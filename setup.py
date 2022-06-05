@@ -1,7 +1,9 @@
 from re import findall
-from setuptools import setup
+from setuptools import setup, find_packages
+from os import getcwd
 
-with open("pytdbot/__init__.py", "r") as f:
+
+with open(getcwd() + "/pytdbot/__init__.py", "r") as f:
     version = findall(r"__version__ = \"(.+)\"", f.read())[0]
 
 with open("README.md", "r") as f:
@@ -18,14 +20,16 @@ setup(
     author_email="let.me.code.safe@gmail.com",
     url="https://github.com/pytdbot/client",
     license="MIT",
-    python_requires="~=3.9",
+    python_requires=">=3.9",
     project_urls={
         "Source": "https://github.com/pytdbot/client",
         "Tracker": "https://github.com/pytdbot/client/issues",
     },
+    packages=find_packages(exclude=["examples"]),
     package_data={
         "pytdbot": [
-            "lib/*",
+            "lib/*.so",
         ],
     },
+    keywords=["telegram", "tdlib", "bot", "telegram-client", "telegram-bot", "bot-api"],
 )
