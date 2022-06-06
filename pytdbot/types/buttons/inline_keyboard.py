@@ -126,13 +126,13 @@ class InlineKeyboardButton:
             "type": {"@type": "inlineKeyboardButtonTypeLoginUrl", "url": url, "id": id},
         }
 
-    def switch_inline(text: str, query: str, is_current_chat: bool = False) -> dict:
+    def switch_inline(text: str, query: str, in_current_chat: bool = False) -> dict:
         """A button that forces an inline query to the bot to be inserted in the input field.
 
         Args:
             text (``str``): Text pf the button.
             query (``str``): Inline query to be sent to the bot.
-            is_current_chat (``str``, optional): True, if the inline query must be sent from the current chat. Defaults to False.
+            in_current_chat (``str``, optional): True, if the inline query must be sent from the current chat. Defaults to False.
 
         Returns:
             dict
@@ -144,7 +144,7 @@ class InlineKeyboardButton:
             "type": {
                 "@type": "inlineKeyboardButtonTypeSwitchInline",
                 "query": query,
-                "is_current_chat": is_current_chat,
+                "in_current_chat": in_current_chat,
             },
         }
 
