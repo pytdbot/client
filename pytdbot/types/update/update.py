@@ -221,6 +221,16 @@ class Update:
                 return decoded_data
 
     @property
+    def query(self) -> str:
+        """The query of the inline query.
+
+        Returns:
+            ``str``
+        """
+        if self.type_ == "updateNewInlineQuery":
+            return self.update["query"]
+
+    @property
     def file_id(self) -> str:
         """Remote file id.
 
