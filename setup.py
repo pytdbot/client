@@ -1,9 +1,8 @@
 from re import findall
 from setuptools import setup, find_packages
-from os import getcwd
 
 
-with open(getcwd() + "/pytdbot/__init__.py", "r") as f:
+with open("pytdbot/__init__.py", "r") as f:
     version = findall(r"__version__ = \"(.+)\"", f.read())[0]
 
 with open("README.md", "r") as f:
