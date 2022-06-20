@@ -14,6 +14,7 @@ from importlib import import_module
 from typing import Callable, Union
 from logging import getLogger, DEBUG
 from base64 import b64encode
+from concurrent.futures import ThreadPoolExecutor
 import signal, pytdbot, asyncio
 
 try:
@@ -49,6 +50,9 @@ class Client(Decorators, Methods):
 
         plugins (:class:`~pytdbot.types.Plugins`, optional):
             Plugins to load.
+
+        update_class (:class:`~pytdbot.types.Update`, optional):
+            Update class to use. Defaults to :class:`~pytdbot.types.Update`.
 
         system_language_code (``str``, optional):
             System language code. Defaults to "en".
@@ -96,6 +100,7 @@ class Client(Decorators, Methods):
         files_directory: str,
         lib_path: str = None,
         plugins: Plugins = None,
+        update_class: Update = Update,
         system_language_code: str = "en",
         device_model: str = None,
         use_test_dc: bool = False,
@@ -116,6 +121,7 @@ class Client(Decorators, Methods):
         self.files_directory = files_directory
         self.lib_path = lib_path
         self.plugins = plugins
+        self.update_class = update_class
         self.system_language_code = system_language_code
         self.device_model = device_model
         self.use_test_dc = use_test_dc
@@ -125,6 +131,7 @@ class Client(Decorators, Methods):
         self.enable_storage_optimizer = enable_storage_optimizer
         self.ignore_file_names = ignore_file_names
         self.workers = workers
+        self.executer = ThreadPoolExecutor(max_workers=workers)
         self.queue = asyncio.Queue()
         self.td_verbosity = td_verbosity
         self.authorization_state = None
@@ -361,10 +368,15 @@ class Client(Decorators, Methods):
         logger.info("Instance closed with %s updates served", self.update_count)
 
     async def send(self, data: dict) -> None:
-        return await self.loop.run_in_executor(None, self._tdjson.send, data)
+        # return await self.loop.run_in_executor(self.executer, self._tdjson.send, data)
+        return self._tdjson.send(
+            data
+        )  # tdjson.send will return immediately. So we don't need to run_in_executor. This improves performance.
 
     async def receive(self, timeout: float = 2.0) -> dict:
-        return await self.loop.run_in_executor(None, self._tdjson.receive, timeout)
+        return await self.loop.run_in_executor(
+            self.executer, self._tdjson.receive, timeout
+        )
 
     def _check_init_args(self):
         if not isinstance(self.api_id, int):
@@ -383,6 +395,10 @@ class Client(Decorators, Methods):
             raise TypeError("Argument td_verbosity must be int")
         elif not isinstance(self.workers, int):
             raise TypeError("Argument workers must be int")
+        elif not type(Update) is type(self.update_class):
+            raise TypeError(
+                "Argument update_class must be instance of class pytdbot.types.Update"
+            )
         if self.workers < 1:
             raise ValueError("Argument workers must be greater than 0")
         try:
@@ -444,6 +460,10 @@ class Client(Decorators, Methods):
         if "@type" not in data:
             return
         elif "@extra" in data:
+            if (
+                logger.root.level >= DEBUG
+            ):  # dumping all responses may create performance issues.
+                logger.debug("Recieved: %s", dumps(data, indent=4))
             if data["@extra"]["request_id"] in self._results:
                 response: Response = self._results.pop(data["@extra"]["request_id"])
                 response.set_response(data)
@@ -459,6 +479,68 @@ class Client(Decorators, Methods):
             elif data["@type"] == "updateOption":
                 self.loop.create_task(self._handle_update_option(data))
             self.queue.put_nowait(data)
+
+    async def __run_initializers(self, data):
+        for initializer in self._handlers["initializer"]:
+            try:
+                if isinstance(initializer.filter, Filter):
+                    if asyncio.iscoroutinefunction(initializer.filter.func):
+                        if not await initializer.filter.func(self, data):
+                            continue
+                    else:
+                        if not await self.loop.run_in_executor(
+                            self.executer,
+                            initializer.filter.func,
+                            self,
+                            data,
+                        ):
+                            continue
+                await initializer.func(self, data)
+            except StopHandlers as e:
+                raise e
+            except Exception:
+                logger.exception("Initializer %s failed", initializer)
+
+    async def __run_handlers(self, data):
+        update_type = data["@type"]
+        for handler in self._handlers[update_type]:
+            try:
+                if isinstance(handler.filter, Filter):
+                    if asyncio.iscoroutinefunction(handler.filter.func):
+                        if not await handler.filter.func(self, data):
+                            continue
+                    else:
+                        if not await self.loop.run_in_executor(
+                            self.executer,
+                            handler.filter.func,
+                            self,
+                            data,
+                        ):
+                            continue
+                await handler.func(self, data)
+            except StopHandlers as e:
+                raise e
+            except Exception:
+                logger.exception("Exception in handler %s", handler)
+
+    async def __run_finalizers(self, data):
+        for finalizer in self._handlers["finalizer"]:
+            try:
+                if isinstance(finalizer.filter, Filter):
+                    if asyncio.iscoroutinefunction(finalizer.filter.func):
+                        if not await finalizer.filter.func(self, data):
+                            continue
+                    else:
+                        if not await self.loop.run_in_executor(
+                            self.executer,
+                            finalizer.filter.func,
+                            self,
+                            data,
+                        ):
+                            continue
+                await finalizer.func(self, data)
+            except Exception:
+                logger.exception("Finalizer %s failed", finalizer)
 
     async def _updates_worker(self):
         while self.is_running:
@@ -477,65 +559,27 @@ class Client(Decorators, Methods):
                 update_type = data["@type"]
 
                 if update_type in self._handlers:
-                    data = Update(self, data)
+                    data = self.update_class(self, data)
 
                     if update_type == "updateNewMessage":
                         if data["message"]["is_outgoing"]:
                             continue
                     self.update_count += 1
 
-                    for initializer in self._handlers["initializer"]:
-                        try:
-                            if isinstance(initializer.filter, Filter):
-                                if asyncio.iscoroutinefunction(initializer.filter.func):
-                                    if not await initializer.filter.func(self, data):
-                                        continue
-                                else:
-                                    if not await self.loop.run_in_executor(
-                                        None, initializer.filter.func, self, data
-                                    ):
-                                        continue
-                            await initializer.func(self, data)
-                        except StopHandlers:
-                            break
-                        except Exception:
-                            logger.exception("Initializer %s failed", initializer)
-
                     try:
-                        for handler in self._handlers[update_type]:
-                            try:
-                                if isinstance(handler.filter, Filter):
-                                    if asyncio.iscoroutinefunction(handler.filter.func):
-                                        if not await handler.filter.func(self, data):
-                                            continue
-                                    else:
-                                        if not await self.loop.run_in_executor(
-                                            None, handler.filter.func, self, data
-                                        ):
-                                            continue
-                                await handler.func(self, data)
-                            except StopHandlers:
-                                break
-                            except Exception:
-                                logger.exception("Exception in handler %s", handler)
-                    finally:
-                        for finalizer in self._handlers["finalizer"]:
-                            try:
-                                if isinstance(finalizer.filter, Filter):
-                                    if asyncio.iscoroutinefunction(
-                                        finalizer.filter.func
-                                    ):
-                                        if not await finalizer.filter.func(self, data):
-                                            continue
-                                    else:
-                                        if not await self.loop.run_in_executor(
-                                            None, finalizer.filter.func, self, data
-                                        ):
-                                            continue
-                                await finalizer.func(data)
-                            except Exception:
-                                logger.exception("Finalizer %s failed", finalizer)
-
+                        await self.__run_initializers(data)
+                    except StopHandlers:
+                        continue  # if initializers raised StopHandlers, we should skip this update
+                    else:
+                        try:
+                            await self.__run_handlers(data)
+                        except StopHandlers:
+                            pass
+                    finally:  # and finally run finalizers after execution of initializers and handlers
+                        try:
+                            await self.__run_finalizers(data)
+                        except StopHandlers:
+                            continue
             except Exception:
                 logger.exception("Exception in _updates_worker")
 
