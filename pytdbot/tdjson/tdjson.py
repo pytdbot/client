@@ -95,8 +95,7 @@ class TDjson:
             `dict`: An incoming update or response to a request. If no data is received, `None` is returned.
         """
         try:
-            res = self._td_receive(self.client_id, c_double(timeout))
-            if res:
+            if res := self._td_receive(self.client_id, c_double(timeout)):
                 return loads(res.decode("utf-8"))
         except Exception:
             logger.exception("Exception while receiving")
@@ -124,8 +123,7 @@ class TDjson:
             `dict`: The response to the request. If the request fails, `None` is returned.
         """
         try:
-            res = self._td_execute(dumps(data).encode("utf-8"))
-            if res:
+            if res := self._td_execute(dumps(data).encode("utf-8")):
                 return loads(res.decode("utf-8"))
         except Exception:
             logger.exception("Exception while executing")

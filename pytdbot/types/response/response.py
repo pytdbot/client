@@ -17,10 +17,7 @@ class Response:
     """
 
     def __init__(self, request: dict, request_id: Union[str, int, dict] = None) -> None:
-        if request_id is None:
-            self.id = uuid4().hex
-        else:
-            self.id = request_id
+        self.id = uuid4().hex if request_id is None else request_id
         request["@extra"] = {"request_id": self.id}
         self.request = request
         self.is_error = False

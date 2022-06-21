@@ -237,44 +237,45 @@ class Update:
         Returns:
             ``str``
         """
-        if self.type_ in [
+        if self.type_ not in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
         ]:
-            if "content" in self.update["message"]:
-                if self.update["message"]["content"]["@type"] == "messageDocument":
-                    return self.update["message"]["content"]["document"]["document"][
-                        "remote"
-                    ]["id"]
-                elif self.update["message"]["content"]["@type"] == "messageVideo":
-                    return self.update["message"]["content"]["video"]["video"][
-                        "remote"
-                    ]["id"]
-                elif self.update["message"]["content"]["@type"] == "messageAnimation":
-                    return self.update["message"]["content"]["animation"]["animation"][
-                        "remote"
-                    ]["id"]
-                elif self.update["message"]["content"]["@type"] == "messageAudio":
-                    return self.update["message"]["content"]["audio"]["audio"][
-                        "remote"
-                    ]["id"]
-                elif self.update["message"]["content"]["@type"] == "messageVoiceNote":
-                    return self.update["message"]["content"]["voice_note"]["voice"][
-                        "remote"
-                    ]["id"]
-                elif self.update["message"]["content"]["@type"] == "messagePhoto":
-                    return self.update["message"]["content"]["photo"]["sizes"][-1][
-                        "photo"
-                    ]["remote"]["id"]
-                elif self.update["message"]["content"]["@type"] == "messageSticker":
-                    return self.update["message"]["content"]["sticker"]["sticker"][
-                        "remote"
-                    ]["id"]
-                elif self.update["message"]["content"]["@type"] == "messageVideoNote":
-                    return self.update["message"]["content"]["video_note"]["video"][
-                        "remote"
-                    ]["id"]
+            return
+        if "content" in self.update["message"]:
+            if self.update["message"]["content"]["@type"] == "messageDocument":
+                return self.update["message"]["content"]["document"]["document"][
+                    "remote"
+                ]["id"]
+            elif self.update["message"]["content"]["@type"] == "messageVideo":
+                return self.update["message"]["content"]["video"]["video"]["remote"][
+                    "id"
+                ]
+            elif self.update["message"]["content"]["@type"] == "messageAnimation":
+                return self.update["message"]["content"]["animation"]["animation"][
+                    "remote"
+                ]["id"]
+            elif self.update["message"]["content"]["@type"] == "messageAudio":
+                return self.update["message"]["content"]["audio"]["audio"]["remote"][
+                    "id"
+                ]
+            elif self.update["message"]["content"]["@type"] == "messageVoiceNote":
+                return self.update["message"]["content"]["voice_note"]["voice"][
+                    "remote"
+                ]["id"]
+            elif self.update["message"]["content"]["@type"] == "messagePhoto":
+                return self.update["message"]["content"]["photo"]["sizes"][-1]["photo"][
+                    "remote"
+                ]["id"]
+            elif self.update["message"]["content"]["@type"] == "messageSticker":
+                return self.update["message"]["content"]["sticker"]["sticker"][
+                    "remote"
+                ]["id"]
+            elif self.update["message"]["content"]["@type"] == "messageVideoNote":
+                return self.update["message"]["content"]["video_note"]["video"][
+                    "remote"
+                ]["id"]
 
     @property
     def is_user(self) -> bool:
@@ -284,10 +285,7 @@ class Update:
             ``bool``
         """
         if isinstance(self.from_id, int):
-            if self.from_id > 0:
-                return True
-            else:
-                return False
+            return self.from_id > 0
 
     @property
     def is_private(self) -> bool:
@@ -297,10 +295,7 @@ class Update:
             ``bool``
         """
         if isinstance(self.chat_id, int):
-            if self.chat_id > 0:
-                return True
-            else:
-                return False
+            return self.chat_id > 0
 
     @property
     def is_service(self) -> bool:
@@ -309,9 +304,7 @@ class Update:
         Returns:
             ``bool``
         """
-        if self.content_type in self.SERVICE_MESSAGE_TYPES:
-            return True
-        return False
+        return self.content_type in self.SERVICE_MESSAGE_TYPES
 
     async def mention(self, parse_mode: str = "markdown", version: int = 1) -> str:
         """Get the text_mention of the message sender.
@@ -330,14 +323,12 @@ class Update:
             user = await self.client.getUser(self.from_id)
             if not user.is_error:
                 name = user["first_name"]
-                if parse_mode == "markdown":
-                    return "[{}](tg://user?id={})".format(
-                        escape_markdown(name, version=version), self.from_id
+                if parse_mode == "html":
+                    return (
+                        f"<a href='tg://user?id={self.from_id}'>{escape_html(name)}</a>"
                     )
-                elif parse_mode == "html":
-                    return "<a href='tg://user?id={}'>{}</a>".format(
-                        self.from_id, escape_html(name)
-                    )
+                elif parse_mode == "markdown":
+                    return f"[{escape_markdown(name, version=version)}](tg://user?id={self.from_id})"
 
     async def getRepliedMessage(
         self,

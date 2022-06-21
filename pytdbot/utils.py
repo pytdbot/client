@@ -35,4 +35,4 @@ def escape_markdown(text: str, version: int = 1) -> str:
     else:
         raise ValueError("Invalid version. Must be 1 or 2.")
 
-    return sub("([{}])".format(chars), r"\\\1", text)
+    return sub(f"([{chars}])", r"\\\1", text)

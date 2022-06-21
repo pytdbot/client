@@ -190,16 +190,16 @@ class Client(Decorators, Methods):
         """Login to Telegram."""
         if self.is_logged_in:
             return
-        else:
-            while self.authorization_state != "authorizationStateReady":
-                if self.authorization_state == "authorizationStateWaitTdlibParameters":
-                    await self._set_td_paramaters()
-                elif self.authorization_state == "authorizationStateWaitEncryptionKey":
-                    await self._set_encryption_key()
-                elif self.authorization_state == "authorizationStateWaitPhoneNumber":
-                    await self._set_bot_token()
-                authorization = await self.getAuthorizationState()
-                self.authorization_state = authorization.type_
+
+        while self.authorization_state != "authorizationStateReady":
+            if self.authorization_state == "authorizationStateWaitTdlibParameters":
+                await self._set_td_paramaters()
+            elif self.authorization_state == "authorizationStateWaitEncryptionKey":
+                await self._set_encryption_key()
+            elif self.authorization_state == "authorizationStateWaitPhoneNumber":
+                await self._set_bot_token()
+            authorization = await self.getAuthorizationState()
+            self.authorization_state = authorization.type_
 
         self.me = await self.getMe()
         self.is_logged_in = True
@@ -395,7 +395,7 @@ class Client(Decorators, Methods):
             raise TypeError("Argument td_verbosity must be int")
         elif not isinstance(self.workers, int):
             raise TypeError("Argument workers must be int")
-        elif not type(Update) is type(self.update_class):
+        elif type(Update) is not type(self.update_class):
             raise TypeError(
                 "Argument update_class must be instance of class pytdbot.types.Update"
             )
@@ -419,27 +419,26 @@ class Client(Decorators, Methods):
                 logger.debug("Plugin %s loaded", module_path)
                 for name in dir(module):
                     obj = getattr(module, name)
-                    if hasattr(obj, "_handler"):
-                        if isinstance(obj._handler, Handler):
-                            if asyncio.iscoroutinefunction(obj._handler.func):
-                                self.add_handler(
-                                    obj._handler.update_type,
-                                    obj._handler.func,
-                                    obj._handler.filter,
-                                    obj._handler.position,
-                                )
-                                logger.debug(
-                                    "Handler %s added from %s",
-                                    obj._handler.func,
-                                    module_path,
-                                )
-                                handlers += 1
-                            else:
-                                logger.warn(
-                                    'Handler " %s " is not coroutine from " %s "',
-                                    obj._handler.func,
-                                    module_path,
-                                )
+                    if hasattr(obj, "_handler") and isinstance(obj._handler, Handler):
+                        if asyncio.iscoroutinefunction(obj._handler.func):
+                            self.add_handler(
+                                obj._handler.update_type,
+                                obj._handler.func,
+                                obj._handler.filter,
+                                obj._handler.position,
+                            )
+                            logger.debug(
+                                "Handler %s added from %s",
+                                obj._handler.func,
+                                module_path,
+                            )
+                            handlers += 1
+                        else:
+                            logger.warn(
+                                'Handler " %s " is not coroutine from " %s "',
+                                obj._handler.func,
+                                module_path,
+                            )
                 count += 1
         logger.info("From %s plugins got %s handlers", count, handlers)
 
@@ -487,14 +486,13 @@ class Client(Decorators, Methods):
                     if asyncio.iscoroutinefunction(initializer.filter.func):
                         if not await initializer.filter.func(self, data):
                             continue
-                    else:
-                        if not await self.loop.run_in_executor(
-                            self.executer,
-                            initializer.filter.func,
-                            self,
-                            data,
-                        ):
-                            continue
+                    elif not await self.loop.run_in_executor(
+                        self.executer,
+                        initializer.filter.func,
+                        self,
+                        data,
+                    ):
+                        continue
                 await initializer.func(self, data)
             except StopHandlers as e:
                 raise e
@@ -509,14 +507,13 @@ class Client(Decorators, Methods):
                     if asyncio.iscoroutinefunction(handler.filter.func):
                         if not await handler.filter.func(self, data):
                             continue
-                    else:
-                        if not await self.loop.run_in_executor(
-                            self.executer,
-                            handler.filter.func,
-                            self,
-                            data,
-                        ):
-                            continue
+                    elif not await self.loop.run_in_executor(
+                        self.executer,
+                        handler.filter.func,
+                        self,
+                        data,
+                    ):
+                        continue
                 await handler.func(self, data)
             except StopHandlers as e:
                 raise e
@@ -530,14 +527,13 @@ class Client(Decorators, Methods):
                     if asyncio.iscoroutinefunction(finalizer.filter.func):
                         if not await finalizer.filter.func(self, data):
                             continue
-                    else:
-                        if not await self.loop.run_in_executor(
-                            self.executer,
-                            finalizer.filter.func,
-                            self,
-                            data,
-                        ):
-                            continue
+                    elif not await self.loop.run_in_executor(
+                        self.executer,
+                        finalizer.filter.func,
+                        self,
+                        data,
+                    ):
+                        continue
                 await finalizer.func(self, data)
             except Exception:
                 logger.exception("Finalizer %s failed", finalizer)
@@ -561,9 +557,11 @@ class Client(Decorators, Methods):
                 if update_type in self._handlers:
                     data = self.update_class(self, data)
 
-                    if update_type == "updateNewMessage":
-                        if data["message"]["is_outgoing"]:
-                            continue
+                    if (
+                        update_type == "updateNewMessage"
+                        and data["message"]["is_outgoing"]
+                    ):
+                        continue
                     self.update_count += 1
 
                     try:
@@ -619,13 +617,12 @@ class Client(Decorators, Methods):
             raise AuthorizationError(res.response["message"])
 
     async def _handle_authorization_state(self, update):
-        if self.is_logged_in == True:
-            if update["@type"] == "updateAuthorizationState":
-                self.authorization_state = update["authorization_state"]["@type"]
-                logger.info(
-                    "Authorization state changed to %s",
-                    self.authorization_state.replace("authorizationState", ""),
-                )
+        if self.is_logged_in == True and update["@type"] == "updateAuthorizationState":
+            self.authorization_state = update["authorization_state"]["@type"]
+            logger.info(
+                "Authorization state changed to %s",
+                self.authorization_state.replace("authorizationState", ""),
+            )
 
     async def _handle_connection_state(self, update):
         if update["@type"] == "updateConnectionState":
