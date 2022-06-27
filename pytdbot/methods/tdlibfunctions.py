@@ -46,7 +46,7 @@ class TDLibFunctions:
         """Checks the database encryption key for correctness. Works only when the current authorization state is authorizationStateWaitEncryptionKey
 
         Args:
-            encryption_key (`bytes`):
+            encryption_key (``bytes``):
                 Encryption key to check or set up
 
 
@@ -366,7 +366,7 @@ class TDLibFunctions:
         """Changes the database encryption key. Usually the encryption key is never changed and is stored in some OS keychain
 
         Args:
-            new_encryption_key (`bytes`):
+            new_encryption_key (``bytes``):
                 New encryption key
 
 
@@ -1445,7 +1445,7 @@ class TDLibFunctions:
         self, type: dict, timeout: float = None
     ) -> Response:
 
-        """Checks whether the maximum number of owned public chats has been reached. Returns corresponding error if the limit was reached
+        """Checks whether the maximum number of owned public chats has been reached. Returns corresponding error if the limit was reached. The limit can be increased with Telegram Premium
 
         Args:
             type (``dict``):
@@ -1477,7 +1477,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def getInactiveSupergroupChats(self, timeout: float = None) -> Response:
-        """Returns a list of recently inactive supergroups and channels. Can be used when user reaches limit on the number of joined supergroups and channels and receives CHANNELS_TOO_MUCH error
+        """Returns a list of recently inactive supergroups and channels. Can be used when user reaches limit on the number of joined supergroups and channels and receives CHANNELS_TOO_MUCH error. Also, the limit can be increased with Telegram Premium
 
         Returns:
             :class:`~pytdbot.types.Response`
@@ -2332,6 +2332,62 @@ class TDLibFunctions:
             "text": text,
             "from_language_code": from_language_code,
             "to_language_code": to_language_code,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def recognizeSpeech(
+        self, chat_id: int, message_id: int, timeout: float = None
+    ) -> Response:
+
+        """Recognizes speech in a voice note message. The message must be successfully sent and must not be scheduled. May return an error with a message "MSG_VOICE_TOO_LONG" if the voice note is too long to be recognized
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which the message belongs
+
+            message_id (``int``):
+                Identifier of the message
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "recognizeSpeech",
+            "chat_id": chat_id,
+            "message_id": message_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def rateSpeechRecognition(
+        self, chat_id: int, message_id: int, is_good: bool, timeout: float = None
+    ) -> Response:
+
+        """Rates recognized speech in a voice note message
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which the message belongs
+
+            message_id (``int``):
+                Identifier of the message
+
+            is_good (``bool``):
+                Pass true if the speech recognition is good
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "rateSpeechRecognition",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "is_good": is_good,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -3217,7 +3273,7 @@ class TDLibFunctions:
         self, chat_id: int, message_id: int, timeout: float = None
     ) -> Response:
 
-        """Returns reactions, which can be added to a message. The list can change after updateReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message
+        """Returns reactions, which can be added to a message. The list can change after updateReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message. The method will return Premium reactions, even the current user has no Premium subscription
 
         Args:
             chat_id (``int``):
@@ -3374,7 +3430,7 @@ class TDLibFunctions:
 
         Args:
             text (``dict``):
-                The text to parse.
+                The text to parse. For example, "__italic__ ~~strikethrough~~ ||spoiler|| **bold** `code` ```pre``` __[italic__ text_url](telegram.org) __italic**bold italic__bold**"
 
 
         Returns:
@@ -3870,7 +3926,7 @@ class TDLibFunctions:
         self, bot_user_id: int, url: str, theme: dict = None, timeout: float = None
     ) -> Response:
 
-        """Returns an HTTPS URL of a web app to open after keyboardButtonTypeWebApp button is pressed
+        """Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp button is pressed
 
         Args:
             bot_user_id (``int``):
@@ -3880,7 +3936,7 @@ class TDLibFunctions:
                 The URL from the keyboardButtonTypeWebApp button
 
             theme (``dict``, optional):
-                Preferred web app theme; pass null to use the default theme.
+                Preferred Web App theme; pass null to use the default theme.
 
 
         Returns:
@@ -3900,14 +3956,14 @@ class TDLibFunctions:
         self, bot_user_id: int, button_text: str, data: str, timeout: float = None
     ) -> Response:
 
-        """Sends data received from a keyboardButtonTypeWebApp web app to a bot
+        """Sends data received from a keyboardButtonTypeWebApp Web App to a bot
 
         Args:
             bot_user_id (``int``):
                 Identifier of the target bot
 
             button_text (``str``):
-                Text of the keyboardButtonTypeWebApp button, which opened the web app
+                Text of the keyboardButtonTypeWebApp button, which opened the Web App
 
             data (``str``):
                 Received data
@@ -3936,23 +3992,23 @@ class TDLibFunctions:
         timeout: float = None,
     ) -> Response:
 
-        """Informs TDLib that a web app is being opened from attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button. For each bot, a confirmation alert about data sent to the bot must be shown once
+        """Informs TDLib that a Web App is being opened from attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button. For each bot, a confirmation alert about data sent to the bot must be shown once
 
         Args:
             chat_id (``int``):
-                Identifier of the chat in which the web app is opened. Web apps can be opened only in private chats for now
+                Identifier of the chat in which the Web App is opened
 
             bot_user_id (``int``):
-                Identifier of the bot, providing the web app
+                Identifier of the bot, providing the Web App
 
             url (``str``):
                 The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, or an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
 
             reply_to_message_id (``int``):
-                Identifier of the replied message for the message sent by the web app; 0 if none
+                Identifier of the replied message for the message sent by the Web App; 0 if none
 
             theme (``dict``, optional):
-                Preferred web app theme; pass null to use the default theme.
+                Preferred Web App theme; pass null to use the default theme.
 
 
         Returns:
@@ -3974,11 +4030,11 @@ class TDLibFunctions:
         self, web_app_launch_id: int, timeout: float = None
     ) -> Response:
 
-        """Informs TDLib that a previously opened web app was closed
+        """Informs TDLib that a previously opened Web App was closed
 
         Args:
             web_app_launch_id (``int``):
-                Identifier of web app launch, received from openWebApp
+                Identifier of Web App launch, received from openWebApp
 
 
         Returns:
@@ -3996,11 +4052,11 @@ class TDLibFunctions:
         self, web_app_query_id: str, result: dict, timeout: float = None
     ) -> Response:
 
-        """Sets the result of interaction with a web app and sends corresponding message on behalf of the user to the chat from which the query originated; for bots only
+        """Sets the result of interaction with a Web App and sends corresponding message on behalf of the user to the chat from which the query originated; for bots only
 
         Args:
             web_app_query_id (``str``):
-                Identifier of the web app query
+                Identifier of the Web App query
 
             result (``dict``):
                 The result of the query
@@ -4888,7 +4944,7 @@ class TDLibFunctions:
 
     async def createChatFilter(self, filter: dict, timeout: float = None) -> Response:
 
-        """Creates new chat filter. Returns information about the created chat filter
+        """Creates new chat filter. Returns information about the created chat filter. There can be up to GetOption("chat_filter_count_max") chat filters, but the limit can be increased with Telegram Premium
 
         Args:
             filter (``dict``):
@@ -4955,7 +5011,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def reorderChatFilters(
-        self, chat_filter_ids: list, timeout: float = None
+        self, chat_filter_ids: list, main_chat_list_position: int, timeout: float = None
     ) -> Response:
 
         """Changes the order of chat filters
@@ -4963,6 +5019,9 @@ class TDLibFunctions:
         Args:
             chat_filter_ids (``list``):
                 Identifiers of chat filters in the new correct order
+
+            main_chat_list_position (``int``):
+                Position of the main chat list among chat filters, 0-based. Can be non-zero only for Premium users
 
 
         Returns:
@@ -4972,6 +5031,7 @@ class TDLibFunctions:
         data = {
             "@type": "reorderChatFilters",
             "chat_filter_ids": chat_filter_ids,
+            "main_chat_list_position": main_chat_list_position,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -5524,7 +5584,7 @@ class TDLibFunctions:
 
     async def joinChat(self, chat_id: int, timeout: float = None) -> Response:
 
-        """Adds the current user as a new member to a chat. Private and secret chats can't be joined using this method
+        """Adds the current user as a new member to a chat. Private and secret chats can't be joined using this method. May return an error with a message "INVITE_REQUEST_SENT" if only a join request was created
 
         Args:
             chat_id (``int``):
@@ -6009,7 +6069,7 @@ class TDLibFunctions:
         self, chat_list: dict, chat_id: int, is_pinned: bool, timeout: float = None
     ) -> Response:
 
-        """Changes the pinned state of a chat. There can be up to GetOption("pinned_chat_count_max")/GetOption("pinned_archived_chat_count_max") pinned non-secret chats and the same number of secret chats in the main/archive chat list
+        """Changes the pinned state of a chat. There can be up to GetOption("pinned_chat_count_max")/GetOption("pinned_archived_chat_count_max") pinned non-secret chats and the same number of secret chats in the main/archive chat list. The limit can be increased with Telegram Premium
 
         Args:
             chat_list (``dict``):
@@ -6294,7 +6354,7 @@ class TDLibFunctions:
             offset (``int``):
                 The offset from which to write the data to the file
 
-            data (`bytes`):
+            data (``bytes``):
                 The data to write
 
 
@@ -6616,7 +6676,7 @@ class TDLibFunctions:
         self, message_file_head: str, timeout: float = None
     ) -> Response:
 
-        """Returns information about a file with messages exported from another app
+        """Returns information about a file with messages exported from another application
 
         Args:
             message_file_head (``str``):
@@ -7045,7 +7105,7 @@ class TDLibFunctions:
         self, invite_link: str, timeout: float = None
     ) -> Response:
 
-        """Uses an invite link to add the current user to the chat if possible
+        """Uses an invite link to add the current user to the chat if possible. May return an error with a message "INVITE_REQUEST_SENT" if only a join request was created
 
         Args:
             invite_link (``str``):
@@ -7233,7 +7293,7 @@ class TDLibFunctions:
             call_id (``int``):
                 Call identifier
 
-            data (`bytes`):
+            data (``bytes``):
                 The data
 
 
@@ -9098,6 +9158,19 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def getAllAnimatedEmojis(self, timeout: float = None) -> Response:
+        """Returns all emojis, which has a corresponding animated emoji
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getAllAnimatedEmojis",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def getEmojiSuggestionsUrl(
         self, language_code: str, timeout: float = None
     ) -> Response:
@@ -9358,7 +9431,7 @@ class TDLibFunctions:
 
         Args:
             bio (``str``):
-                The new value of the user bio; 0-70 characters without line feeds
+                The new value of the user bio; 0-GetOption("bio_length_max") characters without line feeds
 
 
         Returns:
@@ -9897,6 +9970,58 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def toggleSupergroupJoinToSendMessages(
+        self, supergroup_id: int, join_to_send_messages: bool, timeout: float = None
+    ) -> Response:
+
+        """Toggles whether joining is mandatory to send messages to a discussion supergroup; requires can_restrict_members administrator right
+
+        Args:
+            supergroup_id (``int``):
+                Identifier of the supergroup
+
+            join_to_send_messages (``bool``):
+                New value of join_to_send_messages
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleSupergroupJoinToSendMessages",
+            "supergroup_id": supergroup_id,
+            "join_to_send_messages": join_to_send_messages,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def toggleSupergroupJoinByRequest(
+        self, supergroup_id: int, join_by_request: bool, timeout: float = None
+    ) -> Response:
+
+        """Toggles whether all users directly joining the supergroup need to be approved by supergroup administrators; requires can_restrict_members administrator right
+
+        Args:
+            supergroup_id (``int``):
+                Identifier of the channel
+
+            join_by_request (``bool``):
+                New value of join_by_request
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleSupergroupJoinByRequest",
+            "supergroup_id": supergroup_id,
+            "join_by_request": join_by_request,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def toggleSupergroupIsAllHistoryAvailable(
         self, supergroup_id: int, is_all_history_available: bool, timeout: float = None
     ) -> Response:
@@ -10082,17 +10207,14 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def getPaymentForm(
-        self, chat_id: int, message_id: int, theme: dict = None, timeout: float = None
+        self, input_invoice: dict, theme: dict = None, timeout: float = None
     ) -> Response:
 
         """Returns an invoice payment form. This method must be called when the user presses inlineKeyboardButtonBuy
 
         Args:
-            chat_id (``int``):
-                Chat identifier of the Invoice message
-
-            message_id (``int``):
-                Message identifier
+            input_invoice (``dict``):
+                The invoice
 
             theme (``dict``, optional):
                 Preferred payment form theme; pass null to use the default theme.
@@ -10104,8 +10226,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "getPaymentForm",
-            "chat_id": chat_id,
-            "message_id": message_id,
+            "input_invoice": input_invoice,
             "theme": theme,
         }
 
@@ -10113,8 +10234,7 @@ class TDLibFunctions:
 
     async def validateOrderInfo(
         self,
-        chat_id: int,
-        message_id: int,
+        input_invoice: dict,
         allow_save: bool,
         order_info: dict = None,
         timeout: float = None,
@@ -10123,11 +10243,8 @@ class TDLibFunctions:
         """Validates the order information provided by a user and returns the available shipping options for a flexible invoice
 
         Args:
-            chat_id (``int``):
-                Chat identifier of the Invoice message
-
-            message_id (``int``):
-                Message identifier
+            input_invoice (``dict``):
+                The invoice
 
             allow_save (``bool``):
                 Pass true to save the order information
@@ -10142,8 +10259,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "validateOrderInfo",
-            "chat_id": chat_id,
-            "message_id": message_id,
+            "input_invoice": input_invoice,
             "order_info": order_info,
             "allow_save": allow_save,
         }
@@ -10152,8 +10268,7 @@ class TDLibFunctions:
 
     async def sendPaymentForm(
         self,
-        chat_id: int,
-        message_id: int,
+        input_invoice: dict,
         payment_form_id: int,
         order_info_id: str,
         shipping_option_id: str,
@@ -10165,11 +10280,8 @@ class TDLibFunctions:
         """Sends a filled-out payment form to the bot for final verification
 
         Args:
-            chat_id (``int``):
-                Chat identifier of the Invoice message
-
-            message_id (``int``):
-                Message identifier
+            input_invoice (``dict``):
+                The invoice
 
             payment_form_id (``int``):
                 Payment form identifier returned by getPaymentForm
@@ -10193,8 +10305,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "sendPaymentForm",
-            "chat_id": chat_id,
-            "message_id": message_id,
+            "input_invoice": input_invoice,
             "payment_form_id": payment_form_id,
             "order_info_id": order_info_id,
             "shipping_option_id": shipping_option_id,
@@ -10265,6 +10376,26 @@ class TDLibFunctions:
 
         data = {
             "@type": "deleteSavedCredentials",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def createInvoiceLink(self, invoice: dict, timeout: float = None) -> Response:
+
+        """Creates a link for the given invoice; for bots only
+
+        Args:
+            invoice (``dict``):
+                Information about the invoice of the type inputMessageInvoice
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "createInvoiceLink",
+            "invoice": invoice,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -11932,7 +12063,7 @@ class TDLibFunctions:
                 Sticker
 
             position (``int``):
-                New position of the sticker in the set, zero-based
+                New position of the sticker in the set, 0-based
 
 
         Returns:
@@ -12014,6 +12145,172 @@ class TDLibFunctions:
             "height": height,
             "scale": scale,
             "chat_id": chat_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getPremiumLimit(
+        self, limit_type: dict, timeout: float = None
+    ) -> Response:
+
+        """Returns information about a limit, increased for Premium users. Returns a 404 error if the limit is unknown
+
+        Args:
+            limit_type (``dict``):
+                Type of the limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getPremiumLimit",
+            "limit_type": limit_type,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getPremiumFeatures(
+        self, source: dict = None, timeout: float = None
+    ) -> Response:
+
+        """Returns information about features, available to Premium users
+
+        Args:
+            source (``dict``, optional):
+                Source of the request; pass null if the method is called from some non-standard source.
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getPremiumFeatures",
+            "source": source,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getPremiumStickers(self, timeout: float = None) -> Response:
+        """Returns examples of premium stickers for demonstration purposes
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getPremiumStickers",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def viewPremiumFeature(
+        self, feature: dict, timeout: float = None
+    ) -> Response:
+
+        """Informs TDLib that the user viewed detailed information about a Premium feature on the Premium features screen
+
+        Args:
+            feature (``dict``):
+                The viewed premium feature
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "viewPremiumFeature",
+            "feature": feature,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def clickPremiumSubscriptionButton(self, timeout: float = None) -> Response:
+        """Informs TDLib that the user clicked Premium subscription button on the Premium features screen
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "clickPremiumSubscriptionButton",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getPremiumState(self, timeout: float = None) -> Response:
+        """Returns state of Telegram Premium subscription and promotion videos for Premium features
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getPremiumState",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def canPurchasePremium(self, timeout: float = None) -> Response:
+        """Checks whether Telegram Premium purchase is possible. Must be called before in-store Premium purchase
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "canPurchasePremium",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def assignAppStoreTransaction(
+        self, receipt: bytes, is_restore: bool, timeout: float = None
+    ) -> Response:
+
+        """Informs server about a Telegram Premium purchase through App Store. For official applications only
+
+        Args:
+            receipt (``bytes``):
+                App Store receipt
+
+            is_restore (``bool``):
+                True, if this is restore of Premium purchase
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "assignAppStoreTransaction",
+            "receipt": receipt,
+            "is_restore": is_restore,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def assignGooglePlayTransaction(
+        self, purchase_token: str, timeout: float = None
+    ) -> Response:
+
+        """Informs server about a Telegram Premium purchase through Google Play. For official applications only
+
+        Args:
+            purchase_token (``str``):
+                Google Play purchase token
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "assignGooglePlayTransaction",
+            "purchase_token": purchase_token,
         }
 
         return await self.invoke(data, timeout=timeout)

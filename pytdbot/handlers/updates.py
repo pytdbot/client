@@ -2826,7 +2826,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message was sent by an opened web app, so the web app needs to be closed
+        """A message was sent by an opened Web App, so the Web App needs to be closed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
