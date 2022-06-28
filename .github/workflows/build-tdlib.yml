@@ -41,6 +41,10 @@ jobs:
             cd ..
             php SplitSource.php --undo
 
+      - name: Copy TDLib TL
+        run: |
+            cp td/td/generate/scheme/td_api.tl pytdbot/td_api.tl
+
       - name: Move libtdjson.so
         run: |
             mkdir -p pytdbot/lib
@@ -51,4 +55,4 @@ jobs:
         with:
           default_author: github_actions
           message: 'Update TDLib to ${{ steps.td.outputs.TDLIB_VERSION }}'
-          add: 'pytdbot/lib/libtdjson.so'            
+          add: '["pytdbot/lib/libtdjson.so","pytdbot/td_api.tl"]'
