@@ -456,6 +456,9 @@ class Client(Decorators, Methods):
             logger.exception("Exception in _listen_loop")
 
     async def _process_data(self, data):
+        if "@client_id" in data:
+            del data["@client_id"]
+
         if "@type" not in data:
             return
         elif "@extra" in data:
