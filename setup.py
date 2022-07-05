@@ -8,6 +8,9 @@ with open("pytdbot/__init__.py", "r") as f:
 with open("README.md", "r") as f:
     readme = f.read()
 
+with open("requirements.txt", "r") as f:
+    requirements = [x.strip() for x in f.readlines()]
+
 
 setup(
     name="Pytdbot",
@@ -20,6 +23,7 @@ setup(
     url="https://github.com/pytdbot/client",
     license="MIT",
     python_requires=">=3.9",
+    install_requires=requirements,
     project_urls={
         "Source": "https://github.com/pytdbot/client",
         "Tracker": "https://github.com/pytdbot/client/issues",
