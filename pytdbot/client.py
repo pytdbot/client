@@ -15,7 +15,6 @@ from typing import Callable, Union
 from logging import getLogger, DEBUG
 from base64 import b64encode
 from deepdiff import DeepDiff
-from deepdiff.model import DiffLevel
 from concurrent.futures import ThreadPoolExecutor
 import signal, pytdbot, asyncio
 
@@ -691,7 +690,6 @@ def deepdiff(d1, d2):
     deep = DeepDiff(d1, d2, ignore_order=True, view="tree")
 
     for parent in deep.keys():
-        key: DiffLevel
         for diff in deep[parent]:
             difflist = diff.path(output_format="list")
             key = ".".join(str(v) for v in difflist)
