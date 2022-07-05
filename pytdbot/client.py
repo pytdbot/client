@@ -14,6 +14,8 @@ from importlib import import_module
 from typing import Callable, Union
 from logging import getLogger, DEBUG
 from base64 import b64encode
+from deepdiff import DeepDiff
+from deepdiff.model import DiffLevel
 from concurrent.futures import ThreadPoolExecutor
 import signal, pytdbot, asyncio
 
@@ -202,6 +204,7 @@ class Client(Decorators, Methods):
             self.authorization_state = authorization.type_
 
         self.me = await self.getMe()
+        self.me = self.me.response
         self.is_logged_in = True
         logger.info(f"Logged in as {self.me['first_name']} @{self.me['username']}")
 
@@ -480,6 +483,8 @@ class Client(Decorators, Methods):
                 self.loop.create_task(self._handle_connection_state(data))
             elif data["@type"] == "updateOption":
                 self.loop.create_task(self._handle_update_option(data))
+            elif data["@type"] == "updateUser":
+                self.loop.create_task(self._handle_update_user(data))
             self.queue.put_nowait(data)
 
     async def __run_initializers(self, data):
@@ -668,3 +673,30 @@ class Client(Decorators, Methods):
                 update["name"],
                 self.options[update["name"]],
             )
+
+    async def _handle_update_user(self, update):
+        if self.is_logged_in and update["user"]["id"] == self.me["id"]:
+            logger.info(f'Updating {self.me["username"]} info')
+            try:
+                deepdiff(self.me, update["user"])
+            except Exception:
+                logger.exception("deepdiff failed")
+            self.me = update["user"]
+
+
+def deepdiff(d1, d2):
+    if not isinstance(d1, dict) or not isinstance(d2, dict):
+        return d1 == d2
+
+    deep = DeepDiff(d1, d2, ignore_order=True, view="tree")
+
+    for parent in deep.keys():
+        key: DiffLevel
+        for diff in deep[parent]:
+            difflist = diff.path(output_format="list")
+            key = ".".join(str(v) for v in difflist)
+
+            if parent in ["dictionary_item_added", "values_changed"]:
+                logger.info(f'{key} changed to "{diff.t2}"')
+            elif parent in ["dictionary_item_removed"]:
+                logger.info(f"{key} removed")
