@@ -12,14 +12,27 @@ class Response:
     """Generate a response object.
 
     Args:
-        request (``dict``): The request object.
-        request_id (``str`` | ``int`` | ``dict``, optional): The request_id for the object.
+        request (``dict``):
+            The request object.
+
+        request_id (``str`` | ``int`` | ``dict``, optional):
+            The request_id for the object.
+
+        remove_extra (``bool``, optional):
+            Remove @extra from the response. Default is True.
+
     """
 
-    def __init__(self, request: dict, request_id: Union[str, int, dict] = None) -> None:
+    def __init__(
+        self,
+        request: dict,
+        request_id: Union[str, int, dict] = None,
+        remove_extra: bool = True,
+    ) -> None:
         self.id = uuid4().hex if request_id is None else request_id
         request["@extra"] = {"request_id": self.id}
         self.request = request
+        self.remove_extra = remove_extra
         self.is_error = False
         self.is_processed = False
         self.response = {}
@@ -73,4 +86,8 @@ class Response:
 
         if self.type_ == "error":
             self.is_error = True
+
+        if self.remove_extra and "@extra" in self.response:
+            del self.response["@extra"]
+
         self._event.set()
