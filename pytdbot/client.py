@@ -138,7 +138,7 @@ class Client(Decorators, Methods):
         self.authorization_state = None
         self.connection_state = None
         self.is_running = None
-        self.is_logged_in = False
+        self.is_authenticated = False
         self.update_count = 0
         self.options = {}
 
@@ -189,7 +189,7 @@ class Client(Decorators, Methods):
 
     async def login(self) -> None:
         """Login to Telegram."""
-        if self.is_logged_in:
+        if self.is_authenticated:
             return
 
         while self.authorization_state != "authorizationStateReady":
@@ -204,7 +204,7 @@ class Client(Decorators, Methods):
 
         self.me = await self.getMe()
         self.me = self.me.response
-        self.is_logged_in = True
+        self.is_authenticated = True
         logger.info(f"Logged in as {self.me['first_name']} @{self.me['username']}")
 
     def add_handler(
@@ -362,7 +362,7 @@ class Client(Decorators, Methods):
         await self.close()
         while self.authorization_state != "authorizationStateClosed":
             await asyncio.sleep(0.1)
-        self.is_logged_in = False
+        self.is_authenticated = False
         self.is_running = False
         logger.info("Closing workers...")
         for x in self._workers_tasks:
@@ -624,7 +624,10 @@ class Client(Decorators, Methods):
             raise AuthorizationError(res.response["message"])
 
     async def _handle_authorization_state(self, update):
-        if self.is_logged_in == True and update["@type"] == "updateAuthorizationState":
+        if (
+            self.is_authenticated == True
+            and update["@type"] == "updateAuthorizationState"
+        ):
             self.authorization_state = update["authorization_state"]["@type"]
             logger.info(
                 "Authorization state changed to %s",
@@ -666,7 +669,7 @@ class Client(Decorators, Methods):
         else:
             self.options[update["name"]] = update["value"]["value"]
 
-        if self.is_logged_in:
+        if self.is_authenticated:
             logger.info(
                 "Option %s changed to %s",
                 update["name"],
@@ -674,7 +677,7 @@ class Client(Decorators, Methods):
             )
 
     async def _handle_update_user(self, update):
-        if self.is_logged_in and update["user"]["id"] == self.me["id"]:
+        if self.is_authenticated and update["user"]["id"] == self.me["id"]:
             logger.info(f'Updating {self.me["username"]} info')
             try:
                 deepdiff(self.me, update["user"])
