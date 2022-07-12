@@ -24,6 +24,7 @@ jobs:
             cd td
             rm -rf build
             mkdir build
+            echo "::set-output name=TDLIB_COMMIT_HASH::$(git log -1 --pretty=%h)"
             echo "::set-output name=TDLIB_VERSION::$(
               cat README.md |
               sed -nr 's/.*find_package\(Td (.*) REQUIRED\).*/\1/p'
@@ -54,5 +55,5 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          message: 'Update TDLib to ${{ steps.td.outputs.TDLIB_VERSION }}'
+          message: 'Update TDLib to ${{ steps.td.outputs.TDLIB_VERSION }} (tdlib/td@{{ steps.td.outputs.TDLIB_COMMIT_HASH }})'
           add: '["pytdbot/lib/libtdjson.so","pytdbot/td_api.tl"]'
