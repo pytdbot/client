@@ -146,6 +146,7 @@ class Client(Decorators, Methods):
 
         self._handlers = {"initializer": [], "finalizer": []}
         self._results = {}
+        self._workers_tasks = []
         self._tdjson = TDjson(lib_path, td_verbosity)
 
         if isinstance(loop, asyncio.AbstractEventLoop):
@@ -176,13 +177,16 @@ class Client(Decorators, Methods):
         Args:
             login (``bool``, optional): Login after start. Defaults to True.
         """
+        if not self.is_running:
 
-        self.loop.create_task(self._listen_loop())
+            logger.info("Starting pytdbot client...")
+            for _ in range(self.workers):
+                self._workers_tasks.append(
+                    self.loop.create_task(self._updates_worker())
+                )
+            logger.info("Started with %s workers", self.workers)
 
-        for _ in range(self.workers):
-            self._workers_tasks = []
-            self._workers_tasks.append(self.loop.create_task(self._updates_worker()))
-        logger.info("Started with %s workers", self.workers)
+            self.loop.create_task(self._listen_loop())
 
         if login:
             await self.login()
@@ -446,7 +450,7 @@ class Client(Decorators, Methods):
 
     async def _listen_loop(self):
         self.is_running = True
-        logger.info("Listening for updates...")
+        logger.info("Listening to updates...")
         try:
             while self.is_running:
                 data = await self.receive()
@@ -525,7 +529,7 @@ class Client(Decorators, Methods):
             except StopHandlers as e:
                 raise e
             except Exception:
-                logger.exception("Exception in handler %s", handler)
+                logger.exception("Exception in %s", handler)
 
     async def __run_finalizers(self, data):
         for finalizer in self._handlers["finalizer"]:
