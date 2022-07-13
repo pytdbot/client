@@ -449,7 +449,6 @@ class Client(Decorators, Methods):
         logger.info("From %s plugins got %s handlers", count, handlers)
 
     async def _listen_loop(self):
-        self.is_running = True
         logger.info("Listening to updates...")
         try:
             while self.is_running:
@@ -550,6 +549,9 @@ class Client(Decorators, Methods):
                 logger.exception("Finalizer %s failed", finalizer)
 
     async def _updates_worker(self):
+        if not self.is_running:
+            self.is_running = True
+
         while self.is_running:
             try:
                 data = await self.queue.get()
