@@ -60,11 +60,9 @@ jobs:
           mv types/ _types_/
           python generate_json.py "${{ steps.td.outputs.TDLIB_VERSION }}" "${{ steps.td.outputs.TDLIB_COMMIT_HASH }}"
           python generate_files.py
-
-      - name: Format Pytdbot files
-        uses: psf/black@stable
-        with:
-          src: "pytdbot/methods/tdlibfunctions.py pytdbot/handlers/updates.py"
+          python -m pip install black
+          python -m black "methods/tdlibfunctions.py" "handlers/updates.py"
+          mv _types_/ types/
 
       - name: Commit libtdjson.so
         uses: EndBug/add-and-commit@v9
