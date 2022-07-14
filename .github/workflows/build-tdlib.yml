@@ -57,6 +57,7 @@ jobs:
           python-version: "3.9"
       - run: |
           cd $GITHUB_WORKSPACE/pytdbot
+          mv types/ _types_/
           python generate_json.py "${{ steps.td.outputs.TDLIB_VERSION }}" "${{ steps.td.outputs.TDLIB_COMMIT_HASH }}"
           python generate_files.py
 
