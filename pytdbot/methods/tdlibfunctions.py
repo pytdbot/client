@@ -28,8 +28,8 @@ class TDLibFunctions:
                 Parameters for TDLib initialization
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -49,8 +49,8 @@ class TDLibFunctions:
                 Encryption key to check or set up
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -73,8 +73,8 @@ class TDLibFunctions:
                 Settings for the authentication of the user's phone number; pass null to use default settings
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -109,8 +109,8 @@ class TDLibFunctions:
                 Authentication code to check
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -130,8 +130,8 @@ class TDLibFunctions:
                 List of user identifiers of other users currently using the application
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -154,8 +154,8 @@ class TDLibFunctions:
                 The last name of the user; 0-64 characters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -176,8 +176,8 @@ class TDLibFunctions:
                 The password to check
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -213,8 +213,8 @@ class TDLibFunctions:
                 Recovery code to check
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -244,8 +244,8 @@ class TDLibFunctions:
                 New password hint; may be empty
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -267,8 +267,8 @@ class TDLibFunctions:
                 The bot token
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -330,8 +330,8 @@ class TDLibFunctions:
                 A link from a QR code. The link must be scanned by the in-app camera
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -365,8 +365,8 @@ class TDLibFunctions:
                 New encryption key
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -418,8 +418,8 @@ class TDLibFunctions:
                 New recovery email address; may be empty
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -443,8 +443,8 @@ class TDLibFunctions:
                 The password for the current user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -467,8 +467,8 @@ class TDLibFunctions:
                 New recovery email address
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -489,8 +489,8 @@ class TDLibFunctions:
                 Verification code to check
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -538,8 +538,8 @@ class TDLibFunctions:
                 Recovery code to check
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -569,8 +569,8 @@ class TDLibFunctions:
                 New password hint; may be empty
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -623,8 +623,8 @@ class TDLibFunctions:
                 Time during which the temporary password will be valid, in seconds; must be between 60 and 86400
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -671,8 +671,8 @@ class TDLibFunctions:
                 User identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -690,8 +690,8 @@ class TDLibFunctions:
                 User identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -711,8 +711,8 @@ class TDLibFunctions:
                 Basic group identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -732,8 +732,8 @@ class TDLibFunctions:
                 Basic group identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -753,8 +753,8 @@ class TDLibFunctions:
                 Supergroup or channel identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -774,8 +774,8 @@ class TDLibFunctions:
                 Supergroup or channel identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -795,8 +795,8 @@ class TDLibFunctions:
                 Secret chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -814,8 +814,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -838,8 +838,8 @@ class TDLibFunctions:
                 Identifier of the message to get
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -863,8 +863,8 @@ class TDLibFunctions:
                 Identifier of the message to get
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -888,8 +888,8 @@ class TDLibFunctions:
                 Identifier of the reply message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -910,8 +910,8 @@ class TDLibFunctions:
                 Identifier of the chat the message belongs to
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -941,8 +941,8 @@ class TDLibFunctions:
                 Identifier of the callback query
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -967,8 +967,8 @@ class TDLibFunctions:
                 Identifiers of the messages to get
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -992,8 +992,8 @@ class TDLibFunctions:
                 Identifier of the message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1017,8 +1017,8 @@ class TDLibFunctions:
                 Identifier of the message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1037,8 +1037,8 @@ class TDLibFunctions:
                 Identifier of the file to get
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1061,8 +1061,8 @@ class TDLibFunctions:
                 File type; pass null if unknown
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1086,8 +1086,8 @@ class TDLibFunctions:
                 The chat list in which to load chats; pass null to load chats from the main chat list
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1111,8 +1111,8 @@ class TDLibFunctions:
                 The chat list in which to return chats; pass null to get chats from the main chat list
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1131,8 +1131,8 @@ class TDLibFunctions:
                 Username to be resolved
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1150,8 +1150,8 @@ class TDLibFunctions:
                 Query to search for
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1174,8 +1174,8 @@ class TDLibFunctions:
                 The maximum number of chats to be returned
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1199,8 +1199,8 @@ class TDLibFunctions:
                 The maximum number of chats to be returned
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1221,8 +1221,8 @@ class TDLibFunctions:
                 Current user location
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1245,8 +1245,8 @@ class TDLibFunctions:
                 The maximum number of chats to be returned; up to 30
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1270,8 +1270,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1292,8 +1292,8 @@ class TDLibFunctions:
                 Identifier of the chat to add
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1313,8 +1313,8 @@ class TDLibFunctions:
                 Identifier of the chat to be removed
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1348,8 +1348,8 @@ class TDLibFunctions:
                 The maximum number of chats to be returned
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1372,8 +1372,8 @@ class TDLibFunctions:
                 Username to be checked
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1394,8 +1394,8 @@ class TDLibFunctions:
                 Type of the public chats to return
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1415,8 +1415,8 @@ class TDLibFunctions:
                 Type of the public chats, for which to check the limit
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1470,8 +1470,8 @@ class TDLibFunctions:
                 The maximum number of chats to be returned; up to 100
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1511,8 +1511,8 @@ class TDLibFunctions:
                 Pass true to get only messages that are available without sending network requests
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1554,8 +1554,8 @@ class TDLibFunctions:
                 The maximum number of messages to be returned; must be positive and can't be greater than 100. If the offset is negative, the limit must be greater than or equal to -offset. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1589,8 +1589,8 @@ class TDLibFunctions:
                 Pass true to delete chat history for all users
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1610,8 +1610,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1661,8 +1661,8 @@ class TDLibFunctions:
                 Additional filter for messages to search; pass null to search for all messages
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1723,8 +1723,8 @@ class TDLibFunctions:
                 Additional filter for messages to search; pass null to search for all messages. Filters searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, searchMessagesFilterFailedToSend, and searchMessagesFilterPinned are unsupported in this function
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1770,8 +1770,8 @@ class TDLibFunctions:
                 Additional filter for messages to search; pass null to search for all messages
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1801,8 +1801,8 @@ class TDLibFunctions:
                 Pass true to search only for messages with missed/declined calls
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1827,8 +1827,8 @@ class TDLibFunctions:
                 The maximum number of messages to be returned; up to 100
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1849,8 +1849,8 @@ class TDLibFunctions:
                 Pass true to delete the messages for all users
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1873,8 +1873,8 @@ class TDLibFunctions:
                 The maximum number of messages to be returned
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1912,8 +1912,8 @@ class TDLibFunctions:
                 Point in time (Unix timestamp) relative to which to search for messages
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1948,8 +1948,8 @@ class TDLibFunctions:
                 The expected number of message positions to be returned; 50-2000. A smaller number of positions can be returned, if there are not enough appropriate messages
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -1978,8 +1978,8 @@ class TDLibFunctions:
                 The message identifier from which to return information about messages; use 0 to get results from the last message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2007,8 +2007,8 @@ class TDLibFunctions:
                 Pass true to get the number of messages without sending network requests, or -1 if the number of messages is unknown locally
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2030,8 +2030,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2065,8 +2065,8 @@ class TDLibFunctions:
                 The maximum number of messages to be returned; must be positive and can't be greater than 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2089,8 +2089,8 @@ class TDLibFunctions:
                 Identifier of the chat
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2113,8 +2113,8 @@ class TDLibFunctions:
                 Identifier of removed notification
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2141,8 +2141,8 @@ class TDLibFunctions:
                 The maximum identifier of removed notifications
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2181,8 +2181,8 @@ class TDLibFunctions:
                 Pass true to create a link to the message as a channel post comment, or from a message thread
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2212,8 +2212,8 @@ class TDLibFunctions:
                 Pass true to return an HTML code for embedding of the whole media album
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2233,8 +2233,8 @@ class TDLibFunctions:
                 The message link
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2264,8 +2264,8 @@ class TDLibFunctions:
                 A two-letter ISO 639-1 language code of the language to which the message is translated
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2290,8 +2290,8 @@ class TDLibFunctions:
                 Identifier of the message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2318,8 +2318,8 @@ class TDLibFunctions:
                 Pass true if the speech recognition is good
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2341,8 +2341,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2365,8 +2365,8 @@ class TDLibFunctions:
                 New message sender for the chat
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2409,8 +2409,8 @@ class TDLibFunctions:
                 Markup for replying to the message; pass null if none; for bots only
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2457,8 +2457,8 @@ class TDLibFunctions:
                 Options to be used to send the messages; pass null to use default options
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2489,8 +2489,8 @@ class TDLibFunctions:
                 A hidden parameter sent to the bot for deep linking purposes (https://core.telegram.org/bots#deep-linking)
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2538,8 +2538,8 @@ class TDLibFunctions:
                 Options to be used to send the message; pass null to use default options
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2591,8 +2591,8 @@ class TDLibFunctions:
                 Options to be used to send the messages; pass null to use default options
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2621,8 +2621,8 @@ class TDLibFunctions:
                 Identifiers of the messages to resend. Message identifiers must be in a strictly increasing order
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2643,8 +2643,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2682,8 +2682,8 @@ class TDLibFunctions:
                 The content of the message to be added
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2713,8 +2713,8 @@ class TDLibFunctions:
                 Pass true to delete messages for all chat members. Always true for supergroups, channels and secret chats
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2739,8 +2739,8 @@ class TDLibFunctions:
                 Identifier of the sender of messages to delete
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2775,8 +2775,8 @@ class TDLibFunctions:
                 Pass true to delete chat messages for all users; private chats only
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2813,8 +2813,8 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none; for bots only
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2859,8 +2859,8 @@ class TDLibFunctions:
                 New location content of the message; pass null to stop sharing the live location
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2899,8 +2899,8 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none; for bots only
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2937,8 +2937,8 @@ class TDLibFunctions:
                 New message content caption; 0-GetOption("message_caption_length_max") characters; pass null to remove caption
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -2971,8 +2971,8 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3004,8 +3004,8 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3045,8 +3045,8 @@ class TDLibFunctions:
                 New location content of the message; pass null to stop sharing the live location
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3080,8 +3080,8 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none; for bots only
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3113,8 +3113,8 @@ class TDLibFunctions:
                 New message content caption; pass null to remove caption; 0-GetOption("message_caption_length_max") characters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3139,8 +3139,8 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3171,8 +3171,8 @@ class TDLibFunctions:
                 The new message scheduling state; pass null to send the message immediately
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3197,8 +3197,8 @@ class TDLibFunctions:
                 Identifier of the message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3233,8 +3233,8 @@ class TDLibFunctions:
                 Pass true if the reaction is added with a big animation
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3275,8 +3275,8 @@ class TDLibFunctions:
                 The maximum number of reactions to be returned; must be positive and can't be greater than 100
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3298,8 +3298,8 @@ class TDLibFunctions:
                 The text in which to look for entites
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3322,8 +3322,8 @@ class TDLibFunctions:
                 Text parse mode
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3342,8 +3342,8 @@ class TDLibFunctions:
                 The text to parse. For example, "__italic__ ~~strikethrough~~ ||spoiler|| **bold** `code` ```pre``` __[italic__ text_url](telegram.org) __italic**bold italic__bold**"
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3361,8 +3361,8 @@ class TDLibFunctions:
                 The text
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3380,8 +3380,8 @@ class TDLibFunctions:
                 The name of the file or path to the file
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3399,8 +3399,8 @@ class TDLibFunctions:
                 The MIME type of the file
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3418,8 +3418,8 @@ class TDLibFunctions:
                 File name or path to the file
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3453,8 +3453,8 @@ class TDLibFunctions:
                 Language pack key of the string to be returned
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3475,8 +3475,8 @@ class TDLibFunctions:
                 The JSON-serialized string
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3494,8 +3494,8 @@ class TDLibFunctions:
                 The JsonValue object
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3515,8 +3515,8 @@ class TDLibFunctions:
                 Theme parameters to convert to JSON
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3542,8 +3542,8 @@ class TDLibFunctions:
                 0-based identifiers of answer options, chosen by the user. User can choose more than 1 answer option only is the poll allows multiple answers
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3583,8 +3583,8 @@ class TDLibFunctions:
                 The maximum number of users to be returned; must be positive and can't be greater than 50. For optimal performance, the number of returned users is chosen by TDLib and can be smaller than the specified limit, even if the end of the voter list has not been reached
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3618,8 +3618,8 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none; for bots only
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3641,8 +3641,8 @@ class TDLibFunctions:
                 Suggested action to hide
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3668,8 +3668,8 @@ class TDLibFunctions:
                 Button identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3705,8 +3705,8 @@ class TDLibFunctions:
                 Pass true to allow the bot to send messages to the current user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3747,8 +3747,8 @@ class TDLibFunctions:
                 Location of the user; pass null if unknown or the bot doesn't need user's location
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3798,8 +3798,8 @@ class TDLibFunctions:
                 The parameter for the bot start message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3831,8 +3831,8 @@ class TDLibFunctions:
                 Preferred Web App theme; pass null to use the default theme
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3860,8 +3860,8 @@ class TDLibFunctions:
                 Received data
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3901,8 +3901,8 @@ class TDLibFunctions:
                 Preferred Web App theme; pass null to use the default theme
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3926,8 +3926,8 @@ class TDLibFunctions:
                 Identifier of Web App launch, received from openWebApp
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3950,8 +3950,8 @@ class TDLibFunctions:
                 The result of the query
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -3978,8 +3978,8 @@ class TDLibFunctions:
                 Query payload
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4019,8 +4019,8 @@ class TDLibFunctions:
                 Time during which the result of the query can be cached, in seconds
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4054,8 +4054,8 @@ class TDLibFunctions:
                 An error message, empty on success
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4080,8 +4080,8 @@ class TDLibFunctions:
                 An error message, empty on success
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4124,8 +4124,8 @@ class TDLibFunctions:
                 Pass true to update the score even if it decreases. If the score is 0, the user will be deleted from the high score table
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4168,8 +4168,8 @@ class TDLibFunctions:
                 Pass true to update the score even if it decreases. If the score is 0, the user will be deleted from the high score table
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4199,8 +4199,8 @@ class TDLibFunctions:
                 User identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4225,8 +4225,8 @@ class TDLibFunctions:
                 User identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4250,8 +4250,8 @@ class TDLibFunctions:
                 The message identifier of the used keyboard
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4282,8 +4282,8 @@ class TDLibFunctions:
                 The action description; pass null to cancel the currently active action
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4303,8 +4303,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4322,8 +4322,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4357,8 +4357,8 @@ class TDLibFunctions:
                 Pass true to mark as read the specified messages even the chat is closed
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4384,8 +4384,8 @@ class TDLibFunctions:
                 Identifier of the message with the opened content
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4409,8 +4409,8 @@ class TDLibFunctions:
                 Identifier of the clicked message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4429,8 +4429,8 @@ class TDLibFunctions:
                 The link
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4448,8 +4448,8 @@ class TDLibFunctions:
                 The link
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4472,8 +4472,8 @@ class TDLibFunctions:
                 Pass true if the current user allowed the bot, returned in getExternalLinkInfo, to send them messages
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4494,8 +4494,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4515,8 +4515,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4539,8 +4539,8 @@ class TDLibFunctions:
                 Pass true to create the chat without a network request. In this case all information about the chat except its type, title and photo can be incorrect
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4564,8 +4564,8 @@ class TDLibFunctions:
                 Pass true to create the chat without a network request. In this case all information about the chat except its type, title and photo can be incorrect
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4589,8 +4589,8 @@ class TDLibFunctions:
                 Pass true to create the chat without a network request. In this case all information about the chat except its type, title and photo can be incorrect
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4611,8 +4611,8 @@ class TDLibFunctions:
                 Secret chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4635,8 +4635,8 @@ class TDLibFunctions:
                 Title of the new basic group; 1-128 characters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4675,8 +4675,8 @@ class TDLibFunctions:
                 Chat location if a location-based supergroup is being created; pass null to create an ordinary supergroup chat
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4700,8 +4700,8 @@ class TDLibFunctions:
                 Identifier of the target user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4721,8 +4721,8 @@ class TDLibFunctions:
                 Identifier of the chat to upgrade
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4742,8 +4742,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4766,8 +4766,8 @@ class TDLibFunctions:
                 The chat list. Use getChatListsToAddChat to get suitable chat lists
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4788,8 +4788,8 @@ class TDLibFunctions:
                 Chat filter identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4807,8 +4807,8 @@ class TDLibFunctions:
                 Chat filter
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4831,8 +4831,8 @@ class TDLibFunctions:
                 The edited chat filter
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4853,8 +4853,8 @@ class TDLibFunctions:
                 Chat filter identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4877,8 +4877,8 @@ class TDLibFunctions:
                 Position of the main chat list among chat filters, 0-based. Can be non-zero only for Premium users
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4913,8 +4913,8 @@ class TDLibFunctions:
                 Chat filter
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4937,8 +4937,8 @@ class TDLibFunctions:
                 New title of the chat; 1-128 characters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4962,8 +4962,8 @@ class TDLibFunctions:
                 New chat photo; pass null to delete the chat photo
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -4987,8 +4987,8 @@ class TDLibFunctions:
                 New TTL value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5012,8 +5012,8 @@ class TDLibFunctions:
                 New non-administrator members permissions in the chat
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5037,8 +5037,8 @@ class TDLibFunctions:
                 Name of the new chat theme; pass an empty string to return the default theme
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5069,8 +5069,8 @@ class TDLibFunctions:
                 New draft message; pass null to remove the draft
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5095,8 +5095,8 @@ class TDLibFunctions:
                 New notification settings for the chat. If the chat is muted for more than 1 week, it is considered to be muted forever
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5120,8 +5120,8 @@ class TDLibFunctions:
                 New value of has_protected_content
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5145,8 +5145,8 @@ class TDLibFunctions:
                 New value of is_marked_as_unread
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5170,8 +5170,8 @@ class TDLibFunctions:
                 New value of default_disable_notification
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5195,8 +5195,8 @@ class TDLibFunctions:
                 New list of reactions, available in the chat. All reactions must be active
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5220,8 +5220,8 @@ class TDLibFunctions:
                 New value of client_data
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5245,8 +5245,8 @@ class TDLibFunctions:
                 New chat description; 0-255 characters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5270,8 +5270,8 @@ class TDLibFunctions:
                 Identifier of a new channel's discussion group. Use 0 to remove the discussion group. Use the method getSuitableDiscussionChats to find all suitable groups. Basic group chats must be first upgraded to supergroup chats. If new chat members don't have access to old messages in the supergroup, then toggleSupergroupIsAllHistoryAvailable must be used first to change that
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5295,8 +5295,8 @@ class TDLibFunctions:
                 New location for the chat; must be valid and not null
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5320,8 +5320,8 @@ class TDLibFunctions:
                 New slow mode delay for the chat, in seconds; must be one of 0, 10, 30, 60, 300, 900, 3600
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5356,8 +5356,8 @@ class TDLibFunctions:
                 Pass true to pin the message only for self; private chats only
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5383,8 +5383,8 @@ class TDLibFunctions:
                 Identifier of the removed pinned message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5405,8 +5405,8 @@ class TDLibFunctions:
                 Identifier of the chat
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5424,8 +5424,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5443,8 +5443,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5470,8 +5470,8 @@ class TDLibFunctions:
                 The number of earlier messages from the chat to be forwarded to the new member; up to 100. Ignored for supergroups and channels, or if the added user is a bot
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5496,8 +5496,8 @@ class TDLibFunctions:
                 Identifiers of the users to be added to the chat. The maximum number of added users is 20 for supergroups and 100 for channels
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5524,8 +5524,8 @@ class TDLibFunctions:
                 The new status of the member in the chat
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5561,8 +5561,8 @@ class TDLibFunctions:
                 Pass true to delete all messages in the chat for the user that is being removed. Always true for supergroups and channels
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5605,8 +5605,8 @@ class TDLibFunctions:
                 The password of the current user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5631,8 +5631,8 @@ class TDLibFunctions:
                 Member identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5667,8 +5667,8 @@ class TDLibFunctions:
                 The type of users to search for; pass null to search among all chat members
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5691,8 +5691,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5712,8 +5712,8 @@ class TDLibFunctions:
                 Pass true to keep local message drafts in secret chats
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5733,8 +5733,8 @@ class TDLibFunctions:
                 Identifier of the notification sound
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5768,8 +5768,8 @@ class TDLibFunctions:
                 Notification sound file to add
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5789,8 +5789,8 @@ class TDLibFunctions:
                 Identifier of the notification sound
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5813,8 +5813,8 @@ class TDLibFunctions:
                 If specified, only chats from the scope will be returned; pass null to return chats from all scopes
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5835,8 +5835,8 @@ class TDLibFunctions:
                 Types of chats for which to return the notification settings information
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5859,8 +5859,8 @@ class TDLibFunctions:
                 The new notification settings for the given scope
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5901,8 +5901,8 @@ class TDLibFunctions:
                 Pass true to pin the chat; pass false to unpin it
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5927,8 +5927,8 @@ class TDLibFunctions:
                 The new list of pinned chats
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5949,8 +5949,8 @@ class TDLibFunctions:
                 Bot's user identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -5973,8 +5973,8 @@ class TDLibFunctions:
                 Pass true to add the bot to attachment menu; pass false to remove the bot from attachment menu
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6013,8 +6013,8 @@ class TDLibFunctions:
                 Pass true to return response only after the file download has succeeded, has failed, has been canceled, or a new downloadFile request with different offset/limit parameters was sent; pass false to return file state immediately, just after the download has been started
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6041,8 +6041,8 @@ class TDLibFunctions:
                 Offset from which downloaded prefix size needs to be calculated
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6066,8 +6066,8 @@ class TDLibFunctions:
                 Pass true to stop downloading only if it hasn't been started, i.e. request hasn't been sent to server
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6091,8 +6091,8 @@ class TDLibFunctions:
                 Directory in which the file is supposed to be saved
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6119,8 +6119,8 @@ class TDLibFunctions:
                 File type; pass null if unknown
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6140,8 +6140,8 @@ class TDLibFunctions:
                 Identifier of the file to stop uploading
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6167,8 +6167,8 @@ class TDLibFunctions:
                 The data to write
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6200,8 +6200,8 @@ class TDLibFunctions:
                 The number of bytes already generated
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6226,8 +6226,8 @@ class TDLibFunctions:
                 If passed, the file generation has failed and must be terminated; pass null if the file generation succeeded
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6254,8 +6254,8 @@ class TDLibFunctions:
                 Number of bytes to read. An error will be returned if there are not enough bytes available in the file from the specified position. Pass 0 to read all available data from the specified position
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6275,8 +6275,8 @@ class TDLibFunctions:
                 Identifier of the file to delete
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6310,8 +6310,8 @@ class TDLibFunctions:
                 Priority of the download (1-32). The higher the priority, the earlier the file will be downloaded. If the priorities of two files are equal, then the last one for which downloadFile/addFileToDownloads was called will be downloaded first
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6337,8 +6337,8 @@ class TDLibFunctions:
                 Pass true if the download is paused
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6359,8 +6359,8 @@ class TDLibFunctions:
                 Pass true to pause all downloads; pass false to unpause them
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6383,8 +6383,8 @@ class TDLibFunctions:
                 Pass true to delete the file from the TDLib file cache
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6415,8 +6415,8 @@ class TDLibFunctions:
                 Pass true to delete the file from the TDLib file cache
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6456,8 +6456,8 @@ class TDLibFunctions:
                 Query to search for; may be empty to return all downloaded files
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6481,8 +6481,8 @@ class TDLibFunctions:
                 Beginning of the message file; up to 100 first lines
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6502,8 +6502,8 @@ class TDLibFunctions:
                 Identifier of a chat to which the messages will be imported. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can_change_info administrator right
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6533,8 +6533,8 @@ class TDLibFunctions:
                 Files used in the imported messages. Only inputFileLocal and inputFileGenerated are supported. The files must not be previously uploaded
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6556,8 +6556,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6595,8 +6595,8 @@ class TDLibFunctions:
                 Pass true if users joining the chat via the link need to be approved by chat administrators. In this case, member_limit must be 0
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6642,8 +6642,8 @@ class TDLibFunctions:
                 Pass true if users joining the chat via the link need to be approved by chat administrators. In this case, member_limit must be 0
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6671,8 +6671,8 @@ class TDLibFunctions:
                 Invite link to get
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6693,8 +6693,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6736,8 +6736,8 @@ class TDLibFunctions:
                 The maximum number of invite links to return; up to 100
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6776,8 +6776,8 @@ class TDLibFunctions:
                 A chat member from which to return next chat members; pass null to get results from the beginning
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6803,8 +6803,8 @@ class TDLibFunctions:
                 Invite link to be revoked
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6828,8 +6828,8 @@ class TDLibFunctions:
                 Invite link to revoke
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6853,8 +6853,8 @@ class TDLibFunctions:
                 User identifier of a chat administrator, which links will be deleted. Must be an identifier of the current user for non-owner
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6875,8 +6875,8 @@ class TDLibFunctions:
                 Invite link to be checked
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6896,8 +6896,8 @@ class TDLibFunctions:
                 Invite link to use
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6935,8 +6935,8 @@ class TDLibFunctions:
                 A chat join request from which to return next requests; pass null to get results from the beginning
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6966,8 +6966,8 @@ class TDLibFunctions:
                 Pass true to approve the request; pass false to decline it
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -6995,8 +6995,8 @@ class TDLibFunctions:
                 Pass true to approve all requests; pass false to decline them
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7024,8 +7024,8 @@ class TDLibFunctions:
                 Pass true to create a video call
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7050,8 +7050,8 @@ class TDLibFunctions:
                 The call protocols supported by the application
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7075,8 +7075,8 @@ class TDLibFunctions:
                 The data
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7115,8 +7115,8 @@ class TDLibFunctions:
                 Identifier of the connection used during the call
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7154,8 +7154,8 @@ class TDLibFunctions:
                 List of the exact types of problems with the call, specified by the user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7181,8 +7181,8 @@ class TDLibFunctions:
                 Debug information in application-specific format
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7206,8 +7206,8 @@ class TDLibFunctions:
                 Call log file. Only inputFileLocal and inputFileGenerated are supported
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7228,8 +7228,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7252,8 +7252,8 @@ class TDLibFunctions:
                 Default group call participant identifier to join the video chats
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7288,8 +7288,8 @@ class TDLibFunctions:
                 Pass true to create an RTMP stream instead of an ordinary video chat; requires creator privileges
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7312,8 +7312,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7333,8 +7333,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7352,8 +7352,8 @@ class TDLibFunctions:
                 Group call identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7373,8 +7373,8 @@ class TDLibFunctions:
                 Group call identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7400,8 +7400,8 @@ class TDLibFunctions:
                 New value of the enabled_start_notification setting
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7448,8 +7448,8 @@ class TDLibFunctions:
                 Identifier of a group call participant, which will be used to join the call; pass null to join as self; video chats only
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7485,8 +7485,8 @@ class TDLibFunctions:
                 Group call join payload; received from tgcalls
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7511,8 +7511,8 @@ class TDLibFunctions:
                 True if screen sharing is paused
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7533,8 +7533,8 @@ class TDLibFunctions:
                 Group call identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7557,8 +7557,8 @@ class TDLibFunctions:
                 New group call title; 1-64 characters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7582,8 +7582,8 @@ class TDLibFunctions:
                 New value of the mute_new_participants setting
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7607,8 +7607,8 @@ class TDLibFunctions:
                 User identifiers. At most 10 users can be invited simultaneously
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7632,8 +7632,8 @@ class TDLibFunctions:
                 Pass true if the invite link needs to contain an invite hash, passing which to joinGroupCall would allow the invited user to unmute themselves. Requires groupCall.can_be_managed group call flag
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7654,8 +7654,8 @@ class TDLibFunctions:
                 Group call identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7689,8 +7689,8 @@ class TDLibFunctions:
                 Pass true to use portrait orientation for video instead of landscape one
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7713,8 +7713,8 @@ class TDLibFunctions:
                 Group call identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7737,8 +7737,8 @@ class TDLibFunctions:
                 Pass true if the current user's video is paused
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7762,8 +7762,8 @@ class TDLibFunctions:
                 Pass true if the current user's video is enabled
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7794,8 +7794,8 @@ class TDLibFunctions:
                 Pass true if the user is speaking
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7827,8 +7827,8 @@ class TDLibFunctions:
                 Pass true to mute the user; pass false to unmute the them
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7860,8 +7860,8 @@ class TDLibFunctions:
                 New participant's volume level; 1-20000 in hundreds of percents
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7893,8 +7893,8 @@ class TDLibFunctions:
                 Pass true if the user's hand needs to be raised. Only self hand can be raised. Requires groupCall.can_be_managed group call flag to lower other's hand
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7919,8 +7919,8 @@ class TDLibFunctions:
                 The maximum number of participants to load; up to 100
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7941,8 +7941,8 @@ class TDLibFunctions:
                 Group call identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7960,8 +7960,8 @@ class TDLibFunctions:
                 Group call identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -7981,8 +7981,8 @@ class TDLibFunctions:
                 Group call identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8020,8 +8020,8 @@ class TDLibFunctions:
                 Video quality as received from tgcalls; pass null to get the worst available quality
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8048,8 +8048,8 @@ class TDLibFunctions:
                 New value of is_blocked
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8084,8 +8084,8 @@ class TDLibFunctions:
                 Pass true to report the sender to the Telegram moderators
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8111,8 +8111,8 @@ class TDLibFunctions:
                 The maximum number of users and chats to return; up to 100
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8136,8 +8136,8 @@ class TDLibFunctions:
                 Pass true to share the current user's phone number with the new contact. A corresponding rule to userPrivacySettingShowPhoneNumber will be added if needed. Use the field userFullInfo.need_phone_number_privacy_exception to check whether the current user needs to be asked to share their phone number
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8156,8 +8156,8 @@ class TDLibFunctions:
                 The list of contacts to import or edit; contacts' vCard are ignored and are not imported
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8194,8 +8194,8 @@ class TDLibFunctions:
                 Query to search for; may be empty to return all contacts
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8214,8 +8214,8 @@ class TDLibFunctions:
                 Identifiers of users to be deleted
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8249,8 +8249,8 @@ class TDLibFunctions:
                 The new list of contacts, contact's vCard are ignored and are not imported
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8284,8 +8284,8 @@ class TDLibFunctions:
                 Phone number to search for
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8303,8 +8303,8 @@ class TDLibFunctions:
                 Identifier of the user with whom to share the phone number. The user must be a mutual contact
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8330,8 +8330,8 @@ class TDLibFunctions:
                 The maximum number of photos to be returned; up to 100
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8356,8 +8356,8 @@ class TDLibFunctions:
                 The maximum number of stickers to be returned
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8381,8 +8381,8 @@ class TDLibFunctions:
                 The maximum number of stickers to be returned
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8403,8 +8403,8 @@ class TDLibFunctions:
                 Pass true to return mask sticker sets; pass false to return ordinary sticker sets
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8434,8 +8434,8 @@ class TDLibFunctions:
                 The maximum number of sticker sets to return; up to 100
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8460,8 +8460,8 @@ class TDLibFunctions:
                 The maximum number of sticker sets to be returned; up to 100. For optimal performance, the number of returned sticker sets is chosen by TDLib and can be smaller than the specified limit, even if the end of the list has not been reached
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8482,8 +8482,8 @@ class TDLibFunctions:
                 File identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8501,8 +8501,8 @@ class TDLibFunctions:
                 Identifier of the sticker set
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8520,8 +8520,8 @@ class TDLibFunctions:
                 Name of the sticker set
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8547,8 +8547,8 @@ class TDLibFunctions:
                 The maximum number of sticker sets to return
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8568,8 +8568,8 @@ class TDLibFunctions:
                 Query to search for
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8595,8 +8595,8 @@ class TDLibFunctions:
                 The new value of is_archived. A sticker set can't be installed and archived simultaneously
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8618,8 +8618,8 @@ class TDLibFunctions:
                 Identifiers of viewed trending sticker sets
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8642,8 +8642,8 @@ class TDLibFunctions:
                 Identifiers of installed sticker sets in the new correct order
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8664,8 +8664,8 @@ class TDLibFunctions:
                 Pass true to return stickers and masks that were recently attached to photos or video files; pass false to return recently sent stickers
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8688,8 +8688,8 @@ class TDLibFunctions:
                 Sticker file to add
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8713,8 +8713,8 @@ class TDLibFunctions:
                 Sticker file to delete
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8735,8 +8735,8 @@ class TDLibFunctions:
                 Pass true to clear the list of stickers recently attached to photo or video files; pass false to clear the list of recently sent stickers
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8770,8 +8770,8 @@ class TDLibFunctions:
                 Sticker file to add
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8791,8 +8791,8 @@ class TDLibFunctions:
                 Sticker file to delete from the list
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8810,8 +8810,8 @@ class TDLibFunctions:
                 Sticker file identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8841,8 +8841,8 @@ class TDLibFunctions:
                 List of possible IETF language tags of the user's input language; may be empty if unknown
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8862,8 +8862,8 @@ class TDLibFunctions:
                 The emoji
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8897,8 +8897,8 @@ class TDLibFunctions:
                 Language code for which the emoji replacements will be suggested
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8932,8 +8932,8 @@ class TDLibFunctions:
                 The animation file to be added. Only animations known to the server (i.e., successfully sent via a message) can be added to the list
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8953,8 +8953,8 @@ class TDLibFunctions:
                 Animation file to be removed
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -8991,8 +8991,8 @@ class TDLibFunctions:
                 The maximum number of hashtags to be returned
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9013,8 +9013,8 @@ class TDLibFunctions:
                 Hashtag to delete
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9032,8 +9032,8 @@ class TDLibFunctions:
                 Message text with formatting
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9056,8 +9056,8 @@ class TDLibFunctions:
                 Pass true to get full instant view for the web page
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9076,8 +9076,8 @@ class TDLibFunctions:
                 Profile photo to set
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9097,8 +9097,8 @@ class TDLibFunctions:
                 Identifier of the profile photo to delete
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9121,8 +9121,8 @@ class TDLibFunctions:
                 The new value of the optional last name for the current user; 0-64 characters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9141,8 +9141,8 @@ class TDLibFunctions:
                 The new value of the user bio; 0-GetOption("bio_length_max") characters without line feeds
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9160,8 +9160,8 @@ class TDLibFunctions:
                 The new value of the username. Use an empty string to remove the username
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9179,8 +9179,8 @@ class TDLibFunctions:
                 The new location of the user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9203,8 +9203,8 @@ class TDLibFunctions:
                 Settings for the authentication of the user's phone number; pass null to use default settings
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9239,8 +9239,8 @@ class TDLibFunctions:
                 Authentication code to check
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9270,8 +9270,8 @@ class TDLibFunctions:
                 The scope to which the commands are relevant; pass null to change commands in the default bot command scope
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9296,8 +9296,8 @@ class TDLibFunctions:
                 The scope to which the commands are relevant; pass null to delete commands in the default bot command scope
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9321,8 +9321,8 @@ class TDLibFunctions:
                 The scope to which the commands are relevant; pass null to get commands in the default bot command scope
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9346,8 +9346,8 @@ class TDLibFunctions:
                 New menu button
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9366,8 +9366,8 @@ class TDLibFunctions:
                 Identifier of the user or 0 to get the default menu button
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9387,8 +9387,8 @@ class TDLibFunctions:
                 Default administrator rights for adding the bot to basic group and supergroup chats; may be null
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9408,8 +9408,8 @@ class TDLibFunctions:
                 Default administrator rights for adding the bot to channels; may be null
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9443,8 +9443,8 @@ class TDLibFunctions:
                 Session identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9481,8 +9481,8 @@ class TDLibFunctions:
                 Pass true to allow accepting incoming calls by the session; pass false otherwise
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9506,8 +9506,8 @@ class TDLibFunctions:
                 Pass true to allow accepring secret chats by the session; pass false otherwise
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9528,8 +9528,8 @@ class TDLibFunctions:
                 New number of days of inactivity before sessions will be automatically terminated; 1-366 days
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9563,8 +9563,8 @@ class TDLibFunctions:
                 Website identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9601,8 +9601,8 @@ class TDLibFunctions:
                 New value of the username. Use an empty string to remove the username
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9626,8 +9626,8 @@ class TDLibFunctions:
                 New value of the supergroup sticker set identifier. Use 0 to remove the supergroup sticker set
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9651,8 +9651,8 @@ class TDLibFunctions:
                 New value of sign_messages
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9676,8 +9676,8 @@ class TDLibFunctions:
                 New value of join_to_send_messages
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9701,8 +9701,8 @@ class TDLibFunctions:
                 New value of join_by_request
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9726,8 +9726,8 @@ class TDLibFunctions:
                 The new value of is_all_history_available
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9748,8 +9748,8 @@ class TDLibFunctions:
                 Identifier of the supergroup
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9772,8 +9772,8 @@ class TDLibFunctions:
                 Identifiers of messages to report
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9808,8 +9808,8 @@ class TDLibFunctions:
                 The type of users to return; pass null to use supergroupMembersFilterRecent
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9832,8 +9832,8 @@ class TDLibFunctions:
                 Secret chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9875,8 +9875,8 @@ class TDLibFunctions:
                 The types of events to return; pass null to get chat events of all types
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9904,8 +9904,8 @@ class TDLibFunctions:
                 Preferred payment form theme; pass null to use the default theme
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9936,8 +9936,8 @@ class TDLibFunctions:
                 The order information, provided by the user; pass null if empty
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -9981,8 +9981,8 @@ class TDLibFunctions:
                 Chosen by the user amount of tip in the smallest units of the currency
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10010,8 +10010,8 @@ class TDLibFunctions:
                 Message identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10072,8 +10072,8 @@ class TDLibFunctions:
                 Information about the invoice of the type inputMessageInvoice
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10107,8 +10107,8 @@ class TDLibFunctions:
                 Pass true to order returned backgrounds for a dark theme
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10131,8 +10131,8 @@ class TDLibFunctions:
                 Background type
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10151,8 +10151,8 @@ class TDLibFunctions:
                 The name of the background
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10182,8 +10182,8 @@ class TDLibFunctions:
                 Background type; pass null to use the default type of the remote background or to remove the current background
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10205,8 +10205,8 @@ class TDLibFunctions:
                 The background identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10240,8 +10240,8 @@ class TDLibFunctions:
                 Pass true to get only locally available information without sending network requests
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10261,8 +10261,8 @@ class TDLibFunctions:
                 Language pack identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10285,8 +10285,8 @@ class TDLibFunctions:
                 Language pack keys of the strings to be returned; leave empty to request all available strings
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10307,8 +10307,8 @@ class TDLibFunctions:
                 Language pack identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10328,8 +10328,8 @@ class TDLibFunctions:
                 Identifier of a language pack to be added; may be different from a name that is used in an "https://t.me/setlanguage/" link
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10352,8 +10352,8 @@ class TDLibFunctions:
                 Strings of the new language pack
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10374,8 +10374,8 @@ class TDLibFunctions:
                 New information about the custom local language pack
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10398,8 +10398,8 @@ class TDLibFunctions:
                 New language pack string
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10420,8 +10420,8 @@ class TDLibFunctions:
                 Identifier of the language pack to delete
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10444,8 +10444,8 @@ class TDLibFunctions:
                 List of user identifiers of other users currently using the application
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10466,8 +10466,8 @@ class TDLibFunctions:
                 JSON-encoded push notification payload with all fields sent by the server, and "google.sent_time" and "google.notification.sound" fields added
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10485,8 +10485,8 @@ class TDLibFunctions:
                 JSON-encoded push notification payload
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10506,8 +10506,8 @@ class TDLibFunctions:
                 Google Play referrer to identify the user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10530,8 +10530,8 @@ class TDLibFunctions:
                 The new privacy rules
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10552,8 +10552,8 @@ class TDLibFunctions:
                 The privacy setting
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10571,8 +10571,8 @@ class TDLibFunctions:
                 The name of the option
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10595,8 +10595,8 @@ class TDLibFunctions:
                 The new value of the option; pass null to reset option value to a default value
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10615,8 +10615,8 @@ class TDLibFunctions:
                 New account TTL
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10648,8 +10648,8 @@ class TDLibFunctions:
                 The reason why the account was deleted; optional
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10669,8 +10669,8 @@ class TDLibFunctions:
                 Chat identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10704,8 +10704,8 @@ class TDLibFunctions:
                 Identifiers of reported messages; may be empty to report the whole chat
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10737,8 +10737,8 @@ class TDLibFunctions:
                 Additional report details; 0-1024 characters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10764,8 +10764,8 @@ class TDLibFunctions:
                 Pass true if a dark theme is used by the application
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10792,8 +10792,8 @@ class TDLibFunctions:
                 Pass true if a dark theme is used by the application
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10821,8 +10821,8 @@ class TDLibFunctions:
                 X-value for zoomed in graph or 0 otherwise
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10844,8 +10844,8 @@ class TDLibFunctions:
                 The maximum number of chats with the largest storage usage for which separate statistics need to be returned. All other chats will be grouped in entries with chat_id == 0. If the chat info database is not used, the chat_limit is ignored and is always set to 0
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10927,8 +10927,8 @@ class TDLibFunctions:
                 Same as in getStorageStatistics. Affects only returned statistics
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10956,8 +10956,8 @@ class TDLibFunctions:
                 The new network type; pass null to set network type to networkTypeOther
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10977,8 +10977,8 @@ class TDLibFunctions:
                 Pass true to get statistics only for the current library launch
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -10998,8 +10998,8 @@ class TDLibFunctions:
                 The network statistics entry with the data to be added to statistics
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11050,8 +11050,8 @@ class TDLibFunctions:
                 Type of the network for which the new settings are relevant
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11072,8 +11072,8 @@ class TDLibFunctions:
                 The bank card number
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11096,8 +11096,8 @@ class TDLibFunctions:
                 Password of the current user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11118,8 +11118,8 @@ class TDLibFunctions:
                 Password of the current user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11142,8 +11142,8 @@ class TDLibFunctions:
                 Password of the current user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11164,8 +11164,8 @@ class TDLibFunctions:
                 Element type
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11188,8 +11188,8 @@ class TDLibFunctions:
                 The errors
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11210,8 +11210,8 @@ class TDLibFunctions:
                 A two-letter ISO 3166-1 alpha-2 country code
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11234,8 +11234,8 @@ class TDLibFunctions:
                 Settings for the authentication of the user's phone number; pass null to use default settings
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11272,8 +11272,8 @@ class TDLibFunctions:
                 Verification code to check
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11293,8 +11293,8 @@ class TDLibFunctions:
                 Email address
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11330,8 +11330,8 @@ class TDLibFunctions:
                 Verification code to check
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11365,8 +11365,8 @@ class TDLibFunctions:
                 Unique request identifier provided by the service
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11392,8 +11392,8 @@ class TDLibFunctions:
                 Password of the current user
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11417,8 +11417,8 @@ class TDLibFunctions:
                 Types of Telegram Passport elements chosen by user to complete the authorization form
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11445,8 +11445,8 @@ class TDLibFunctions:
                 Settings for the authentication of the user's phone number; pass null to use default settings
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11484,8 +11484,8 @@ class TDLibFunctions:
                 Confirmation code to check
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11508,8 +11508,8 @@ class TDLibFunctions:
                 The last error message
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11533,8 +11533,8 @@ class TDLibFunctions:
                 Sticker file to upload
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11555,8 +11555,8 @@ class TDLibFunctions:
                 Sticker set title; 1-64 characters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11574,8 +11574,8 @@ class TDLibFunctions:
                 Name to be checked
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11613,8 +11613,8 @@ class TDLibFunctions:
                 Source of the sticker set; may be empty if unknown
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11644,8 +11644,8 @@ class TDLibFunctions:
                 Sticker to add to the set
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11673,8 +11673,8 @@ class TDLibFunctions:
                 Thumbnail to set in PNG, TGS, or WEBM format; pass null to remove the sticker set thumbnail. Thumbnail format must match the format of stickers in the set
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11699,8 +11699,8 @@ class TDLibFunctions:
                 New position of the sticker in the set, 0-based
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11721,8 +11721,8 @@ class TDLibFunctions:
                 Sticker
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11764,8 +11764,8 @@ class TDLibFunctions:
                 Identifier of a chat in which the thumbnail will be shown. Use 0 if unknown
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11790,8 +11790,8 @@ class TDLibFunctions:
                 Type of the limit
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11811,8 +11811,8 @@ class TDLibFunctions:
                 Source of the request; pass null if the method is called from some non-standard source
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11846,8 +11846,8 @@ class TDLibFunctions:
                 The viewed premium feature
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11912,8 +11912,8 @@ class TDLibFunctions:
                 Pass true if this is a restore of a Telegram Premium purchase
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11934,8 +11934,8 @@ class TDLibFunctions:
                 Google Play purchase token
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11955,8 +11955,8 @@ class TDLibFunctions:
                 Terms of service identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -11979,8 +11979,8 @@ class TDLibFunctions:
                 JSON-serialized method parameters
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12004,8 +12004,8 @@ class TDLibFunctions:
                 JSON-serialized answer to the query
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12024,8 +12024,8 @@ class TDLibFunctions:
                 Number of seconds before the function returns
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12073,8 +12073,8 @@ class TDLibFunctions:
                 The phone number prefix
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12097,8 +12097,8 @@ class TDLibFunctions:
                 The phone number prefix
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12131,8 +12131,8 @@ class TDLibFunctions:
                 The link
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12172,8 +12172,8 @@ class TDLibFunctions:
                 The log event data
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12204,8 +12204,8 @@ class TDLibFunctions:
                 Proxy type
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12246,8 +12246,8 @@ class TDLibFunctions:
                 Proxy type
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12269,8 +12269,8 @@ class TDLibFunctions:
                 Proxy identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12302,8 +12302,8 @@ class TDLibFunctions:
                 Proxy identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12335,8 +12335,8 @@ class TDLibFunctions:
                 Proxy identifier
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12354,8 +12354,8 @@ class TDLibFunctions:
                 Proxy identifier. Use 0 to ping a Telegram server without a proxy
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12373,8 +12373,8 @@ class TDLibFunctions:
                 New log stream
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12408,8 +12408,8 @@ class TDLibFunctions:
                 New value of the verbosity level for logging. Value 0 corresponds to fatal errors, value 1 corresponds to errors, value 2 corresponds to warnings and debug warnings, value 3 corresponds to informational, value 4 corresponds to debug, value 5 corresponds to verbose debug, value greater than 5 and up to 1023 can be used to enable even more logging
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12460,8 +12460,8 @@ class TDLibFunctions:
                 New verbosity level; 1-1024
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12482,8 +12482,8 @@ class TDLibFunctions:
                 Logging tag to change verbosity level
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {
@@ -12506,8 +12506,8 @@ class TDLibFunctions:
                 Text of a message to log
 
 
-            Returns:
-                :class:`~pytdbot.types.Response`
+        Returns:
+            :class:`~pytdbot.types.Response`
         """
 
         data = {

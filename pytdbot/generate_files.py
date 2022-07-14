@@ -97,7 +97,7 @@ def functions():
                             f"            {_k} (``{getType(_v['type'])}``, optional):\n                {_v['description']}\n\n"
                         )
             f.write(
-                '\n            Returns:\n                :class:`~pytdbot.types.Response`\n        """\n\n'
+                '\n        Returns:\n            :class:`~pytdbot.types.Response`\n        """\n\n'
             )
             f.write(f"        data = {{'@type': '{k}',")
             for k in v["args"]:
