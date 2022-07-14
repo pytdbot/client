@@ -12,48 +12,71 @@ jobs:
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1.12
         with:
-          cmake-version: '3.23.2'
-  
+          cmake-version: "3.23.2"
+
       - name: Install TDLib
         id: td
         run: |
-            sudo apt-get update
-            sudo apt-get upgrade -y
-            sudo sudo apt-get install make git zlib1g-dev libssl-dev gperf php-cli cmake clang-6.0 libc++-dev libc++abi-dev -y
-            git clone https://github.com/tdlib/td.git
-            cd td
-            rm -rf build
-            mkdir build
-            echo "::set-output name=TDLIB_COMMIT_HASH::$(git log -1 --pretty=%h)"
-            echo "::set-output name=TDLIB_VERSION::$(
-              cat CMakeLists.txt |
-              sed -nr 's/.*project\(TDLib VERSION (.*) LANGUAGES CXX C\).*/\1/p'
-            )"
+          sudo apt-get update
+          sudo apt-get upgrade -y
+          sudo sudo apt-get install make git zlib1g-dev libssl-dev gperf php-cli cmake clang-6.0 libc++-dev libc++abi-dev -y
+          git clone https://github.com/tdlib/td.git
+          cd td
+          rm -rf build
+          mkdir build
+          echo "::set-output name=TDLIB_COMMIT_HASH::$(git log -1 --pretty=%h)"
+          echo "::set-output name=TDLIB_VERSION::$(
+            cat CMakeLists.txt |
+            sed -nr 's/.*project\(TDLib VERSION (.*) LANGUAGES CXX C\).*/\1/p'
+          )"
 
       - name: Compile
         run: |
-            cd td/build
-            CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-6.0 CXX=/usr/bin/clang++-6.0 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib -DTD_ENABLE_LTO=ON -DCMAKE_AR=/usr/bin/llvm-ar-6.0 -DCMAKE_NM=/usr/bin/llvm-nm-6.0 -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump-6.0 -DCMAKE_RANLIB=/usr/bin/llvm-ranlib-6.0 ..
-            cmake --build . --target prepare_cross_compiling
-            cd ..
-            php SplitSource.php
-            cd build/
-            cmake --build . --target install --parallel 5
-            cd ..
-            php SplitSource.php --undo
+          cd td/build
+          CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-6.0 CXX=/usr/bin/clang++-6.0 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib -DTD_ENABLE_LTO=ON -DCMAKE_AR=/usr/bin/llvm-ar-6.0 -DCMAKE_NM=/usr/bin/llvm-nm-6.0 -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump-6.0 -DCMAKE_RANLIB=/usr/bin/llvm-ranlib-6.0 ..
+          cmake --build . --target prepare_cross_compiling
+          cd ..
+          php SplitSource.php
+          cd build/
+          cmake --build . --target install --parallel 5
+          cd ..
+          php SplitSource.php --undo
 
       - name: Copy TDLib TL
         run: |
-            cp td/td/generate/scheme/td_api.tl pytdbot/td_api.tl
+          cp td/td/generate/scheme/td_api.tl pytdbot/td_api.tl
 
       - name: Move libtdjson.so
         run: |
-            mkdir -p pytdbot/lib
-            mv td/tdlib/lib/libtdjson.so.${{ steps.td.outputs.TDLIB_VERSION }} pytdbot/lib/libtdjson.so
+          mkdir -p pytdbot/lib
+          mv td/tdlib/lib/libtdjson.so.${{ steps.td.outputs.TDLIB_VERSION }} pytdbot/lib/libtdjson.so
 
-      - name: Commit
+      - name: Generate Pytdbot files
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - run: |
+          cd $GITHUB_WORKSPACE/pytdbot
+          python generate_json.py "${{ steps.td.outputs.TDLIB_VERSION }}" "${{ steps.td.outputs.TDLIB_COMMIT_HASH }}"
+          python generate_files.py
+
+      - name: Format Pytdbot files
+        uses: psf/black@stable
+        with:
+          src: "pytdbot/methods/tdlibfunctions.py pytdbot/handlers/updates.py"
+
+      - name: Commit libtdjson.so
         uses: EndBug/add-and-commit@v9
         with:
-          default_author: github_actions
-          message: 'Update TDLib to ${{ steps.td.outputs.TDLIB_VERSION }} (tdlib/td@${{ steps.td.outputs.TDLIB_COMMIT_HASH }})'
+          message: "Update TDLib to ${{ steps.td.outputs.TDLIB_VERSION }} (tdlib/td@${{ steps.td.outputs.TDLIB_COMMIT_HASH }})"
           add: '["pytdbot/lib/libtdjson.so","pytdbot/td_api.tl"]'
+          committer_name: GitHub Actions
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+
+      - name: Commit generated Pytdbot files
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Generate Pytdbot files (tdlib/td@${{ steps.td.outputs.TDLIB_COMMIT_HASH }})"
+          add: '["pytdbot/methods/tdlibfunctions.py","pytdbot/handlers/updates.py", "pytdbot/td_api.json"]'
+          committer_name: GitHub Actions
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
