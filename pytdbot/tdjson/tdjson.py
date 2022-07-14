@@ -43,8 +43,11 @@ class TDjson:
         """Build TDjson client.
 
         Args:
-            lib_path (`str`): Path to shared library.
-            verbosity (`int`): TDLib verbosity level.
+            lib_path (`str`):
+                Path to shared library.
+
+            verbosity (`int`):
+                TDLib verbosity level.
         """
         self._tdjson = CDLL(lib_path)
 
@@ -83,13 +86,21 @@ class TDjson:
 
         self.client_id = self._td_create_client_id()
 
+        td_version, td_commit_hash = self.execute(
+            {"@type": "getOption", "name": "version"}
+        ), self.execute({"@type": "getOption", "name": "commit_hash"})
+        logger.info(
+            "Using TDLib %s (%s)", td_version["value"], td_commit_hash["value"][:9]
+        )
+
         self._td_set_log_verbosity_level(verbosity)
 
     def receive(self, timeout: float = 2.0) -> Union[None, dict]:
-        """Receives incoming updates and responses to requests from TDLib.
+        """Receives incoming updates and responses from TDLib.
 
         Args:
-            timeout (`float`, optional): The maximum number of seconds allowed to wait for new data. Defaults to 2.0.
+            timeout (`float`, optional):
+                The maximum number of seconds allowed to wait for new data. Defaults to 2.0.
 
         Returns:
             `dict`: An incoming update or response to a request. If no data is received, `None` is returned.
@@ -105,7 +116,8 @@ class TDjson:
         """Sends a request to TDLib.
 
         Args:
-            data (`dict`): The request to be sent.
+            data (`dict`):
+                The request to be sent.
         """
         try:
             self._td_send(self.client_id, dumps(data).encode("utf-8"))
@@ -120,7 +132,7 @@ class TDjson:
             data (`dict`): The request to be executed.
 
         Returns:
-            `dict`: The response to the request. If the request fails, `None` is returned.
+            `dict`: The response to the request.
         """
         try:
             if res := self._td_execute(dumps(data).encode("utf-8")):
