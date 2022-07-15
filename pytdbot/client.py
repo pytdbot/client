@@ -15,7 +15,6 @@ from typing import Callable, Union
 from logging import getLogger, DEBUG
 from base64 import b64encode
 from deepdiff import DeepDiff
-from concurrent.futures import ThreadPoolExecutor
 import signal, pytdbot, asyncio
 
 try:
@@ -132,7 +131,6 @@ class Client(Decorators, Methods):
         self.enable_storage_optimizer = enable_storage_optimizer
         self.ignore_file_names = ignore_file_names
         self.workers = workers
-        self.executer = ThreadPoolExecutor(max_workers=workers)
         self.queue = asyncio.Queue()
         self.td_verbosity = td_verbosity
         self.authorization_state = None
@@ -496,12 +494,7 @@ class Client(Decorators, Methods):
                     if asyncio.iscoroutinefunction(initializer.filter.func):
                         if not await initializer.filter.func(self, data):
                             continue
-                    elif not await self.loop.run_in_executor(
-                        self.executer,
-                        initializer.filter.func,
-                        self,
-                        data,
-                    ):
+                    elif not initializer.filter.func(self, data):
                         continue
                 await initializer.func(self, data)
             except StopHandlers as e:
@@ -517,12 +510,7 @@ class Client(Decorators, Methods):
                     if asyncio.iscoroutinefunction(handler.filter.func):
                         if not await handler.filter.func(self, data):
                             continue
-                    elif not await self.loop.run_in_executor(
-                        self.executer,
-                        handler.filter.func,
-                        self,
-                        data,
-                    ):
+                    elif not handler.filter.func(self, data):
                         continue
                 await handler.func(self, data)
             except StopHandlers as e:
@@ -537,12 +525,7 @@ class Client(Decorators, Methods):
                     if asyncio.iscoroutinefunction(finalizer.filter.func):
                         if not await finalizer.filter.func(self, data):
                             continue
-                    elif not await self.loop.run_in_executor(
-                        self.executer,
-                        finalizer.filter.func,
-                        self,
-                        data,
-                    ):
+                    elif not finalizer.filter.func(self, data):
                         continue
                 await finalizer.func(self, data)
             except Exception:
