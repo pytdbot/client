@@ -235,13 +235,11 @@ class Client(Decorators, Methods):
             TypeError
         """
         if not isinstance(update_type, str):
-            raise TypeError("Argument update_type must be str")
+            raise TypeError("update_type must be str")
         elif not isinstance(func, Callable):
-            raise TypeError("Argument func must be callable")
+            raise TypeError("func must be callable")
         elif filters is not None and not isinstance(filters, Filter):
-            raise TypeError(
-                "Argument filters must be instance of pytdbot.filters.Filter"
-            )
+            raise TypeError("filters must be instance of pytdbot.filters.Filter")
         else:
             func = Handler(func, update_type, filters, position)
             if update_type not in self._handlers:
@@ -265,7 +263,7 @@ class Client(Decorators, Methods):
             ``bool``: True if handler was removed, False otherwise.
         """
         if not isinstance(func, Callable):
-            raise TypeError("Argument func must be callable")
+            raise TypeError("func must be callable")
         for update_type in self._handlers:
             for handler in self._handlers[update_type]:
                 if handler.func == func:
@@ -372,43 +370,40 @@ class Client(Decorators, Methods):
         logger.info("Instance closed with %s updates served", self.update_count)
 
     async def send(self, data: dict) -> None:
-        # return await self.loop.run_in_executor(self.executer, self._tdjson.send, data)
         return self._tdjson.send(
             data
-        )  # tdjson.send will return immediately. So we don't need to run_in_executor. This improves performance.
+        )  # tdjson.send is asynchronous, So we don't need run_in_executor. This improves performance.
 
     async def receive(self, timeout: float = 2.0) -> dict:
-        return await self.loop.run_in_executor(
-            self.executer, self._tdjson.receive, timeout
-        )
+        return await self.loop.run_in_executor(None, self._tdjson.receive, timeout)
 
     def _check_init_args(self):
         if not isinstance(self.api_id, int):
-            raise TypeError("Argument api_id must be int")
+            raise TypeError("api_id must be int")
         elif not isinstance(self.api_hash, str):
-            raise TypeError("Argument api_hash must be str")
+            raise TypeError("api_hash must be str")
         elif not isinstance(self.database_encryption_key, str) and not isinstance(
             self.database_encryption_key, bytes
         ):
-            raise TypeError("Argument database_encryption_key must be str or bytes")
+            raise TypeError("database_encryption_key must be str or bytes")
         elif not isinstance(self.files_directory, str):
-            raise TypeError("Argument files_directory must be str")
+            raise TypeError("files_directory must be str")
         elif not isinstance(self.token, str):
-            raise TypeError("Argument token must be str")
+            raise TypeError("token must be str")
         elif not isinstance(self.td_verbosity, int):
-            raise TypeError("Argument td_verbosity must be int")
+            raise TypeError("td_verbosity must be int")
         elif not isinstance(self.workers, int):
-            raise TypeError("Argument workers must be int")
+            raise TypeError("workers must be int")
         elif type(Update) is not type(self.update_class):
             raise TypeError(
-                "Argument update_class must be instance of class pytdbot.types.Update"
+                "update_class must be instance of class pytdbot.types.Update"
             )
+
         if self.workers < 1:
-            raise ValueError("Argument workers must be greater than 0")
-        try:
-            self.bot_id, _ = self.token.split(":")
-        except Exception:
-            raise ValueError("Argument token must be in format bot_id:bot_hash")
+            raise ValueError("workers must be greater than 0")
+
+        if len(self.token.split(":")) != 2:
+            raise ValueError("token must be in format <token>:<hash>")
 
     def _load_plugins(self):
         count = 0
