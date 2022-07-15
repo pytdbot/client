@@ -13,6 +13,10 @@ Easy, Sample and powerful [TDLib-based](https://github.com/tdlib/td) client for 
 ```bash
 pip install pytdbot
 ```
+From github
+```bash
+pip install git+https://github.com/pytdbot/client.git
+```
 
 ### Examples
 Basic example:
