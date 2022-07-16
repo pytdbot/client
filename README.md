@@ -6,7 +6,9 @@ Easy, Sample and powerful [TDLib-based](https://github.com/tdlib/td) client for 
 
 - python3.9+
 - Telegram [API key](https://my.telegram.org/apps)
-- [TDLib](https://github.com/tdlib/td#building) tdjson
+- [tdjson](https://github.com/tdlib/td#building)
+- [deepdiff](https://github.com/seperman/deepdiff)
+- [ujson](https://github.com/ultrajson/ultrajson) (optional)
 
 ### Installation
 

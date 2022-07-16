@@ -1,1 +1,2 @@
-include README.md LICENSE requirements.txt
+include README.md LICENSE requirements.txt pytdbot/lib/*.so
+exclude examples/
