@@ -38,7 +38,7 @@ setup(
         "telegram-client",
         "telegram-bot",
         "bot-api",
-        "elegram-bot",
+        "telegram-bot",
         "tdlib-python",
         "tdlib-bot",
     ],
