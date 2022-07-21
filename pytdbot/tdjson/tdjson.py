@@ -19,14 +19,14 @@ class TDjson:
         """TDjson client.
 
         Args:
-            lib_path (`str`, optional):
+            lib_path (``str``, optional):
                 Path to shared library. Defaults to None.
 
-            verbosity (`int`, optional):
+            verbosity (``int``, optional):
                 TDLib verbosity level. Defaults to 2.
 
         Raises:
-            ValueError: If library not found.
+            ``ValueError``: If library not found.
         """
         if lib_path is None:
             if system() == "Linux":
@@ -43,10 +43,10 @@ class TDjson:
         """Build TDjson client.
 
         Args:
-            lib_path (`str`):
+            lib_path (``str``):
                 Path to shared library.
 
-            verbosity (`int`):
+            verbosity (``int``):
                 TDLib verbosity level.
         """
         self._tdjson = CDLL(lib_path)
@@ -99,11 +99,11 @@ class TDjson:
         """Receives incoming updates and responses from TDLib.
 
         Args:
-            timeout (`float`, optional):
+            timeout (``float``, optional):
                 The maximum number of seconds allowed to wait for new data. Defaults to 2.0.
 
         Returns:
-            `dict`: An incoming update or response to a request. If no data is received, `None` is returned.
+            ``dict``: An incoming update or response to a request. If no data is received, ``None`` is returned.
         """
         try:
             if res := self._td_receive(self.client_id, c_double(timeout)):
@@ -116,7 +116,7 @@ class TDjson:
         """Sends a request to TDLib.
 
         Args:
-            data (`dict`):
+            data (``dict``):
                 The request to be sent.
         """
         try:
@@ -129,10 +129,10 @@ class TDjson:
         """Executes a TDLib request.
 
         Args:
-            data (`dict`): The request to be executed.
+            data (``dict``): The request to be executed.
 
         Returns:
-            `dict`: The response to the request.
+            ``dict``: The response to the request.
         """
         try:
             if res := self._td_execute(dumps(data).encode("utf-8")):
