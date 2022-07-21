@@ -78,11 +78,14 @@ class Client(Decorators, Methods):
         ignore_file_names (``bool``, optional):
             If set to true, original file names will be ignored. Otherwise, downloaded files will be saved under names as close as possible to the original name. Defaults to False.
 
-        workers (``int``, optional):
-            Number of workers for handling updates. Defaults to 5.
-
         loop (:py:class:`asyncio.AbstractEventLoop`, optional):
             Event loop. Defaults to None (auto-detect).
+
+        options (``dict``, optional):
+            Pass key-value dictionary to set TDLib options. Check the list of available options at https://core.telegram.org/tdlib/options.
+
+        workers (``int``, optional):
+            Number of workers for handling updates. Defaults to 5.
 
         td_verbosity (``int``, optional):
             Verbosity level of TDLib. Defaults to 2.
@@ -109,8 +112,9 @@ class Client(Decorators, Methods):
         use_message_database: bool = True,
         enable_storage_optimizer: bool = True,
         ignore_file_names: bool = False,
-        workers: int = 5,
         loop: asyncio.AbstractEventLoop = None,
+        options: dict = None,
+        workers: int = 5,
         td_verbosity: int = 2,
         td_log: LogStream = None,
     ) -> None:
@@ -130,6 +134,7 @@ class Client(Decorators, Methods):
         self.use_message_database = use_message_database
         self.enable_storage_optimizer = enable_storage_optimizer
         self.ignore_file_names = ignore_file_names
+        self.td_options = options
         self.workers = workers
         self.queue = asyncio.Queue()
         self.td_verbosity = td_verbosity
@@ -199,6 +204,7 @@ class Client(Decorators, Methods):
                 await self._set_td_paramaters()
             elif self.authorization_state == "authorizationStateWaitEncryptionKey":
                 await self._set_encryption_key()
+                await self._set_options()  # setOption works only after processing authorizationStateWaitEncryptionKey.
             elif self.authorization_state == "authorizationStateWaitPhoneNumber":
                 await self._set_bot_token()
             authorization = await self.getAuthorizationState()
@@ -533,6 +539,7 @@ class Client(Decorators, Methods):
         while self.is_running:
             try:
                 data = await self.queue.get()
+
                 if "@type" not in data:
                     continue
 
@@ -578,7 +585,7 @@ class Client(Decorators, Methods):
             "api_id": self.api_id,
             "api_hash": self.api_hash,
             "system_language_code": self.system_language_code,
-            "device_model": python_implementation() + " " + python_version(),
+            "device_model": f"{python_implementation()} {python_version()}",
             "use_file_database": self.use_file_database,
             "use_chat_info_database": self.use_chat_info_database,
             "use_message_database": self.use_message_database,
@@ -586,8 +593,9 @@ class Client(Decorators, Methods):
             "ignore_file_names": self.ignore_file_names,
             "files_directory": self.files_directory,
             "database_directory": join_path(self.files_directory, "database"),
-            "application_version": "Pytdbot " + VERSION,
+            "application_version": f"Pytdbot {VERSION}",
         }
+
         res = await self.setTdlibParameters(prams)
         if res.is_error:
             raise AuthorizationError(res.response["message"])
@@ -606,6 +614,28 @@ class Client(Decorators, Methods):
         res = await self.checkAuthenticationBotToken(self.token)
         if res.is_error:
             raise AuthorizationError(res.response["message"])
+
+    async def _set_options(self):
+        if not isinstance(self.td_options, dict):
+            return
+
+        for k, v in self.td_options.items():
+            v_type = type(v)
+
+            if v_type is str:
+                data = {"@type": "optionValueString", "value": v}
+            elif v_type is int:
+                data = {"@type": "optionValueInteger", "value": v}
+            elif v_type is bool:
+                data = {"@type": "optionValueBoolean", "value": v}
+            else:
+                raise ValueError(f"Option {k} has unsupported type {v_type}")
+
+            res = await self.setOption(k, data)
+            if res.is_error:
+                logger.error("Error setting option %s: %s", k, res.response["message"])
+            else:
+                logger.debug("Option %s set to %s", k, str(v))
 
     async def _handle_authorization_state(self, update):
         if (
