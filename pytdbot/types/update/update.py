@@ -222,12 +222,12 @@ class Update:
 
     @property
     def query(self) -> str:
-        """The query of the inline query.
+        """The query of the inline query or the chosen inline result.
 
         Returns:
             ``str``
         """
-        if self.type_ == "updateNewInlineQuery":
+        if self.type_ in ["updateNewInlineQuery", "updateNewChosenInlineResult"]:
             return self.update["query"]
 
     @property
