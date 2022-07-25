@@ -18,8 +18,8 @@ data = {
 }
 params = {}
 start = False
-description = ""
 is_functions = False
+description = ""
 class_regex = compile(r"//@class\s(?P<name>.*)\s@description\s(?P<description>.*)")
 description_regex = compile(r"//@description\s(?P<description>.*)$")
 parameter_regex = compile(r"@(.*?)\s+([^@]+)")
@@ -29,7 +29,12 @@ tl = Path("td_api.tl").read_text().replace("\n//-", " ")
 
 
 def is_optional(d):
-    return "; may be null" in d or "; pass null" in d or "; may be empty" in d
+    return (
+        "; may be null" in d
+        or "; pass null" in d
+        or "; may be empty" in d
+        or "If non-empty," in d
+    )
 
 
 for line in tl.split("\n"):
