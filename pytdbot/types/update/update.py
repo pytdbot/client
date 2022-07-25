@@ -211,7 +211,7 @@ class Update:
         """
         if "data" in self._store:
             return self._store["data"]
-        elif self.type_ in ["updateNewCallbackQuery", "updateNewInlineQuery"]:
+        elif self.type_ in ["updateNewCallbackQuery", "updateNewInlineCallbackQuery"]:
             if self.update["payload"]["@type"] in [
                 "callbackQueryPayloadData",
                 "callbackQueryPayloadDataWithPassword",
