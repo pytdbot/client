@@ -355,7 +355,6 @@ class Client(Decorators, Methods):
             signal.SIGINT,
             signal.SIGTERM,
             signal.SIGABRT,
-            signal.SIGQUIT,
             signal.SIGSEGV,
         ):
             self.loop.add_signal_handler(sig, _handle_signal)
