@@ -1788,7 +1788,7 @@ class TDLibFunctions:
     async def searchCallMessages(
         self, from_message_id: int, limit: int, only_missed: bool, timeout: float = None
     ) -> Response:
-        """Searches for call messages. Returns the results in reverse chronological order (i. e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib
+        """Searches for call messages. Returns the results in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib
 
         Args:
             from_message_id (``int``):
@@ -3251,9 +3251,9 @@ class TDLibFunctions:
         self,
         chat_id: int,
         message_id: int,
-        reaction: str,
         offset: str,
         limit: int,
+        reaction: str = None,
         timeout: float = None,
     ) -> Response:
         """Returns reactions added for a message, along with their sender
@@ -3265,14 +3265,14 @@ class TDLibFunctions:
             message_id (``int``):
                 Identifier of the message
 
-            reaction (``str``):
-                If non-empty, only added reactions with the specified text representation will be returned
-
             offset (``str``):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
 
             limit (``int``):
                 The maximum number of reactions to be returned; must be positive and can't be greater than 100
+
+            reaction (``str``, optional):
+                If non-empty, only added reactions with the specified text representation will be returned
 
 
         Returns:
@@ -3769,8 +3769,8 @@ class TDLibFunctions:
         results: list,
         cache_time: int,
         next_offset: str,
-        switch_pm_text: str,
         switch_pm_parameter: str,
+        switch_pm_text: str = None,
         timeout: float = None,
     ) -> Response:
         """Sets the result of an inline query; for bots only
@@ -3791,11 +3791,11 @@ class TDLibFunctions:
             next_offset (``str``):
                 Offset for the next inline query; pass an empty string if there are no more results
 
-            switch_pm_text (``str``):
-                If non-empty, this text must be shown on the button that opens a private chat with the bot and sends a start message to the bot with the parameter switch_pm_parameter
-
             switch_pm_parameter (``str``):
                 The parameter for the bot start message
+
+            switch_pm_text (``str``, optional):
+                If non-empty, this text must be shown on the button that opens a private chat with the bot and sends a start message to the bot with the parameter switch_pm_parameter
 
 
         Returns:
@@ -7419,8 +7419,8 @@ class TDLibFunctions:
         payload: str,
         is_muted: bool,
         is_my_video_enabled: bool,
-        invite_hash: str,
         participant_id: dict = None,
+        invite_hash: str = None,
         timeout: float = None,
     ) -> Response:
         """Joins an active group call. Returns join response payload for tgcalls
@@ -7441,11 +7441,11 @@ class TDLibFunctions:
             is_my_video_enabled (``bool``):
                 Pass true if the user's video is enabled
 
-            invite_hash (``str``):
-                If non-empty, invite hash to be used to join the group call without being muted by administrators
-
             participant_id (``dict``, optional):
                 Identifier of a group call participant, which will be used to join the call; pass null to join as self; video chats only
+
+            invite_hash (``str``, optional):
+                If non-empty, invite hash to be used to join the group call without being muted by administrators
 
 
         Returns:
@@ -9853,7 +9853,7 @@ class TDLibFunctions:
         filters: dict = None,
         timeout: float = None,
     ) -> Response:
-        """Returns a list of service actions taken by chat members and administrators in the last 48 hours. Available only for supergroups and channels. Requires administrator rights. Returns results in reverse chronological order (i. e., in order of decreasing event_id)
+        """Returns a list of service actions taken by chat members and administrators in the last 48 hours. Available only for supergroups and channels. Requires administrator rights. Returns results in reverse chronological order (i.e., in order of decreasing event_id)
 
         Args:
             chat_id (``int``):
@@ -10889,11 +10889,11 @@ class TDLibFunctions:
         ttl: int,
         count: int,
         immunity_delay: int,
-        file_types: list,
-        chat_ids: list,
-        exclude_chat_ids: list,
         return_deleted_file_statistics: bool,
         chat_limit: int,
+        file_types: list = None,
+        chat_ids: list = None,
+        exclude_chat_ids: list = None,
         timeout: float = None,
     ) -> Response:
         """Optimizes storage usage, i.e. deletes some files and returns new storage usage statistics. Secret thumbnails can't be deleted
@@ -10911,20 +10911,20 @@ class TDLibFunctions:
             immunity_delay (``int``):
                 The amount of time after the creation of a file during which it can't be deleted, in seconds. Pass -1 to use the default value
 
-            file_types (``list``):
-                If non-empty, only files with the given types are considered. By default, all types except thumbnails, profile photos, stickers and wallpapers are deleted
-
-            chat_ids (``list``):
-                If non-empty, only files from the given chats are considered. Use 0 as chat identifier to delete files not belonging to any chat (e.g., profile photos)
-
-            exclude_chat_ids (``list``):
-                If non-empty, files from the given chats are excluded. Use 0 as chat identifier to exclude all files not belonging to any chat (e.g., profile photos)
-
             return_deleted_file_statistics (``bool``):
                 Pass true if statistics about the files that were deleted must be returned instead of the whole storage usage statistics. Affects only returned statistics
 
             chat_limit (``int``):
                 Same as in getStorageStatistics. Affects only returned statistics
+
+            file_types (``list``, optional):
+                If non-empty, only files with the given types are considered. By default, all types except thumbnails, profile photos, stickers and wallpapers are deleted
+
+            chat_ids (``list``, optional):
+                If non-empty, only files from the given chats are considered. Use 0 as chat identifier to delete files not belonging to any chat (e.g., profile photos)
+
+            exclude_chat_ids (``list``, optional):
+                If non-empty, files from the given chats are excluded. Use 0 as chat identifier to exclude all files not belonging to any chat (e.g., profile photos)
 
 
         Returns:
