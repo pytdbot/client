@@ -1,5 +1,6 @@
 from base64 import b64decode
 from typing import Union
+from ujson import dumps
 from pytdbot.utils import escape_html, escape_markdown
 from pytdbot.types import (
     Response,
@@ -11,11 +12,6 @@ from pytdbot.types import (
     InputThumbnail,
 )
 import pytdbot
-
-try:
-    from ujson import dumps
-except ImportError:
-    from json import dumps
 
 
 class Update:

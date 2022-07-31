@@ -24,9 +24,6 @@ setup(
     license="MIT",
     python_requires=">=3.9",
     install_requires=requirements,
-    extras_require={
-        "ujson": ["ujson"],
-    },
     project_urls={
         "Source": "https://github.com/pytdbot/client",
         "Tracker": "https://github.com/pytdbot/client/issues",

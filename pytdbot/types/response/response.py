@@ -1,11 +1,7 @@
 from uuid import uuid4
 from asyncio import Event, wait_for
 from typing import Union
-
-try:
-    from ujson import dumps
-except ImportError:
-    from json import dumps
+from ujson import dumps
 
 
 class Response:

@@ -370,8 +370,8 @@ class Client(Decorators, Methods):
         self.is_authenticated = False
         self.is_running = False
         logger.info("Closing workers...")
-        for x in self._workers_tasks:
-            x.cancel()
+        for worker_task in self._workers_tasks:
+            worker_task.cancel()
         logger.info("Instance closed with %s updates served", self.update_count)
 
     async def send(self, data: dict) -> None:
