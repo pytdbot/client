@@ -14,12 +14,17 @@ jobs:
         with:
           cmake-version: "3.23.2"
 
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+
       - name: Install TDLib
         id: td
         run: |
           sudo apt-get update
           sudo apt-get upgrade -y
-          sudo sudo apt-get install make git zlib1g-dev libssl-dev gperf php-cli cmake clang-6.0 libc++-dev libc++abi-dev -y
+          sudo sudo apt-get install make git zlib1g-dev libssl-dev gperf cmake clang-6.0 libc++-dev libc++abi-dev -y
           git clone https://github.com/tdlib/td.git
           cd td
           rm -rf build
