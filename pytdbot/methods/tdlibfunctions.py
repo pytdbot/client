@@ -169,11 +169,11 @@ class TDLibFunctions:
     async def checkAuthenticationPassword(
         self, password: str, timeout: float = None
     ) -> Response:
-        """Checks the authentication password for correctness. Works only when the current authorization state is authorizationStateWaitPassword
+        """Checks the 2-step verification password for correctness. Works only when the current authorization state is authorizationStateWaitPassword
 
         Args:
             password (``str``):
-                The password to check
+                The 2-step verification password to check
 
 
         Returns:
@@ -190,7 +190,7 @@ class TDLibFunctions:
     async def requestAuthenticationPasswordRecovery(
         self, timeout: float = None
     ) -> Response:
-        """Requests to send a password recovery code to an email address that was previously set up. Works only when the current authorization state is authorizationStateWaitPassword
+        """Requests to send a 2-step verification password recovery code to an email address that was previously set up. Works only when the current authorization state is authorizationStateWaitPassword
 
 
         Returns:
@@ -206,7 +206,7 @@ class TDLibFunctions:
     async def checkAuthenticationPasswordRecoveryCode(
         self, recovery_code: str, timeout: float = None
     ) -> Response:
-        """Checks whether a password recovery code sent to an email address is valid. Works only when the current authorization state is authorizationStateWaitPassword
+        """Checks whether a 2-step verification password recovery code sent to an email address is valid. Works only when the current authorization state is authorizationStateWaitPassword
 
         Args:
             recovery_code (``str``):
@@ -231,14 +231,14 @@ class TDLibFunctions:
         new_hint: str = None,
         timeout: float = None,
     ) -> Response:
-        """Recovers the password with a password recovery code sent to an email address that was previously set up. Works only when the current authorization state is authorizationStateWaitPassword
+        """Recovers the 2-step verification password with a password recovery code sent to an email address that was previously set up. Works only when the current authorization state is authorizationStateWaitPassword
 
         Args:
             recovery_code (``str``):
                 Recovery code to check
 
             new_password (``str``, optional):
-                New password of the user; may be empty to remove the password
+                New 2-step verification password of the user; may be empty to remove the password
 
             new_hint (``str``, optional):
                 New password hint; may be empty
@@ -399,17 +399,17 @@ class TDLibFunctions:
         new_recovery_email_address: str = None,
         timeout: float = None,
     ) -> Response:
-        """Changes the password for the current user. If a new recovery email address is specified, then the change will not be applied until the new recovery email address is confirmed
+        """Changes the 2-step verification password for the current user. If a new recovery email address is specified, then the change will not be applied until the new recovery email address is confirmed
 
         Args:
             old_password (``str``):
-                Previous password of the user
+                Previous 2-step verification password of the user
 
             set_recovery_email_address (``bool``):
                 Pass true to change also the recovery email address
 
             new_password (``str``, optional):
-                New password of the user; may be empty to remove the password
+                New 2-step verification password of the user; may be empty to remove the password
 
             new_hint (``str``, optional):
                 New password hint; may be empty
@@ -440,7 +440,7 @@ class TDLibFunctions:
 
         Args:
             password (``str``):
-                The password for the current user
+                The 2-step verification password for the current user
 
 
         Returns:
@@ -461,7 +461,7 @@ class TDLibFunctions:
 
         Args:
             password (``str``):
-                Password of the current user
+                The 2-step verification password of the current user
 
             new_recovery_email_address (``str``):
                 New recovery email address
@@ -563,7 +563,7 @@ class TDLibFunctions:
                 Recovery code to check
 
             new_password (``str``, optional):
-                New password of the user; may be empty to remove the password
+                New 2-step verification password of the user; may be empty to remove the password
 
             new_hint (``str``, optional):
                 New password hint; may be empty
@@ -617,7 +617,7 @@ class TDLibFunctions:
 
         Args:
             password (``str``):
-                Persistent user password
+                The 2-step verification password of the current user
 
             valid_for (``int``):
                 Time during which the temporary password will be valid, in seconds; must be between 60 and 86400
@@ -3187,7 +3187,7 @@ class TDLibFunctions:
     async def getMessageAvailableReactions(
         self, chat_id: int, message_id: int, timeout: float = None
     ) -> Response:
-        """Returns reactions, which can be added to a message. The list can change after updateReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message. The method will return Premium reactions, even the current user has no Premium subscription
+        """Returns reactions, which can be added to a message. The list can change after updateReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message
 
         Args:
             chat_id (``int``):
@@ -3312,7 +3312,7 @@ class TDLibFunctions:
     async def parseTextEntities(
         self, text: str, parse_mode: dict, timeout: float = None
     ) -> Response:
-        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text. Can be called synchronously
+        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text. Can be called synchronously
 
         Args:
             text (``str``):
@@ -5092,7 +5092,7 @@ class TDLibFunctions:
                 Chat identifier
 
             notification_settings (``dict``):
-                New notification settings for the chat. If the chat is muted for more than 1 week, it is considered to be muted forever
+                New notification settings for the chat. If the chat is muted for more than 366 days, it is considered to be muted forever
 
 
         Returns:
@@ -5602,7 +5602,7 @@ class TDLibFunctions:
                 Identifier of the user to which transfer the ownership. The ownership can't be transferred to a bot or to a deleted user
 
             password (``str``):
-                The password of the current user
+                The 2-step verification password of the current user
 
 
         Returns:
@@ -6103,17 +6103,17 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def uploadFile(
+    async def preliminaryUploadFile(
         self, file: dict, priority: int, file_type: dict = None, timeout: float = None
     ) -> Response:
-        """Asynchronously uploads a file to the cloud without sending it in a message. updateFile will be used to notify about upload progress and successful completion of the upload. The file will not have a persistent remote identifier until it will be sent in a message
+        """Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes. Updates updateFile will be used to notify about upload progress and successful completion of the upload. The file will not have a persistent remote identifier until it will be sent in a message
 
         Args:
             file (``dict``):
                 File to upload
 
             priority (``int``):
-                Priority of the upload (1-32). The higher the priority, the earlier the file will be uploaded. If the priorities of two files are equal, then the first one for which uploadFile was called will be uploaded first
+                Priority of the upload (1-32). The higher the priority, the earlier the file will be uploaded. If the priorities of two files are equal, then the first one for which preliminaryUploadFile was called will be uploaded first
 
             file_type (``dict``, optional):
                 File type; pass null if unknown
@@ -6124,7 +6124,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "uploadFile",
+            "@type": "preliminaryUploadFile",
             "file": file,
             "file_type": file_type,
             "priority": priority,
@@ -6132,8 +6132,10 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def cancelUploadFile(self, file_id: int, timeout: float = None) -> Response:
-        """Stops the uploading of a file. Supported only for files uploaded by using uploadFile. For other files the behavior is undefined
+    async def cancelPreliminaryUploadFile(
+        self, file_id: int, timeout: float = None
+    ) -> Response:
+        """Stops the preliminary uploading of a file. Supported only for files uploaded by using preliminaryUploadFile. For other files the behavior is undefined
 
         Args:
             file_id (``int``):
@@ -6145,7 +6147,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "cancelUploadFile",
+            "@type": "cancelPreliminaryUploadFile",
             "file_id": file_id,
         }
 
@@ -8344,16 +8346,27 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def getStickers(
-        self, emoji: str, limit: int, timeout: float = None
+        self,
+        sticker_type: dict,
+        emoji: str,
+        limit: int,
+        chat_id: int,
+        timeout: float = None,
     ) -> Response:
-        """Returns stickers from the installed sticker sets that correspond to a given emoji. If the emoji is non-empty, favorite and recently used stickers may also be returned
+        """Returns stickers from the installed sticker sets that correspond to a given emoji. If the emoji is non-empty, then favorite, recently used or trending stickers may also be returned
 
         Args:
+            sticker_type (``dict``):
+                Type of the sticker sets to return
+
             emoji (``str``):
                 String representation of emoji. If empty, returns all known installed stickers
 
             limit (``int``):
                 The maximum number of stickers to be returned
+
+            chat_id (``int``):
+                Chat identifier for which to return stickers. Available custom emoji may be different for different chats
 
 
         Returns:
@@ -8362,8 +8375,10 @@ class TDLibFunctions:
 
         data = {
             "@type": "getStickers",
+            "sticker_type": sticker_type,
             "emoji": emoji,
             "limit": limit,
+            "chat_id": chat_id,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -8378,7 +8393,7 @@ class TDLibFunctions:
                 String representation of emoji; must be non-empty
 
             limit (``int``):
-                The maximum number of stickers to be returned
+                The maximum number of stickers to be returned; 0-100
 
 
         Returns:
@@ -8393,14 +8408,33 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def getPremiumStickers(self, limit: int, timeout: float = None) -> Response:
+        """Returns premium stickers from regular sticker sets
+
+        Args:
+            limit (``int``):
+                The maximum number of stickers to be returned; 0-100
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getPremiumStickers",
+            "limit": limit,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def getInstalledStickerSets(
-        self, is_masks: bool, timeout: float = None
+        self, sticker_type: dict, timeout: float = None
     ) -> Response:
         """Returns a list of installed sticker sets
 
         Args:
-            is_masks (``bool``):
-                Pass true to return mask sticker sets; pass false to return ordinary sticker sets
+            sticker_type (``dict``):
+                Type of the sticker sets to return
 
 
         Returns:
@@ -8409,14 +8443,14 @@ class TDLibFunctions:
 
         data = {
             "@type": "getInstalledStickerSets",
-            "is_masks": is_masks,
+            "sticker_type": sticker_type,
         }
 
         return await self.invoke(data, timeout=timeout)
 
     async def getArchivedStickerSets(
         self,
-        is_masks: bool,
+        sticker_type: dict,
         offset_sticker_set_id: int,
         limit: int,
         timeout: float = None,
@@ -8424,8 +8458,8 @@ class TDLibFunctions:
         """Returns a list of archived sticker sets
 
         Args:
-            is_masks (``bool``):
-                Pass true to return mask stickers sets; pass false to return ordinary sticker sets
+            sticker_type (``dict``):
+                Type of the sticker sets to return
 
             offset_sticker_set_id (``int``):
                 Identifier of the sticker set from which to return the result
@@ -8440,7 +8474,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "getArchivedStickerSets",
-            "is_masks": is_masks,
+            "sticker_type": sticker_type,
             "offset_sticker_set_id": offset_sticker_set_id,
             "limit": limit,
         }
@@ -8448,11 +8482,14 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def getTrendingStickerSets(
-        self, offset: int, limit: int, timeout: float = None
+        self, sticker_type: dict, offset: int, limit: int, timeout: float = None
     ) -> Response:
         """Returns a list of trending sticker sets. For optimal performance, the number of returned sticker sets is chosen by TDLib
 
         Args:
+            sticker_type (``dict``):
+                Type of the sticker sets to return
+
             offset (``int``):
                 The offset from which to return the sticker sets; must be non-negative
 
@@ -8466,6 +8503,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "getTrendingStickerSets",
+            "sticker_type": sticker_type,
             "offset": offset,
             "limit": limit,
         }
@@ -8532,13 +8570,13 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def searchInstalledStickerSets(
-        self, is_masks: bool, query: str, limit: int, timeout: float = None
+        self, sticker_type: dict, query: str, limit: int, timeout: float = None
     ) -> Response:
         """Searches for installed sticker sets by looking for specified query in their title and name
 
         Args:
-            is_masks (``bool``):
-                Pass true to return mask sticker sets; pass false to return ordinary sticker sets
+            sticker_type (``dict``):
+                Type of the sticker sets to search for
 
             query (``str``):
                 Query to search for
@@ -8553,7 +8591,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "searchInstalledStickerSets",
-            "is_masks": is_masks,
+            "sticker_type": sticker_type,
             "query": query,
             "limit": limit,
         }
@@ -8630,13 +8668,13 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def reorderInstalledStickerSets(
-        self, is_masks: bool, sticker_set_ids: list, timeout: float = None
+        self, sticker_type: dict, sticker_set_ids: list, timeout: float = None
     ) -> Response:
         """Changes the order of installed sticker sets
 
         Args:
-            is_masks (``bool``):
-                Pass true to change the order of mask sticker sets; pass false to change the order of ordinary sticker sets
+            sticker_type (``dict``):
+                Type of the sticker sets to reorder
 
             sticker_set_ids (``list``):
                 Identifiers of installed sticker sets in the new correct order
@@ -8648,7 +8686,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "reorderInstalledStickerSets",
-            "is_masks": is_masks,
+            "sticker_type": sticker_type,
             "sticker_set_ids": sticker_set_ids,
         }
 
@@ -8678,7 +8716,7 @@ class TDLibFunctions:
     async def addRecentSticker(
         self, is_attached: bool, sticker: dict, timeout: float = None
     ) -> Response:
-        """Manually adds a new sticker to the list of recently used stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set can be added to this list
+        """Manually adds a new sticker to the list of recently used stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set can be added to this list. Emoji stickers can't be added to recent stickers
 
         Args:
             is_attached (``bool``):
@@ -8763,7 +8801,7 @@ class TDLibFunctions:
     async def addFavoriteSticker(
         self, sticker: dict, timeout: float = None
     ) -> Response:
-        """Adds a new sticker to the list of favorite stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set can be added to this list
+        """Adds a new sticker to the list of favorite stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set can be added to this list. Emoji stickers can't be added to favorite stickers
 
         Args:
             sticker (``dict``):
@@ -8873,20 +8911,6 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def getAllAnimatedEmojis(self, timeout: float = None) -> Response:
-        """Returns all emojis, which has a corresponding animated emoji
-
-
-        Returns:
-            :class:`~pytdbot.types.Response`
-        """
-
-        data = {
-            "@type": "getAllAnimatedEmojis",
-        }
-
-        return await self.invoke(data, timeout=timeout)
-
     async def getEmojiSuggestionsUrl(
         self, language_code: str, timeout: float = None
     ) -> Response:
@@ -8904,6 +8928,27 @@ class TDLibFunctions:
         data = {
             "@type": "getEmojiSuggestionsUrl",
             "language_code": language_code,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getCustomEmojiStickers(
+        self, custom_emoji_ids: list, timeout: float = None
+    ) -> Response:
+        """Returns list of custom emoji stickers by their identifiers. Stickers are returned in arbitrary order. Only found stickers are returned
+
+        Args:
+            custom_emoji_ids (``list``):
+                Identifiers of custom emoji stickers. At most 200 custom emoji stickers can be received simultaneously
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getCustomEmojiStickers",
+            "custom_emoji_ids": custom_emoji_ids,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -10640,12 +10685,17 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def deleteAccount(self, reason: str, timeout: float = None) -> Response:
+    async def deleteAccount(
+        self, reason: str, password: str, timeout: float = None
+    ) -> Response:
         """Deletes the account of the current user, deleting all information associated with the user from the server. The phone number of the account can be used to create a new account. Can be called before authorization when the current authorization state is authorizationStateWaitPassword
 
         Args:
             reason (``str``):
                 The reason why the account was deleted; optional
+
+            password (``str``):
+                The 2-step verification password of the current user. If not specified, account deletion can be canceled within one week
 
 
         Returns:
@@ -10655,6 +10705,7 @@ class TDLibFunctions:
         data = {
             "@type": "deleteAccount",
             "reason": reason,
+            "password": password,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -11093,7 +11144,7 @@ class TDLibFunctions:
                 Telegram Passport element type
 
             password (``str``):
-                Password of the current user
+                The 2-step verification password of the current user
 
 
         Returns:
@@ -11115,7 +11166,7 @@ class TDLibFunctions:
 
         Args:
             password (``str``):
-                Password of the current user
+                The 2-step verification password of the current user
 
 
         Returns:
@@ -11139,7 +11190,7 @@ class TDLibFunctions:
                 Input Telegram Passport element
 
             password (``str``):
-                Password of the current user
+                The 2-step verification password of the current user
 
 
         Returns:
@@ -11389,7 +11440,7 @@ class TDLibFunctions:
                 Authorization form identifier
 
             password (``str``):
-                Password of the current user
+                The 2-step verification password of the current user
 
 
         Returns:
@@ -11590,6 +11641,7 @@ class TDLibFunctions:
         user_id: int,
         title: str,
         name: str,
+        sticker_type: dict,
         stickers: list,
         source: str = None,
         timeout: float = None,
@@ -11605,6 +11657,9 @@ class TDLibFunctions:
 
             name (``str``):
                 Sticker set name. Can contain only English letters, digits and underscores. Must end with *"_by_<bot username>"* (*<bot_username>* is case insensitive) for bots; 1-64 characters
+
+            sticker_type (``dict``):
+                Type of the stickers in the set
 
             stickers (``list``):
                 List of stickers to be added to the set; must be non-empty. All stickers must have the same format. For TGS stickers, uploadStickerFile must be used before the sticker is shown
@@ -11622,6 +11677,7 @@ class TDLibFunctions:
             "user_id": user_id,
             "title": title,
             "name": name,
+            "sticker_type": sticker_type,
             "stickers": stickers,
             "source": source,
         }
@@ -11822,7 +11878,7 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def getPremiumStickers(self, timeout: float = None) -> Response:
+    async def getPremiumStickerExamples(self, timeout: float = None) -> Response:
         """Returns examples of premium stickers for demonstration purposes
 
 
@@ -11831,7 +11887,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "getPremiumStickers",
+            "@type": "getPremiumStickerExamples",
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -11885,8 +11941,14 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def canPurchasePremium(self, timeout: float = None) -> Response:
+    async def canPurchasePremium(
+        self, purpose: dict, timeout: float = None
+    ) -> Response:
         """Checks whether Telegram Premium purchase is possible. Must be called before in-store Premium purchase
+
+        Args:
+            purpose (``dict``):
+                Transaction purpose
 
 
         Returns:
@@ -11895,21 +11957,22 @@ class TDLibFunctions:
 
         data = {
             "@type": "canPurchasePremium",
+            "purpose": purpose,
         }
 
         return await self.invoke(data, timeout=timeout)
 
     async def assignAppStoreTransaction(
-        self, receipt: bytes, is_restore: bool, timeout: float = None
+        self, receipt: bytes, purpose: dict, timeout: float = None
     ) -> Response:
-        """Informs server about a Telegram Premium purchase through App Store. For official applications only
+        """Informs server about a purchase through App Store. For official applications only
 
         Args:
             receipt (``bytes``):
                 App Store receipt
 
-            is_restore (``bool``):
-                Pass true if this is a restore of a Telegram Premium purchase
+            purpose (``dict``):
+                Transaction purpose
 
 
         Returns:
@@ -11919,19 +11982,33 @@ class TDLibFunctions:
         data = {
             "@type": "assignAppStoreTransaction",
             "receipt": receipt,
-            "is_restore": is_restore,
+            "purpose": purpose,
         }
 
         return await self.invoke(data, timeout=timeout)
 
     async def assignGooglePlayTransaction(
-        self, purchase_token: str, timeout: float = None
+        self,
+        package_name: str,
+        store_product_id: str,
+        purchase_token: str,
+        purpose: dict,
+        timeout: float = None,
     ) -> Response:
-        """Informs server about a Telegram Premium purchase through Google Play. For official applications only
+        """Informs server about a purchase through Google Play. For official applications only
 
         Args:
+            package_name (``str``):
+                Application package name
+
+            store_product_id (``str``):
+                Identifier of the purchased store product
+
             purchase_token (``str``):
                 Google Play purchase token
+
+            purpose (``dict``):
+                Transaction purpose
 
 
         Returns:
@@ -11940,7 +12017,10 @@ class TDLibFunctions:
 
         data = {
             "@type": "assignGooglePlayTransaction",
+            "package_name": package_name,
+            "store_product_id": store_product_id,
             "purchase_token": purchase_token,
+            "purpose": purpose,
         }
 
         return await self.invoke(data, timeout=timeout)
