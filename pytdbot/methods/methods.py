@@ -1265,6 +1265,58 @@ class Methods(TDLibFunctions):
         await _new.wait(timeout)
         return _new
 
+    async def forwardMessage(
+        self,
+        chat_id: int,
+        from_chat_id: int,
+        message_id: int,
+        in_game_share: bool = False,
+        disable_notification: bool = False,
+        timeout: int = None,
+    ):
+        """Forward message to chat
+
+        Args:
+            chat_id (``int``):
+                Target chat.
+
+            from_chat_id (``int``):
+                Identifier for the chat this forwarded message came from.
+
+            message_id (``int``):
+                Identifier of the message to forward.
+
+            in_game_share (``bool``, optional):
+                True, if a game message is being shared from a launched game; applies only to game messages.
+
+            disable_notification (``bool``, optional):
+                If True, disable notification for the message. Defaults to False.
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+        data = {
+            "@type": "sendMessage",
+            "chat_id": chat_id,
+            "options": {
+                "@type": "messageSendOptions",
+                "disable_notification": disable_notification,
+            },
+            "input_message_content": {
+                "@type": "inputMessageForwarded",
+                "from_chat_id": from_chat_id,
+                "message_id": message_id,
+                "in_game_share": in_game_share,
+            },
+        }
+        res = await self.invoke(data, timeout=timeout)
+        if res.is_error:
+            return res
+        _new = Response(data)
+        self._results[res.response["id"]] = _new
+        await _new.wait(timeout)
+        return _new
+
     async def editTextMessage(
         self,
         chat_id: int,

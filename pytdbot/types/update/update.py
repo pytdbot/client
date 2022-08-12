@@ -156,7 +156,7 @@ class Update:
         Returns:
             ``str``
         """
-        if self.content_type == "messageText":
+        if self.type_ == "updateNewMessage" and self.content_type == "messageText":
             return self.update["message"]["content"]["text"]["text"]
         elif self.type_ == "updateMessageContent":
             if "text" in self.update["new_content"]:
@@ -413,6 +413,44 @@ class Update:
         if isinstance(self.message_id, int):
             return await self.client.deleteMessages(
                 self.chat_id, [self.message_id], revoke, timeout
+            )
+
+    async def forward(
+        self,
+        chat_id: int,
+        message_id: int = None,
+        in_game_share: bool = False,
+        disable_notification: bool = False,
+        timeout: float = None,
+    ) -> Response:
+        """Forward the message.
+
+        Args:
+            chat_id (``int``):
+                The chat id.
+
+            message_id (``int``, optional):
+                The message id. If None, the current message will be forwarded. Defaults to None.
+
+            in_game_share (``bool``, optional):
+                True, if a game message is being shared from a launched game; applies only to game messages.
+
+            disable_notification (``bool``, optional):
+                If True, disable notification for the message.
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+        if (
+            isinstance(self.message_id, int) or isinstance(message_id, int)
+        ) and isinstance(self.chat_id, int):
+            return await self.client.forwardMessage(
+                chat_id,
+                self.chat_id,
+                message_id or self.message_id,
+                in_game_share,
+                disable_notification,
+                timeout,
             )
 
     async def reply_text(
