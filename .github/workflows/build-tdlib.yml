@@ -23,7 +23,6 @@ jobs:
         id: td
         run: |
           sudo apt-get update
-          sudo apt-get upgrade -y
           sudo sudo apt-get install make git zlib1g-dev libssl-dev gperf cmake clang-6.0 libc++-dev libc++abi-dev -y
           git clone https://github.com/tdlib/td.git
           cd td
