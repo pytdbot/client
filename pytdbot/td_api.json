@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
     "version": "1.8.5",
-    "commit_hash": "9a469eef3",
+    "commit_hash": "e49135e54",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "AuthorizationState": "Represents the current authorization state of the TDLib client",
@@ -15665,6 +15665,27 @@
             },
             "type": "LogTags"
         },
+        "userSupportInfo": {
+            "description": "Contains custom information about the user",
+            "args": {
+                "message": {
+                    "description": "Information message",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "author": {
+                    "description": "Information author",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Information change date",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "UserSupportInfo"
+        },
         "testInt": {
             "description": "A simple object containing a number; for testing only",
             "args": {
@@ -25367,6 +25388,33 @@
                 }
             },
             "type": "Ok"
+        },
+        "getUserSupportInfo": {
+            "description": "Returns support information for the given user; for Telegram support only",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "UserSupportInfo"
+        },
+        "setUserSupportInfo": {
+            "description": "Sets support information for the given user; for Telegram support only",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message": {
+                    "description": "New information message",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "UserSupportInfo"
         },
         "testCallEmpty": {
             "description": "Does nothing; for testing only. This is an offline method. Can be called before authorization",

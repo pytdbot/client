@@ -12597,3 +12597,47 @@ class TDLibFunctions:
         }
 
         return await self.invoke(data, timeout=timeout)
+
+    async def getUserSupportInfo(self, user_id: int, timeout: float = None) -> Response:
+        """Returns support information for the given user; for Telegram support only
+
+        Args:
+            user_id (``int``):
+                User identifier
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getUserSupportInfo",
+            "user_id": user_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def setUserSupportInfo(
+        self, user_id: int, message: dict, timeout: float = None
+    ) -> Response:
+        """Sets support information for the given user; for Telegram support only
+
+        Args:
+            user_id (``int``):
+                User identifier
+
+            message (``dict``):
+                New information message
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "setUserSupportInfo",
+            "user_id": user_id,
+            "message": message,
+        }
+
+        return await self.invoke(data, timeout=timeout)
