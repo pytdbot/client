@@ -28,6 +28,10 @@ setup(
         "Source": "https://github.com/pytdbot/client",
         "Tracker": "https://github.com/pytdbot/client/issues",
     },
+    packages=find_packages(exclude=["examples"]),
+    package_data={
+        "pytdbot": ["lib/*.so", "td_api.*"],
+    },
     keywords=[
         "telegram",
         "tdlib",
