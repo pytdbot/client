@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
     "version": "1.8.5",
-    "commit_hash": "e49135e54",
+    "commit_hash": "91bdc57ec",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "AuthorizationState": "Represents the current authorization state of the TDLib client",
