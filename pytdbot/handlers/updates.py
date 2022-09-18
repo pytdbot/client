@@ -2854,12 +2854,12 @@ class Updates:
 
         return decorator
 
-    def on_updateReactions(
+    def on_updateActiveEmojiReactions(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of supported reactions has changed
+        """The list of active emoji reactions has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
@@ -2874,13 +2874,52 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateReactions", func, filters, position)
+                    self.add_handler(
+                        "updateActiveEmojiReactions", func, filters, position
+                    )
                 else:
                     logger.warn(
                         'Function "{}" is not a coroutine function'.format(func)
                     )
             else:
-                func._handler = Handler(func, "updateReactions", filters, position)
+                func._handler = Handler(
+                    func, "updateActiveEmojiReactions", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateDefaultReactionType(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The type of default reaction has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
+            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+
+        Raises:
+            TypeError
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateDefaultReactionType", func, filters, position
+                    )
+                else:
+                    logger.warn(
+                        'Function "{}" is not a coroutine function'.format(func)
+                    )
+            else:
+                func._handler = Handler(
+                    func, "updateDefaultReactionType", filters, position
+                )
             return func
 
         return decorator

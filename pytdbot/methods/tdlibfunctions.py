@@ -19,13 +19,75 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def setTdlibParameters(
-        self, parameters: dict, timeout: float = None
+        self,
+        use_test_dc: bool,
+        database_directory: str,
+        files_directory: str,
+        database_encryption_key: bytes,
+        use_file_database: bool,
+        use_chat_info_database: bool,
+        use_message_database: bool,
+        use_secret_chats: bool,
+        api_id: int,
+        api_hash: str,
+        system_language_code: str,
+        device_model: str,
+        system_version: str,
+        application_version: str,
+        enable_storage_optimizer: bool,
+        ignore_file_names: bool,
+        timeout: float = None,
     ) -> Response:
         """Sets the parameters for TDLib initialization. Works only when the current authorization state is authorizationStateWaitTdlibParameters
 
         Args:
-            parameters (``dict``):
-                Parameters for TDLib initialization
+            use_test_dc (``bool``):
+                Pass true to use Telegram test environment instead of the production environment
+
+            database_directory (``str``):
+                The path to the directory for the persistent database; if empty, the current working directory will be used
+
+            files_directory (``str``):
+                The path to the directory for storing files; if empty, database_directory will be used
+
+            database_encryption_key (``bytes``):
+                Encryption key for the database
+
+            use_file_database (``bool``):
+                Pass true to keep information about downloaded and uploaded files between application restarts
+
+            use_chat_info_database (``bool``):
+                Pass true to keep cache of users, basic groups, supergroups, channels and secret chats between restarts. Implies use_file_database
+
+            use_message_database (``bool``):
+                Pass true to keep cache of chats and messages between restarts. Implies use_chat_info_database
+
+            use_secret_chats (``bool``):
+                Pass true to enable support for secret chats
+
+            api_id (``int``):
+                Application identifier for Telegram API access, which can be obtained at https://my.telegram.org
+
+            api_hash (``str``):
+                Application identifier hash for Telegram API access, which can be obtained at https://my.telegram.org
+
+            system_language_code (``str``):
+                IETF language tag of the user's operating system language; must be non-empty
+
+            device_model (``str``):
+                Model of the device the application is being run on; must be non-empty
+
+            system_version (``str``):
+                Version of the operating system the application is being run on. If empty, the version is automatically detected by TDLib
+
+            application_version (``str``):
+                Application version; must be non-empty
+
+            enable_storage_optimizer (``bool``):
+                Pass true to automatically delete old files in background
+
+            ignore_file_names (``bool``):
+                Pass true to ignore original file names for downloaded files. Otherwise, downloaded files are saved under names as close as possible to the original name
 
 
         Returns:
@@ -34,28 +96,22 @@ class TDLibFunctions:
 
         data = {
             "@type": "setTdlibParameters",
-            "parameters": parameters,
-        }
-
-        return await self.invoke(data, timeout=timeout)
-
-    async def checkDatabaseEncryptionKey(
-        self, encryption_key: bytes, timeout: float = None
-    ) -> Response:
-        """Checks the database encryption key for correctness. Works only when the current authorization state is authorizationStateWaitEncryptionKey
-
-        Args:
-            encryption_key (``bytes``):
-                Encryption key to check or set up
-
-
-        Returns:
-            :class:`~pytdbot.types.Response`
-        """
-
-        data = {
-            "@type": "checkDatabaseEncryptionKey",
-            "encryption_key": encryption_key,
+            "use_test_dc": use_test_dc,
+            "database_directory": database_directory,
+            "files_directory": files_directory,
+            "database_encryption_key": database_encryption_key,
+            "use_file_database": use_file_database,
+            "use_chat_info_database": use_chat_info_database,
+            "use_message_database": use_message_database,
+            "use_secret_chats": use_secret_chats,
+            "api_id": api_id,
+            "api_hash": api_hash,
+            "system_language_code": system_language_code,
+            "device_model": device_model,
+            "system_version": system_version,
+            "application_version": application_version,
+            "enable_storage_optimizer": enable_storage_optimizer,
+            "ignore_file_names": ignore_file_names,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -85,8 +141,29 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def setAuthenticationEmailAddress(
+        self, email_address: str, timeout: float = None
+    ) -> Response:
+        """Sets the email address of the user and sends an authentication code to the email address. Works only when the current authorization state is authorizationStateWaitEmailAddress
+
+        Args:
+            email_address (``str``):
+                The email address of the user
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "setAuthenticationEmailAddress",
+            "email_address": email_address,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def resendAuthenticationCode(self, timeout: float = None) -> Response:
-        """Re-sends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitCode, the next_code_type of the result is not null and the server-specified timeout has passed
+        """Resends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitCode, the next_code_type of the result is not null and the server-specified timeout has passed, or when the current authorization state is authorizationStateWaitEmailCode
 
 
         Returns:
@@ -95,6 +172,27 @@ class TDLibFunctions:
 
         data = {
             "@type": "resendAuthenticationCode",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def checkAuthenticationEmailCode(
+        self, code: dict, timeout: float = None
+    ) -> Response:
+        """Checks the authentication of a email address. Works only when the current authorization state is authorizationStateWaitEmailCode
+
+        Args:
+            code (``dict``):
+                Email address authentication to check
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "checkAuthenticationEmailCode",
+            "code": code,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -429,6 +527,62 @@ class TDLibFunctions:
             "new_hint": new_hint,
             "set_recovery_email_address": set_recovery_email_address,
             "new_recovery_email_address": new_recovery_email_address,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def setLoginEmailAddress(
+        self, new_login_email_address: str, timeout: float = None
+    ) -> Response:
+        """Changes the login email address of the user. The change will not be applied until the new login email address is confirmed with `checkLoginEmailAddressCode`. To use Apple ID/Google ID instead of a email address, call `checkLoginEmailAddressCode` directly
+
+        Args:
+            new_login_email_address (``str``):
+                New login email address
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "setLoginEmailAddress",
+            "new_login_email_address": new_login_email_address,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def resendLoginEmailAddressCode(self, timeout: float = None) -> Response:
+        """Resends the login email address verification code
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "resendLoginEmailAddressCode",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def checkLoginEmailAddressCode(
+        self, code: dict, timeout: float = None
+    ) -> Response:
+        """Checks the login email address authentication
+
+        Args:
+            code (``dict``):
+                Email address authentication to check
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "checkLoginEmailAddressCode",
+            "code": code,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -3184,10 +3338,43 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def getEmojiReaction(self, emoji: str, timeout: float = None) -> Response:
+        """Returns information about a emoji reaction. Returns a 404 error if the reaction is not found
+
+        Args:
+            emoji (``str``):
+                Text representation of the reaction
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getEmojiReaction",
+            "emoji": emoji,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getCustomEmojiReactionAnimations(self, timeout: float = None) -> Response:
+        """Returns TGS files with generic animations for custom emoji reactions
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getCustomEmojiReactionAnimations",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def getMessageAvailableReactions(
-        self, chat_id: int, message_id: int, timeout: float = None
+        self, chat_id: int, message_id: int, row_size: int, timeout: float = None
     ) -> Response:
-        """Returns reactions, which can be added to a message. The list can change after updateReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message
+        """Returns reactions, which can be added to a message. The list can change after updateActiveEmojiReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message
 
         Args:
             chat_id (``int``):
@@ -3195,6 +3382,9 @@ class TDLibFunctions:
 
             message_id (``int``):
                 Identifier of the message
+
+            row_size (``int``):
+                Number of reaction per row, 5-25
 
 
         Returns:
@@ -3205,19 +3395,35 @@ class TDLibFunctions:
             "@type": "getMessageAvailableReactions",
             "chat_id": chat_id,
             "message_id": message_id,
+            "row_size": row_size,
         }
 
         return await self.invoke(data, timeout=timeout)
 
-    async def setMessageReaction(
+    async def clearRecentReactions(self, timeout: float = None) -> Response:
+        """Clears the list of recently used reactions
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "clearRecentReactions",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def addMessageReaction(
         self,
         chat_id: int,
         message_id: int,
-        reaction: str,
+        reaction_type: dict,
         is_big: bool,
+        update_recent_reactions: bool,
         timeout: float = None,
     ) -> Response:
-        """Changes chosen reaction for a message
+        """Adds a reaction to a message. Use getMessageAvailableReactions to receive the list of available reactions for the message
 
         Args:
             chat_id (``int``):
@@ -3226,11 +3432,14 @@ class TDLibFunctions:
             message_id (``int``):
                 Identifier of the message
 
-            reaction (``str``):
-                Text representation of the new chosen reaction. Can be an empty string or the currently chosen non-big reaction to remove the reaction
+            reaction_type (``dict``):
+                Type of the reaction to add
 
             is_big (``bool``):
                 Pass true if the reaction is added with a big animation
+
+            update_recent_reactions (``bool``):
+                Pass true if the reaction needs to be added to recent reactions
 
 
         Returns:
@@ -3238,11 +3447,41 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "setMessageReaction",
+            "@type": "addMessageReaction",
             "chat_id": chat_id,
             "message_id": message_id,
-            "reaction": reaction,
+            "reaction_type": reaction_type,
             "is_big": is_big,
+            "update_recent_reactions": update_recent_reactions,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def removeMessageReaction(
+        self, chat_id: int, message_id: int, reaction_type: dict, timeout: float = None
+    ) -> Response:
+        """Removes a reaction from a message. A chosen reaction can always be removed
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which the message belongs
+
+            message_id (``int``):
+                Identifier of the message
+
+            reaction_type (``dict``):
+                Type of the reaction to remove
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "removeMessageReaction",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "reaction_type": reaction_type,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -3253,7 +3492,7 @@ class TDLibFunctions:
         message_id: int,
         offset: str,
         limit: int,
-        reaction: str = None,
+        reaction_type: dict = None,
         timeout: float = None,
     ) -> Response:
         """Returns reactions added for a message, along with their sender
@@ -3271,8 +3510,8 @@ class TDLibFunctions:
             limit (``int``):
                 The maximum number of reactions to be returned; must be positive and can't be greater than 100
 
-            reaction (``str``, optional):
-                If non-empty, only added reactions with the specified text representation will be returned
+            reaction_type (``dict``, optional):
+                Type of the reactions to return; pass null to return all added reactions
 
 
         Returns:
@@ -3283,9 +3522,30 @@ class TDLibFunctions:
             "@type": "getMessageAddedReactions",
             "chat_id": chat_id,
             "message_id": message_id,
-            "reaction": reaction,
+            "reaction_type": reaction_type,
             "offset": offset,
             "limit": limit,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def setDefaultReactionType(
+        self, reaction_type: dict, timeout: float = None
+    ) -> Response:
+        """Changes type of default reaction for the current user
+
+        Args:
+            reaction_type (``dict``):
+                New type of the default reaction
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "setDefaultReactionType",
+            "reaction_type": reaction_type,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -3816,7 +4076,12 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def getWebAppUrl(
-        self, bot_user_id: int, url: str, theme: dict = None, timeout: float = None
+        self,
+        bot_user_id: int,
+        url: str,
+        application_name: str,
+        theme: dict = None,
+        timeout: float = None,
     ) -> Response:
         """Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp button is pressed
 
@@ -3826,6 +4091,9 @@ class TDLibFunctions:
 
             url (``str``):
                 The URL from the keyboardButtonTypeWebApp button
+
+            application_name (``str``):
+                Short name of the application; 0-64 English letters, digits, and underscores
 
             theme (``dict``, optional):
                 Preferred Web App theme; pass null to use the default theme
@@ -3840,6 +4108,7 @@ class TDLibFunctions:
             "bot_user_id": bot_user_id,
             "url": url,
             "theme": theme,
+            "application_name": application_name,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -3878,6 +4147,7 @@ class TDLibFunctions:
         chat_id: int,
         bot_user_id: int,
         url: str,
+        application_name: str,
         reply_to_message_id: int,
         theme: dict = None,
         timeout: float = None,
@@ -3893,6 +4163,9 @@ class TDLibFunctions:
 
             url (``str``):
                 The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, or an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
+
+            application_name (``str``):
+                Short name of the application; 0-64 English letters, digits, and underscores
 
             reply_to_message_id (``int``):
                 Identifier of the replied message for the message sent by the Web App; 0 if none
@@ -3911,6 +4184,7 @@ class TDLibFunctions:
             "bot_user_id": bot_user_id,
             "url": url,
             "theme": theme,
+            "application_name": application_name,
             "reply_to_message_id": reply_to_message_id,
         }
 
@@ -5183,7 +5457,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def setChatAvailableReactions(
-        self, chat_id: int, available_reactions: list, timeout: float = None
+        self, chat_id: int, available_reactions: dict, timeout: float = None
     ) -> Response:
         """Changes reactions, available in a chat. Available for basic groups, supergroups, and channels. Requires can_change_info administrator right
 
@@ -5191,8 +5465,8 @@ class TDLibFunctions:
             chat_id (``int``):
                 Identifier of the chat
 
-            available_reactions (``list``):
-                New list of reactions, available in the chat. All reactions must be active
+            available_reactions (``dict``):
+                Reactions available in the chat. All emoji reactions must be active
 
 
         Returns:
@@ -5981,6 +6255,62 @@ class TDLibFunctions:
             "@type": "toggleBotIsAddedToAttachmentMenu",
             "bot_user_id": bot_user_id,
             "is_added": is_added,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getThemedEmojiStatuses(self, timeout: float = None) -> Response:
+        """Returns up to 8 themed emoji statuses, which color must be changed to the color of the Telegram Premium badge
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getThemedEmojiStatuses",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getRecentEmojiStatuses(self, timeout: float = None) -> Response:
+        """Returns recent emoji statuses
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getRecentEmojiStatuses",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getDefaultEmojiStatuses(self, timeout: float = None) -> Response:
+        """Returns default emoji statuses
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getDefaultEmojiStatuses",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def clearRecentEmojiStatuses(self, timeout: float = None) -> Response:
+        """Clears the list of recently used emoji statuses
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "clearRecentEmojiStatuses",
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -9216,6 +9546,31 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def setEmojiStatus(
+        self, duration: int, emoji_status: dict = None, timeout: float = None
+    ) -> Response:
+        """Changes the emoji status of the current user; for Telegram Premium users only
+
+        Args:
+            duration (``int``):
+                Duration of the status, in seconds; pass 0 to keep the status active until it will be changed manually
+
+            emoji_status (``dict``, optional):
+                New emoji status; pass null to switch to the default badge
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "setEmojiStatus",
+            "emoji_status": emoji_status,
+            "duration": duration,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def setLocation(self, location: dict, timeout: float = None) -> Response:
         """Changes the location of the current user. Needs to be called if GetOption("is_location_visible") is true and location changes for more than 1 kilometer
 
@@ -9261,7 +9616,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def resendChangePhoneNumberCode(self, timeout: float = None) -> Response:
-        """Re-sends the authentication code sent to confirm a new phone number for the current user. Works only if the previously received authenticationCodeInfo next_code_type was not null and the server-specified timeout has passed
+        """Resends the authentication code sent to confirm a new phone number for the current user. Works only if the previously received authenticationCodeInfo next_code_type was not null and the server-specified timeout has passed
 
 
         Returns:
@@ -10802,6 +11157,35 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def reportMessageReactions(
+        self, chat_id: int, message_id: int, sender_id: dict, timeout: float = None
+    ) -> Response:
+        """Reports reactions set on a message to the Telegram moderators. Reactions on a message can be reported only if message.can_report_reactions
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            message_id (``int``):
+                Message identifier
+
+            sender_id (``dict``):
+                Identifier of the sender, which added the reaction
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "reportMessageReactions",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "sender_id": sender_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def getChatStatistics(
         self, chat_id: int, is_dark: bool, timeout: float = None
     ) -> Response:
@@ -11300,7 +11684,7 @@ class TDLibFunctions:
     async def resendPhoneNumberVerificationCode(
         self, timeout: float = None
     ) -> Response:
-        """Re-sends the code to verify a phone number to be added to a user's Telegram Passport
+        """Resends the code to verify a phone number to be added to a user's Telegram Passport
 
 
         Returns:
@@ -11358,7 +11742,7 @@ class TDLibFunctions:
     async def resendEmailAddressVerificationCode(
         self, timeout: float = None
     ) -> Response:
-        """Re-sends the code to verify an email address to be added to a user's Telegram Passport
+        """Resends the code to verify an email address to be added to a user's Telegram Passport
 
 
         Returns:
