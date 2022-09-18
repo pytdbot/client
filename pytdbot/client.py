@@ -39,7 +39,7 @@ class Client(Decorators, Methods):
         token (``str``):
             Bot token.
 
-        database_encryption_key (``str``):
+        database_encryption_key (``str`` | ``bytes``):
             Encryption key for database encryption.
 
         files_directory (``str``):
@@ -120,8 +120,8 @@ class Client(Decorators, Methods):
     ) -> None:
         self.api_id = api_id
         self.api_hash = api_hash
-        self.database_encryption_key = database_encryption_key
         self.token = token
+        self.database_encryption_key = database_encryption_key
         self.files_directory = files_directory
         self.lib_path = lib_path
         self.plugins = plugins
@@ -141,6 +141,7 @@ class Client(Decorators, Methods):
         self.authorization_state = None
         self.connection_state = None
         self.is_running = None
+        self.me = None
         self.is_authenticated = False
         self.update_count = 0
         self.options = {}
@@ -202,9 +203,7 @@ class Client(Decorators, Methods):
         while self.authorization_state != "authorizationStateReady":
             if self.authorization_state == "authorizationStateWaitTdlibParameters":
                 await self._set_td_paramaters()
-            elif self.authorization_state == "authorizationStateWaitEncryptionKey":
-                await self._set_encryption_key()
-                await self._set_options()  # setOption works only after processing authorizationStateWaitEncryptionKey.
+                await self._set_options()  # setOption works only after init TDLib instance.
             elif self.authorization_state == "authorizationStateWaitPhoneNumber":
                 await self._set_bot_token()
             authorization = await self.getAuthorizationState()
@@ -579,32 +578,28 @@ class Client(Decorators, Methods):
                 logger.exception("Exception in _updates_worker")
 
     async def _set_td_paramaters(self):
-        prams = {
-            "use_test_dc": self.use_test_dc,
-            "api_id": self.api_id,
-            "api_hash": self.api_hash,
-            "system_language_code": self.system_language_code,
-            "device_model": f"{python_implementation()} {python_version()}",
-            "use_file_database": self.use_file_database,
-            "use_chat_info_database": self.use_chat_info_database,
-            "use_message_database": self.use_message_database,
-            "enable_storage_optimizer": self.enable_storage_optimizer,
-            "ignore_file_names": self.ignore_file_names,
-            "files_directory": self.files_directory,
-            "database_directory": join_path(self.files_directory, "database"),
-            "application_version": f"Pytdbot {VERSION}",
-        }
-
-        res = await self.setTdlibParameters(prams)
-        if res.is_error:
-            raise AuthorizationError(res.response["message"])
-
-    async def _set_encryption_key(self):
         if isinstance(self.database_encryption_key, str):
             self.database_encryption_key = self.database_encryption_key.encode("utf-8")
 
-        res = await self.checkDatabaseEncryptionKey(
-            b64encode(self.database_encryption_key).decode("utf-8")
+        res = await self.setTdlibParameters(
+            use_test_dc=self.use_test_dc,
+            api_id=self.api_id,
+            api_hash=self.api_hash,
+            system_language_code=self.system_language_code,
+            device_model=f"{python_implementation()} {python_version()}",
+            use_file_database=self.use_file_database,
+            use_chat_info_database=self.use_chat_info_database,
+            use_message_database=self.use_message_database,
+            use_secret_chats=False,
+            system_version=None,
+            enable_storage_optimizer=self.enable_storage_optimizer,
+            ignore_file_names=self.ignore_file_names,
+            files_directory=self.files_directory,
+            database_encryption_key=b64encode(self.database_encryption_key).decode(
+                "utf-8"
+            ),
+            database_directory=join_path(self.files_directory, "database"),
+            application_version=f"Pytdbot {VERSION}",
         )
         if res.is_error:
             raise AuthorizationError(res.response["message"])
