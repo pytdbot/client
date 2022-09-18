@@ -33,6 +33,7 @@ client = Client(
     database_encryption_key="1234echobot$",
     token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token. You can get it from https://t.me/botfather
     files_directory="BotDB",  # path where to store session and files.
+    lib_path="/path/to/libtdjson.so" # Path to TDjson shared library.
 )
 
 
