@@ -202,8 +202,8 @@ class Client(Decorators, Methods):
 
         while self.authorization_state != "authorizationStateReady":
             if self.authorization_state == "authorizationStateWaitTdlibParameters":
+                await self._set_options()
                 await self._set_td_paramaters()
-                await self._set_options()  # setOption works only after init TDLib instance.
             elif self.authorization_state == "authorizationStateWaitPhoneNumber":
                 await self._set_bot_token()
             authorization = await self.getAuthorizationState()
