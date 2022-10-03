@@ -79,7 +79,7 @@ jobs:
       - name: Commit generated Pytdbot files
         uses: EndBug/add-and-commit@v9
         with:
-          message: "Generate Pytdbot files (tdlib/td@${{ steps.td.outputs.TDLIB_COMMIT_HASH }})"
+          message: "Generate Pytdbot files"
           add: '["pytdbot/methods/tdlibfunctions.py","pytdbot/handlers/updates.py", "pytdbot/td_api.json"]'
           committer_name: GitHub Actions
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
