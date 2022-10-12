@@ -2174,6 +2174,44 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def getChatMessagePosition(
+        self,
+        chat_id: int,
+        message_id: int,
+        filter: dict,
+        message_thread_id: int,
+        timeout: float = None,
+    ) -> Response:
+        """Returns approximate 1-based position of a message among messages, which can be found by the specified filter in the chat. Cannot be used in secret chats
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat in which to find message position
+
+            message_id (``int``):
+                Message identifier
+
+            filter (``dict``):
+                Filter for message content; searchMessagesFilterEmpty, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterFailedToSend are unsupported in this function
+
+            message_thread_id (``int``):
+                If not 0, only messages in the specified thread will be considered; supergroups only
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getChatMessagePosition",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "filter": filter,
+            "message_thread_id": message_thread_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def getChatScheduledMessages(
         self, chat_id: int, timeout: float = None
     ) -> Response:
@@ -3358,7 +3396,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def getCustomEmojiReactionAnimations(self, timeout: float = None) -> Response:
-        """Returns TGS files with generic animations for custom emoji reactions
+        """Returns TGS stickers with generic animations for custom emoji reactions
 
 
         Returns:
@@ -8678,25 +8716,25 @@ class TDLibFunctions:
     async def getStickers(
         self,
         sticker_type: dict,
-        emoji: str,
+        query: str,
         limit: int,
         chat_id: int,
         timeout: float = None,
     ) -> Response:
-        """Returns stickers from the installed sticker sets that correspond to a given emoji. If the emoji is non-empty, then favorite, recently used or trending stickers may also be returned
+        """Returns stickers from the installed sticker sets that correspond to a given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned
 
         Args:
             sticker_type (``dict``):
-                Type of the sticker sets to return
+                Type of the stickers to return
 
-            emoji (``str``):
-                String representation of emoji. If empty, returns all known installed stickers
+            query (``str``):
+                Search query; an emoji or a keyword prefix. If empty, returns all known installed stickers
 
             limit (``int``):
                 The maximum number of stickers to be returned
 
             chat_id (``int``):
-                Chat identifier for which to return stickers. Available custom emoji may be different for different chats
+                Chat identifier for which to return stickers. Available custom emoji stickers may be different for different chats
 
 
         Returns:
@@ -8706,7 +8744,7 @@ class TDLibFunctions:
         data = {
             "@type": "getStickers",
             "sticker_type": sticker_type,
-            "emoji": emoji,
+            "query": query,
             "limit": limit,
             "chat_id": chat_id,
         }

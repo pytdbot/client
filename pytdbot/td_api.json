@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.6",
-    "commit_hash": "cb70993b9",
+    "version": "1.8.7",
+    "commit_hash": "c1a3fa633",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -39,7 +39,8 @@
         "PageBlock": "Describes a block of an instant view web page",
         "InputCredentials": "Contains information about the payment method chosen by the user",
         "PaymentProvider": "Contains information about a payment provider",
-        "InputInvoice": "Describe an invoice to process",
+        "InputInvoice": "Describes an invoice to process",
+        "MessageExtendedMedia": "Describes a media, which is attached to an invoice",
         "PassportElementType": "Contains the type of a Telegram Passport element",
         "PassportElement": "Contains information about a Telegram Passport element",
         "InputPassportElement": "Contains information about a Telegram Passport element to be saved",
@@ -631,17 +632,6 @@
                 }
             },
             "type": "File"
-        },
-        "files": {
-            "description": "Represents a list of files",
-            "args": {
-                "files": {
-                    "description": "List of files",
-                    "is_optional": false,
-                    "type": "vector<file>"
-                }
-            },
-            "type": "Files"
         },
         "inputFileId": {
             "description": "A file defined by its unique ID",
@@ -1305,6 +1295,16 @@
                     "description": "Sticker for the emoji; may be null if yet unknown for a custom emoji. If the sticker is a custom emoji, it can have arbitrary format different from stickerFormatTgs",
                     "is_optional": true,
                     "type": "sticker"
+                },
+                "sticker_width": {
+                    "description": "Expected width of the sticker, which can be used if the sticker is null",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "sticker_height": {
+                    "description": "Expected height of the sticker, which can be used if the sticker is null",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "fitzpatrick_type": {
                     "description": "Emoji modifier fitzpatrick type; 0-6; 0 if none",
@@ -2806,7 +2806,7 @@
                     "type": "int32"
                 },
                 "status": {
-                    "description": "Status of the current user in the supergroup or channel; custom title will be always empty",
+                    "description": "Status of the current user in the supergroup or channel; custom title will always be empty",
                     "is_optional": false,
                     "type": "ChatMemberStatus"
                 },
@@ -3077,6 +3077,33 @@
                 }
             },
             "type": "MessageSenders"
+        },
+        "chatMessageSender": {
+            "description": "Represents a message sender, which can be used to send messages in a chat",
+            "args": {
+                "sender": {
+                    "description": "Available message senders",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "needs_premium": {
+                    "description": "True, if Telegram Premium is needed to use the message sender",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ChatMessageSender"
+        },
+        "chatMessageSenders": {
+            "description": "Represents a list of message senders, which can be used to send messages in a chat",
+            "args": {
+                "senders": {
+                    "description": "List of available message senders",
+                    "is_optional": false,
+                    "type": "vector<chatMessageSender>"
+                }
+            },
+            "type": "ChatMessageSenders"
         },
         "messageForwardOriginUser": {
             "description": "The message was originally sent by a known user",
@@ -6437,6 +6464,80 @@
             },
             "type": "InputInvoice"
         },
+        "messageExtendedMediaPreview": {
+            "description": "The media is hidden until the invoice is paid",
+            "args": {
+                "width": {
+                    "description": "Media width; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "height": {
+                    "description": "Media height; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "duration": {
+                    "description": "Media duration; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "minithumbnail": {
+                    "description": "Media minithumbnail; may be null",
+                    "is_optional": true,
+                    "type": "minithumbnail"
+                },
+                "caption": {
+                    "description": "Media caption",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "MessageExtendedMedia"
+        },
+        "messageExtendedMediaPhoto": {
+            "description": "The media is a photo",
+            "args": {
+                "photo": {
+                    "description": "The photo",
+                    "is_optional": false,
+                    "type": "photo"
+                },
+                "caption": {
+                    "description": "Photo caption",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "MessageExtendedMedia"
+        },
+        "messageExtendedMediaVideo": {
+            "description": "The media is a video",
+            "args": {
+                "video": {
+                    "description": "The video",
+                    "is_optional": false,
+                    "type": "video"
+                },
+                "caption": {
+                    "description": "Photo caption",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "MessageExtendedMedia"
+        },
+        "messageExtendedMediaUnsupported": {
+            "description": "The media is unuspported",
+            "args": {
+                "caption": {
+                    "description": "Media caption",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "MessageExtendedMedia"
+        },
         "datedFile": {
             "description": "File with the date it was uploaded",
             "args": {
@@ -7699,6 +7800,11 @@
                     "description": "The identifier of the message with the receipt, after the product has been purchased",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "extended_media": {
+                    "description": "Extended media attached to the invoice; may be null",
+                    "is_optional": true,
+                    "type": "MessageExtendedMedia"
                 }
             },
             "type": "MessageContent"
@@ -8506,7 +8612,7 @@
                     "type": "inputThumbnail"
                 },
                 "disable_content_type_detection": {
-                    "description": "If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats",
+                    "description": "If true, automatic file type detection will be disabled and the document will always be sent as file. Always true for files sent to secret chats",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -8830,6 +8936,11 @@
                     "description": "Unique invoice bot deep link parameter for the generation of this invoice. If empty, it would be possible to pay directly from forwards of the invoice message",
                     "is_optional": false,
                     "type": "string"
+                },
+                "extended_media_content": {
+                    "description": "The content of extended media attached to the invoice. The content of the message to be sent. Must be one of the following types: inputMessagePhoto, inputMessageVideo",
+                    "is_optional": false,
+                    "type": "InputMessageContent"
                 }
             },
             "type": "InputMessageContent"
@@ -12536,7 +12647,7 @@
                     "type": "int32"
                 },
                 "rotation_angle": {
-                    "description": "Clockwise rotation angle of the gradient, in degrees; 0-359. Must be always divisible by 45",
+                    "description": "Clockwise rotation angle of the gradient, in degrees; 0-359. Must always be divisible by 45",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -14234,6 +14345,11 @@
             "args": {
                 "url": {
                     "description": "URL to be passed to getWebPageInstantView",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "fallback_url": {
+                    "description": "An URL to open if getWebPageInstantView fails",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -19031,6 +19147,32 @@
             },
             "type": "Count"
         },
+        "getChatMessagePosition": {
+            "description": "Returns approximate 1-based position of a message among messages, which can be found by the specified filter in the chat. Cannot be used in secret chats",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat in which to find message position",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Message identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "filter": {
+                    "description": "Filter for message content; searchMessagesFilterEmpty, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterFailedToSend are unsupported in this function",
+                    "is_optional": false,
+                    "type": "SearchMessagesFilter"
+                },
+                "message_thread_id": {
+                    "description": "If not 0, only messages in the specified thread will be considered; supergroups only",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Count"
+        },
         "getChatScheduledMessages": {
             "description": "Returns all scheduled messages in a chat. The messages are returned in a reverse chronological order (i.e., in order of decreasing message_id)",
             "args": {
@@ -19241,7 +19383,7 @@
                     "type": "int53"
                 }
             },
-            "type": "MessageSenders"
+            "type": "ChatMessageSenders"
         },
         "setChatMessageSender": {
             "description": "Selects a message sender to send messages in a chat",
@@ -19833,9 +19975,9 @@
             "type": "EmojiReaction"
         },
         "getCustomEmojiReactionAnimations": {
-            "description": "Returns TGS files with generic animations for custom emoji reactions",
+            "description": "Returns TGS stickers with generic animations for custom emoji reactions",
             "args": {},
-            "type": "Files"
+            "type": "Stickers"
         },
         "getMessageAvailableReactions": {
             "description": "Returns reactions, which can be added to a message. The list can change after updateActiveEmojiReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message",
@@ -23206,15 +23348,15 @@
             "type": "ChatPhotos"
         },
         "getStickers": {
-            "description": "Returns stickers from the installed sticker sets that correspond to a given emoji. If the emoji is non-empty, then favorite, recently used or trending stickers may also be returned",
+            "description": "Returns stickers from the installed sticker sets that correspond to a given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned",
             "args": {
                 "sticker_type": {
-                    "description": "Type of the sticker sets to return",
+                    "description": "Type of the stickers to return",
                     "is_optional": false,
                     "type": "StickerType"
                 },
-                "emoji": {
-                    "description": "String representation of emoji. If empty, returns all known installed stickers",
+                "query": {
+                    "description": "Search query; an emoji or a keyword prefix. If empty, returns all known installed stickers",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -23224,7 +23366,7 @@
                     "type": "int32"
                 },
                 "chat_id": {
-                    "description": "Chat identifier for which to return stickers. Available custom emoji may be different for different chats",
+                    "description": "Chat identifier for which to return stickers. Available custom emoji stickers may be different for different chats",
                     "is_optional": false,
                     "type": "int53"
                 }
