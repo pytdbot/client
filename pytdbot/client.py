@@ -468,9 +468,15 @@ class Client(Decorators, Methods):
                 logger.root.level >= DEBUG
             ):  # dumping all responses may create performance issues.
                 logger.debug("Recieved: %s", dumps(data, indent=4))
-            if data["@extra"]["request_id"] in self._results:
+            if data["@extra"].get("request_id", "") in self._results:
                 response: Response = self._results.pop(data["@extra"]["request_id"])
                 response.set_response(data)
+            elif data["@type"] == "error" and "option" in data["@extra"]:
+                logger.error(
+                    "Cannot set option %s with value %s",
+                    data["@extra"]["option"],
+                    str(data["@extra"]["value"]),
+                )
         else:
             if data["@type"] == "updateAuthorizationState":
                 self.loop.create_task(self._handle_authorization_state(data))
@@ -625,11 +631,15 @@ class Client(Decorators, Methods):
             else:
                 raise ValueError(f"Option {k} has unsupported type {v_type}")
 
-            res = await self.setOption(k, data)
-            if res.is_error:
-                logger.error("Error setting option %s: %s", k, res.response["message"])
-            else:
-                logger.debug("Option %s set to %s", k, str(v))
+            self.send(
+                {
+                    "@type": "setOption",
+                    "name": k,
+                    "value": data,
+                    "@extra": {"option": k, "value": v},
+                }
+            )
+            logger.debug("Option %s sent with value %s", k, str(v))
 
     async def _handle_authorization_state(self, update):
         if (
