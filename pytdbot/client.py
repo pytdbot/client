@@ -317,7 +317,7 @@ class Client(Decorators, Methods):
         ):  # dumping all requests may create performance issues.
             logger.debug("Sending: %s", dumps(response.request, indent=4))
 
-        await self.send(response.request)
+        self.send(response.request)
         await response.wait(timeout=timeout)
         return response
 
@@ -373,7 +373,7 @@ class Client(Decorators, Methods):
             worker_task.cancel()
         logger.info("Instance closed with %s updates served", self.update_count)
 
-    async def send(self, data: dict) -> None:
+    def send(self, data: dict) -> None:
         return self._tdjson.send(
             data
         )  # tdjson.send is asynchronous, So we don't need run_in_executor. This improves performance.
