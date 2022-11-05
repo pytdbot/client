@@ -1757,7 +1757,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def deleteChat(self, chat_id: int, timeout: float = None) -> Response:
-        """Deletes a chat along with all messages in the corresponding chat for all chat members. For group chats this will release the username and remove all members. Use the field chat.can_be_deleted_for_all_users to find whether the method can be applied to the chat
+        """Deletes a chat along with all messages in the corresponding chat for all chat members. For group chats this will release the usernames and remove all members. Use the field chat.can_be_deleted_for_all_users to find whether the method can be applied to the chat
 
         Args:
             chat_id (``int``):
@@ -1787,7 +1787,7 @@ class TDLibFunctions:
         filter: dict = None,
         timeout: float = None,
     ) -> Response:
-        """Searches for messages with given words in the chat. Returns the results in reverse chronological order, i.e. in order of decreasing message_id. Cannot be used in secret chats with a non-empty query (searchSecretMessages must be used instead), or without an enabled message database. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        """Searches for messages with given words in the chat. Returns the results in reverse chronological order, i.e. in order of decreasing message_id. Cannot be used in secret chats with a non-empty query (searchSecretMessages must be used instead), or without an enabled message database. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit. A combination of query, sender_id, filter and message_thread_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
 
         Args:
             chat_id (``int``):
@@ -2271,10 +2271,10 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def getChatSponsoredMessage(
+    async def getChatSponsoredMessages(
         self, chat_id: int, timeout: float = None
     ) -> Response:
-        """Returns sponsored message to be shown in a chat; for channel chats only. Returns a 404 error if there is no sponsored message in the chat
+        """Returns sponsored messages to be shown in a chat; for channel chats only
 
         Args:
             chat_id (``int``):
@@ -2286,7 +2286,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "getChatSponsoredMessage",
+            "@type": "getChatSponsoredMessages",
             "chat_id": chat_id,
         }
 
@@ -2351,7 +2351,7 @@ class TDLibFunctions:
         message_id: int,
         media_timestamp: int,
         for_album: bool,
-        for_comment: bool,
+        in_message_thread: bool,
         timeout: float = None,
     ) -> Response:
         """Returns an HTTPS link to a message in a chat. Available only for already sent messages in supergroups and channels, or if message.can_get_media_timestamp_links and a media timestamp link is generated. This is an offline request
@@ -2369,8 +2369,8 @@ class TDLibFunctions:
             for_album (``bool``):
                 Pass true to create a link for the whole media album
 
-            for_comment (``bool``):
-                Pass true to create a link to the message as a channel post comment, or from a message thread
+            in_message_thread (``bool``):
+                Pass true to create a link to the message as a channel post comment, in a message thread, or a forum topic
 
 
         Returns:
@@ -2383,7 +2383,7 @@ class TDLibFunctions:
             "message_id": message_id,
             "media_timestamp": media_timestamp,
             "for_album": for_album,
-            "for_comment": for_comment,
+            "in_message_thread": in_message_thread,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -2472,7 +2472,7 @@ class TDLibFunctions:
     async def recognizeSpeech(
         self, chat_id: int, message_id: int, timeout: float = None
     ) -> Response:
-        """Recognizes speech in a voice note message. The message must be successfully sent and must not be scheduled. May return an error with a message "MSG_VOICE_TOO_LONG" if the voice note is too long to be recognized
+        """Recognizes speech in a video note or a voice note message. The message must be successfully sent and must not be scheduled. May return an error with a message "MSG_VOICE_TOO_LONG" if media duration is too big to be recognized
 
         Args:
             chat_id (``int``):
@@ -2497,7 +2497,7 @@ class TDLibFunctions:
     async def rateSpeechRecognition(
         self, chat_id: int, message_id: int, is_good: bool, timeout: float = None
     ) -> Response:
-        """Rates recognized speech in a voice note message
+        """Rates recognized speech in a video note or a voice note message
 
         Args:
             chat_id (``int``):
@@ -2750,6 +2750,7 @@ class TDLibFunctions:
     async def forwardMessages(
         self,
         chat_id: int,
+        message_thread_id: int,
         from_chat_id: int,
         message_ids: list,
         send_copy: bool,
@@ -2763,6 +2764,9 @@ class TDLibFunctions:
         Args:
             chat_id (``int``):
                 Identifier of the chat to which to forward messages
+
+            message_thread_id (``int``):
+                If not 0, a message thread identifier in which the message will be sent; for forum threads only
 
             from_chat_id (``int``):
                 Identifier of the chat from which to forward messages
@@ -2790,6 +2794,7 @@ class TDLibFunctions:
         data = {
             "@type": "forwardMessages",
             "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
             "from_chat_id": from_chat_id,
             "message_ids": message_ids,
             "options": options,
@@ -3376,6 +3381,145 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def getForumTopicDefaultIcons(self, timeout: float = None) -> Response:
+        """Returns list of custom emojis, which can be used as forum topic icon by all users
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getForumTopicDefaultIcons",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def createForumTopic(
+        self, chat_id: int, name: str, icon: dict, timeout: float = None
+    ) -> Response:
+        """Creates a topic in a forum supergroup chat; requires can_manage_topics rights in the supergroup
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            name (``str``):
+                Name of the topic; 1-128 characters
+
+            icon (``dict``):
+                Icon of the topic. Icon color must be one of 0x6FB9F0, 0xFFD67E, 0xCB86DB, 0x8EEE98, 0xFF93B2, or 0xFB6F5F. Telegram Premium users can use any custom emoji as topic icon, other users can use only a custom emoji returned by getForumTopicDefaultIcons
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "createForumTopic",
+            "chat_id": chat_id,
+            "name": name,
+            "icon": icon,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def editForumTopic(
+        self,
+        chat_id: int,
+        message_thread_id: int,
+        name: str,
+        icon_custom_emoji_id: int,
+        timeout: float = None,
+    ) -> Response:
+        """Edits title and icon of a topic in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup unless the user is creator of the topic
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            message_thread_id (``int``):
+                Message thread identifier of the forum topic
+
+            name (``str``):
+                New name of the topic; 1-128 characters
+
+            icon_custom_emoji_id (``int``):
+                Identifier of the new custom emoji for topic icon. Telegram Premium users can use any custom emoji, other users can use only a custom emoji returned by getForumTopicDefaultIcons
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "editForumTopic",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
+            "name": name,
+            "icon_custom_emoji_id": icon_custom_emoji_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def toggleForumTopicIsClosed(
+        self,
+        chat_id: int,
+        message_thread_id: int,
+        is_closed: bool,
+        timeout: float = None,
+    ) -> Response:
+        """Toggles whether a topic is closed in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup unless the user is creator of the topic
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            message_thread_id (``int``):
+                Message thread identifier of the forum topic
+
+            is_closed (``bool``):
+                Pass true to close the topic; pass false to reopen it
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleForumTopicIsClosed",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
+            "is_closed": is_closed,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def deleteForumTopic(
+        self, chat_id: int, message_thread_id: int, timeout: float = None
+    ) -> Response:
+        """Deletes all messages in a forum topic; requires can_delete_messages administrator rights in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            message_thread_id (``int``):
+                Message thread identifier of the forum topic
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "deleteForumTopic",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def getEmojiReaction(self, emoji: str, timeout: float = None) -> Response:
         """Returns information about a emoji reaction. Returns a 404 error if the reaction is not found
 
@@ -3589,7 +3733,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def getTextEntities(self, text: str, timeout: float = None) -> Response:
-        """Returns all entities (mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses) contained in the text. Can be called synchronously
+        """Returns all entities (mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses) found in the text. Can be called synchronously
 
         Args:
             text (``str``):
@@ -3610,7 +3754,7 @@ class TDLibFunctions:
     async def parseTextEntities(
         self, text: str, parse_mode: dict, timeout: float = None
     ) -> Response:
-        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text. Can be called synchronously
+        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities from a marked-up text. Can be called synchronously
 
         Args:
             text (``str``):
@@ -4186,6 +4330,7 @@ class TDLibFunctions:
         bot_user_id: int,
         url: str,
         application_name: str,
+        message_thread_id: int,
         reply_to_message_id: int,
         theme: dict = None,
         timeout: float = None,
@@ -4205,6 +4350,9 @@ class TDLibFunctions:
             application_name (``str``):
                 Short name of the application; 0-64 English letters, digits, and underscores
 
+            message_thread_id (``int``):
+                If not 0, a message thread identifier in which the message will be sent
+
             reply_to_message_id (``int``):
                 Identifier of the replied message for the message sent by the Web App; 0 if none
 
@@ -4223,6 +4371,7 @@ class TDLibFunctions:
             "url": url,
             "theme": theme,
             "application_name": application_name,
+            "message_thread_id": message_thread_id,
             "reply_to_message_id": reply_to_message_id,
         }
 
@@ -4817,10 +4966,35 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def readAllMessageThreadMentions(
+        self, chat_id: int, message_thread_id: int, timeout: float = None
+    ) -> Response:
+        """Marks all mentions in a forum topic as read
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            message_thread_id (``int``):
+                Message thread identifier in which mentions are marked as read
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "readAllMessageThreadMentions",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def readAllChatReactions(
         self, chat_id: int, timeout: float = None
     ) -> Response:
-        """Marks all reactions in a chat as read
+        """Marks all reactions in a chat or a forum topic as read
 
         Args:
             chat_id (``int``):
@@ -4834,6 +5008,31 @@ class TDLibFunctions:
         data = {
             "@type": "readAllChatReactions",
             "chat_id": chat_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def readAllMessageThreadReactions(
+        self, chat_id: int, message_thread_id: int, timeout: float = None
+    ) -> Response:
+        """Marks all reactions in a forum topic as read
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            message_thread_id (``int``):
+                Message thread identifier in which reactions are marked as read
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "readAllMessageThreadReactions",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -5728,6 +5927,31 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def unpinAllMessageThreadMessages(
+        self, chat_id: int, message_thread_id: int, timeout: float = None
+    ) -> Response:
+        """Removes all pinned messages from a forum topic; requires can_pin_messages rights in the supergroup
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            message_thread_id (``int``):
+                Message thread identifier in which messages will be unpinned
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "unpinAllMessageThreadMessages",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def joinChat(self, chat_id: int, timeout: float = None) -> Response:
         """Adds the current user as a new member to a chat. Private and secret chats can't be joined using this method. May return an error with a message "INVITE_REQUEST_SENT" if only a join request was created
 
@@ -5963,7 +6187,7 @@ class TDLibFunctions:
         filter: dict = None,
         timeout: float = None,
     ) -> Response:
-        """Searches for a specified query in the first name, last name and username of the members of a specified chat. Requires administrator rights in channels
+        """Searches for a specified query in the first name, last name and usernames of the members of a specified chat. Requires administrator rights in channels
 
         Args:
             chat_id (``int``):
@@ -9566,11 +9790,11 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def setUsername(self, username: str, timeout: float = None) -> Response:
-        """Changes the username of the current user
+        """Changes the editable username of the current user
 
         Args:
             username (``str``):
-                The new value of the username. Use an empty string to remove the username
+                The new value of the username. Use an empty string to remove the username. The username can't be completely removed if there is another active or disabled username
 
 
         Returns:
@@ -9580,6 +9804,52 @@ class TDLibFunctions:
         data = {
             "@type": "setUsername",
             "username": username,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def toggleUsernameIsActive(
+        self, username: str, is_active: bool, timeout: float = None
+    ) -> Response:
+        """Changes active state for a username of the current user. The editable username can't be disabled. May return an error with a message "USERNAMES_ACTIVE_TOO_MUCH" if the maximum number of active usernames has been reached
+
+        Args:
+            username (``str``):
+                The username to change
+
+            is_active (``bool``):
+                Pass true to activate the username; pass false to disable it
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleUsernameIsActive",
+            "username": username,
+            "is_active": is_active,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def reorderActiveUsernames(
+        self, usernames: list, timeout: float = None
+    ) -> Response:
+        """Changes order of active usernames of the current user
+
+        Args:
+            usernames (``list``):
+                The new order of active usernames. All currently active usernames must be specified
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "reorderActiveUsernames",
+            "usernames": usernames,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -10029,14 +10299,14 @@ class TDLibFunctions:
     async def setSupergroupUsername(
         self, supergroup_id: int, username: str, timeout: float = None
     ) -> Response:
-        """Changes the username of a supergroup or channel, requires owner privileges in the supergroup or channel
+        """Changes the editable username of a supergroup or channel, requires owner privileges in the supergroup or channel
 
         Args:
             supergroup_id (``int``):
                 Identifier of the supergroup or channel
 
             username (``str``):
-                New value of the username. Use an empty string to remove the username
+                New value of the username. Use an empty string to remove the username. The username can't be completely removed if there is another active or disabled username
 
 
         Returns:
@@ -10047,6 +10317,81 @@ class TDLibFunctions:
             "@type": "setSupergroupUsername",
             "supergroup_id": supergroup_id,
             "username": username,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def toggleSupergroupUsernameIsActive(
+        self, supergroup_id: int, username: str, is_active: bool, timeout: float = None
+    ) -> Response:
+        """Changes active state for a username of a supergroup or channel, requires owner privileges in the supergroup or channel. The editable username can't be disabled. May return an error with a message "USERNAMES_ACTIVE_TOO_MUCH" if the maximum number of active usernames has been reached
+
+        Args:
+            supergroup_id (``int``):
+                Identifier of the supergroup or channel
+
+            username (``str``):
+                The username to change
+
+            is_active (``bool``):
+                Pass true to activate the username; pass false to disable it
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleSupergroupUsernameIsActive",
+            "supergroup_id": supergroup_id,
+            "username": username,
+            "is_active": is_active,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def disableAllSupergroupUsernames(
+        self, supergroup_id: int, timeout: float = None
+    ) -> Response:
+        """Disables all active non-editable usernames of a supergroup or channel, requires owner privileges in the supergroup or channel
+
+        Args:
+            supergroup_id (``int``):
+                Identifier of the supergroup or channel
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "disableAllSupergroupUsernames",
+            "supergroup_id": supergroup_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def reorderSupergroupActiveUsernames(
+        self, supergroup_id: int, usernames: list, timeout: float = None
+    ) -> Response:
+        """Changes order of active usernames of a supergroup or channel, requires owner privileges in the supergroup or channel
+
+        Args:
+            supergroup_id (``int``):
+                Identifier of the supergroup or channel
+
+            usernames (``list``):
+                The new order of active usernames. All currently active usernames must be specified
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "reorderSupergroupActiveUsernames",
+            "supergroup_id": supergroup_id,
+            "usernames": usernames,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -10172,6 +10517,31 @@ class TDLibFunctions:
             "@type": "toggleSupergroupIsAllHistoryAvailable",
             "supergroup_id": supergroup_id,
             "is_all_history_available": is_all_history_available,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def toggleSupergroupIsForum(
+        self, supergroup_id: int, is_forum: bool, timeout: float = None
+    ) -> Response:
+        """Toggles whether the supergroup is a forum; requires owner privileges in the supergroup
+
+        Args:
+            supergroup_id (``int``):
+                Identifier of the supergroup
+
+            is_forum (``bool``):
+                New value of is_forum. A supergroup can be converted to a forum, only if it has at least GetOption("forum_member_count_min") members
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleSupergroupIsForum",
+            "supergroup_id": supergroup_id,
+            "is_forum": is_forum,
         }
 
         return await self.invoke(data, timeout=timeout)

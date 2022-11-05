@@ -1336,6 +1336,37 @@ class Updates:
 
         return decorator
 
+    def on_updateForumTopicInfo(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Basic information about a topic in a forum chat was changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
+            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+
+        Raises:
+            TypeError
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateForumTopicInfo", func, filters, position)
+                else:
+                    logger.warn(
+                        'Function "{}" is not a coroutine function'.format(func)
+                    )
+            else:
+                func._handler = Handler(func, "updateForumTopicInfo", filters, position)
+            return func
+
+        return decorator
+
     def on_updateScopeNotificationSettings(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,

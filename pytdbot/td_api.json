@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.7",
-    "commit_hash": "c1a3fa633",
+    "version": "1.8.8",
+    "commit_hash": "bbe37ee59",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -303,7 +303,7 @@
                     "type": "string"
                 },
                 "entities": {
-                    "description": "Entities contained in the text. Entities can be nested, but must not mutually intersect with each other. Pre, Code and PreCode entities can't contain other entities. Bold, Italic, Underline, Strikethrough, and Spoiler entities can contain and to be contained in all other entities. All other entities can't contain each other",
+                    "description": "Entities contained in the text. Entities can be nested, but must not mutually intersect with each other. Pre, Code and PreCode entities can't contain other entities. Bold, Italic, Underline, Strikethrough, and Spoiler entities can contain and can be part of any other entities. All other entities can't contain each other",
                     "is_optional": false,
                     "type": "vector<textEntity>"
                 }
@@ -1234,6 +1234,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "waveform": {
+                    "description": "A waveform representation of the video note's audio in 5-bit format; may be empty if unknown",
+                    "is_optional": true,
+                    "type": "bytes"
+                },
                 "length": {
                     "description": "Video width and height; as defined by the sender",
                     "is_optional": false,
@@ -1248,6 +1253,11 @@
                     "description": "Video thumbnail in JPEG format; as defined by the sender; may be null",
                     "is_optional": true,
                     "type": "thumbnail"
+                },
+                "speech_recognition_result": {
+                    "description": "Result of speech recognition in the video note; may be null",
+                    "is_optional": true,
+                    "type": "SpeechRecognitionResult"
                 },
                 "video": {
                     "description": "File containing the video",
@@ -1829,6 +1839,11 @@
                     "description": "True, if the user can pin messages",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "can_manage_topics": {
+                    "description": "True, if the user can manage topics",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "ChatPermissions"
@@ -1873,6 +1888,11 @@
                 },
                 "can_pin_messages": {
                     "description": "True, if the administrator can pin messages; applicable to basic groups and supergroups only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_manage_topics": {
+                    "description": "True, if the administrator can manage topics; applicable to forum supergroups only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -1952,6 +1972,27 @@
             },
             "type": "EmojiStatuses"
         },
+        "usernames": {
+            "description": "Describes usernames assigned to a user, a supergroup, or a channel",
+            "args": {
+                "active_usernames": {
+                    "description": "List of active usernames; the first one must be shown as the primary username. The order of active usernames can be changed with reorderActiveUsernames or reorderSupergroupActiveUsernames",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                },
+                "disabled_usernames": {
+                    "description": "List of currently disabled usernames; the username can be activated with toggleUsernameIsActive/toggleSupergroupUsernameIsActive",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                },
+                "editable_username": {
+                    "description": "The active username, which can be changed with setUsername/setSupergroupUsername",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Usernames"
+        },
         "user": {
             "description": "Represents a user",
             "args": {
@@ -1970,10 +2011,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "username": {
-                    "description": "Username of the user",
-                    "is_optional": false,
-                    "type": "string"
+                "usernames": {
+                    "description": "Usernames of the user; may be null",
+                    "is_optional": true,
+                    "type": "usernames"
                 },
                 "phone_number": {
                     "description": "Phone number of the user",
@@ -2108,7 +2149,7 @@
             "description": "Contains full information about a user",
             "args": {
                 "photo": {
-                    "description": "User profile photo; may be null",
+                    "description": "User profile photo; may be null if empty or unknown. If non-null, then it is the same photo as in user.profile_photo and chat.photo",
                     "is_optional": true,
                     "type": "chatPhoto"
                 },
@@ -2755,7 +2796,7 @@
             "description": "Contains full information about a basic group",
             "args": {
                 "photo": {
-                    "description": "Chat photo; may be null",
+                    "description": "Chat photo; may be null if empty or unknown. If non-null, then it is the same photo as in chat.photo",
                     "is_optional": true,
                     "type": "chatPhoto"
                 },
@@ -2795,10 +2836,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "username": {
-                    "description": "Username of the supergroup or channel; empty for private supergroups or channels",
-                    "is_optional": false,
-                    "type": "string"
+                "usernames": {
+                    "description": "Usernames of the supergroup or channel; may be null",
+                    "is_optional": true,
+                    "type": "usernames"
                 },
                 "date": {
                     "description": "Point in time (Unix timestamp) when the current user joined, or the point in time when the supergroup or channel was created, in case the user is not a member",
@@ -2855,6 +2896,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_forum": {
+                    "description": "True, if the supergroup must be shown as a forum by default",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_verified": {
                     "description": "True, if the supergroup or channel is verified",
                     "is_optional": false,
@@ -2882,7 +2928,7 @@
             "description": "Contains full information about a supergroup or channel",
             "args": {
                 "photo": {
-                    "description": "Chat photo; may be null",
+                    "description": "Chat photo; may be null if empty or unknown. If non-null, then it is the same photo as in chat.photo",
                     "is_optional": true,
                     "type": "chatPhoto"
                 },
@@ -2952,7 +2998,7 @@
                     "type": "Bool"
                 },
                 "is_all_history_available": {
-                    "description": "True, if new chat members will have access to old messages. In public or discussion groups and both public and private channels, old messages are always available, so this option affects only private supergroups without a linked chat. The value of this field is only available for chat administrators",
+                    "description": "True, if new chat members will have access to old messages. In public, discussion, of forum groups and all channels, old messages are always available, so this option affects only private non-forum supergroups without a linked chat. The value of this field is only available for chat administrators",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3471,6 +3517,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_topic_message": {
+                    "description": "True, if the message is a forum topic message",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "contains_unread_mention": {
                     "description": "True, if the message contains an unread mention for the current user",
                     "is_optional": false,
@@ -3688,6 +3739,11 @@
                     "is_optional": true,
                     "type": "chatInviteLinkInfo"
                 },
+                "show_chat_photo": {
+                    "description": "True, if the sponsor's chat photo must be shown",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "link": {
                     "description": "An internal link to be opened when the sponsored message is clicked; may be null if the sponsor chat needs to be opened instead",
                     "is_optional": true,
@@ -3700,6 +3756,22 @@
                 }
             },
             "type": "SponsoredMessage"
+        },
+        "sponsoredMessages": {
+            "description": "Contains a list of sponsored messages",
+            "args": {
+                "messages": {
+                    "description": "List of sponsored messages",
+                    "is_optional": false,
+                    "type": "vector<sponsoredMessage>"
+                },
+                "messages_between": {
+                    "description": "The minimum number of messages between shown sponsored messages, or 0 if only one sponsored message must be shown after all ordinary messages",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "SponsoredMessages"
         },
         "fileDownload": {
             "description": "Describes a file added to file download list",
@@ -4396,7 +4468,7 @@
             "type": "ChatsNearby"
         },
         "publicChatTypeHasUsername": {
-            "description": "The chat is public, because it has username",
+            "description": "The chat is public, because it has an active username",
             "args": {},
             "type": "PublicChatType"
         },
@@ -4406,7 +4478,7 @@
             "type": "PublicChatType"
         },
         "chatActionBarReportSpam": {
-            "description": "The chat can be reported as spam using the method reportChat with the reason chatReportReasonSpam",
+            "description": "The chat can be reported as spam using the method reportChat with the reason chatReportReasonSpam. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown",
             "args": {
                 "can_unarchive": {
                     "description": "If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings",
@@ -4427,7 +4499,7 @@
             "type": "ChatActionBar"
         },
         "chatActionBarReportAddBlock": {
-            "description": "The chat is a private or secret chat, which can be reported using the method reportChat, or the other user can be blocked using the method toggleMessageSenderIsBlocked, or the other user can be added to the contact list using the method addContact",
+            "description": "The chat is a private or secret chat, which can be reported using the method reportChat, or the other user can be blocked using the method toggleMessageSenderIsBlocked, or the other user can be added to the contact list using the method addContact. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown",
             "args": {
                 "can_unarchive": {
                     "description": "If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings",
@@ -4790,8 +4862,8 @@
                     "type": "int53"
                 },
                 "reply_info": {
-                    "description": "Information about the message thread",
-                    "is_optional": false,
+                    "description": "Information about the message thread; may be null for forum topic threads",
+                    "is_optional": true,
                     "type": "messageReplyInfo"
                 },
                 "unread_message_count": {
@@ -4811,6 +4883,119 @@
                 }
             },
             "type": "MessageThreadInfo"
+        },
+        "forumTopicIcon": {
+            "description": "Describes a forum topic icon",
+            "args": {
+                "color": {
+                    "description": "Color of the topic icon in RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "custom_emoji_id": {
+                    "description": "Unique identifier of the custom emoji shown on the topic icon; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "ForumTopicIcon"
+        },
+        "forumTopicInfo": {
+            "description": "Contains basic information about a forum topic",
+            "args": {
+                "message_thread_id": {
+                    "description": "Message thread identifier of the topic",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "name": {
+                    "description": "Name of the topic",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "Icon of the topic",
+                    "is_optional": false,
+                    "type": "forumTopicIcon"
+                },
+                "creation_date": {
+                    "description": "Date the topic was created",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "creator_id": {
+                    "description": "Identifier of the creator of the topic",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "is_outgoing": {
+                    "description": "True, if the topic was created by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_closed": {
+                    "description": "True, if the topic is closed",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ForumTopicInfo"
+        },
+        "forumTopic": {
+            "description": "Describes a forum topic",
+            "args": {
+                "info": {
+                    "description": "Basic information about the topic",
+                    "is_optional": false,
+                    "type": "forumTopicInfo"
+                },
+                "last_message": {
+                    "description": "Last message in the topic; may be null",
+                    "is_optional": true,
+                    "type": "message"
+                },
+                "is_pinned": {
+                    "description": "True, if the topic is pinned in the topic list",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "unread_count": {
+                    "description": "Number of unread messages in the topic",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "last_read_inbox_message_id": {
+                    "description": "Identifier of the last read incoming message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "last_read_outbox_message_id": {
+                    "description": "Identifier of the last read outgoing message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "unread_mention_count": {
+                    "description": "Number of unread messages with a mention/reply in the topic",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "unread_reaction_count": {
+                    "description": "Number of messages with unread reactions in the topic",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "notification_settings": {
+                    "description": "Notification settings for the topic",
+                    "is_optional": false,
+                    "type": "chatNotificationSettings"
+                },
+                "draft_message": {
+                    "description": "A draft of a message in the topic; may be null",
+                    "is_optional": true,
+                    "type": "draftMessage"
+                }
+            },
+            "type": "ForumTopic"
         },
         "richTextPlain": {
             "description": "A plain text",
@@ -8035,6 +8220,54 @@
             },
             "type": "MessageContent"
         },
+        "messageForumTopicCreated": {
+            "description": "A forum topic has been created",
+            "args": {
+                "name": {
+                    "description": "Name of the topic",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "Icon of the topic",
+                    "is_optional": false,
+                    "type": "forumTopicIcon"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageForumTopicEdited": {
+            "description": "A forum topic has been edited",
+            "args": {
+                "name": {
+                    "description": "If non-empty, the new name of the topic",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "edit_icon_custom_emoji_id": {
+                    "description": "True, if icon's custom_emoji_id is changed",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "icon_custom_emoji_id": {
+                    "description": "New unique identifier of the custom emoji shown on the topic icon; 0 if none. Must be ignored if edit_icon_custom_emoji_id is false",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageForumTopicIsClosedToggled": {
+            "description": "A forum topic has been closed or opened",
+            "args": {
+                "is_closed": {
+                    "description": "True if the topic was closed or reopened",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messageCustomServiceAction": {
             "description": "A non-standard action has happened in the chat",
             "args": {
@@ -8071,7 +8304,7 @@
             "description": "A payment has been completed",
             "args": {
                 "invoice_chat_id": {
-                    "description": "Identifier of the chat, containing the corresponding invoice message; 0 if unknown",
+                    "description": "Identifier of the chat, containing the corresponding invoice message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8282,7 +8515,7 @@
             "type": "MessageContent"
         },
         "textEntityTypeMention": {
-            "description": "A mention of a user by their username",
+            "description": "A mention of a user, a supergroup, or a channel by their username",
             "args": {},
             "type": "TextEntityType"
         },
@@ -8787,7 +9020,7 @@
                     "type": "int32"
                 },
                 "waveform": {
-                    "description": "Waveform representation of the voice note, in 5-bit format",
+                    "description": "Waveform representation of the voice note in 5-bit format",
                     "is_optional": false,
                     "type": "bytes"
                 },
@@ -11770,7 +12003,7 @@
             "type": "ChatEventAction"
         },
         "chatEventUsernameChanged": {
-            "description": "The chat username was changed",
+            "description": "The chat editable username was changed",
             "args": {
                 "old_username": {
                     "description": "Previous chat username",
@@ -11781,6 +12014,22 @@
                     "description": "New chat username",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "ChatEventAction"
+        },
+        "chatEventActiveUsernamesChanged": {
+            "description": "The chat active usernames were changed",
+            "args": {
+                "old_usernames": {
+                    "description": "Previous list of active usernames",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                },
+                "new_usernames": {
+                    "description": "New list of active usernames",
+                    "is_optional": false,
+                    "type": "vector<string>"
                 }
             },
             "type": "ChatEventAction"
@@ -11932,6 +12181,82 @@
             },
             "type": "ChatEventAction"
         },
+        "chatEventIsForumToggled": {
+            "description": "The is_forum setting of a channel was toggled",
+            "args": {
+                "is_forum": {
+                    "description": "New value of is_forum",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ChatEventAction"
+        },
+        "chatEventForumTopicCreated": {
+            "description": "A new forum topic was created",
+            "args": {
+                "topic_info": {
+                    "description": "Information about the topic",
+                    "is_optional": false,
+                    "type": "forumTopicInfo"
+                }
+            },
+            "type": "ChatEventAction"
+        },
+        "chatEventForumTopicEdited": {
+            "description": "A forum topic was edited",
+            "args": {
+                "old_topic_info": {
+                    "description": "Old information about the topic",
+                    "is_optional": false,
+                    "type": "forumTopicInfo"
+                },
+                "new_topic_info": {
+                    "description": "New information about the topic",
+                    "is_optional": false,
+                    "type": "forumTopicInfo"
+                }
+            },
+            "type": "ChatEventAction"
+        },
+        "chatEventForumTopicToggleIsClosed": {
+            "description": "A forum topic was closed or reopened",
+            "args": {
+                "topic_info": {
+                    "description": "New information about the topic",
+                    "is_optional": false,
+                    "type": "forumTopicInfo"
+                }
+            },
+            "type": "ChatEventAction"
+        },
+        "chatEventForumTopicDeleted": {
+            "description": "A forum topic was deleted",
+            "args": {
+                "topic_info": {
+                    "description": "Information about the topic",
+                    "is_optional": false,
+                    "type": "forumTopicInfo"
+                }
+            },
+            "type": "ChatEventAction"
+        },
+        "chatEventForumTopicPinned": {
+            "description": "A pinned forum topic was changed",
+            "args": {
+                "old_topic_info": {
+                    "description": "Information about the old pinned topic; may be null",
+                    "is_optional": true,
+                    "type": "forumTopicInfo"
+                },
+                "new_topic_info": {
+                    "description": "Information about the new pinned topic; may be null",
+                    "is_optional": true,
+                    "type": "forumTopicInfo"
+                }
+            },
+            "type": "ChatEventAction"
+        },
         "chatEvent": {
             "description": "Represents a chat event",
             "args": {
@@ -12029,6 +12354,11 @@
                 },
                 "video_chat_changes": {
                     "description": "True, if video chat actions need to be returned",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "forum_changes": {
+                    "description": "True, if forum-related actions need to be returned",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -12303,6 +12633,11 @@
         },
         "premiumFeatureAnimatedProfilePhoto": {
             "description": "Profile photo animation on message and chat screens",
+            "args": {},
+            "type": "PremiumFeature"
+        },
+        "premiumFeatureForumTopicIcon": {
+            "description": "The ability to set a custom emoji as a forum topic icon",
             "args": {},
             "type": "PremiumFeature"
         },
@@ -14624,6 +14959,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "message_thread_id": {
+                    "description": "If found, identifier of the message thread in which to open the message, or which to open in case of a missing message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "message": {
                     "description": "If found, the linked message; may be null",
                     "is_optional": true,
@@ -14636,11 +14976,6 @@
                 },
                 "for_album": {
                     "description": "True, if the whole media album to which the message belongs is linked",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "for_comment": {
-                    "description": "True, if the message is linked as a channel post comment or from a message thread",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -16665,6 +17000,22 @@
                     "description": "New number of online members in the chat, or 0 if unknown",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "Update"
+        },
+        "updateForumTopicInfo": {
+            "description": "Basic information about a topic in a forum chat was changed",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "info": {
+                    "description": "New information about the topic",
+                    "is_optional": false,
+                    "type": "forumTopicInfo"
                 }
             },
             "type": "Update"
@@ -18856,7 +19207,7 @@
             "type": "Ok"
         },
         "deleteChat": {
-            "description": "Deletes a chat along with all messages in the corresponding chat for all chat members. For group chats this will release the username and remove all members. Use the field chat.can_be_deleted_for_all_users to find whether the method can be applied to the chat",
+            "description": "Deletes a chat along with all messages in the corresponding chat for all chat members. For group chats this will release the usernames and remove all members. Use the field chat.can_be_deleted_for_all_users to find whether the method can be applied to the chat",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -18867,7 +19218,7 @@
             "type": "Ok"
         },
         "searchChatMessages": {
-            "description": "Searches for messages with given words in the chat. Returns the results in reverse chronological order, i.e. in order of decreasing message_id. Cannot be used in secret chats with a non-empty query (searchSecretMessages must be used instead), or without an enabled message database. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+            "description": "Searches for messages with given words in the chat. Returns the results in reverse chronological order, i.e. in order of decreasing message_id. Cannot be used in secret chats with a non-empty query (searchSecretMessages must be used instead), or without an enabled message database. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit. A combination of query, sender_id, filter and message_thread_id search criteria is expected to be supported, only if it is required for Telegram official application implementation",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat in which to search messages",
@@ -19210,8 +19561,8 @@
             },
             "type": "FoundMessages"
         },
-        "getChatSponsoredMessage": {
-            "description": "Returns sponsored message to be shown in a chat; for channel chats only. Returns a 404 error if there is no sponsored message in the chat",
+        "getChatSponsoredMessages": {
+            "description": "Returns sponsored messages to be shown in a chat; for channel chats only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -19219,7 +19570,7 @@
                     "type": "int53"
                 }
             },
-            "type": "SponsoredMessage"
+            "type": "SponsoredMessages"
         },
         "removeNotification": {
             "description": "Removes an active notification from notification list. Needs to be called only if the notification is removed by the current user",
@@ -19276,8 +19627,8 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "for_comment": {
-                    "description": "Pass true to create a link to the message as a channel post comment, or from a message thread",
+                "in_message_thread": {
+                    "description": "Pass true to create a link to the message as a channel post comment, in a message thread, or a forum topic",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -19338,7 +19689,7 @@
             "type": "Text"
         },
         "recognizeSpeech": {
-            "description": "Recognizes speech in a voice note message. The message must be successfully sent and must not be scheduled. May return an error with a message \"MSG_VOICE_TOO_LONG\" if the voice note is too long to be recognized",
+            "description": "Recognizes speech in a video note or a voice note message. The message must be successfully sent and must not be scheduled. May return an error with a message \"MSG_VOICE_TOO_LONG\" if media duration is too big to be recognized",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which the message belongs",
@@ -19354,7 +19705,7 @@
             "type": "Ok"
         },
         "rateSpeechRecognition": {
-            "description": "Rates recognized speech in a voice note message",
+            "description": "Rates recognized speech in a video note or a voice note message",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which the message belongs",
@@ -19540,6 +19891,11 @@
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which to forward messages",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "If not 0, a message thread identifier in which the message will be sent; for forum threads only",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19963,6 +20319,95 @@
             },
             "type": "Ok"
         },
+        "getForumTopicDefaultIcons": {
+            "description": "Returns list of custom emojis, which can be used as forum topic icon by all users",
+            "args": {},
+            "type": "Stickers"
+        },
+        "createForumTopic": {
+            "description": "Creates a topic in a forum supergroup chat; requires can_manage_topics rights in the supergroup",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "name": {
+                    "description": "Name of the topic; 1-128 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "Icon of the topic. Icon color must be one of 0x6FB9F0, 0xFFD67E, 0xCB86DB, 0x8EEE98, 0xFF93B2, or 0xFB6F5F. Telegram Premium users can use any custom emoji as topic icon, other users can use only a custom emoji returned by getForumTopicDefaultIcons",
+                    "is_optional": false,
+                    "type": "forumTopicIcon"
+                }
+            },
+            "type": "ForumTopicInfo"
+        },
+        "editForumTopic": {
+            "description": "Edits title and icon of a topic in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup unless the user is creator of the topic",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier of the forum topic",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "name": {
+                    "description": "New name of the topic; 1-128 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "icon_custom_emoji_id": {
+                    "description": "Identifier of the new custom emoji for topic icon. Telegram Premium users can use any custom emoji, other users can use only a custom emoji returned by getForumTopicDefaultIcons",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleForumTopicIsClosed": {
+            "description": "Toggles whether a topic is closed in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup unless the user is creator of the topic",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier of the forum topic",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_closed": {
+                    "description": "Pass true to close the topic; pass false to reopen it",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteForumTopic": {
+            "description": "Deletes all messages in a forum topic; requires can_delete_messages administrator rights in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier of the forum topic",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
         "getEmojiReaction": {
             "description": "Returns information about a emoji reaction. Returns a 404 error if the reaction is not found",
             "args": {
@@ -20100,7 +20545,7 @@
             "type": "Ok"
         },
         "getTextEntities": {
-            "description": "Returns all entities (mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses) contained in the text. Can be called synchronously",
+            "description": "Returns all entities (mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses) found in the text. Can be called synchronously",
             "args": {
                 "text": {
                     "description": "The text in which to look for entites",
@@ -20111,7 +20556,7 @@
             "type": "TextEntities"
         },
         "parseTextEntities": {
-            "description": "Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text. Can be called synchronously",
+            "description": "Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities from a marked-up text. Can be called synchronously",
             "args": {
                 "text": {
                     "description": "The text to parse",
@@ -20518,6 +20963,11 @@
                     "is_optional": false,
                     "type": "string"
                 },
+                "message_thread_id": {
+                    "description": "If not 0, a message thread identifier in which the message will be sent",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "reply_to_message_id": {
                     "description": "Identifier of the replied message for the message sent by the Web App; 0 if none",
                     "is_optional": false,
@@ -20912,11 +21362,43 @@
             },
             "type": "Ok"
         },
-        "readAllChatReactions": {
-            "description": "Marks all reactions in a chat as read",
+        "readAllMessageThreadMentions": {
+            "description": "Marks all mentions in a forum topic as read",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier in which mentions are marked as read",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "readAllChatReactions": {
+            "description": "Marks all reactions in a chat or a forum topic as read",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "readAllMessageThreadReactions": {
+            "description": "Marks all reactions in a forum topic as read",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier in which reactions are marked as read",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -21473,6 +21955,22 @@
             },
             "type": "Ok"
         },
+        "unpinAllMessageThreadMessages": {
+            "description": "Removes all pinned messages from a forum topic; requires can_pin_messages rights in the supergroup",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier in which messages will be unpinned",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
         "joinChat": {
             "description": "Adds the current user as a new member to a chat. Private and secret chats can't be joined using this method. May return an error with a message \"INVITE_REQUEST_SENT\" if only a join request was created",
             "args": {
@@ -21622,7 +22120,7 @@
             "type": "ChatMember"
         },
         "searchChatMembers": {
-            "description": "Searches for a specified query in the first name, last name and username of the members of a specified chat. Requires administrator rights in channels",
+            "description": "Searches for a specified query in the first name, last name and usernames of the members of a specified chat. Requires administrator rights in channels",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -23848,12 +24346,39 @@
             "type": "Ok"
         },
         "setUsername": {
-            "description": "Changes the username of the current user",
+            "description": "Changes the editable username of the current user",
             "args": {
                 "username": {
-                    "description": "The new value of the username. Use an empty string to remove the username",
+                    "description": "The new value of the username. Use an empty string to remove the username. The username can't be completely removed if there is another active or disabled username",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleUsernameIsActive": {
+            "description": "Changes active state for a username of the current user. The editable username can't be disabled. May return an error with a message \"USERNAMES_ACTIVE_TOO_MUCH\" if the maximum number of active usernames has been reached",
+            "args": {
+                "username": {
+                    "description": "The username to change",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_active": {
+                    "description": "Pass true to activate the username; pass false to disable it",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "reorderActiveUsernames": {
+            "description": "Changes order of active usernames of the current user",
+            "args": {
+                "usernames": {
+                    "description": "The new order of active usernames. All currently active usernames must be specified",
+                    "is_optional": false,
+                    "type": "vector<string>"
                 }
             },
             "type": "Ok"
@@ -24105,7 +24630,7 @@
             "type": "Ok"
         },
         "setSupergroupUsername": {
-            "description": "Changes the username of a supergroup or channel, requires owner privileges in the supergroup or channel",
+            "description": "Changes the editable username of a supergroup or channel, requires owner privileges in the supergroup or channel",
             "args": {
                 "supergroup_id": {
                     "description": "Identifier of the supergroup or channel",
@@ -24113,9 +24638,57 @@
                     "type": "int53"
                 },
                 "username": {
-                    "description": "New value of the username. Use an empty string to remove the username",
+                    "description": "New value of the username. Use an empty string to remove the username. The username can't be completely removed if there is another active or disabled username",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleSupergroupUsernameIsActive": {
+            "description": "Changes active state for a username of a supergroup or channel, requires owner privileges in the supergroup or channel. The editable username can't be disabled. May return an error with a message \"USERNAMES_ACTIVE_TOO_MUCH\" if the maximum number of active usernames has been reached",
+            "args": {
+                "supergroup_id": {
+                    "description": "Identifier of the supergroup or channel",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "username": {
+                    "description": "The username to change",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_active": {
+                    "description": "Pass true to activate the username; pass false to disable it",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "disableAllSupergroupUsernames": {
+            "description": "Disables all active non-editable usernames of a supergroup or channel, requires owner privileges in the supergroup or channel",
+            "args": {
+                "supergroup_id": {
+                    "description": "Identifier of the supergroup or channel",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "reorderSupergroupActiveUsernames": {
+            "description": "Changes order of active usernames of a supergroup or channel, requires owner privileges in the supergroup or channel",
+            "args": {
+                "supergroup_id": {
+                    "description": "Identifier of the supergroup or channel",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "usernames": {
+                    "description": "The new order of active usernames. All currently active usernames must be specified",
+                    "is_optional": false,
+                    "type": "vector<string>"
                 }
             },
             "type": "Ok"
@@ -24194,6 +24767,22 @@
                 },
                 "is_all_history_available": {
                     "description": "The new value of is_all_history_available",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleSupergroupIsForum": {
+            "description": "Toggles whether the supergroup is a forum; requires owner privileges in the supergroup",
+            "args": {
+                "supergroup_id": {
+                    "description": "Identifier of the supergroup",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_forum": {
+                    "description": "New value of is_forum. A supergroup can be converted to a forum, only if it has at least GetOption(\"forum_member_count_min\") members",
                     "is_optional": false,
                     "type": "Bool"
                 }
