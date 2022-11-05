@@ -28,8 +28,8 @@ jobs:
           cd td
           rm -rf build
           mkdir build
-          echo "name=TDLIB_COMMIT_HASH::$(git log -1 --pretty=%h)" >> $GITHUB_OUTPUT
-          echo "name=TDLIB_VERSION::$(
+          echo "TDLIB_COMMIT_HASH=$(git log -1 --pretty=%h)" >> $GITHUB_OUTPUT
+          echo "TDLIB_VERSION=$(
             cat CMakeLists.txt |
             sed -nr 's/.*project\(TDLib VERSION (.*) LANGUAGES CXX C\).*/\1/p'
           )" >> $GITHUB_OUTPUT
