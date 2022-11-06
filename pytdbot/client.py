@@ -212,7 +212,9 @@ class Client(Decorators, Methods):
         self.me = await self.getMe()
         self.me = self.me.response
         self.is_authenticated = True
-        logger.info(f"Logged in as {self.me['first_name']} @{self.me['username']}")
+        logger.info(
+            f"Logged in as {self.me['first_name']} @{self.me['usernames']['editable_username']}"
+        )
 
     def add_handler(
         self,
@@ -696,7 +698,7 @@ class Client(Decorators, Methods):
 
     async def _handle_update_user(self, update):
         if self.is_authenticated and update["user"]["id"] == self.me["id"]:
-            logger.info(f'Updating {self.me["username"]} info')
+            logger.info(f'Updating {self.me["usernames"]["editable_username"]} info')
             try:
                 deepdiff(self.me, update["user"])
             except Exception:
