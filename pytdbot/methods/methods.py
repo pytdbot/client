@@ -1,4 +1,5 @@
 from typing import Union
+from base64 import b64encode
 from .tdlibfunctions import TDLibFunctions
 from ..types import (
     Response,
@@ -1028,7 +1029,7 @@ class Methods(TDLibFunctions):
             data["reply_markup"] = reply_markup.to_dict()
 
         if isinstance(waveform, bytes):
-            data["input_message_content"]["waveform"] = waveform
+            data["input_message_content"]["waveform"] = str(b64encode(waveform))
 
         if isinstance(voice, InputFile):
             data["input_message_content"]["voice_note"] = voice.to_dict()
