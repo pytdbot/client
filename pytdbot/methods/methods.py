@@ -194,7 +194,7 @@ class Methods(TDLibFunctions):
                     "entities": caption_entities,
                 }
             elif isinstance(parse_mode, str):
-                parse = self.parseText(caption, parse_mode=parse_mode)
+                parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
                 else:
@@ -335,7 +335,7 @@ class Methods(TDLibFunctions):
                     "entities": caption_entities,
                 }
             elif isinstance(parse_mode, str):
-                parse = self.parseText(caption, parse_mode=parse_mode)
+                parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
                 else:
@@ -468,7 +468,7 @@ class Methods(TDLibFunctions):
                     "entities": caption_entities,
                 }
             elif isinstance(parse_mode, str):
-                parse = self.parseText(caption, parse_mode=parse_mode)
+                parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
                 else:
@@ -609,7 +609,7 @@ class Methods(TDLibFunctions):
                     "entities": caption_entities,
                 }
             elif isinstance(parse_mode, str):
-                parse = self.parseText(caption, parse_mode=parse_mode)
+                parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
                 else:
@@ -761,7 +761,7 @@ class Methods(TDLibFunctions):
                     "entities": caption_entities,
                 }
             elif isinstance(parse_mode, str):
-                parse = self.parseText(caption, parse_mode=parse_mode)
+                parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
                 else:
@@ -991,7 +991,7 @@ class Methods(TDLibFunctions):
                     "entities": caption_entities,
                 }
             elif isinstance(parse_mode, str):
-                parse = self.parseText(caption, parse_mode=parse_mode)
+                parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
                 else:
@@ -1217,7 +1217,7 @@ class Methods(TDLibFunctions):
                     "entities": new_caption_entities,
                 }
             elif isinstance(parse_mode, str):
-                parse = self.parseText(new_caption, parse_mode=parse_mode)
+                parse = await self.parseText(new_caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
                 else:
