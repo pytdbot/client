@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.8",
-    "commit_hash": "bbe37ee59",
+    "version": "1.8.9",
+    "commit_hash": "a7952f383",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -96,7 +96,7 @@
         "TopChatCategory": "Represents the categories of chats for which a list of frequently used chats can be retrieved",
         "TMeUrlType": "Describes the type of a URL linking to an internal Telegram entity",
         "SuggestedAction": "Describes an action suggested to the current user",
-        "TextParseMode": "Describes the way the text needs to be parsed for TextEntities",
+        "TextParseMode": "Describes the way the text needs to be parsed for text entities",
         "ProxyType": "Describes the type of a proxy server",
         "StatisticalGraph": "Describes a statistical graph",
         "ChatStatistics": "Contains a detailed statistics about a chat",
@@ -181,6 +181,22 @@
                 },
                 "length": {
                     "description": "Number of digits in the code, excluding the prefix",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "AuthenticationCodeType"
+        },
+        "authenticationCodeTypeFragment": {
+            "description": "An authentication code is delivered to https://fragment.com. The user must be logged in there via a wallet owning the phone number's NFT",
+            "args": {
+                "url": {
+                    "description": "URL to open to receive the code",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "length": {
+                    "description": "Length of the code",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -1954,7 +1970,7 @@
             "description": "Describes a custom emoji to be shown instead of the Telegram Premium badge",
             "args": {
                 "custom_emoji_id": {
-                    "description": "Identifier of the custom emoji in stickerFormatTgs format. If the custom emoji belongs to the sticker set GetOption(\"themed_emoji_statuses_sticker_set_id\"), then it's color must be changed to the color of the Telegram Premium badge",
+                    "description": "Identifier of the custom emoji in stickerFormatTgs format. If the custom emoji belongs to the sticker set getOption(\"themed_emoji_statuses_sticker_set_id\"), then it's color must be changed to the color of the Telegram Premium badge",
                     "is_optional": false,
                     "type": "int64"
                 }
@@ -2061,6 +2077,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "has_anonymous_phone_number": {
+                    "description": "True, if the user's phone number was bought on Fragment and isn't tied to a SIM card",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "restriction_reason": {
                     "description": "If non-empty, it contains a human-readable description of the reason why access to this user must be restricted",
                     "is_optional": true,
@@ -2077,7 +2098,7 @@
                     "type": "Bool"
                 },
                 "have_access": {
-                    "description": "If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method except GetUser",
+                    "description": "If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -2357,7 +2378,7 @@
                     "type": "int53"
                 },
                 "joined_chat_date": {
-                    "description": "Point in time (Unix timestamp) when the user joined the chat",
+                    "description": "Point in time (Unix timestamp) when the user joined/was promoted/was banned in the chat",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -2999,6 +3020,11 @@
                 },
                 "is_all_history_available": {
                     "description": "True, if new chat members will have access to old messages. In public, discussion, of forum groups and all channels, old messages are always available, so this option affects only private non-forum supergroups without a linked chat. The value of this field is only available for chat administrators",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_aggressive_anti_spam_enabled": {
+                    "description": "True, if aggressive anti-spam checks are enabled in the supergroup. The value of this field is only available for chat administrators",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3862,10 +3888,10 @@
             "type": "NotificationSettingsScope"
         },
         "chatNotificationSettings": {
-            "description": "Contains information about notification settings for a chat",
+            "description": "Contains information about notification settings for a chat or a froum topic",
             "args": {
                 "use_default_mute_for": {
-                    "description": "If true, mute_for is ignored and the value for the relevant type of chat is used instead",
+                    "description": "If true, mute_for is ignored and the value for the relevant type of chat or the forum chat is used instead",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3875,7 +3901,7 @@
                     "type": "int32"
                 },
                 "use_default_sound": {
-                    "description": "If true, the value for the relevant type of chat is used instead of sound_id",
+                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of sound_id",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3885,7 +3911,7 @@
                     "type": "int64"
                 },
                 "use_default_show_preview": {
-                    "description": "If true, show_preview is ignored and the value for the relevant type of chat is used instead",
+                    "description": "If true, show_preview is ignored and the value for the relevant type of chat or the forum chat is used instead",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3895,7 +3921,7 @@
                     "type": "Bool"
                 },
                 "use_default_disable_pinned_message_notifications": {
-                    "description": "If true, disable_pinned_message_notifications is ignored and the value for the relevant type of chat is used instead",
+                    "description": "If true, disable_pinned_message_notifications is ignored and the value for the relevant type of chat or the forum chat is used instead",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3905,7 +3931,7 @@
                     "type": "Bool"
                 },
                 "use_default_disable_mention_notifications": {
-                    "description": "If true, disable_mention_notifications is ignored and the value for the relevant type of chat is used instead",
+                    "description": "If true, disable_mention_notifications is ignored and the value for the relevant type of chat or the forum chat is used instead",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4037,17 +4063,17 @@
                     "type": "string"
                 },
                 "pinned_chat_ids": {
-                    "description": "The chat identifiers of pinned chats in the filtered chat list. There can be up to GetOption(\"chat_filter_chosen_chat_count_max\") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
+                    "description": "The chat identifiers of pinned chats in the filtered chat list. There can be up to getOption(\"chat_filter_chosen_chat_count_max\") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
                 "included_chat_ids": {
-                    "description": "The chat identifiers of always included chats in the filtered chat list. There can be up to GetOption(\"chat_filter_chosen_chat_count_max\") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
+                    "description": "The chat identifiers of always included chats in the filtered chat list. There can be up to getOption(\"chat_filter_chosen_chat_count_max\") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
                 "excluded_chat_ids": {
-                    "description": "The chat identifiers of always excluded chats in the filtered chat list. There can be up to GetOption(\"chat_filter_chosen_chat_count_max\") always excluded non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
+                    "description": "The chat identifiers of always excluded chats in the filtered chat list. There can be up to getOption(\"chat_filter_chosen_chat_count_max\") always excluded non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
@@ -4722,7 +4748,7 @@
             "type": "InlineKeyboardButton"
         },
         "replyMarkupRemoveKeyboard": {
-            "description": "Instructs application to remove the keyboard once this message has been received. This kind of keyboard can't be received in an incoming message; instead, UpdateChatReplyMarkup with message_id == 0 will be sent",
+            "description": "Instructs application to remove the keyboard once this message has been received. This kind of keyboard can't be received in an incoming message; instead, updateChatReplyMarkup with message_id == 0 will be sent",
             "args": {
                 "is_personal": {
                     "description": "True, if the keyboard is removed only for the mentioned users or the target user of a reply",
@@ -4928,6 +4954,11 @@
                     "is_optional": false,
                     "type": "MessageSender"
                 },
+                "is_general": {
+                    "description": "True, if the topic is the General topic list",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_outgoing": {
                     "description": "True, if the topic was created by the current user",
                     "is_optional": false,
@@ -4935,6 +4966,11 @@
                 },
                 "is_closed": {
                     "description": "True, if the topic is closed",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_hidden": {
+                    "description": "True, if the topic is hidden above the topic list and closed; for General topic only",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -4950,7 +4986,7 @@
                     "type": "forumTopicInfo"
                 },
                 "last_message": {
-                    "description": "Last message in the topic; may be null",
+                    "description": "Last message in the topic; may be null if unknown",
                     "is_optional": true,
                     "type": "message"
                 },
@@ -4996,6 +5032,37 @@
                 }
             },
             "type": "ForumTopic"
+        },
+        "forumTopics": {
+            "description": "Describes a list of forum topics",
+            "args": {
+                "total_count": {
+                    "description": "Approximate total number of forum topics found",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "topics": {
+                    "description": "List of forum topics",
+                    "is_optional": false,
+                    "type": "vector<forumTopic>"
+                },
+                "next_offset_date": {
+                    "description": "Offset date for the next getForumTopics request",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "next_offset_message_id": {
+                    "description": "Offset message identifier for the next getForumTopics request",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "next_offset_message_thread_id": {
+                    "description": "Offset message thread identifier for the next getForumTopics request",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "ForumTopics"
         },
         "richTextPlain": {
             "description": "A plain text",
@@ -8216,6 +8283,11 @@
                     "description": "New message TTL",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "from_user_id": {
+                    "description": "If not 0, a user identifier, which default setting was automatically applied",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "MessageContent"
@@ -8261,7 +8333,18 @@
             "description": "A forum topic has been closed or opened",
             "args": {
                 "is_closed": {
-                    "description": "True if the topic was closed or reopened",
+                    "description": "True, if the topic was closed, otherwise the topic was reopened",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageForumTopicIsHiddenToggled": {
+            "description": "A General forum topic has been hidden or unhidden",
+            "args": {
+                "is_hidden": {
+                    "description": "True, if the topic was hidden, otherwise the topic was unhidden",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -8737,7 +8820,7 @@
             "description": "A text message",
             "args": {
                 "text": {
-                    "description": "Formatted text to be sent; 1-GetOption(\"message_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually",
+                    "description": "Formatted text to be sent; 1-getOption(\"message_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually",
                     "is_optional": false,
                     "type": "formattedText"
                 },
@@ -8788,7 +8871,7 @@
                     "type": "int32"
                 },
                 "caption": {
-                    "description": "Animation caption; pass null to use an empty caption; 0-GetOption(\"message_caption_length_max\") characters",
+                    "description": "Animation caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
                 }
@@ -8824,7 +8907,7 @@
                     "type": "string"
                 },
                 "caption": {
-                    "description": "Audio caption; pass null to use an empty caption; 0-GetOption(\"message_caption_length_max\") characters",
+                    "description": "Audio caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
                 }
@@ -8850,7 +8933,7 @@
                     "type": "Bool"
                 },
                 "caption": {
-                    "description": "Document caption; pass null to use an empty caption; 0-GetOption(\"message_caption_length_max\") characters",
+                    "description": "Document caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
                 }
@@ -8886,7 +8969,7 @@
                     "type": "int32"
                 },
                 "caption": {
-                    "description": "Photo caption; pass null to use an empty caption; 0-GetOption(\"message_caption_length_max\") characters",
+                    "description": "Photo caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
                 },
@@ -8968,7 +9051,7 @@
                     "type": "Bool"
                 },
                 "caption": {
-                    "description": "Video caption; pass null to use an empty caption; 0-GetOption(\"message_caption_length_max\") characters",
+                    "description": "Video caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
                 },
@@ -9025,7 +9108,7 @@
                     "type": "bytes"
                 },
                 "caption": {
-                    "description": "Voice note caption; pass null to use an empty caption; 0-GetOption(\"message_caption_length_max\") characters",
+                    "description": "Voice note caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
                 }
@@ -10154,7 +10237,7 @@
                     "type": "string"
                 },
                 "is_paused": {
-                    "description": "True if the video is paused. This flag needs to be ignored, if new video frames are received",
+                    "description": "True, if the video is paused. This flag needs to be ignored, if new video frames are received",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -10553,7 +10636,7 @@
             "type": "DiceStickers"
         },
         "importedContacts": {
-            "description": "Represents the result of an ImportContacts request",
+            "description": "Represents the result of an importContacts request",
             "args": {
                 "user_ids": {
                     "description": "User identifiers of the imported contacts in the same order as they were specified in the request; 0 if the contact is not yet a registered user",
@@ -10724,6 +10807,22 @@
                 }
             },
             "type": "HttpUrl"
+        },
+        "userLink": {
+            "description": "Contains an HTTPS URL, which can be used to get information about a user",
+            "args": {
+                "url": {
+                    "description": "The URL",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "expires_in": {
+                    "description": "Left time for which the link is valid, in seconds; 0 if the link is a public username link",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "UserLink"
         },
         "inputInlineQueryResultAnimation": {
             "description": "Represents a link to an animated GIF or an animated (i.e., without sound) H.264/MPEG-4 AVC video",
@@ -11710,6 +11809,11 @@
                     "description": "Deleted message",
                     "is_optional": false,
                     "type": "message"
+                },
+                "can_report_anti_spam_false_positive": {
+                    "description": "True, if the message deletion can be reported via reportSupergroupAntiSpamFalsePositive",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "ChatEventAction"
@@ -12067,6 +12171,17 @@
             },
             "type": "ChatEventAction"
         },
+        "chatEventIsAggressiveAntiSpamEnabledToggled": {
+            "description": "The is_aggressive_anti_spam_enabled setting of a supergroup was toggled",
+            "args": {
+                "is_aggressive_anti_spam_enabled": {
+                    "description": "New value of is_aggressive_anti_spam_enabled",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ChatEventAction"
+        },
         "chatEventSignMessagesToggled": {
             "description": "The sign_messages setting of a channel was toggled",
             "args": {
@@ -12221,6 +12336,17 @@
         },
         "chatEventForumTopicToggleIsClosed": {
             "description": "A forum topic was closed or reopened",
+            "args": {
+                "topic_info": {
+                    "description": "New information about the topic",
+                    "is_optional": false,
+                    "type": "forumTopicInfo"
+                }
+            },
+            "type": "ChatEventAction"
+        },
+        "chatEventForumTopicToggleIsHidden": {
+            "description": "The General forum topic was hidden or unhidden",
             "args": {
                 "topic_info": {
                     "description": "New information about the topic",
@@ -13232,7 +13358,12 @@
             "args": {},
             "type": "CheckChatUsernameResult"
         },
-        "checkChatUsernameResultPublicChatsTooMuch": {
+        "checkChatUsernameResultUsernamePurchasable": {
+            "description": "The username can be purchased at fragment.com",
+            "args": {},
+            "type": "CheckChatUsernameResult"
+        },
+        "checkChatUsernameResultPublicChatsTooMany": {
             "description": "The user has too many chats with username, one of them must be made private first",
             "args": {},
             "type": "CheckChatUsernameResult"
@@ -14181,6 +14312,17 @@
             },
             "type": "AccountTtl"
         },
+        "messageTtl": {
+            "description": "Contains default message Time To Live setting (self-destruct timer) for new chats",
+            "args": {
+                "ttl": {
+                    "description": "Message TTL setting, in seconds. If 0, then messages aren't deleted automatically",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageTtl"
+        },
         "sessionTypeAndroid": {
             "description": "The session is running on an Android device",
             "args": {},
@@ -14719,7 +14861,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeMessage": {
-            "description": "The link is a link to a Telegram message. Call getMessageLinkInfo with the given URL to process the link",
+            "description": "The link is a link to a Telegram message or a forum topic. Call getMessageLinkInfo with the given URL to process the link",
             "args": {
                 "url": {
                     "description": "URL to be passed to getMessageLinkInfo",
@@ -14909,6 +15051,17 @@
             },
             "type": "InternalLinkType"
         },
+        "internalLinkTypeUserToken": {
+            "description": "The link is a link to a user by a temporary token. Call searchUserByToken with the given token to process the link",
+            "args": {
+                "token": {
+                    "description": "The token",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeVideoChat": {
             "description": "The link is a link to a video chat. Call searchPublicChat with the given chat username, and then joinGroupCall with the given invite hash to process the link",
             "args": {
@@ -14947,7 +15100,7 @@
             "type": "MessageLink"
         },
         "messageLinkInfo": {
-            "description": "Contains information about a link to a message in a chat",
+            "description": "Contains information about a link to a message or a forum topic in a chat",
             "args": {
                 "is_public": {
                     "description": "True, if the link is a public link for a message in a chat",
@@ -14960,7 +15113,7 @@
                     "type": "int53"
                 },
                 "message_thread_id": {
-                    "description": "If found, identifier of the message thread in which to open the message, or which to open in case of a missing message",
+                    "description": "If found, identifier of the message thread in which to open the message, or a forum topic to open if the message is missing",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -17826,7 +17979,7 @@
             "type": "Update"
         },
         "updateAnimationSearchParameters": {
-            "description": "The parameters of animation search through GetOption(\"animation_search_bot_username\") bot has changed",
+            "description": "The parameters of animation search through getOption(\"animation_search_bot_username\") bot has changed",
             "args": {
                 "provider": {
                     "description": "Name of the animation search provider",
@@ -18450,7 +18603,7 @@
             "type": "Session"
         },
         "getCurrentState": {
-            "description": "Returns all updates needed to restore current TDLib state, i.e. all actual UpdateAuthorizationState/UpdateUser/UpdateNewChat and others. This is especially useful if TDLib is run in a separate process. Can be called before initialization",
+            "description": "Returns all updates needed to restore current TDLib state, i.e. all actual updateAuthorizationState/updateUser/updateNewChat and others. This is especially useful if TDLib is run in a separate process. Can be called before initialization",
             "args": {},
             "type": "Updates"
         },
@@ -18765,7 +18918,7 @@
             "type": "Message"
         },
         "getRepliedMessage": {
-            "description": "Returns information about a message that is replied by a given message. Also returns the pinned message, the game message, and the invoice message for messages of the types messagePinMessage, messageGameScore, and messagePaymentSuccessful respectively",
+            "description": "Returns information about a message that is replied by a given message. Also returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, and topic messages without replied message respectively",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat the message belongs to",
@@ -19879,7 +20032,7 @@
                     "type": "string"
                 },
                 "hide_via_bot": {
-                    "description": "Pass true to hide the bot, via which the message is sent. Can be used only for bots GetOption(\"animation_search_bot_username\"), GetOption(\"photo_search_bot_username\"), and GetOption(\"venue_search_bot_username\")",
+                    "description": "Pass true to hide the bot, via which the message is sent. Can be used only for bots getOption(\"animation_search_bot_username\"), getOption(\"photo_search_bot_username\"), and getOption(\"venue_search_bot_username\")",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -20160,7 +20313,7 @@
                     "type": "ReplyMarkup"
                 },
                 "caption": {
-                    "description": "New message content caption; 0-GetOption(\"message_caption_length_max\") characters; pass null to remove caption",
+                    "description": "New message content caption; 0-getOption(\"message_caption_length_max\") characters; pass null to remove caption",
                     "is_optional": true,
                     "type": "formattedText"
                 }
@@ -20275,7 +20428,7 @@
                     "type": "ReplyMarkup"
                 },
                 "caption": {
-                    "description": "New message content caption; pass null to remove caption; 0-GetOption(\"message_caption_length_max\") characters",
+                    "description": "New message content caption; pass null to remove caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
                 }
@@ -20359,14 +20512,108 @@
                     "type": "int53"
                 },
                 "name": {
-                    "description": "New name of the topic; 1-128 characters",
+                    "description": "New name of the topic; 0-128 characters. If empty, the previous topic name is kept",
                     "is_optional": false,
                     "type": "string"
                 },
+                "edit_icon_custom_emoji": {
+                    "description": "Pass true to edit the icon of the topic. Icon of the General topic can't be edited",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "icon_custom_emoji_id": {
-                    "description": "Identifier of the new custom emoji for topic icon. Telegram Premium users can use any custom emoji, other users can use only a custom emoji returned by getForumTopicDefaultIcons",
+                    "description": "Identifier of the new custom emoji for topic icon; pass 0 to remove the custom emoji. Ignored if edit_icon_custom_emoji is false. Telegram Premium users can use any custom emoji, other users can use only a custom emoji returned by getForumTopicDefaultIcons",
                     "is_optional": false,
                     "type": "int64"
+                }
+            },
+            "type": "Ok"
+        },
+        "getForumTopic": {
+            "description": "Returns information about a forum topic",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier of the forum topic",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "ForumTopic"
+        },
+        "getForumTopicLink": {
+            "description": "Returns an HTTPS link to a topic in a forum chat. This is an offline request",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier of the forum topic",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "HttpUrl"
+        },
+        "getForumTopics": {
+            "description": "Returns found forum topics in a forum chat. This is a temporary method for getting information about topic list from the server",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the forum chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "query": {
+                    "description": "Query to search for in the forum topic's name",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "offset_date": {
+                    "description": "The date starting from which the results need to be fetched. Use 0 or any date in the future to get results from the last topic",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "offset_message_id": {
+                    "description": "The message identifier of the last message in the last found topic, or 0 for the first request",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset_message_thread_id": {
+                    "description": "The message thread identifier of the last found topic, or 0 for the first request",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "limit": {
+                    "description": "The maximum number of forum topics to be returned; up to 100. For optimal performance, the number of returned forum topics is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ForumTopics"
+        },
+        "setForumTopicNotificationSettings": {
+            "description": "Changes the notification settings of a forum topic",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier of the forum topic",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "notification_settings": {
+                    "description": "New notification settings for the forum topic. If the topic is muted for more than 366 days, it is considered to be muted forever",
+                    "is_optional": false,
+                    "type": "chatNotificationSettings"
                 }
             },
             "type": "Ok"
@@ -20386,6 +20633,22 @@
                 },
                 "is_closed": {
                     "description": "Pass true to close the topic; pass false to reopen it",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleGeneralForumTopicIsHidden": {
+            "description": "Toggles whether a General topic is hidden in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_hidden": {
+                    "description": "Pass true to hide and close the General topic; pass false to unhide it",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -21197,7 +21460,7 @@
             "type": "GameHighScores"
         },
         "deleteChatReplyMarkup": {
-            "description": "Deletes the default reply markup from a chat. Must be called after a one-time keyboard or a ForceReply reply markup has been used. UpdateChatReplyMarkup will be sent if the reply markup is changed",
+            "description": "Deletes the default reply markup from a chat. Must be called after a one-time keyboard or a replyMarkupForceReply reply markup has been used. An updateChatReplyMarkup update will be sent if the reply markup is changed",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -21476,6 +21739,11 @@
                     "description": "Title of the new basic group; 1-128 characters",
                     "is_optional": false,
                     "type": "string"
+                },
+                "message_ttl": {
+                    "description": "Message TTL value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "Chat"
@@ -21502,6 +21770,11 @@
                     "description": "Chat location if a location-based supergroup is being created; pass null to create an ordinary supergroup chat",
                     "is_optional": true,
                     "type": "chatLocation"
+                },
+                "message_ttl": {
+                    "description": "Message TTL value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "for_import": {
                     "description": "Pass true to create a supergroup for importing messages using importMessage",
@@ -21572,7 +21845,7 @@
             "type": "ChatFilter"
         },
         "createChatFilter": {
-            "description": "Creates new chat filter. Returns information about the created chat filter. There can be up to GetOption(\"chat_filter_count_max\") chat filters, but the limit can be increased with Telegram Premium",
+            "description": "Creates new chat filter. Returns information about the created chat filter. There can be up to getOption(\"chat_filter_count_max\") chat filters, but the limit can be increased with Telegram Premium",
             "args": {
                 "filter": {
                     "description": "Chat filter",
@@ -21674,7 +21947,7 @@
             "type": "Ok"
         },
         "setChatMessageTtl": {
-            "description": "Changes the message TTL in a chat. Requires can_delete_messages administrator right in basic groups, supergroups and channels Message TTL can't be changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).",
+            "description": "Changes the message TTL in a chat. Requires change_info administrator right in basic groups, supergroups and channels Message TTL can't be changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -21682,7 +21955,7 @@
                     "type": "int53"
                 },
                 "ttl": {
-                    "description": "New TTL value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400",
+                    "description": "New TTL value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -22254,7 +22527,7 @@
             "type": "Ok"
         },
         "toggleChatIsPinned": {
-            "description": "Changes the pinned state of a chat. There can be up to GetOption(\"pinned_chat_count_max\")/GetOption(\"pinned_archived_chat_count_max\") pinned non-secret chats and the same number of secret chats in the main/archive chat list. The limit can be increased with Telegram Premium",
+            "description": "Changes the pinned state of a chat. There can be up to getOption(\"pinned_chat_count_max\")/getOption(\"pinned_archived_chat_count_max\") pinned non-secret chats and the same number of secret chats in the main/archive chat list. The limit can be increased with Telegram Premium",
             "args": {
                 "chat_list": {
                     "description": "Chat list in which to change the pinned state of the chat",
@@ -23338,7 +23611,7 @@
                     "type": "int32"
                 },
                 "is_paused": {
-                    "description": "True if screen sharing is paused",
+                    "description": "True, if screen sharing is paused",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -24338,7 +24611,7 @@
             "description": "Changes the bio of the current user",
             "args": {
                 "bio": {
-                    "description": "The new value of the user bio; 0-GetOption(\"bio_length_max\") characters without line feeds",
+                    "description": "The new value of the user bio; 0-getOption(\"bio_length_max\") characters without line feeds",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -24400,7 +24673,7 @@
             "type": "Ok"
         },
         "setLocation": {
-            "description": "Changes the location of the current user. Needs to be called if GetOption(\"is_location_visible\") is true and location changes for more than 1 kilometer",
+            "description": "Changes the location of the current user. Needs to be called if getOption(\"is_location_visible\") is true and location changes for more than 1 kilometer",
             "args": {
                 "location": {
                     "description": "The new location of the user",
@@ -24441,6 +24714,22 @@
                 }
             },
             "type": "Ok"
+        },
+        "getUserLink": {
+            "description": "Returns an HTTPS link, which can be used to get information about the current user",
+            "args": {},
+            "type": "UserLink"
+        },
+        "searchUserByToken": {
+            "description": "Searches a user by a token from the user's link",
+            "args": {
+                "token": {
+                    "description": "Token to search for",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "User"
         },
         "setCommands": {
             "description": "Sets the list of commands supported by the bot for the given user scope and language; for bots only",
@@ -24773,6 +25062,22 @@
             },
             "type": "Ok"
         },
+        "toggleSupergroupIsAggressiveAntiSpamEnabled": {
+            "description": "Toggles whether aggressive anti-spam checks are enabled in the supergroup; requires can_delete_messages administrator right. Can be called only if the supergroup has at least getOption(\"aggressive_anti_spam_supergroup_member_count_min\") members",
+            "args": {
+                "supergroup_id": {
+                    "description": "The identifier of the supergroup, which isn't a broadcast group",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_aggressive_anti_spam_enabled": {
+                    "description": "The new value of is_aggressive_anti_spam_enabled",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
         "toggleSupergroupIsForum": {
             "description": "Toggles whether the supergroup is a forum; requires owner privileges in the supergroup",
             "args": {
@@ -24782,7 +25087,7 @@
                     "type": "int53"
                 },
                 "is_forum": {
-                    "description": "New value of is_forum. A supergroup can be converted to a forum, only if it has at least GetOption(\"forum_member_count_min\") members",
+                    "description": "New value of is_forum. A supergroup can be converted to a forum, only if it has at least getOption(\"forum_member_count_min\") members",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -24812,6 +25117,22 @@
                     "description": "Identifiers of messages to report",
                     "is_optional": false,
                     "type": "vector<int53>"
+                }
+            },
+            "type": "Ok"
+        },
+        "reportSupergroupAntiSpamFalsePositive": {
+            "description": "Reports a false deletion of a message by aggressive anti-spam checks; requires administrator rights in the supergroup. Can be called only for messages from chatEventMessageDeleted with can_report_anti_spam_false_positive == true",
+            "args": {
+                "supergroup_id": {
+                    "description": "Supergroup identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the erroneously deleted message",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "Ok"
@@ -24966,7 +25287,7 @@
             "description": "Returns information about a successful payment",
             "args": {
                 "chat_id": {
-                    "description": "Chat identifier of the PaymentSuccessful message",
+                    "description": "Chat identifier of the messagePaymentSuccessful message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -25332,6 +25653,22 @@
                 }
             },
             "type": "Ok"
+        },
+        "setDefaultMessageTtl": {
+            "description": "Changes the default message Time To Live setting (self-destruct timer) for new chats",
+            "args": {
+                "ttl": {
+                    "description": "New message TTL; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
+                    "is_optional": false,
+                    "type": "messageTtl"
+                }
+            },
+            "type": "Ok"
+        },
+        "getDefaultMessageTtl": {
+            "description": "Returns default message Time To Live setting (self-destruct timer) for new chats",
+            "args": {},
+            "type": "MessageTtl"
         },
         "removeChatActionBar": {
             "description": "Removes a chat action bar without any other action",

@@ -3026,7 +3026,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The parameters of animation search through GetOption("animation_search_bot_username") bot has changed
+        """The parameters of animation search through getOption("animation_search_bot_username") bot has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, optional): An update filter.

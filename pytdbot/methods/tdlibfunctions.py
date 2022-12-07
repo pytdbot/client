@@ -440,7 +440,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def getCurrentState(self, timeout: float = None) -> Response:
-        """Returns all updates needed to restore current TDLib state, i.e. all actual UpdateAuthorizationState/UpdateUser/UpdateNewChat and others. This is especially useful if TDLib is run in a separate process. Can be called before initialization
+        """Returns all updates needed to restore current TDLib state, i.e. all actual updateAuthorizationState/updateUser/updateNewChat and others. This is especially useful if TDLib is run in a separate process. Can be called before initialization
 
 
         Returns:
@@ -1032,7 +1032,7 @@ class TDLibFunctions:
     async def getRepliedMessage(
         self, chat_id: int, message_id: int, timeout: float = None
     ) -> Response:
-        """Returns information about a message that is replied by a given message. Also returns the pinned message, the game message, and the invoice message for messages of the types messagePinMessage, messageGameScore, and messagePaymentSuccessful respectively
+        """Returns information about a message that is replied by a given message. Also returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, and topic messages without replied message respectively
 
         Args:
             chat_id (``int``):
@@ -2724,7 +2724,7 @@ class TDLibFunctions:
                 Identifier of the inline result
 
             hide_via_bot (``bool``):
-                Pass true to hide the bot, via which the message is sent. Can be used only for bots GetOption("animation_search_bot_username"), GetOption("photo_search_bot_username"), and GetOption("venue_search_bot_username")
+                Pass true to hide the bot, via which the message is sent. Can be used only for bots getOption("animation_search_bot_username"), getOption("photo_search_bot_username"), and getOption("venue_search_bot_username")
 
             options (``dict``, optional):
                 Options to be used to send the message; pass null to use default options
@@ -3131,7 +3131,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none; for bots only
 
             caption (``dict``, optional):
-                New message content caption; 0-GetOption("message_caption_length_max") characters; pass null to remove caption
+                New message content caption; 0-getOption("message_caption_length_max") characters; pass null to remove caption
 
 
         Returns:
@@ -3307,7 +3307,7 @@ class TDLibFunctions:
                 The new message reply markup; pass null if none
 
             caption (``dict``, optional):
-                New message content caption; pass null to remove caption; 0-GetOption("message_caption_length_max") characters
+                New message content caption; pass null to remove caption; 0-getOption("message_caption_length_max") characters
 
 
         Returns:
@@ -3429,6 +3429,7 @@ class TDLibFunctions:
         chat_id: int,
         message_thread_id: int,
         name: str,
+        edit_icon_custom_emoji: bool,
         icon_custom_emoji_id: int,
         timeout: float = None,
     ) -> Response:
@@ -3442,10 +3443,13 @@ class TDLibFunctions:
                 Message thread identifier of the forum topic
 
             name (``str``):
-                New name of the topic; 1-128 characters
+                New name of the topic; 0-128 characters. If empty, the previous topic name is kept
+
+            edit_icon_custom_emoji (``bool``):
+                Pass true to edit the icon of the topic. Icon of the General topic can't be edited
 
             icon_custom_emoji_id (``int``):
-                Identifier of the new custom emoji for topic icon. Telegram Premium users can use any custom emoji, other users can use only a custom emoji returned by getForumTopicDefaultIcons
+                Identifier of the new custom emoji for topic icon; pass 0 to remove the custom emoji. Ignored if edit_icon_custom_emoji is false. Telegram Premium users can use any custom emoji, other users can use only a custom emoji returned by getForumTopicDefaultIcons
 
 
         Returns:
@@ -3457,7 +3461,139 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "message_thread_id": message_thread_id,
             "name": name,
+            "edit_icon_custom_emoji": edit_icon_custom_emoji,
             "icon_custom_emoji_id": icon_custom_emoji_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getForumTopic(
+        self, chat_id: int, message_thread_id: int, timeout: float = None
+    ) -> Response:
+        """Returns information about a forum topic
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            message_thread_id (``int``):
+                Message thread identifier of the forum topic
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getForumTopic",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getForumTopicLink(
+        self, chat_id: int, message_thread_id: int, timeout: float = None
+    ) -> Response:
+        """Returns an HTTPS link to a topic in a forum chat. This is an offline request
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            message_thread_id (``int``):
+                Message thread identifier of the forum topic
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getForumTopicLink",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getForumTopics(
+        self,
+        chat_id: int,
+        query: str,
+        offset_date: int,
+        offset_message_id: int,
+        offset_message_thread_id: int,
+        limit: int,
+        timeout: float = None,
+    ) -> Response:
+        """Returns found forum topics in a forum chat. This is a temporary method for getting information about topic list from the server
+
+        Args:
+            chat_id (``int``):
+                Identifier of the forum chat
+
+            query (``str``):
+                Query to search for in the forum topic's name
+
+            offset_date (``int``):
+                The date starting from which the results need to be fetched. Use 0 or any date in the future to get results from the last topic
+
+            offset_message_id (``int``):
+                The message identifier of the last message in the last found topic, or 0 for the first request
+
+            offset_message_thread_id (``int``):
+                The message thread identifier of the last found topic, or 0 for the first request
+
+            limit (``int``):
+                The maximum number of forum topics to be returned; up to 100. For optimal performance, the number of returned forum topics is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getForumTopics",
+            "chat_id": chat_id,
+            "query": query,
+            "offset_date": offset_date,
+            "offset_message_id": offset_message_id,
+            "offset_message_thread_id": offset_message_thread_id,
+            "limit": limit,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def setForumTopicNotificationSettings(
+        self,
+        chat_id: int,
+        message_thread_id: int,
+        notification_settings: dict,
+        timeout: float = None,
+    ) -> Response:
+        """Changes the notification settings of a forum topic
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            message_thread_id (``int``):
+                Message thread identifier of the forum topic
+
+            notification_settings (``dict``):
+                New notification settings for the forum topic. If the topic is muted for more than 366 days, it is considered to be muted forever
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "setForumTopicNotificationSettings",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
+            "notification_settings": notification_settings,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -3491,6 +3627,31 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "message_thread_id": message_thread_id,
             "is_closed": is_closed,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def toggleGeneralForumTopicIsHidden(
+        self, chat_id: int, is_hidden: bool, timeout: float = None
+    ) -> Response:
+        """Toggles whether a General topic is hidden in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            is_hidden (``bool``):
+                Pass true to hide and close the General topic; pass false to unhide it
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleGeneralForumTopicIsHidden",
+            "chat_id": chat_id,
+            "is_hidden": is_hidden,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -4701,7 +4862,7 @@ class TDLibFunctions:
     async def deleteChatReplyMarkup(
         self, chat_id: int, message_id: int, timeout: float = None
     ) -> Response:
-        """Deletes the default reply markup from a chat. Must be called after a one-time keyboard or a ForceReply reply markup has been used. UpdateChatReplyMarkup will be sent if the reply markup is changed
+        """Deletes the default reply markup from a chat. Must be called after a one-time keyboard or a replyMarkupForceReply reply markup has been used. An updateChatReplyMarkup update will be sent if the reply markup is changed
 
         Args:
             chat_id (``int``):
@@ -5134,7 +5295,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def createNewBasicGroupChat(
-        self, user_ids: list, title: str, timeout: float = None
+        self, user_ids: list, title: str, message_ttl: int, timeout: float = None
     ) -> Response:
         """Creates a new basic group and sends a corresponding messageBasicGroupChatCreate. Returns the newly created chat
 
@@ -5145,6 +5306,9 @@ class TDLibFunctions:
             title (``str``):
                 Title of the new basic group; 1-128 characters
 
+            message_ttl (``int``):
+                Message TTL value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
+
 
         Returns:
             :class:`~pytdbot.types.Response`
@@ -5154,6 +5318,7 @@ class TDLibFunctions:
             "@type": "createNewBasicGroupChat",
             "user_ids": user_ids,
             "title": title,
+            "message_ttl": message_ttl,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -5163,6 +5328,7 @@ class TDLibFunctions:
         title: str,
         is_channel: bool,
         description: str,
+        message_ttl: int,
         for_import: bool,
         location: dict = None,
         timeout: float = None,
@@ -5178,6 +5344,9 @@ class TDLibFunctions:
 
             description (``str``):
                 Chat description; 0-255 characters
+
+            message_ttl (``int``):
+                Message TTL value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
 
             for_import (``bool``):
                 Pass true to create a supergroup for importing messages using importMessage
@@ -5196,6 +5365,7 @@ class TDLibFunctions:
             "is_channel": is_channel,
             "description": description,
             "location": location,
+            "message_ttl": message_ttl,
             "for_import": for_import,
         }
 
@@ -5311,7 +5481,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def createChatFilter(self, filter: dict, timeout: float = None) -> Response:
-        """Creates new chat filter. Returns information about the created chat filter. There can be up to GetOption("chat_filter_count_max") chat filters, but the limit can be increased with Telegram Premium
+        """Creates new chat filter. Returns information about the created chat filter. There can be up to getOption("chat_filter_count_max") chat filters, but the limit can be increased with Telegram Premium
 
         Args:
             filter (``dict``):
@@ -5488,14 +5658,14 @@ class TDLibFunctions:
     async def setChatMessageTtl(
         self, chat_id: int, ttl: int, timeout: float = None
     ) -> Response:
-        """Changes the message TTL in a chat. Requires can_delete_messages administrator right in basic groups, supergroups and channels Message TTL can't be changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).
+        """Changes the message TTL in a chat. Requires change_info administrator right in basic groups, supergroups and channels Message TTL can't be changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).
 
         Args:
             chat_id (``int``):
                 Chat identifier
 
             ttl (``int``):
-                New TTL value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400
+                New TTL value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
 
 
         Returns:
@@ -6424,7 +6594,7 @@ class TDLibFunctions:
     async def toggleChatIsPinned(
         self, chat_list: dict, chat_id: int, is_pinned: bool, timeout: float = None
     ) -> Response:
-        """Changes the pinned state of a chat. There can be up to GetOption("pinned_chat_count_max")/GetOption("pinned_archived_chat_count_max") pinned non-secret chats and the same number of secret chats in the main/archive chat list. The limit can be increased with Telegram Premium
+        """Changes the pinned state of a chat. There can be up to getOption("pinned_chat_count_max")/getOption("pinned_archived_chat_count_max") pinned non-secret chats and the same number of secret chats in the main/archive chat list. The limit can be increased with Telegram Premium
 
         Args:
             chat_list (``dict``):
@@ -8102,7 +8272,7 @@ class TDLibFunctions:
                 Group call identifier
 
             is_paused (``bool``):
-                True if screen sharing is paused
+                True, if screen sharing is paused
 
 
         Returns:
@@ -9775,7 +9945,7 @@ class TDLibFunctions:
 
         Args:
             bio (``str``):
-                The new value of the user bio; 0-GetOption("bio_length_max") characters without line feeds
+                The new value of the user bio; 0-getOption("bio_length_max") characters without line feeds
 
 
         Returns:
@@ -9880,7 +10050,7 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def setLocation(self, location: dict, timeout: float = None) -> Response:
-        """Changes the location of the current user. Needs to be called if GetOption("is_location_visible") is true and location changes for more than 1 kilometer
+        """Changes the location of the current user. Needs to be called if getOption("is_location_visible") is true and location changes for more than 1 kilometer
 
         Args:
             location (``dict``):
@@ -9954,6 +10124,39 @@ class TDLibFunctions:
         data = {
             "@type": "checkChangePhoneNumberCode",
             "code": code,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getUserLink(self, timeout: float = None) -> Response:
+        """Returns an HTTPS link, which can be used to get information about the current user
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getUserLink",
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def searchUserByToken(self, token: str, timeout: float = None) -> Response:
+        """Searches a user by a token from the user's link
+
+        Args:
+            token (``str``):
+                Token to search for
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "searchUserByToken",
+            "token": token,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -10521,6 +10724,34 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def toggleSupergroupIsAggressiveAntiSpamEnabled(
+        self,
+        supergroup_id: int,
+        is_aggressive_anti_spam_enabled: bool,
+        timeout: float = None,
+    ) -> Response:
+        """Toggles whether aggressive anti-spam checks are enabled in the supergroup; requires can_delete_messages administrator right. Can be called only if the supergroup has at least getOption("aggressive_anti_spam_supergroup_member_count_min") members
+
+        Args:
+            supergroup_id (``int``):
+                The identifier of the supergroup, which isn't a broadcast group
+
+            is_aggressive_anti_spam_enabled (``bool``):
+                The new value of is_aggressive_anti_spam_enabled
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleSupergroupIsAggressiveAntiSpamEnabled",
+            "supergroup_id": supergroup_id,
+            "is_aggressive_anti_spam_enabled": is_aggressive_anti_spam_enabled,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def toggleSupergroupIsForum(
         self, supergroup_id: int, is_forum: bool, timeout: float = None
     ) -> Response:
@@ -10531,7 +10762,7 @@ class TDLibFunctions:
                 Identifier of the supergroup
 
             is_forum (``bool``):
-                New value of is_forum. A supergroup can be converted to a forum, only if it has at least GetOption("forum_member_count_min") members
+                New value of is_forum. A supergroup can be converted to a forum, only if it has at least getOption("forum_member_count_min") members
 
 
         Returns:
@@ -10588,6 +10819,31 @@ class TDLibFunctions:
             "@type": "reportSupergroupSpam",
             "supergroup_id": supergroup_id,
             "message_ids": message_ids,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def reportSupergroupAntiSpamFalsePositive(
+        self, supergroup_id: int, message_id: int, timeout: float = None
+    ) -> Response:
+        """Reports a false deletion of a message by aggressive anti-spam checks; requires administrator rights in the supergroup. Can be called only for messages from chatEventMessageDeleted with can_report_anti_spam_false_positive == true
+
+        Args:
+            supergroup_id (``int``):
+                Supergroup identifier
+
+            message_id (``int``):
+                Identifier of the erroneously deleted message
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "reportSupergroupAntiSpamFalsePositive",
+            "supergroup_id": supergroup_id,
+            "message_id": message_id,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -10812,7 +11068,7 @@ class TDLibFunctions:
 
         Args:
             chat_id (``int``):
-                Chat identifier of the PaymentSuccessful message
+                Chat identifier of the messagePaymentSuccessful message
 
             message_id (``int``):
                 Message identifier
@@ -11469,6 +11725,39 @@ class TDLibFunctions:
             "@type": "deleteAccount",
             "reason": reason,
             "password": password,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def setDefaultMessageTtl(self, ttl: dict, timeout: float = None) -> Response:
+        """Changes the default message Time To Live setting (self-destruct timer) for new chats
+
+        Args:
+            ttl (``dict``):
+                New message TTL; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "setDefaultMessageTtl",
+            "ttl": ttl,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def getDefaultMessageTtl(self, timeout: float = None) -> Response:
+        """Returns default message Time To Live setting (self-destruct timer) for new chats
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "getDefaultMessageTtl",
         }
 
         return await self.invoke(data, timeout=timeout)
