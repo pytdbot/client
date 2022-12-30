@@ -534,7 +534,7 @@ class TDLibFunctions:
     async def setLoginEmailAddress(
         self, new_login_email_address: str, timeout: float = None
     ) -> Response:
-        """Changes the login email address of the user. The change will not be applied until the new login email address is confirmed with `checkLoginEmailAddressCode`. To use Apple ID/Google ID instead of a email address, call `checkLoginEmailAddressCode` directly
+        """Changes the login email address of the user. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode. To use Apple ID/Google ID instead of a email address, call checkLoginEmailAddressCode directly
 
         Args:
             new_login_email_address (``str``):
@@ -1836,9 +1836,7 @@ class TDLibFunctions:
     async def searchMessages(
         self,
         query: str,
-        offset_date: int,
-        offset_chat_id: int,
-        offset_message_id: int,
+        offset: str,
         limit: int,
         min_date: int,
         max_date: int,
@@ -1852,14 +1850,8 @@ class TDLibFunctions:
             query (``str``):
                 Query to search for
 
-            offset_date (``int``):
-                The date of the message starting from which the results need to be fetched. Use 0 or any date in the future to get results from the last message
-
-            offset_chat_id (``int``):
-                The chat identifier of the last found message, or 0 for the first request
-
-            offset_message_id (``int``):
-                The message identifier of the last found message, or 0 for the first request
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
 
             limit (``int``):
                 The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
@@ -1885,9 +1877,7 @@ class TDLibFunctions:
             "@type": "searchMessages",
             "chat_list": chat_list,
             "query": query,
-            "offset_date": offset_date,
-            "offset_chat_id": offset_chat_id,
-            "offset_message_id": offset_message_id,
+            "offset": offset,
             "limit": limit,
             "filter": filter,
             "min_date": min_date,
@@ -1940,13 +1930,13 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def searchCallMessages(
-        self, from_message_id: int, limit: int, only_missed: bool, timeout: float = None
+        self, offset: str, limit: int, only_missed: bool, timeout: float = None
     ) -> Response:
         """Searches for call messages. Returns the results in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib
 
         Args:
-            from_message_id (``int``):
-                Identifier of the message from which to search; use 0 to get results from the last message
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
 
             limit (``int``):
                 The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
@@ -1961,7 +1951,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "searchCallMessages",
-            "from_message_id": from_message_id,
+            "offset": offset,
             "limit": limit,
             "only_missed": only_missed,
         }
@@ -3433,7 +3423,7 @@ class TDLibFunctions:
         icon_custom_emoji_id: int,
         timeout: float = None,
     ) -> Response:
-        """Edits title and icon of a topic in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup unless the user is creator of the topic
+        """Edits title and icon of a topic in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup unless the user is creator of the topic
 
         Args:
             chat_id (``int``):
@@ -3605,7 +3595,7 @@ class TDLibFunctions:
         is_closed: bool,
         timeout: float = None,
     ) -> Response:
-        """Toggles whether a topic is closed in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup unless the user is creator of the topic
+        """Toggles whether a topic is closed in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup unless the user is creator of the topic
 
         Args:
             chat_id (``int``):
@@ -3634,7 +3624,7 @@ class TDLibFunctions:
     async def toggleGeneralForumTopicIsHidden(
         self, chat_id: int, is_hidden: bool, timeout: float = None
     ) -> Response:
-        """Toggles whether a General topic is hidden in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup
+        """Toggles whether a General topic is hidden in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup
 
         Args:
             chat_id (``int``):
@@ -3656,10 +3646,68 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def toggleForumTopicIsPinned(
+        self,
+        chat_id: int,
+        message_thread_id: int,
+        is_pinned: bool,
+        timeout: float = None,
+    ) -> Response:
+        """Changes the pinned state of a forum topic; requires can_manage_topics administrator right in the supergroup. There can be up to getOption("pinned_forum_topic_count_max") pinned forum topics
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            message_thread_id (``int``):
+                Message thread identifier of the forum topic
+
+            is_pinned (``bool``):
+                Pass true to pin the topic; pass false to unpin it
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleForumTopicIsPinned",
+            "chat_id": chat_id,
+            "message_thread_id": message_thread_id,
+            "is_pinned": is_pinned,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def setPinnedForumTopics(
+        self, chat_id: int, message_thread_ids: list, timeout: float = None
+    ) -> Response:
+        """Changes the order of pinned forum topics
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            message_thread_ids (``list``):
+                The new list of pinned forum topics
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "setPinnedForumTopics",
+            "chat_id": chat_id,
+            "message_thread_ids": message_thread_ids,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def deleteForumTopic(
         self, chat_id: int, message_thread_id: int, timeout: float = None
     ) -> Response:
-        """Deletes all messages in a forum topic; requires can_delete_messages administrator rights in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages
+        """Deletes all messages in a forum topic; requires can_delete_messages administrator right in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages
 
         Args:
             chat_id (``int``):
@@ -5295,7 +5343,11 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def createNewBasicGroupChat(
-        self, user_ids: list, title: str, message_ttl: int, timeout: float = None
+        self,
+        user_ids: list,
+        title: str,
+        message_auto_delete_time: int,
+        timeout: float = None,
     ) -> Response:
         """Creates a new basic group and sends a corresponding messageBasicGroupChatCreate. Returns the newly created chat
 
@@ -5306,8 +5358,8 @@ class TDLibFunctions:
             title (``str``):
                 Title of the new basic group; 1-128 characters
 
-            message_ttl (``int``):
-                Message TTL value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
+            message_auto_delete_time (``int``):
+                Message auto-delete time value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
 
 
         Returns:
@@ -5318,7 +5370,7 @@ class TDLibFunctions:
             "@type": "createNewBasicGroupChat",
             "user_ids": user_ids,
             "title": title,
-            "message_ttl": message_ttl,
+            "message_auto_delete_time": message_auto_delete_time,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -5328,7 +5380,7 @@ class TDLibFunctions:
         title: str,
         is_channel: bool,
         description: str,
-        message_ttl: int,
+        message_auto_delete_time: int,
         for_import: bool,
         location: dict = None,
         timeout: float = None,
@@ -5345,8 +5397,8 @@ class TDLibFunctions:
             description (``str``):
                 Chat description; 0-255 characters
 
-            message_ttl (``int``):
-                Message TTL value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
+            message_auto_delete_time (``int``):
+                Message auto-delete time value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
 
             for_import (``bool``):
                 Pass true to create a supergroup for importing messages using importMessage
@@ -5365,7 +5417,7 @@ class TDLibFunctions:
             "is_channel": is_channel,
             "description": description,
             "location": location,
-            "message_ttl": message_ttl,
+            "message_auto_delete_time": message_auto_delete_time,
             "for_import": for_import,
         }
 
@@ -5655,17 +5707,17 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def setChatMessageTtl(
-        self, chat_id: int, ttl: int, timeout: float = None
+    async def setChatMessageAutoDeleteTime(
+        self, chat_id: int, message_auto_delete_time: int, timeout: float = None
     ) -> Response:
-        """Changes the message TTL in a chat. Requires change_info administrator right in basic groups, supergroups and channels Message TTL can't be changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).
+        """Changes the message auto-delete or self-destruct (for secret chats) time in a chat. Requires change_info administrator right in basic groups, supergroups and channels Message auto-delete time can't be changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).
 
         Args:
             chat_id (``int``):
                 Chat identifier
 
-            ttl (``int``):
-                New TTL value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
+            message_auto_delete_time (``int``):
+                New time value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
 
 
         Returns:
@@ -5673,9 +5725,9 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "setChatMessageTtl",
+            "@type": "setChatMessageAutoDeleteTime",
             "chat_id": chat_id,
-            "ttl": ttl,
+            "message_auto_delete_time": message_auto_delete_time,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -6667,7 +6719,11 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def toggleBotIsAddedToAttachmentMenu(
-        self, bot_user_id: int, is_added: bool, timeout: float = None
+        self,
+        bot_user_id: int,
+        is_added: bool,
+        allow_write_access: bool,
+        timeout: float = None,
     ) -> Response:
         """Adds or removes a bot to attachment menu. Bot can be added to attachment menu, only if userTypeBot.can_be_added_to_attachment_menu == true
 
@@ -6678,6 +6734,9 @@ class TDLibFunctions:
             is_added (``bool``):
                 Pass true to add the bot to attachment menu; pass false to remove the bot from attachment menu
 
+            allow_write_access (``bool``):
+                Pass true if the current user allowed the bot to send them messages. Ignored if is_added is false
+
 
         Returns:
             :class:`~pytdbot.types.Response`
@@ -6687,12 +6746,13 @@ class TDLibFunctions:
             "@type": "toggleBotIsAddedToAttachmentMenu",
             "bot_user_id": bot_user_id,
             "is_added": is_added,
+            "allow_write_access": allow_write_access,
         }
 
         return await self.invoke(data, timeout=timeout)
 
     async def getThemedEmojiStatuses(self, timeout: float = None) -> Response:
-        """Returns up to 8 themed emoji statuses, which color must be changed to the color of the Telegram Premium badge
+        """Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list
 
 
         Returns:
@@ -8272,7 +8332,7 @@ class TDLibFunctions:
                 Group call identifier
 
             is_paused (``bool``):
-                True, if screen sharing is paused
+                Pass true to pause screen sharing; pass false to unpause it
 
 
         Returns:
@@ -9038,6 +9098,56 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
+    async def setUserPersonalProfilePhoto(
+        self, user_id: int, photo: dict = None, timeout: float = None
+    ) -> Response:
+        """Changes a personal profile photo of a contact user
+
+        Args:
+            user_id (``int``):
+                User identifier
+
+            photo (``dict``, optional):
+                Profile photo to set; pass null to delete the photo; inputChatPhotoPrevious isn't supported in this function
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "setUserPersonalProfilePhoto",
+            "user_id": user_id,
+            "photo": photo,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def suggestUserProfilePhoto(
+        self, user_id: int, photo: dict, timeout: float = None
+    ) -> Response:
+        """Suggests a profile photo to another regular user with common messages
+
+        Args:
+            user_id (``int``):
+                User identifier
+
+            photo (``dict``):
+                Profile photo to suggest; inputChatPhotoPrevious isn't supported in this function
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "suggestUserProfilePhoto",
+            "user_id": user_id,
+            "photo": photo,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
     async def searchUserByPhoneNumber(
         self, phone_number: str, timeout: float = None
     ) -> Response:
@@ -9081,7 +9191,7 @@ class TDLibFunctions:
     async def getUserProfilePhotos(
         self, user_id: int, offset: int, limit: int, timeout: float = None
     ) -> Response:
-        """Returns the profile photos of a user. The result of this query may be outdated: some photos might have been deleted already
+        """Returns the profile photos of a user. Personal and public photo aren't returned
 
         Args:
             user_id (``int``):
@@ -9275,7 +9385,7 @@ class TDLibFunctions:
     async def getAttachedStickerSets(
         self, file_id: int, timeout: float = None
     ) -> Response:
-        """Returns a list of sticker sets attached to a file. Currently, only photos and videos can have attached sticker sets
+        """Returns a list of sticker sets attached to a file, including regular, mask, and emoji sticker sets. Currently, only animations, photos, and videos can have attached sticker sets
 
         Args:
             file_id (``int``):
@@ -9875,12 +9985,17 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def setProfilePhoto(self, photo: dict, timeout: float = None) -> Response:
+    async def setProfilePhoto(
+        self, photo: dict, is_public: bool, timeout: float = None
+    ) -> Response:
         """Changes a profile photo for the current user
 
         Args:
             photo (``dict``):
                 Profile photo to set
+
+            is_public (``bool``):
+                Pass true to set a public photo, which will be visible even the main photo is hidden by privacy settings
 
 
         Returns:
@@ -9890,6 +10005,7 @@ class TDLibFunctions:
         data = {
             "@type": "setProfilePhoto",
             "photo": photo,
+            "is_public": is_public,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -10724,20 +10840,17 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def toggleSupergroupIsAggressiveAntiSpamEnabled(
-        self,
-        supergroup_id: int,
-        is_aggressive_anti_spam_enabled: bool,
-        timeout: float = None,
+    async def toggleSupergroupHasHiddenMembers(
+        self, supergroup_id: int, has_hidden_members: bool, timeout: float = None
     ) -> Response:
-        """Toggles whether aggressive anti-spam checks are enabled in the supergroup; requires can_delete_messages administrator right. Can be called only if the supergroup has at least getOption("aggressive_anti_spam_supergroup_member_count_min") members
+        """Toggles whether non-administrators can receive only administrators and bots using getSupergroupMembers or searchChatMembers. Can be called only if supergroupFullInfo.can_hide_members == true
 
         Args:
             supergroup_id (``int``):
-                The identifier of the supergroup, which isn't a broadcast group
+                Identifier of the supergroup
 
-            is_aggressive_anti_spam_enabled (``bool``):
-                The new value of is_aggressive_anti_spam_enabled
+            has_hidden_members (``bool``):
+                New value of has_hidden_members
 
 
         Returns:
@@ -10745,9 +10858,37 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "toggleSupergroupIsAggressiveAntiSpamEnabled",
+            "@type": "toggleSupergroupHasHiddenMembers",
             "supergroup_id": supergroup_id,
-            "is_aggressive_anti_spam_enabled": is_aggressive_anti_spam_enabled,
+            "has_hidden_members": has_hidden_members,
+        }
+
+        return await self.invoke(data, timeout=timeout)
+
+    async def toggleSupergroupHasAggressiveAntiSpamEnabled(
+        self,
+        supergroup_id: int,
+        has_aggressive_anti_spam_enabled: bool,
+        timeout: float = None,
+    ) -> Response:
+        """Toggles whether aggressive anti-spam checks are enabled in the supergroup. Can be called only if supergroupFullInfo.can_toggle_aggressive_anti_spam == true
+
+        Args:
+            supergroup_id (``int``):
+                The identifier of the supergroup, which isn't a broadcast group
+
+            has_aggressive_anti_spam_enabled (``bool``):
+                The new value of has_aggressive_anti_spam_enabled
+
+
+        Returns:
+            :class:`~pytdbot.types.Response`
+        """
+
+        data = {
+            "@type": "toggleSupergroupHasAggressiveAntiSpamEnabled",
+            "supergroup_id": supergroup_id,
+            "has_aggressive_anti_spam_enabled": has_aggressive_anti_spam_enabled,
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -11729,12 +11870,14 @@ class TDLibFunctions:
 
         return await self.invoke(data, timeout=timeout)
 
-    async def setDefaultMessageTtl(self, ttl: dict, timeout: float = None) -> Response:
-        """Changes the default message Time To Live setting (self-destruct timer) for new chats
+    async def setDefaultMessageAutoDeleteTime(
+        self, message_auto_delete_time: dict, timeout: float = None
+    ) -> Response:
+        """Changes the default message auto-delete time for new chats
 
         Args:
-            ttl (``dict``):
-                New message TTL; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
+            message_auto_delete_time (``dict``):
+                New default message auto-delete time; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically
 
 
         Returns:
@@ -11742,14 +11885,14 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "setDefaultMessageTtl",
-            "ttl": ttl,
+            "@type": "setDefaultMessageAutoDeleteTime",
+            "message_auto_delete_time": message_auto_delete_time,
         }
 
         return await self.invoke(data, timeout=timeout)
 
-    async def getDefaultMessageTtl(self, timeout: float = None) -> Response:
-        """Returns default message Time To Live setting (self-destruct timer) for new chats
+    async def getDefaultMessageAutoDeleteTime(self, timeout: float = None) -> Response:
+        """Returns default message auto-delete time setting for new chats
 
 
         Returns:
@@ -11757,7 +11900,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "getDefaultMessageTtl",
+            "@type": "getDefaultMessageAutoDeleteTime",
         }
 
         return await self.invoke(data, timeout=timeout)
@@ -12512,12 +12655,12 @@ class TDLibFunctions:
         return await self.invoke(data, timeout=timeout)
 
     async def getPassportAuthorizationFormAvailableElements(
-        self, autorization_form_id: int, password: str, timeout: float = None
+        self, authorization_form_id: int, password: str, timeout: float = None
     ) -> Response:
         """Returns already available Telegram Passport elements suitable for completing a Telegram Passport authorization form. Result can be received only once for each authorization form
 
         Args:
-            autorization_form_id (``int``):
+            authorization_form_id (``int``):
                 Authorization form identifier
 
             password (``str``):
@@ -12530,19 +12673,19 @@ class TDLibFunctions:
 
         data = {
             "@type": "getPassportAuthorizationFormAvailableElements",
-            "autorization_form_id": autorization_form_id,
+            "authorization_form_id": authorization_form_id,
             "password": password,
         }
 
         return await self.invoke(data, timeout=timeout)
 
     async def sendPassportAuthorizationForm(
-        self, autorization_form_id: int, types: list, timeout: float = None
+        self, authorization_form_id: int, types: list, timeout: float = None
     ) -> Response:
         """Sends a Telegram Passport authorization form, effectively sharing data with the service. This method must be called after getPassportAuthorizationFormAvailableElements if some previously available elements are going to be reused
 
         Args:
-            autorization_form_id (``int``):
+            authorization_form_id (``int``):
                 Authorization form identifier
 
             types (``list``):
@@ -12555,7 +12698,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "sendPassportAuthorizationForm",
-            "autorization_form_id": autorization_form_id,
+            "authorization_form_id": authorization_form_id,
             "types": types,
         }
 

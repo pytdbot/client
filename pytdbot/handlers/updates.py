@@ -314,7 +314,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The message content was opened. Updates voice note messages to "listened", video note messages to "viewed" and starts the TTL timer for self-destructing messages
+        """The message content was opened. Updates voice note messages to "listened", video note messages to "viewed" and starts the self-destruct timer
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
@@ -833,12 +833,12 @@ class Updates:
 
         return decorator
 
-    def on_updateChatMessageTtl(
+    def on_updateChatMessageAutoDeleteTime(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The message Time To Live setting for a chat was changed
+        """The message auto-delete or self-destruct timer setting for a chat was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
@@ -853,13 +853,17 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatMessageTtl", func, filters, position)
+                    self.add_handler(
+                        "updateChatMessageAutoDeleteTime", func, filters, position
+                    )
                 else:
                     logger.warn(
                         'Function "{}" is not a coroutine function'.format(func)
                     )
             else:
-                func._handler = Handler(func, "updateChatMessageTtl", filters, position)
+                func._handler = Handler(
+                    func, "updateChatMessageAutoDeleteTime", filters, position
+                )
             return func
 
         return decorator

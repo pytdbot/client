@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.9",
-    "commit_hash": "a7952f383",
+    "version": "1.8.10",
+    "commit_hash": "1d07857cb",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -11,6 +11,7 @@
         "MaskPoint": "Part of the face, relative to which a mask is placed",
         "StickerFormat": "Describes format of a sticker",
         "StickerType": "Describes type of a sticker",
+        "StickerFullType": "Contains full information about sticker type",
         "PollType": "Describes the type of a poll",
         "UserType": "Represents the type of a user. The following types are possible: regular users, deleted users and bots",
         "InputChatPhoto": "Describes a photo to be set as a user profile or chat photo",
@@ -348,17 +349,17 @@
             "type": "TermsOfService"
         },
         "authorizationStateWaitTdlibParameters": {
-            "description": "Initializetion parameters are needed. Call `setTdlibParameters` to provide them",
+            "description": "Initializetion parameters are needed. Call setTdlibParameters to provide them",
             "args": {},
             "type": "AuthorizationState"
         },
         "authorizationStateWaitPhoneNumber": {
-            "description": "TDLib needs the user's phone number to authorize. Call `setAuthenticationPhoneNumber` to provide the phone number, or use `requestQrCodeAuthentication`, or `checkAuthenticationBotToken` for other authentication options",
+            "description": "TDLib needs the user's phone number to authorize. Call setAuthenticationPhoneNumber to provide the phone number, or use requestQrCodeAuthentication or checkAuthenticationBotToken for other authentication options",
             "args": {},
             "type": "AuthorizationState"
         },
         "authorizationStateWaitEmailAddress": {
-            "description": "TDLib needs the user's email address to authorize. Call `setAuthenticationEmailAddress` to provide the email address, or directly call `checkAuthenticationEmailCode` with Apple ID/Google ID token if allowed",
+            "description": "TDLib needs the user's email address to authorize. Call setAuthenticationEmailAddress to provide the email address, or directly call checkAuthenticationEmailCode with Apple ID/Google ID token if allowed",
             "args": {
                 "allow_apple_id": {
                     "description": "True, if authorization through Apple ID is allowed",
@@ -374,7 +375,7 @@
             "type": "AuthorizationState"
         },
         "authorizationStateWaitEmailCode": {
-            "description": "TDLib needs the user's authentication code sent to an email address to authorize. Call `checkAuthenticationEmailCode` to provide the code",
+            "description": "TDLib needs the user's authentication code sent to an email address to authorize. Call checkAuthenticationEmailCode to provide the code",
             "args": {
                 "allow_apple_id": {
                     "description": "True, if authorization through Apple ID is allowed",
@@ -400,7 +401,7 @@
             "type": "AuthorizationState"
         },
         "authorizationStateWaitCode": {
-            "description": "TDLib needs the user's authentication code to authorize",
+            "description": "TDLib needs the user's authentication code to authorize. Call checkAuthenticationCode to check the code",
             "args": {
                 "code_info": {
                     "description": "Information about the authorization code that was sent",
@@ -422,7 +423,7 @@
             "type": "AuthorizationState"
         },
         "authorizationStateWaitRegistration": {
-            "description": "The user is unregistered and need to accept terms of service and enter their first name and last name to finish registration",
+            "description": "The user is unregistered and need to accept terms of service and enter their first name and last name to finish registration. Call registerUser to accept the terms of service and provide the data",
             "args": {
                 "terms_of_service": {
                     "description": "Telegram terms of service",
@@ -433,7 +434,7 @@
             "type": "AuthorizationState"
         },
         "authorizationStateWaitPassword": {
-            "description": "The user has been authorized, but needs to enter a 2-step verification password to start using the application",
+            "description": "The user has been authorized, but needs to enter a 2-step verification password to start using the application. Call checkAuthenticationPassword to provide the password, or requestAuthenticationPasswordRecovery to recover the password, or deleteAccount to delete the account after a week",
             "args": {
                 "password_hint": {
                     "description": "Hint for the password; may be empty",
@@ -454,7 +455,7 @@
             "type": "AuthorizationState"
         },
         "authorizationStateReady": {
-            "description": "The user has been successfully authorized. TDLib is now ready to answer queries",
+            "description": "The user has been successfully authorized. TDLib is now ready to answer general requests",
             "args": {},
             "type": "AuthorizationState"
         },
@@ -892,6 +893,44 @@
             "args": {},
             "type": "StickerType"
         },
+        "stickerFullTypeRegular": {
+            "description": "The sticker is a regular sticker",
+            "args": {
+                "premium_animation": {
+                    "description": "Premium animation of the sticker; may be null. If present, only Telegram Premium users can use the sticker",
+                    "is_optional": true,
+                    "type": "file"
+                }
+            },
+            "type": "StickerFullType"
+        },
+        "stickerFullTypeMask": {
+            "description": "The sticker is a mask in WEBP format to be placed on photos or videos",
+            "args": {
+                "mask_position": {
+                    "description": "Position where the mask is placed; may be null",
+                    "is_optional": true,
+                    "type": "maskPosition"
+                }
+            },
+            "type": "StickerFullType"
+        },
+        "stickerFullTypeCustomEmoji": {
+            "description": "The sticker is a custom emoji to be used inside message text and caption. Currently, only Telegram Premium users can use custom emoji",
+            "args": {
+                "custom_emoji_id": {
+                    "description": "Identifier of the custom emoji",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "needs_repainting": {
+                    "description": "True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, or another appropriate color in other places",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StickerFullType"
+        },
         "closedVectorPath": {
             "description": "Represents a closed vector path. The path begins at the end point of the last command",
             "args": {
@@ -1143,20 +1182,10 @@
                     "is_optional": false,
                     "type": "StickerFormat"
                 },
-                "type": {
-                    "description": "Sticker type",
+                "full_type": {
+                    "description": "Sticker's full type",
                     "is_optional": false,
-                    "type": "StickerType"
-                },
-                "mask_position": {
-                    "description": "Position where the mask is placed; may be null even the sticker is a mask",
-                    "is_optional": true,
-                    "type": "maskPosition"
-                },
-                "custom_emoji_id": {
-                    "description": "Identifier of the emoji if the sticker is a custom emoji",
-                    "is_optional": false,
-                    "type": "int64"
+                    "type": "StickerFullType"
                 },
                 "outline": {
                     "description": "Sticker's outline represented as a list of closed vector paths; may be empty. The coordinate system origin is in the upper-left corner",
@@ -1167,16 +1196,6 @@
                     "description": "Sticker thumbnail in WEBP or JPEG format; may be null",
                     "is_optional": true,
                     "type": "thumbnail"
-                },
-                "is_premium": {
-                    "description": "True, if only Premium users can use the sticker",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "premium_animation": {
-                    "description": "Premium animation of the sticker; may be null",
-                    "is_optional": true,
-                    "type": "file"
                 },
                 "sticker": {
                     "description": "File containing the sticker",
@@ -1437,7 +1456,7 @@
             "description": "Describes a game",
             "args": {
                 "id": {
-                    "description": "Game ID",
+                    "description": "Unique game identifier",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -1557,6 +1576,11 @@
                     "description": "True, if the photo has animated variant",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "is_personal": {
+                    "description": "True, if the photo is visible only for the current user",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "ProfilePhoto"
@@ -1581,6 +1605,11 @@
                 },
                 "has_animation": {
                     "description": "True, if the photo has animated variant",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_personal": {
+                    "description": "True, if the photo is visible only for the current user",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -1970,7 +1999,7 @@
             "description": "Describes a custom emoji to be shown instead of the Telegram Premium badge",
             "args": {
                 "custom_emoji_id": {
-                    "description": "Identifier of the custom emoji in stickerFormatTgs format. If the custom emoji belongs to the sticker set getOption(\"themed_emoji_statuses_sticker_set_id\"), then it's color must be changed to the color of the Telegram Premium badge",
+                    "description": "Identifier of the custom emoji in stickerFormatTgs format",
                     "is_optional": false,
                     "type": "int64"
                 }
@@ -2077,11 +2106,6 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "has_anonymous_phone_number": {
-                    "description": "True, if the user's phone number was bought on Fragment and isn't tied to a SIM card",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
                 "restriction_reason": {
                     "description": "If non-empty, it contains a human-readable description of the reason why access to this user must be restricted",
                     "is_optional": true,
@@ -2169,8 +2193,18 @@
         "userFullInfo": {
             "description": "Contains full information about a user",
             "args": {
+                "personal_photo": {
+                    "description": "User profile photo set by the current user for the contact; may be null. If null and user.profile_photo is null, then the photo is empty, otherwise unknown. If non-null, then it is the same photo as in user.profile_photo and chat.photo. This photo isn't returned in the list of user photos",
+                    "is_optional": true,
+                    "type": "chatPhoto"
+                },
                 "photo": {
-                    "description": "User profile photo; may be null if empty or unknown. If non-null, then it is the same photo as in user.profile_photo and chat.photo",
+                    "description": "User profile photo; may be null. If null and user.profile_photo is null, then the photo is empty, otherwise unknown. If non-null and personal_photo is null, then it is the same photo as in user.profile_photo and chat.photo",
+                    "is_optional": true,
+                    "type": "chatPhoto"
+                },
+                "public_photo": {
+                    "description": "User profile photo visible if the main photo is hidden by privacy settings; may be null. If null and user.profile_photo is null, then the photo is empty, otherwise unknown. If non-null and both photo and personal_photo are null, then it is the same photo as in user.profile_photo and chat.photo. This photo isn't returned in the list of user photos",
                     "is_optional": true,
                     "type": "chatPhoto"
                 },
@@ -2836,6 +2870,16 @@
                     "is_optional": false,
                     "type": "vector<chatMember>"
                 },
+                "can_hide_members": {
+                    "description": "True, if non-administrators and non-bots can be hidden in responses to getSupergroupMembers and searchChatMembers for non-administrators after upgrading the basic group to a supergroup",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_toggle_aggressive_anti_spam": {
+                    "description": "True, if aggressive anti-spam checks can be enabled or disabled in the supergroup after upgrading the basic group to a supergroup",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "invite_link": {
                     "description": "Primary invite link for this group; may be null. For chat administrators with can_invite_users right only. Updated only after the basic group is opened",
                     "is_optional": true,
@@ -2994,7 +3038,17 @@
                     "type": "double"
                 },
                 "can_get_members": {
-                    "description": "True, if members of the chat can be retrieved",
+                    "description": "True, if members of the chat can be retrieved via getSupergroupMembers or searchChatMembers",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_hidden_members": {
+                    "description": "True, if non-administrators can receive only administrators and bots using getSupergroupMembers or searchChatMembers",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_hide_members": {
+                    "description": "True, if non-administrators and non-bots can be hidden in responses to getSupergroupMembers and searchChatMembers for non-administrators",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3018,13 +3072,18 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "is_all_history_available": {
-                    "description": "True, if new chat members will have access to old messages. In public, discussion, of forum groups and all channels, old messages are always available, so this option affects only private non-forum supergroups without a linked chat. The value of this field is only available for chat administrators",
+                "can_toggle_aggressive_anti_spam": {
+                    "description": "True, if aggressive anti-spam checks can be enabled or disabled in the supergroup",
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "is_aggressive_anti_spam_enabled": {
-                    "description": "True, if aggressive anti-spam checks are enabled in the supergroup. The value of this field is only available for chat administrators",
+                "is_all_history_available": {
+                    "description": "True, if new chat members will have access to old messages. In public, discussion, of forum groups and all channels, old messages are always available, so this option affects only private non-forum supergroups without a linked chat. The value of this field is only available to chat administrators",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_aggressive_anti_spam_enabled": {
+                    "description": "True, if aggressive anti-spam checks are enabled in the supergroup. The value of this field is only available to chat administrators",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3593,13 +3652,18 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "ttl": {
-                    "description": "For self-destructing messages, the message's TTL (Time To Live), in seconds; 0 if none. TDLib will send updateDeleteMessages or updateMessageContent once the TTL expires",
+                "self_destruct_time": {
+                    "description": "The message's self-destruct time, in seconds; 0 if none. TDLib will send updateDeleteMessages or updateMessageContent once the time expires",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "ttl_expires_in": {
-                    "description": "Time left before the message expires, in seconds. If the TTL timer isn't started yet, equals to the value of the ttl field",
+                "self_destruct_in": {
+                    "description": "Time left before the message self-destruct timer expires, in seconds. If the self-destruct timer isn't started yet, equals to the value of the self_destruct_time field",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "auto_delete_in": {
+                    "description": "Time left before the message will be automatically deleted by message_auto_delete_time setting of the chat, in seconds; 0 if never. TDLib will send updateDeleteMessages or updateMessageContent once the time expires",
                     "is_optional": false,
                     "type": "double"
                 },
@@ -3672,6 +3736,27 @@
                 }
             },
             "type": "FoundMessages"
+        },
+        "foundChatMessages": {
+            "description": "Contains a list of messages found by a search in a given chat",
+            "args": {
+                "total_count": {
+                    "description": "Approximate total number of messages found; -1 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "messages": {
+                    "description": "List of messages",
+                    "is_optional": false,
+                    "type": "vector<message>"
+                },
+                "next_from_message_id": {
+                    "description": "The offset for the next request. If 0, there are no more results",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "FoundChatMessages"
         },
         "messagePosition": {
             "description": "Contains information about a message in a specific position",
@@ -4402,8 +4487,8 @@
                     "is_optional": false,
                     "type": "ChatAvailableReactions"
                 },
-                "message_ttl": {
-                    "description": "Current message Time To Live setting (self-destruct timer) for the chat; 0 if not defined. TTL is counted from the time message or its content is viewed in secret chats and from the send date in other chats",
+                "message_auto_delete_time": {
+                    "description": "Current message auto-delete or self-destruct timer setting for the chat, in seconds; 0 if disabled. Self-destruct timer in secret chats starts after the message or its content is viewed. Auto-delete timer in other chats starts from the send date",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -4781,6 +4866,11 @@
                     "description": "A list of rows of bot keyboard buttons",
                     "is_optional": false,
                     "type": "vector<vector<keyboardButton>>"
+                },
+                "is_persistent": {
+                    "description": "True, if the keyboard is supposed to be always shown when the ordinary keyboard is hidden",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "resize_keyboard": {
                     "description": "True, if the application needs to resize the keyboard vertically",
@@ -6083,7 +6173,7 @@
                     "type": "voiceNote"
                 },
                 "instant_view_version": {
-                    "description": "Version of instant view, available for the web page (currently, can be 1 or 2), 0 if none",
+                    "description": "Version of web page instant view (currently, can be 1 or 2); 0 if none",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -6149,6 +6239,11 @@
                     "description": "The phone number without country calling code formatted accordingly to local rules. Expected digits are returned as '-', but even more digits might be entered by the user",
                     "is_optional": false,
                     "type": "string"
+                },
+                "is_anonymous": {
+                    "description": "True, if the phone number was bought on Fragment and isn't tied to a SIM card",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "PhoneNumberInfo"
@@ -7733,6 +7828,11 @@
                     "is_optional": false,
                     "type": "formattedText"
                 },
+                "has_spoiler": {
+                    "description": "True, if the animation preview must be covered by a spoiler animation",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_secret": {
                     "description": "True, if the animation thumbnail must be blurred and the animation must be shown only while tapped",
                     "is_optional": false,
@@ -7777,7 +7877,7 @@
             "description": "A photo message",
             "args": {
                 "photo": {
-                    "description": "The photo description",
+                    "description": "The photo",
                     "is_optional": false,
                     "type": "photo"
                 },
@@ -7785,6 +7885,11 @@
                     "description": "Photo caption",
                     "is_optional": false,
                     "type": "formattedText"
+                },
+                "has_spoiler": {
+                    "description": "True, if the photo preview must be covered by a spoiler animation",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "is_secret": {
                     "description": "True, if the photo must be blurred and must be shown only while tapped",
@@ -7795,7 +7900,7 @@
             "type": "MessageContent"
         },
         "messageExpiredPhoto": {
-            "description": "An expired photo message (self-destructed after TTL has elapsed)",
+            "description": "A self-destructed photo message",
             "args": {},
             "type": "MessageContent"
         },
@@ -7828,6 +7933,11 @@
                     "is_optional": false,
                     "type": "formattedText"
                 },
+                "has_spoiler": {
+                    "description": "True, if the video preview must be covered by a spoiler animation",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_secret": {
                     "description": "True, if the video thumbnail must be blurred and the video must be shown only while tapped",
                     "is_optional": false,
@@ -7837,7 +7947,7 @@
             "type": "MessageContent"
         },
         "messageExpiredVideo": {
-            "description": "An expired video message (self-destructed after TTL has elapsed)",
+            "description": "A self-destructed video message",
             "args": {},
             "type": "MessageContent"
         },
@@ -7907,7 +8017,7 @@
                     "type": "int32"
                 },
                 "proximity_alert_radius": {
-                    "description": "For live locations, a maximum distance to another chat member for proximity alerts, in meters (0-100000). 0 if the notification is disabled. Available only for the message sender",
+                    "description": "For live locations, a maximum distance to another chat member for proximity alerts, in meters (0-100000). 0 if the notification is disabled. Available only to the message sender",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -8276,11 +8386,11 @@
             },
             "type": "MessageContent"
         },
-        "messageChatSetTtl": {
-            "description": "The TTL (Time To Live) setting for messages in the chat has been changed",
+        "messageChatSetMessageAutoDeleteTime": {
+            "description": "The auto-delete or self-destruct timer for messages in the chat has been changed",
             "args": {
-                "ttl": {
-                    "description": "New message TTL",
+                "message_auto_delete_time": {
+                    "description": "New value auto-delete or self-destruct time, in seconds; 0 if disabled",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -8347,6 +8457,17 @@
                     "description": "True, if the topic was hidden, otherwise the topic was unhidden",
                     "is_optional": false,
                     "type": "Bool"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageSuggestProfilePhoto": {
+            "description": "A profile photo was suggested to a user in a private chat",
+            "args": {
+                "photo": {
+                    "description": "The suggested chat photo. Use the method setProfilePhoto with inputChatPhotoPrevious to apply the photo",
+                    "is_optional": false,
+                    "type": "chatPhoto"
                 }
             },
             "type": "MessageContent"
@@ -8515,6 +8636,11 @@
                     "type": "string"
                 }
             },
+            "type": "MessageContent"
+        },
+        "messageBotWriteAccessAllowed": {
+            "description": "The user allowed the bot to send messages",
+            "args": {},
             "type": "MessageContent"
         },
         "messageWebAppDataSent": {
@@ -8874,6 +9000,11 @@
                     "description": "Animation caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
+                },
+                "has_spoiler": {
+                    "description": "True, if the animation preview must be covered by a spoiler animation; not supported in secret chats",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "InputMessageContent"
@@ -8973,10 +9104,15 @@
                     "is_optional": true,
                     "type": "formattedText"
                 },
-                "ttl": {
-                    "description": "Photo TTL (Time To Live), in seconds (0-60). A non-zero TTL can be specified only in private chats",
+                "self_destruct_time": {
+                    "description": "Photo self-destruct time, in seconds (0-60). A non-zero self-destruct time can be specified only in private chats",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "has_spoiler": {
+                    "description": "True, if the photo preview must be covered by a spoiler animation; not supported in secret chats",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "InputMessageContent"
@@ -9055,10 +9191,15 @@
                     "is_optional": true,
                     "type": "formattedText"
                 },
-                "ttl": {
-                    "description": "Video TTL (Time To Live), in seconds (0-60). A non-zero TTL can be specified only in private chats",
+                "self_destruct_time": {
+                    "description": "Video self-destruct time, in seconds (0-60). A non-zero self-destruct time can be specified only in private chats",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "has_spoiler": {
+                    "description": "True, if the video preview must be covered by a spoiler animation; not supported in secret chats",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "InputMessageContent"
@@ -10701,7 +10842,7 @@
             "type": "AttachmentMenuBotColor"
         },
         "attachmentMenuBot": {
-            "description": "Represents a bot added to attachment menu",
+            "description": "Represents a bot, which can be added to attachment menu",
             "args": {
                 "bot_user_id": {
                     "description": "User identifier of the bot added to attachment menu",
@@ -10735,6 +10876,11 @@
                 },
                 "supports_settings": {
                     "description": "True, if the bot supports \"settings_button_pressed\" event",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "request_write_access": {
+                    "description": "True, if the user needs to be requested to give the permission to the bot to send them messages",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -12010,16 +12156,16 @@
             },
             "type": "ChatEventAction"
         },
-        "chatEventMessageTtlChanged": {
-            "description": "The message TTL was changed",
+        "chatEventMessageAutoDeleteTimeChanged": {
+            "description": "The message auto-delete timer was changed",
             "args": {
-                "old_message_ttl": {
-                    "description": "Previous value of message_ttl",
+                "old_message_auto_delete_time": {
+                    "description": "Previous value of message_auto_delete_time",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "new_message_ttl": {
-                    "description": "New value of message_ttl",
+                "new_message_auto_delete_time": {
+                    "description": "New value of message_auto_delete_time",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -12171,11 +12317,11 @@
             },
             "type": "ChatEventAction"
         },
-        "chatEventIsAggressiveAntiSpamEnabledToggled": {
-            "description": "The is_aggressive_anti_spam_enabled setting of a supergroup was toggled",
+        "chatEventHasAggressiveAntiSpamEnabledToggled": {
+            "description": "The has_aggressive_anti_spam_enabled setting of a supergroup was toggled",
             "args": {
-                "is_aggressive_anti_spam_enabled": {
-                    "description": "New value of is_aggressive_anti_spam_enabled",
+                "has_aggressive_anti_spam_enabled": {
+                    "description": "New value of has_aggressive_anti_spam_enabled",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -13838,6 +13984,11 @@
             },
             "type": "PushMessageContent"
         },
+        "pushMessageContentSuggestProfilePhoto": {
+            "description": "A profile photo was suggested to the user",
+            "args": {},
+            "type": "PushMessageContent"
+        },
         "pushMessageContentMessageForwards": {
             "description": "A forwarded messages",
             "args": {
@@ -13863,7 +14014,7 @@
                     "type": "Bool"
                 },
                 "has_videos": {
-                    "description": "True, if the album has at least one video",
+                    "description": "True, if the album has at least one video file",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -14312,16 +14463,16 @@
             },
             "type": "AccountTtl"
         },
-        "messageTtl": {
-            "description": "Contains default message Time To Live setting (self-destruct timer) for new chats",
+        "messageAutoDeleteTime": {
+            "description": "Contains default auto-delete timer setting for new chats",
             "args": {
-                "ttl": {
-                    "description": "Message TTL setting, in seconds. If 0, then messages aren't deleted automatically",
+                "time": {
+                    "description": "Message auto-delete time, in seconds. If 0, then messages aren't deleted automatically",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "MessageTtl"
+            "type": "MessageAutoDeleteTime"
         },
         "sessionTypeAndroid": {
             "description": "The session is running on an Android device",
@@ -14796,8 +14947,18 @@
             },
             "type": "InternalLinkType"
         },
+        "internalLinkTypeDefaultMessageAutoDeleteTimerSettings": {
+            "description": "The link is a link to the default message auto-delete timer settings section of the app settings",
+            "args": {},
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeEditProfileSettings": {
+            "description": "The link is a link to the edit profile section of the app settings",
+            "args": {},
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeFilterSettings": {
-            "description": "The link is a link to the filter settings section of the app",
+            "description": "The link is a link to the filter section of the app settings",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -14856,7 +15017,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeLanguageSettings": {
-            "description": "The link is a link to the language settings section of the app",
+            "description": "The link is a link to the language section of the app settings",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -14946,7 +15107,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePrivacyAndSecuritySettings": {
-            "description": "The link is a link to the privacy and security settings section of the app",
+            "description": "The link is a link to the privacy and security section of the app settings",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -15004,6 +15165,11 @@
                     "description": "Name of the sticker set",
                     "is_optional": false,
                     "type": "string"
+                },
+                "expect_custom_emoji": {
+                    "description": "True, if the sticker set is expected to contain custom emoji",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "InternalLinkType"
@@ -15020,7 +15186,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeThemeSettings": {
-            "description": "The link is a link to the theme settings section of the app",
+            "description": "The link is a link to the theme section of the app settings",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -15084,10 +15250,10 @@
             "type": "InternalLinkType"
         },
         "messageLink": {
-            "description": "Contains an HTTPS link to a message in a supergroup or channel",
+            "description": "Contains an HTTPS link to a message in a supergroup or channel, or a forum topic",
             "args": {
                 "link": {
-                    "description": "Message link",
+                    "description": "The link",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -15103,12 +15269,12 @@
             "description": "Contains information about a link to a message or a forum topic in a chat",
             "args": {
                 "is_public": {
-                    "description": "True, if the link is a public link for a message in a chat",
+                    "description": "True, if the link is a public link for a message or a forum topic in a chat",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "chat_id": {
-                    "description": "If found, identifier of the chat to which the message belongs, 0 otherwise",
+                    "description": "If found, identifier of the chat to which the link points, 0 otherwise",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -16637,7 +16803,7 @@
             "type": "Update"
         },
         "updateMessageContentOpened": {
-            "description": "The message content was opened. Updates voice note messages to \"listened\", video note messages to \"viewed\" and starts the TTL timer for self-destructing messages",
+            "description": "The message content was opened. Updates voice note messages to \"listened\", video note messages to \"viewed\" and starts the self-destruct timer",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -16917,16 +17083,16 @@
             },
             "type": "Update"
         },
-        "updateChatMessageTtl": {
-            "description": "The message Time To Live setting for a chat was changed",
+        "updateChatMessageAutoDeleteTime": {
+            "description": "The message auto-delete or self-destruct timer setting for a chat was changed",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_ttl": {
-                    "description": "New value of message_ttl",
+                "message_auto_delete_time": {
+                    "description": "New value of message_auto_delete_time",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -18655,7 +18821,7 @@
             "type": "PasswordState"
         },
         "setLoginEmailAddress": {
-            "description": "Changes the login email address of the user. The change will not be applied until the new login email address is confirmed with `checkLoginEmailAddressCode`. To use Apple ID/Google ID instead of a email address, call `checkLoginEmailAddressCode` directly",
+            "description": "Changes the login email address of the user. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode. To use Apple ID/Google ID instead of a email address, call checkLoginEmailAddressCode directly",
             "args": {
                 "new_login_email_address": {
                     "description": "New login email address",
@@ -19414,7 +19580,7 @@
                     "type": "int53"
                 }
             },
-            "type": "Messages"
+            "type": "FoundChatMessages"
         },
         "searchMessages": {
             "description": "Searches for messages in all chats except secret chats. Returns the results in reverse chronological order (i.e., in order of decreasing (date, chat_id, message_id)). For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
@@ -19429,20 +19595,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "offset_date": {
-                    "description": "The date of the message starting from which the results need to be fetched. Use 0 or any date in the future to get results from the last message",
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
                     "is_optional": false,
-                    "type": "int32"
-                },
-                "offset_chat_id": {
-                    "description": "The chat identifier of the last found message, or 0 for the first request",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "offset_message_id": {
-                    "description": "The message identifier of the last found message, or 0 for the first request",
-                    "is_optional": false,
-                    "type": "int53"
+                    "type": "string"
                 },
                 "limit": {
                     "description": "The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
@@ -19465,7 +19621,7 @@
                     "type": "int32"
                 }
             },
-            "type": "Messages"
+            "type": "FoundMessages"
         },
         "searchSecretMessages": {
             "description": "Searches for messages in secret chats. Returns the results in reverse chronological order. For optimal performance, the number of returned messages is chosen by TDLib",
@@ -19501,10 +19657,10 @@
         "searchCallMessages": {
             "description": "Searches for call messages. Returns the results in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib",
             "args": {
-                "from_message_id": {
-                    "description": "Identifier of the message from which to search; use 0 to get results from the last message",
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "string"
                 },
                 "limit": {
                     "description": "The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
@@ -19517,7 +19673,7 @@
                     "type": "Bool"
                 }
             },
-            "type": "Messages"
+            "type": "FoundMessages"
         },
         "searchOutgoingDocumentMessages": {
             "description": "Searches for outgoing messages with content of the type messageDocument in all chats except secret chats. Returns the results in reverse chronological order",
@@ -20499,7 +20655,7 @@
             "type": "ForumTopicInfo"
         },
         "editForumTopic": {
-            "description": "Edits title and icon of a topic in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup unless the user is creator of the topic",
+            "description": "Edits title and icon of a topic in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup unless the user is creator of the topic",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -20559,7 +20715,7 @@
                     "type": "int53"
                 }
             },
-            "type": "HttpUrl"
+            "type": "MessageLink"
         },
         "getForumTopics": {
             "description": "Returns found forum topics in a forum chat. This is a temporary method for getting information about topic list from the server",
@@ -20619,7 +20775,7 @@
             "type": "Ok"
         },
         "toggleForumTopicIsClosed": {
-            "description": "Toggles whether a topic is closed in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup unless the user is creator of the topic",
+            "description": "Toggles whether a topic is closed in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup unless the user is creator of the topic",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -20640,7 +20796,7 @@
             "type": "Ok"
         },
         "toggleGeneralForumTopicIsHidden": {
-            "description": "Toggles whether a General topic is hidden in a forum supergroup chat; requires can_manage_topics administrator rights in the supergroup",
+            "description": "Toggles whether a General topic is hidden in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -20655,8 +20811,45 @@
             },
             "type": "Ok"
         },
+        "toggleForumTopicIsPinned": {
+            "description": "Changes the pinned state of a forum topic; requires can_manage_topics administrator right in the supergroup. There can be up to getOption(\"pinned_forum_topic_count_max\") pinned forum topics",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_id": {
+                    "description": "Message thread identifier of the forum topic",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_pinned": {
+                    "description": "Pass true to pin the topic; pass false to unpin it",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "setPinnedForumTopics": {
+            "description": "Changes the order of pinned forum topics",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_thread_ids": {
+                    "description": "The new list of pinned forum topics",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "Ok"
+        },
         "deleteForumTopic": {
-            "description": "Deletes all messages in a forum topic; requires can_delete_messages administrator rights in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages",
+            "description": "Deletes all messages in a forum topic; requires can_delete_messages administrator right in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -21740,8 +21933,8 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "message_ttl": {
-                    "description": "Message TTL value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
+                "message_auto_delete_time": {
+                    "description": "Message auto-delete time value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -21771,8 +21964,8 @@
                     "is_optional": true,
                     "type": "chatLocation"
                 },
-                "message_ttl": {
-                    "description": "Message TTL value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
+                "message_auto_delete_time": {
+                    "description": "Message auto-delete time value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -21946,16 +22139,16 @@
             },
             "type": "Ok"
         },
-        "setChatMessageTtl": {
-            "description": "Changes the message TTL in a chat. Requires change_info administrator right in basic groups, supergroups and channels Message TTL can't be changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).",
+        "setChatMessageAutoDeleteTime": {
+            "description": "Changes the message auto-delete or self-destruct (for secret chats) time in a chat. Requires change_info administrator right in basic groups, supergroups and channels Message auto-delete time can't be changed in a chat with the current user (Saved Messages) and the chat 777000 (Telegram).",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "ttl": {
-                    "description": "New TTL value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
+                "message_auto_delete_time": {
+                    "description": "New time value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -22586,12 +22779,17 @@
                     "description": "Pass true to add the bot to attachment menu; pass false to remove the bot from attachment menu",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "allow_write_access": {
+                    "description": "Pass true if the current user allowed the bot to send them messages. Ignored if is_added is false",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Ok"
         },
         "getThemedEmojiStatuses": {
-            "description": "Returns up to 8 themed emoji statuses, which color must be changed to the color of the Telegram Premium badge",
+            "description": "Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list",
             "args": {},
             "type": "EmojiStatuses"
         },
@@ -23611,7 +23809,7 @@
                     "type": "int32"
                 },
                 "is_paused": {
-                    "description": "True, if screen sharing is paused",
+                    "description": "Pass true to pause screen sharing; pass false to unpause it",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -24075,6 +24273,38 @@
             "args": {},
             "type": "Ok"
         },
+        "setUserPersonalProfilePhoto": {
+            "description": "Changes a personal profile photo of a contact user",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "photo": {
+                    "description": "Profile photo to set; pass null to delete the photo; inputChatPhotoPrevious isn't supported in this function",
+                    "is_optional": true,
+                    "type": "InputChatPhoto"
+                }
+            },
+            "type": "Ok"
+        },
+        "suggestUserProfilePhoto": {
+            "description": "Suggests a profile photo to another regular user with common messages",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "photo": {
+                    "description": "Profile photo to suggest; inputChatPhotoPrevious isn't supported in this function",
+                    "is_optional": false,
+                    "type": "InputChatPhoto"
+                }
+            },
+            "type": "Ok"
+        },
         "searchUserByPhoneNumber": {
             "description": "Searches a user by their phone number. Returns a 404 error if the user can't be found",
             "args": {
@@ -24098,7 +24328,7 @@
             "type": "Ok"
         },
         "getUserProfilePhotos": {
-            "description": "Returns the profile photos of a user. The result of this query may be outdated: some photos might have been deleted already",
+            "description": "Returns the profile photos of a user. Personal and public photo aren't returned",
             "args": {
                 "user_id": {
                     "description": "User identifier",
@@ -24225,7 +24455,7 @@
             "type": "TrendingStickerSets"
         },
         "getAttachedStickerSets": {
-            "description": "Returns a list of sticker sets attached to a file. Currently, only photos and videos can have attached sticker sets",
+            "description": "Returns a list of sticker sets attached to a file, including regular, mask, and emoji sticker sets. Currently, only animations, photos, and videos can have attached sticker sets",
             "args": {
                 "file_id": {
                     "description": "File identifier",
@@ -24576,6 +24806,11 @@
                     "description": "Profile photo to set",
                     "is_optional": false,
                     "type": "InputChatPhoto"
+                },
+                "is_public": {
+                    "description": "Pass true to set a public photo, which will be visible even the main photo is hidden by privacy settings",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Ok"
@@ -25062,16 +25297,32 @@
             },
             "type": "Ok"
         },
-        "toggleSupergroupIsAggressiveAntiSpamEnabled": {
-            "description": "Toggles whether aggressive anti-spam checks are enabled in the supergroup; requires can_delete_messages administrator right. Can be called only if the supergroup has at least getOption(\"aggressive_anti_spam_supergroup_member_count_min\") members",
+        "toggleSupergroupHasHiddenMembers": {
+            "description": "Toggles whether non-administrators can receive only administrators and bots using getSupergroupMembers or searchChatMembers. Can be called only if supergroupFullInfo.can_hide_members == true",
+            "args": {
+                "supergroup_id": {
+                    "description": "Identifier of the supergroup",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "has_hidden_members": {
+                    "description": "New value of has_hidden_members",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleSupergroupHasAggressiveAntiSpamEnabled": {
+            "description": "Toggles whether aggressive anti-spam checks are enabled in the supergroup. Can be called only if supergroupFullInfo.can_toggle_aggressive_anti_spam == true",
             "args": {
                 "supergroup_id": {
                     "description": "The identifier of the supergroup, which isn't a broadcast group",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "is_aggressive_anti_spam_enabled": {
-                    "description": "The new value of is_aggressive_anti_spam_enabled",
+                "has_aggressive_anti_spam_enabled": {
+                    "description": "The new value of has_aggressive_anti_spam_enabled",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -25654,21 +25905,21 @@
             },
             "type": "Ok"
         },
-        "setDefaultMessageTtl": {
-            "description": "Changes the default message Time To Live setting (self-destruct timer) for new chats",
+        "setDefaultMessageAutoDeleteTime": {
+            "description": "Changes the default message auto-delete time for new chats",
             "args": {
-                "ttl": {
-                    "description": "New message TTL; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
+                "message_auto_delete_time": {
+                    "description": "New default message auto-delete time; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically",
                     "is_optional": false,
-                    "type": "messageTtl"
+                    "type": "messageAutoDeleteTime"
                 }
             },
             "type": "Ok"
         },
-        "getDefaultMessageTtl": {
-            "description": "Returns default message Time To Live setting (self-destruct timer) for new chats",
+        "getDefaultMessageAutoDeleteTime": {
+            "description": "Returns default message auto-delete time setting for new chats",
             "args": {},
-            "type": "MessageTtl"
+            "type": "MessageAutoDeleteTime"
         },
         "removeChatActionBar": {
             "description": "Removes a chat action bar without any other action",
@@ -26123,7 +26374,7 @@
         "getPassportAuthorizationFormAvailableElements": {
             "description": "Returns already available Telegram Passport elements suitable for completing a Telegram Passport authorization form. Result can be received only once for each authorization form",
             "args": {
-                "autorization_form_id": {
+                "authorization_form_id": {
                     "description": "Authorization form identifier",
                     "is_optional": false,
                     "type": "int32"
@@ -26139,7 +26390,7 @@
         "sendPassportAuthorizationForm": {
             "description": "Sends a Telegram Passport authorization form, effectively sharing data with the service. This method must be called after getPassportAuthorizationFormAvailableElements if some previously available elements are going to be reused",
             "args": {
-                "autorization_form_id": {
+                "authorization_form_id": {
                     "description": "Authorization form identifier",
                     "is_optional": false,
                     "type": "int32"
