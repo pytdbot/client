@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
     "version": "1.8.10",
-    "commit_hash": "1d07857cb",
+    "commit_hash": "cf1984844",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -18535,7 +18535,7 @@
                     "type": "string"
                 },
                 "database_encryption_key": {
-                    "description": "Encryption key for the database",
+                    "description": "Encryption key for the database. If the encryption key is invalid, then an error with code 401 will be returned",
                     "is_optional": false,
                     "type": "bytes"
                 },
@@ -25330,7 +25330,7 @@
             "type": "Ok"
         },
         "toggleSupergroupIsForum": {
-            "description": "Toggles whether the supergroup is a forum; requires owner privileges in the supergroup",
+            "description": "Toggles whether the supergroup is a forum; requires owner privileges in the supergroup. Discussion supergroups can't be converted to forums",
             "args": {
                 "supergroup_id": {
                     "description": "Identifier of the supergroup",
@@ -25338,7 +25338,7 @@
                     "type": "int53"
                 },
                 "is_forum": {
-                    "description": "New value of is_forum. A supergroup can be converted to a forum, only if it has at least getOption(\"forum_member_count_min\") members",
+                    "description": "New value of is_forum",
                     "is_optional": false,
                     "type": "Bool"
                 }

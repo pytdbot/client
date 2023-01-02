@@ -51,7 +51,7 @@ class TDLibFunctions:
                 The path to the directory for storing files; if empty, database_directory will be used
 
             database_encryption_key (``bytes``):
-                Encryption key for the database
+                Encryption key for the database. If the encryption key is invalid, then an error with code 401 will be returned
 
             use_file_database (``bool``):
                 Pass true to keep information about downloaded and uploaded files between application restarts
@@ -10896,14 +10896,14 @@ class TDLibFunctions:
     async def toggleSupergroupIsForum(
         self, supergroup_id: int, is_forum: bool, timeout: float = None
     ) -> Response:
-        """Toggles whether the supergroup is a forum; requires owner privileges in the supergroup
+        """Toggles whether the supergroup is a forum; requires owner privileges in the supergroup. Discussion supergroups can't be converted to forums
 
         Args:
             supergroup_id (``int``):
                 Identifier of the supergroup
 
             is_forum (``bool``):
-                New value of is_forum. A supergroup can be converted to a forum, only if it has at least getOption("forum_member_count_min") members
+                New value of is_forum
 
 
         Returns:
