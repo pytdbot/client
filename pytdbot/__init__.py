@@ -1,5 +1,5 @@
 __version__ = "0.7.11dev0"
-__copyright__ = "Copyright (c) 2022 AYMEN Mohammed ~ https://github.com/AYMENJD"
+__copyright__ = "Copyright (c) 2023 AYMEN Mohammed ~ https://github.com/AYMENJD"
 
 VERSION = __version__
 
