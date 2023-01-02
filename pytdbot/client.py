@@ -461,6 +461,7 @@ class Client(Decorators, Methods):
             del data["@client_id"]
 
         if "@type" not in data:
+            logger.error("Unexpected data received: %s", data)
             return
         elif "@extra" in data:
             if (
