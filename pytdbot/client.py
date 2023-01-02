@@ -279,7 +279,7 @@ class Client(Decorators, Methods):
 
     async def invoke(
         self,
-        data: dict,
+        request: dict,
         timeout: float = None,
         request_id: Union[str, int, dict] = None,
     ) -> Response:
@@ -296,8 +296,8 @@ class Client(Decorators, Methods):
                         print(res)
 
         Args:
-            data (``dict``):
-                A request data.
+            request (``dict``):
+                The request to be sent.
 
             timeout (``float``, optional):
                 Timeout in seconds. Defaults to None (no timeout).
@@ -308,12 +308,12 @@ class Client(Decorators, Methods):
         Returns:
             :class:`~pytdbot.types.Response`
         """
-        response = Response(data, request_id)
+        response = Response(request, request_id)
         self._results[response.id] = response
         if (
             logger.root.level >= DEBUG
         ):  # dumping all requests may create performance issues.
-            logger.debug("Sending: %s", dumps(response.request, indent=4))
+            logger.debug("Sending: {}".format(dumps(response.request, indent=4)))
 
         self.send(response.request)
         await response.wait(timeout=timeout)
@@ -366,11 +366,11 @@ class Client(Decorators, Methods):
             await asyncio.sleep(0.1)
         self.is_authenticated = False
         self.is_running = False
-        logger.info("Instance closed with %s updates served", self.update_count)
+        logger.info("Instance closed with {} updates served".format(self.update_count))
 
-    def send(self, data: dict) -> None:
+    def send(self, request: dict) -> None:
         return self._tdjson.send(
-            data
+            request
         )  # tdjson.send is asynchronous, So we don't need run_in_executor. This improves performance.
 
     async def receive(self, timeout: float = 2.0) -> dict:
@@ -412,9 +412,9 @@ class Client(Decorators, Methods):
             try:
                 module = import_module(module_path)
             except Exception:
-                logger.exception("Failed to load plugin %s", module_path)
+                logger.exception("Failed to load plugin {}".format(module_path))
             else:
-                logger.debug("Plugin %s loaded", module_path)
+                logger.debug("Plugin {} loaded".format(module_path))
                 for name in dir(module):
                     obj = getattr(module, name)
                     if hasattr(obj, "_handler") and isinstance(obj._handler, Handler):
@@ -426,19 +426,21 @@ class Client(Decorators, Methods):
                                 obj._handler.position,
                             )
                             logger.debug(
-                                "Handler %s added from %s",
-                                obj._handler.func,
-                                module_path,
+                                "Handler {} added from {}".format(
+                                    obj._handler.func,
+                                    module_path,
+                                )
                             )
                             handlers += 1
                         else:
                             logger.warn(
-                                'Handler "%s" is not an async function from module "%s"',
-                                obj._handler.func,
-                                module_path,
+                                'Handler "{}" is not an async function from module "{}"'.format(
+                                    obj._handler.func,
+                                    module_path,
+                                )
                             )
                 count += 1
-        logger.info("From %s plugins got %s handlers", count, handlers)
+        logger.info("From {} plugins got {} handlers".format(count, handlers))
 
     async def _listen_loop(self):
         try:
@@ -446,126 +448,130 @@ class Client(Decorators, Methods):
             logger.info("Listening to updates...")
 
             while self.is_running:
-                data = await self.receive()
-                if data is None:
+                update = await self.receive()
+                if update is None:
                     continue
-                await self._process_data(data)
+                await self._process_update(update)
 
         except Exception:
             logger.exception("Exception in _listen_loop")
         finally:
             self.is_running = False
 
-    async def _process_data(self, data):
-        if "@client_id" in data:
-            del data["@client_id"]
+    async def _process_update(self, update):
+        if "@client_id" in update:
+            del update["@client_id"]
 
-        if "@type" not in data:
-            logger.error("Unexpected data received: %s", data)
+        if "@type" not in update:
+            logger.error("Unexpected update received: {}".format(update))
             return
-        elif "@extra" in data:
+        elif "@extra" in update:
             if (
                 logger.root.level >= DEBUG
             ):  # dumping all responses may create performance issues.
-                logger.debug("Recieved: %s", dumps(data, indent=4))
-            if data["@extra"].get("request_id", "") in self._results:
-                response: Response = self._results.pop(data["@extra"]["request_id"])
-                response.set_response(data)
-            elif data["@type"] == "error" and "option" in data["@extra"]:
+                logger.debug("Recieved: {}".format(dumps(update, indent=4)))
+            if update["@extra"].get("request_id", "") in self._results:
+                response: Response = self._results.pop(update["@extra"]["request_id"])
+                response.set_response(update)
+            elif update["@type"] == "error" and "option" in update["@extra"]:
                 logger.error(
-                    "Cannot set option %s with value %s",
-                    data["@extra"]["option"],
-                    str(data["@extra"]["value"]),
+                    "Cannot set option {} with value {}".format(
+                        update["@extra"]["option"],
+                        str(update["@extra"]["value"]),
+                    )
                 )
         else:
-            if data["@type"] == "updateAuthorizationState":
-                await self._handle_authorization_state(data)
-            elif data["@type"] == "updateMessageSendSucceeded":
-                await self._handle_update_message_succeeded(data)
-            elif data["@type"] == "updateMessageSendFailed":
-                self.loop.create_task()
-                await self._handle_update_message_failed(data)
-            elif data["@type"] == "updateConnectionState":
-                await self._handle_connection_state(data)
-            elif data["@type"] == "updateOption":
-                await self._handle_update_option(data)
-            elif data["@type"] == "updateUser":
-                await self._handle_update_user(data)
+            if update["@type"] == "updateAuthorizationState":
+                await self._handle_authorization_state(update)
+            elif update["@type"] == "updateMessageSendSucceeded":
+                await self._handle_update_message_succeeded(update)
+            elif update["@type"] == "updateMessageSendFailed":
+                await self._handle_update_message_failed(update)
+            elif update["@type"] == "updateConnectionState":
+                await self._handle_connection_state(update)
+            elif update["@type"] == "updateOption":
+                await self._handle_update_option(update)
+            elif update["@type"] == "updateUser":
+                await self._handle_update_user(update)
 
             # We need to make sure that there is enough workers before we submit the update.
             # This also keeps the update in TDLib side until we call receive().
             await self.semaphore.acquire()
 
-            self.loop.create_task(self._handle_data(data))
+            self.loop.create_task(self._handle_update(update))
 
-    async def __run_initializers(self, data):
+    async def __run_initializers(self, update):
         for initializer in self._handlers["initializer"]:
             try:
                 if isinstance(initializer.filter, Filter):
                     if asyncio.iscoroutinefunction(initializer.filter.func):
-                        if not await initializer.filter.func(self, data):
+                        if not await initializer.filter.func(self, update):
                             continue
-                    elif not initializer.filter.func(self, data):
+                    elif not initializer.filter.func(self, update):
                         continue
-                await initializer.func(self, data)
+                await initializer.func(self, update)
             except StopHandlers as e:
                 raise e
             except Exception:
-                logger.exception("Initializer %s failed", initializer)
+                logger.exception("Initializer {} failed".format(initializer))
 
-    async def __run_handlers(self, data):
-        update_type = data["@type"]
+    async def __run_handlers(self, update):
+        update_type = update["@type"]
         for handler in self._handlers[update_type]:
             try:
                 if isinstance(handler.filter, Filter):
                     if asyncio.iscoroutinefunction(handler.filter.func):
-                        if not await handler.filter.func(self, data):
+                        if not await handler.filter.func(self, update):
                             continue
-                    elif not handler.filter.func(self, data):
+                    elif not handler.filter.func(self, update):
                         continue
-                await handler.func(self, data)
+                await handler.func(self, update)
             except StopHandlers as e:
                 raise e
             except Exception:
-                logger.exception("Exception in %s", handler)
+                logger.exception("Exception in {}".format(handler))
 
-    async def __run_finalizers(self, data):
+    async def __run_finalizers(self, update):
         for finalizer in self._handlers["finalizer"]:
             try:
                 if isinstance(finalizer.filter, Filter):
                     if asyncio.iscoroutinefunction(finalizer.filter.func):
-                        if not await finalizer.filter.func(self, data):
+                        if not await finalizer.filter.func(self, update):
                             continue
-                    elif not finalizer.filter.func(self, data):
+                    elif not finalizer.filter.func(self, update):
                         continue
-                await finalizer.func(self, data)
+                await finalizer.func(self, update)
             except Exception:
-                logger.exception("Finalizer %s failed", finalizer)
+                logger.exception("Finalizer {} failed".format(finalizer))
 
-    async def _handle_data(self, data: dict):
+    async def _handle_update(self, update: dict):
         try:
 
-            if "@type" not in data:
+            if "@type" not in update:
                 return self.semaphore.release()
 
             if (
                 logger.root.level >= DEBUG
             ):  # dumping all updates may create performance issues.
                 logger.debug(
-                    "Received: %s",
-                    dumps(data, indent=4),
+                    "Received: {}".format(
+                        dumps(update, indent=4),
+                    )
                 )
-            update_type = data["@type"]
+            update_type = update["@type"]
 
             if update_type in self._handlers:
-                data = self.update_class(self, data)
+                update = self.update_class(self, update)
 
-                if update_type == "updateNewMessage" and data["message"]["is_outgoing"]:
+                if (
+                    update_type == "updateNewMessage"
+                    and update["message"]["is_outgoing"]
+                ):
                     return self.semaphore.release()
                 self.update_count += 1
 
                 try:
-                    await self.__run_initializers(data)
+                    await self.__run_initializers(update)
                 except StopHandlers:
                     return (
                         self.semaphore.release()
@@ -573,13 +579,13 @@ class Client(Decorators, Methods):
                 else:
 
                     try:
-                        await self.__run_handlers(data)
+                        await self.__run_handlers(update)
                     except StopHandlers:
                         pass
 
                 finally:  # and finally run finalizers after execution of initializers and handlers
                     try:
-                        await self.__run_finalizers(data)
+                        await self.__run_finalizers(update)
                     except StopHandlers:
                         pass
                     finally:
@@ -645,7 +651,7 @@ class Client(Decorators, Methods):
                     "@extra": {"option": k, "value": v},
                 }
             )
-            logger.debug("Option %s sent with value %s", k, str(v))
+            logger.debug("Option {} sent with value {}".format(k, str(v)))
 
     async def _handle_authorization_state(self, update):
         if (
@@ -654,16 +660,18 @@ class Client(Decorators, Methods):
         ):
             self.authorization_state = update["authorization_state"]["@type"]
             logger.info(
-                "Authorization state changed to %s",
-                self.authorization_state.replace("authorizationState", ""),
+                "Authorization state changed to {}".format(
+                    self.authorization_state.replace("authorizationState", ""),
+                )
             )
 
     async def _handle_connection_state(self, update):
         if update["@type"] == "updateConnectionState":
             self.connection_state = update["state"]["@type"]
             logger.info(
-                "Connection state changed to %s",
-                self.connection_state.replace("connectionState", ""),
+                "Connection state changed to {}".format(
+                    self.connection_state.replace("connectionState", ""),
+                )
             )
 
     async def _handle_update_message_succeeded(self, update):
@@ -695,9 +703,10 @@ class Client(Decorators, Methods):
 
         if self.is_authenticated:
             logger.info(
-                "Option %s changed to %s",
-                update["name"],
-                self.options[update["name"]],
+                "Option {} changed to {}".format(
+                    update["name"],
+                    self.options[update["name"]],
+                )
             )
 
     async def _handle_update_user(self, update):
