@@ -90,3 +90,17 @@ class Response:
             del self.response["@extra"]
 
         self._event.set()
+
+    def reset(self) -> bool:
+        """Reset the current response flags
+
+        Returns:
+            ``bool``: `True` on success.
+        """
+        self.is_error = False
+        self.is_processed = False
+        self.response = {}
+        self.type_ = None
+        self._event.clear()
+
+        return True
