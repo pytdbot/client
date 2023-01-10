@@ -17,10 +17,7 @@ from base64 import b64encode
 from deepdiff import DeepDiff
 import signal, pytdbot, asyncio
 
-try:
-    from ujson import dumps
-except ImportError:
-    from json import dumps
+from ujson import dumps
 
 
 logger = getLogger(__name__)
@@ -136,6 +133,7 @@ class Client(Decorators, Methods):
         self.ignore_file_names = ignore_file_names
         self.td_options = options
         self.workers = workers
+        self.queue = asyncio.Queue()
         self.td_verbosity = td_verbosity
         self.authorization_state = None
         self.connection_state = None
@@ -147,15 +145,16 @@ class Client(Decorators, Methods):
 
         self._check_init_args()
 
-        self.semaphore = asyncio.Semaphore(self.workers)
-
         self._handlers = {"initializer": [], "finalizer": []}
         self._results = {}
         self._tdjson = TDjson(lib_path, td_verbosity)
+        self._workers_tasks = None
 
-        if isinstance(loop, asyncio.AbstractEventLoop):
-            asyncio.set_event_loop(loop)
-        self.loop = asyncio.get_event_loop()
+        self.loop = (
+            loop
+            if isinstance(loop, asyncio.AbstractEventLoop)
+            else asyncio.get_event_loop()
+        )
 
         if plugins is not None:
             self._load_plugins()
@@ -185,6 +184,13 @@ class Client(Decorators, Methods):
         if not self.is_running:
 
             logger.info("Starting pytdbot client...")
+
+            self._workers_tasks = [
+                self.loop.create_task(self._update_worker())
+                for _ in range(self.workers)
+            ]
+
+            logger.info("Started with %s workers", self.workers)
 
             self.loop.create_task(self._listen_loop())
 
@@ -364,8 +370,13 @@ class Client(Decorators, Methods):
         await self.close()
         while self.authorization_state != "authorizationStateClosed":
             await asyncio.sleep(0.1)
+
         self.is_authenticated = False
         self.is_running = False
+
+        for worker_task in self._workers_tasks:
+            worker_task.cancel()
+
         logger.info("Instance closed with {} updates served".format(self.update_count))
 
     def send(self, request: dict) -> None:
@@ -482,23 +493,19 @@ class Client(Decorators, Methods):
                 )
         else:
             if update["@type"] == "updateAuthorizationState":
-                await self._handle_authorization_state(update)
+                self.loop.create_task(self._handle_authorization_state(update))
             elif update["@type"] == "updateMessageSendSucceeded":
-                await self._handle_update_message_succeeded(update)
+                self.loop.create_task(self._handle_update_message_succeeded(update))
             elif update["@type"] == "updateMessageSendFailed":
-                await self._handle_update_message_failed(update)
+                self.loop.create_task(self._handle_update_message_failed(update))
             elif update["@type"] == "updateConnectionState":
-                await self._handle_connection_state(update)
+                self.loop.create_task(self._handle_connection_state(update))
             elif update["@type"] == "updateOption":
-                await self._handle_update_option(update)
+                self.loop.create_task(self._handle_update_option(update))
             elif update["@type"] == "updateUser":
-                await self._handle_update_user(update)
+                self.loop.create_task(self._handle_update_user(update))
 
-            # We need to make sure that there is enough workers before we submit the update.
-            # This also keeps the update in TDLib side until we call receive().
-            await self.semaphore.acquire()
-
-            self.loop.create_task(self._handle_update(update))
+            self.queue.put_nowait(update)
 
     async def __run_initializers(self, update):
         for initializer in self._handlers["initializer"]:
@@ -544,56 +551,52 @@ class Client(Decorators, Methods):
             except Exception:
                 logger.exception("Finalizer {} failed".format(finalizer))
 
-    async def _handle_update(self, update: dict):
-        try:
+    async def _update_worker(self):
+        if not self.is_running:
+            self.is_running = True
 
-            if "@type" not in update:
-                return self.semaphore.release()
+        while self.is_running:
+            try:
+                update = await self.queue.get()
 
-            if (
-                logger.root.level >= DEBUG
-            ):  # dumping all updates may create performance issues.
-                logger.debug(
-                    "Received: {}".format(
-                        dumps(update, indent=4),
-                    )
-                )
-            update_type = update["@type"]
-
-            if update_type in self._handlers:
-                update = self.update_class(self, update)
+                if "@type" not in update:
+                    continue
 
                 if (
-                    update_type == "updateNewMessage"
-                    and update["message"]["is_outgoing"]
-                ):
-                    return self.semaphore.release()
-                self.update_count += 1
+                    logger.root.level >= DEBUG
+                ):  # dumping all updates may create performance issues.
+                    logger.debug(
+                        "Received: %s",
+                        dumps(update, indent=4),
+                    )
+                update_type = update["@type"]
 
-                try:
-                    await self.__run_initializers(update)
-                except StopHandlers:
-                    return (
-                        self.semaphore.release()
-                    )  # if initializers raised StopHandlers, we should skip this update
-                else:
+                if update_type in self._handlers:
+                    update = self.update_class(self, update)
+
+                    if (
+                        update_type == "updateNewMessage"
+                        and update["message"]["is_outgoing"]
+                    ):
+                        continue
+                    self.update_count += 1
 
                     try:
-                        await self.__run_handlers(update)
+                        await self.__run_initializers(update)
                     except StopHandlers:
-                        pass
-
-                finally:  # and finally run finalizers after execution of initializers and handlers
-                    try:
-                        await self.__run_finalizers(update)
-                    except StopHandlers:
-                        pass
-                    finally:
-                        return self.semaphore.release()
-        except Exception:
-            logger.exception("Exception in _updates_worker")
-        finally:
-            return self.semaphore.release()
+                        continue  # if initializers raised StopHandlers, we should skip this update
+                    else:
+                        try:
+                            await self.__run_handlers(update)
+                        except StopHandlers:
+                            pass
+                    finally:  # and finally run finalizers after execution of initializers and handlers
+                        try:
+                            await self.__run_finalizers(update)
+                        except StopHandlers:
+                            continue
+            except Exception:
+                logger.exception("Exception in _updates_worker")
 
     async def _set_td_paramaters(self):
         if isinstance(self.database_encryption_key, str):
