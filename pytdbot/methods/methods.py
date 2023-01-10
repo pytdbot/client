@@ -107,7 +107,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -251,7 +251,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -393,7 +393,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -522,7 +522,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -666,7 +666,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -820,7 +820,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -916,7 +916,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -1045,7 +1045,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -1145,7 +1145,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -1262,7 +1262,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 
@@ -1314,7 +1314,7 @@ class Methods(TDLibFunctions):
         if res.is_error:
             return res
         _new = Response(data)
-        self._results[res.response["id"]] = _new
+        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
         await _new.wait(timeout)
         return _new
 

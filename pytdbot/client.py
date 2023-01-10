@@ -748,17 +748,21 @@ class Client(Decorators, Methods):
             )
 
     async def _handle_update_message_succeeded(self, update):
-        if update["old_message_id"] in self._results:
-            response: Response = self._results.pop(update["old_message_id"])
+        m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
+
+        if m_id in self._results:
+            response: Response = self._results.pop(m_id)
             response.set_response(update["message"])
 
     async def _handle_update_message_failed(self, update):
-        if update["old_message_id"] in self._results:
+        m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
+
+        if m_id in self._results:
             if update["error_code"] == 429:
                 retry_after = update["message"]["sending_state"]["retry_after"]
 
                 if retry_after <= self.sleep_threshold:
-                    response: Response = self._results.pop(update["old_message_id"])
+                    response: Response = self._results.pop(m_id)
 
                     logger.error(
                         "Sleeping for {}s (Caused by {})".format(
