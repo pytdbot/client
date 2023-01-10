@@ -348,7 +348,7 @@ class Client(Decorators, Methods):
                     )
                 )
 
-                await asyncio.sleep(retry_after + 0.5)  # 0.5 just in case
+                await asyncio.sleep(retry_after)
                 self._results[response.id] = response
                 self.send(response.request)
                 await response.wait(timeout=timeout)
