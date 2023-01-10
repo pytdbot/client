@@ -15,6 +15,7 @@ from typing import Callable, Union
 from logging import getLogger, DEBUG
 from base64 import b64encode
 from deepdiff import DeepDiff
+from threading import current_thread, main_thread
 import signal, pytdbot, asyncio
 
 from ujson import dumps
@@ -354,13 +355,15 @@ class Client(Decorators, Methods):
         def _handle_signal():
             self.loop.create_task(self.stop())
 
-        for sig in (
-            signal.SIGINT,
-            signal.SIGTERM,
-            signal.SIGABRT,
-            signal.SIGSEGV,
-        ):
-            self.loop.add_signal_handler(sig, _handle_signal)
+        if current_thread() is main_thread():
+            for sig in (
+                signal.SIGINT,
+                signal.SIGTERM,
+                signal.SIGABRT,
+                signal.SIGSEGV,
+            ):
+                self.loop.add_signal_handler(sig, _handle_signal)
+
         while self.is_running:
             await asyncio.sleep(1)
 
