@@ -56,6 +56,9 @@ class Response:
     def __iter__(self):
         return iter(self.response.items())
 
+    def __await__(self):
+        return self.wait().__await__()
+
     async def wait(self, timeout: float = None) -> None:
         """Wait for the response.
 
