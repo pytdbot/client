@@ -179,7 +179,8 @@ class Client(Decorators, Methods):
         """Start pytdbot client.
 
         Args:
-            login (``bool``, optional): Login after start. Defaults to True.
+            login (``bool``, optional):
+                Login after start. Defaults to True.
         """
         if not self.is_running:
 
@@ -263,7 +264,8 @@ class Client(Decorators, Methods):
         """Remove an update handler.
 
         Args:
-            func (`Callable`): A callable function.
+            func (`Callable`):
+                A callable function.
 
         Raises:
             TypeError
@@ -342,7 +344,8 @@ class Client(Decorators, Methods):
                 client.run()
 
         Args:
-            login (``bool``, optional): Login after start. Defaults to True.
+            login (``bool``, optional):
+                Login after start. Defaults to True.
         """
 
         self.loop.run_until_complete(self.start(login))
@@ -366,19 +369,38 @@ class Client(Decorators, Methods):
         while self.is_running:
             await asyncio.sleep(1)
 
-    async def stop(self):
-        """Stop the client."""
+    async def stop(self) -> bool:
+        """Stop the client.
+
+        Raises:
+            `RuntimeError`:
+                If the instance is already stopped.
+
+        Returns:
+            ``bool``: `True` on success.
+        """
+        if (
+            self.is_running == False
+            and self.authorization_state == "authorizationStateClosed"
+        ):
+            raise RuntimeError("Instance is not running")
+
         logger.info("Waiting for TDLib to close...")
+
         await self.close()
+
         while self.authorization_state != "authorizationStateClosed":
             await asyncio.sleep(0.1)
-        self.is_authenticated = False
-        self.is_running = False
+        else:
+            self.is_authenticated = False
+            self.is_running = False
 
-        for worker_task in self._workers_tasks:
-            worker_task.cancel()
+            for worker_task in self._workers_tasks:
+                worker_task.cancel()
 
-        logger.info("Instance closed")
+            logger.info("Instance closed")
+            
+            return True
 
     def send(self, request: dict) -> None:
         return self._tdjson.send(
