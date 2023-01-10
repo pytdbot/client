@@ -353,9 +353,6 @@ class Client(Decorators, Methods):
                 self.send(response.request)
                 await response.wait(timeout=timeout)
 
-                if response.is_error and response["code"] == 429:
-                    retry_after = self.get_retry_after_time(response["message"])
-
         return response
 
     def run(self, login: bool = True) -> None:
