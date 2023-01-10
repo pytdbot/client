@@ -32,7 +32,7 @@ class Response:
         self.is_error = False
         self.is_processed = False
         self.response = {}
-        self.type_ = None
+        self.type = None
         self._event = Event()
 
     def __str__(self):
@@ -81,9 +81,9 @@ class Response:
         """
         self.response = response
         self.is_processed = True
-        self.type_ = response["@type"]
+        self.type = response["@type"]
 
-        if self.type_ == "error":
+        if self.type == "error":
             self.is_error = True
 
         if self.remove_extra and "@extra" in self.response:
@@ -100,7 +100,7 @@ class Response:
         self.is_error = False
         self.is_processed = False
         self.response = {}
-        self.type_ = None
+        self.type = None
         self._event.clear()
 
         return True

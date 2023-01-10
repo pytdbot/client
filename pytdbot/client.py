@@ -218,7 +218,7 @@ class Client(Decorators, Methods):
             elif self.authorization_state == "authorizationStateWaitPhoneNumber":
                 await self._set_bot_token()
             authorization = await self.getAuthorizationState()
-            self.authorization_state = authorization.type_
+            self.authorization_state = authorization.type
 
         self.me = await self.getMe()
         self.me = self.me.response

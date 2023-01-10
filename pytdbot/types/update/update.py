@@ -47,7 +47,7 @@ class Update:
     def __init__(self, client: "pytdbot.Client", update: dict) -> None:
         self.client = client
         self.update = update
-        self.type_ = update["@type"]
+        self.type = update["@type"]
         self._store = {}
 
     def __getitem__(self, key):
@@ -75,7 +75,7 @@ class Update:
         Returns:
             ``int``
         """
-        if self.type_ in [
+        if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
@@ -91,7 +91,7 @@ class Update:
         Returns:
             ``int``
         """
-        if self.type_ in [
+        if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
@@ -112,7 +112,7 @@ class Update:
         Returns:
             ``int``
         """
-        if self.type_ in [
+        if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
@@ -126,7 +126,7 @@ class Update:
     @property
     def reply_to_message_id(self) -> int:
         """The message id of the replied message."""
-        if self.type_ in [
+        if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
@@ -140,13 +140,13 @@ class Update:
         Returns:
             ``str``
         """
-        if self.type_ in [
+        if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
         ]:
             return self.update["message"]["content"]["@type"]
-        elif self.type_ == "updateMessageContent":
+        elif self.type == "updateMessageContent":
             return self.update["new_content"]["@type"]
 
     @property
@@ -156,16 +156,16 @@ class Update:
         Returns:
             ``str``
         """
-        if self.type_ == "updateNewMessage" and self.content_type == "messageText":
+        if self.type == "updateNewMessage" and self.content_type == "messageText":
             return self.update["message"]["content"]["text"]["text"]
-        elif self.type_ == "updateMessageContent":
+        elif self.type == "updateMessageContent":
             if "text" in self.update["new_content"]:
                 return self.update["new_content"]["text"]["text"]
 
     @property
     def entities(self) -> list:
         """The entities of the message."""
-        if self.type_ in [
+        if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
@@ -174,7 +174,7 @@ class Update:
                 return self.update["message"]["content"]["text"]["entities"]
             elif "caption" in self.update["message"]["content"]:
                 return self.update["message"]["content"]["caption"]["entities"]
-        elif self.type_ == "updateMessageContent":
+        elif self.type == "updateMessageContent":
             if self.content_type == "messageText":
                 return self.update["new_content"]["text"]["entities"]
             elif "caption" in self.update["new_content"]:
@@ -187,14 +187,14 @@ class Update:
         Returns:
             ``str``
         """
-        if self.type_ in [
+        if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
         ]:
             if "caption" in self.update["message"]["content"]:
                 return self.update["message"]["content"]["caption"]["text"]
-        elif self.type_ == "updateMessageContent":
+        elif self.type == "updateMessageContent":
             if "caption" in self.update["new_content"]:
                 return self.update["new_content"]["caption"]["text"]
 
@@ -207,7 +207,7 @@ class Update:
         """
         if "data" in self._store:
             return self._store["data"]
-        elif self.type_ in ["updateNewCallbackQuery", "updateNewInlineCallbackQuery"]:
+        elif self.type in ["updateNewCallbackQuery", "updateNewInlineCallbackQuery"]:
             if self.update["payload"]["@type"] in [
                 "callbackQueryPayloadData",
                 "callbackQueryPayloadDataWithPassword",
@@ -223,7 +223,7 @@ class Update:
         Returns:
             ``str``
         """
-        if self.type_ in ["updateNewInlineQuery", "updateNewChosenInlineResult"]:
+        if self.type in ["updateNewInlineQuery", "updateNewChosenInlineResult"]:
             return self.update["query"]
 
     @property
@@ -233,7 +233,7 @@ class Update:
         Returns:
             ``str``
         """
-        if self.type_ not in [
+        if self.type not in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
