@@ -16,9 +16,8 @@ from logging import getLogger, DEBUG
 from base64 import b64encode
 from deepdiff import DeepDiff
 from threading import current_thread, main_thread
-import signal, pytdbot, asyncio
-
 from ujson import dumps
+import signal, pytdbot, asyncio
 
 
 logger = getLogger(__name__)
@@ -82,6 +81,10 @@ class Client(Decorators, Methods):
         options (``dict``, optional):
             Pass key-value dictionary to set TDLib options. Check the list of available options at https://core.telegram.org/tdlib/options.
 
+        sleep_threshold (``int``, optional):
+            Sleep threshold for all `FLOOD_WAIT_X` aka `Too Many Requests: retry after` errors occur to this client.
+            If any request is rate limited (flood waited) the client will repeat the request after sleeping the required amount of seconds returned by the error. If the `retry after` value is higher than `sleep_threshold` the error is returned. Defaults to `None` (Disabled).
+
         workers (``int``, optional):
             Number of workers for handling updates. Defaults to 5.
 
@@ -112,6 +115,7 @@ class Client(Decorators, Methods):
         ignore_file_names: bool = False,
         loop: asyncio.AbstractEventLoop = None,
         options: dict = None,
+        sleep_threshold: int = None,
         workers: int = 5,
         td_verbosity: int = 2,
         td_log: LogStream = None,
@@ -133,9 +137,13 @@ class Client(Decorators, Methods):
         self.enable_storage_optimizer = enable_storage_optimizer
         self.ignore_file_names = ignore_file_names
         self.td_options = options
+        self.sleep_threshold = (
+            sleep_threshold if isinstance(sleep_threshold, int) else 0
+        )
         self.workers = workers
         self.queue = asyncio.Queue()
         self.td_verbosity = td_verbosity
+        self._retry_after_prefex = "Too Many Requests: retry after "
         self.authorization_state = None
         self.connection_state = None
         self.is_running = None
@@ -316,8 +324,10 @@ class Client(Decorators, Methods):
         Returns:
             :class:`~pytdbot.types.Response`
         """
+
         response = Response(request, request_id)
         self._results[response.id] = response
+
         if (
             logger.root.level >= DEBUG
         ):  # dumping all requests may create performance issues.
@@ -325,6 +335,27 @@ class Client(Decorators, Methods):
 
         self.send(response.request)
         await response.wait(timeout=timeout)
+
+        if response.is_error and response["code"] == 429:
+            retry_after = self.get_retry_after_time(response["message"])
+
+            if retry_after <= self.sleep_threshold:
+                response.reset()
+
+                logger.error(
+                    "Sleeping for {}s (Caused by {})".format(
+                        retry_after, response.request["@type"]
+                    )
+                )
+
+                await asyncio.sleep(retry_after + 0.5)  # 0.5 just in case
+                self._results[response.id] = response
+                self.send(response.request)
+                await response.wait(timeout=timeout)
+
+                if response.is_error and response["code"] == 429:
+                    retry_after = self.get_retry_after_time(response["message"])
+
         return response
 
     def run(self, login: bool = True) -> None:
@@ -399,7 +430,7 @@ class Client(Decorators, Methods):
                 worker_task.cancel()
 
             logger.info("Instance closed")
-            
+
             return True
 
     def send(self, request: dict) -> None:
@@ -437,6 +468,23 @@ class Client(Decorators, Methods):
 
         if len(self.token.split(":")) != 2:
             raise ValueError("token must be in format <token>:<hash>")
+
+    def get_retry_after_time(self, error_message: str) -> int:
+        """Get the retry after time from flood wait error message
+
+        Args:
+            error_message (``str``):
+                The returned error message from TDLib.
+
+        Returns:
+            ``int``
+        """
+        assert isinstance(error_message, str), "error_message must be str"
+
+        try:
+            return int(error_message.removeprefix(self._retry_after_prefex))
+        except Exception:
+            return 0
 
     def _load_plugins(self):
         count = 0
@@ -706,14 +754,39 @@ class Client(Decorators, Methods):
 
     async def _handle_update_message_failed(self, update):
         if update["old_message_id"] in self._results:
-            response: Response = self._results.pop(update["old_message_id"])
-            response.set_response(
-                {
-                    "@type": "error",
-                    "code": update["error_code"],
-                    "message": update["error_message"],
-                }
-            )
+            if update["error_code"] == 429:
+                retry_after = update["message"]["sending_state"]["retry_after"]
+
+                if retry_after <= self.sleep_threshold:
+                    response: Response = self._results.pop(update["old_message_id"])
+
+                    logger.error(
+                        "Sleeping for {}s (Caused by {})".format(
+                            int(retry_after), response.request["@type"]
+                        )
+                    )
+
+                    await asyncio.sleep(retry_after)  # 0.5 just in case
+                    res = await self.invoke(response.request)
+                    if res.is_error:
+                        return response.set_response(
+                            {
+                                "@type": "error",
+                                "code": update["error_code"],
+                                "message": update["error_message"],
+                            }
+                        )
+
+                    self._results[res.response["id"]] = response
+            else:
+                response: Response = self._results.pop(update["old_message_id"])
+                response.set_response(
+                    {
+                        "@type": "error",
+                        "code": update["error_code"],
+                        "message": update["error_message"],
+                    }
+                )
 
     async def _handle_update_option(self, update):
 
