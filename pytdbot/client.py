@@ -141,7 +141,6 @@ class Client(Decorators, Methods):
         self.is_running = None
         self.me = None
         self.is_authenticated = False
-        self.update_count = 0
         self.options = {}
 
         self._check_init_args()
@@ -373,14 +372,13 @@ class Client(Decorators, Methods):
         await self.close()
         while self.authorization_state != "authorizationStateClosed":
             await asyncio.sleep(0.1)
-
         self.is_authenticated = False
         self.is_running = False
 
         for worker_task in self._workers_tasks:
             worker_task.cancel()
 
-        logger.info("Instance closed with {} updates served".format(self.update_count))
+        logger.info("Instance closed")
 
     def send(self, request: dict) -> None:
         return self._tdjson.send(
@@ -582,7 +580,6 @@ class Client(Decorators, Methods):
                         and update["message"]["is_outgoing"]
                     ):
                         continue
-                    self.update_count += 1
 
                     try:
                         await self.__run_initializers(update)
