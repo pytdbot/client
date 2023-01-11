@@ -1,4 +1,4 @@
-__version__ = "0.8.0dev0"
+__version__ = "0.8.0dev1"
 __copyright__ = "Copyright (c) 2023 AYMEN Mohammed ~ https://github.com/AYMENJD"
 
 VERSION = __version__
