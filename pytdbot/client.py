@@ -780,7 +780,7 @@ class Client(Decorators, Methods):
 
                     self._results[res.response["id"]] = response
             else:
-                response: Response = self._results.pop(update["old_message_id"])
+                response: Response = self._results.pop(m_id)
                 response.set_response(
                     {
                         "@type": "error",
