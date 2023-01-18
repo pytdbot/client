@@ -15,7 +15,7 @@ Easy, Sample and powerful [TDLib-based](https://github.com/tdlib/td) client for 
 ```bash
 pip install pytdbot
 ```
-From github
+From github (dev version)
 ```bash
 pip install git+https://github.com/pytdbot/client.git
 ```
@@ -53,8 +53,10 @@ client.run()
 ```
 For more examples, check the [examples](https://github.com/pytdbot/client/tree/main/examples) folder.
 
-# Contributing
-Pull requests are always welcome!!
+# Thanks to
+- You for viewing or using this project.
+
+- [@levlam](https://github.com/levlam) for maintaining [TDLib](https://github.com/tdlib/td) and for the help to create [Pytdbot](https://github.com/pytdbot/client).
 # License
 
 MIT [License](https://github.com/pytdbot/client/blob/main/LICENSE)
