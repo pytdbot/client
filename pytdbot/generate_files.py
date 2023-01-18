@@ -75,9 +75,9 @@ def functions():
                 continue
             f.write(f"    async def {k}(self")
             if p := getP(v["args"]):
-                f.write(f",{p}" + ", timeout: float = None) -> Response:\n")
+                f.write(f",{p}" + ") -> Response:\n")
             else:
-                f.write(", timeout: float = None) -> Response:\n")
+                f.write(") -> Response:\n")
 
             f.write(f'        """{v["description"]}\n\n')
 
@@ -102,7 +102,7 @@ def functions():
             f.write(f"        data = {{'@type': '{k}',")
             for k in v["args"]:
                 f.write(f" '{k}': {k},")
-            f.write("}\n\n        return await self.invoke(data, timeout=timeout)\n\n")
+            f.write("}\n\n        return await self.invoke(data)\n\n")
 
 
 updates()

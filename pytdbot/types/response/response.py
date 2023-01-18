@@ -1,5 +1,5 @@
 from uuid import uuid4
-from asyncio import Event, wait_for
+from asyncio import Event
 from typing import Union
 from ujson import dumps
 
@@ -59,19 +59,9 @@ class Response:
     def __await__(self):
         return self.wait().__await__()
 
-    async def wait(self, timeout: float = None) -> None:
-        """Wait for the response.
-
-        Args:
-            timeout (``float``, optional): Number of seconds to wait.
-
-        Raises:
-            TimeoutError: No response received.
-        """
-        if timeout is not None:
-            await wait_for(self._event.wait(), timeout=timeout)
-        else:
-            await self._event.wait()
+    async def wait(self) -> bool:
+        """Wait for the response."""
+        return await self._event.wait()
 
     def set_response(self, response: dict) -> None:
         """Set the response.

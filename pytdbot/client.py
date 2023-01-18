@@ -296,7 +296,6 @@ class Client(Decorators, Methods):
     async def invoke(
         self,
         request: dict,
-        timeout: float = None,
         request_id: Union[str, int, dict] = None,
     ) -> Response:
         """Invoke a new TDLib request.
@@ -315,9 +314,6 @@ class Client(Decorators, Methods):
             request (``dict``):
                 The request to be sent.
 
-            timeout (``float``, optional):
-                Timeout in seconds. Defaults to None (no timeout).
-
             request_id (``str`` | ``int`` | ``dict``, optional):
                 Request id. Defaults to None (random).
 
@@ -334,7 +330,7 @@ class Client(Decorators, Methods):
             logger.debug("Sending: {}".format(dumps(response.request, indent=4)))
 
         self.send(response.request)
-        await response.wait(timeout=timeout)
+        await response.wait()
 
         if response.is_error and response["code"] == 429:
             retry_after = self.get_retry_after_time(response["message"])
@@ -351,7 +347,7 @@ class Client(Decorators, Methods):
                 await asyncio.sleep(retry_after)
                 self._results[response.id] = response
                 self.send(response.request)
-                await response.wait(timeout=timeout)
+                await response.wait()
 
         return response
 
@@ -530,14 +526,14 @@ class Client(Decorators, Methods):
                 update = await self.receive()
                 if update is None:
                     continue
-                await self._process_update(update)
+                self._process_update(update)
 
         except Exception:
             logger.exception("Exception in _listen_loop")
         finally:
             self.is_running = False
 
-    async def _process_update(self, update):
+    def _process_update(self, update):
         if "@client_id" in update:
             del update["@client_id"]
 

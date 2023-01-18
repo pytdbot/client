@@ -31,7 +31,6 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Send text message to chat
 
@@ -103,12 +102,12 @@ class Methods(TDLibFunctions):
         }
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def sendAnimation(
@@ -130,7 +129,6 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Send animation to chat
 
@@ -247,12 +245,12 @@ class Methods(TDLibFunctions):
         if isinstance(thumbnail, InputThumbnail):
             data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
 
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def sendAudio(
@@ -273,7 +271,6 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Send audio to chat
 
@@ -389,12 +386,12 @@ class Methods(TDLibFunctions):
                 "album_cover_thumbnail"
             ] = album_cover_thumbnail.to_dict()
 
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def sendDocument(
@@ -413,7 +410,6 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Send document to chat
 
@@ -518,12 +514,12 @@ class Methods(TDLibFunctions):
         if isinstance(thumbnail, InputThumbnail):
             data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
 
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def sendPhoto(
@@ -545,7 +541,6 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Send photo to chat
 
@@ -662,12 +657,12 @@ class Methods(TDLibFunctions):
         if isinstance(thumbnail, InputThumbnail):
             data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
 
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def sendVideo(
@@ -691,7 +686,6 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Send video to chat
 
@@ -816,12 +810,12 @@ class Methods(TDLibFunctions):
         if isinstance(thumbnail, InputThumbnail):
             data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
 
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def sendVideoNote(
@@ -838,7 +832,6 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Send video note to chat
 
@@ -912,12 +905,12 @@ class Methods(TDLibFunctions):
         if isinstance(thumbnail, InputThumbnail):
             data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
 
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def sendVoice(
@@ -936,7 +929,6 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Send voice to chat
 
@@ -1041,12 +1033,12 @@ class Methods(TDLibFunctions):
         else:
             raise ValueError("voice must be InputFile or str")
 
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def sendSticker(
@@ -1064,7 +1056,6 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Send sticker to chat
 
@@ -1141,12 +1132,12 @@ class Methods(TDLibFunctions):
         if isinstance(thumbnail, InputThumbnail):
             data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
 
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def sendCopy(
@@ -1163,7 +1154,6 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
-        timeout: float = None,
     ) -> Response:
         """Copy message to chat
 
@@ -1258,12 +1248,12 @@ class Methods(TDLibFunctions):
             },
         }
 
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def forwardMessage(
@@ -1273,7 +1263,6 @@ class Methods(TDLibFunctions):
         message_id: int,
         in_game_share: bool = False,
         disable_notification: bool = False,
-        timeout: int = None,
     ):
         """Forward message to chat
 
@@ -1310,12 +1299,12 @@ class Methods(TDLibFunctions):
                 "in_game_share": in_game_share,
             },
         }
-        res = await self.invoke(data, timeout=timeout)
+        res = await self.invoke(data)
         if res.is_error:
             return res
         _new = Response(data)
         self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
-        await _new.wait(timeout)
+        await _new.wait()
         return _new
 
     async def editTextMessage(
@@ -1327,7 +1316,6 @@ class Methods(TDLibFunctions):
         entities: list = None,
         disable_web_page_preview: bool = False,
         reply_markup: ReplyMarkup = None,
-        timeout: float = None,
     ) -> Response:
         """Edit text message
 
@@ -1387,13 +1375,12 @@ class Methods(TDLibFunctions):
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
 
-        return await self.invoke(data, timeout=timeout)
+        return await self.invoke(data)
 
     async def parseText(
         self,
         text: str,
         parse_mode: str = "markdown",
-        timeout: float = None,
     ) -> Response:
         """Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text. Can be called synchronously
 
@@ -1403,9 +1390,6 @@ class Methods(TDLibFunctions):
 
             parse_mode (``str``):
                 Text parse mode. Currently supported: markdown, markdownv2 and html. Defaults to "markdown".
-
-            timeout (``float``, optional):
-                Number of seconds to wait before raising TimeoutError.
 
         Returns:
             :class:`~pytdbot.types.Response`
@@ -1426,4 +1410,4 @@ class Methods(TDLibFunctions):
             "parse_mode": _data,
         }
 
-        return await self.invoke(data, timeout=timeout)
+        return await self.invoke(data)

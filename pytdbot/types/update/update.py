@@ -328,52 +328,45 @@ class Update:
 
     async def getRepliedMessage(
         self,
-        timeout: float = None,
     ) -> Response:
         """Get the replied message."""
         if isinstance(self.message_id, int):
             return await self.client.getRepliedMessage(
-                self.chat_id, self.message_id, timeout
+                self.chat_id,
+                self.message_id,
             )
 
     async def getMessage(
         self,
         message_id: int,
-        timeout: float = None,
     ) -> Response:
         """Get the message by id.
 
         Args:
             message_id (``int``):
                 The message id.
-
-            timeout (``float``, optional):
-                Number of seconds to wait for the result before raising a `TimeoutError`.
         """
         if isinstance(message_id, int):
-            return await self.client.getMessage(self.chat_id, message_id, timeout)
+            return await self.client.getMessage(self.chat_id, message_id)
 
     async def getChat(
         self,
-        timeout: float = None,
     ) -> Response:
         """Get chat info."""
         if isinstance(self.chat_id, int):
-            return await self.client.getChat(self.chat_id, timeout)
+            return await self.client.getChat(self.chat_id)
 
     async def getUser(
         self,
-        timeout: float = None,
     ) -> Response:
         """Get user info."""
         if self.is_user:
-            return await self.client.getUser(self.from_id, timeout)
+            return await self.client.getUser(self.from_id)
 
     async def pin(
         self,
         disable_notification: bool = False,
         only_for_self: bool = False,
-        timeout: float = None,
     ) -> Response:
         """Pin the message.
 
@@ -393,13 +386,11 @@ class Update:
                 self.message_id,
                 disable_notification,
                 only_for_self,
-                timeout,
             )
 
     async def delete(
         self,
         revoke: bool = True,
-        timeout: float = None,
     ) -> Response:
         """Delete the received message.
 
@@ -412,7 +403,7 @@ class Update:
         """
         if isinstance(self.message_id, int):
             return await self.client.deleteMessages(
-                self.chat_id, [self.message_id], revoke, timeout
+                self.chat_id, [self.message_id], revoke
             )
 
     async def forward(
@@ -421,7 +412,6 @@ class Update:
         message_id: int = None,
         in_game_share: bool = False,
         disable_notification: bool = False,
-        timeout: float = None,
     ) -> Response:
         """Forward the message.
 
@@ -450,7 +440,6 @@ class Update:
                 message_id or self.message_id,
                 in_game_share,
                 disable_notification,
-                timeout,
             )
 
     async def reply_text(
@@ -467,7 +456,6 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Reply to the message with text. Shortcut for :meth:`~pytdbot.Client.sendTextMessage`.
 
@@ -546,7 +534,6 @@ class Update:
                 message_thread_id=message_thread_id,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
-                timeout=timeout,
             )
 
     async def reply_animation(
@@ -568,7 +555,6 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Reply to the message with an animation. Shortcut for :meth:`~pytdbot.Client.sendAnimation`.
 
@@ -667,7 +653,6 @@ class Update:
                 message_thread_id=message_thread_id,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
-                timeout=timeout,
             )
 
     async def reply_audio(
@@ -687,7 +672,6 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Reply to the message with an audio. Shortcut for :meth:`~pytdbot.Client.Methods.sendAudio`.
 
@@ -778,7 +762,6 @@ class Update:
                 message_thread_id=message_thread_id,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
-                timeout=timeout,
             )
 
     async def reply_document(
@@ -795,7 +778,6 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Reply to the message with a document. Shortcut for :meth:`~pytdbot.Client.sendDocument`.
 
@@ -874,7 +856,6 @@ class Update:
                 message_thread_id=message_thread_id,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
-                timeout=timeout,
             )
 
     async def reply_sticker(
@@ -889,7 +870,6 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Reply to the message with a sticker. Shortcut for :meth:`~pytdbot.Client.sendSticker`.
 
@@ -960,7 +940,6 @@ class Update:
                 message_thread_id=message_thread_id,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
-                timeout=timeout,
             )
 
     async def reply_video(
@@ -981,7 +960,6 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Reply to the message with a video. Shortcut for :meth:`~pytdbot.Client.sendVideo`.
 
@@ -1076,7 +1054,6 @@ class Update:
                 message_thread_id=message_thread_id,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
-                timeout=timeout,
             )
 
     async def reply_photo(
@@ -1093,7 +1070,6 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Reply to the message with a photo. Shortcut for :meth:`~pytdbot.Client.sendPhoto`.
 
@@ -1172,7 +1148,6 @@ class Update:
                 message_thread_id=message_thread_id,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
-                timeout=timeout,
             )
 
     async def reply_voice(
@@ -1190,7 +1165,6 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-        timeout: float = None,
     ) -> Response:
         """Reply to the message with a voice. Shortcut for :meth:`~pytdbot.Client.sendVoice`.
 
@@ -1273,5 +1247,4 @@ class Update:
                 message_thread_id=message_thread_id,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
-                timeout=timeout,
             )
