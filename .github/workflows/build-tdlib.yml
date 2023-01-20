@@ -12,12 +12,22 @@ jobs:
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1.12
         with:
-          cmake-version: "3.23.2"
+          cmake-version: "3.25.1"
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
+
+      - name: Increase swap
+        run: |
+          free -h
+          export SWAP_PATH=$(sudo swapon --show=NAME | tail -1)
+          sudo swapoff -a
+          sudo fallocate -l 7G $SWAP_PATH
+          sudo mkswap $SWAP_PATH
+          sudo swapon $SWAP_PATH
+          free -h
 
       - name: Install TDLib
         id: td
@@ -39,12 +49,7 @@ jobs:
           cd td/build
           CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-6.0 CXX=/usr/bin/clang++-6.0 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib -DTD_ENABLE_LTO=ON -DCMAKE_AR=/usr/bin/llvm-ar-6.0 -DCMAKE_NM=/usr/bin/llvm-nm-6.0 -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump-6.0 -DCMAKE_RANLIB=/usr/bin/llvm-ranlib-6.0 ..
           cmake --build . --target prepare_cross_compiling
-          cd ..
-          php SplitSource.php
-          cd build/
-          cmake --build . --target install --parallel 5
-          cd ..
-          php SplitSource.php --undo
+          cmake --build . --target install -j45
 
       - name: Copy TDLib TL
         run: |
