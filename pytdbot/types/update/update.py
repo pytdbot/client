@@ -485,7 +485,7 @@ class Update:
         text: str,
         quote: bool = None,
         entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         disable_web_page_preview: bool = False,
         disable_notification: dict = False,
         protect_content: bool = False,
@@ -526,7 +526,7 @@ class Update:
                 List of `MessageEntity` objects to parse in the text. If you want to send a text with formatting, use *parse_mode* instead.
 
             parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to "markdown".
+                Mode for parsing entities. Defaults to None.
 
             disable_web_page_preview (``bool``, optional):
                 Disables link previews for links in this message.
@@ -581,7 +581,7 @@ class Update:
         quote: bool = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         added_sticker_file_ids: list = None,
         duration: int = None,
         width: int = None,
@@ -632,7 +632,7 @@ class Update:
                 List of `MessageEntity` objects to parse in the animation caption.
 
             parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to "markdown".
+                Mode for parsing entities. Defaults to None.
 
             added_sticker_file_ids (``list``, optional):
                 List of file identifiers of new sticker set that should be added to the current sticker set.
@@ -699,7 +699,7 @@ class Update:
         quote: bool = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         duration: int = None,
         performer: str = None,
         title: str = None,
@@ -746,7 +746,7 @@ class Update:
                 List of `MessageEntity` objects to parse in the audio caption.
 
             parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to "markdown".
+                Mode for parsing entities. Defaults to None.
 
             duration (``int``, optional):
                 Duration of the audio in seconds.
@@ -808,7 +808,7 @@ class Update:
         quote: bool = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
@@ -852,7 +852,7 @@ class Update:
                 List of `MessageEntity` objects to parse in the document caption.
 
             parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to "markdown".
+                Mode for parsing entities. Defaults to None.
 
             disable_notification (``bool``, optional):
                 If True, disable notification for the message.
@@ -989,7 +989,7 @@ class Update:
         height: int = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         supports_streaming: bool = False,
         disable_notification: bool = False,
         protect_content: bool = False,
@@ -1043,7 +1043,7 @@ class Update:
                 List of `MessageEntity` objects to parse in the document caption.
 
             parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to "markdown".
+                Mode for parsing entities. Defaults to None.
 
             supports_streaming (``bool``, optional):
                 Pass True, if the uploaded video is suitable for streaming.
@@ -1100,7 +1100,7 @@ class Update:
         quote: bool = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
@@ -1144,7 +1144,7 @@ class Update:
                 List of `MessageEntity` objects to parse in the document caption.
 
             parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to "markdown".
+                Mode for parsing entities. Defaults to None.
 
             disable_notification (``bool``, optional):
                 If True, disable notification for the message.
@@ -1194,7 +1194,7 @@ class Update:
         quote: bool = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         duration: int = None,
         disable_notification: bool = False,
         protect_content: bool = False,
@@ -1239,7 +1239,7 @@ class Update:
                 List of `MessageEntity` objects to parse in the voice caption.
 
             parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to "markdown".
+                Mode for parsing entities. Defaults to None.
 
             duration (``int``, optional):
                 Duration of sent voice in seconds.

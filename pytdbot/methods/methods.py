@@ -22,7 +22,7 @@ class Methods(TDLibFunctions):
         chat_id: int,
         text: str,
         entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         disable_web_page_preview: bool = False,
         disable_notification: bool = False,
         protect_content: bool = False,
@@ -117,7 +117,7 @@ class Methods(TDLibFunctions):
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         added_sticker_file_ids: list = None,
         duration: int = None,
         width: int = None,
@@ -260,7 +260,7 @@ class Methods(TDLibFunctions):
         album_cover_thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         title: str = None,
         performer: str = None,
         duration: int = None,
@@ -401,7 +401,7 @@ class Methods(TDLibFunctions):
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         disable_content_type_detection: bool = True,
         disable_notification: bool = False,
         protect_content: bool = False,
@@ -529,7 +529,7 @@ class Methods(TDLibFunctions):
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         added_sticker_file_ids: list = None,
         width: int = None,
         height: int = None,
@@ -672,7 +672,7 @@ class Methods(TDLibFunctions):
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         added_sticker_file_ids: list = None,
         supports_streaming: bool = None,
         duration: int = None,
@@ -919,7 +919,7 @@ class Methods(TDLibFunctions):
         voice: Union[InputFile, str],
         caption: str = None,
         caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         duration: int = None,
         waveform: bytes = None,
         disable_notification: bool = False,
@@ -946,7 +946,7 @@ class Methods(TDLibFunctions):
                 List of `MessageEntity` objects to parse in the caption. If you want to send a caption without parsing entities, use `parse_mode` instead.
 
             parse_mode (``str``, optional):
-                Parse mode for the caption. Defaults to `markdown`.
+                Parse mode for the caption. Defaults to None.
 
             duration (``int``, optional):
                 Duration of sent voice in seconds.
@@ -1149,7 +1149,7 @@ class Methods(TDLibFunctions):
         replace_caption: bool = None,
         new_caption: str = None,
         new_caption_entities: list = None,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
@@ -1312,7 +1312,7 @@ class Methods(TDLibFunctions):
         chat_id: int,
         message_id: int,
         text: str,
-        parse_mode: str = "markdown",
+        parse_mode: str = None,
         entities: list = None,
         disable_web_page_preview: bool = False,
         reply_markup: ReplyMarkup = None,
