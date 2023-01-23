@@ -1380,7 +1380,7 @@ class Methods(TDLibFunctions):
     async def parseText(
         self,
         text: str,
-        parse_mode: str = "markdown",
+        parse_mode: str = "markdownv2",
     ) -> Response:
         """Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text. Can be called synchronously
 
@@ -1389,11 +1389,14 @@ class Methods(TDLibFunctions):
                 The text to parse
 
             parse_mode (``str``):
-                Text parse mode. Currently supported: markdown, markdownv2 and html. Defaults to "markdown".
+                Text parse mode. Currently supported: markdown, markdownv2 and html. Defaults to "markdownv2".
 
         Returns:
             :class:`~pytdbot.types.Response`
         """
+        assert isinstance(text, str), "text must be str"
+        assert isinstance(parse_mode, str), "parse_mode must be str"
+
         if parse_mode.lower() == "markdown":
             _data = {"@type": "textParseModeMarkdown", "version": 1}
         elif parse_mode.lower() == "markdownv2":

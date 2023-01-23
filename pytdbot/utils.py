@@ -25,7 +25,7 @@ special_chars_v1 = _re_compile("([{}])".format(_re_escape(r"_\*`\[")))
 special_chars_v2 = _re_compile("([{}])".format(_re_escape(r"\_*[]()~`>#+-=|{}.!")))
 
 
-def escape_markdown(text: str, version: int = 1) -> str:
+def escape_markdown(text: str, version: int = 2) -> str:
     """Escape Markdown characters in the given text.
 
     Args:
@@ -33,7 +33,7 @@ def escape_markdown(text: str, version: int = 1) -> str:
             The text to escape.
 
         version (``int``, optional):
-            The Markdown version to escape. Defaults to 1.
+            The Markdown version to escape. Defaults to 2.
 
     Returns:
         ``str``: The escaped text.
