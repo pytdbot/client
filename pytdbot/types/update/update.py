@@ -1,3 +1,4 @@
+from .chatActions import ChatActions
 from base64 import b64decode
 from typing import Union
 from ujson import dumps
@@ -405,6 +406,43 @@ class Update:
             return await self.client.deleteMessages(
                 self.chat_id, [self.message_id], revoke
             )
+
+    def action(self, action: str, message_thread_id: int = None) -> ChatActions:
+        """Sends a chat action to a specific chat. Supporting context manager (`with` statment).
+
+        Example:
+
+
+            .. code-block:: python
+
+                async with update.action("typing")
+                    # Anything that takes more than 4 seconds to produce
+                    await asyncio.sleep(10)
+
+        Or
+
+
+            .. code-block:: python
+
+                await update.action("typing")
+                # anything that takes less than 4 seconds to produce
+                await asyncio.sleep(2)
+                await update.reply_text("Hello?")
+
+        Args:
+            action (``str``):
+                Type of action to broadcast. Choose one, depending on what the user is about to receive: `typing` for text messages, `upload_photo` for photos, `record_video` or `upload_video` for videos, `record_voice` or `upload_voice` for voice notes, `upload_document` for general files, `choose_sticker` for stickers, `find_location` for location data, `record_video_note` or `upload_video_note` for video notes.
+
+            message_thread_id (``int``, optional):
+                If not 0, a message thread identifier in which the action was performed. Defaults to None.
+
+        Returns:
+            :class:`~pytdbot.types.ChatActions`
+        """
+        if isinstance(self.chat_id, int):
+            return ChatActions(self.client, self.chat_id, action, message_thread_id)
+        else:
+            raise ValueError("Unknown chat_id")
 
     async def forward(
         self,
