@@ -42,6 +42,7 @@ async def start(c: Client, message: Update):
 
         await message.reply_text(
             text,
+            parse_mode="markdown",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [
