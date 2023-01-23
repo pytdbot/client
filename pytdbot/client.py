@@ -15,6 +15,7 @@ from typing import Callable, Union
 from logging import getLogger, DEBUG
 from base64 import b64encode
 from deepdiff import DeepDiff
+from concurrent.futures import ThreadPoolExecutor
 from threading import current_thread, main_thread
 from ujson import dumps
 import signal, pytdbot, asyncio
@@ -156,6 +157,7 @@ class Client(Decorators, Methods):
         self._handlers = {"initializer": [], "finalizer": []}
         self._results = {}
         self._tdjson = TDjson(lib_path, td_verbosity)
+        self._executor = ThreadPoolExecutor(5)
         self._workers_tasks = None
 
         self.loop = (
@@ -432,7 +434,9 @@ class Client(Decorators, Methods):
         )  # tdjson.send is asynchronous, So we don't need run_in_executor. This improves performance.
 
     async def receive(self, timeout: float = 2.0) -> dict:
-        return await self.loop.run_in_executor(None, self._tdjson.receive, timeout)
+        return await self.loop.run_in_executor(
+            self._executor, self._tdjson.receive, timeout
+        )
 
     def _check_init_args(self):
         if not isinstance(self.api_id, int):
