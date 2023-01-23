@@ -195,8 +195,8 @@ class Client(Decorators, Methods):
             logger.info("Starting pytdbot client...")
 
             self._workers_tasks = [
-                self.loop.create_task(self._update_worker())
-                for _ in range(self.workers)
+                self.loop.create_task(self._update_worker(x + 1))
+                for x in range(self.workers)
             ]
 
             logger.info("Started with %s workers", self.workers)
@@ -615,7 +615,7 @@ class Client(Decorators, Methods):
             except Exception:
                 logger.exception("Finalizer {} failed".format(finalizer))
 
-    async def _update_worker(self):
+    async def _update_worker(self, worker_id: int):
         if not self.is_running:
             self.is_running = True
 
@@ -628,10 +628,9 @@ class Client(Decorators, Methods):
 
                 if (
                     logger.root.level >= DEBUG
-                ):  # dumping all updates may create performance issues.
+                ):  # dumping all updates can create performance issues.
                     logger.debug(
-                        "Received: %s",
-                        dumps(update, indent=4),
+                        "w{}: Received: {}".format(worker_id, dumps(update, indent=4)),
                     )
                 update_type = update["@type"]
 
@@ -659,7 +658,7 @@ class Client(Decorators, Methods):
                         except StopHandlers:
                             continue
             except Exception:
-                logger.exception("Exception in _updates_worker")
+                logger.exception("Exception in _update_worker")
 
     async def _set_td_paramaters(self):
         if isinstance(self.database_encryption_key, str):
