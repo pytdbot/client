@@ -35,8 +35,9 @@ class TDjson:
                 )
             else:
                 lib_path = find_library("tdjson")
-                if not lib_path:
-                    raise ValueError("TDLib library not found")
+
+            if not lib_path:
+                raise ValueError("TDLib library not found")
 
         logger.info("Initializing TDjson client with library: %s", lib_path)
         self._build_client(lib_path, verbosity)
