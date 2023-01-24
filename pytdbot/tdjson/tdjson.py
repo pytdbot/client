@@ -30,7 +30,9 @@ class TDjson:
         """
         if lib_path is None:
             if system() == "Linux":
-                lib_path = resource_filename("pytdbot", "lib/libtdjson.so")
+                lib_path = find_library("tdjson") or resource_filename(
+                    "pytdbot", "lib/libtdjson.so"
+                )
             else:
                 lib_path = find_library("tdjson")
                 if not lib_path:
