@@ -9,6 +9,7 @@ from . import VERSION
 from platform import python_implementation, python_version
 from os.path import join as join_path
 from pathlib import Path
+from getpass import getpass
 from importlib import import_module
 
 from typing import Callable, Union
@@ -100,9 +101,9 @@ class Client(Decorators, Methods):
         self,
         api_id: int,
         api_hash: str,
-        token: str,
         database_encryption_key: Union[str, bytes],
         files_directory: str,
+        token: str = None,
         lib_path: str = None,
         plugins: Plugins = None,
         update_class: Update = Update,
@@ -210,15 +211,186 @@ class Client(Decorators, Methods):
 
     async def login(self) -> None:
         """Login to Telegram."""
+
         if self.is_authenticated:
             return
 
         while self.authorization_state != "authorizationStateReady":
+
             if self.authorization_state == "authorizationStateWaitTdlibParameters":
                 await self._set_options()
-                await self._set_td_paramaters()
+                await self.set_td_paramaters()
             elif self.authorization_state == "authorizationStateWaitPhoneNumber":
-                await self._set_bot_token()
+                self._print_welcome()
+                if not isinstance(self.token, str):
+                    while True:
+                        user_input = await self.loop.run_in_executor(
+                            None, input, "Enter a phone number or bot token: "
+                        )
+
+                        if user_input:
+                            y_n = await self.loop.run_in_executor(
+                                None,
+                                input,
+                                'Is "{}" correct? (y/n): '.format(user_input),
+                            )
+
+                            if y_n == "" or y_n.lower() in ["y", "yes"]:
+                                if ":" in user_input:
+                                    res = await self.checkAuthenticationBotToken(
+                                        user_input
+                                    )
+                                else:
+                                    res = await self.setAuthenticationPhoneNumber(
+                                        user_input
+                                    )
+
+                                if res.is_error:
+                                    print(res["message"])
+                                else:
+                                    break
+                else:
+                    if ":" in self.token:
+                        res = await self.checkAuthenticationBotToken(self.token)
+                    else:
+                        res = await self.setAuthenticationPhoneNumber(self.token)
+
+                    if res.is_error:
+                        raise AuthorizationError(res["message"])
+            elif self.authorization_state == "authorizationStateWaitEmailAddress":
+                while True:
+                    email_address = await self.loop.run_in_executor(
+                        None, input, "Enter your email address: "
+                    )
+
+                    res = await self.setAuthenticationEmailAddress(email_address)
+                    if res.is_error:
+                        print(res["message"])
+                    else:
+                        break
+            elif self.authorization_state == "authorizationStateWaitEmailCode":
+                while True:
+                    code = await self.loop.run_in_executor(
+                        None,
+                        input,
+                        "Enter the email authentication code you received: ",
+                    )
+
+                    res = await self.checkAuthenticationEmailCode(
+                        code={"@type": "emailAddressAuthenticationCode", "code": code}
+                    )
+                    if res.is_error:
+                        print(res["message"])
+                    else:
+                        break
+            elif self.authorization_state == "authorizationStateWaitCode":
+                code_type = authorization["code_info"]["type"]["@type"]
+
+                if code_type == "authenticationCodeTypeTelegramMessage":
+                    code_type = "Telegram app"
+                elif code_type == "authenticationCodeTypeSms":
+                    code_type = "SMS"
+                elif code_type == "authenticationCodeTypeCall":
+                    code_type = "phone call"
+                elif code_type == "authenticationCodeTypeFlashCall":
+                    code_type = "phone flush call"
+                elif code_type == "authenticationCodeTypeMissedCall":
+                    code_type = "phone missed call"
+                elif code_type == "authenticationCodeTypeFragment":
+                    code_type = "fragment.com SMS"
+
+                while True:
+                    code = await self.loop.run_in_executor(
+                        None,
+                        input,
+                        "Enter the login code received via {}: ".format(code_type),
+                    )
+
+                    res = await self.checkAuthenticationCode(code=code)
+                    if res.is_error:
+                        print(res["message"])
+                    else:
+                        break
+            elif self.authorization_state == "authorizationStateWaitRegistration":
+                while True:
+                    first_name = await self.loop.run_in_executor(
+                        None, input, "Enter your first name: "
+                    )
+                    last_name = await self.loop.run_in_executor(
+                        None, input, "Enter your last name: "
+                    )
+
+                    res = await self.registerUser(
+                        first_name=first_name, last_name=last_name
+                    )
+                    if res.is_error:
+                        print(res["message"])
+                    else:
+                        break
+            elif self.authorization_state == "authorizationStateWaitPassword":
+                if authorization["password_hint"]:
+                    print(
+                        "Your 2FA password hint is: {}".format(
+                            authorization["password_hint"]
+                        )
+                    )
+
+                while True:
+                    password = await self.loop.run_in_executor(
+                        None,
+                        getpass,
+                        "Enter your 2FA password {}: ".format(
+                            "(empty to recover)"
+                            if authorization["has_recovery_email_address"]
+                            else ""
+                        ),
+                    )
+
+                    if password == "":
+                        if authorization["has_recovery_email_address"]:
+                            y_n = await self.loop.run_in_executor(
+                                None,
+                                input,
+                                "Are you sure you want to recover your 2FA password? (y/n): ",
+                            )
+
+                            if y_n.lower() in ["y", "yes"]:
+                                res = await self.requestAuthenticationPasswordRecovery()
+                                authorization = (
+                                    await self.getAuthorizationState()
+                                )  # Reload after requestAuthenticationPasswordRecovery to get recovery_email_address_pattern.
+                                if res.is_error:
+                                    raise AuthorizationError(res["message"])
+                                else:
+                                    while True:
+                                        recovery_code = await self.loop.run_in_executor(
+                                            None,
+                                            getpass,
+                                            "Enter your recovery code sent to {}: ".format(
+                                                authorization[
+                                                    "recovery_email_address_pattern"
+                                                ]
+                                            ),
+                                        )
+
+                                        res = await self.checkPasswordRecoveryCode(
+                                            recovery_code
+                                        )
+                                        if res.is_error:
+                                            print(res["message"])
+                                        else:
+                                            break
+                        else:
+                            print(
+                                "You can't recover your 2FA password because you don't set any recovery email address"
+                            )
+                    else:
+                        res = await self.checkAuthenticationPassword(password)
+                        if res.is_error:
+                            print(res["message"])
+                        else:
+                            break
+
             authorization = await self.getAuthorizationState()
             self.authorization_state = authorization.type
 
@@ -226,7 +398,12 @@ class Client(Decorators, Methods):
         self.me = self.me.response
         self.is_authenticated = True
         logger.info(
-            f"Logged in as {self.me['first_name']} @{self.me['usernames']['editable_username']}"
+            "Logged in as {} {}".format(
+                self.me["first_name"],
+                ""
+                if "usernames" not in self.me
+                else "@" + self.me["usernames"]["editable_username"],
+            )
         )
 
     def add_handler(
@@ -449,8 +626,6 @@ class Client(Decorators, Methods):
             raise TypeError("database_encryption_key must be str or bytes")
         elif not isinstance(self.files_directory, str):
             raise TypeError("files_directory must be str")
-        elif not isinstance(self.token, str):
-            raise TypeError("token must be str")
         elif not isinstance(self.td_verbosity, int):
             raise TypeError("td_verbosity must be int")
         elif not isinstance(self.workers, int):
@@ -462,9 +637,6 @@ class Client(Decorators, Methods):
 
         if self.workers < 1:
             raise ValueError("workers must be greater than 0")
-
-        if len(self.token.split(":")) != 2:
-            raise ValueError("token must be in format <token>:<hash>")
 
     def get_retry_after_time(self, error_message: str) -> int:
         """Get the retry after time from flood wait error message
@@ -664,7 +836,12 @@ class Client(Decorators, Methods):
             except Exception:
                 logger.exception("Exception in _update_worker")
 
-    async def _set_td_paramaters(self):
+    async def set_td_paramaters(self):
+        """Make a call to meth:`~pytdbot.Client.setTdlibParameters` with the current client init parameters
+
+        Raises:
+            `AuthorizationError`
+        """
         if isinstance(self.database_encryption_key, str):
             self.database_encryption_key = self.database_encryption_key.encode("utf-8")
 
@@ -809,12 +986,31 @@ class Client(Decorators, Methods):
 
     async def _handle_update_user(self, update):
         if self.is_authenticated and update["user"]["id"] == self.me["id"]:
-            logger.info(f'Updating {self.me["usernames"]["editable_username"]} info')
+            logger.info(
+                "Updating {} ({}) info".format(
+                    self.me["first_name"],
+                    ""
+                    if "usernames" not in self.me
+                    else "@" + self.me["usernames"]["editable_username"],
+                )
+            )
             try:
                 deepdiff(self.me, update["user"])
             except Exception:
                 logger.exception("deepdiff failed")
             self.me = update["user"]
+
+    def _print_welcome(self):
+        print(
+            "Welcome to Pytdbot (v{}). {}".format(
+                pytdbot.__version__, pytdbot.__copyright__
+            )
+        )
+        print(
+            "Pytdbot is free software and comes with ABSOLUTELY NO WARRANTY. Licensed under the terms of {}.\n\n".format(
+                pytdbot.__license__
+            )
+        )
 
 
 def deepdiff(d1, d2):
@@ -830,5 +1026,5 @@ def deepdiff(d1, d2):
 
             if parent in ["dictionary_item_added", "values_changed"]:
                 logger.info(f'{key} changed to "{diff.t2}"')
-            elif parent in ["dictionary_item_removed"]:
+            elif parent == "dictionary_item_removed":
                 logger.info(f"{key} removed")
