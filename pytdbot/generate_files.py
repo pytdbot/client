@@ -49,7 +49,7 @@ def getType(_type):
     elif _type == "double":
         return "float"
     else:
-        return "dict"
+        return _type
 
 
 def updates():
@@ -97,7 +97,9 @@ def functions():
                             f"            {_k} (``{getType(_v['type'])}``, optional):\n                {_v['description']}\n\n"
                         )
             f.write(
-                '\n        Returns:\n            :class:`~pytdbot.types.Response`\n        """\n\n'
+                '\n        Returns:\n            :class:`~pytdbot.types.Response` (`{}`)\n        """\n\n'.format(
+                    v["type"]
+                )
             )
             f.write(f"        data = {{'@type': '{k}',")
             for k in v["args"]:
