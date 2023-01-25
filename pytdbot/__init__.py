@@ -1,5 +1,6 @@
 __version__ = "0.8.0dev3"
-__copyright__ = "Copyright (c) 2023 AYMEN Mohammed ~ https://github.com/AYMENJD"
+__copyright__ = "Copyright (c) 2022-2023 AYMEN Mohammed ~ https://github.com/AYMENJD"
+__license__ = "MIT License"
 
 VERSION = __version__
 
