@@ -509,7 +509,7 @@ class Client(Decorators, Methods):
             logger.debug("Sending: {}".format(dumps(response.request, indent=4)))
 
         self.send(response.request)
-        await response.wait()
+        await response
 
         if response.is_error and response["code"] == 429:
             retry_after = self.get_retry_after_time(response["message"])
@@ -526,7 +526,7 @@ class Client(Decorators, Methods):
                 await asyncio.sleep(retry_after)
                 self._results[response.id] = response
                 self.send(response.request)
-                await response.wait()
+                await response
 
         return response
 
