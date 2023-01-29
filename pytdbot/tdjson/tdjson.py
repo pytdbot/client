@@ -28,6 +28,7 @@ class TDjson:
         Raises:
             ``ValueError``: If library not found.
         """
+
         if lib_path is None:
             if system() == "Linux":
                 lib_path = find_library("tdjson") or resource_filename(
@@ -75,28 +76,24 @@ class TDjson:
         self._td_execute.restype = c_char_p
         self._td_execute.argtypes = [c_char_p]
 
-        self._td_set_log_verbosity_level = self._tdjson.td_set_log_verbosity_level
-        self._td_set_log_verbosity_level.restype = None
-        self._td_set_log_verbosity_level.argtypes = [c_int]
-
-        self._td_set_log_file_path = self._tdjson.td_set_log_file_path
-        self._td_set_log_file_path.restype = None
-        self._td_set_log_file_path.argtypes = [c_char_p]
-
-        self._td_set_log_max_file_size = self._tdjson.td_set_log_max_file_size
-        self._td_set_log_max_file_size.restype = None
-        self._td_set_log_max_file_size.argtypes = [c_int]
-
         self.client_id = self._td_create_client_id()
 
         td_version, td_commit_hash = self.execute(
             {"@type": "getOption", "name": "version"}
         ), self.execute({"@type": "getOption", "name": "commit_hash"})
         logger.info(
-            "Using TDLib %s (%s)", td_version["value"], td_commit_hash["value"][:9]
+            "Using TDLib {} ({})".format(
+                td_version["value"], td_commit_hash["value"][:9]
+            )
         )
 
-        self._td_set_log_verbosity_level(verbosity)
+        if isinstance(verbosity, int):
+            res = self.execute(
+                {"@type": "setLogVerbosityLevel", "new_verbosity_level": verbosity}
+            )
+
+            if res["@type"] == "error":
+                logger.error("Can't set log level: {}".format(res["message"]))
 
     def receive(self, timeout: float = 2.0) -> Union[None, dict]:
         """Receives incoming updates and responses from TDLib.
