@@ -35,14 +35,14 @@ class Client(Decorators, Methods):
         api_hash (``str``):
             Identifier hash for Telegram API access, which can be obtained at https://my.telegram.org.
 
-        token (``str``):
-            Bot token.
-
         database_encryption_key (``str`` | ``bytes``):
             Encryption key for database encryption.
 
         files_directory (``str``):
             Directory for storing files and database.
+
+        token (``str``, optional):
+            Bot token or phone number.
 
         lib_path (``str``, optional):
             Path to TDLib library. Defaults to None (auto-detect).
