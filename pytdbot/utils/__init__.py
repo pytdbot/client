@@ -1,17 +1,3 @@
-from .escape import escape_markdown, escape_html
-from .text_format import (
-    bold,
-    italic,
-    underline,
-    strikethrough,
-    spoiler,
-    hyperlink,
-    mention,
-    code,
-    pre,
-    pre_code,
-)
-
 __all__ = [
     "escape_markdown",
     "escape_html",
@@ -26,3 +12,17 @@ __all__ = [
     "pre",
     "pre_code",
 ]
+
+from .escape import escape_markdown, escape_html
+from .text_format import (
+    bold,
+    italic,
+    underline,
+    strikethrough,
+    spoiler,
+    hyperlink,
+    mention,
+    code,
+    pre,
+    pre_code,
+)

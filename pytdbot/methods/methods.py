@@ -1,3 +1,5 @@
+import pytdbot
+
 from typing import Union
 from base64 import b64encode
 from .tdlibfunctions import TDLibFunctions
@@ -11,7 +13,6 @@ from ..types import (
     InputFile,
     InputThumbnail,
 )
-import pytdbot
 
 
 class Methods(TDLibFunctions):

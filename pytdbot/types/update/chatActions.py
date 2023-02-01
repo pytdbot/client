@@ -1,5 +1,5 @@
-from asyncio import sleep
 import pytdbot
+from asyncio import sleep
 
 
 class ChatActions:

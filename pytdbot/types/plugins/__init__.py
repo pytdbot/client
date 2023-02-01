@@ -1,3 +1,3 @@
-from .plugins import Plugins
-
 __all__ = ["Plugins"]
+
+from .plugins import Plugins

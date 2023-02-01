@@ -1,10 +1,6 @@
-from .tdjson import TDjson
-from .handlers import Decorators, Handler
-from .methods import Methods
-from .types import Plugins, Response, LogStream, Update
-from .filters import Filter
-from .exception import StopHandlers, AuthorizationError
-from . import VERSION
+import signal
+import pytdbot
+import asyncio
 
 from platform import python_implementation, python_version
 from os.path import join as join_path
@@ -19,7 +15,14 @@ from deepdiff import DeepDiff
 from concurrent.futures import ThreadPoolExecutor
 from threading import current_thread, main_thread
 from ujson import dumps
-import signal, pytdbot, asyncio
+
+from .tdjson import TDjson
+from .handlers import Decorators, Handler
+from .methods import Methods
+from .types import Plugins, Response, LogStream, Update
+from .filters import Filter
+from .exception import StopHandlers, AuthorizationError
+from . import VERSION
 
 
 logger = getLogger(__name__)
@@ -216,6 +219,8 @@ class Client(Decorators, Methods):
             return
 
         while self.authorization_state != "authorizationStateReady":
+            authorization = await self.getAuthorizationState()
+            self.authorization_state = authorization.type
 
             if self.authorization_state == "authorizationStateWaitTdlibParameters":
                 await self._set_options()
@@ -359,6 +364,7 @@ class Client(Decorators, Methods):
                                 authorization = (
                                     await self.getAuthorizationState()
                                 )  # Reload after requestAuthenticationPasswordRecovery to get recovery_email_address_pattern.
+
                                 if res.is_error:
                                     raise AuthorizationError(res["message"])
                                 else:
@@ -390,9 +396,6 @@ class Client(Decorators, Methods):
                             print(res["message"])
                         else:
                             break
-
-            authorization = await self.getAuthorizationState()
-            self.authorization_state = authorization.type
 
         self.me = await self.getMe()
         self.me = self.me.response
@@ -583,7 +586,7 @@ class Client(Decorators, Methods):
             ``bool``: `True` on success.
         """
         if (
-            self.is_running == False
+            self.is_running is False
             and self.authorization_state == "authorizationStateClosed"
         ):
             raise RuntimeError("Instance is not running")
@@ -901,7 +904,7 @@ class Client(Decorators, Methods):
 
     async def _handle_authorization_state(self, update):
         if (
-            self.is_authenticated == True
+            self.is_authenticated is True
             and update["@type"] == "updateAuthorizationState"
         ):
             self.authorization_state = update["authorization_state"]["@type"]

@@ -1,8 +1,10 @@
-from .handler import Handler
-from .updates import Updates
+import logging
+import pytdbot
+
 from typing import Callable
 from asyncio import iscoroutinefunction
-import pytdbot, logging
+from .handler import Handler
+from .updates import Updates
 
 logger = logging.getLogger(__name__)
 

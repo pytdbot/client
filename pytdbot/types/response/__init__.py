@@ -1,3 +1,3 @@
-from .response import Response
-
 __all__ = ["Response"]
+
+from .response import Response

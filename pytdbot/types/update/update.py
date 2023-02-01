@@ -1,4 +1,5 @@
-from .chatActions import ChatActions
+import pytdbot
+
 from base64 import b64decode
 from typing import Union
 from ujson import dumps
@@ -12,7 +13,7 @@ from pytdbot.types import (
     InputFile,
     InputThumbnail,
 )
-import pytdbot
+from .chatActions import ChatActions
 
 
 class Update:
@@ -550,9 +551,9 @@ class Update:
             :class:`~pytdbot.types.Response`
         """
 
-        if quote == False:
+        if quote is False:
             reply_to_message_id = 0
-        elif quote == True:
+        elif quote is True:
             reply_to_message_id = self.message_id
         else:
             if self.is_private:
@@ -664,9 +665,9 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Response`
         """
-        if quote == False:
+        if quote is False:
             reply_to_message_id = 0
-        elif quote == True:
+        elif quote is True:
             reply_to_message_id = self.message_id
         else:
             if self.is_private:
@@ -775,9 +776,9 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Response`
         """
-        if quote == False:
+        if quote is False:
             reply_to_message_id = 0
-        elif quote == True:
+        elif quote is True:
             reply_to_message_id = self.message_id
         else:
             if self.is_private:
@@ -872,9 +873,9 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Response`
         """
-        if quote == False:
+        if quote is False:
             reply_to_message_id = 0
-        elif quote == True:
+        elif quote is True:
             reply_to_message_id = self.message_id
         else:
             if self.is_private:
@@ -958,9 +959,9 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Response`
         """
-        if quote == False:
+        if quote is False:
             reply_to_message_id = 0
-        elif quote == True:
+        elif quote is True:
             reply_to_message_id = self.message_id
         else:
             if self.is_private:
@@ -1066,9 +1067,9 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Response`
         """
-        if quote == False:
+        if quote is False:
             reply_to_message_id = 0
-        elif quote == True:
+        elif quote is True:
             reply_to_message_id = self.message_id
         else:
             if self.is_private:
@@ -1164,9 +1165,9 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Response`
         """
-        if quote == False:
+        if quote is False:
             reply_to_message_id = 0
-        elif quote == True:
+        elif quote is True:
             reply_to_message_id = self.message_id
         else:
             if self.is_private:
@@ -1262,9 +1263,9 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Response`
         """
-        if quote == False:
+        if quote is False:
             reply_to_message_id = 0
-        elif quote == True:
+        elif quote is True:
             reply_to_message_id = self.message_id
         else:
             if self.is_private:

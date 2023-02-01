@@ -1,3 +1,3 @@
-from .tdjson import TDjson
-
 __all__ = ["TDjson"]
+
+from .tdjson import TDjson

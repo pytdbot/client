@@ -1,6 +1,6 @@
-from .base import InputFile
 from pathlib import Path, PosixPath
 from typing import Union
+from .base import InputFile
 
 
 class InputFileLocal(InputFile):

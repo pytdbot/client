@@ -1,6 +1,6 @@
-from .base import LogStream
 from pathlib import Path, PosixPath
 from typing import Union
+from .base import LogStream
 
 
 class LogStreamFile(LogStream):
