@@ -22,7 +22,6 @@ from .methods import Methods
 from .types import Plugins, Response, LogStream, Update
 from .filters import Filter
 from .exception import StopHandlers, AuthorizationError
-from . import VERSION
 
 
 logger = getLogger(__name__)
@@ -866,7 +865,7 @@ class Client(Decorators, Methods):
                 "utf-8"
             ),
             database_directory=join_path(self.files_directory, "database"),
-            application_version=f"Pytdbot {VERSION}",
+            application_version=f"Pytdbot {pytdbot.__version__}",
         )
         if res.is_error:
             raise AuthorizationError(res.response["message"])
