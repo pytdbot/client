@@ -148,7 +148,6 @@ class Client(Decorators, Methods):
         self.queue = asyncio.Queue()
         self.td_verbosity = td_verbosity
         self._retry_after_prefex = "Too Many Requests: retry after "
-        self.authorization_state = None
         self.connection_state = None
         self.is_running = None
         self.me = None
@@ -162,6 +161,10 @@ class Client(Decorators, Methods):
         self._tdjson = TDjson(lib_path, td_verbosity)
         self._executor = ThreadPoolExecutor(5)
         self._workers_tasks = None
+        self.__authorization_state = None
+        self.__authorization = None
+        self.__login = False
+        self.__is_closing = False
 
         self.loop = (
             loop
@@ -188,6 +191,11 @@ class Client(Decorators, Methods):
         except Exception:
             pass
 
+    @property
+    def authorization_state(self):
+        """Current authorization state"""
+        return self.__authorization_state
+
     async def start(self, login: bool = True) -> None:
         """Start pytdbot client.
 
@@ -206,7 +214,7 @@ class Client(Decorators, Methods):
 
             logger.info("Started with %s workers", self.workers)
 
-            self.loop.create_task(self._listen_loop())
+            self.loop.create_task(self.__listen_loop())
 
         if login:
             await self.login()
@@ -217,172 +225,22 @@ class Client(Decorators, Methods):
         if self.is_authenticated:
             return
 
+        self.__login = True
+
+        await self.getOption("version")  # Ping TDLib to start authorization proccess.
+
         while self.authorization_state != "authorizationStateReady":
-            authorization = await self.getAuthorizationState()
-            self.authorization_state = authorization.type
+            await asyncio.sleep(0.1)
+            if self.authorization_state == "authorizationStateClosed":
+                return
 
-            if self.authorization_state == "authorizationStateWaitTdlibParameters":
-                await self._set_options()
-                await self.set_td_paramaters()
-            elif self.authorization_state == "authorizationStateWaitPhoneNumber":
-                self._print_welcome()
-                if not isinstance(self.token, str):
-                    while True:
-                        user_input = await self.__ainput(
-                            "Enter a phone number or bot token: "
-                        )
-
-                        if user_input:
-                            y_n = await self.__ainput(
-                                'Is "{}" correct? (y/n): '.format(user_input),
-                            )
-
-                            if y_n == "" or y_n.lower() in ["y", "yes"]:
-                                if ":" in user_input:
-                                    res = await self.checkAuthenticationBotToken(
-                                        user_input
-                                    )
-                                else:
-                                    res = await self.setAuthenticationPhoneNumber(
-                                        user_input
-                                    )
-
-                                if res.is_error:
-                                    print(res["message"])
-                                else:
-                                    break
-                else:
-                    if ":" in self.token:
-                        res = await self.checkAuthenticationBotToken(self.token)
-                    else:
-                        res = await self.setAuthenticationPhoneNumber(self.token)
-
-                    if res.is_error:
-                        raise AuthorizationError(res["message"])
-            elif self.authorization_state == "authorizationStateWaitEmailAddress":
-                while True:
-                    email_address = await self.__ainput("Enter your email address: ")
-
-                    res = await self.setAuthenticationEmailAddress(email_address)
-                    if res.is_error:
-                        print(res["message"])
-                    else:
-                        break
-            elif self.authorization_state == "authorizationStateWaitEmailCode":
-                while True:
-                    code = await self.__ainput(
-                        "Enter the email authentication code you received: ",
-                    )
-
-                    res = await self.checkAuthenticationEmailCode(
-                        code={"@type": "emailAddressAuthenticationCode", "code": code}
-                    )
-                    if res.is_error:
-                        print(res["message"])
-                    else:
-                        break
-            elif self.authorization_state == "authorizationStateWaitCode":
-                code_type = authorization["code_info"]["type"]["@type"]
-
-                if code_type == "authenticationCodeTypeTelegramMessage":
-                    code_type = "Telegram app"
-                elif code_type == "authenticationCodeTypeSms":
-                    code_type = "SMS"
-                elif code_type == "authenticationCodeTypeCall":
-                    code_type = "phone call"
-                elif code_type == "authenticationCodeTypeFlashCall":
-                    code_type = "phone flush call"
-                elif code_type == "authenticationCodeTypeMissedCall":
-                    code_type = "phone missed call"
-                elif code_type == "authenticationCodeTypeFragment":
-                    code_type = "fragment.com SMS"
-
-                while True:
-                    code = await self.__ainput(
-                        "Enter the login code received via {}: ".format(code_type),
-                    )
-
-                    res = await self.checkAuthenticationCode(code=code)
-                    if res.is_error:
-                        print(res["message"])
-                    else:
-                        break
-            elif self.authorization_state == "authorizationStateWaitRegistration":
-                while True:
-                    first_name = await self.__ainput("Enter your first name: ")
-                    last_name = await self.__ainput("Enter your last name: ")
-
-                    res = await self.registerUser(
-                        first_name=first_name, last_name=last_name
-                    )
-                    if res.is_error:
-                        print(res["message"])
-                    else:
-                        break
-            elif self.authorization_state == "authorizationStateWaitPassword":
-                if authorization["password_hint"]:
-                    print(
-                        "Your 2FA password hint is: {}".format(
-                            authorization["password_hint"]
-                        )
-                    )
-
-                while True:
-                    password = await self.loop.run_in_executor(
-                        None,
-                        getpass,
-                        "Enter your 2FA password {}: ".format(
-                            "(empty to recover)"
-                            if authorization["has_recovery_email_address"]
-                            else ""
-                        ),
-                    )
-
-                    if password == "":
-                        if authorization["has_recovery_email_address"]:
-                            y_n = await self.__ainput(
-                                "Are you sure you want to recover your 2FA password? (y/n): ",
-                            )
-
-                            if y_n.lower() in ["y", "yes"]:
-                                res = await self.requestAuthenticationPasswordRecovery()
-                                authorization = (
-                                    await self.getAuthorizationState()
-                                )  # Reload after requestAuthenticationPasswordRecovery to get recovery_email_address_pattern.
-
-                                if res.is_error:
-                                    raise AuthorizationError(res["message"])
-                                else:
-                                    while True:
-                                        recovery_code = await self.loop.run_in_executor(
-                                            None,
-                                            getpass,
-                                            "Enter your recovery code sent to {}: ".format(
-                                                authorization[
-                                                    "recovery_email_address_pattern"
-                                                ]
-                                            ),
-                                        )
-
-                                        res = await self.checkPasswordRecoveryCode(
-                                            recovery_code
-                                        )
-                                        if res.is_error:
-                                            print(res["message"])
-                                        else:
-                                            break
-                        else:
-                            print(
-                                "You can't recover your 2FA password because you don't set any recovery email address"
-                            )
-                    else:
-                        res = await self.checkAuthenticationPassword(password)
-                        if res.is_error:
-                            print(res["message"])
-                        else:
-                            break
+        if not self.is_running:
+            return
 
         self.me = await self.getMe()
+        if self.me.is_error:
+            logger.error("Get me error: {}".format(self.me["message"]))
+
         self.me = self.me.response
         self.is_authenticated = True
         logger.info(
@@ -539,23 +397,13 @@ class Client(Decorators, Methods):
                 Login after start. Defaults to True.
         """
 
+        self._register_signal_handlers()
+
         self.loop.run_until_complete(self.start(login))
         self.loop.run_until_complete(self.idle())
 
     async def idle(self):
         """Idle and wait until the client is stopped."""
-
-        def _handle_signal():
-            self.loop.create_task(self.stop())
-
-        if current_thread() is main_thread():
-            for sig in (
-                signal.SIGINT,
-                signal.SIGTERM,
-                signal.SIGABRT,
-                signal.SIGSEGV,
-            ):
-                self.loop.add_signal_handler(sig, _handle_signal)
 
         while self.is_running:
             await asyncio.sleep(1)
@@ -578,16 +426,14 @@ class Client(Decorators, Methods):
 
         logger.info("Waiting for TDLib to close...")
 
+        self.__is_closing = True
+
         await self.close()
 
         while self.authorization_state != "authorizationStateClosed":
             await asyncio.sleep(0.1)
         else:
-            self.is_authenticated = False
-            self.is_running = False
-
-            for worker_task in self._workers_tasks:
-                worker_task.cancel()
+            self.__stop_client()
 
             logger.info("Instance closed")
 
@@ -681,7 +527,7 @@ class Client(Decorators, Methods):
                 count += 1
         logger.info("From {} plugins got {} handlers".format(count, handlers))
 
-    async def _listen_loop(self):
+    async def __listen_loop(self):
         try:
             self.is_running = True
             logger.info("Listening to updates...")
@@ -693,7 +539,7 @@ class Client(Decorators, Methods):
                 self._process_update(update)
 
         except Exception:
-            logger.exception("Exception in _listen_loop")
+            logger.exception("Exception in __listen_loop")
         finally:
             self.is_running = False
 
@@ -721,17 +567,17 @@ class Client(Decorators, Methods):
                 )
         else:
             if update["@type"] == "updateAuthorizationState":
-                self.loop.create_task(self._handle_authorization_state(update))
+                self.loop.create_task(self.__handle_authorization_state(update))
             elif update["@type"] == "updateMessageSendSucceeded":
-                self.loop.create_task(self._handle_update_message_succeeded(update))
+                self.loop.create_task(self.__handle_update_message_succeeded(update))
             elif update["@type"] == "updateMessageSendFailed":
-                self.loop.create_task(self._handle_update_message_failed(update))
+                self.loop.create_task(self.__handle_update_message_failed(update))
             elif update["@type"] == "updateConnectionState":
-                self.loop.create_task(self._handle_connection_state(update))
+                self.loop.create_task(self.__handle_connection_state(update))
             elif update["@type"] == "updateOption":
-                self.loop.create_task(self._handle_update_option(update))
+                self.loop.create_task(self.__handle_update_option(update))
             elif update["@type"] == "updateUser":
-                self.loop.create_task(self._handle_update_user(update))
+                self.loop.create_task(self.__handle_update_user(update))
 
             self.queue.put_nowait(update)
 
@@ -804,6 +650,7 @@ class Client(Decorators, Methods):
                     if (
                         update_type == "updateNewMessage"
                         and update["message"]["is_outgoing"]
+                        and "sending_state" in update["message"]
                     ):
                         continue
 
@@ -887,19 +734,45 @@ class Client(Decorators, Methods):
             )
             logger.debug("Option {} sent with value {}".format(k, str(v)))
 
-    async def _handle_authorization_state(self, update):
-        if (
-            self.is_authenticated is True
-            and update["@type"] == "updateAuthorizationState"
-        ):
-            self.authorization_state = update["authorization_state"]["@type"]
+    async def __handle_authorization_state(self, update):
+        if update["@type"] == "updateAuthorizationState":
+            old_authorization_state = self.authorization_state
+            self.__authorization_state = update["authorization_state"]["@type"]
+            self.__authorization = update["authorization_state"]
+
             logger.info(
                 "Authorization state changed to {}".format(
                     self.authorization_state.replace("authorizationState", ""),
                 )
             )
 
-    async def _handle_connection_state(self, update):
+            if self.__login:
+                if self.authorization_state == "authorizationStateWaitTdlibParameters":
+                    await self._set_options()
+                    await self.set_td_paramaters()
+                elif self.authorization_state == "authorizationStateWaitPhoneNumber":
+                    self._print_welcome()
+                    await self.__handle_authorization_state_wait_phone_number()
+                elif self.authorization_state == "authorizationStateWaitEmailAddress":
+                    await self.__handle_authorization_state_wait_email_address()
+                elif self.authorization_state == "authorizationStateWaitEmailCode":
+                    await self.__handle_authorization_state_wait_email_code()
+                elif self.authorization_state == "authorizationStateWaitCode":
+                    await self.__handle_authorization_state_wait_code()
+                elif self.authorization_state == "authorizationStateWaitRegistration":
+                    await self.__handle_authorization_state_wait_registration()
+                elif (
+                    old_authorization_state != "authorizationStateWaitPassword"
+                    and self.authorization_state == "authorizationStateWaitPassword"
+                ):
+                    await self.__handle_authorization_state_wait_password()
+                elif (
+                    self.authorization_state == "authorizationStateClosed"
+                    and self.__is_closing is False
+                ):
+                    self.__stop_client()
+
+    async def __handle_connection_state(self, update):
         if update["@type"] == "updateConnectionState":
             self.connection_state = update["state"]["@type"]
             logger.info(
@@ -908,14 +781,14 @@ class Client(Decorators, Methods):
                 )
             )
 
-    async def _handle_update_message_succeeded(self, update):
+    async def __handle_update_message_succeeded(self, update):
         m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
 
         if m_id in self._results:
             response: Response = self._results.pop(m_id)
             response.set_response(update["message"])
 
-    async def _handle_update_message_failed(self, update):
+    async def __handle_update_message_failed(self, update):
         m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
 
         if m_id in self._results:
@@ -953,7 +826,7 @@ class Client(Decorators, Methods):
                     }
                 )
 
-    async def _handle_update_option(self, update):
+    async def __handle_update_option(self, update):
 
         if update["value"]["@type"] == "optionValueBoolean":
             self.options[update["name"]] = bool(update["value"]["value"])
@@ -972,7 +845,7 @@ class Client(Decorators, Methods):
                 )
             )
 
-    async def _handle_update_user(self, update):
+    async def __handle_update_user(self, update):
         if self.is_authenticated and update["user"]["id"] == self.me["id"]:
             logger.info(
                 "Updating {} ({}) info".format(
@@ -988,8 +861,215 @@ class Client(Decorators, Methods):
                 logger.exception("deepdiff failed")
             self.me = update["user"]
 
+    async def __handle_authorization_state_wait_phone_number(self):
+        if self.authorization_state != "authorizationStateWaitPhoneNumber":
+            return
+
+        if not isinstance(self.token, str):
+            while self.is_running:
+                user_input = await self.__ainput("Enter a phone number or bot token: ")
+
+                if user_input:
+                    y_n = await self.__ainput(
+                        'Is "{}" correct? (y/n): '.format(user_input),
+                    )
+
+                    if y_n == "" or y_n.lower() in ["y", "yes"]:
+                        if ":" in user_input:
+                            res = await self.checkAuthenticationBotToken(user_input)
+                        else:
+                            res = await self.setAuthenticationPhoneNumber(user_input)
+
+                        if res.is_error:
+                            print(res["message"])
+                        else:
+                            break
+        else:
+            if ":" in self.token:
+                res = await self.checkAuthenticationBotToken(self.token)
+            else:
+                res = await self.setAuthenticationPhoneNumber(self.token)
+
+            if res.is_error:
+                raise AuthorizationError(res["message"])
+
+    async def __handle_authorization_state_wait_email_address(self):
+        if self.authorization_state == "authorizationStateWaitEmailAddress":
+            return
+
+        while self.is_running:
+            email_address = await self.__ainput("Enter your email address: ")
+
+            res = await self.setAuthenticationEmailAddress(email_address)
+            if res.is_error:
+                print(res["message"])
+            else:
+                break
+
+    async def __handle_authorization_state_wait_email_code(self):
+        if self.authorization_state != "authorizationStateWaitEmailCode":
+            return
+
+        while self.is_running:
+            code = await self.__ainput(
+                "Enter the email authentication code you received: ",
+            )
+
+            res = await self.checkAuthenticationEmailCode(
+                code={"@type": "emailAddressAuthenticationCode", "code": code}
+            )
+            if res.is_error:
+                print(res["message"])
+            else:
+                break
+
+    async def __handle_authorization_state_wait_code(self):
+        if self.authorization_state != "authorizationStateWaitCode":
+            return
+
+        code_type = self.__authorization["code_info"]["type"]["@type"]
+
+        if code_type == "authenticationCodeTypeTelegramMessage":
+            code_type = "Telegram app"
+        elif code_type == "authenticationCodeTypeSms":
+            code_type = "SMS"
+        elif code_type == "authenticationCodeTypeCall":
+            code_type = "phone call"
+        elif code_type == "authenticationCodeTypeFlashCall":
+            code_type = "phone flush call"
+        elif code_type == "authenticationCodeTypeMissedCall":
+            code_type = "phone missed call"
+        elif code_type == "authenticationCodeTypeFragment":
+            code_type = "fragment.com SMS"
+
+        while self.is_running:
+            code = await self.__ainput(
+                "Enter the login code received via {}: ".format(code_type),
+            )
+
+            res = await self.checkAuthenticationCode(code=code)
+            if res.is_error:
+                print(res["message"])
+            else:
+                break
+
+    async def __handle_authorization_state_wait_registration(self):
+        if self.authorization_state != "authorizationStateWaitRegistration":
+            return
+
+        while self.is_running:
+            first_name = await self.__ainput("Enter your first name: ")
+            last_name = await self.__ainput("Enter your last name: ")
+
+            res = await self.registerUser(first_name=first_name, last_name=last_name)
+            if res.is_error:
+                print(res["message"])
+            else:
+                break
+
+    async def __handle_authorization_state_wait_password(self):
+        if self.authorization_state != "authorizationStateWaitPassword":
+            return
+
+        if self.__authorization["password_hint"]:
+            print(
+                "Your 2FA password hint is: {}".format(
+                    self.__authorization["password_hint"]
+                )
+            )
+
+        while self.is_running:
+            password = await self.loop.run_in_executor(
+                self._executor,
+                getpass,
+                "Enter your 2FA password {}: ".format(
+                    "(empty to recover)"
+                    if self.__authorization["has_recovery_email_address"]
+                    else ""
+                ),
+            )
+
+            if password == "":
+                if self.__authorization["has_recovery_email_address"]:
+                    y_n = await self.__ainput(
+                        "Are you sure you want to recover your 2FA password? (y/n): ",
+                    )
+
+                    if y_n.lower() in ["y", "yes"]:
+                        res = await self.requestAuthenticationPasswordRecovery()
+
+                        if res.is_error:
+                            raise AuthorizationError(res["message"])
+                        else:
+                            while True:
+                                recovery_code = await self.__ainput(
+                                    "Enter your recovery code sent to {}: ".format(
+                                        self.__authorization[
+                                            "recovery_email_address_pattern"
+                                        ]
+                                    ),
+                                )
+
+                                res = (
+                                    await self.checkAuthenticationPasswordRecoveryCode(
+                                        recovery_code
+                                    )
+                                )
+
+                                if res.is_error:
+                                    print(res["message"])
+                                else:
+                                    recover_res = (
+                                        await self.recoverAuthenticationPassword(
+                                            recovery_code
+                                        )
+                                    )
+                                    if recover_res.is_error:
+                                        raise AuthorizationError(recover_res["message"])
+
+                                    return
+                else:
+                    print(
+                        "You can't recover your 2FA password because you don't set any recovery email address"
+                    )
+            else:
+                res = await self.checkAuthenticationPassword(password)
+                if res.is_error:
+                    print(res["message"])
+                else:
+                    break
+
+    def __stop_client(self) -> None:
+        self.is_authenticated = False
+        self.is_running = False
+
+        for worker_task in self._workers_tasks:
+            worker_task.cancel()
+
+        self._executor.shutdown(wait=False, cancel_futures=True)
+
+    def _register_signal_handlers(self):
+        def _handle_signal():
+            self.loop.create_task(self.stop())
+            for sig in (
+                signal.SIGINT,
+                signal.SIGTERM,
+                signal.SIGABRT,
+                signal.SIGSEGV,
+            ):
+                self.loop.remove_signal_handler(sig)
+
+        if current_thread() is main_thread():
+            for sig in (
+                signal.SIGINT,
+                signal.SIGTERM,
+                signal.SIGABRT,
+                signal.SIGSEGV,
+            ):
+                self.loop.add_signal_handler(sig, _handle_signal)
+
     def __ainput(self, prompt: str):
-        return self.loop.run_in_executor(None, input, prompt)
+        return self.loop.run_in_executor(self._executor, input, prompt)
 
     def _print_welcome(self):
         print(
