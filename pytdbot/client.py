@@ -228,14 +228,12 @@ class Client(Decorators, Methods):
                 self._print_welcome()
                 if not isinstance(self.token, str):
                     while True:
-                        user_input = await self.loop.run_in_executor(
-                            None, input, "Enter a phone number or bot token: "
+                        user_input = await self.__ainput(
+                            "Enter a phone number or bot token: "
                         )
 
                         if user_input:
-                            y_n = await self.loop.run_in_executor(
-                                None,
-                                input,
+                            y_n = await self.__ainput(
                                 'Is "{}" correct? (y/n): '.format(user_input),
                             )
 
@@ -263,9 +261,7 @@ class Client(Decorators, Methods):
                         raise AuthorizationError(res["message"])
             elif self.authorization_state == "authorizationStateWaitEmailAddress":
                 while True:
-                    email_address = await self.loop.run_in_executor(
-                        None, input, "Enter your email address: "
-                    )
+                    email_address = await self.__ainput("Enter your email address: ")
 
                     res = await self.setAuthenticationEmailAddress(email_address)
                     if res.is_error:
@@ -274,9 +270,7 @@ class Client(Decorators, Methods):
                         break
             elif self.authorization_state == "authorizationStateWaitEmailCode":
                 while True:
-                    code = await self.loop.run_in_executor(
-                        None,
-                        input,
+                    code = await self.__ainput(
                         "Enter the email authentication code you received: ",
                     )
 
@@ -304,9 +298,7 @@ class Client(Decorators, Methods):
                     code_type = "fragment.com SMS"
 
                 while True:
-                    code = await self.loop.run_in_executor(
-                        None,
-                        input,
+                    code = await self.__ainput(
                         "Enter the login code received via {}: ".format(code_type),
                     )
 
@@ -317,12 +309,8 @@ class Client(Decorators, Methods):
                         break
             elif self.authorization_state == "authorizationStateWaitRegistration":
                 while True:
-                    first_name = await self.loop.run_in_executor(
-                        None, input, "Enter your first name: "
-                    )
-                    last_name = await self.loop.run_in_executor(
-                        None, input, "Enter your last name: "
-                    )
+                    first_name = await self.__ainput("Enter your first name: ")
+                    last_name = await self.__ainput("Enter your last name: ")
 
                     res = await self.registerUser(
                         first_name=first_name, last_name=last_name
@@ -352,9 +340,7 @@ class Client(Decorators, Methods):
 
                     if password == "":
                         if authorization["has_recovery_email_address"]:
-                            y_n = await self.loop.run_in_executor(
-                                None,
-                                input,
+                            y_n = await self.__ainput(
                                 "Are you sure you want to recover your 2FA password? (y/n): ",
                             )
 
@@ -1001,6 +987,9 @@ class Client(Decorators, Methods):
             except Exception:
                 logger.exception("deepdiff failed")
             self.me = update["user"]
+
+    def __ainput(self, prompt: str):
+        return self.loop.run_in_executor(None, input, prompt)
 
     def _print_welcome(self):
         print(
