@@ -1,6 +1,6 @@
 # Pytdbot [![version](https://img.shields.io/pypi/v/Pytdbot?style=flat&logo=pypi)](https://pypi.org/project/Pytdbot) [![downloads](https://img.shields.io/pypi/dm/Pytdbot?style=flat)](https://pypistats.org/packages/pytdbot)
 
-Easy, Sample and powerful [TDLib-based](https://github.com/tdlib/td) client for Telegram bots.
+Easy, Sample and powerful [TDLib-based](https://github.com/tdlib/td) client.
 
 ### Requirements
 
@@ -31,7 +31,7 @@ client = Client(
     api_id=0,  
     api_hash="API_HASH",  
     database_encryption_key="1234echobot$",
-    token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token. You can get it from https://t.me/botfather
+    token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token or phone number if you want to login as user.
     files_directory="BotDB",  # path where to store session and files.
     lib_path="/path/to/libtdjson.so" # Path to TDjson shared library.
 )
@@ -44,7 +44,8 @@ async def print_message(c: Client, message: Update):
 
 @client.on_updateNewMessage()
 async def simple_message(c: Client, message: Update):
-    await message.reply_text('Hi! i am simple bot')
+    if message.is_private:
+        await message.reply_text('Hi! i am simple bot')
 
 
 # Run the client
