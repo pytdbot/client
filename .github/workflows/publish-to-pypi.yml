@@ -1,6 +1,12 @@
 name: Publish to pypi
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - "main"
+
+    paths:
+      - "pytdbot/__init__.py"
 
 jobs:
   build:
