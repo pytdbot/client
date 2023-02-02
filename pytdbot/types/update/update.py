@@ -323,6 +323,16 @@ class Update:
         """
         return self.content_type in self.SERVICE_MESSAGE_TYPES
 
+    @property
+    def is_self(self) -> bool:
+        """True, if the message is sent by the current user.
+
+        Returns:
+            ``bool``
+        """
+        if isinstance(self.from_id, int):
+            return self.client.options["my_id"] == self.from_id
+
     async def mention(self, parse_mode: str = "markdown", version: int = 1) -> str:
         """Get the text_mention of the message sender.
 
