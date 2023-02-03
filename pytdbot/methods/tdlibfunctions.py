@@ -118,7 +118,7 @@ class TDLibFunctions:
     async def setAuthenticationPhoneNumber(
         self, phone_number: str, settings: dict = None
     ) -> Response:
-        """Sets the phone number of the user and sends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
+        """Sets the phone number of the user and sends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
 
         Args:
             phone_number (``str``):
@@ -212,7 +212,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def requestQrCodeAuthentication(self, other_user_ids: list) -> Response:
-        """Requests QR code authentication by scanning a QR code on another logged in device. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
+        """Requests QR code authentication by scanning a QR code on another logged in device. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
 
         Args:
             other_user_ids (``list``):
@@ -332,6 +332,25 @@ class TDLibFunctions:
             "recovery_code": recovery_code,
             "new_password": new_password,
             "new_hint": new_hint,
+        }
+
+        return await self.invoke(data)
+
+    async def sendAuthenticationFirebaseSms(self, token: str) -> Response:
+        """Sends Firebase Authentication SMS to the phone number of the user. Works only when the current authorization state is authorizationStateWaitCode and the server returned code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos
+
+        Args:
+            token (``str``):
+                SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`Ok`)
+        """
+
+        data = {
+            "@type": "sendAuthenticationFirebaseSms",
+            "token": token,
         }
 
         return await self.invoke(data)
@@ -974,7 +993,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getRepliedMessage(self, chat_id: int, message_id: int) -> Response:
-        """Returns information about a message that is replied by a given message. Also returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, and topic messages without replied message respectively
+        """Returns information about a message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, and topic messages without replied message respectively
 
         Args:
             chat_id (``int``):
@@ -1204,7 +1223,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def searchPublicChat(self, username: str) -> Response:
-        """Searches a public chat by its username. Currently, only private chats, supergroups and channels can be public. Returns the chat if found; otherwise an error is returned
+        """Searches a public chat by its username. Currently, only private chats, supergroups and channels can be public. Returns the chat if found; otherwise, an error is returned
 
         Args:
             username (``str``):
@@ -2287,30 +2306,53 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def translateText(
-        self, text: str, from_language_code: str, to_language_code: str
-    ) -> Response:
-        """Translates a text to the given language. Returns a 404 error if the translation can't be performed
+    async def translateText(self, text: dict, to_language_code: str) -> Response:
+        """Translates a text to the given language. If the current user is a Telegram Premium user, then text formatting is preserved
 
         Args:
-            text (``str``):
+            text (``formattedText``):
                 Text to translate
 
-            from_language_code (``str``):
-                A two-letter ISO 639-1 language code of the language from which the message is translated. If empty, the language will be detected automatically
-
             to_language_code (``str``):
-                A two-letter ISO 639-1 language code of the language to which the message is translated
+                ISO language code of the language to which the message is translated. Must be one of "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh-CN", "zh", "zh-Hans", "zh-TW", "zh-Hant", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "id", "in", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "ji", "yo", "zu"
 
 
         Returns:
-            :class:`~pytdbot.types.Response` (`Text`)
+            :class:`~pytdbot.types.Response` (`FormattedText`)
         """
 
         data = {
             "@type": "translateText",
             "text": text,
-            "from_language_code": from_language_code,
+            "to_language_code": to_language_code,
+        }
+
+        return await self.invoke(data)
+
+    async def translateMessageText(
+        self, chat_id: int, message_id: int, to_language_code: str
+    ) -> Response:
+        """Extracts text or caption of the given message and translates it to the given language. If the current user is a Telegram Premium user, then text formatting is preserved
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which the message belongs
+
+            message_id (``int``):
+                Identifier of the message
+
+            to_language_code (``str``):
+                ISO language code of the language to which the message is translated. Must be one of "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh-CN", "zh", "zh-Hans", "zh-TW", "zh-Hant", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "id", "in", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "ji", "yo", "zu"
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`FormattedText`)
+        """
+
+        data = {
+            "@type": "translateMessageText",
+            "chat_id": chat_id,
+            "message_id": message_id,
             "to_language_code": to_language_code,
         }
 
@@ -4142,6 +4184,90 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def shareUserWithBot(
+        self,
+        chat_id: int,
+        message_id: int,
+        button_id: int,
+        shared_user_id: int,
+        only_check: bool,
+    ) -> Response:
+        """Shares a user after pressing a keyboardButtonTypeRequestUser button with the bot
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat with the bot
+
+            message_id (``int``):
+                Identifier of the message with the button
+
+            button_id (``int``):
+                Identifier of the button
+
+            shared_user_id (``int``):
+                Identifier of the shared user
+
+            only_check (``bool``):
+                Pass true to check that the user can be shared by the button instead of actually sharing them
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`Ok`)
+        """
+
+        data = {
+            "@type": "shareUserWithBot",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "button_id": button_id,
+            "shared_user_id": shared_user_id,
+            "only_check": only_check,
+        }
+
+        return await self.invoke(data)
+
+    async def shareChatWithBot(
+        self,
+        chat_id: int,
+        message_id: int,
+        button_id: int,
+        shared_chat_id: int,
+        only_check: bool,
+    ) -> Response:
+        """Shares a chat after pressing a keyboardButtonTypeRequestChat button with the bot
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat with the bot
+
+            message_id (``int``):
+                Identifier of the message with the button
+
+            button_id (``int``):
+                Identifier of the button
+
+            shared_chat_id (``int``):
+                Identifier of the shared chat
+
+            only_check (``bool``):
+                Pass true to check that the chat can be shared by the button instead of actually sharing it. Doesn't check bot_is_member and bot_administrator_rights restrictions. If the bot must be a member, then all chats from getGroupsInCommon and all chats, where the user can add the bot, are suitable. In the latter case the bot will be automatically added to the chat. If the bot must be an administrator, then all chats, where the bot already has requested rights or can be added to administrators by the user, are suitable. In the latter case the bot will be automatically granted requested rights
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`Ok`)
+        """
+
+        data = {
+            "@type": "shareChatWithBot",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "button_id": button_id,
+            "shared_chat_id": shared_chat_id,
+            "only_check": only_check,
+        }
+
+        return await self.invoke(data)
+
     async def getInlineQueryResults(
         self,
         bot_user_id: int,
@@ -5100,6 +5226,7 @@ class TDLibFunctions:
     async def createNewSupergroupChat(
         self,
         title: str,
+        is_forum: bool,
         is_channel: bool,
         description: str,
         message_auto_delete_time: int,
@@ -5112,8 +5239,11 @@ class TDLibFunctions:
             title (``str``):
                 Title of the new chat; 1-128 characters
 
+            is_forum (``bool``):
+                Pass true to create a forum supergroup chat
+
             is_channel (``bool``):
-                Pass true to create a channel chat
+                Pass true to create a channel chat; ignored if a forum is created
 
             description (``str``):
                 Chat description; 0-255 characters
@@ -5135,6 +5265,7 @@ class TDLibFunctions:
         data = {
             "@type": "createNewSupergroupChat",
             "title": title,
+            "is_forum": is_forum,
             "is_channel": is_channel,
             "description": description,
             "location": location,
@@ -5554,6 +5685,31 @@ class TDLibFunctions:
             "@type": "toggleChatHasProtectedContent",
             "chat_id": chat_id,
             "has_protected_content": has_protected_content,
+        }
+
+        return await self.invoke(data)
+
+    async def toggleChatIsTranslatable(
+        self, chat_id: int, is_translatable: bool
+    ) -> Response:
+        """Changes the tranlatable state of a chat; for Telegram Premium users only
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            is_translatable (``bool``):
+                New value of is_translatable
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`Ok`)
+        """
+
+        data = {
+            "@type": "toggleChatIsTranslatable",
+            "chat_id": chat_id,
+            "is_translatable": is_translatable,
         }
 
         return await self.invoke(data)
@@ -8735,14 +8891,14 @@ class TDLibFunctions:
     async def getStickers(
         self, sticker_type: dict, query: str, limit: int, chat_id: int
     ) -> Response:
-        """Returns stickers from the installed sticker sets that correspond to a given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned
+        """Returns stickers from the installed sticker sets that correspond to any of the given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned
 
         Args:
             sticker_type (``StickerType``):
                 Type of the stickers to return
 
             query (``str``):
-                Search query; an emoji or a keyword prefix. If empty, returns all known installed stickers
+                Search query; a space-separated list of emoji or a keyword prefix. If empty, returns all known installed stickers
 
             limit (``int``):
                 The maximum number of stickers to be returned
@@ -8765,12 +8921,17 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def searchStickers(self, emoji: str, limit: int) -> Response:
-        """Searches for stickers from public sticker sets that correspond to a given emoji
+    async def searchStickers(
+        self, sticker_type: dict, emojis: str, limit: int
+    ) -> Response:
+        """Searches for stickers from public sticker sets that correspond to any of the given emoji
 
         Args:
-            emoji (``str``):
-                String representation of emoji; must be non-empty
+            sticker_type (``StickerType``):
+                Type of the stickers to return
+
+            emojis (``str``):
+                Space-separated list of emoji to search for; must be non-empty
 
             limit (``int``):
                 The maximum number of stickers to be returned; 0-100
@@ -8782,7 +8943,8 @@ class TDLibFunctions:
 
         data = {
             "@type": "searchStickers",
-            "emoji": emoji,
+            "sticker_type": sticker_type,
+            "emojis": emojis,
             "limit": limit,
         }
 
@@ -9246,6 +9408,25 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getEmojiCategories(self, type: dict = None) -> Response:
+        """Returns available emojis categories
+
+        Args:
+            type (``EmojiCategoryType``, optional):
+                Type of emoji categories to return; pass null to get default emoji categories
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`EmojiCategories`)
+        """
+
+        data = {
+            "@type": "getEmojiCategories",
+            "type": type,
+        }
+
+        return await self.invoke(data)
+
     async def getAnimatedEmoji(self, emoji: str) -> Response:
         """Returns an animated emoji corresponding to a given emoji. Returns a 404 error if the emoji has no animated emoji
 
@@ -9299,6 +9480,34 @@ class TDLibFunctions:
         data = {
             "@type": "getCustomEmojiStickers",
             "custom_emoji_ids": custom_emoji_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def getDefaultChatPhotoCustomEmojiStickers(self) -> Response:
+        """Returns default list of custom emoji stickers for placing on a chat photo
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`Stickers`)
+        """
+
+        data = {
+            "@type": "getDefaultChatPhotoCustomEmojiStickers",
+        }
+
+        return await self.invoke(data)
+
+    async def getDefaultProfilePhotoCustomEmojiStickers(self) -> Response:
+        """Returns default list of custom emoji stickers for placing on a profile photo
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`Stickers`)
+        """
+
+        data = {
+            "@type": "getDefaultProfilePhotoCustomEmojiStickers",
         }
 
         return await self.invoke(data)
@@ -9786,7 +9995,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getCommands(self, language_code: str, scope: dict = None) -> Response:
-        """Returns the list of commands supported by the bot for the given user scope and language; for bots only
+        """Returns list of commands supported by the bot for the given user scope and language; for bots only
 
         Args:
             language_code (``str``):
@@ -11691,6 +11900,57 @@ class TDLibFunctions:
             "@type": "setAutoDownloadSettings",
             "settings": settings,
             "type": type,
+        }
+
+        return await self.invoke(data)
+
+    async def getAutosaveSettings(self) -> Response:
+        """Returns autosave settings for the current user
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`AutosaveSettings`)
+        """
+
+        data = {
+            "@type": "getAutosaveSettings",
+        }
+
+        return await self.invoke(data)
+
+    async def setAutosaveSettings(self, scope: dict, settings: dict = None) -> Response:
+        """Sets autosave settings for the given scope
+
+        Args:
+            scope (``AutosaveSettingsScope``):
+                Autosave settings scope
+
+            settings (``scopeAutosaveSettings``, optional):
+                New autosave settings for the scope; pass null to set autosave settings to default
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`Ok`)
+        """
+
+        data = {
+            "@type": "setAutosaveSettings",
+            "scope": scope,
+            "settings": settings,
+        }
+
+        return await self.invoke(data)
+
+    async def clearAutosaveSettingsExceptions(self) -> Response:
+        """Clears the list of all autosave settings exceptions
+
+
+        Returns:
+            :class:`~pytdbot.types.Response` (`Ok`)
+        """
+
+        data = {
+            "@type": "clearAutosaveSettingsExceptions",
         }
 
         return await self.invoke(data)

@@ -613,7 +613,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The position of a chat in a chat list has changed. Instead of this update updateChatLastMessage or updateChatDraftMessage might be sent
+        """The position of a chat in a chat list has changed. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
@@ -1173,12 +1173,12 @@ class Updates:
 
         return decorator
 
-    def on_updateChatHasScheduledMessages(
+    def on_updateChatIsTranslatable(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat's has_scheduled_messages field has changed
+        """Translation of chat messages was enabled or disabled
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
@@ -1194,7 +1194,7 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatHasScheduledMessages", func, filters, position
+                        "updateChatIsTranslatable", func, filters, position
                     )
                 else:
                     logger.warn(
@@ -1202,7 +1202,42 @@ class Updates:
                     )
             else:
                 func._handler = Handler(
-                    func, "updateChatHasScheduledMessages", filters, position
+                    func, "updateChatIsTranslatable", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateChatIsMarkedAsUnread(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A chat was marked as unread or was read
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
+            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+
+        Raises:
+            TypeError
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateChatIsMarkedAsUnread", func, filters, position
+                    )
+                else:
+                    logger.warn(
+                        'Function "{}" is not a coroutine function'.format(func)
+                    )
+            else:
+                func._handler = Handler(
+                    func, "updateChatIsMarkedAsUnread", filters, position
                 )
             return func
 
@@ -1239,12 +1274,12 @@ class Updates:
 
         return decorator
 
-    def on_updateChatIsMarkedAsUnread(
+    def on_updateChatHasScheduledMessages(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat was marked as unread or was read
+        """A chat's has_scheduled_messages field has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
@@ -1260,7 +1295,7 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatIsMarkedAsUnread", func, filters, position
+                        "updateChatHasScheduledMessages", func, filters, position
                     )
                 else:
                     logger.warn(
@@ -1268,7 +1303,7 @@ class Updates:
                     )
             else:
                 func._handler = Handler(
-                    func, "updateChatIsMarkedAsUnread", filters, position
+                    func, "updateChatHasScheduledMessages", filters, position
                 )
             return func
 
@@ -3088,6 +3123,39 @@ class Updates:
             else:
                 func._handler = Handler(
                     func, "updateSuggestedActions", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateAutosaveSettings(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Autosave settings for some type of chats were updated
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
+            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+
+        Raises:
+            TypeError
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateAutosaveSettings", func, filters, position)
+                else:
+                    logger.warn(
+                        'Function "{}" is not a coroutine function'.format(func)
+                    )
+            else:
+                func._handler = Handler(
+                    func, "updateAutosaveSettings", filters, position
                 )
             return func
 

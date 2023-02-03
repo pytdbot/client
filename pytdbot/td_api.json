@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.10",
-    "commit_hash": "cf1984844",
+    "version": "1.8.11",
+    "commit_hash": "6dc48f30d",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -14,6 +14,7 @@
         "StickerFullType": "Contains full information about sticker type",
         "PollType": "Describes the type of a poll",
         "UserType": "Represents the type of a user. The following types are possible: regular users, deleted users and bots",
+        "ChatPhotoStickerType": "Describes type of a sticker, which was used to create a chat photo",
         "InputChatPhoto": "Describes a photo to be set as a user profile or chat photo",
         "ChatMemberStatus": "Provides information about the status of a member in a chat",
         "ChatMembersFilter": "Specifies the kind of chat members to return in searchChatMembers",
@@ -54,11 +55,13 @@
         "SearchMessagesFilter": "Represents a filter for message search results",
         "ChatAction": "Describes the different types of activity in a chat",
         "UserStatus": "Describes the last time the user was online",
+        "EmojiCategoryType": "Describes type of an emoji category",
         "CallDiscardReason": "Describes the reason why a call was discarded",
         "CallServerType": "Describes the type of a call server",
         "CallState": "Describes the current call state",
         "GroupCallVideoQuality": "Describes the quality of a group call video",
         "CallProblem": "Describes the exact type of a problem with a call",
+        "FirebaseAuthenticationSettings": "Contains settings for Firebase Authentication in the official applications",
         "DiceStickers": "Contains animated stickers which must be used for dice animation rendering",
         "SpeechRecognitionResult": "Describes result of speech recognition in a voice note",
         "InputInlineQueryResult": "Represents a single result of an inline query; for bots only",
@@ -93,6 +96,7 @@
         "FileType": "Represents the type of a file",
         "NetworkType": "Represents the type of a network",
         "NetworkStatisticsEntry": "Contains statistics about network usage",
+        "AutosaveSettingsScope": "Describes scope of autosave settings",
         "ConnectionState": "Describes the current state of the connection to Telegram servers",
         "TopChatCategory": "Represents the categories of chats for which a list of frequently used chats can be retrieved",
         "TMeUrlType": "Describes the type of a URL linking to an internal Telegram entity",
@@ -195,6 +199,43 @@
                     "description": "URL to open to receive the code",
                     "is_optional": false,
                     "type": "string"
+                },
+                "length": {
+                    "description": "Length of the code",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "AuthenticationCodeType"
+        },
+        "authenticationCodeTypeFirebaseAndroid": {
+            "description": "An authentication code is delivered via Firebase Authentication to the official Android application",
+            "args": {
+                "nonce": {
+                    "description": "Nonce to pass to the SafetyNet Attestation API",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "length": {
+                    "description": "Length of the code",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "AuthenticationCodeType"
+        },
+        "authenticationCodeTypeFirebaseIos": {
+            "description": "An authentication code is delivered via Firebase Authentication to the official iOS application",
+            "args": {
+                "receipt": {
+                    "description": "Receipt of successful applikation token validation to compare with receipt from push notification",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "push_timeout": {
+                    "description": "Time after the next authentication method is supposed to be used if verification push notification isn't received, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "length": {
                     "description": "Length of the code",
@@ -924,7 +965,7 @@
                     "type": "int64"
                 },
                 "needs_repainting": {
-                    "description": "True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, or another appropriate color in other places",
+                    "description": "True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, or another appropriate color in other places. The sticker must not be repainted on chat photos",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -1157,6 +1198,11 @@
         "sticker": {
             "description": "Describes a sticker",
             "args": {
+                "id": {
+                    "description": "Unique sticker identifier within the set; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                },
                 "set_id": {
                     "description": "The identifier of the sticker set to which the sticker belongs; 0 if none",
                     "is_optional": false,
@@ -1388,7 +1434,7 @@
                     "type": "string"
                 },
                 "user_id": {
-                    "description": "Identifier of the user, if known; otherwise 0",
+                    "description": "Identifier of the user, if known; 0 otherwise",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -1731,6 +1777,49 @@
             },
             "type": "ChatLocation"
         },
+        "chatPhotoStickerTypeRegularOrMask": {
+            "description": "Information about the sticker, which was used to create the chat photo",
+            "args": {
+                "sticker_set_id": {
+                    "description": "Sticker set identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "sticker_id": {
+                    "description": "Identifier of the sticker in the set",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "ChatPhotoStickerType"
+        },
+        "chatPhotoStickerTypeCustomEmoji": {
+            "description": "Information about the custom emoji, which was used to create the chat photo",
+            "args": {
+                "custom_emoji_id": {
+                    "description": "Identifier of the custom emoji",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "ChatPhotoStickerType"
+        },
+        "chatPhotoSticker": {
+            "description": "Information about the sticker, which was used to create the chat photo. The sticker is shown at the center of the photo and occupies at most 67% of it",
+            "args": {
+                "type": {
+                    "description": "Type of the sticker",
+                    "is_optional": false,
+                    "type": "ChatPhotoStickerType"
+                },
+                "background_fill": {
+                    "description": "The fill to be used as background for the sticker; rotation angle in backgroundFillGradient isn't supported",
+                    "is_optional": false,
+                    "type": "BackgroundFill"
+                }
+            },
+            "type": "ChatPhotoSticker"
+        },
         "animatedChatPhoto": {
             "description": "Animated variant of a chat photo in MPEG4 format",
             "args": {
@@ -1776,7 +1865,7 @@
                     "type": "vector<photoSize>"
                 },
                 "animation": {
-                    "description": "A big (640x640) animated variant of the photo in MPEG4 format; may be null",
+                    "description": "A big (up to 1280x1280) animated variant of the photo in MPEG4 format; may be null",
                     "is_optional": true,
                     "type": "animatedChatPhoto"
                 },
@@ -1784,6 +1873,11 @@
                     "description": "A small (160x160) animated variant of the photo in MPEG4 format; may be null even the big animation is available",
                     "is_optional": true,
                     "type": "animatedChatPhoto"
+                },
+                "sticker": {
+                    "description": "Sticker-based version of the chat photo; may be null",
+                    "is_optional": true,
+                    "type": "chatPhotoSticker"
                 }
             },
             "type": "ChatPhoto"
@@ -1827,7 +1921,7 @@
             "type": "InputChatPhoto"
         },
         "inputChatPhotoAnimation": {
-            "description": "An animation in MPEG4 format; must be square, at most 10 seconds long, have width between 160 and 800 and be at most 2MB in size",
+            "description": "An animation in MPEG4 format; must be square, at most 10 seconds long, have width between 160 and 1280 and be at most 2MB in size",
             "args": {
                 "animation": {
                     "description": "Animation to be set as profile photo. Only inputFileLocal and inputFileGenerated are allowed",
@@ -1842,31 +1936,67 @@
             },
             "type": "InputChatPhoto"
         },
+        "inputChatPhotoSticker": {
+            "description": "A sticker on a custom background",
+            "args": {
+                "sticker": {
+                    "description": "Information about the sticker",
+                    "is_optional": false,
+                    "type": "chatPhotoSticker"
+                }
+            },
+            "type": "InputChatPhoto"
+        },
         "chatPermissions": {
             "description": "Describes actions that a user is allowed to take in a chat",
             "args": {
                 "can_send_messages": {
-                    "description": "True, if the user can send text messages, contacts, locations, and venues",
+                    "description": "True, if the user can send text messages, contacts, invoices, locations, and venues",
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "can_send_media_messages": {
-                    "description": "True, if the user can send audio files, documents, photos, videos, video notes, and voice notes. Implies can_send_messages permissions",
+                "can_send_audios": {
+                    "description": "True, if the user can send music files",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_send_documents": {
+                    "description": "True, if the user can send documents",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_send_photos": {
+                    "description": "True, if the user can send audio photos",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_send_videos": {
+                    "description": "True, if the user can send audio videos",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_send_video_notes": {
+                    "description": "True, if the user can send video notes",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_send_voice_notes": {
+                    "description": "True, if the user can send voice notes",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "can_send_polls": {
-                    "description": "True, if the user can send polls. Implies can_send_messages permissions",
+                    "description": "True, if the user can send polls",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "can_send_other_messages": {
-                    "description": "True, if the user can send animations, games, stickers, and dice and use inline bots. Implies can_send_messages permissions",
+                    "description": "True, if the user can send animations, games, stickers, and dice and use inline bots",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "can_add_web_page_previews": {
-                    "description": "True, if the user may add a web page preview to their messages. Implies can_send_messages permissions",
+                    "description": "True, if the user may add a web page preview to their messages",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -1994,6 +2124,32 @@
                 }
             },
             "type": "PremiumPaymentOption"
+        },
+        "premiumStatePaymentOption": {
+            "description": "Describes an option for buying or upgrading Telegram Premium for self",
+            "args": {
+                "payment_option": {
+                    "description": "Information about the payment option",
+                    "is_optional": false,
+                    "type": "premiumPaymentOption"
+                },
+                "is_current": {
+                    "description": "True, if this is the currently used Telegram Premium subscription option",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_upgrade": {
+                    "description": "True, if the payment option can be used to upgrade the existing Telegram Premium subscription",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "last_transaction_id": {
+                    "description": "Identifier of the last in-store transaction for the currently used option",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "PremiumStatePaymentOption"
         },
         "emojiStatus": {
             "description": "Describes a custom emoji to be shown instead of the Telegram Premium badge",
@@ -2194,17 +2350,17 @@
             "description": "Contains full information about a user",
             "args": {
                 "personal_photo": {
-                    "description": "User profile photo set by the current user for the contact; may be null. If null and user.profile_photo is null, then the photo is empty, otherwise unknown. If non-null, then it is the same photo as in user.profile_photo and chat.photo. This photo isn't returned in the list of user photos",
+                    "description": "User profile photo set by the current user for the contact; may be null. If null and user.profile_photo is null, then the photo is empty; otherwise, it is unknown. If non-null, then it is the same photo as in user.profile_photo and chat.photo. This photo isn't returned in the list of user photos",
                     "is_optional": true,
                     "type": "chatPhoto"
                 },
                 "photo": {
-                    "description": "User profile photo; may be null. If null and user.profile_photo is null, then the photo is empty, otherwise unknown. If non-null and personal_photo is null, then it is the same photo as in user.profile_photo and chat.photo",
+                    "description": "User profile photo; may be null. If null and user.profile_photo is null, then the photo is empty; otherwise, it is unknown. If non-null and personal_photo is null, then it is the same photo as in user.profile_photo and chat.photo",
                     "is_optional": true,
                     "type": "chatPhoto"
                 },
                 "public_photo": {
-                    "description": "User profile photo visible if the main photo is hidden by privacy settings; may be null. If null and user.profile_photo is null, then the photo is empty, otherwise unknown. If non-null and both photo and personal_photo are null, then it is the same photo as in user.profile_photo and chat.photo. This photo isn't returned in the list of user photos",
+                    "description": "User profile photo visible if the main photo is hidden by privacy settings; may be null. If null and user.profile_photo is null, then the photo is empty; otherwise, it is unknown. If non-null and both photo and personal_photo are null, then it is the same photo as in user.profile_photo and chat.photo. This photo isn't returned in the list of user photos",
                     "is_optional": true,
                     "type": "chatPhoto"
                 },
@@ -3154,7 +3310,7 @@
                     "type": "SecretChatState"
                 },
                 "is_outbound": {
-                    "description": "True, if the chat was created by the current user; otherwise false",
+                    "description": "True, if the chat was created by the current user; false otherwise",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4417,6 +4573,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_translatable": {
+                    "description": "True, if translation of all messages in the chat must be suggested to the user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_marked_as_unread": {
                     "description": "True, if the chat is marked as unread",
                     "is_optional": false,
@@ -4687,6 +4848,93 @@
             },
             "type": "KeyboardButtonType"
         },
+        "keyboardButtonTypeRequestUser": {
+            "description": "A button that requests a user to be shared by the current user; available only in private chats. Use the method shareUserWithBot to complete the request",
+            "args": {
+                "id": {
+                    "description": "Unique button identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "restrict_user_is_bot": {
+                    "description": "True, if the shared user must or must not be a bot",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "user_is_bot": {
+                    "description": "True, if the shared user must be a bot; otherwise, the shared user must no be a bot. Ignored if restrict_user_is_bot is false",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "restrict_user_is_premium": {
+                    "description": "True, if the shared user must or must not be a Telegram Premium user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "user_is_premium": {
+                    "description": "True, if the shared user must be a Telegram Premium user; otherwise, the shared user must no be a Telegram Premium user. Ignored if restrict_user_is_premium is false",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "KeyboardButtonType"
+        },
+        "keyboardButtonTypeRequestChat": {
+            "description": "A button that requests a chat to be shared by the current user; available only in private chats. Use the method shareChatWithBot to complete the request",
+            "args": {
+                "id": {
+                    "description": "Unique button identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "chat_is_channel": {
+                    "description": "True, if the chat must be a channel; otherwise, a basic group or a supergroup chat is shared",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "restrict_chat_is_forum": {
+                    "description": "True, if the chat must or must not be a forum supergroup",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "chat_is_forum": {
+                    "description": "True, if the chat must be a forum supergroup; otherwise, the chat must not be a forum supergroup. Ignored if restrict_chat_is_forum is false",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "restrict_chat_has_username": {
+                    "description": "True, if the chat must or must not have a username",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "chat_has_username": {
+                    "description": "True, if the chat must have a username; otherwise, the chat must not have a username. Ignored if restrict_chat_has_username is false",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "chat_is_created": {
+                    "description": "True, if the chat must be created by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "user_administrator_rights": {
+                    "description": "Expected user administrator rights in the chat; may be null if they aren't restricted",
+                    "is_optional": true,
+                    "type": "chatAdministratorRights"
+                },
+                "bot_administrator_rights": {
+                    "description": "Expected bot administrator rights in the chat; may be null if they aren't restricted",
+                    "is_optional": true,
+                    "type": "chatAdministratorRights"
+                },
+                "bot_is_member": {
+                    "description": "True, if the bot must be a member of the chat; for basic group and supergroup chats only",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "KeyboardButtonType"
+        },
         "keyboardButtonTypeWebApp": {
             "description": "A button that opens a Web App by calling getWebAppUrl",
             "args": {
@@ -4868,7 +5116,7 @@
                     "type": "vector<vector<keyboardButton>>"
                 },
                 "is_persistent": {
-                    "description": "True, if the keyboard is supposed to be always shown when the ordinary keyboard is hidden",
+                    "description": "True, if the keyboard is supposed to always be shown when the ordinary keyboard is hidden",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4907,7 +5155,7 @@
             "type": "ReplyMarkup"
         },
         "loginUrlInfoOpen": {
-            "description": "An HTTP url needs to be open",
+            "description": "An HTTP URL needs to be open",
             "args": {
                 "url": {
                     "description": "The URL to open",
@@ -6692,7 +6940,7 @@
             "type": "PaymentForm"
         },
         "validatedOrderInfo": {
-            "description": "Contains a temporary identifier of validated order information, which is stored for one hour. Also contains the available shipping options",
+            "description": "Contains a temporary identifier of validated order information, which is stored for one hour, and the available shipping options",
             "args": {
                 "order_info_id": {
                     "description": "Temporary identifier of the order information",
@@ -6711,7 +6959,7 @@
             "description": "Contains the result of a payment request",
             "args": {
                 "success": {
-                    "description": "True, if the payment request was successful; otherwise the verification_url will be non-empty",
+                    "description": "True, if the payment request was successful; otherwise, the verification_url will be non-empty",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -8379,7 +8627,7 @@
             "description": "A theme in the chat has been changed",
             "args": {
                 "theme_name": {
-                    "description": "If non-empty, name of a new theme, set for the chat. Otherwise chat theme was reset to the default one",
+                    "description": "If non-empty, name of a new theme, set for the chat. Otherwise, chat theme was reset to the default one",
                     "is_optional": true,
                     "type": "string"
                 }
@@ -8443,7 +8691,7 @@
             "description": "A forum topic has been closed or opened",
             "args": {
                 "is_closed": {
-                    "description": "True, if the topic was closed, otherwise the topic was reopened",
+                    "description": "True, if the topic was closed; otherwise, the topic was reopened",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -8454,7 +8702,7 @@
             "description": "A General forum topic has been hidden or unhidden",
             "args": {
                 "is_hidden": {
-                    "description": "True, if the topic was hidden, otherwise the topic was unhidden",
+                    "description": "True, if the topic was hidden; otherwise, the topic was unhidden",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -8625,6 +8873,38 @@
         "messageContactRegistered": {
             "description": "A contact has registered with Telegram",
             "args": {},
+            "type": "MessageContent"
+        },
+        "messageUserShared": {
+            "description": "The current user shared a user, which was requested by the bot",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the shared user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "button_id": {
+                    "description": "Identifier of the keyboard button with the request",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageChatShared": {
+            "description": "The current user shared a chat, which was requested by the bot",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the shared chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "button_id": {
+                    "description": "Identifier of the keyboard button with the request",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
             "type": "MessageContent"
         },
         "messageWebsiteConnected": {
@@ -9908,6 +10188,53 @@
             },
             "type": "TrendingStickerSets"
         },
+        "emojiCategory": {
+            "description": "Contains a list of similar emoji to search for in getStickers and searchStickers",
+            "args": {
+                "name": {
+                    "description": "Name of the category",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "icon_custom_emoji_id": {
+                    "description": "Unique identifier of the custom emoji, which represents icon of the category",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "emojis": {
+                    "description": "List of emojis in the category",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "EmojiCategory"
+        },
+        "emojiCategories": {
+            "description": "Represents a list of emoji categories",
+            "args": {
+                "categories": {
+                    "description": "List of categories",
+                    "is_optional": false,
+                    "type": "vector<emojiCategory>"
+                }
+            },
+            "type": "EmojiCategories"
+        },
+        "emojiCategoryTypeDefault": {
+            "description": "The category must be used by default",
+            "args": {},
+            "type": "EmojiCategoryType"
+        },
+        "emojiCategoryTypeEmojiStatus": {
+            "description": "The category must be used for emoji status selection",
+            "args": {},
+            "type": "EmojiCategoryType"
+        },
+        "emojiCategoryTypeChatPhoto": {
+            "description": "The category must be used for chat photo emoji selection",
+            "args": {},
+            "type": "EmojiCategoryType"
+        },
         "callDiscardReasonEmpty": {
             "description": "The call wasn't discarded, or the reason is unknown",
             "args": {},
@@ -10206,7 +10533,7 @@
             "type": "GroupCallStreams"
         },
         "rtmpUrl": {
-            "description": "Represents an RTMP url",
+            "description": "Represents an RTMP URL",
             "args": {
                 "url": {
                     "description": "The URL",
@@ -10557,6 +10884,27 @@
             },
             "type": "Call"
         },
+        "firebaseAuthenticationSettingsAndroid": {
+            "description": "Settings for Firebase Authentication in the official Android application",
+            "args": {},
+            "type": "FirebaseAuthenticationSettings"
+        },
+        "firebaseAuthenticationSettingsIos": {
+            "description": "Settings for Firebase Authentication in the official iOS application",
+            "args": {
+                "device_token": {
+                    "description": "Device token from Apple Push Notification service",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_app_sandbox": {
+                    "description": "True, if App Sandbox is enabled",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "FirebaseAuthenticationSettings"
+        },
         "phoneNumberAuthenticationSettings": {
             "description": "Contains settings for the authentication of the user's phone number",
             "args": {
@@ -10579,6 +10927,11 @@
                     "description": "For official applications only. True, if the application can use Android SMS Retriever API (requires Google Play Services >= 10.2) to automatically receive the authentication code from the SMS. See https://developers.google.com/identity/sms-retriever/ for more details",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "firebase_authentication_settings": {
+                    "description": "For official Android and iOS applications only; pass null otherwise. Settings for Firebase Authentication",
+                    "is_optional": true,
+                    "type": "FirebaseAuthenticationSettings"
                 },
                 "authentication_tokens": {
                     "description": "List of up to 20 authentication tokens, recently received in updateOption(\"authentication_token\") in previously logged out sessions",
@@ -12918,6 +13271,11 @@
             "args": {},
             "type": "PremiumFeature"
         },
+        "premiumFeatureRealTimeChatTranslation": {
+            "description": "Allowed to translate chat messages real-time",
+            "args": {},
+            "type": "PremiumFeature"
+        },
         "premiumLimit": {
             "description": "Contains information about a limit, increased for Premium users",
             "args": {
@@ -13025,7 +13383,7 @@
                 "payment_options": {
                     "description": "The list of available options for buying Telegram Premium",
                     "is_optional": false,
-                    "type": "vector<premiumPaymentOption>"
+                    "type": "vector<premiumStatePaymentOption>"
                 },
                 "animations": {
                     "description": "The list of available promotion animations for Premium features",
@@ -13040,6 +13398,11 @@
             "args": {
                 "is_restore": {
                     "description": "Pass true if this is a restore of a Telegram Premium purchase; only for App Store",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_upgrade": {
+                    "description": "Pass true if this is an upgrade from a monthly subscription to early subscription; only for App Store",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -13214,6 +13577,22 @@
                     "description": "Push service registration identifier; may be empty to deregister a device",
                     "is_optional": true,
                     "type": "string"
+                }
+            },
+            "type": "DeviceToken"
+        },
+        "deviceTokenHuaweiPush": {
+            "description": "A token for HUAWEI Push Service",
+            "args": {
+                "token": {
+                    "description": "Device registration token; may be empty to deregister a device",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "encrypt": {
+                    "description": "True, if push notifications must be additionally encrypted",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "DeviceToken"
@@ -13935,7 +14314,7 @@
             "description": "A chat theme was edited",
             "args": {
                 "theme_name": {
-                    "description": "If non-empty, name of a new theme, set for the chat. Otherwise chat theme was reset to the default one",
+                    "description": "If non-empty, name of a new theme, set for the chat. Otherwise, the chat theme was reset to the default one",
                     "is_optional": true,
                     "type": "string"
                 }
@@ -14831,7 +15210,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeAttachmentMenuBot": {
-            "description": "The link is a link to an attachment menu bot to be opened in the specified or a chosen chat. Process given target_chat to open the chat. Then call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to attachment menu, then user needs to confirm adding the bot to attachment menu. If user confirms adding, then use toggleBotIsAddedToAttachmentMenu to add it. If the attachment menu bot can't be used in the opened chat, show an error to the user. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL",
+            "description": "The link is a link to an attachment menu bot to be opened in the specified or a chosen chat. Process given target_chat to open the chat. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to attachment menu, then user needs to confirm adding the bot to attachment menu. If user confirms adding, then use toggleBotIsAddedToAttachmentMenu to add it. If the attachment menu bot can't be used in the opened chat, show an error to the user. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL",
             "args": {
                 "target_chat": {
                     "description": "Target chat to be opened",
@@ -14895,7 +15274,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeBotStartInGroup": {
-            "description": "The link is a link to a Telegram bot, which is supposed to be added to a group chat. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to groups, ask the current user to select a basic group or a supergroup chat to add the bot to, taking into account that bots can be added to a public supergroup only by administrators of the supergroup. If administrator rights are provided by the link, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights, combine received rights with the requested administrator rights, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed administrator rights. Before call to setChatMemberStatus it may be required to upgrade the chosen basic group chat to a supergroup chat. Then if start_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat, otherwise just send /start message with bot's username added to the chat.",
+            "description": "The link is a link to a Telegram bot, which is supposed to be added to a group chat. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to groups, ask the current user to select a basic group or a supergroup chat to add the bot to, taking into account that bots can be added to a public supergroup only by administrators of the supergroup. If administrator rights are provided by the link, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights, combine received rights with the requested administrator rights, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed administrator rights. Before call to setChatMemberStatus it may be required to upgrade the chosen basic group chat to a supergroup chat. Then, if start_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat; otherwise, just send /start message with bot's username added to the chat.",
             "args": {
                 "bot_username": {
                     "description": "Username of the bot",
@@ -14916,7 +15295,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeBotAddToChannel": {
-            "description": "The link is a link to a Telegram bot, which is supposed to be added to a channel chat as an administrator. Call searchPublicChat with the given bot username and check that the user is a bot, ask the current user to select a channel chat to add the bot to as an administrator. Then call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights",
+            "description": "The link is a link to a Telegram bot, which is supposed to be added to a channel chat as an administrator. Call searchPublicChat with the given bot username and check that the user is a bot, ask the current user to select a channel chat to add the bot to as an administrator. Then, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights",
             "args": {
                 "bot_username": {
                     "description": "Username of the bot",
@@ -15049,7 +15428,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePassportDataRequest": {
-            "description": "The link contains a request of Telegram passport data. Call getPassportAuthorizationForm with the given parameters to process the link if the link was received from outside of the application, otherwise ignore it",
+            "description": "The link contains a request of Telegram passport data. Call getPassportAuthorizationForm with the given parameters to process the link if the link was received from outside of the application; otherwise, ignore it",
             "args": {
                 "bot_user_id": {
                     "description": "User identifier of the service's bot",
@@ -15072,7 +15451,7 @@
                     "type": "string"
                 },
                 "callback_url": {
-                    "description": "An HTTP URL to open once the request is finished or canceled with the parameter tg_passport=success or tg_passport=cancel respectively. If empty, then the link tgbot{bot_user_id}://passport/success or tgbot{bot_user_id}://passport/cancel needs to be opened instead",
+                    "description": "An HTTP URL to open once the request is finished, canceled, or failed with the parameters tg_passport=success, tg_passport=cancel, or tg_passport=error&error=... respectively. If empty, then onActivityResult method must be used to return response on Android, or the link tgbot{bot_user_id}://passport/success or tgbot{bot_user_id}://passport/cancel must be opened otherwise",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -15667,6 +16046,95 @@
             },
             "type": "AutoDownloadSettingsPresets"
         },
+        "autosaveSettingsScopePrivateChats": {
+            "description": "Autosave settings applied to all private chats without chat-specific settings",
+            "args": {},
+            "type": "AutosaveSettingsScope"
+        },
+        "autosaveSettingsScopeGroupChats": {
+            "description": "Autosave settings applied to all basic group and supergroup chats without chat-specific settings",
+            "args": {},
+            "type": "AutosaveSettingsScope"
+        },
+        "autosaveSettingsScopeChannelChats": {
+            "description": "Autosave settings applied to all channel chats without chat-specific settings",
+            "args": {},
+            "type": "AutosaveSettingsScope"
+        },
+        "autosaveSettingsScopeChat": {
+            "description": "Autosave settings applied to a chat",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "AutosaveSettingsScope"
+        },
+        "scopeAutosaveSettings": {
+            "description": "Contains autosave settings for an autosave settings scope",
+            "args": {
+                "autosave_photos": {
+                    "description": "True, if photo autosave is enabled",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "autosave_videos": {
+                    "description": "True, if video autosave is enabled",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "max_video_file_size": {
+                    "description": "The maximum size of a video file to be autosaved, in bytes; 512 KB - 4000 MB",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "ScopeAutosaveSettings"
+        },
+        "autosaveSettingsException": {
+            "description": "Contains autosave settings for a chat, which overrides default settings for the corresponding scope",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "settings": {
+                    "description": "Autosave settings for the chat",
+                    "is_optional": false,
+                    "type": "scopeAutosaveSettings"
+                }
+            },
+            "type": "AutosaveSettingsException"
+        },
+        "autosaveSettings": {
+            "description": "Describes autosave settings",
+            "args": {
+                "private_chat_settings": {
+                    "description": "Default autosave settings for private chats",
+                    "is_optional": false,
+                    "type": "scopeAutosaveSettings"
+                },
+                "group_settings": {
+                    "description": "Default autosave settings for basic group and supergroup chats",
+                    "is_optional": false,
+                    "type": "scopeAutosaveSettings"
+                },
+                "channel_settings": {
+                    "description": "Default autosave settings for channel chats",
+                    "is_optional": false,
+                    "type": "scopeAutosaveSettings"
+                },
+                "exceptions": {
+                    "description": "Autosave settings for specific chats",
+                    "is_optional": false,
+                    "type": "vector<autosaveSettingsException>"
+                }
+            },
+            "type": "AutosaveSettings"
+        },
         "connectionStateWaitingForNetwork": {
             "description": "Currently waiting for the network to become available. Use setNetworkType to change the available network type",
             "args": {},
@@ -15833,11 +16301,21 @@
             "description": "Suggests the user to set a 2-step verification password to be able to log in again",
             "args": {
                 "authorization_delay": {
-                    "description": "The number of days to pass between consecutive authorizations if the user declines to set password",
+                    "description": "The number of days to pass between consecutive authorizations if the user declines to set password; if 0, then the user is advised to set the password for security reasons",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
+            "type": "SuggestedAction"
+        },
+        "suggestedActionUpgradePremium": {
+            "description": "Suggests the user to upgrade the Premium subscription from monthly payments to annual payments",
+            "args": {},
+            "type": "SuggestedAction"
+        },
+        "suggestedActionSubscribeToAnnualPremium": {
+            "description": "Suggests the user to subscribe to the Premium subscription with annual payments",
+            "args": {},
             "type": "SuggestedAction"
         },
         "count": {
@@ -16962,7 +17440,7 @@
             "type": "Update"
         },
         "updateChatPosition": {
-            "description": "The position of a chat in a chat list has changed. Instead of this update updateChatLastMessage or updateChatDraftMessage might be sent",
+            "description": "The position of a chat in a chat list has changed. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -17243,16 +17721,32 @@
             },
             "type": "Update"
         },
-        "updateChatHasScheduledMessages": {
-            "description": "A chat's has_scheduled_messages field has changed",
+        "updateChatIsTranslatable": {
+            "description": "Translation of chat messages was enabled or disabled",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "has_scheduled_messages": {
-                    "description": "New value of has_scheduled_messages",
+                "is_translatable": {
+                    "description": "New value of is_translatable",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Update"
+        },
+        "updateChatIsMarkedAsUnread": {
+            "description": "A chat was marked as unread or was read",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_marked_as_unread": {
+                    "description": "New value of is_marked_as_unread",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -17275,16 +17769,16 @@
             },
             "type": "Update"
         },
-        "updateChatIsMarkedAsUnread": {
-            "description": "A chat was marked as unread or was read",
+        "updateChatHasScheduledMessages": {
+            "description": "A chat's has_scheduled_messages field has changed",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "is_marked_as_unread": {
-                    "description": "New value of is_marked_as_unread",
+                "has_scheduled_messages": {
+                    "description": "New value of has_scheduled_messages",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -17937,7 +18431,7 @@
             "description": "The list of recently used stickers was updated",
             "args": {
                 "is_attached": {
-                    "description": "True, if the list of stickers attached to photo or video files was updated, otherwise the list of sent stickers is updated",
+                    "description": "True, if the list of stickers attached to photo or video files was updated; otherwise, the list of sent stickers is updated",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -18172,6 +18666,22 @@
                     "description": "Removed suggested actions",
                     "is_optional": false,
                     "type": "vector<SuggestedAction>"
+                }
+            },
+            "type": "Update"
+        },
+        "updateAutosaveSettings": {
+            "description": "Autosave settings for some type of chats were updated",
+            "args": {
+                "scope": {
+                    "description": "Type of chats for which autosave settings were updated",
+                    "is_optional": false,
+                    "type": "AutosaveSettingsScope"
+                },
+                "settings": {
+                    "description": "The new autosave settings",
+                    "is_optional": false,
+                    "type": "scopeAutosaveSettings"
                 }
             },
             "type": "Update"
@@ -18490,6 +19000,11 @@
                     "is_optional": false,
                     "type": "chatJoinRequest"
                 },
+                "user_chat_id": {
+                    "description": "Chat identifier of the private chat with the user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "invite_link": {
                     "description": "The invite link, which was used to send join request; may be null",
                     "is_optional": true,
@@ -18603,7 +19118,7 @@
             "type": "Ok"
         },
         "setAuthenticationPhoneNumber": {
-            "description": "Sets the phone number of the user and sends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword",
+            "description": "Sets the phone number of the user and sends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword",
             "args": {
                 "phone_number": {
                     "description": "The phone number of the user, in international format",
@@ -18657,7 +19172,7 @@
             "type": "Ok"
         },
         "requestQrCodeAuthentication": {
-            "description": "Requests QR code authentication by scanning a QR code on another logged in device. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword",
+            "description": "Requests QR code authentication by scanning a QR code on another logged in device. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword",
             "args": {
                 "other_user_ids": {
                     "description": "List of user identifiers of other users currently using the application",
@@ -18726,6 +19241,17 @@
                 "new_hint": {
                     "description": "New password hint; may be empty",
                     "is_optional": true,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "sendAuthenticationFirebaseSms": {
+            "description": "Sends Firebase Authentication SMS to the phone number of the user. Works only when the current authorization state is authorizationStateWaitCode and the server returned code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos",
+            "args": {
+                "token": {
+                    "description": "SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application",
+                    "is_optional": false,
                     "type": "string"
                 }
             },
@@ -19084,7 +19610,7 @@
             "type": "Message"
         },
         "getRepliedMessage": {
-            "description": "Returns information about a message that is replied by a given message. Also returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, and topic messages without replied message respectively",
+            "description": "Returns information about a message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, and topic messages without replied message respectively",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat the message belongs to",
@@ -19239,7 +19765,7 @@
             "type": "Chats"
         },
         "searchPublicChat": {
-            "description": "Searches a public chat by its username. Currently, only private chats, supergroups and channels can be public. Returns the chat if found; otherwise an error is returned",
+            "description": "Searches a public chat by its username. Currently, only private chats, supergroups and channels can be public. Returns the chat if found; otherwise, an error is returned",
             "args": {
                 "username": {
                     "description": "Username to be resolved",
@@ -19977,25 +20503,41 @@
             "type": "MessageLinkInfo"
         },
         "translateText": {
-            "description": "Translates a text to the given language. Returns a 404 error if the translation can't be performed",
+            "description": "Translates a text to the given language. If the current user is a Telegram Premium user, then text formatting is preserved",
             "args": {
                 "text": {
                     "description": "Text to translate",
                     "is_optional": false,
-                    "type": "string"
-                },
-                "from_language_code": {
-                    "description": "A two-letter ISO 639-1 language code of the language from which the message is translated. If empty, the language will be detected automatically",
-                    "is_optional": false,
-                    "type": "string"
+                    "type": "formattedText"
                 },
                 "to_language_code": {
-                    "description": "A two-letter ISO 639-1 language code of the language to which the message is translated",
+                    "description": "ISO language code of the language to which the message is translated. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh-CN\", \"zh\", \"zh-Hans\", \"zh-TW\", \"zh-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"",
                     "is_optional": false,
                     "type": "string"
                 }
             },
-            "type": "Text"
+            "type": "FormattedText"
+        },
+        "translateMessageText": {
+            "description": "Extracts text or caption of the given message and translates it to the given language. If the current user is a Telegram Premium user, then text formatting is preserved",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the message belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "to_language_code": {
+                    "description": "ISO language code of the language to which the message is translated. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh-CN\", \"zh\", \"zh-Hans\", \"zh-TW\", \"zh-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "FormattedText"
         },
         "recognizeSpeech": {
             "description": "Recognizes speech in a video note or a voice note message. The message must be successfully sent and must not be scheduled. May return an error with a message \"MSG_VOICE_TOO_LONG\" if media duration is too big to be recognized",
@@ -21272,6 +21814,68 @@
             },
             "type": "HttpUrl"
         },
+        "shareUserWithBot": {
+            "description": "Shares a user after pressing a keyboardButtonTypeRequestUser button with the bot",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message with the button",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "button_id": {
+                    "description": "Identifier of the button",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "shared_user_id": {
+                    "description": "Identifier of the shared user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "only_check": {
+                    "description": "Pass true to check that the user can be shared by the button instead of actually sharing them",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "shareChatWithBot": {
+            "description": "Shares a chat after pressing a keyboardButtonTypeRequestChat button with the bot",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message with the button",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "button_id": {
+                    "description": "Identifier of the button",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "shared_chat_id": {
+                    "description": "Identifier of the shared chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "only_check": {
+                    "description": "Pass true to check that the chat can be shared by the button instead of actually sharing it. Doesn't check bot_is_member and bot_administrator_rights restrictions. If the bot must be a member, then all chats from getGroupsInCommon and all chats, where the user can add the bot, are suitable. In the latter case the bot will be automatically added to the chat. If the bot must be an administrator, then all chats, where the bot already has requested rights or can be added to administrators by the user, are suitable. In the latter case the bot will be automatically granted requested rights",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
         "getInlineQueryResults": {
             "description": "Sends an inline query to a bot and returns its results. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires",
             "args": {
@@ -21949,8 +22553,13 @@
                     "is_optional": false,
                     "type": "string"
                 },
+                "is_forum": {
+                    "description": "Pass true to create a forum supergroup chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_channel": {
-                    "description": "Pass true to create a channel chat",
+                    "description": "Pass true to create a channel chat; ignored if a forum is created",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -22234,6 +22843,22 @@
                 },
                 "has_protected_content": {
                     "description": "New value of has_protected_content",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleChatIsTranslatable": {
+            "description": "Changes the tranlatable state of a chat; for Telegram Premium users only",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_translatable": {
+                    "description": "New value of is_translatable",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -24349,7 +24974,7 @@
             "type": "ChatPhotos"
         },
         "getStickers": {
-            "description": "Returns stickers from the installed sticker sets that correspond to a given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned",
+            "description": "Returns stickers from the installed sticker sets that correspond to any of the given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned",
             "args": {
                 "sticker_type": {
                     "description": "Type of the stickers to return",
@@ -24357,7 +24982,7 @@
                     "type": "StickerType"
                 },
                 "query": {
-                    "description": "Search query; an emoji or a keyword prefix. If empty, returns all known installed stickers",
+                    "description": "Search query; a space-separated list of emoji or a keyword prefix. If empty, returns all known installed stickers",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -24375,10 +25000,15 @@
             "type": "Stickers"
         },
         "searchStickers": {
-            "description": "Searches for stickers from public sticker sets that correspond to a given emoji",
+            "description": "Searches for stickers from public sticker sets that correspond to any of the given emoji",
             "args": {
-                "emoji": {
-                    "description": "String representation of emoji; must be non-empty",
+                "sticker_type": {
+                    "description": "Type of the stickers to return",
+                    "is_optional": false,
+                    "type": "StickerType"
+                },
+                "emojis": {
+                    "description": "Space-separated list of emoji to search for; must be non-empty",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -24680,6 +25310,17 @@
             },
             "type": "Emojis"
         },
+        "getEmojiCategories": {
+            "description": "Returns available emojis categories",
+            "args": {
+                "type": {
+                    "description": "Type of emoji categories to return; pass null to get default emoji categories",
+                    "is_optional": true,
+                    "type": "EmojiCategoryType"
+                }
+            },
+            "type": "EmojiCategories"
+        },
         "getAnimatedEmoji": {
             "description": "Returns an animated emoji corresponding to a given emoji. Returns a 404 error if the emoji has no animated emoji",
             "args": {
@@ -24711,6 +25352,16 @@
                     "type": "vector<int64>"
                 }
             },
+            "type": "Stickers"
+        },
+        "getDefaultChatPhotoCustomEmojiStickers": {
+            "description": "Returns default list of custom emoji stickers for placing on a chat photo",
+            "args": {},
+            "type": "Stickers"
+        },
+        "getDefaultProfilePhotoCustomEmojiStickers": {
+            "description": "Returns default list of custom emoji stickers for placing on a profile photo",
+            "args": {},
             "type": "Stickers"
         },
         "getSavedAnimations": {
@@ -25004,7 +25655,7 @@
             "type": "Ok"
         },
         "getCommands": {
-            "description": "Returns the list of commands supported by the bot for the given user scope and language; for bots only",
+            "description": "Returns list of commands supported by the bot for the given user scope and language; for bots only",
             "args": {
                 "scope": {
                     "description": "The scope to which the commands are relevant; pass null to get commands in the default bot command scope",
@@ -26192,6 +26843,32 @@
                     "type": "NetworkType"
                 }
             },
+            "type": "Ok"
+        },
+        "getAutosaveSettings": {
+            "description": "Returns autosave settings for the current user",
+            "args": {},
+            "type": "AutosaveSettings"
+        },
+        "setAutosaveSettings": {
+            "description": "Sets autosave settings for the given scope",
+            "args": {
+                "scope": {
+                    "description": "Autosave settings scope",
+                    "is_optional": false,
+                    "type": "AutosaveSettingsScope"
+                },
+                "settings": {
+                    "description": "New autosave settings for the scope; pass null to set autosave settings to default",
+                    "is_optional": true,
+                    "type": "scopeAutosaveSettings"
+                }
+            },
+            "type": "Ok"
+        },
+        "clearAutosaveSettingsExceptions": {
+            "description": "Clears the list of all autosave settings exceptions",
+            "args": {},
             "type": "Ok"
         },
         "getBankCardInfo": {
