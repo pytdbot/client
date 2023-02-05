@@ -1318,3 +1318,64 @@ class Update:
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
             )
+
+    async def edit_text(
+        self,
+        text: str,
+        entities: list = None,
+        parse_mode: str = None,
+        disable_web_page_preview: bool = False,
+        reply_markup: Union[
+            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+        ] = None,
+    ) -> Result:
+        """Edit the current recevied message. Shortcut for :meth:`~pytdbot.Client.editTextMessage`.
+
+        Example:
+
+
+            .. code-block:: python
+
+                update.edit_text("Hello, world!")
+
+        Instead of:
+
+
+            .. code-block:: python
+
+                await client.editTextMessage(
+                    update.chat_id,
+                    update.message_id,
+                    "Hello, world!"
+                )
+
+        Args:
+            text (``str``):
+                The text of the message to be sent.
+
+            entities (``list``, optional):
+                List of `MessageEntity` objects to parse in the text. If you want to send a text with formatting, use *parse_mode* instead.
+
+            parse_mode (``str``, optional):
+                Mode for parsing entities. Defaults to None.
+
+            disable_web_page_preview (``bool``, optional):
+                Disables link previews for links in this message.
+
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+                The message reply markup.
+
+        Returns:
+            :class:`~pytdbot.types.Result`
+        """
+
+        if isinstance(self.message_id, int):
+            return await self.client.editTextMessage(
+                self.chat_id,
+                self.message_id,
+                text,
+                entities=entities,
+                parse_mode=parse_mode,
+                disable_web_page_preview=disable_web_page_preview,
+                reply_markup=reply_markup,
+            )
