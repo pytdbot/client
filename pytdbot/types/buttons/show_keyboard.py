@@ -42,7 +42,7 @@ class ShowKeyboardMarkup(ReplyMarkup):
         """Converts the object to a dictionary.
 
         Returns:
-            dict: Show keyboard.
+            py:class:`dict`: Show keyboard.
         """
 
         return {
@@ -62,10 +62,11 @@ class ShowKeyboardButton:
         """A button that sends the user's location when pressed; available only in private chats.
 
         Args:
-            text (``str``): Text of the button.
+            text (``str``):
+                Text of the button.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         return {
@@ -78,10 +79,11 @@ class ShowKeyboardButton:
         """A button that sends the user's phone number when pressed; available only in private chats.
 
         Args:
-            text (``str``): Text of the button.
+            text (``str``):
+                Text of the button.
 
         Returns:
-            dict
+            result:py:class:`dict`
         """
 
         return {
@@ -94,12 +96,17 @@ class ShowKeyboardButton:
         """A button that allows the user to create and send a poll when pressed; available only in private chats.
 
         Args:
-            text (``str``): Text of the button.
-            force_regular (``bool``, optional): If True, only regular polls must be allowed to create.
-            force_quiz (``bool``, optional): If True, only polls in quiz mode must be allowed to create.
+            text (``str``):
+                Text of the button.
+
+            force_regular (``bool``, optional):
+                If True, only regular polls must be allowed to create.
+
+            force_quiz (``bool``, optional):
+                If True, only polls in quiz mode must be allowed to create.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         return {
@@ -112,14 +119,132 @@ class ShowKeyboardButton:
             },
         }
 
+    def request_user(
+        text: str,
+        id: int,
+        restrict_user_is_bot: bool = None,
+        user_is_bot: bool = None,
+        restrict_user_is_premium: bool = None,
+        user_is_premium: bool = None,
+    ) -> dict:
+        """A button that requests a user to be shared by the current user; available only in private chats. Use the method shareUserWithBot to complete the request
+
+        Args:
+            text (``str``):
+                Text of the button.
+
+            id (``int``):
+                Unique button identifier
+
+            restrict_user_is_bot (``bool``, optional):
+                True, if the shared user must or must not be a bot
+
+            user_is_bot (``bool``, optional):
+                True, if the shared user must be a bot; otherwise, the shared user must no be a bot. Ignored if restrict_user_is_bot is false
+
+            restrict_user_is_premium (``bool``, optional):
+                True, if the shared user must or must not be a Telegram Premium user
+
+            user_is_premium (``bool``, optional):
+                True, if the shared user must be a Telegram Premium user; otherwise, the shared user must no be a Telegram Premium user. Ignored if restrict_user_is_premium is false
+
+        Returns:
+            py:class:`dict`
+        """
+
+        return {
+            "@type": "replyMarkupShowKeyboard",
+            "text": text,
+            "type": {
+                "@type": "keyboardButtonTypeRequestUser",
+                "id": id,
+                "restrict_user_is_bot": restrict_user_is_bot,
+                "user_is_bot": user_is_bot,
+                "restrict_user_is_premium": restrict_user_is_premium,
+                "user_is_premium": user_is_premium,
+            },
+        }
+
+    def request_chat(
+        text: str,
+        id: int,
+        chat_is_channel: bool,
+        restrict_chat_is_forum: bool = None,
+        chat_is_forum: bool = None,
+        restrict_chat_has_username: bool = None,
+        chat_has_username: bool = None,
+        chat_is_created: bool = None,
+        user_administrator_rights: dict = None,
+        bot_administrator_rights: dict = None,
+        bot_is_member: bool = None,
+    ) -> dict:
+        """A button that requests a user to be shared by the current user; available only in private chats. Use the method shareUserWithBot to complete the request
+
+        Args:
+            text (``str``):
+                Text of the button.
+
+            id (``int``):
+                Unique button identifier
+
+            chat_is_channel (``bool``):
+                True, if the chat must be a channel; otherwise, a basic group or a supergroup chat is shared
+
+            restrict_chat_is_forum (``bool``, optional):
+                True, if the chat must or must not be a forum supergroup
+
+            chat_is_forum (``bool``, optional):
+                True, if the chat must be a forum supergroup; otherwise, the chat must not be a forum supergroup. Ignored if restrict_chat_is_forum is false
+
+            restrict_chat_has_username (``bool``, optional):
+                True, if the chat must or must not have a username
+
+            chat_has_username (``bool``, optional):
+                if the chat must have a username; otherwise, the chat must not have a username. Ignored if restrict_chat_has_username is false
+
+            chat_is_created (``bool``, optional):
+                True, if the chat must be created by the current user
+
+            user_administrator_rights (``chatAdministratorRights``, optional):
+                Expected user administrator rights in the chat; may be null if they aren't restricted
+
+            bot_administrator_rights (``chatAdministratorRights``, optional):
+                Expected user administrator rights in the chat; may be null if they aren't restricted
+
+            bot_is_member (``bool``, optional):
+                True, if the bot must be a member of the chat; for basic group and supergroup chats only
+
+        Returns:
+            :py:class:`dict`
+        """
+
+        return {
+            "@type": "replyMarkupShowKeyboard",
+            "text": text,
+            "type": {
+                "@type": "keyboardButtonTypeRequestChat",
+                "id": id,
+                "chat_is_channel": chat_is_channel,
+                "restrict_chat_is_forum": restrict_chat_is_forum,
+                "chat_is_forum": chat_is_forum,
+                "restrict_chat_has_username": restrict_chat_has_username,
+                "chat_has_username": chat_has_username,
+                "chat_is_created": chat_is_created,
+                "user_administrator_rights": user_administrator_rights,
+                "bot_administrator_rights": bot_administrator_rights,
+                "bot_is_member": bot_is_member,
+            },
+        }
+
     def text(text: str) -> dict:
         """A simple button, with text that must be sent when the button is pressed.
 
         Args:
-            text (``str``): Text of the button.
+            text (``str``):
+                Text of the button.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         return {
