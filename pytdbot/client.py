@@ -19,7 +19,7 @@ from ujson import dumps
 from .tdjson import TDjson
 from .handlers import Decorators, Handler
 from .methods import Methods
-from .types import Plugins, Response, LogStream, Update
+from .types import Plugins, Result, LogStream, Update
 from .filters import Filter
 from .exception import StopHandlers, AuthorizationError
 
@@ -241,7 +241,7 @@ class Client(Decorators, Methods):
         if self.me.is_error:
             logger.error("Get me error: {}".format(self.me["message"]))
 
-        self.me = self.me.response
+        self.me = self.me.result
         self.is_authenticated = True
         logger.info(
             "Logged in as {} {}".format(
@@ -322,7 +322,7 @@ class Client(Decorators, Methods):
         self,
         request: dict,
         request_id: Union[str, int, dict] = None,
-    ) -> Response:
+    ) -> Result:
         """Invoke a new TDLib request.
 
         Example:
@@ -343,38 +343,38 @@ class Client(Decorators, Methods):
                 Request id. Defaults to None (random).
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
 
-        response = Response(request, request_id)
-        self._results[response.id] = response
+        result = Result(request, request_id)
+        self._results[result.id] = result
 
         if (
             logger.root.level >= DEBUG
         ):  # dumping all requests may create performance issues.
-            logger.debug("Sending: {}".format(dumps(response.request, indent=4)))
+            logger.debug("Sending: {}".format(dumps(result.request, indent=4)))
 
-        self.send(response.request)
-        await response
+        self.send(result.request)
+        await result
 
-        if response.is_error and response["code"] == 429:
-            retry_after = self.get_retry_after_time(response["message"])
+        if result.is_error and result["code"] == 429:
+            retry_after = self.get_retry_after_time(result["message"])
 
             if retry_after <= self.sleep_threshold:
-                response.reset()
+                result.reset()
 
                 logger.error(
                     "Sleeping for {}s (Caused by {})".format(
-                        retry_after, response.request["@type"]
+                        retry_after, result.request["@type"]
                     )
                 )
 
                 await asyncio.sleep(retry_after)
-                self._results[response.id] = response
-                self.send(response.request)
-                await response
+                self._results[result.id] = result
+                self.send(result.request)
+                await result
 
-        return response
+        return result
 
     def run(self, login: bool = True) -> None:
         """Start the client and block until the client is stopped.
@@ -553,11 +553,11 @@ class Client(Decorators, Methods):
         elif "@extra" in update:
             if (
                 logger.root.level >= DEBUG
-            ):  # dumping all responses may create performance issues.
+            ):  # dumping all results may create performance issues.
                 logger.debug("Recieved: {}".format(dumps(update, indent=4)))
             if update["@extra"].get("request_id", "") in self._results:
-                response: Response = self._results.pop(update["@extra"]["request_id"])
-                response.set_response(update)
+                result: Result = self._results.pop(update["@extra"]["request_id"])
+                result.set_result(update)
             elif update["@type"] == "error" and "option" in update["@extra"]:
                 logger.error(
                     "Cannot set option {} with value {}".format(
@@ -701,12 +701,12 @@ class Client(Decorators, Methods):
             application_version=f"Pytdbot {pytdbot.__version__}",
         )
         if res.is_error:
-            raise AuthorizationError(res.response["message"])
+            raise AuthorizationError(res.result["message"])
 
     async def _set_bot_token(self):
         res = await self.checkAuthenticationBotToken(self.token)
         if res.is_error:
-            raise AuthorizationError(res.response["message"])
+            raise AuthorizationError(res.result["message"])
 
     async def _set_options(self):
         if not isinstance(self.td_options, dict):
@@ -785,8 +785,8 @@ class Client(Decorators, Methods):
         m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
 
         if m_id in self._results:
-            response: Response = self._results.pop(m_id)
-            response.set_response(update["message"])
+            result: Result = self._results.pop(m_id)
+            result.set_result(update["message"])
 
     async def __handle_update_message_failed(self, update):
         m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
@@ -796,18 +796,18 @@ class Client(Decorators, Methods):
                 retry_after = update["message"]["sending_state"]["retry_after"]
 
                 if retry_after <= self.sleep_threshold:
-                    response: Response = self._results.pop(m_id)
+                    result: Result = self._results.pop(m_id)
 
                     logger.error(
                         "Sleeping for {}s (Caused by {})".format(
-                            int(retry_after), response.request["@type"]
+                            int(retry_after), result.request["@type"]
                         )
                     )
 
                     await asyncio.sleep(retry_after)  # 0.5 just in case
-                    res = await self.invoke(response.request)
+                    res = await self.invoke(result.request)
                     if res.is_error:
-                        return response.set_response(
+                        return result.set_result(
                             {
                                 "@type": "error",
                                 "code": update["error_code"],
@@ -815,10 +815,10 @@ class Client(Decorators, Methods):
                             }
                         )
 
-                    self._results[res.response["id"]] = response
+                    self._results[res.result["id"]] = result
             else:
-                response: Response = self._results.pop(m_id)
-                response.set_response(
+                result: Result = self._results.pop(m_id)
+                result.set_result(
                     {
                         "@type": "error",
                         "code": update["error_code"],

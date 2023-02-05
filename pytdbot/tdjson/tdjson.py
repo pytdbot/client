@@ -96,14 +96,14 @@ class TDjson:
                 logger.error("Can't set log level: {}".format(res["message"]))
 
     def receive(self, timeout: float = 2.0) -> Union[None, dict]:
-        """Receives incoming updates and responses from TDLib.
+        """Receives incoming updates and results from TDLib.
 
         Args:
             timeout (``float``, optional):
                 The maximum number of seconds allowed to wait for new data. Defaults to 2.0.
 
         Returns:
-            ``dict``: An incoming update or response to a request. If no data is received, ``None`` is returned.
+            ``dict``: An incoming update or result to a request. If no data is received, ``None`` is returned.
         """
         try:
             if res := self._td_receive(self.client_id, c_double(timeout)):
@@ -132,7 +132,7 @@ class TDjson:
             data (``dict``): The request to be executed.
 
         Returns:
-            ``dict``: The response to the request.
+            ``dict``: The result of the request.
         """
         try:
             if res := self._td_execute(dumps(data).encode("utf-8")):

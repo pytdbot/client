@@ -5,7 +5,7 @@ from typing import Union
 from ujson import dumps
 from pytdbot.utils import escape_html, escape_markdown
 from pytdbot.types import (
-    Response,
+    Result,
     InlineKeyboardMarkup,
     ShowKeyboardMarkup,
     ForceReply,
@@ -359,7 +359,7 @@ class Update:
 
     async def getRepliedMessage(
         self,
-    ) -> Response:
+    ) -> Result:
         """Get the replied message."""
         if isinstance(self.message_id, int):
             return await self.client.getRepliedMessage(
@@ -370,7 +370,7 @@ class Update:
     async def getMessage(
         self,
         message_id: int,
-    ) -> Response:
+    ) -> Result:
         """Get the message by id.
 
         Args:
@@ -382,14 +382,14 @@ class Update:
 
     async def getChat(
         self,
-    ) -> Response:
+    ) -> Result:
         """Get chat info."""
         if isinstance(self.chat_id, int):
             return await self.client.getChat(self.chat_id)
 
     async def getUser(
         self,
-    ) -> Response:
+    ) -> Result:
         """Get user info."""
         if self.is_user:
             return await self.client.getUser(self.from_id)
@@ -398,7 +398,7 @@ class Update:
         self,
         disable_notification: bool = False,
         only_for_self: bool = False,
-    ) -> Response:
+    ) -> Result:
         """Pin the message.
 
         Args:
@@ -409,7 +409,7 @@ class Update:
                 True, if the message needs to be pinned for one side only; private chats only.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if isinstance(self.message_id, int):
             return await self.client.pinChatMessage(
@@ -422,7 +422,7 @@ class Update:
     async def delete(
         self,
         revoke: bool = True,
-    ) -> Response:
+    ) -> Result:
         """Delete the received message.
 
         Args:
@@ -430,7 +430,7 @@ class Update:
                 Pass true to delete messages for all chat members. Always true for supergroups, channels and secret chats.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if isinstance(self.message_id, int):
             return await self.client.deleteMessages(
@@ -480,7 +480,7 @@ class Update:
         message_id: int = None,
         in_game_share: bool = False,
         disable_notification: bool = False,
-    ) -> Response:
+    ) -> Result:
         """Forward the message.
 
         Args:
@@ -497,7 +497,7 @@ class Update:
                 If True, disable notification for the message.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if (
             isinstance(self.message_id, int) or isinstance(message_id, int)
@@ -524,7 +524,7 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Reply to the message with text. Shortcut for :meth:`~pytdbot.Client.sendTextMessage`.
 
         Example:
@@ -577,7 +577,7 @@ class Update:
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
 
         if quote is False:
@@ -623,7 +623,7 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Reply to the message with an animation. Shortcut for :meth:`~pytdbot.Client.sendAnimation`.
 
         Example:
@@ -692,7 +692,7 @@ class Update:
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if quote is False:
             reply_to_message_id = 0
@@ -740,7 +740,7 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Reply to the message with an audio. Shortcut for :meth:`~pytdbot.Client.Methods.sendAudio`.
 
         Example:
@@ -803,7 +803,7 @@ class Update:
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if quote is False:
             reply_to_message_id = 0
@@ -846,7 +846,7 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Reply to the message with a document. Shortcut for :meth:`~pytdbot.Client.sendDocument`.
 
         Example:
@@ -900,7 +900,7 @@ class Update:
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if quote is False:
             reply_to_message_id = 0
@@ -938,7 +938,7 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Reply to the message with a sticker. Shortcut for :meth:`~pytdbot.Client.sendSticker`.
 
         Example:
@@ -986,7 +986,7 @@ class Update:
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if quote is False:
             reply_to_message_id = 0
@@ -1028,7 +1028,7 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Reply to the message with a video. Shortcut for :meth:`~pytdbot.Client.sendVideo`.
 
         Example:
@@ -1094,7 +1094,7 @@ class Update:
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if quote is False:
             reply_to_message_id = 0
@@ -1138,7 +1138,7 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Reply to the message with a photo. Shortcut for :meth:`~pytdbot.Client.sendPhoto`.
 
         Example:
@@ -1192,7 +1192,7 @@ class Update:
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if quote is False:
             reply_to_message_id = 0
@@ -1233,7 +1233,7 @@ class Update:
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Reply to the message with a voice. Shortcut for :meth:`~pytdbot.Client.sendVoice`.
 
         Example:
@@ -1290,7 +1290,7 @@ class Update:
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if quote is False:
             reply_to_message_id = 0

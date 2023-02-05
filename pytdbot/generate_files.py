@@ -68,16 +68,16 @@ def updates():
 def functions():
     with open("methods/tdlibfunctions.py", "w") as f:
         f.write(
-            'from ..types import Response\n\nclass TDLibFunctions:\n    """Auto generated tdlib functions"""\n\n'
+            'from ..types import Result\n\nclass TDLibFunctions:\n    """Auto generated tdlib functions"""\n\n'
         )
         for k, v in data["functions"].items():
             if k.startswith("test"):
                 continue
             f.write(f"    async def {k}(self")
             if p := getP(v["args"]):
-                f.write(f",{p}" + ") -> Response:\n")
+                f.write(f",{p}" + ") -> Result:\n")
             else:
-                f.write(") -> Response:\n")
+                f.write(") -> Result:\n")
 
             f.write(f'        """{v["description"]}\n\n')
 
@@ -97,7 +97,7 @@ def functions():
                             f"            {_k} (``{getType(_v['type'])}``, optional):\n                {_v['description']}\n\n"
                         )
             f.write(
-                '\n        Returns:\n            :class:`~pytdbot.types.Response` (`{}`)\n        """\n\n'.format(
+                '\n        Returns:\n            :class:`~pytdbot.types.Result` (`{}`)\n        """\n\n'.format(
                     v["type"]
                 )
             )

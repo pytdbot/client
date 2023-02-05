@@ -4,7 +4,7 @@ from typing import Union
 from base64 import b64encode
 from .tdlibfunctions import TDLibFunctions
 from ..types import (
-    Response,
+    Result,
     ReplyMarkup,
     InlineKeyboardMarkup,
     ShowKeyboardMarkup,
@@ -32,7 +32,7 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Send text message to chat
 
         Args:
@@ -67,7 +67,7 @@ class Methods(TDLibFunctions):
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
 
         if entities is None:
@@ -78,8 +78,8 @@ class Methods(TDLibFunctions):
                 else:
                     _text = {
                         "@type": "formattedText",
-                        "text": parse.response["text"],
-                        "entities": parse.response["entities"],
+                        "text": parse.result["text"],
+                        "entities": parse.result["entities"],
                     }
             else:
                 _text = {"@type": "formattedText", "text": text, "entities": []}
@@ -106,8 +106,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -130,7 +130,7 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Send animation to chat
 
         Args:
@@ -180,7 +180,7 @@ class Methods(TDLibFunctions):
                 The message reply markup.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
 
         """
 
@@ -200,8 +200,8 @@ class Methods(TDLibFunctions):
                 else:
                     _caption = {
                         "@type": "formattedText",
-                        "text": parse.response["text"],
-                        "entities": parse.response["entities"],
+                        "text": parse.result["text"],
+                        "entities": parse.result["entities"],
                     }
             else:
                 _caption = {
@@ -249,8 +249,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -272,7 +272,7 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Send audio to chat
 
         Args:
@@ -320,7 +320,7 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
 
         """
 
@@ -340,8 +340,8 @@ class Methods(TDLibFunctions):
                 else:
                     _caption = {
                         "@type": "formattedText",
-                        "text": parse.response["text"],
-                        "entities": parse.response["entities"],
+                        "text": parse.result["text"],
+                        "entities": parse.result["entities"],
                     }
             else:
                 _caption = {
@@ -390,8 +390,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -411,7 +411,7 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Send document to chat
 
         Args:
@@ -453,7 +453,7 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
 
         _caption = None
@@ -472,8 +472,8 @@ class Methods(TDLibFunctions):
                 else:
                     _caption = {
                         "@type": "formattedText",
-                        "text": parse.response["text"],
-                        "entities": parse.response["entities"],
+                        "text": parse.result["text"],
+                        "entities": parse.result["entities"],
                     }
             else:
                 _caption = {
@@ -518,8 +518,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -542,7 +542,7 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Send photo to chat
 
         Args:
@@ -593,7 +593,7 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
 
         _caption = None
@@ -612,8 +612,8 @@ class Methods(TDLibFunctions):
                 else:
                     _caption = {
                         "@type": "formattedText",
-                        "text": parse.response["text"],
-                        "entities": parse.response["entities"],
+                        "text": parse.result["text"],
+                        "entities": parse.result["entities"],
                     }
             else:
                 _caption = {
@@ -661,8 +661,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -687,7 +687,7 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Send video to chat
 
         Args:
@@ -744,7 +744,7 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
 
         _caption = None
@@ -763,8 +763,8 @@ class Methods(TDLibFunctions):
                 else:
                     _caption = {
                         "@type": "formattedText",
-                        "text": parse.response["text"],
-                        "entities": parse.response["entities"],
+                        "text": parse.result["text"],
+                        "entities": parse.result["entities"],
                     }
             else:
                 _caption = {
@@ -814,8 +814,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -833,7 +833,7 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Send video note to chat
 
         Args:
@@ -869,7 +869,7 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
 
         """
 
@@ -909,8 +909,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -930,7 +930,7 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Send voice to chat
 
         Args:
@@ -972,7 +972,7 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
 
         _caption = None
@@ -991,8 +991,8 @@ class Methods(TDLibFunctions):
                 else:
                     _caption = {
                         "@type": "formattedText",
-                        "text": parse.response["text"],
-                        "entities": parse.response["entities"],
+                        "text": parse.result["text"],
+                        "entities": parse.result["entities"],
                     }
             else:
                 _caption = {
@@ -1037,8 +1037,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -1057,7 +1057,7 @@ class Methods(TDLibFunctions):
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
-    ) -> Response:
+    ) -> Result:
         """Send sticker to chat
 
         Args:
@@ -1096,7 +1096,7 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
 
         data = {
@@ -1136,8 +1136,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -1155,7 +1155,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
-    ) -> Response:
+    ) -> Result:
         """Copy message to chat
 
         Args:
@@ -1197,7 +1197,7 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         _caption = None
         if isinstance(new_caption, str):
@@ -1215,8 +1215,8 @@ class Methods(TDLibFunctions):
                 else:
                     _caption = {
                         "@type": "formattedText",
-                        "text": parse.response["text"],
-                        "entities": parse.response["entities"],
+                        "text": parse.result["text"],
+                        "entities": parse.result["entities"],
                     }
             else:
                 _caption = {
@@ -1252,8 +1252,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -1284,7 +1284,7 @@ class Methods(TDLibFunctions):
                 If True, disable notification for the message. Defaults to False.
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         data = {
             "@type": "sendMessage",
@@ -1303,8 +1303,8 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Response(data)
-        self._results[str(res.response["id"]) + str(res.response["chat_id"])] = _new
+        _new = Result(data)
+        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
         await _new.wait()
         return _new
 
@@ -1317,7 +1317,7 @@ class Methods(TDLibFunctions):
         entities: list = None,
         disable_web_page_preview: bool = False,
         reply_markup: ReplyMarkup = None,
-    ) -> Response:
+    ) -> Result:
         """Edit text message
 
         Args:
@@ -1344,7 +1344,7 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         if entities is None:
             if parse_mode is not None:
@@ -1354,8 +1354,8 @@ class Methods(TDLibFunctions):
                 else:
                     _text = {
                         "@type": "formattedText",
-                        "text": parse.response["text"],
-                        "entities": parse.response["entities"],
+                        "text": parse.result["text"],
+                        "entities": parse.result["entities"],
                     }
             else:
                 _text = {"@type": "formattedText", "text": text, "entities": []}
@@ -1382,7 +1382,7 @@ class Methods(TDLibFunctions):
         self,
         text: str,
         parse_mode: str = "markdownv2",
-    ) -> Response:
+    ) -> Result:
         """Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text. Can be called synchronously
 
         Args:
@@ -1393,7 +1393,7 @@ class Methods(TDLibFunctions):
                 Text parse mode. Currently supported: markdown, markdownv2 and html. Defaults to "markdownv2".
 
         Returns:
-            :class:`~pytdbot.types.Response`
+            :class:`~pytdbot.types.Result`
         """
         assert isinstance(text, str), "text must be str"
         assert isinstance(parse_mode, str), "parse_mode must be str"
