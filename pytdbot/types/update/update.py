@@ -63,6 +63,8 @@ class Update:
         "messagePassportDataSent",
         "messagePassportDataReceived",
         "messageProximityAlertTriggered",
+        "messageUserShared",
+        "messageChatShared",
     ]
 
     def __init__(self, client: "pytdbot.Client", update: dict) -> None:
