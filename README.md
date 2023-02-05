@@ -24,7 +24,7 @@ pip install git+https://github.com/pytdbot/client.git
 Basic example:
 ```python
 
-from pytdbot import Client
+from pytdbot import Client, utils
 from pytdbot.types import Update
 
 client = Client(
@@ -46,6 +46,18 @@ async def print_message(c: Client, message: Update):
 async def simple_message(c: Client, message: Update):
     if message.is_private:
         await message.reply_text('Hi! i am simple bot')
+
+    if message.is_self and message.text: # Works only for userbots.
+        if message.text == "!id":
+            await message.edit_text(
+                "\\- Current chat ID: {}\n\\- {} ID: {}".format(
+                    utils.code(str(message.chat_id)),
+                    utils.bold(c.me["first_name"]),
+                    utils.code(str(message.from_id)),
+                ),
+                parse_mode="markdownv2",
+            )
+
 
 
 # Run the client
