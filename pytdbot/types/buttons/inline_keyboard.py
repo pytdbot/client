@@ -17,7 +17,7 @@ class InlineKeyboardMarkup(ReplyMarkup):
         """Converts the object to a dictionary.
 
         Returns:
-            dict: Inline keyboard.
+            py:class:`dict`: Inline keyboard.
         """
 
         return {"@type": "replyMarkupInlineKeyboard", "rows": self.rows}
@@ -33,7 +33,7 @@ class InlineKeyboardButton:
             text (``str``): Text of the button.
 
         Returns:
-            dict: Inline keyboard button.
+            py:class:`dict`: Inline keyboard button.
         """
 
         return {
@@ -51,7 +51,7 @@ class InlineKeyboardButton:
             text (``str``): Text of the button.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         return {
@@ -70,7 +70,7 @@ class InlineKeyboardButton:
             data (`bytes`): Data to be sent to the bot via a callback query.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         if isinstance(data, str):
@@ -93,7 +93,7 @@ class InlineKeyboardButton:
             data (`bytes`): Data to be sent to the bot via a callback query.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         if isinstance(data, str):
@@ -117,7 +117,7 @@ class InlineKeyboardButton:
             id (``str``): Unique button identifier.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         return {
@@ -135,7 +135,7 @@ class InlineKeyboardButton:
             in_current_chat (``str``, optional): True, if the inline query must be sent from the current chat. Defaults to False.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         return {
@@ -156,7 +156,7 @@ class InlineKeyboardButton:
             url (``str``): HTTP or tg:// URL to open.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         return {
@@ -173,7 +173,7 @@ class InlineKeyboardButton:
             user_id (``str``): User identifier.
 
         Returns:
-            dict
+            py:class:`dict`
         """
 
         return {
@@ -190,7 +190,7 @@ class InlineKeyboardButton:
             url (``str``): An HTTP URL to pass to openWebApp
 
         Returns:
-            dict: Inline keyboard button.
+            py:class:`dict`: Inline keyboard button.
         """
 
         return {

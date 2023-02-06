@@ -23,7 +23,7 @@ class ForceReply(ReplyMarkup):
         """Converts the object to a dictionary.
 
         Returns:
-            dict: Force reply.
+            py:class:`dict`: Force reply.
         """
 
         return {

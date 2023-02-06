@@ -19,7 +19,7 @@ class RemoveKeyboard(ReplyMarkup):
         """Converts the object to a dictionary.
 
         Returns:
-            dict: Remove keyboard.
+            py:class:`dict`: Remove keyboard.
         """
 
         return {"@type": "replyMarkupRemoveKeyboard", "is_personal": self.is_personal}
