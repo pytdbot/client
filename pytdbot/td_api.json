@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
     "version": "1.8.11",
-    "commit_hash": "6dc48f30d",
+    "commit_hash": "3d0140b3e",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -18679,8 +18679,8 @@
                     "type": "AutosaveSettingsScope"
                 },
                 "settings": {
-                    "description": "The new autosave settings",
-                    "is_optional": false,
+                    "description": "The new autosave settings; may be null if the settings are reset to default",
+                    "is_optional": true,
                     "type": "scopeAutosaveSettings"
                 }
             },
