@@ -71,8 +71,8 @@ def functions():
             'from ..types import Result\n\nclass TDLibFunctions:\n    """Auto generated tdlib functions"""\n\n'
         )
         for k, v in data["functions"].items():
-            if k.startswith("test"):
-                continue
+            # if k.startswith("test"):
+            #     continue
             f.write(f"    async def {k}(self")
             if p := getP(v["args"]):
                 f.write(f",{p}" + ") -> Result:\n")

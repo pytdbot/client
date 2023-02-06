@@ -13385,3 +13385,248 @@ class TDLibFunctions:
         }
 
         return await self.invoke(data)
+
+    async def testCallEmpty(self) -> Result:
+        """Does nothing; for testing only. This is an offline method. Can be called before authorization
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`Ok`)
+        """
+
+        data = {
+            "@type": "testCallEmpty",
+        }
+
+        return await self.invoke(data)
+
+    async def testCallString(self, x: str) -> Result:
+        """Returns the received string; for testing only. This is an offline method. Can be called before authorization
+
+        Args:
+            x (``str``):
+                String to return
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`TestString`)
+        """
+
+        data = {
+            "@type": "testCallString",
+            "x": x,
+        }
+
+        return await self.invoke(data)
+
+    async def testCallBytes(self, x: bytes) -> Result:
+        """Returns the received bytes; for testing only. This is an offline method. Can be called before authorization
+
+        Args:
+            x (``bytes``):
+                Bytes to return
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`TestBytes`)
+        """
+
+        data = {
+            "@type": "testCallBytes",
+            "x": x,
+        }
+
+        return await self.invoke(data)
+
+    async def testCallVectorInt(self, x: list) -> Result:
+        """Returns the received vector of numbers; for testing only. This is an offline method. Can be called before authorization
+
+        Args:
+            x (``list``):
+                Vector of numbers to return
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`TestVectorInt`)
+        """
+
+        data = {
+            "@type": "testCallVectorInt",
+            "x": x,
+        }
+
+        return await self.invoke(data)
+
+    async def testCallVectorIntObject(self, x: list) -> Result:
+        """Returns the received vector of objects containing a number; for testing only. This is an offline method. Can be called before authorization
+
+        Args:
+            x (``list``):
+                Vector of objects to return
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`TestVectorIntObject`)
+        """
+
+        data = {
+            "@type": "testCallVectorIntObject",
+            "x": x,
+        }
+
+        return await self.invoke(data)
+
+    async def testCallVectorString(self, x: list) -> Result:
+        """Returns the received vector of strings; for testing only. This is an offline method. Can be called before authorization
+
+        Args:
+            x (``list``):
+                Vector of strings to return
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`TestVectorString`)
+        """
+
+        data = {
+            "@type": "testCallVectorString",
+            "x": x,
+        }
+
+        return await self.invoke(data)
+
+    async def testCallVectorStringObject(self, x: list) -> Result:
+        """Returns the received vector of objects containing a string; for testing only. This is an offline method. Can be called before authorization
+
+        Args:
+            x (``list``):
+                Vector of objects to return
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`TestVectorStringObject`)
+        """
+
+        data = {
+            "@type": "testCallVectorStringObject",
+            "x": x,
+        }
+
+        return await self.invoke(data)
+
+    async def testSquareInt(self, x: int) -> Result:
+        """Returns the squared received number; for testing only. This is an offline method. Can be called before authorization
+
+        Args:
+            x (``int``):
+                Number to square
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`TestInt`)
+        """
+
+        data = {
+            "@type": "testSquareInt",
+            "x": x,
+        }
+
+        return await self.invoke(data)
+
+    async def testNetwork(self) -> Result:
+        """Sends a simple network request to the Telegram servers; for testing only. Can be called before authorization
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`Ok`)
+        """
+
+        data = {
+            "@type": "testNetwork",
+        }
+
+        return await self.invoke(data)
+
+    async def testProxy(
+        self, server: str, port: int, type: dict, dc_id: int, timeout: float
+    ) -> Result:
+        """Sends a simple network request to the Telegram servers via proxy; for testing only. Can be called before authorization
+
+        Args:
+            server (``str``):
+                Proxy server IP address
+
+            port (``int``):
+                Proxy server port
+
+            type (``ProxyType``):
+                Proxy type
+
+            dc_id (``int``):
+                Identifier of a datacenter with which to test connection
+
+            timeout (``float``):
+                The maximum overall timeout for the request
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`Ok`)
+        """
+
+        data = {
+            "@type": "testProxy",
+            "server": server,
+            "port": port,
+            "type": type,
+            "dc_id": dc_id,
+            "timeout": timeout,
+        }
+
+        return await self.invoke(data)
+
+    async def testGetDifference(self) -> Result:
+        """Forces an updates.getDifference call to the Telegram servers; for testing only
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`Ok`)
+        """
+
+        data = {
+            "@type": "testGetDifference",
+        }
+
+        return await self.invoke(data)
+
+    async def testUseUpdate(self) -> Result:
+        """Does nothing and ensures that the Update object is used; for testing only. This is an offline method. Can be called before authorization
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`Update`)
+        """
+
+        data = {
+            "@type": "testUseUpdate",
+        }
+
+        return await self.invoke(data)
+
+    async def testReturnError(self, error: dict) -> Result:
+        """Returns the specified error and ensures that the Error object is used; for testing only. Can be called synchronously
+
+        Args:
+            error (``error``):
+                The error to be returned
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (`Error`)
+        """
+
+        data = {
+            "@type": "testReturnError",
+            "error": error,
+        }
+
+        return await self.invoke(data)
