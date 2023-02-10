@@ -1,4 +1,4 @@
-# Pytdbot [![version](https://img.shields.io/pypi/v/Pytdbot?style=flat&logo=pypi)](https://pypi.org/project/Pytdbot) [![downloads](https://img.shields.io/pypi/dm/Pytdbot?style=flat)](https://pypistats.org/packages/pytdbot)
+# Pytdbot [![Version](https://img.shields.io/pypi/v/Pytdbot?style=flat&logo=pypi)](https://pypi.org/project/Pytdbot) [![Downloads](https://static.pepy.tech/personalized-badge/pytdbot?period=month&units=none&left_color=grey&right_color=orange&left_text=Downloads)](https://pepy.tech/project/pytdbot)
 
 Easy, Sample and powerful [TDLib-based](https://github.com/tdlib/td) client.
 
