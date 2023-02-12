@@ -25,6 +25,7 @@ class Methods(TDLibFunctions):
         entities: list = None,
         parse_mode: str = None,
         disable_web_page_preview: bool = False,
+        clear_draft: bool = False,
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
@@ -53,6 +54,9 @@ class Methods(TDLibFunctions):
 
             disable_notification (``bool``, *optional*):
                 If True, disable notification for the message. Defaults to ``False``.
+
+            clear_draft (``bool``, *optional*):
+                True, if a chat message draft must be deleted. Defaults to ``False``.
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
@@ -97,8 +101,9 @@ class Methods(TDLibFunctions):
             },
             "input_message_content": {
                 "@type": "inputMessageText",
-                "disable_web_page_preview": disable_web_page_preview,
                 "text": _text,
+                "disable_web_page_preview": disable_web_page_preview,
+                "clear_draft": clear_draft,
             },
         }
         if isinstance(reply_markup, ReplyMarkup):
