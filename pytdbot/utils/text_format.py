@@ -8,11 +8,11 @@ def bold(text: str, html: bool = False, escape: bool = True) -> str:
         text (``str``):
             The text to convert
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text
@@ -35,11 +35,11 @@ def italic(text: str, html: bool = False, escape: bool = True) -> str:
         text (``str``):
             The text to convert
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text
@@ -62,11 +62,11 @@ def underline(text: str, html: bool = False, escape: bool = True) -> str:
         text (``str``):
             The text to convert
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text
@@ -89,11 +89,11 @@ def strikethrough(text: str, html: bool = False, escape: bool = True) -> str:
         text (``str``):
             The text to convert
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text
@@ -116,11 +116,11 @@ def spoiler(text: str, html: bool = False, escape: bool = True) -> str:
         text (``str``):
             The text to convert
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text
@@ -148,11 +148,11 @@ def hyperlink(text: str, url: str, html: bool = False, escape: bool = True) -> s
         url (``str``):
             The hyperlink url
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text
@@ -183,11 +183,11 @@ def mention(text: str, user_id: str, html: bool = False, escape: bool = True) ->
         user_id (``str``):
             The inline user id to mention
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text
@@ -215,11 +215,11 @@ def code(text: str, html: bool = False, escape: bool = True) -> str:
         text (``str``):
             The text to convert
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text
@@ -242,11 +242,11 @@ def pre(text: str, html: bool = False, escape: bool = True) -> str:
         text (``str``):
             The text to convert
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text
@@ -272,11 +272,11 @@ def pre_code(text: str, language: str, html: bool = False, escape: bool = True) 
         language (``str``):
             The name of the programming language written in the given code block
 
-        html (``bool``, optional):
-            Pass `True` to return text in `html` format. Defaults to False (markdownv2).
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``).
 
-        escape (``bool``, optional):
-            Whether escape special characters to the given text or not. Defaults to True.
+        escape (``bool``, *optional*):
+            Whether escape special characters to the given text or not. Defaults to ``True``.
 
     Returns:
         :py:class:`str`: The formated text

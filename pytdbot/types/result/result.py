@@ -5,17 +5,17 @@ from ujson import dumps
 
 
 class Result:
-    """Generate a result object.
+    """Result object.
 
     Args:
         request (``dict``):
             The request object.
 
-        request_id (``str`` | ``int`` | ``dict``, optional):
+        request_id (``str`` | ``int`` | ``dict``, *optional*):
             The request_id for the object.
 
-        remove_extra (``bool``, optional):
-            Remove @extra from the result. Default is True.
+        remove_extra (``bool``, *optional*):
+            Remove @extra from the result. Defaults to ``True``.
 
     """
 
@@ -85,7 +85,7 @@ class Result:
         """Reset the current result flags
 
         Returns:
-            ``bool``: `True` on success.
+            :py:class:``bool``: ``True`` on success.
         """
         self.is_error = False
         self.is_processed = False

@@ -1,8 +1,9 @@
+import pytdbot
+
 from .handler import Handler
 from typing import Callable
 from asyncio import iscoroutinefunction
 from logging import getLogger
-import pytdbot
 
 logger = getLogger(__name__)
 
@@ -18,11 +19,14 @@ class Updates:
         """The user authorization state has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -53,11 +57,14 @@ class Updates:
         """A new message was received; can also be an outgoing message
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -81,14 +88,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A request to send a message has reached the Telegram server. This doesn't mean that the message will be sent successfully or even that the send message request will be processed. This update will be sent only if the option "use_quick_ack" is set to true. This update may be sent multiple times for the same message
+        """A request to send a message has reached the Telegram server\. This doesn't mean that the message will be sent successfully or even that the send message request will be processed\. This update will be sent only if the option "use\_quick\_ack" is set to true\. This update may be sent multiple times for the same message
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -119,11 +129,14 @@ class Updates:
         """A message has been successfully sent
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -151,14 +164,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message failed to send. Be aware that some messages being sent can be irrecoverably deleted, in which case updateDeleteMessages will be received instead of this update
+        """A message failed to send\. Be aware that some messages being sent can be irrecoverably deleted, in which case updateDeleteMessages will be received instead of this update
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -187,11 +203,14 @@ class Updates:
         """The message content has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -215,14 +234,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message was edited. Changes in the message content will come in a separate updateMessageContent
+        """A message was edited\. Changes in the message content will come in a separate updateMessageContent
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -249,11 +271,14 @@ class Updates:
         """The message pinned state was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -282,11 +307,14 @@ class Updates:
         """The information about interactions with a message has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -314,14 +342,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The message content was opened. Updates voice note messages to "listened", video note messages to "viewed" and starts the self-destruct timer
+        """The message content was opened\. Updates voice note messages to "listened", video note messages to "viewed" and starts the self\-destruct timer
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -352,11 +383,14 @@ class Updates:
         """A message with an unread mention was read
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -387,11 +421,14 @@ class Updates:
         """The list of unread reactions added to a message was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -419,14 +456,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message with a live location was viewed. When the update is received, the application is supposed to update the live location
+        """A message with a live location was viewed\. When the update is received, the application is supposed to update the live location
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -454,14 +494,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new chat has been loaded/created. This update is guaranteed to come before the chat identifier is returned to the application. The chat field changes will be reported through separate updates
+        """A new chat has been loaded/created\. This update is guaranteed to come before the chat identifier is returned to the application\. The chat field changes will be reported through separate updates
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -488,11 +531,14 @@ class Updates:
         """The title of a chat was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -519,11 +565,14 @@ class Updates:
         """A chat photo was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -550,11 +599,14 @@ class Updates:
         """Chat permissions was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -580,14 +632,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The last message of a chat was changed. If last_message is null, then the last message in the chat became unknown. Some new unknown messages might be added to the chat in this case
+        """The last message of a chat was changed\. If last\_message is null, then the last message in the chat became unknown\. Some new unknown messages might be added to the chat in this case
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -613,14 +668,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The position of a chat in a chat list has changed. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update
+        """The position of a chat in a chat list has changed\. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -647,11 +705,14 @@ class Updates:
         """Incoming messages were read or the number of unread messages has been changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -678,11 +739,14 @@ class Updates:
         """Outgoing messages were read
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -709,11 +773,14 @@ class Updates:
         """The chat action bar was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -740,11 +807,14 @@ class Updates:
         """The chat available reactions were changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -772,14 +842,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat draft has changed. Be aware that the update may come in the currently opened chat but with old content of the draft. If the user has changed the content of the draft, this update mustn't be applied
+        """A chat draft has changed\. Be aware that the update may come in the currently opened chat but with old content of the draft\. If the user has changed the content of the draft, this update mustn't be applied
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -808,11 +881,14 @@ class Updates:
         """The message sender that is selected to send messages in a chat has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -838,14 +914,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The message auto-delete or self-destruct timer setting for a chat was changed
+        """The message auto\-delete or self\-destruct timer setting for a chat was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -876,11 +955,14 @@ class Updates:
         """Notification settings for a chat were changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -911,11 +993,14 @@ class Updates:
         """The chat pending join requests were changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -943,14 +1028,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The default chat reply markup was changed. Can occur because new messages with reply markup were received or because an old reply markup was hidden by the user
+        """The default chat reply markup was changed\. Can occur because new messages with reply markup were received or because an old reply markup was hidden by the user
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -979,11 +1067,14 @@ class Updates:
         """The chat theme was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1007,14 +1098,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The chat unread_mention_count has changed
+        """The chat unread\_mention\_count has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1042,14 +1136,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The chat unread_reaction_count has changed
+        """The chat unread\_reaction\_count has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1080,11 +1177,14 @@ class Updates:
         """A chat video chat state has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1108,14 +1208,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The value of the default disable_notification parameter, used when a message is sent to the chat, was changed
+        """The value of the default disable\_notification parameter, used when a message is sent to the chat, was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1146,11 +1249,14 @@ class Updates:
         """A chat content was allowed or restricted for saving
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1181,11 +1287,14 @@ class Updates:
         """Translation of chat messages was enabled or disabled
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1216,11 +1325,14 @@ class Updates:
         """A chat was marked as unread or was read
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1251,11 +1363,14 @@ class Updates:
         """A chat was blocked or unblocked
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1279,14 +1394,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat's has_scheduled_messages field has changed
+        """A chat's has\_scheduled\_messages field has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1317,11 +1435,14 @@ class Updates:
         """The list of chat filters or a chat filter has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1345,14 +1466,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The number of online group members has changed. This update with non-zero number of online group members is sent only for currently opened chats. There is no guarantee that it will be sent just after the number of online users has changed
+        """The number of online group members has changed\. This update with non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it will be sent just after the number of online users has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1383,11 +1507,14 @@ class Updates:
         """Basic information about a topic in a forum chat was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1414,11 +1541,14 @@ class Updates:
         """Notification settings for some type of chats were updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1449,11 +1579,14 @@ class Updates:
         """A notification was changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1480,11 +1613,14 @@ class Updates:
         """A list of active notifications in a notification group has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1510,14 +1646,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Contains active notifications that was shown on previous application launches. This update is sent only if the message database is used. In that case it comes once before any updateNotification and updateNotificationGroup update
+        """Contains active notifications that was shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1545,14 +1684,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Describes whether there are some pending notification updates. Can be used to prevent application from killing, while there are some pending notifications
+        """Describes whether there are some pending notification updates\. Can be used to prevent application from killing, while there are some pending notifications
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1583,11 +1725,14 @@ class Updates:
         """Some messages were deleted
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1614,11 +1759,14 @@ class Updates:
         """A message sender activity in the chat has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1645,11 +1793,14 @@ class Updates:
         """The user went online or offline
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1673,14 +1824,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data of a user has changed. This update is guaranteed to come before the user identifier is returned to the application
+        """Some data of a user has changed\. This update is guaranteed to come before the user identifier is returned to the application
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1704,14 +1858,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data of a basic group has changed. This update is guaranteed to come before the basic group identifier is returned to the application
+        """Some data of a basic group has changed\. This update is guaranteed to come before the basic group identifier is returned to the application
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1735,14 +1892,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data of a supergroup or a channel has changed. This update is guaranteed to come before the supergroup identifier is returned to the application
+        """Some data of a supergroup or a channel has changed\. This update is guaranteed to come before the supergroup identifier is returned to the application
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1766,14 +1926,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data of a secret chat has changed. This update is guaranteed to come before the secret chat identifier is returned to the application
+        """Some data of a secret chat has changed\. This update is guaranteed to come before the secret chat identifier is returned to the application
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1800,11 +1963,14 @@ class Updates:
         """Some data in userFullInfo has been changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1831,11 +1997,14 @@ class Updates:
         """Some data in basicGroupFullInfo has been changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1866,11 +2035,14 @@ class Updates:
         """Some data in supergroupFullInfo has been changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1898,14 +2070,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A service notification from the server was received. Upon receiving this the application must show a popup with the content of the notification
+        """A service notification from the server was received\. Upon receiving this the application must show a popup with the content of the notification
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1936,11 +2111,14 @@ class Updates:
         """Information about a file was updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -1967,11 +2145,14 @@ class Updates:
         """The file generation process needs to be started by the application
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2002,11 +2183,14 @@ class Updates:
         """File generation is no longer needed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2037,11 +2221,14 @@ class Updates:
         """The state of the file download list has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2065,14 +2252,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A file was added to the file download list. This update is sent only after file download list is loaded for the first time
+        """A file was added to the file download list\. This update is sent only after file download list is loaded for the first time
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2100,14 +2290,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A file download was changed. This update is sent only after file download list is loaded for the first time
+        """A file download was changed\. This update is sent only after file download list is loaded for the first time
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2131,14 +2324,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A file was removed from the file download list. This update is sent only after file download list is loaded for the first time
+        """A file was removed from the file download list\. This update is sent only after file download list is loaded for the first time
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2169,11 +2365,14 @@ class Updates:
         """New call was created or information about a call was updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2200,11 +2399,14 @@ class Updates:
         """Information about a group call was updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2228,14 +2430,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Information about a group call participant was changed. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined
+        """Information about a group call participant was changed\. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2266,11 +2471,14 @@ class Updates:
         """New call signaling data arrived
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2301,11 +2509,14 @@ class Updates:
         """Some privacy setting rules have been changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2333,14 +2544,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Number of unread messages in a chat list has changed. This update is sent only if the message database is used
+        """Number of unread messages in a chat list has changed\. This update is sent only if the message database is used
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2368,14 +2582,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Number of unread chats, i.e. with unread messages or marked as unread, has changed. This update is sent only if the message database is used
+        """Number of unread chats, i\.e\. with unread messages or marked as unread, has changed\. This update is sent only if the message database is used
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2404,11 +2621,14 @@ class Updates:
         """An option changed its value
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2435,11 +2655,14 @@ class Updates:
         """A sticker set has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2466,11 +2689,14 @@ class Updates:
         """The list of installed sticker sets was updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2501,11 +2727,14 @@ class Updates:
         """The list of trending sticker sets was updated or some of them were viewed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2536,11 +2765,14 @@ class Updates:
         """The list of recently used stickers was updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2567,11 +2799,14 @@ class Updates:
         """The list of favorite stickers was updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2600,11 +2835,14 @@ class Updates:
         """The list of saved animations was updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2630,14 +2868,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of saved notifications sounds was updated. This update may not be sent until information about a notification sound was requested for the first time
+        """The list of saved notifications sounds was updated\. This update may not be sent until information about a notification sound was requested for the first time
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2668,11 +2909,14 @@ class Updates:
         """The selected background has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2703,11 +2947,14 @@ class Updates:
         """The list of available chat themes has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2734,11 +2981,14 @@ class Updates:
         """Some language pack strings have been updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2766,14 +3016,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The connection state has changed. This update must be used only to show a human-readable description of the connection state
+        """The connection state has changed\. This update must be used only to show a human\-readable description of the connection state
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2799,14 +3052,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """New terms of service must be accepted by the user. If the terms of service are declined, then the deleteAccount method must be called with the reason "Decline ToS update"
+        """New terms of service must be accepted by the user\. If the terms of service are declined, then the deleteAccount method must be called with the reason "Decline ToS update"
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2830,14 +3086,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of users nearby has changed. The update is guaranteed to be sent only 60 seconds after a successful searchChatsNearby request
+        """The list of users nearby has changed\. The update is guaranteed to be sent only 60 seconds after a successful searchChatsNearby request
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2864,11 +3123,14 @@ class Updates:
         """The list of bots added to attachment menu has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2899,11 +3161,14 @@ class Updates:
         """A message was sent by an opened Web App, so the Web App needs to be closed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2932,11 +3197,14 @@ class Updates:
         """The list of active emoji reactions has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -2967,11 +3235,14 @@ class Updates:
         """The type of default reaction has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3002,11 +3273,14 @@ class Updates:
         """The list of supported dice emojis has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3030,14 +3304,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played
+        """Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen\. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3065,14 +3342,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The parameters of animation search through getOption("animation_search_bot_username") bot has changed
+        """The parameters of animation search through getOption\("animation\_search\_bot\_username"\) bot has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3103,11 +3383,14 @@ class Updates:
         """The list of suggested to the user actions has changed
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3136,11 +3419,14 @@ class Updates:
         """Autosave settings for some type of chats were updated
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3169,11 +3455,14 @@ class Updates:
         """A new incoming inline query; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3200,11 +3489,14 @@ class Updates:
         """The user has chosen a result of an inline query; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3235,11 +3527,14 @@ class Updates:
         """A new incoming callback query; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3268,11 +3563,14 @@ class Updates:
         """A new incoming callback query from a message sent via a bot; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3300,14 +3598,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming shipping query; for bots only. Only for invoices with flexible price
+        """A new incoming shipping query; for bots only\. Only for invoices with flexible price
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3333,14 +3634,17 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming pre-checkout query; for bots only. Contains full information about a checkout
+        """A new incoming pre\-checkout query; for bots only\. Contains full information about a checkout
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3371,11 +3675,14 @@ class Updates:
         """A new incoming event; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3402,11 +3709,14 @@ class Updates:
         """A new incoming query; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3433,11 +3743,14 @@ class Updates:
         """A poll was updated; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3464,11 +3777,14 @@ class Updates:
         """A user changed the answer to a poll; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3495,11 +3811,14 @@ class Updates:
         """User rights changed in a chat; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3526,11 +3845,14 @@ class Updates:
         """A user sent a join request to a chat; for bots only
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -3561,11 +3883,14 @@ class Updates:
         """Contains a list of updates
 
         Args:
-            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in handlers list. Defaults to None (append).
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:

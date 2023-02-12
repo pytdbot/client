@@ -8,11 +8,11 @@ class InputThumbnail:
         f (:class:`~pytdbot.types.InputFileLocal`):
             Thumbnail file to send.
 
-        width (``int``, optional):
-            Thumbnail width, usually shouldn't exceed 320. Use 0 if unknown. Defaults to 0.
+        width (``int``, *optional*):
+            Thumbnail width, usually shouldn't exceed 320. Use 0 if unknown. Defaults to ``0``.
 
-        height (``int``, optional):
-            Thumbnail height, usually shouldn't exceed 320. Use 0 if unknown. Defaults to 0.
+        height (``int``, *optional*):
+            Thumbnail height, usually shouldn't exceed 320. Use 0 if unknown. Defaults to ``0``.
     """
 
     def __init__(self, f: InputFileLocal, width: int = 0, height: int = 0) -> None:

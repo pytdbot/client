@@ -4,12 +4,8 @@ from logging import getLogger
 from typing import Union
 from platform import system
 from pkg_resources import resource_filename
+from ujson import loads, dumps
 
-
-try:
-    from ujson import loads, dumps
-except ImportError:
-    from json import loads, dumps
 
 logger = getLogger(__name__)
 
@@ -20,13 +16,13 @@ class TDjson:
 
         Args:
             lib_path (``str``, optional):
-                Path to shared library. Defaults to None.
+                Path to shared library. Defaults to ``None``.
 
             verbosity (``int``, optional):
-                TDLib verbosity level. Defaults to 2.
+                TDLib verbosity level. Defaults to ``2``.
 
         Raises:
-            ``ValueError``: If library not found.
+            :py:class:``ValueError``: If library not found.
         """
 
         if lib_path is None:
@@ -99,11 +95,11 @@ class TDjson:
         """Receives incoming updates and results from TDLib.
 
         Args:
-            timeout (``float``, optional):
+            timeout (``float``, *optional*):
                 The maximum number of seconds allowed to wait for new data. Defaults to 2.0.
 
         Returns:
-            ``dict``: An incoming update or result to a request. If no data is received, ``None`` is returned.
+            :py:class:``dict``: An incoming update or result to a request. If no data is received, ``None`` is returned.
         """
         try:
             if res := self._td_receive(self.client_id, c_double(timeout)):
@@ -132,7 +128,7 @@ class TDjson:
             data (``dict``): The request to be executed.
 
         Returns:
-            ``dict``: The result of the request.
+            :py:class:``dict``: The result of the request.
         """
         try:
             if res := self._td_execute(dumps(data).encode("utf-8")):

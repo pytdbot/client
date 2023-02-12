@@ -1,4 +1,9 @@
+if __name__ != "__main__":
+    exit(1)
+
 from json import loads
+import utils
+
 
 with open("td_api.json") as f:
     data = loads(f.read())
@@ -55,12 +60,12 @@ def getType(_type):
 def updates():
     with open("handlers/updates.py", "w") as f:
         f.write(
-            'from .handler import Handler\nfrom typing import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\nimport pytdbot\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated tdlib updates"""\n\n'
+            'import pytdbot\n\nfrom .handler import Handler\nfrom typing import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated tdlib updates"""\n\n'
         )
         for k, v in data["updates"].items():
             f.write(
-                '    def on_{update_name}(\n        self: "pytdbot.Client" = None,\n        filters: "pytdbot.filters.Filter" = None,\n        position: int = None,\n    ) -> Callable:\n        """{description}\n\n        Args:\n            filters (:class:`pytdbot.filters.Filter`, optional): An update filter.\n            position (``int``, optional): The function position in handlers list. Defaults to None (append).\n\n        Raises:\n            TypeError\n        """\n\n        def decorator(func: Callable) -> Callable:\n            if hasattr(func, "_handler"):\n                return func\n            elif isinstance(self, pytdbot.Client):\n                if iscoroutinefunction(func):\n                    self.add_handler(\n                        "{update_name}", func, filters, position\n                    )\n                else:\n                    logger.warn(\n                        \'Function "{{}}" is not a coroutine function\'.format(func)\n                    )\n            else:\n                func._handler = Handler(\n                    func, "{update_name}", filters, position\n                )\n            return func\n        return decorator\n\n'.format(
-                    update_name=k, description=v["description"]
+                '    def on_{update_name}(\n        self: "pytdbot.Client" = None,\n        filters: "pytdbot.filters.Filter" = None,\n        position: int = None,\n    ) -> Callable:\n        """{description}\n\n        Args:\n            filters (:class:`pytdbot.filters.Filter`, *optional*):\n                An update filter.\n\n            position (``int``, *optional*):\n                The function position in handlers list. Defaults to ``None`` (append).\n\n        Raises:\n            :py:class:`TypeError`\n        """\n\n        def decorator(func: Callable) -> Callable:\n            if hasattr(func, "_handler"):\n                return func\n            elif isinstance(self, pytdbot.Client):\n                if iscoroutinefunction(func):\n                    self.add_handler(\n                        "{update_name}", func, filters, position\n                    )\n                else:\n                    logger.warn(\n                        \'Function "{{}}" is not a coroutine function\'.format(func)\n                    )\n            else:\n                func._handler = Handler(\n                    func, "{update_name}", filters, position\n                )\n            return func\n        return decorator\n\n'.format(
+                    update_name=k, description=utils.escape_markdown(v["description"])
                 )
             )
 
@@ -79,7 +84,7 @@ def functions():
             else:
                 f.write(") -> Result:\n")
 
-            f.write(f'        """{v["description"]}\n\n')
+            f.write(f'        """{utils.escape_markdown(v["description"])}\n\n')
 
             if v["args"]:
                 f.write(f"        Args:\n")
@@ -90,14 +95,14 @@ def functions():
                 for _k, _v in params.items():
                     if not _v["is_optional"]:
                         f.write(
-                            f"            {_k} (``{getType(_v['type'])}``):\n                {_v['description']}\n\n"
+                            f"            {_k} (``{getType(_v['type'])}``):\n                {utils.escape_markdown(_v['description'])}\n\n"
                         )
                     else:
                         f.write(
-                            f"            {_k} (``{getType(_v['type'])}``, optional):\n                {_v['description']}\n\n"
+                            f"            {_k} (``{getType(_v['type'])}``, *optional*):\n                {utils.escape_markdown(_v['description'])}\n\n"
                         )
             f.write(
-                '\n        Returns:\n            :class:`~pytdbot.types.Result` (`{}`)\n        """\n\n'.format(
+                '\n        Returns:\n            :class:`~pytdbot.types.Result` (``{}``)\n        """\n\n'.format(
                     v["type"]
                 )
             )
@@ -107,5 +112,6 @@ def functions():
             f.write("}\n\n        return await self.invoke(data)\n\n")
 
 
-updates()
-functions()
+if __name__ == "__main__":
+    updates()
+    functions()

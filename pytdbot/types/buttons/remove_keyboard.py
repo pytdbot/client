@@ -8,8 +8,8 @@ class RemoveKeyboard(ReplyMarkup):
         """
 
         Args:
-            is_personal (``bool``, optional):
-                True, if the keyboard is removed only for the mentioned users or the target user of a reply. Defaults to True.
+            is_personal (``bool``, *optional*):
+                True, if the keyboard is removed only for the mentioned users or the target user of a reply. Defaults to ``True``.
 
         """
 
@@ -19,7 +19,7 @@ class RemoveKeyboard(ReplyMarkup):
         """Converts the object to a dictionary.
 
         Returns:
-            py:class:`dict`: Remove keyboard.
+            :py:class:`dict`: Remove keyboard.
         """
 
         return {"@type": "replyMarkupRemoveKeyboard", "is_personal": self.is_personal}

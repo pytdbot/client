@@ -9,11 +9,11 @@ def escape_html(text: str, quote: bool = True) -> str:
         text (``str``):
             The text to escape.
 
-        quote (``bool``, optional):
-            Whether to escape double quotes. Defaults to True.
+        quote (``bool``, *optional*):
+            Whether to escape double quotes. Defaults to ``True``.
 
     Returns:
-        ``str``: The escaped text.
+        :py:class:`str`: The escaped text.
     """
     assert isinstance(text, str), "text must be a string"
     assert isinstance(quote, bool), "quote must be a boolean"
@@ -32,14 +32,14 @@ def escape_markdown(text: str, version: int = 2) -> str:
         text (``str``):
             The text to escape.
 
-        version (``int``, optional):
-            The Markdown version to escape. Defaults to 2.
+        version (``int``, *optional*):
+            The Markdown version to escape. Defaults to ``2``.
 
     Returns:
-        ``str``: The escaped text.
+        :py:class:`str`: The escaped text.
 
     Raises:
-        ``ValueError``: If the given markdown version is not supported.
+        :py:class:`ValueError`: If the given markdown version is not supported.
     """
     assert isinstance(text, str), "text must be a string"
 

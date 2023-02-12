@@ -5,7 +5,8 @@ class InputFileId(InputFile):
     """A file defined by its unique ID
 
     Args:
-        id (``int``): The unique ID of the file
+        id (``int``):
+            The unique ID of the file
     """
 
     def __init__(self, id: str) -> None:

@@ -20,8 +20,11 @@ class Update:
     """Wrapper for the updates.
 
     Args:
-        client (:class:`~pytdbot.Client`): The client object.
-        update (``dict``): The update received from TDLib.
+        client (:class:`~pytdbot.Client`):
+            The client object.
+
+        update (``dict``):
+            The update received from TDLib.
     """
 
     SERVICE_MESSAGE_TYPES = [
@@ -96,7 +99,7 @@ class Update:
         """The chat id of the update.
 
         Returns:
-            ``int``
+            :py:class:`int`
         """
         if self.type in [
             "updateNewMessage",
@@ -112,7 +115,7 @@ class Update:
         """The user id of the sender of the update.
 
         Returns:
-            ``int``
+            :py:class:`int`
         """
         if self.type in [
             "updateNewMessage",
@@ -133,7 +136,7 @@ class Update:
         """The message id of the received update.
 
         Returns:
-            ``int``
+            :py:class:`int`
         """
         if self.type in [
             "updateNewMessage",
@@ -161,7 +164,7 @@ class Update:
         """The content type of the received message.
 
         Returns:
-            ``str``
+            :py:class:`str`
         """
         if self.type in [
             "updateNewMessage",
@@ -177,7 +180,7 @@ class Update:
         """The text of the message.
 
         Returns:
-            ``str``
+            :py:class:`str`
         """
         if self.type == "updateNewMessage" and self.content_type == "messageText":
             return self.update["message"]["content"]["text"]["text"]
@@ -208,7 +211,7 @@ class Update:
         """The caption of the received media.
 
         Returns:
-            ``str``
+            :py:class:`str`
         """
         if self.type in [
             "updateNewMessage",
@@ -226,7 +229,7 @@ class Update:
         """The callback data.
 
         Returns:
-            ``str``: The callback data.
+            :py:class:`str`: The callback data.
         """
         if "data" in self._store:
             return self._store["data"]
@@ -244,7 +247,7 @@ class Update:
         """The query of the inline query or the chosen inline result.
 
         Returns:
-            ``str``
+            :py:class:`str`
         """
         if self.type in ["updateNewInlineQuery", "updateNewChosenInlineResult"]:
             return self.update["query"]
@@ -254,7 +257,7 @@ class Update:
         """Remote file id.
 
         Returns:
-            ``str``
+            :py:class:`str`
         """
         if self.type not in [
             "updateNewMessage",
@@ -301,7 +304,7 @@ class Update:
         """True, if the update is sent by regular user.
 
         Returns:
-            ``bool``
+            :py:class:`bool`
         """
         if isinstance(self.from_id, int):
             return self.from_id > 0
@@ -311,7 +314,7 @@ class Update:
         """True, if the update is sent on private chat.
 
         Returns:
-            ``bool``
+            :py:class:`bool`
         """
         if isinstance(self.chat_id, int):
             return self.chat_id > 0
@@ -321,7 +324,7 @@ class Update:
         """True, if the update is service message.
 
         Returns:
-            ``bool``
+            :py:class:`bool`
         """
         return self.content_type in self.SERVICE_MESSAGE_TYPES
 
@@ -330,23 +333,23 @@ class Update:
         """True, if the message is sent by the current user.
 
         Returns:
-            ``bool``
+            :py:class:`bool`
         """
         if isinstance(self.from_id, int):
             return self.client.options["my_id"] == self.from_id
 
-    async def mention(self, parse_mode: str = "markdown", version: int = 1) -> str:
+    async def mention(self, parse_mode: str = "markdown", version: int = 2) -> str:
         """Get the text_mention of the message sender.
 
         Args:
-            parse_mode (``str``, optional):
-                The parse mode of the mention. Defaults to "markdown".
+            parse_mode (``str``, *optional*):
+                The parse mode of the mention. Defaults to ``markdown``.
 
-            version (``int``, optional):
-                If the parse mode is "markdown", pass the version of the markdown. Defaults to 1.
+            version (``int``, *optional*):
+                If the parse mode is ``markdown``, pass the version of the markdown. Defaults to ``2``.
 
         Returns:
-            ``str``
+            :py:class:`str`
         """
         if self.is_user:
             user = await self.client.getUser(self.from_id)
@@ -404,10 +407,10 @@ class Update:
         """Pin the message.
 
         Args:
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
-            only_for_self (``bool``, optional):
+            only_for_self (``bool``, *optional*):
                 True, if the message needs to be pinned for one side only; private chats only.
 
         Returns:
@@ -428,7 +431,7 @@ class Update:
         """Delete the received message.
 
         Args:
-            revoke (``bool``, optional):
+            revoke (``bool``, *optional*):
                 Pass true to delete messages for all chat members. Always true for supergroups, channels and secret chats.
 
         Returns:
@@ -463,10 +466,10 @@ class Update:
 
         Args:
             action (``str``):
-                Type of action to broadcast. Choose one, depending on what the user is about to receive: `typing` for text messages, `upload_photo` for photos, `record_video` or `upload_video` for videos, `record_voice` or `upload_voice` for voice notes, `upload_document` for general files, `choose_sticker` for stickers, `find_location` for location data, `record_video_note` or `upload_video_note` for video notes.
+                Type of action to broadcast. Choose one, depending on what the user is about to receive: ``typing`` for text messages, ``upload_photo`` for photos, ``record_video`` or ``upload_video`` for videos, ``record_voice`` or ``upload_voice`` for voice notes, ``upload_document`` for general files, ``choose_sticker`` for stickers, ``find_location` for location data, ``record_video_note`` or ``upload_video_note`` for video notes.
 
-            message_thread_id (``int``, optional):
-                If not 0, a message thread identifier in which the action was performed. Defaults to None.
+            message_thread_id (``int``, *optional*):
+                If not 0, a message thread identifier in which the action was performed. Defaults to ``None``.
 
         Returns:
             :class:`~pytdbot.types.ChatActions`
@@ -489,13 +492,13 @@ class Update:
             chat_id (``int``):
                 The chat id.
 
-            message_id (``int``, optional):
-                The message id. If None, the current message will be forwarded. Defaults to None.
+            message_id (``int``, *optional*):
+                The message id. If ``None``, the current message will be forwarded. Defaults to ``None``.
 
-            in_game_share (``bool``, optional):
+            in_game_share (``bool``, *optional*):
                 True, if a game message is being shared from a launched game; applies only to game messages.
 
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
         Returns:
@@ -551,31 +554,31 @@ class Update:
             text (``str``):
                 The text of the message to be sent.
 
-            quote (``bool``, optional)
+            quote (``bool``, *optional*)
                 If True, the message is sent as a reply to this message. Ignored if ``reply_to_message_id`` is specified. Default to ``True`` in group/channel chats and ``False`` in private chats.
 
-            entities (``list``, optional):
-                List of `MessageEntity` objects to parse in the text. If you want to send a text with formatting, use *parse_mode* instead.
+            entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the text. If you want to send a text with formatting, use *parse_mode* instead.
 
-            parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to None.
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Defaults to ``None``.
 
-            disable_web_page_preview (``bool``, optional):
+            disable_web_page_preview (``bool``, *optional*):
                 Disables link previews for links in this message.
 
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
-            protect_content (``bool``, optional):
+            protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
 
-            message_thread_id (``int``, optional):
+            message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
 
-            reply_to_message_id (``int``, optional):
+            reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply to or 0.
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
         Returns:
@@ -648,49 +651,49 @@ class Update:
                 )
 
         Args:
-            animation (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, optional):
+            animation (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, *optional*):
                 Animation to send. Pass a file_id as string to send an animation that exists on the Telegram servers, pass an HTTP URL as a string to send animation by URL, or pass :class:`~pytdbot.types.InputFileLocal` to upload an animation that exists on the local machine.
 
-            thumbnail (:class:`~pytdbot.types.InputThumbnail`, optional):
+            thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
                 Thumbnail of the animation to send.
 
-            quote (``bool``, optional)
+            quote (``bool``, *optional*)
                 If True, the message is sent as a reply to this message. Ignored if ``reply_to_message_id`` is specified. Default to ``True`` in group/channel chats and ``False`` in private chats.
 
-            caption (``str``, optional):
+            caption (``str``, *optional*):
                 Animation caption.
 
-            caption_entities (``list``, optional):
-                List of `MessageEntity` objects to parse in the animation caption.
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the animation caption.
 
-            parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to None.
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Defaults to ``None``.
 
-            added_sticker_file_ids (``list``, optional):
+            added_sticker_file_ids (``list``, *optional*):
                 List of file identifiers of new sticker set that should be added to the current sticker set.
 
-            duration (``int``, optional):
+            duration (``int``, *optional*):
                 Duration of sent animation in seconds.
 
-            width (``int``, optional):
+            width (``int``, *optional*):
                 Animation width.
 
-            height (``int``, optional):
+            height (``int``, *optional*):
                 Animation height.
 
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
-            protect_content (``bool``, optional):
+            protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
 
-            message_thread_id (``int``, optional):
+            message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
 
-            reply_to_message_id (``int``, optional):
+            reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply to or 0.
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
         Returns:
@@ -765,43 +768,43 @@ class Update:
                 )
 
         Args:
-            audio (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, optional):
+            audio (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, *optional*):
                 Audio file to send. Pass a file_id as string to send an audio that exists on the Telegram servers, pass an HTTP URL as a string to send an audio from the Internet, or pass :class:`~pytdbot.types.InputFileLocal` to upload an audio from a file on the local machine.
 
-            quote (``bool``, optional)
+            quote (``bool``, *optional*)
                 If True, the message is sent as a reply to this message. Ignored if ``reply_to_message_id`` is specified. Default to ``True`` in group/channel chats and ``False`` in private chats.
 
-            caption (``str``, optional):
+            caption (``str``, *optional*):
                 Audio caption.
 
-            caption_entities (``list``, optional):
-                List of `MessageEntity` objects to parse in the audio caption.
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the audio caption.
 
-            parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to None.
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Defaults to ``None``.
 
-            duration (``int``, optional):
+            duration (``int``, *optional*):
                 Duration of the audio in seconds.
 
-            performer (``str``, optional):
+            performer (``str``, *optional*):
                 Performer of the audio as defined by sender or by audio tags.
 
-            title (``str``, optional):
+            title (``str``, *optional*):
                 Title of the audio as defined by sender or by audio tags.
 
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
-            protect_content (``bool``, optional):
+            protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
 
-            message_thread_id (``int``, optional):
+            message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
 
-            reply_to_message_id (``int``, optional):
+            reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply to or 0.
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
         Returns:
@@ -871,34 +874,34 @@ class Update:
                 )
 
         Args:
-            document (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, optional):
+            document (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, *optional*):
                 File to send. Pass a file_id as string to send a file that exists on the Telegram servers, pass an HTTP URL as a string to send a file from the Internet, or pass :class:`~pytdbot.types.InputFileLocal` to upload a file from the local machine.
 
-            quote (``bool``, optional)
+            quote (``bool``, *optional*)
                 If True, the message is sent as a reply to this message. Ignored if ``reply_to_message_id`` is specified. Default to ``True`` in group/channel chats and ``False`` in private chats.
 
-            caption (``str``, optional):
+            caption (``str``, *optional*):
                 Document caption.
 
-            caption_entities (``list``, optional):
-                List of `MessageEntity` objects to parse in the document caption.
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the document caption.
 
-            parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to None.
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Defaults to ``None``.
 
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
-            protect_content (``bool``, optional):
+            protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
 
-            message_thread_id (``int``, optional):
+            message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
 
-            reply_to_message_id (``int``, optional):
+            reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply to or 0.
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
         Returns:
@@ -963,28 +966,28 @@ class Update:
                 )
 
         Args:
-            sticker (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, optional):
+            sticker (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, *optional*):
                 Sticker to send. Pass a file_id as string to send a file that exists on the Telegram servers, pass an HTTP URL as a string to send a file from the Internet, or pass :class:`~pytdbot.types.InputFileLocal` to upload a sticker from the local machine.
 
-            emoji (``str``, optional):
+            emoji (``str``, *optional*):
                 Emoji associated with the sticker.
 
-            quote (``bool``, optional)
+            quote (``bool``, *optional*)
                 If True, the message is sent as a reply to this message. Ignored if ``reply_to_message_id`` is specified. Default to ``True`` in group/channel chats and ``False`` in private chats.
 
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
-            protect_content (``bool``, optional):
+            protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
 
-            message_thread_id (``int``, optional):
+            message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
 
-            reply_to_message_id (``int``, optional):
+            reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply to or 0.
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
         Returns:
@@ -1053,46 +1056,46 @@ class Update:
                 )
 
         Args:
-            video (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, optional):
+            video (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, *optional*):
                 Video to send. Pass a file_id as string to send a file that exists on the Telegram servers, pass an HTTP URL as a string to send a file from the Internet, or pass :class:`~pytdbot.types.InputFileLocal` to upload a video from the local machine.
 
-            quote (``bool``, optional)
+            quote (``bool``, *optional*)
                 If True, the message is sent as a reply to this message. Ignored if ``reply_to_message_id`` is specified. Default to ``True`` in group/channel chats and ``False`` in private chats.
 
-            duration (``int``, optional):
+            duration (``int``, *optional*):
                 Duration of sent video in seconds.
 
-            width (``int``, optional):
+            width (``int``, *optional*):
                 Video width.
 
-            height (``int``, optional):
+            height (``int``, *optional*):
                 Video height.
 
-            caption (``str``, optional):
+            caption (``str``, *optional*):
                 Video caption.
 
-            caption_entities (``list``, optional):
-                List of `MessageEntity` objects to parse in the document caption.
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the document caption.
 
-            parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to None.
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Defaults to ``None``.
 
-            supports_streaming (``bool``, optional):
+            supports_streaming (``bool``, *optional*):
                 Pass True, if the uploaded video is suitable for streaming.
 
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
-            protect_content (``bool``, optional):
+            protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
 
-            message_thread_id (``int``, optional):
+            message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
 
-            reply_to_message_id (``int``, optional):
+            reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply to or 0.
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
         Returns:
@@ -1163,34 +1166,34 @@ class Update:
                 )
 
         Args:
-            photo (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, optional):
+            photo (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, *optional*):
                 Photo to send. Pass a file_id as string to send a file that exists on the Telegram servers, pass an HTTP URL as a string to send a file from the Internet, or pass :class:`~pytdbot.types.InputFileLocal` to upload a photo from the local machine.
 
-            quote (``bool``, optional)
+            quote (``bool``, *optional*)
                 If True, the message is sent as a reply to this message. Ignored if ``reply_to_message_id`` is specified. Default to ``True`` in group/channel chats and ``False`` in private chats.
 
-            caption (``str``, optional):
+            caption (``str``, *optional*):
                 Photo caption.
 
-            caption_entities (``list``, optional):
-                List of `MessageEntity` objects to parse in the document caption.
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the document caption.
 
-            parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to None.
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Defaults to ``None``.
 
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
-            protect_content (``bool``, optional):
+            protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
 
-            message_thread_id (``int``, optional):
+            message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
 
-            reply_to_message_id (``int``, optional):
+            reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply to or 0.
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
         Returns:
@@ -1258,37 +1261,37 @@ class Update:
                 )
 
         Args:
-            voice (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, optional):
+            voice (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``, *optional*):
                 Voice to send. Pass a file_id as string to send a file that exists on the Telegram servers, pass an HTTP URL as a string to send a file from the Internet, or pass :class:`~pytdbot.types.InputFileLocal` to upload a voice from the local machine.
 
-            quote (``bool``, optional)
+            quote (``bool``, *optional*)
                 If True, the message is sent as a reply to this message. Ignored if ``reply_to_message_id`` is specified. Default to ``True`` in group/channel chats and ``False`` in private chats.
 
-            caption (``str``, optional):
+            caption (``str``, *optional*):
                 Voice caption.
 
-            caption_entities (``list``, optional):
-                List of `MessageEntity` objects to parse in the voice caption.
+            caption_entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the voice caption.
 
-            parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to None.
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Defaults to ``None``.
 
-            duration (``int``, optional):
+            duration (``int``, *optional*):
                 Duration of sent voice in seconds.
 
-            disable_notification (``bool``, optional):
+            disable_notification (``bool``, *optional*):
                 If True, disable notification for the message.
 
-            protect_content (``bool``, optional):
+            protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
 
-            message_thread_id (``int``, optional):
+            message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
 
-            reply_to_message_id (``int``, optional):
+            reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply to or 0.
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
         Returns:
@@ -1353,16 +1356,16 @@ class Update:
             text (``str``):
                 The text of the message to be sent.
 
-            entities (``list``, optional):
-                List of `MessageEntity` objects to parse in the text. If you want to send a text with formatting, use *parse_mode* instead.
+            entities (``list``, *optional*):
+                List of ``MessageEntity`` objects to parse in the text. If you want to send a text with formatting, use *parse_mode* instead.
 
-            parse_mode (``str``, optional):
-                Mode for parsing entities. Defaults to None.
+            parse_mode (``str``, *optional*):
+                Mode for parsing entities. Defaults to ``None``.
 
-            disable_web_page_preview (``bool``, optional):
+            disable_web_page_preview (``bool``, *optional*):
                 Disables link previews for links in this message.
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, optional):
+            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
         Returns:

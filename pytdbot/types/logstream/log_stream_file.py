@@ -7,14 +7,14 @@ class LogStreamFile(LogStream):
     """The log is written to a file.
 
     Args:
-        path (`:py:class:pathlib.PosixPath` | ``str``):
+        path (:py:class:`pathlib.PosixPath` | ``str``):
             Path to the file to where the internal TDLib log will be written.
 
-        max_file_size (``int``, optional):
-            The maximum size of the file to where the internal TDLib log is written before the file will automatically be rotated, in bytes. Defaults to 104857600 (100MB).
+        max_file_size (``int``, *optional*):
+            The maximum size of the file to where the internal TDLib log is written before the file will automatically be rotated, in bytes. Defaults to ``104857600`` (100MB).
 
-        redirect_stderr (``bool``, optional):
-            Pass true to additionally redirect stderr to the log file. Ignored on Windows. Defaults to False.
+        redirect_stderr (``bool``, *optional*):
+            Pass true to additionally redirect stderr to the log file. Ignored on Windows. Defaults to ``False``.
     """
 
     def __init__(

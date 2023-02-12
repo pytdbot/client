@@ -7,7 +7,8 @@ class InputFileLocal(InputFile):
     """A file defined by a local path
 
     Args:
-        path (`:py:class:pathlib.PosixPath` | ``str``): The path to the file
+        path (:py:class:`pathlib.PosixPath` | ``str``):
+            The path to the file
 
     """
 

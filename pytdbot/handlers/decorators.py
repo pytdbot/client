@@ -20,11 +20,14 @@ class Decorators(Updates):
         """A decorator to initialize an event object before running other handlers.
 
         Args:
-            filters (`~pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in initializers list. Defaults to None (append).
+            filters (:class:`~pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in initializers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:
@@ -52,11 +55,14 @@ class Decorators(Updates):
         """A decorator to finalize an event object after running all handlers.
 
         Args:
-            filters (`~pytdbot.filters.Filter`, optional): An update filter.
-            position (``int``, optional): The function position in initializers list. Defaults to None (append).
+            filters (:class:`~pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in finalizers list. Defaults to ``None`` (append).
 
         Raises:
-            TypeError
+            :py:class:`TypeError`
         """
 
         def decorator(func: Callable) -> Callable:

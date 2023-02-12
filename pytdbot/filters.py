@@ -4,7 +4,7 @@ from typing import Callable
 class Filter:
     """Filter class.
 
-    A filter is a function that takes a request and returns a boolean. If the returned value is *True* then the handler will be called.
+    A filter is a function that takes a request and returns a boolean. If the returned value is ``True`` then the handler will be called.
     See :func:`~pytdbot.filters.create` for more information.
     """
 
@@ -53,7 +53,8 @@ def create(func: Callable) -> Filter:
             client.run()
 
     Args:
-        func (``Callable``): The filter function.
+        func (``Callable``):
+            The filter function.
 
     """
     return Filter(func)

@@ -18,16 +18,16 @@ class ShowKeyboardMarkup(ReplyMarkup):
             rows (``list``):
                 A list of rows of inline keyboard buttons.
 
-            resize_keyboard (``bool``, optional):
-                True, if the application needs to resize the keyboard vertically. Defaults to False.
+            resize_keyboard (``bool``, *optional*):
+                True, if the application needs to resize the keyboard vertically. Defaults to ``False``.
 
-            one_time (``bool``, optional):
-                True, if the application needs to hide the keyboard after use. Defaults to False.
+            one_time (``bool``, *optional*):
+                True, if the application needs to hide the keyboard after use. Defaults to ``False``.
 
-            is_personal (``bool``, optional):
-                True, if the keyboard must automatically be shown to the current user. For outgoing messages, specify true to show the keyboard only for the mentioned users and for the target user of a reply. Defaults to True.
+            is_personal (``bool``, *optional*):
+                True, if the keyboard must automatically be shown to the current user. For outgoing messages, specify true to show the keyboard only for the mentioned users and for the target user of a reply. Defaults to ``True``.
 
-            input_field_placeholder (``str``, optional):
+            input_field_placeholder (``str``, *optional*):
                 If non-empty, the placeholder to be shown in the input field when the keyboard is active; 0-64 characters.
 
         """
@@ -42,7 +42,7 @@ class ShowKeyboardMarkup(ReplyMarkup):
         """Converts the object to a dictionary.
 
         Returns:
-            py:class:`dict`: Show keyboard.
+            :py:class:`dict`: Show keyboard.
         """
 
         return {
@@ -66,7 +66,7 @@ class ShowKeyboardButton:
                 Text of the button.
 
         Returns:
-            py:class:`dict`
+            :py:class:`dict`
         """
 
         return {
@@ -83,7 +83,7 @@ class ShowKeyboardButton:
                 Text of the button.
 
         Returns:
-            result:py:class:`dict`
+            :py:class:`dict`
         """
 
         return {
@@ -99,14 +99,14 @@ class ShowKeyboardButton:
             text (``str``):
                 Text of the button.
 
-            force_regular (``bool``, optional):
+            force_regular (``bool``, *optional*):
                 If True, only regular polls must be allowed to create.
 
-            force_quiz (``bool``, optional):
+            force_quiz (``bool``, *optional*):
                 If True, only polls in quiz mode must be allowed to create.
 
         Returns:
-            py:class:`dict`
+            :py:class:`dict`
         """
 
         return {
@@ -136,20 +136,20 @@ class ShowKeyboardButton:
             id (``int``):
                 Unique button identifier
 
-            restrict_user_is_bot (``bool``, optional):
+            restrict_user_is_bot (``bool``, *optional*):
                 True, if the shared user must or must not be a bot
 
-            user_is_bot (``bool``, optional):
-                True, if the shared user must be a bot; otherwise, the shared user must no be a bot. Ignored if restrict_user_is_bot is false
+            user_is_bot (``bool``, *optional*):
+                True, if the shared user must be a bot; otherwise, the shared user must no be a bot. Ignored if ``restrict_user_is_bot`` is ``False``
 
-            restrict_user_is_premium (``bool``, optional):
+            restrict_user_is_premium (``bool``, *optional*):
                 True, if the shared user must or must not be a Telegram Premium user
 
-            user_is_premium (``bool``, optional):
-                True, if the shared user must be a Telegram Premium user; otherwise, the shared user must no be a Telegram Premium user. Ignored if restrict_user_is_premium is false
+            user_is_premium (``bool``, *optional*):
+                True, if the shared user must be a Telegram Premium user; otherwise, the shared user must no be a Telegram Premium user. Ignored if ``restrict_user_is_premium`` is ``False``
 
         Returns:
-            py:class:`dict`
+            :py:class:`dict`
         """
 
         return {
@@ -190,28 +190,28 @@ class ShowKeyboardButton:
             chat_is_channel (``bool``):
                 True, if the chat must be a channel; otherwise, a basic group or a supergroup chat is shared
 
-            restrict_chat_is_forum (``bool``, optional):
+            restrict_chat_is_forum (``bool``, *optional*):
                 True, if the chat must or must not be a forum supergroup
 
-            chat_is_forum (``bool``, optional):
-                True, if the chat must be a forum supergroup; otherwise, the chat must not be a forum supergroup. Ignored if restrict_chat_is_forum is false
+            chat_is_forum (``bool``, *optional*):
+                True, if the chat must be a forum supergroup; otherwise, the chat must not be a forum supergroup. Ignored if ``restrict_chat_is_forum`` is ``False``
 
-            restrict_chat_has_username (``bool``, optional):
+            restrict_chat_has_username (``bool``, *optional*):
                 True, if the chat must or must not have a username
 
-            chat_has_username (``bool``, optional):
-                if the chat must have a username; otherwise, the chat must not have a username. Ignored if restrict_chat_has_username is false
+            chat_has_username (``bool``, *optional*):
+                if the chat must have a username; otherwise, the chat must not have a username. Ignored if ``restrict_chat_has_username`` is ``False``
 
-            chat_is_created (``bool``, optional):
+            chat_is_created (``bool``, *optional*):
                 True, if the chat must be created by the current user
 
-            user_administrator_rights (``chatAdministratorRights``, optional):
+            user_administrator_rights (``chatAdministratorRights``, *optional*):
                 Expected user administrator rights in the chat; may be null if they aren't restricted
 
-            bot_administrator_rights (``chatAdministratorRights``, optional):
+            bot_administrator_rights (``chatAdministratorRights``, *optional*):
                 Expected user administrator rights in the chat; may be null if they aren't restricted
 
-            bot_is_member (``bool``, optional):
+            bot_is_member (``bool``, *optional*):
                 True, if the bot must be a member of the chat; for basic group and supergroup chats only
 
         Returns:
@@ -244,7 +244,7 @@ class ShowKeyboardButton:
                 Text of the button.
 
         Returns:
-            py:class:`dict`
+            :py:class:`dict`
         """
 
         return {
