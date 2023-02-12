@@ -354,7 +354,7 @@ class Client(Decorators, Methods):
         ):  # dumping all requests may create performance issues.
             logger.debug("Sending: {}".format(dumps(result.request, indent=4)))
 
-        self.send(result.request)
+        self.__send(result.request)
         await result
 
         if result.is_error and result["code"] == 429:
@@ -371,7 +371,7 @@ class Client(Decorators, Methods):
 
                 await asyncio.sleep(retry_after)
                 self._results[result.id] = result
-                self.send(result.request)
+                self.__send(result.request)
                 await result
 
         return result
@@ -439,12 +439,12 @@ class Client(Decorators, Methods):
 
             return True
 
-    def send(self, request: dict) -> None:
+    def __send(self, request: dict) -> None:
         return self._tdjson.send(
             request
         )  # tdjson.send is asynchronous, So we don't need run_in_executor. This improves performance.
 
-    async def receive(self, timeout: float = 2.0) -> dict:
+    async def __receive(self, timeout: float = 2.0) -> dict:
         return await self.loop.run_in_executor(
             self._executor, self._tdjson.receive, timeout
         )
@@ -533,7 +533,7 @@ class Client(Decorators, Methods):
             logger.info("Listening to updates...")
 
             while self.is_running:
-                update = await self.receive()
+                update = await self.__receive()
                 if update is None:
                     continue
                 self._process_update(update)
@@ -724,7 +724,7 @@ class Client(Decorators, Methods):
             else:
                 raise ValueError(f"Option {k} has unsupported type {v_type}")
 
-            self.send(
+            self.__send(
                 {
                     "@type": "setOption",
                     "name": k,
