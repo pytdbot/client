@@ -148,7 +148,7 @@ class Client(Decorators, Methods):
         self.queue = asyncio.Queue()
         self.td_verbosity = td_verbosity
         self._retry_after_prefex = "Too Many Requests: retry after "
-        self.connection_state = None
+        self.connection_state: str = None
         self.is_running = None
         self.me = None
         self.is_authenticated = False
@@ -192,7 +192,7 @@ class Client(Decorators, Methods):
             pass
 
     @property
-    def authorization_state(self):
+    def authorization_state(self) -> str:
         """Current authorization state"""
         return self.__authorization_state
 
@@ -357,22 +357,55 @@ class Client(Decorators, Methods):
         self.__send(result.request)
         await result
 
-        if result.is_error and result["code"] == 429:
-            retry_after = self.get_retry_after_time(result["message"])
+        if result.is_error:
+            if result["code"] == 429:
+                retry_after = self.get_retry_after_time(result["message"])
 
-            if retry_after <= self.sleep_threshold:
-                result.reset()
+                if retry_after <= self.sleep_threshold:
+                    result.reset()
 
-                logger.error(
-                    "Sleeping for {}s (Caused by {})".format(
-                        retry_after, result.request["@type"]
+                    logger.error(
+                        "Sleeping for {}s (Caused by {})".format(
+                            retry_after, result.request["@type"]
+                        )
                     )
-                )
 
-                await asyncio.sleep(retry_after)
-                self._results[result.id] = result
-                self.__send(result.request)
-                await result
+                    await asyncio.sleep(retry_after)
+                    self._results[result.id] = result
+                    self.__send(result.request)
+                    await result
+            elif not self.use_message_database and (
+                result["code"] == 400
+                and result["message"] == "Chat not found"
+                and "chat_id" in result.request
+            ):
+                chat_id = result.request["chat_id"]
+
+                logger.debug("Attempt to load chat {}".format(chat_id))
+
+                load_chat = await self.getChat(chat_id)
+
+                if not load_chat.is_error:
+                    logger.debug("Chat {} is loaded".format(chat_id))
+
+                    message_id = result.request.get(
+                        "reply_to_message_id", 0
+                    ) or result.request.get("message_id", 0)
+
+                    # If there is a message_id then
+                    # we need to load it to avoid MESSAGE_NOT_FOUND.
+                    if message_id > 0:
+                        await self.getMessage(
+                            chat_id,message_id
+                        )
+
+                    # repeat the first request
+                    result.reset()
+                    self._results[result.id] = result
+                    self.__send(result.request)
+                    await result
+                else:
+                    logger.error("Couldn't load chat {}".format(chat_id))
 
         return result
 
@@ -742,7 +775,7 @@ class Client(Decorators, Methods):
 
             logger.info(
                 "Authorization state changed to {}".format(
-                    self.authorization_state.replace("authorizationState", ""),
+                    self.authorization_state.removeprefix("authorizationState"),
                 )
             )
 
@@ -774,10 +807,10 @@ class Client(Decorators, Methods):
 
     async def __handle_connection_state(self, update):
         if update["@type"] == "updateConnectionState":
-            self.connection_state = update["state"]["@type"]
+            self.connection_state: str = update["state"]["@type"]
             logger.info(
                 "Connection state changed to {}".format(
-                    self.connection_state.replace("connectionState", ""),
+                    self.connection_state.removeprefix("connectionState"),
                 )
             )
 
