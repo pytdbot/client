@@ -1,5 +1,6 @@
 __all__ = [
-    "Plugins" "ReplyMarkup",
+    "Plugins",
+    "ReplyMarkup",
     "ForceReply",
     "InlineKeyboardMarkup",
     "InlineKeyboardButton",
