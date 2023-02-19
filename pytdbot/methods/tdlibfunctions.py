@@ -11899,7 +11899,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setAutosaveSettings(self, scope: dict, settings: dict = None) -> Result:
-        """Sets autosave settings for the given scope
+        """Sets autosave settings for the given scope\. The method is guaranteed to work only after at least one call to getAutosaveSettings
 
         Args:
             scope (``AutosaveSettingsScope``):
@@ -11922,7 +11922,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def clearAutosaveSettingsExceptions(self) -> Result:
-        """Clears the list of all autosave settings exceptions
+        """Clears the list of all autosave settings exceptions\. The method is guaranteed to work only after at least one call to getAutosaveSettings
 
 
         Returns:

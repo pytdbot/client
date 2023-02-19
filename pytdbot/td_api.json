@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
     "version": "1.8.11",
-    "commit_hash": "3d0140b3e",
+    "commit_hash": "6ba394fc411c1c6585345df7dbe1919a08489050",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -965,7 +965,7 @@
                     "type": "int64"
                 },
                 "needs_repainting": {
-                    "description": "True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, or another appropriate color in other places. The sticker must not be repainted on chat photos",
+                    "description": "True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, white color on chat photos, or another appropriate color in other places",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -26851,7 +26851,7 @@
             "type": "AutosaveSettings"
         },
         "setAutosaveSettings": {
-            "description": "Sets autosave settings for the given scope",
+            "description": "Sets autosave settings for the given scope. The method is guaranteed to work only after at least one call to getAutosaveSettings",
             "args": {
                 "scope": {
                     "description": "Autosave settings scope",
@@ -26867,7 +26867,7 @@
             "type": "Ok"
         },
         "clearAutosaveSettingsExceptions": {
-            "description": "Clears the list of all autosave settings exceptions",
+            "description": "Clears the list of all autosave settings exceptions. The method is guaranteed to work only after at least one call to getAutosaveSettings",
             "args": {},
             "type": "Ok"
         },
