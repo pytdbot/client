@@ -159,7 +159,7 @@ class Client(Decorators, Methods):
         self._handlers = {"initializer": [], "finalizer": []}
         self._results = {}
         self._tdjson = TDjson(lib_path, td_verbosity)
-        self._executor = ThreadPoolExecutor(5)
+        self._executor = ThreadPoolExecutor(5, "Pytdbot")
         self._workers_tasks = None
         self.__authorization_state = None
         self.__authorization = None
@@ -395,9 +395,7 @@ class Client(Decorators, Methods):
                     # If there is a message_id then
                     # we need to load it to avoid MESSAGE_NOT_FOUND.
                     if message_id > 0:
-                        await self.getMessage(
-                            chat_id,message_id
-                        )
+                        await self.getMessage(chat_id, message_id)
 
                     # repeat the first request
                     result.reset()
