@@ -465,7 +465,7 @@ class Update:
 
         Args:
             chat_id (``int``, *optional*):
-                The chat to leave. Defaults to :meth:`pytdbot.types.Update.chat_id`.
+                The chat to leave. Defaults to the current chat.
 
         Returns:
             :class:`~pytdbot.types.Result`
