@@ -132,6 +132,23 @@ class Update:
             return self.update["sender_user_id"]
 
     @property
+    def sender_type(self) -> int:
+        """The message sender type of the update.
+
+        Returns:
+            :py:class:`int`
+        """
+        if self.type in [
+            "updateNewMessage",
+            "updateMessageSendSucceeded",
+            "updateMessageSendFailed",
+        ]:
+            if self.update["message"]["sender_id"]["@type"] == "messageSenderChat":
+                return "chat"
+            else:
+                return "user"
+
+    @property
     def message_id(self) -> int:
         """The message id of the received update.
 
