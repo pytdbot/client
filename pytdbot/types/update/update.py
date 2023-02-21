@@ -132,23 +132,6 @@ class Update:
             return self.update["sender_user_id"]
 
     @property
-    def sender_type(self) -> int:
-        """The message sender type of the update.
-
-        Returns:
-            :py:class:`int`
-        """
-        if self.type in [
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        ]:
-            if self.update["message"]["sender_id"]["@type"] == "messageSenderChat":
-                return "chat"
-            else:
-                return "user"
-
-    @property
     def message_id(self) -> int:
         """The message id of the received update.
 
@@ -191,6 +174,23 @@ class Update:
             return self.update["message"]["content"]["@type"]
         elif self.type == "updateMessageContent":
             return self.update["new_content"]["@type"]
+
+    @property
+    def sender_type(self) -> str:
+        """The message sender type of received message.
+
+        Returns:
+            :py:class:`str`
+        """
+        if self.type in [
+            "updateNewMessage",
+            "updateMessageSendSucceeded",
+            "updateMessageSendFailed",
+        ]:
+            if self.update["message"]["sender_id"]["@type"] == "messageSenderChat":
+                return "chat"
+            else:
+                return "user"
 
     @property
     def text(self) -> str:
@@ -460,8 +460,23 @@ class Update:
                 self.chat_id, [self.message_id], revoke
             )
 
+    async def leaveChat(self, chat_id: int = None) -> Result:
+        """Leave the current chat.
+
+        Args:
+            chat_id (``int``, *optional*):
+                The chat to leave. Defaults to :meth:`pytdbot.types.Update.chat_id`.
+
+        Returns:
+            :class:`~pytdbot.types.Result`
+        """
+        chat_id = chat_id if isinstance(chat_id, int) else self.chat_id
+
+        if chat_id:
+            return await self.client.leaveChat(chat_id)
+
     def action(self, action: str, message_thread_id: int = None) -> ChatActions:
-        """Sends a chat action to a specific chat. Supporting context manager (`with` statment).
+        """Sends a chat action to a specific chat. Supporting context manager (``with`` statment).
 
         Example:
 
