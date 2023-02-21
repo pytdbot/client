@@ -813,14 +813,14 @@ class Client(Decorators, Methods):
             )
 
     async def __handle_update_message_succeeded(self, update):
-        m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
+        m_id = update["old_message_id"].__str__() + update["message"]["chat_id"].__str__()
 
         if m_id in self._results:
             result: Result = self._results.pop(m_id)
             result.set_result(update["message"])
 
     async def __handle_update_message_failed(self, update):
-        m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
+        m_id = update["old_message_id"].__str__() + update["message"]["chat_id"].__str__()
 
         if m_id in self._results:
             if update["error_code"] == 429:
@@ -1124,7 +1124,7 @@ def deepdiff(d1, d2):
     for parent in deep.keys():
         for diff in deep[parent]:
             difflist = diff.path(output_format="list")
-            key = ".".join(str(v) for v in difflist)
+            key = ".".join(v.__str__() for v in difflist)
 
             if parent in ["dictionary_item_added", "values_changed"]:
                 logger.info(f"{key} changed to {diff.t2}")
