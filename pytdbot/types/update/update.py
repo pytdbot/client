@@ -130,6 +130,8 @@ class Update:
             return self.update["user_id"]
         elif "sender_user_id" in self.update:
             return self.update["sender_user_id"]
+        elif "actor_user_id" in self.update:
+            return self.update["actor_user_id"]
 
     @property
     def message_id(self) -> int:
