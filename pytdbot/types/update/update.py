@@ -351,10 +351,11 @@ class Update:
         Returns:
             :py:class:`str`
         """
-        if self.is_user:
-            user = await self.client.getUser(self.from_id)
-            if not user.is_error:
-                name = user["first_name"]
+        if self.from_id:
+            chat = await self.client.getChat(self.from_id)
+            if not chat.is_error:
+                name = chat["title"]
+
                 if parse_mode == "html":
                     return (
                         f"<a href='tg://user?id={self.from_id}'>{escape_html(name)}</a>"
