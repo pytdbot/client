@@ -417,6 +417,17 @@ class Update:
         if self.is_user:
             return await self.client.getUser(self.from_id)
 
+    async def getSupergroupId(self) -> int:
+        """Get the current chat ``supergroup_id``."""
+        if "supergroup_id" in self._store:
+            return self._store["supergroup_id"]
+        else:
+            chat = await self.getChat()
+            if not chat.is_error:
+                if chat["type"]["@type"] == "chatTypeSupergroup":
+                    self._store["supergroup_id"] = chat["type"]["supergroup_id"]
+                    return self._store["supergroup_id"]
+
     async def pin(
         self,
         disable_notification: bool = False,
