@@ -550,7 +550,7 @@ class Client(Decorators, Methods):
                             handlers += 1
                         else:
                             logger.warn(
-                                'Handler "{}" is not an async function from module "{}"'.format(
+                                "Handler {} is not an async function from module {}".format(
                                     obj._handler.func,
                                     module_path,
                                 )
@@ -1127,6 +1127,6 @@ def deepdiff(d1, d2):
             key = ".".join(str(v) for v in difflist)
 
             if parent in ["dictionary_item_added", "values_changed"]:
-                logger.info(f'{key} changed to "{diff.t2}"')
+                logger.info(f"{key} changed to {diff.t2}")
             elif parent == "dictionary_item_removed":
                 logger.info(f"{key} removed")
