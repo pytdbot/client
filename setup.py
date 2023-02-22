@@ -15,7 +15,7 @@ with open("requirements.txt", "r") as f:
 setup(
     name="Pytdbot",
     version=version,
-    description="Easy-to-use asynchronous TDLib wrapper for Telegram bots.",
+    description="Easy-to-use asynchronous TDLib wrapper for Python.",
     long_description=readme,
     long_description_content_type="text/markdown",
     author="AYMEN Mohammed",
