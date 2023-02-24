@@ -80,11 +80,7 @@ class Methods(TDLibFunctions):
                 if parse.is_error:
                     return parse
                 else:
-                    _text = {
-                        "@type": "formattedText",
-                        "text": parse.result["text"],
-                        "entities": parse.result["entities"],
-                    }
+                    _text = parse.result
             else:
                 _text = {"@type": "formattedText", "text": text, "entities": []}
         else:
@@ -203,11 +199,7 @@ class Methods(TDLibFunctions):
                 if parse.is_error:
                     return parse
                 else:
-                    _caption = {
-                        "@type": "formattedText",
-                        "text": parse.result["text"],
-                        "entities": parse.result["entities"],
-                    }
+                    _caption = parse.result
             else:
                 _caption = {
                     "@type": "formattedText",
@@ -343,11 +335,7 @@ class Methods(TDLibFunctions):
                 if parse.is_error:
                     return parse
                 else:
-                    _caption = {
-                        "@type": "formattedText",
-                        "text": parse.result["text"],
-                        "entities": parse.result["entities"],
-                    }
+                    _caption = parse.result
             else:
                 _caption = {
                     "@type": "formattedText",
@@ -475,11 +463,7 @@ class Methods(TDLibFunctions):
                 if parse.is_error:
                     return parse
                 else:
-                    _caption = {
-                        "@type": "formattedText",
-                        "text": parse.result["text"],
-                        "entities": parse.result["entities"],
-                    }
+                    _caption = parse.result
             else:
                 _caption = {
                     "@type": "formattedText",
@@ -615,11 +599,7 @@ class Methods(TDLibFunctions):
                 if parse.is_error:
                     return parse
                 else:
-                    _caption = {
-                        "@type": "formattedText",
-                        "text": parse.result["text"],
-                        "entities": parse.result["entities"],
-                    }
+                    _caption = parse.result
             else:
                 _caption = {
                     "@type": "formattedText",
@@ -766,11 +746,7 @@ class Methods(TDLibFunctions):
                 if parse.is_error:
                     return parse
                 else:
-                    _caption = {
-                        "@type": "formattedText",
-                        "text": parse.result["text"],
-                        "entities": parse.result["entities"],
-                    }
+                    _caption = parse.result
             else:
                 _caption = {
                     "@type": "formattedText",
@@ -994,11 +970,7 @@ class Methods(TDLibFunctions):
                 if parse.is_error:
                     return parse
                 else:
-                    _caption = {
-                        "@type": "formattedText",
-                        "text": parse.result["text"],
-                        "entities": parse.result["entities"],
-                    }
+                    _caption = parse.result
             else:
                 _caption = {
                     "@type": "formattedText",
@@ -1218,11 +1190,7 @@ class Methods(TDLibFunctions):
                 if parse.is_error:
                     return parse
                 else:
-                    _caption = {
-                        "@type": "formattedText",
-                        "text": parse.result["text"],
-                        "entities": parse.result["entities"],
-                    }
+                    _caption = parse.result
             else:
                 _caption = {
                     "@type": "formattedText",
@@ -1357,11 +1325,7 @@ class Methods(TDLibFunctions):
                 if parse.is_error:
                     return parse
                 else:
-                    _text = {
-                        "@type": "formattedText",
-                        "text": parse.result["text"],
-                        "entities": parse.result["entities"],
-                    }
+                    _text = parse.result
             else:
                 _text = {"@type": "formattedText", "text": text, "entities": []}
         else:
