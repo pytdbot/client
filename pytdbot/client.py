@@ -564,7 +564,7 @@ class Client(Decorators, Methods):
             logger.info("Listening to updates...")
 
             while self.is_running:
-                update = await self.__receive()
+                update = await self.__receive(100000.0)  # seconds
                 if update is None:
                     continue
                 self._process_update(update)
@@ -813,14 +813,18 @@ class Client(Decorators, Methods):
             )
 
     async def __handle_update_message_succeeded(self, update):
-        m_id = update["old_message_id"].__str__() + update["message"]["chat_id"].__str__()
+        m_id = (
+            update["old_message_id"].__str__() + update["message"]["chat_id"].__str__()
+        )
 
         if m_id in self._results:
             result: Result = self._results.pop(m_id)
             result.set_result(update["message"])
 
     async def __handle_update_message_failed(self, update):
-        m_id = update["old_message_id"].__str__() + update["message"]["chat_id"].__str__()
+        m_id = (
+            update["old_message_id"].__str__() + update["message"]["chat_id"].__str__()
+        )
 
         if m_id in self._results:
             if update["error_code"] == 429:
