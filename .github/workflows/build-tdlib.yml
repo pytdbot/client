@@ -88,7 +88,7 @@ jobs:
           python -m black "methods/tdlibfunctions.py" "handlers/updates.py"
 
           CURRENT_VERSION=${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }}
-          sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g"
+          sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g" ../README.md
 
           mv _types_/ types/
 
