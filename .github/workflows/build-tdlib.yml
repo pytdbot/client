@@ -86,6 +86,10 @@ jobs:
           python generate_files.py
           python -m pip install black
           python -m black "methods/tdlibfunctions.py" "handlers/updates.py"
+
+          CURRENT_VERSION=${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }}
+          sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g"
+
           mv _types_/ types/
 
       - name: Commit libtdjson.so
@@ -100,6 +104,6 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: "Generate Pytdbot files"
-          add: '["pytdbot/methods/tdlibfunctions.py","pytdbot/handlers/updates.py", "pytdbot/td_api.json"]'
+          add: '["README.md", "pytdbot/methods/tdlibfunctions.py","pytdbot/handlers/updates.py", "pytdbot/td_api.json",]'
           committer_name: GitHub Actions
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
