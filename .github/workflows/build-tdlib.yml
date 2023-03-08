@@ -59,8 +59,8 @@ jobs:
 
       - name: TDLib version
         run: |
-          echo "Current TDLib version: ${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }} (${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }})"
-          echo "Latest TDLib version: ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (${{ steps.vars.outputs.LATEST_TDLIB_VERSION }})"
+          echo "Current TDLib version: ${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }} (${{ steps.vars.outputs.CURRENT_TDLIB_COMMIT_HASH }})"
+          echo "Latest TDLib version: ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }})"
 
       - name: Compile
         run: |
