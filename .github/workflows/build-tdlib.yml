@@ -8,16 +8,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.12
+      - uses: actions/setup-python@v4
         with:
-          cmake-version: "3.25.1"
+          python-version: "3.9"
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
+
+      - uses: jwlawson/actions-setup-cmake@v1.12
+        with:
+          cmake-version: "3.25.1"
 
       - name: Increase swap
         run: |
@@ -41,21 +42,18 @@ jobs:
 
       - name: Setup variables
         id: vars
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-          run: |
-            cd $GITHUB_WORKSPACE/pytdbot
-            mv types/ _types_/
-            echo "CURRENT_TDLIB_VERSION=$(python -c "import json; print(json.loads(open('td_api.json').read())['version'])")" >> $GITHUB_OUTPUT
-            mv _types_/ types/
+        run: |
+          cd $GITHUB_WORKSPACE/pytdbot
+          mv types/ _types_/
+          echo "CURRENT_TDLIB_VERSION=$(python -c "import json; print(json.loads(open('td_api.json').read())['version'])")" >> $GITHUB_OUTPUT
+          mv _types_/ types/
 
-            cd $GITHUB_WORKSPACE/td
-            echo "TDLIB_COMMIT_HASH=$(git log -1 --pretty=%H)" >> $GITHUB_OUTPUT
-            echo "LATEST_TDLIB_VERSION=$(
-              cat CMakeLists.txt |
-              sed -nr 's/.*project\(TDLib VERSION (.*) LANGUAGES CXX C\).*/\1/p'
-            )" >> $GITHUB_OUTPUT
+          cd $GITHUB_WORKSPACE/td
+          echo "TDLIB_COMMIT_HASH=$(git log -1 --pretty=%H)" >> $GITHUB_OUTPUT
+          echo "LATEST_TDLIB_VERSION=$(
+            cat CMakeLists.txt |
+            sed -nr 's/.*project\(TDLib VERSION (.*) LANGUAGES CXX C\).*/\1/p'
+          )" >> $GITHUB_OUTPUT
 
       - name: TDLib version
         run: |
@@ -79,17 +77,14 @@ jobs:
           mv td/tdlib/lib/libtdjson.so.${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} pytdbot/lib/libtdjson.so
 
       - name: Generate Pytdbot files
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.9"
-          run: |
-            cd $GITHUB_WORKSPACE/pytdbot
-            mv types/ _types_/
-            python generate_json.py "${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}" "${{ steps.vars.outputs.TDLIB_COMMIT_HASH }}"
-            python generate_files.py
-            python -m pip install black
-            python -m black "methods/tdlibfunctions.py" "handlers/updates.py"
-            mv _types_/ types/
+        run: |
+          cd $GITHUB_WORKSPACE/pytdbot
+          mv types/ _types_/
+          python generate_json.py "${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}" "${{ steps.vars.outputs.TDLIB_COMMIT_HASH }}"
+          python generate_files.py
+          python -m pip install black
+          python -m black "methods/tdlibfunctions.py" "handlers/updates.py"
+          mv _types_/ types/
 
       - name: Commit libtdjson.so
         uses: EndBug/add-and-commit@v9
