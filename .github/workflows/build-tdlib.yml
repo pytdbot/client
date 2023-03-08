@@ -38,11 +38,29 @@ jobs:
           cd td
           rm -rf build
           mkdir build
+
+      - name: Setup variables
+        id: vars
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - run: |
+          cd $GITHUB_WORKSPACE/pytdbot
+          mv types/ _types_/
+          echo "CURRENT_TDLIB_VERSION=$(python -c "import json; print(json.loads(open('td_api.json').read())['version'])")" >> $GITHUB_OUTPUT
+          mv _types_/ types/
+
+          cd $GITHUB_WORKSPACE/td
           echo "TDLIB_COMMIT_HASH=$(git log -1 --pretty=%H)" >> $GITHUB_OUTPUT
-          echo "TDLIB_VERSION=$(
+          echo "LATEST_TDLIB_VERSION=$(
             cat CMakeLists.txt |
             sed -nr 's/.*project\(TDLib VERSION (.*) LANGUAGES CXX C\).*/\1/p'
           )" >> $GITHUB_OUTPUT
+
+      - name: TDLib version
+        run: |
+          echo "Current TDLib version: ${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }}"
+          echo "Latest TDLib version: ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}"
 
       - name: Compile
         run: |
@@ -58,7 +76,7 @@ jobs:
       - name: Move libtdjson.so
         run: |
           mkdir -p pytdbot/lib
-          mv td/tdlib/lib/libtdjson.so.${{ steps.td.outputs.TDLIB_VERSION }} pytdbot/lib/libtdjson.so
+          mv td/tdlib/lib/libtdjson.so.${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} pytdbot/lib/libtdjson.so
 
       - name: Generate Pytdbot files
         uses: actions/setup-python@v4
@@ -67,7 +85,7 @@ jobs:
       - run: |
           cd $GITHUB_WORKSPACE/pytdbot
           mv types/ _types_/
-          python generate_json.py "${{ steps.td.outputs.TDLIB_VERSION }}" "${{ steps.td.outputs.TDLIB_COMMIT_HASH }}"
+          python generate_json.py "${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}" "${{ steps.vars.outputs.TDLIB_COMMIT_HASH }}"
           python generate_files.py
           python -m pip install black
           python -m black "methods/tdlibfunctions.py" "handlers/updates.py"
@@ -76,7 +94,7 @@ jobs:
       - name: Commit libtdjson.so
         uses: EndBug/add-and-commit@v9
         with:
-          message: "Update TDLib to ${{ steps.td.outputs.TDLIB_VERSION }} (tdlib/td@${{ steps.td.outputs.TDLIB_COMMIT_HASH }})"
+          message: "Update TDLib to ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (tdlib/td@${{ steps.vars.outputs.TDLIB_COMMIT_HASH }})"
           add: '["pytdbot/lib/libtdjson.so","pytdbot/td_api.tl"]'
           committer_name: GitHub Actions
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
