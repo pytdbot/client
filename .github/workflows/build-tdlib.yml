@@ -44,18 +44,18 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-      - run: |
-          cd $GITHUB_WORKSPACE/pytdbot
-          mv types/ _types_/
-          echo "CURRENT_TDLIB_VERSION=$(python -c "import json; print(json.loads(open('td_api.json').read())['version'])")" >> $GITHUB_OUTPUT
-          mv _types_/ types/
+          run: |
+            cd $GITHUB_WORKSPACE/pytdbot
+            mv types/ _types_/
+            echo "CURRENT_TDLIB_VERSION=$(python -c "import json; print(json.loads(open('td_api.json').read())['version'])")" >> $GITHUB_OUTPUT
+            mv _types_/ types/
 
-          cd $GITHUB_WORKSPACE/td
-          echo "TDLIB_COMMIT_HASH=$(git log -1 --pretty=%H)" >> $GITHUB_OUTPUT
-          echo "LATEST_TDLIB_VERSION=$(
-            cat CMakeLists.txt |
-            sed -nr 's/.*project\(TDLib VERSION (.*) LANGUAGES CXX C\).*/\1/p'
-          )" >> $GITHUB_OUTPUT
+            cd $GITHUB_WORKSPACE/td
+            echo "TDLIB_COMMIT_HASH=$(git log -1 --pretty=%H)" >> $GITHUB_OUTPUT
+            echo "LATEST_TDLIB_VERSION=$(
+              cat CMakeLists.txt |
+              sed -nr 's/.*project\(TDLib VERSION (.*) LANGUAGES CXX C\).*/\1/p'
+            )" >> $GITHUB_OUTPUT
 
       - name: TDLib version
         run: |
@@ -82,14 +82,14 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
-      - run: |
-          cd $GITHUB_WORKSPACE/pytdbot
-          mv types/ _types_/
-          python generate_json.py "${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}" "${{ steps.vars.outputs.TDLIB_COMMIT_HASH }}"
-          python generate_files.py
-          python -m pip install black
-          python -m black "methods/tdlibfunctions.py" "handlers/updates.py"
-          mv _types_/ types/
+          run: |
+            cd $GITHUB_WORKSPACE/pytdbot
+            mv types/ _types_/
+            python generate_json.py "${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}" "${{ steps.vars.outputs.TDLIB_COMMIT_HASH }}"
+            python generate_files.py
+            python -m pip install black
+            python -m black "methods/tdlibfunctions.py" "handlers/updates.py"
+            mv _types_/ types/
 
       - name: Commit libtdjson.so
         uses: EndBug/add-and-commit@v9
