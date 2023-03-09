@@ -1121,7 +1121,7 @@ class TDLibFunctions:
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``Users``)
+            :class:`~pytdbot.types.Result` (``MessageViewers``)
         """
 
         data = {
@@ -2314,7 +2314,7 @@ class TDLibFunctions:
                 Text to translate
 
             to_language_code (``str``):
-                ISO language code of the language to which the message is translated\. Must be one of "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh\-CN", "zh", "zh\-Hans", "zh\-TW", "zh\-Hant", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "id", "in", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "ji", "yo", "zu"
+                Language code of the language to which the message is translated\. Must be one of "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh\-CN", "zh", "zh\-Hans", "zh\-TW", "zh\-Hant", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "id", "in", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "ji", "yo", "zu"
 
 
         Returns:
@@ -2342,7 +2342,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             to_language_code (``str``):
-                ISO language code of the language to which the message is translated\. Must be one of "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh\-CN", "zh", "zh\-Hans", "zh\-TW", "zh\-Hant", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "id", "in", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "ji", "yo", "zu"
+                Language code of the language to which the message is translated\. Must be one of "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh\-CN", "zh", "zh\-Hans", "zh\-TW", "zh\-Hant", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "id", "in", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "ji", "yo", "zu"
 
 
         Returns:
@@ -4315,8 +4315,7 @@ class TDLibFunctions:
         results: list,
         cache_time: int,
         next_offset: str,
-        switch_pm_parameter: str,
-        switch_pm_text: str = None,
+        button: dict = None,
     ) -> Result:
         """Sets the result of an inline query; for bots only
 
@@ -4336,11 +4335,8 @@ class TDLibFunctions:
             next_offset (``str``):
                 Offset for the next inline query; pass an empty string if there are no more results
 
-            switch_pm_parameter (``str``):
-                The parameter for the bot start message
-
-            switch_pm_text (``str``, *optional*):
-                If non\-empty, this text must be shown on the button that opens a private chat with the bot and sends a start message to the bot with the parameter switch\_pm\_parameter
+            button (``inlineQueryResultsButton``, *optional*):
+                Button to be shown above inline query results; pass null if none
 
 
         Returns:
@@ -4351,11 +4347,85 @@ class TDLibFunctions:
             "@type": "answerInlineQuery",
             "inline_query_id": inline_query_id,
             "is_personal": is_personal,
+            "button": button,
             "results": results,
             "cache_time": cache_time,
             "next_offset": next_offset,
-            "switch_pm_text": switch_pm_text,
-            "switch_pm_parameter": switch_pm_parameter,
+        }
+
+        return await self.invoke(data)
+
+    async def searchWebApp(self, bot_user_id: int, web_app_short_name: str) -> Result:
+        """Returns information about a Web App by its short name\. Returns a 404 error if the Web App is not found
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+            web_app_short_name (``str``):
+                Short name of the Web App
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundWebApp``)
+        """
+
+        data = {
+            "@type": "searchWebApp",
+            "bot_user_id": bot_user_id,
+            "web_app_short_name": web_app_short_name,
+        }
+
+        return await self.invoke(data)
+
+    async def getWebAppLinkUrl(
+        self,
+        chat_id: int,
+        bot_user_id: int,
+        web_app_short_name: str,
+        start_parameter: str,
+        application_name: str,
+        allow_write_access: bool,
+        theme: dict = None,
+    ) -> Result:
+        """Returns an HTTPS URL of a Web App to open after a link of the type internalLinkTypeWebApp is clicked
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat in which the link was clicked; pass 0 if none
+
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+            web_app_short_name (``str``):
+                Short name of the Web App
+
+            start_parameter (``str``):
+                Start parameter from internalLinkTypeWebApp
+
+            application_name (``str``):
+                Short name of the application; 0\-64 English letters, digits, and underscores
+
+            allow_write_access (``bool``):
+                Pass true if the current user allowed the bot to send them messages
+
+            theme (``themeParameters``, *optional*):
+                Preferred Web App theme; pass null to use the default theme
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``HttpUrl``)
+        """
+
+        data = {
+            "@type": "getWebAppLinkUrl",
+            "chat_id": chat_id,
+            "bot_user_id": bot_user_id,
+            "web_app_short_name": web_app_short_name,
+            "start_parameter": start_parameter,
+            "theme": theme,
+            "application_name": application_name,
+            "allow_write_access": allow_write_access,
         }
 
         return await self.invoke(data)
@@ -4363,14 +4433,14 @@ class TDLibFunctions:
     async def getWebAppUrl(
         self, bot_user_id: int, url: str, application_name: str, theme: dict = None
     ) -> Result:
-        """Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp button is pressed
+        """Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button is pressed
 
         Args:
             bot_user_id (``int``):
                 Identifier of the target bot
 
             url (``str``):
-                The URL from the keyboardButtonTypeWebApp button
+                The URL from the keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button
 
             application_name (``str``):
                 Short name of the application; 0\-64 English letters, digits, and underscores
@@ -4875,7 +4945,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def viewMessages(
-        self, chat_id: int, message_thread_id: int, message_ids: list, force_read: bool
+        self, chat_id: int, message_ids: list, source: dict, force_read: bool = None
     ) -> Result:
         """Informs TDLib that messages are being viewed by the user\. Sponsored messages must be marked as viewed only when the entire text of the message is shown on the screen \(excluding the button\)\. Many useful activities depend on whether the messages are currently being viewed or not \(e\.g\., marking messages as read, incrementing a view counter, updating a view counter, removing deleted messages in supergroups and channels\)
 
@@ -4883,14 +4953,14 @@ class TDLibFunctions:
             chat_id (``int``):
                 Chat identifier
 
-            message_thread_id (``int``):
-                If not 0, a message thread identifier in which the messages are being viewed
-
             message_ids (``list``):
                 The identifiers of the messages being viewed
 
-            force_read (``bool``):
-                Pass true to mark as read the specified messages even the chat is closed
+            source (``MessageSource``):
+                Source of the message view
+
+            force_read (``bool``, *optional*):
+                Pass true to mark as read the specified messages even the chat is closed; pass null to guess the source based on chat open state
 
 
         Returns:
@@ -4900,8 +4970,8 @@ class TDLibFunctions:
         data = {
             "@type": "viewMessages",
             "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
             "message_ids": message_ids,
+            "source": source,
             "force_read": force_read,
         }
 
@@ -4949,6 +5019,29 @@ class TDLibFunctions:
             "@type": "clickAnimatedEmojiMessage",
             "chat_id": chat_id,
             "message_id": message_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getInternalLink(self, type: dict, is_http: bool) -> Result:
+        """Returns an HTTPS or a tg: link with the given type\. Can be called before authorization
+
+        Args:
+            type (``InternalLinkType``):
+                Expected type of the link
+
+            is_http (``bool``):
+                Pass true to create an HTTPS link \(only available for some link types\); pass false to create a tg: link
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``HttpUrl``)
+        """
+
+        data = {
+            "@type": "getInternalLink",
+            "type": type,
+            "is_http": is_http,
         }
 
         return await self.invoke(data)
@@ -5191,19 +5284,19 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def createNewBasicGroupChat(
-        self, user_ids: list, title: str, message_auto_delete_time: int
+        self, title: str, message_auto_delete_time: int, user_ids: list = None
     ) -> Result:
         """Creates a new basic group and sends a corresponding messageBasicGroupChatCreate\. Returns the newly created chat
 
         Args:
-            user_ids (``list``):
-                Identifiers of users to be added to the basic group
-
             title (``str``):
                 Title of the new basic group; 1\-128 characters
 
             message_auto_delete_time (``int``):
                 Message auto\-delete time value, in seconds; must be from 0 up to 365 \* 86400 and be divisible by 86400\. If 0, then messages aren't deleted automatically
+
+            user_ids (``list``, *optional*):
+                Identifiers of users to be added to the basic group; may be empty to create a basic group without other members
 
 
         Returns:
@@ -10087,6 +10180,94 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def setBotInfoDescription(
+        self, language_code: str, description: str
+    ) -> Result:
+        """Sets the text shown in the chat with the bot if the chat is empty; bots only
+
+        Args:
+            language_code (``str``):
+                A two\-letter ISO 639\-1 language code\. If empty, the description will be shown to all users, for which language there are no dedicated description
+
+            description (``str``):
+                New bot's description on the specified language
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBotInfoDescription",
+            "language_code": language_code,
+            "description": description,
+        }
+
+        return await self.invoke(data)
+
+    async def getBotInfoDescription(self, language_code: str) -> Result:
+        """Returns the text shown in the chat with the bot if the chat is empty in the given language; bots only
+
+        Args:
+            language_code (``str``):
+                A two\-letter ISO 639\-1 language code or an empty string
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Text``)
+        """
+
+        data = {
+            "@type": "getBotInfoDescription",
+            "language_code": language_code,
+        }
+
+        return await self.invoke(data)
+
+    async def setBotInfoShortDescription(
+        self, language_code: str, short_description: str
+    ) -> Result:
+        """Sets the text shown on the bot's profile page and sent together with the link when users share the bot; bots only
+
+        Args:
+            language_code (``str``):
+                A two\-letter ISO 639\-1 language code\. If empty, the short description will be shown to all users, for which language there are no dedicated description
+
+            short_description (``str``):
+                New bot's short description on the specified language
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBotInfoShortDescription",
+            "language_code": language_code,
+            "short_description": short_description,
+        }
+
+        return await self.invoke(data)
+
+    async def getBotInfoShortDescription(self, language_code: str) -> Result:
+        """Returns the text shown on the bot's profile page and sent together with the link when users share the bot in the given language; bots only
+
+        Args:
+            language_code (``str``):
+                A two\-letter ISO 639\-1 language code or an empty string
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Text``)
+        """
+
+        data = {
+            "@type": "getBotInfoShortDescription",
+            "language_code": language_code,
+        }
+
+        return await self.invoke(data)
+
     async def getActiveSessions(self) -> Result:
         """Returns all active sessions of the current user
 
@@ -11119,7 +11300,7 @@ class TDLibFunctions:
 
         Args:
             language_pack_id (``str``):
-                Identifier of a language pack to be added; may be different from a name that is used in an "https://t\.me/setlanguage/" link
+                Identifier of a language pack to be added
 
 
         Returns:
@@ -12360,15 +12541,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def uploadStickerFile(self, user_id: int, sticker: dict) -> Result:
+    async def uploadStickerFile(
+        self, user_id: int, sticker_format: dict, sticker: dict
+    ) -> Result:
         """Uploads a file with a sticker; returns the uploaded file
 
         Args:
             user_id (``int``):
                 Sticker file owner; ignored for regular users
 
-            sticker (``inputSticker``):
-                Sticker file to upload
+            sticker_format (``StickerFormat``):
+                Sticker format
+
+            sticker (``InputFile``):
+                File file to upload; must fit in a 512x512 square\. For WEBP stickers the file must be in WEBP or PNG format, which will be converted to WEBP server\-side\. See https://core\.telegram\.org/animated\_stickers\#technical\-requirements for technical requirements
 
 
         Returns:
@@ -12378,6 +12564,7 @@ class TDLibFunctions:
         data = {
             "@type": "uploadStickerFile",
             "user_id": user_id,
+            "sticker_format": sticker_format,
             "sticker": sticker,
         }
 
@@ -12426,7 +12613,9 @@ class TDLibFunctions:
         user_id: int,
         title: str,
         name: str,
+        sticker_format: dict,
         sticker_type: dict,
+        needs_repainting: bool,
         stickers: list,
         source: str = None,
     ) -> Result:
@@ -12442,8 +12631,14 @@ class TDLibFunctions:
             name (``str``):
                 Sticker set name\. Can contain only English letters, digits and underscores\. Must end with \*"\_by\_<bot username\>"\* \(\*<bot\_username\>\* is case insensitive\) for bots; 1\-64 characters
 
+            sticker_format (``StickerFormat``):
+                Format of the stickers in the set
+
             sticker_type (``StickerType``):
                 Type of the stickers in the set
+
+            needs_repainting (``bool``):
+                Pass true if stickers in the sticker set must be repainted; for custom emoji sticker sets only
 
             stickers (``list``):
                 List of stickers to be added to the set; must be non\-empty\. All stickers must have the same format\. For TGS stickers, uploadStickerFile must be used before the sticker is shown
@@ -12461,7 +12656,9 @@ class TDLibFunctions:
             "user_id": user_id,
             "title": title,
             "name": name,
+            "sticker_format": sticker_format,
             "sticker_type": sticker_type,
+            "needs_repainting": needs_repainting,
             "stickers": stickers,
             "source": source,
         }
@@ -12469,7 +12666,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def addStickerToSet(self, user_id: int, name: str, sticker: dict) -> Result:
-        """Adds a new sticker to a set; for bots only\. Returns the sticker set
+        """Adds a new sticker to a set; for bots only
 
         Args:
             user_id (``int``):
@@ -12483,7 +12680,7 @@ class TDLibFunctions:
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``StickerSet``)
+            :class:`~pytdbot.types.Result` (``Ok``)
         """
 
         data = {
@@ -12498,7 +12695,7 @@ class TDLibFunctions:
     async def setStickerSetThumbnail(
         self, user_id: int, name: str, thumbnail: dict = None
     ) -> Result:
-        """Sets a sticker set thumbnail; for bots only\. Returns the sticker set
+        """Sets a sticker set thumbnail; for bots only
 
         Args:
             user_id (``int``):
@@ -12512,7 +12709,7 @@ class TDLibFunctions:
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``StickerSet``)
+            :class:`~pytdbot.types.Result` (``Ok``)
         """
 
         data = {
@@ -12520,6 +12717,73 @@ class TDLibFunctions:
             "user_id": user_id,
             "name": name,
             "thumbnail": thumbnail,
+        }
+
+        return await self.invoke(data)
+
+    async def setCustomEmojiStickerSetThumbnail(
+        self, name: str, custom_emoji_id: int
+    ) -> Result:
+        """Sets a custom emoji sticker set thumbnail; for bots only
+
+        Args:
+            name (``str``):
+                Sticker set name
+
+            custom_emoji_id (``int``):
+                Identifier of the custom emoji from the sticker set, which will be set as sticker set thumbnail; pass 0 to remove the sticker set thumbnail
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setCustomEmojiStickerSetThumbnail",
+            "name": name,
+            "custom_emoji_id": custom_emoji_id,
+        }
+
+        return await self.invoke(data)
+
+    async def setStickerSetTitle(self, name: str, title: str) -> Result:
+        """Sets a sticker set title; for bots only
+
+        Args:
+            name (``str``):
+                Sticker set name
+
+            title (``str``):
+                New sticker set title
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setStickerSetTitle",
+            "name": name,
+            "title": title,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteStickerSet(self, name: str) -> Result:
+        """Deleted a sticker set; for bots only
+
+        Args:
+            name (``str``):
+                Sticker set name
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteStickerSet",
+            "name": name,
         }
 
         return await self.invoke(data)
@@ -12562,6 +12826,77 @@ class TDLibFunctions:
         data = {
             "@type": "removeStickerFromSet",
             "sticker": sticker,
+        }
+
+        return await self.invoke(data)
+
+    async def setStickerEmojis(self, sticker: dict, emojis: str) -> Result:
+        """Changes the list of emoji corresponding to a sticker; for bots only\. The sticker must belong to a regular or custom emoji sticker set created by the bot
+
+        Args:
+            sticker (``InputFile``):
+                Sticker
+
+            emojis (``str``):
+                New string with 1\-20 emoji corresponding to the sticker
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setStickerEmojis",
+            "sticker": sticker,
+            "emojis": emojis,
+        }
+
+        return await self.invoke(data)
+
+    async def setStickerKeywords(self, sticker: dict, keywords: list) -> Result:
+        """Changes the list of keywords of a sticker; for bots only\. The sticker must belong to a regular or custom emoji sticker set created by the bot
+
+        Args:
+            sticker (``InputFile``):
+                Sticker
+
+            keywords (``list``):
+                List of up to 20 keywords with total length up to 64 characters, which can be used to find the sticker
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setStickerKeywords",
+            "sticker": sticker,
+            "keywords": keywords,
+        }
+
+        return await self.invoke(data)
+
+    async def setStickerMaskPosition(
+        self, sticker: dict, mask_position: dict = None
+    ) -> Result:
+        """Changes the mask position of a mask sticker; for bots only\. The sticker must belong to a mask sticker set created by the bot
+
+        Args:
+            sticker (``InputFile``):
+                Sticker
+
+            mask_position (``maskPosition``, *optional*):
+                Position where the mask is placed; pass null to remove mask position
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setStickerMaskPosition",
+            "sticker": sticker,
+            "mask_position": mask_position,
         }
 
         return await self.invoke(data)
@@ -12947,20 +13282,6 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getApplicationDownloadLink(self) -> Result:
-        """Returns the link for downloading official Telegram application to be used when the current user invites friends to Telegram
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``HttpUrl``)
-        """
-
-        data = {
-            "@type": "getApplicationDownloadLink",
-        }
-
-        return await self.invoke(data)
-
     async def getDeepLinkInfo(self, link: str) -> Result:
         """Returns information about a tg:// deep link\. Use "tg://need\_update\_for\_some\_feature" or "tg:some\_unsupported\_feature" for testing\. Returns a 404 error for unknown links\. Can be called before authorization
 
@@ -12994,6 +13315,27 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def addApplicationChangelog(
+        self, previous_application_version: str
+    ) -> Result:
+        """Adds server\-provided application changelog as messages to the chat 777000 \(Telegram\); for official applications only
+
+        Args:
+            previous_application_version (``str``):
+                The previous application version
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "addApplicationChangelog",
+            "previous_application_version": previous_application_version,
+        }
+
+        return await self.invoke(data)
+
     async def saveApplicationLogEvent(
         self, type: str, chat_id: int, data: dict
     ) -> Result:
@@ -13019,6 +13361,20 @@ class TDLibFunctions:
             "type": type,
             "chat_id": chat_id,
             "data": data,
+        }
+
+        return await self.invoke(data)
+
+    async def getApplicationDownloadLink(self) -> Result:
+        """Returns the link for downloading official Telegram application to be used when the current user invites friends to Telegram
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``HttpUrl``)
+        """
+
+        data = {
+            "@type": "getApplicationDownloadLink",
         }
 
         return await self.invoke(data)

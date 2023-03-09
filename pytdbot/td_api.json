@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.11",
-    "commit_hash": "6ba394fc411c1c6585345df7dbe1919a08489050",
+    "version": "1.8.12",
+    "commit_hash": "6c53a61162e6ea4a753869ee248b8a9e926ffd5d",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -24,6 +24,7 @@
         "MessageForwardOrigin": "Contains information about the origin of a forwarded message",
         "ReactionType": "Describes type of message reaction",
         "MessageSendingState": "Contains information about the sending state of the message",
+        "MessageSource": "Describes source of a message",
         "NotificationSettingsScope": "Describes the types of chats to which notification settings are relevant",
         "ChatType": "Describes the type of a chat",
         "ChatList": "Describes a list of chats",
@@ -66,6 +67,7 @@
         "SpeechRecognitionResult": "Describes result of speech recognition in a voice note",
         "InputInlineQueryResult": "Represents a single result of an inline query; for bots only",
         "InlineQueryResult": "Represents a single result of an inline query",
+        "InlineQueryResultsButtonType": "Represents a type of a button in results of inline query",
         "CallbackQueryPayload": "Represents a payload of a callback query",
         "ChatEventAction": "Represents a chat event",
         "LanguagePackStringValue": "Represents the value of a string in a language pack",
@@ -484,6 +486,11 @@
                 },
                 "has_recovery_email_address": {
                     "description": "True, if a recovery email address has been set up",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_passport_data": {
+                    "description": "True, if some Telegram Passport elements were saved",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -1499,7 +1506,7 @@
             "type": "Venue"
         },
         "game": {
-            "description": "Describes a game",
+            "description": "Describes a game. Use getInternalLink with internalLinkTypeGame to share the game",
             "args": {
                 "id": {
                     "description": "Unique game identifier",
@@ -1507,7 +1514,7 @@
                     "type": "int64"
                 },
                 "short_name": {
-                    "description": "Game short name. To share a game use the URL https://t.me/{bot_username}?game={game_short_name}",
+                    "description": "Game short name",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -1538,6 +1545,37 @@
                 }
             },
             "type": "Game"
+        },
+        "webApp": {
+            "description": "Describes a Web App. Use getInternalLink with internalLinkTypeWebApp to share the Web App",
+            "args": {
+                "short_name": {
+                    "description": "Web App short name",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "title": {
+                    "description": "Web App title",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Web App description",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "photo": {
+                    "description": "Web App photo",
+                    "is_optional": false,
+                    "type": "photo"
+                },
+                "animation": {
+                    "description": "Web App animation; may be null",
+                    "is_optional": true,
+                    "type": "animation"
+                }
+            },
+            "type": "WebApp"
         },
         "poll": {
             "description": "Describes a poll",
@@ -1950,7 +1988,7 @@
         "chatPermissions": {
             "description": "Describes actions that a user is allowed to take in a chat",
             "args": {
-                "can_send_messages": {
+                "can_send_basic_messages": {
                     "description": "True, if the user can send text messages, contacts, invoices, locations, and venues",
                     "is_optional": false,
                     "type": "Bool"
@@ -2303,7 +2341,7 @@
         "botInfo": {
             "description": "Contains information about a bot",
             "args": {
-                "share_text": {
+                "short_description": {
                     "description": "The text that is shown on the bot's profile page and is sent together with the link when users share the bot",
                     "is_optional": false,
                     "type": "string"
@@ -3392,6 +3430,33 @@
             },
             "type": "ChatMessageSenders"
         },
+        "messageViewer": {
+            "description": "Represents a viewer of a message",
+            "args": {
+                "user_id": {
+                    "description": "User identifier of the viewer",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "view_date": {
+                    "description": "Approximate point in time (Unix timestamp) when the message was viewed",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageViewer"
+        },
+        "messageViewers": {
+            "description": "Represents a list of message viewers",
+            "args": {
+                "viewers": {
+                    "description": "List of message viewers",
+                    "is_optional": false,
+                    "type": "vector<messageViewer>"
+                }
+            },
+            "type": "MessageViewers"
+        },
         "messageForwardOriginUser": {
             "description": "The message was originally sent by a known user",
             "args": {
@@ -3621,7 +3686,13 @@
         },
         "messageSendingStatePending": {
             "description": "The message is being sent now, but has not yet been delivered to the server",
-            "args": {},
+            "args": {
+                "sending_id": {
+                    "description": "Non-persistent message sending identifier, specified by the application",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
             "type": "MessageSendingState"
         },
         "messageSendingStateFailed": {
@@ -3983,6 +4054,51 @@
             },
             "type": "MessageCalendar"
         },
+        "messageSourceChatHistory": {
+            "description": "The message is from a chat history",
+            "args": {},
+            "type": "MessageSource"
+        },
+        "messageSourceMessageThreadHistory": {
+            "description": "The message is from a message thread history",
+            "args": {},
+            "type": "MessageSource"
+        },
+        "messageSourceForumTopicHistory": {
+            "description": "The message is from a forum topic history",
+            "args": {},
+            "type": "MessageSource"
+        },
+        "messageSourceHistoryPreview": {
+            "description": "The message is from chat, message thread or forum topic history preview",
+            "args": {},
+            "type": "MessageSource"
+        },
+        "messageSourceChatList": {
+            "description": "The message is from a chat list or a forum topic list",
+            "args": {},
+            "type": "MessageSource"
+        },
+        "messageSourceSearch": {
+            "description": "The message is from search results, including file downloads, local file list, outgoing document messages, calendar",
+            "args": {},
+            "type": "MessageSource"
+        },
+        "messageSourceChatEventLog": {
+            "description": "The message is from a chat event log",
+            "args": {},
+            "type": "MessageSource"
+        },
+        "messageSourceNotification": {
+            "description": "The message is from a notification",
+            "args": {},
+            "type": "MessageSource"
+        },
+        "messageSourceOther": {
+            "description": "The message is from some other source",
+            "args": {},
+            "type": "MessageSource"
+        },
         "sponsoredMessage": {
             "description": "Describes a sponsored message",
             "args": {
@@ -4020,6 +4136,16 @@
                     "description": "Content of the message. Currently, can be only of the type messageText",
                     "is_optional": false,
                     "type": "MessageContent"
+                },
+                "sponsor_info": {
+                    "description": "If non-empty, information about the sponsor to be shown along with the message",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "additional_info": {
+                    "description": "If non-empty, additional information about the sponsored message to be shown along with the message",
+                    "is_optional": true,
+                    "type": "string"
                 }
             },
             "type": "SponsoredMessage"
@@ -5162,8 +5288,8 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "skip_confirm": {
-                    "description": "True, if there is no need to show an ordinary open URL confirm",
+                "skip_confirmation": {
+                    "description": "True, if there is no need to show an ordinary open URL confirmation",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -5189,12 +5315,33 @@
                     "type": "int53"
                 },
                 "request_write_access": {
-                    "description": "True, if the user needs to be requested to give the permission to the bot to send them messages",
+                    "description": "True, if the user must be asked for the permission to the bot to send them messages",
                     "is_optional": false,
                     "type": "Bool"
                 }
             },
             "type": "LoginUrlInfo"
+        },
+        "foundWebApp": {
+            "description": "Contains information about a Web App found by its short name",
+            "args": {
+                "web_app": {
+                    "description": "The Web App",
+                    "is_optional": false,
+                    "type": "webApp"
+                },
+                "request_write_access": {
+                    "description": "True, if the user must be asked for the permission to the bot to send them messages",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "skip_confirmation": {
+                    "description": "True, if there is no need to show an ordinary open URL confirmation before opening the Web App. The field must be ignored and confirmation must be shown anyway if the Web App link was hidden",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "FoundWebApp"
         },
         "webAppInfo": {
             "description": "Contains information about a Web App",
@@ -8364,7 +8511,7 @@
             "type": "MessageContent"
         },
         "messageInvoice": {
-            "description": "A message with an invoice from a bot",
+            "description": "A message with an invoice from a bot. Use getInternalLink with internalLinkTypeBotStart to share the invoice",
             "args": {
                 "title": {
                     "description": "Product title",
@@ -8392,7 +8539,7 @@
                     "type": "int53"
                 },
                 "start_parameter": {
-                    "description": "Unique invoice bot start_parameter. To share an invoice use the URL https://t.me/{bot_username}?start={start_parameter}",
+                    "description": "Unique invoice bot start_parameter to be passed to getInternalLink",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -8920,7 +9067,13 @@
         },
         "messageBotWriteAccessAllowed": {
             "description": "The user allowed the bot to send messages",
-            "args": {},
+            "args": {
+                "web_app": {
+                    "description": "Information about the Web App, which requested the access; may be null if none or the Web App was opened from the attachment menu",
+                    "is_optional": true,
+                    "type": "webApp"
+                }
+            },
             "type": "MessageContent"
         },
         "messageWebAppDataSent": {
@@ -9197,6 +9350,11 @@
                     "description": "Message scheduling state; pass null to send message immediately. Messages sent to a secret chat, live location messages and self-destructing messages can't be scheduled",
                     "is_optional": true,
                     "type": "MessageSchedulingState"
+                },
+                "sending_id": {
+                    "description": "Non-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "MessageSendOptions"
@@ -10196,10 +10354,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "icon_custom_emoji_id": {
-                    "description": "Unique identifier of the custom emoji, which represents icon of the category",
+                "icon": {
+                    "description": "Custom emoji sticker, which represents icon of the category",
                     "is_optional": false,
-                    "type": "int64"
+                    "type": "sticker"
                 },
                 "emojis": {
                     "description": "List of emojis in the category",
@@ -10953,6 +11111,11 @@
                     "description": "Identifier of the chat member, applied the reaction",
                     "is_optional": false,
                     "type": "MessageSender"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the reaction was added",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "AddedReaction"
@@ -11233,7 +11396,7 @@
                     "type": "Bool"
                 },
                 "request_write_access": {
-                    "description": "True, if the user needs to be requested to give the permission to the bot to send them messages",
+                    "description": "True, if the user must be asked for the permission to the bot to send them messages",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -12152,6 +12315,44 @@
             },
             "type": "InlineQueryResult"
         },
+        "inlineQueryResultsButtonTypeStartBot": {
+            "description": "Describes the button that opens a private chat with the bot and sends a start message to the bot with the given parameter",
+            "args": {
+                "parameter": {
+                    "description": "The parameter for the bot start message",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InlineQueryResultsButtonType"
+        },
+        "inlineQueryResultsButtonTypeWebApp": {
+            "description": "Describes the button that opens a Web App by calling getWebAppUrl",
+            "args": {
+                "url": {
+                    "description": "An HTTP URL to pass to getWebAppUrl",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InlineQueryResultsButtonType"
+        },
+        "inlineQueryResultsButton": {
+            "description": "Represents a button to be shown above inline query results",
+            "args": {
+                "text": {
+                    "description": "The text of the button",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Type of the button",
+                    "is_optional": false,
+                    "type": "InlineQueryResultsButtonType"
+                }
+            },
+            "type": "InlineQueryResultsButton"
+        },
         "inlineQueryResults": {
             "description": "Represents the results of the inline query. Use sendInlineQueryResultMessage to send the result of the query",
             "args": {
@@ -12160,23 +12361,18 @@
                     "is_optional": false,
                     "type": "int64"
                 },
-                "next_offset": {
-                    "description": "The offset for the next request. If empty, there are no more results",
-                    "is_optional": false,
-                    "type": "string"
+                "button": {
+                    "description": "Button to be shown above inline query results; may be null",
+                    "is_optional": true,
+                    "type": "inlineQueryResultsButton"
                 },
                 "results": {
                     "description": "Results of the query",
                     "is_optional": false,
                     "type": "vector<InlineQueryResult>"
                 },
-                "switch_pm_text": {
-                    "description": "If non-empty, this text must be shown on the button, which opens a private chat with the bot and sends the bot a start message with the switch_pm_parameter",
-                    "is_optional": true,
-                    "type": "string"
-                },
-                "switch_pm_parameter": {
-                    "description": "Parameter for the bot start message",
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, there are no more results",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -15252,6 +15448,22 @@
             },
             "type": "InternalLinkType"
         },
+        "internalLinkTypeBotAddToChannel": {
+            "description": "The link is a link to a Telegram bot, which is supposed to be added to a channel chat as an administrator. Call searchPublicChat with the given bot username and check that the user is a bot, ask the current user to select a channel chat to add the bot to as an administrator. Then, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights",
+            "args": {
+                "bot_username": {
+                    "description": "Username of the bot",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "administrator_rights": {
+                    "description": "Expected administrator rights for the bot",
+                    "is_optional": false,
+                    "type": "chatAdministratorRights"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeBotStart": {
             "description": "The link is a link to a chat with a Telegram bot. Call searchPublicChat with the given bot username, check that the user is a bot, show START button in the chat with the bot, and then call sendBotStartMessage with the given start parameter after the button is pressed",
             "args": {
@@ -15289,22 +15501,6 @@
                 "administrator_rights": {
                     "description": "Expected administrator rights for the bot; may be null",
                     "is_optional": true,
-                    "type": "chatAdministratorRights"
-                }
-            },
-            "type": "InternalLinkType"
-        },
-        "internalLinkTypeBotAddToChannel": {
-            "description": "The link is a link to a Telegram bot, which is supposed to be added to a channel chat as an administrator. Call searchPublicChat with the given bot username and check that the user is a bot, ask the current user to select a channel chat to add the bot to as an administrator. Then, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights and combine received rights with the requested administrator rights. Then, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed rights",
-            "args": {
-                "bot_username": {
-                    "description": "Username of the bot",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "administrator_rights": {
-                    "description": "Expected administrator rights for the bot",
-                    "is_optional": false,
                     "type": "chatAdministratorRights"
                 }
             },
@@ -15475,7 +15671,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePremiumFeatures": {
-            "description": "The link is a link to the Premium features screen of the applcation from which the user can subscribe to Telegram Premium. Call getPremiumFeatures with the given referrer to process the link",
+            "description": "The link is a link to the Premium features screen of the application from which the user can subscribe to Telegram Premium. Call getPremiumFeatures with the given referrer to process the link",
             "args": {
                 "referrer": {
                     "description": "Referrer specified in the link",
@@ -15624,6 +15820,27 @@
                     "description": "True, if the video chat is expected to be a live stream in a channel or a broadcast group",
                     "is_optional": false,
                     "type": "Bool"
+                }
+            },
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeWebApp": {
+            "description": "The link is a link to a Web App. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web_app_short_name. Process received foundWebApp by showing a confirmation dialog if needed, then calling getWebAppLinkUrl and opening the returned URL",
+            "args": {
+                "bot_username": {
+                    "description": "Username of the bot that owns the Web App",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "web_app_short_name": {
+                    "description": "Short name of the Web App",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "start_parameter": {
+                    "description": "Start parameter to be passed to getWebAppLinkUrl",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "InternalLinkType"
@@ -16493,24 +16710,24 @@
             "description": "A sticker to be added to a sticker set",
             "args": {
                 "sticker": {
-                    "description": "File with the sticker; must fit in a 512x512 square. For WEBP stickers and masks the file must be in PNG format, which will be converted to WEBP server-side. Otherwise, the file must be local or uploaded within a week. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements",
+                    "description": "File with the sticker; must fit in a 512x512 square. For WEBP stickers the file must be in WEBP or PNG format, which will be converted to WEBP server-side. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements",
                     "is_optional": false,
                     "type": "InputFile"
                 },
                 "emojis": {
-                    "description": "Emojis corresponding to the sticker",
+                    "description": "String with 1-20 emoji corresponding to the sticker",
                     "is_optional": false,
                     "type": "string"
-                },
-                "format": {
-                    "description": "Sticker format",
-                    "is_optional": false,
-                    "type": "StickerFormat"
                 },
                 "mask_position": {
                     "description": "Position where the mask is placed; pass null if not specified",
                     "is_optional": true,
                     "type": "maskPosition"
+                },
+                "keywords": {
+                    "description": "List of up to 20 keywords with total length up to 64 characters, which can be used to find the sticker",
+                    "is_optional": false,
+                    "type": "vector<string>"
                 }
             },
             "type": "InputSticker"
@@ -18670,6 +18887,22 @@
             },
             "type": "Update"
         },
+        "updateAddChatMembersPrivacyForbidden": {
+            "description": "Adding users to a chat has failed because of their privacy settings. An invite link can be shared with the users if appropriate",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "user_ids": {
+                    "description": "Identifiers of users, which weren't added because of their privacy settings",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "Update"
+        },
         "updateAutosaveSettings": {
             "description": "Autosave settings for some type of chats were updated",
             "args": {
@@ -19703,7 +19936,7 @@
                     "type": "int53"
                 }
             },
-            "type": "Users"
+            "type": "MessageViewers"
         },
         "getFile": {
             "description": "Returns information about a file; this is an offline request",
@@ -20511,7 +20744,7 @@
                     "type": "formattedText"
                 },
                 "to_language_code": {
-                    "description": "ISO language code of the language to which the message is translated. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh-CN\", \"zh\", \"zh-Hans\", \"zh-TW\", \"zh-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"",
+                    "description": "Language code of the language to which the message is translated. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh-CN\", \"zh\", \"zh-Hans\", \"zh-TW\", \"zh-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -20532,7 +20765,7 @@
                     "type": "int53"
                 },
                 "to_language_code": {
-                    "description": "ISO language code of the language to which the message is translated. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh-CN\", \"zh\", \"zh-Hans\", \"zh-TW\", \"zh-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"",
+                    "description": "Language code of the language to which the message is translated. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh-CN\", \"zh\", \"zh-Hans\", \"zh-TW\", \"zh-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -21920,6 +22153,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "button": {
+                    "description": "Button to be shown above inline query results; pass null if none",
+                    "is_optional": true,
+                    "type": "inlineQueryResultsButton"
+                },
                 "results": {
                     "description": "The results of the query",
                     "is_optional": false,
@@ -21934,22 +22172,69 @@
                     "description": "Offset for the next inline query; pass an empty string if there are no more results",
                     "is_optional": false,
                     "type": "string"
-                },
-                "switch_pm_text": {
-                    "description": "If non-empty, this text must be shown on the button that opens a private chat with the bot and sends a start message to the bot with the parameter switch_pm_parameter",
-                    "is_optional": true,
-                    "type": "string"
-                },
-                "switch_pm_parameter": {
-                    "description": "The parameter for the bot start message",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "Ok"
         },
+        "searchWebApp": {
+            "description": "Returns information about a Web App by its short name. Returns a 404 error if the Web App is not found",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "web_app_short_name": {
+                    "description": "Short name of the Web App",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "FoundWebApp"
+        },
+        "getWebAppLinkUrl": {
+            "description": "Returns an HTTPS URL of a Web App to open after a link of the type internalLinkTypeWebApp is clicked",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat in which the link was clicked; pass 0 if none",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "web_app_short_name": {
+                    "description": "Short name of the Web App",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "start_parameter": {
+                    "description": "Start parameter from internalLinkTypeWebApp",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "theme": {
+                    "description": "Preferred Web App theme; pass null to use the default theme",
+                    "is_optional": true,
+                    "type": "themeParameters"
+                },
+                "application_name": {
+                    "description": "Short name of the application; 0-64 English letters, digits, and underscores",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "allow_write_access": {
+                    "description": "Pass true if the current user allowed the bot to send them messages",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "HttpUrl"
+        },
         "getWebAppUrl": {
-            "description": "Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp button is pressed",
+            "description": "Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button is pressed",
             "args": {
                 "bot_user_id": {
                     "description": "Identifier of the target bot",
@@ -21957,7 +22242,7 @@
                     "type": "int53"
                 },
                 "url": {
-                    "description": "The URL from the keyboardButtonTypeWebApp button",
+                    "description": "The URL from the keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -22323,19 +22608,19 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, a message thread identifier in which the messages are being viewed",
-                    "is_optional": false,
-                    "type": "int53"
-                },
                 "message_ids": {
                     "description": "The identifiers of the messages being viewed",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
-                "force_read": {
-                    "description": "Pass true to mark as read the specified messages even the chat is closed",
+                "source": {
+                    "description": "Source of the message view",
                     "is_optional": false,
+                    "type": "MessageSource"
+                },
+                "force_read": {
+                    "description": "Pass true to mark as read the specified messages even the chat is closed; pass null to guess the source based on chat open state",
+                    "is_optional": true,
                     "type": "Bool"
                 }
             },
@@ -22372,6 +22657,22 @@
                 }
             },
             "type": "Sticker"
+        },
+        "getInternalLink": {
+            "description": "Returns an HTTPS or a tg: link with the given type. Can be called before authorization",
+            "args": {
+                "type": {
+                    "description": "Expected type of the link",
+                    "is_optional": false,
+                    "type": "InternalLinkType"
+                },
+                "is_http": {
+                    "description": "Pass true to create an HTTPS link (only available for some link types); pass false to create a tg: link",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "HttpUrl"
         },
         "getInternalLinkType": {
             "description": "Returns information about the type of an internal link. Returns a 404 error if the link is not internal. Can be called before authorization",
@@ -22528,8 +22829,8 @@
             "description": "Creates a new basic group and sends a corresponding messageBasicGroupChatCreate. Returns the newly created chat",
             "args": {
                 "user_ids": {
-                    "description": "Identifiers of users to be added to the basic group",
-                    "is_optional": false,
+                    "description": "Identifiers of users to be added to the basic group; may be empty to create a basic group without other members",
+                    "is_optional": true,
                     "type": "vector<int53>"
                 },
                 "title": {
@@ -25719,6 +26020,60 @@
             },
             "type": "Ok"
         },
+        "setBotInfoDescription": {
+            "description": "Sets the text shown in the chat with the bot if the chat is empty; bots only",
+            "args": {
+                "language_code": {
+                    "description": "A two-letter ISO 639-1 language code. If empty, the description will be shown to all users, for which language there are no dedicated description",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "description": {
+                    "description": "New bot's description on the specified language",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "getBotInfoDescription": {
+            "description": "Returns the text shown in the chat with the bot if the chat is empty in the given language; bots only",
+            "args": {
+                "language_code": {
+                    "description": "A two-letter ISO 639-1 language code or an empty string",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Text"
+        },
+        "setBotInfoShortDescription": {
+            "description": "Sets the text shown on the bot's profile page and sent together with the link when users share the bot; bots only",
+            "args": {
+                "language_code": {
+                    "description": "A two-letter ISO 639-1 language code. If empty, the short description will be shown to all users, for which language there are no dedicated description",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "short_description": {
+                    "description": "New bot's short description on the specified language",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "getBotInfoShortDescription": {
+            "description": "Returns the text shown on the bot's profile page and sent together with the link when users share the bot in the given language; bots only",
+            "args": {
+                "language_code": {
+                    "description": "A two-letter ISO 639-1 language code or an empty string",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Text"
+        },
         "getActiveSessions": {
             "description": "Returns all active sessions of the current user",
             "args": {},
@@ -26360,7 +26715,7 @@
             "description": "Adds a custom server language pack to the list of installed language packs in current localization target. Can be called before authorization",
             "args": {
                 "language_pack_id": {
-                    "description": "Identifier of a language pack to be added; may be different from a name that is used in an \"https://t.me/setlanguage/\" link",
+                    "description": "Identifier of a language pack to be added",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -27141,10 +27496,15 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "sticker": {
-                    "description": "Sticker file to upload",
+                "sticker_format": {
+                    "description": "Sticker format",
                     "is_optional": false,
-                    "type": "inputSticker"
+                    "type": "StickerFormat"
+                },
+                "sticker": {
+                    "description": "File file to upload; must fit in a 512x512 square. For WEBP stickers the file must be in WEBP or PNG format, which will be converted to WEBP server-side. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements",
+                    "is_optional": false,
+                    "type": "InputFile"
                 }
             },
             "type": "File"
@@ -27189,10 +27549,20 @@
                     "is_optional": false,
                     "type": "string"
                 },
+                "sticker_format": {
+                    "description": "Format of the stickers in the set",
+                    "is_optional": false,
+                    "type": "StickerFormat"
+                },
                 "sticker_type": {
                     "description": "Type of the stickers in the set",
                     "is_optional": false,
                     "type": "StickerType"
+                },
+                "needs_repainting": {
+                    "description": "Pass true if stickers in the sticker set must be repainted; for custom emoji sticker sets only",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "stickers": {
                     "description": "List of stickers to be added to the set; must be non-empty. All stickers must have the same format. For TGS stickers, uploadStickerFile must be used before the sticker is shown",
@@ -27208,7 +27578,7 @@
             "type": "StickerSet"
         },
         "addStickerToSet": {
-            "description": "Adds a new sticker to a set; for bots only. Returns the sticker set",
+            "description": "Adds a new sticker to a set; for bots only",
             "args": {
                 "user_id": {
                     "description": "Sticker set owner",
@@ -27226,10 +27596,10 @@
                     "type": "inputSticker"
                 }
             },
-            "type": "StickerSet"
+            "type": "Ok"
         },
         "setStickerSetThumbnail": {
-            "description": "Sets a sticker set thumbnail; for bots only. Returns the sticker set",
+            "description": "Sets a sticker set thumbnail; for bots only",
             "args": {
                 "user_id": {
                     "description": "Sticker set owner",
@@ -27247,7 +27617,50 @@
                     "type": "InputFile"
                 }
             },
-            "type": "StickerSet"
+            "type": "Ok"
+        },
+        "setCustomEmojiStickerSetThumbnail": {
+            "description": "Sets a custom emoji sticker set thumbnail; for bots only",
+            "args": {
+                "name": {
+                    "description": "Sticker set name",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "custom_emoji_id": {
+                    "description": "Identifier of the custom emoji from the sticker set, which will be set as sticker set thumbnail; pass 0 to remove the sticker set thumbnail",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Ok"
+        },
+        "setStickerSetTitle": {
+            "description": "Sets a sticker set title; for bots only",
+            "args": {
+                "name": {
+                    "description": "Sticker set name",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "title": {
+                    "description": "New sticker set title",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteStickerSet": {
+            "description": "Deleted a sticker set; for bots only",
+            "args": {
+                "name": {
+                    "description": "Sticker set name",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
         },
         "setStickerPositionInSet": {
             "description": "Changes the position of a sticker in the set to which it belongs; for bots only. The sticker set must have been created by the bot",
@@ -27272,6 +27685,54 @@
                     "description": "Sticker",
                     "is_optional": false,
                     "type": "InputFile"
+                }
+            },
+            "type": "Ok"
+        },
+        "setStickerEmojis": {
+            "description": "Changes the list of emoji corresponding to a sticker; for bots only. The sticker must belong to a regular or custom emoji sticker set created by the bot",
+            "args": {
+                "sticker": {
+                    "description": "Sticker",
+                    "is_optional": false,
+                    "type": "InputFile"
+                },
+                "emojis": {
+                    "description": "New string with 1-20 emoji corresponding to the sticker",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "setStickerKeywords": {
+            "description": "Changes the list of keywords of a sticker; for bots only. The sticker must belong to a regular or custom emoji sticker set created by the bot",
+            "args": {
+                "sticker": {
+                    "description": "Sticker",
+                    "is_optional": false,
+                    "type": "InputFile"
+                },
+                "keywords": {
+                    "description": "List of up to 20 keywords with total length up to 64 characters, which can be used to find the sticker",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "Ok"
+        },
+        "setStickerMaskPosition": {
+            "description": "Changes the mask position of a mask sticker; for bots only. The sticker must belong to a mask sticker set created by the bot",
+            "args": {
+                "sticker": {
+                    "description": "Sticker",
+                    "is_optional": false,
+                    "type": "InputFile"
+                },
+                "mask_position": {
+                    "description": "Position where the mask is placed; pass null to remove mask position",
+                    "is_optional": true,
+                    "type": "maskPosition"
                 }
             },
             "type": "Ok"
@@ -27504,11 +27965,6 @@
             },
             "type": "PhoneNumberInfo"
         },
-        "getApplicationDownloadLink": {
-            "description": "Returns the link for downloading official Telegram application to be used when the current user invites friends to Telegram",
-            "args": {},
-            "type": "HttpUrl"
-        },
         "getDeepLinkInfo": {
             "description": "Returns information about a tg:// deep link. Use \"tg://need_update_for_some_feature\" or \"tg:some_unsupported_feature\" for testing. Returns a 404 error for unknown links. Can be called before authorization",
             "args": {
@@ -27524,6 +27980,17 @@
             "description": "Returns application config, provided by the server. Can be called before authorization",
             "args": {},
             "type": "JsonValue"
+        },
+        "addApplicationChangelog": {
+            "description": "Adds server-provided application changelog as messages to the chat 777000 (Telegram); for official applications only",
+            "args": {
+                "previous_application_version": {
+                    "description": "The previous application version",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
         },
         "saveApplicationLogEvent": {
             "description": "Saves application log event on the server. Can be called before authorization",
@@ -27545,6 +28012,11 @@
                 }
             },
             "type": "Ok"
+        },
+        "getApplicationDownloadLink": {
+            "description": "Returns the link for downloading official Telegram application to be used when the current user invites friends to Telegram",
+            "args": {},
+            "type": "HttpUrl"
         },
         "addProxy": {
             "description": "Adds a proxy server for network requests. Can be called before authorization",

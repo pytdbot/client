@@ -3411,6 +3411,44 @@ class Updates:
 
         return decorator
 
+    def on_updateAddChatMembersPrivacyForbidden(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Adding users to a chat has failed because of their privacy settings\. An invite link can be shared with the users if appropriate
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter.
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append).
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateAddChatMembersPrivacyForbidden", func, filters, position
+                    )
+                else:
+                    logger.warn(
+                        'Function "{}" is not a coroutine function'.format(func)
+                    )
+            else:
+                func._handler = Handler(
+                    func, "updateAddChatMembersPrivacyForbidden", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateAutosaveSettings(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
