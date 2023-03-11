@@ -288,19 +288,17 @@ class Update:
             if self.update["message"]["content"]["@type"] == "messageDocument":
                 return self.update["message"]["content"]["document"]["document"]["id"]
             elif self.update["message"]["content"]["@type"] == "messageVideo":
-                return self.update["message"]["content"]["video"]["video"][
-                    "id"
-                ]
+                return self.update["message"]["content"]["video"]["video"]["id"]
             elif self.update["message"]["content"]["@type"] == "messageAnimation":
                 return self.update["message"]["content"]["animation"]["animation"]["id"]
             elif self.update["message"]["content"]["@type"] == "messageAudio":
-                return self.update["message"]["content"]["audio"]["audio"][
-                    "id"
-                ]
+                return self.update["message"]["content"]["audio"]["audio"]["id"]
             elif self.update["message"]["content"]["@type"] == "messageVoiceNote":
                 return self.update["message"]["content"]["voice_note"]["voice"]["id"]
             elif self.update["message"]["content"]["@type"] == "messagePhoto":
-                return self.update["message"]["content"]["photo"]["sizes"][-1]["photo"]["id"]
+                return self.update["message"]["content"]["photo"]["sizes"][-1]["photo"][
+                    "id"
+                ]
             elif self.update["message"]["content"]["@type"] == "messageSticker":
                 return self.update["message"]["content"]["sticker"]["sticker"]["id"]
             elif self.update["message"]["content"]["@type"] == "messageVideoNote":
@@ -559,6 +557,22 @@ class Update:
             return ChatActions(self.client, self.chat_id, action, message_thread_id)
         else:
             raise ValueError("Unknown chat_id")
+
+    async def download(self, file_id: int = None) -> Result:
+        """Download the current received media
+
+        Args:
+            file_id (``int``, *optional*):
+                File identifier to download. Defaults to None (:meth:`~pytdbot.types.Update.local_file_id`).
+
+        Returns:
+            :class:`~pytdbot.types.Result`
+        """
+        file_id = file_id or self.local_file_id
+        if isinstance(file_id, int):
+            return await self.client.downloadFile(
+                file_id, priority=1, offset=None, limit=None, synchronous=True
+            )
 
     async def forward(
         self,
