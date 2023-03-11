@@ -272,6 +272,41 @@ class Update:
             return self.update["query"]
 
     @property
+    def local_file_id(self) -> int:
+        """Local file id.
+
+        Returns:
+            :py:class:`int`
+        """
+        if self.type not in [
+            "updateNewMessage",
+            "updateMessageSendSucceeded",
+            "updateMessageSendFailed",
+        ]:
+            return
+        if "content" in self.update["message"]:
+            if self.update["message"]["content"]["@type"] == "messageDocument":
+                return self.update["message"]["content"]["document"]["document"]["id"]
+            elif self.update["message"]["content"]["@type"] == "messageVideo":
+                return self.update["message"]["content"]["video"]["video"][
+                    "id"
+                ]
+            elif self.update["message"]["content"]["@type"] == "messageAnimation":
+                return self.update["message"]["content"]["animation"]["animation"]["id"]
+            elif self.update["message"]["content"]["@type"] == "messageAudio":
+                return self.update["message"]["content"]["audio"]["audio"][
+                    "id"
+                ]
+            elif self.update["message"]["content"]["@type"] == "messageVoiceNote":
+                return self.update["message"]["content"]["voice_note"]["voice"]["id"]
+            elif self.update["message"]["content"]["@type"] == "messagePhoto":
+                return self.update["message"]["content"]["photo"]["sizes"][-1]["photo"]["id"]
+            elif self.update["message"]["content"]["@type"] == "messageSticker":
+                return self.update["message"]["content"]["sticker"]["sticker"]["id"]
+            elif self.update["message"]["content"]["@type"] == "messageVideoNote":
+                return self.update["message"]["content"]["video_note"]["video"]["id"]
+
+    @property
     def remote_file_id(self) -> str:
         """Remote file id.
 
