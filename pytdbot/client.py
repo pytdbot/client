@@ -591,9 +591,9 @@ class Client(Decorators, Methods):
                 result.set_result(update)
             elif update["@type"] == "error" and "option" in update["@extra"]:
                 logger.error(
-                    "Cannot set option {} with value {}".format(
+                    "{}: {}".format(
                         update["@extra"]["option"],
-                        str(update["@extra"]["value"]),
+                        update["message"],
                     )
                 )
         else:
