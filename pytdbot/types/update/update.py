@@ -95,11 +95,12 @@ class Update:
         return dumps(self.update, indent=4)
 
     @property
-    def chat_id(self) -> int:
+    def chat_id(self) -> Union[int, None]:
         """The chat id of the update.
 
         Returns:
             :py:class:`int`
+            ``None``
         """
         if self.type in [
             "updateNewMessage",
@@ -111,11 +112,12 @@ class Update:
             return self.update["chat_id"]
 
     @property
-    def from_id(self) -> int:
+    def from_id(self) -> Union[int, None]:
         """The user id of the sender of the update.
 
         Returns:
             :py:class:`int`
+            ``None``
         """
         if self.type in [
             "updateNewMessage",
@@ -134,11 +136,12 @@ class Update:
             return self.update["actor_user_id"]
 
     @property
-    def message_id(self) -> int:
+    def message_id(self) -> Union[int, None]:
         """The message id of the received update.
 
         Returns:
             :py:class:`int`
+            ``None``
         """
         if self.type in [
             "updateNewMessage",
@@ -152,8 +155,13 @@ class Update:
             return self.update["inline_message_id"]
 
     @property
-    def reply_to_message_id(self) -> int:
-        """The message id of the replied message."""
+    def reply_to_message_id(self) -> Union[int, None]:
+        """The message id of the replied message.
+
+        Returns:
+            :py:class:`int`
+            ``None``
+        """
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -162,11 +170,12 @@ class Update:
             return self.update["message"]["reply_to_message_id"]
 
     @property
-    def content_type(self) -> str:
+    def content_type(self) -> Union[str, None]:
         """The content type of the received message.
 
         Returns:
             :py:class:`str`
+            ``None``
         """
         if self.type in [
             "updateNewMessage",
@@ -178,11 +187,12 @@ class Update:
             return self.update["new_content"]["@type"]
 
     @property
-    def sender_type(self) -> str:
+    def sender_type(self) -> Union[str, None]:
         """The message sender type of received message.
 
         Returns:
             :py:class:`str`
+            ``None``
         """
         if self.type in [
             "updateNewMessage",
@@ -207,9 +217,16 @@ class Update:
             if "text" in self.update["new_content"]:
                 return self.update["new_content"]["text"]["text"]
 
+        return ""
+
     @property
-    def entities(self) -> list:
-        """The entities of the message."""
+    def entities(self) -> Union[list, None]:
+        """The entities of the message.
+
+        Returns:
+            :py:class:`list`
+            ``None``
+        """
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -226,11 +243,12 @@ class Update:
                 return self.update["new_content"]["caption"]["entities"]
 
     @property
-    def caption(self) -> str:
+    def caption(self) -> Union[str, None]:
         """The caption of the received media.
 
         Returns:
             :py:class:`str`
+            ``None``
         """
         if self.type in [
             "updateNewMessage",
@@ -244,11 +262,12 @@ class Update:
                 return self.update["new_content"]["caption"]["text"]
 
     @property
-    def data(self) -> str:
+    def data(self) -> Union[str, None]:
         """The callback data.
 
         Returns:
             :py:class:`str`: The callback data.
+            ``None``
         """
         if "data" in self._store:
             return self._store["data"]
@@ -260,16 +279,19 @@ class Update:
                 decoded_data = b64decode(self.update["payload"]["data"]).decode("utf-8")
                 self._store["data"] = decoded_data
                 return decoded_data
+        return ""
 
     @property
-    def query(self) -> str:
+    def query(self) -> Union[str, None]:
         """The query of the inline query or the chosen inline result.
 
         Returns:
             :py:class:`str`
+            ``None``
         """
         if self.type in ["updateNewInlineQuery", "updateNewChosenInlineResult"]:
             return self.update["query"]
+        return ""
 
     @property
     def local_file_id(self) -> int:
@@ -360,6 +382,7 @@ class Update:
         """
         if isinstance(self.from_id, int):
             return self.from_id > 0
+        return False
 
     @property
     def is_private(self) -> bool:
@@ -370,6 +393,7 @@ class Update:
         """
         if isinstance(self.chat_id, int):
             return self.chat_id > 0
+        return False
 
     @property
     def is_service(self) -> bool:
@@ -389,6 +413,7 @@ class Update:
         """
         if isinstance(self.from_id, int):
             return self.client.options["my_id"] == self.from_id
+        return False
 
     async def mention(self, parse_mode: str = "markdown", version: int = 2) -> str:
         """Get the text_mention of the message sender.
