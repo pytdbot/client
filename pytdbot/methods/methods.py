@@ -30,6 +30,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -67,6 +68,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
@@ -85,6 +89,19 @@ class Methods(TDLibFunctions):
                 _text = {"@type": "formattedText", "text": text, "entities": []}
         else:
             _text = {"@type": "formattedText", "text": text, "entities": entities}
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
+
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
@@ -128,6 +145,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -177,6 +195,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
@@ -206,6 +227,18 @@ class Methods(TDLibFunctions):
                     "text": caption,
                     "entities": [],
                 }
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
 
         data = {
             "@type": "sendMessage",
@@ -266,6 +299,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -312,6 +346,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
@@ -342,6 +379,18 @@ class Methods(TDLibFunctions):
                     "text": caption,
                     "entities": [],
                 }
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
 
         data = {
             "@type": "sendMessage",
@@ -401,6 +450,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -441,6 +491,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
@@ -470,6 +523,18 @@ class Methods(TDLibFunctions):
                     "text": caption,
                     "entities": [],
                 }
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
 
         data = {
             "@type": "sendMessage",
@@ -528,6 +593,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -577,6 +643,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
@@ -606,6 +675,18 @@ class Methods(TDLibFunctions):
                     "text": caption,
                     "entities": [],
                 }
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
 
         data = {
             "@type": "sendMessage",
@@ -669,6 +750,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -724,6 +806,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
@@ -753,6 +838,18 @@ class Methods(TDLibFunctions):
                     "text": caption,
                     "entities": [],
                 }
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
 
         data = {
             "@type": "sendMessage",
@@ -811,6 +908,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -845,6 +943,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
@@ -853,6 +954,18 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
 
         """
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
 
         data = {
             "@type": "sendMessage",
@@ -908,6 +1021,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -948,6 +1062,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
@@ -977,6 +1094,18 @@ class Methods(TDLibFunctions):
                     "text": caption,
                     "entities": [],
                 }
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
 
         data = {
             "@type": "sendMessage",
@@ -1031,6 +1160,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -1068,6 +1198,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup.
 
@@ -1075,6 +1208,18 @@ class Methods(TDLibFunctions):
         Returns:
             :class:`~pytdbot.types.Result`
         """
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
 
         data = {
             "@type": "sendMessage",
@@ -1132,6 +1277,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
     ) -> Result:
         """Copy message to chat
 
@@ -1172,6 +1318,9 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply.
 
+            load_replied_message (``bool``, *optional*):
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+
 
         Returns:
             :class:`~pytdbot.types.Result`
@@ -1197,6 +1346,18 @@ class Methods(TDLibFunctions):
                     "text": new_caption,
                     "entities": [],
                 }
+
+        if load_replied_message == None and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message == True
+            and isinstance(reply_to_message_id, int)
+            and reply_to_message_id > 0
+        ):
+            # Because TDLib will ignore `reply_to_message_id`
+            # if the message isn't loaded in memory
+            await self.getMessage(chat_id, reply_to_message_id)
 
         data = {
             "@type": "sendMessage",
