@@ -272,7 +272,7 @@ class Update:
             return self.update["query"]
 
     @property
-    def file_id(self) -> str:
+    def remote_file_id(self) -> str:
         """Remote file id.
 
         Returns:
