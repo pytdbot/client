@@ -388,9 +388,11 @@ class Client(Decorators, Methods):
                 if not load_chat.is_error:
                     logger.debug("Chat {} is loaded".format(chat_id))
 
-                    message_id = result.request.get(
-                        "reply_to_message_id", 0
-                    ) or result.request.get("message_id", 0)
+                    message_id = 0
+                    if "reply_to_message_id" in result.request:
+                        message_id = result.request["reply_to_message_id"]
+                    elif "message_id" in result.request:
+                        message_id = result.request["message_id"]
 
                     # If there is a message_id then
                     # we need to load it to avoid MESSAGE_NOT_FOUND.
@@ -586,7 +588,7 @@ class Client(Decorators, Methods):
                 logger.root.level >= DEBUG
             ):  # dumping all results may create performance issues.
                 logger.debug("Recieved: {}".format(dumps(update, indent=4)))
-            if update["@extra"].get("request_id", "") in self._results:
+            if update["@extra"]["request_id"] in self._results:
                 result: Result = self._results.pop(update["@extra"]["request_id"])
                 result.set_result(update)
             elif update["@type"] == "error" and "option" in update["@extra"]:
@@ -760,7 +762,7 @@ class Client(Decorators, Methods):
                     "@type": "setOption",
                     "name": k,
                     "value": data,
-                    "@extra": {"option": k, "value": v},
+                    "@extra": {"option": k, "value": v, "request_id": ""},
                 }
             )
             logger.debug("Option {} sent with value {}".format(k, str(v)))
