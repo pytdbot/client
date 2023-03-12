@@ -31,35 +31,35 @@ async def echo(c: Client, message: Update):
 
     elif message.content_type == "messageAnimation":
         await message.reply_animation(
-            message.file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id, caption=message.caption, caption_entities=message.entities
         )
 
     elif message.content_type == "messageAudio":
         await message.reply_audio(
-            message.file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id, caption=message.caption, caption_entities=message.entities
         )
 
     elif message.content_type == "messageDocument":
         await message.reply_document(
-            message.file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id, caption=message.caption, caption_entities=message.entities
         )
 
     elif message.content_type == "messagePhoto":
         await message.reply_photo(
-            message.file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id, caption=message.caption, caption_entities=message.entities
         )
 
     elif message.content_type == "messageSticker":
-        await message.reply_sticker(message.file_id)
+        await message.reply_sticker(message.remote_file_id)
 
     elif message.content_type == "messageVideo":
         await message.reply_video(
-            message.file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id, caption=message.caption, caption_entities=message.entities
         )
 
     elif message.content_type == "messageVoiceNote":
         await message.reply_voice(
-            message.file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id, caption=message.caption, caption_entities=message.entities
         )
     else:
         await message.reply_text("Oops! i don't know how to handle this message.")
