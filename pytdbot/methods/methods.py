@@ -593,7 +593,7 @@ class Methods(TDLibFunctions):
         added_sticker_file_ids: list = None,
         width: int = None,
         height: int = None,
-        ttl: int = None,
+        self_destruct_time: int = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         has_spoiler: bool = False,
@@ -634,8 +634,8 @@ class Methods(TDLibFunctions):
             height (``int``, *optional*):
                 Photo height.
 
-            ttl (``int``, *optional*):
-                Photo TTL (Time To Live), in seconds (0-60). A non-zero TTL can be specified only in private chats.
+            self_destruct_time (``int``, *optional*):
+                Photo self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats.
 
             disable_notification (``bool``, *optional*):
                 If True, disable notification for the message. Defaults to ``False``.
@@ -713,7 +713,7 @@ class Methods(TDLibFunctions):
                 "width": width,
                 "height": height,
                 "caption": _caption,
-                "ttl": ttl,
+                "self_destruct_time": self_destruct_time,
                 "has_spoiler": has_spoiler,
             },
         }
@@ -755,7 +755,7 @@ class Methods(TDLibFunctions):
         duration: int = None,
         width: int = None,
         height: int = None,
-        ttl: int = None,
+        self_destruct_time: int = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         has_spoiler: bool = False,
@@ -802,8 +802,8 @@ class Methods(TDLibFunctions):
             height (``int``, *optional*):
                 Video height.
 
-            ttl (``int``, *optional*):
-                Video TTL (Time To Live), in seconds (0-60). A non-zero TTL can be specified only in private chats.
+            self_destruct_time (``int``, *optional*):
+                Video self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats.
 
             disable_notification (``bool``, *optional*):
                 If True, disable notification for the message. Defaults to ``False``.
@@ -883,7 +883,7 @@ class Methods(TDLibFunctions):
                 "width": width,
                 "height": height,
                 "caption": _caption,
-                "ttl": ttl,
+                "self_destruct_time": self_destruct_time,
                 "has_spoiler": has_spoiler,
             },
         }
