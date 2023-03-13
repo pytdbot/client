@@ -143,6 +143,7 @@ class Methods(TDLibFunctions):
         height: int = None,
         disable_notification: bool = False,
         protect_content: bool = False,
+        has_spoiler: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -188,6 +189,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
+
+            has_spoiler (``bool``, *optional*):
+                True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
@@ -257,6 +261,7 @@ class Methods(TDLibFunctions):
                 "width": width,
                 "height": height,
                 "caption": _caption,
+                "has_spoiler": has_spoiler,
             },
         }
 
@@ -591,6 +596,7 @@ class Methods(TDLibFunctions):
         ttl: int = None,
         disable_notification: bool = False,
         protect_content: bool = False,
+        has_spoiler: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -636,6 +642,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
+
+            has_spoiler (``bool``, *optional*):
+                True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
@@ -705,6 +714,7 @@ class Methods(TDLibFunctions):
                 "height": height,
                 "caption": _caption,
                 "ttl": ttl,
+                "has_spoiler": has_spoiler,
             },
         }
 
@@ -748,6 +758,7 @@ class Methods(TDLibFunctions):
         ttl: int = None,
         disable_notification: bool = False,
         protect_content: bool = False,
+        has_spoiler: bool = False,
         message_thread_id: int = 0,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -799,6 +810,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving.
+
+            has_spoiler (``bool``, *optional*):
+                True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent.
@@ -870,6 +884,7 @@ class Methods(TDLibFunctions):
                 "height": height,
                 "caption": _caption,
                 "ttl": ttl,
+                "has_spoiler": has_spoiler,
             },
         }
 
