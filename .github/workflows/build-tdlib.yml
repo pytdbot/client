@@ -7,16 +7,27 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Clone Pytdbot
+        uses: actions/checkout@v3
+
+      - name: Clone TDLib
+        uses: actions/checkout@v3
+        with:
+          repository: tdlib/td
+          path: "td/"
+
+      - name: Install Python 3.9
+        uses: actions/setup-python@v4
         with:
           python-version: "3.9"
 
-      - uses: shivammathur/setup-php@v2
+      - name: Install PHP 7.4
+        uses: shivammathur/setup-php@v2
         with:
           php-version: "7.4"
 
-      - uses: jwlawson/actions-setup-cmake@v1.12
+      - name: Install CMake 3.25
+        uses: jwlawson/actions-setup-cmake@v1.12
         with:
           cmake-version: "3.25.1"
 
@@ -30,15 +41,13 @@ jobs:
           sudo swapon $SWAP_PATH
           free -h
 
-      - name: Install TDLib
+      - name: Install TDLib dependencies
         id: td
         run: |
           sudo apt-get update
-          sudo sudo apt-get install make git zlib1g-dev libssl-dev gperf cmake clang-6.0 libc++-dev libc++abi-dev -y
-          git clone https://github.com/tdlib/td.git
-          cd td
-          rm -rf build
-          mkdir build
+          sudo sudo apt-get install make zlib1g-dev libssl-dev gperf clang-6.0 libc++-dev libc++abi-dev -y
+          rm -rf td/build
+          mkdir td/build
 
       - name: Setup variables
         id: vars
