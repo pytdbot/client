@@ -1,10 +1,17 @@
 # Pytdbot [![Version](https://img.shields.io/pypi/v/Pytdbot?style=flat&logo=pypi)](https://pypi.org/project/Pytdbot) [![TDLib version](https://img.shields.io/badge/TDLib-v1.8.12-blue?logo=telegram)](https://github.com/tdlib/td) [![Downloads](https://static.pepy.tech/personalized-badge/pytdbot?period=month&units=none&left_color=grey&right_color=brightgreen&left_text=Downloads)](https://pepy.tech/project/pytdbot)
 
-Easy, Sample and powerful [TDLib-based](https://github.com/tdlib/td) client.
+Pytdbot (Python TDLib) is an asynchronous [**TDLib**](https://github.com/tdlib/td) wrapper for **Telegram** users/bots written in **Python**.  
+
+### Features
+- Easy, **Fast** and **Powerful**
+- Fully **asynchronous**
+- **Decorator** based update handler
+- Supports **userbots**, **Plugins**, [**Filters**](https://github.com/pytdbot/client/blob/ad33d05d3e48bc8842b3986613ad2d99480a1fa8/pytdbot/filters.py#L23), [**TDLib**](https://github.com/tdlib/td) functions and much more.
+
 
 ### Requirements
 
-- python3.9+
+- Python 3.9+
 - Telegram [API key](https://my.telegram.org/apps)
 - [tdjson](https://github.com/tdlib/td#building)
 - [deepdiff](https://github.com/seperman/deepdiff)
