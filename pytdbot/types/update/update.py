@@ -470,6 +470,15 @@ class Update:
         if isinstance(self.chat_id, int):
             return await self.client.getChat(self.chat_id)
 
+    async def getChatMember(self) -> Result:
+        """Get member info in the current chat."""
+        if isinstance(self.chat_id, int) and isinstance(self.from_id, int):
+            if self.is_user:
+                member_id = {"@type": "messageSenderUser", "user_id": self.from_id}
+            else:
+                member_id = {"@type": "messageSenderChat", "chat_id": self.from_id}
+            return await self.client.getChatMember(self.chat_id, member_id=member_id)
+
     async def getUser(
         self,
     ) -> Result:
