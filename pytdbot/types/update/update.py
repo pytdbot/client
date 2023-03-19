@@ -608,6 +608,38 @@ class Update:
                 file_id, priority=1, offset=None, limit=None, synchronous=True
             )
 
+    async def answerCallbackQuery(
+        self,
+        text: str,
+        show_alert: bool = False,
+        url: str = None,
+        cache_time: int = None,
+    ) -> Result:
+        """Answer an callback query
+
+        Args:
+            text (``str``, *optional*):
+                Text of the answer
+
+            show_alert (``bool``, *optional*):
+                Pass true to show an alert to the user instead of a toast notification. Defaults to ``False``
+
+            url (``str``, *optional*):
+                URL to be opened
+
+            cache_time (``int``, *optional*):
+                Time during which the result of the query can be cached, in seconds
+
+        Returns:
+            :class:`~pytdbot.types.Result`
+        """
+        if self.type != "updateNewCallbackQuery":
+            return
+
+        return await self.client.answerCallbackQuery(
+            self.update["id"], text, show_alert, url, cache_time
+        )
+
     async def forward(
         self,
         chat_id: int,
@@ -714,15 +746,16 @@ class Update:
             :class:`~pytdbot.types.Result`
         """
 
-        if quote is False:
-            reply_to_message_id = 0
-        elif quote is True:
-            reply_to_message_id = self.message_id
-        else:
-            if self.is_private:
+        if not reply_to_message_id:
+            if quote is False:
                 reply_to_message_id = 0
-            else:
+            elif quote is True:
                 reply_to_message_id = self.message_id
+            else:
+                if self.is_private:
+                    reply_to_message_id = 0
+                else:
+                    reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
             return await self.client.sendTextMessage(
@@ -828,15 +861,17 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
-        if quote is False:
-            reply_to_message_id = 0
-        elif quote is True:
-            reply_to_message_id = self.message_id
-        else:
-            if self.is_private:
+
+        if not reply_to_message_id:
+            if quote is False:
                 reply_to_message_id = 0
-            else:
+            elif quote is True:
                 reply_to_message_id = self.message_id
+            else:
+                if self.is_private:
+                    reply_to_message_id = 0
+                else:
+                    reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
             return await self.client.sendAnimation(
@@ -939,15 +974,17 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
-        if quote is False:
-            reply_to_message_id = 0
-        elif quote is True:
-            reply_to_message_id = self.message_id
-        else:
-            if self.is_private:
+
+        if not reply_to_message_id:
+            if quote is False:
                 reply_to_message_id = 0
-            else:
+            elif quote is True:
                 reply_to_message_id = self.message_id
+            else:
+                if self.is_private:
+                    reply_to_message_id = 0
+                else:
+                    reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
             return await self.client.sendAudio(
@@ -1036,15 +1073,17 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
-        if quote is False:
-            reply_to_message_id = 0
-        elif quote is True:
-            reply_to_message_id = self.message_id
-        else:
-            if self.is_private:
+
+        if not reply_to_message_id:
+            if quote is False:
                 reply_to_message_id = 0
-            else:
+            elif quote is True:
                 reply_to_message_id = self.message_id
+            else:
+                if self.is_private:
+                    reply_to_message_id = 0
+                else:
+                    reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
             return await self.client.sendDocument(
@@ -1122,15 +1161,17 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
-        if quote is False:
-            reply_to_message_id = 0
-        elif quote is True:
-            reply_to_message_id = self.message_id
-        else:
-            if self.is_private:
+
+        if not reply_to_message_id:
+            if quote is False:
                 reply_to_message_id = 0
-            else:
+            elif quote is True:
                 reply_to_message_id = self.message_id
+            else:
+                if self.is_private:
+                    reply_to_message_id = 0
+                else:
+                    reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
             return await self.client.sendSticker(
@@ -1230,15 +1271,17 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
-        if quote is False:
-            reply_to_message_id = 0
-        elif quote is True:
-            reply_to_message_id = self.message_id
-        else:
-            if self.is_private:
+
+        if not reply_to_message_id:
+            if quote is False:
                 reply_to_message_id = 0
-            else:
+            elif quote is True:
                 reply_to_message_id = self.message_id
+            else:
+                if self.is_private:
+                    reply_to_message_id = 0
+                else:
+                    reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
             return await self.client.sendVideo(
@@ -1328,15 +1371,17 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
-        if quote is False:
-            reply_to_message_id = 0
-        elif quote is True:
-            reply_to_message_id = self.message_id
-        else:
-            if self.is_private:
+
+        if not reply_to_message_id:
+            if quote is False:
                 reply_to_message_id = 0
-            else:
+            elif quote is True:
                 reply_to_message_id = self.message_id
+            else:
+                if self.is_private:
+                    reply_to_message_id = 0
+                else:
+                    reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
             return await self.client.sendPhoto(
@@ -1426,15 +1471,17 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
-        if quote is False:
-            reply_to_message_id = 0
-        elif quote is True:
-            reply_to_message_id = self.message_id
-        else:
-            if self.is_private:
+
+        if not reply_to_message_id:
+            if quote is False:
                 reply_to_message_id = 0
-            else:
+            elif quote is True:
                 reply_to_message_id = self.message_id
+            else:
+                if self.is_private:
+                    reply_to_message_id = 0
+                else:
+                    reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
             return await self.client.sendVoice(
