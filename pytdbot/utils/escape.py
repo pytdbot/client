@@ -3,20 +3,18 @@ from re import escape as _re_escape, compile as _re_compile
 
 
 def escape_html(text: str, quote: bool = True) -> str:
-    """Escape HTML characters in the given text.
+    """Escape HTML characters in the given text
 
     Args:
         text (``str``):
-            The text to escape.
+            The text to escape
 
         quote (``bool``, *optional*):
-            Whether to escape double quotes. Defaults to ``True``.
+            Whether to escape double quotes. Defaults to ``True``
 
     Returns:
-        :py:class:`str`: The escaped text.
+        :py:class:`str`: The escaped text
     """
-    assert isinstance(text, str), "text must be a string"
-    assert isinstance(quote, bool), "quote must be a boolean"
 
     return _html_escape(text, quote=quote)
 
@@ -26,22 +24,21 @@ special_chars_v2 = _re_compile("([{}])".format(_re_escape(r"\_*[]()~`>#+-=|{}.!"
 
 
 def escape_markdown(text: str, version: int = 2) -> str:
-    """Escape Markdown characters in the given text.
+    """Escape Markdown characters in the given text
 
     Args:
         text (``str``):
-            The text to escape.
+            The text to escape
 
         version (``int``, *optional*):
-            The Markdown version to escape. Defaults to ``2``.
+            The Markdown version to escape. Defaults to ``2``
 
     Returns:
-        :py:class:`str`: The escaped text.
+        :py:class:`str`: The escaped text
 
     Raises:
         :py:class:`ValueError`: If the given markdown version is not supported.
     """
-    assert isinstance(text, str), "text must be a string"
 
     if version == 1:
         chars = special_chars_v1

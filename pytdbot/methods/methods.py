@@ -39,40 +39,40 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             text (``str``):
-                Text to send.
+                Text to send
 
             entities (``list``, *optional*):
-                List of ``MessageEntity`` objects to parse in the text. If you want to send a text with formatting, use ```parse_mode``` instead.
+                List of ``MessageEntity`` objects to parse in the text. If you want to send a text with formatting, use ```parse_mode``` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``.
+                Mode for parsing entities. Defaults to ``markdown``
 
             disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message. Defaults to ``False``.
+                Disables link previews for links in this message. Defaults to ``False``
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             clear_draft (``bool``, *optional*):
-                True, if a chat message draft must be deleted. Defaults to ``False``.
+                True, if a chat message draft must be deleted. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
         Returns:
             :class:`~pytdbot.types.Result`
@@ -155,55 +155,55 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             animation (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
-                Animation to send.
+                Animation to send
 
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
-                Thumbnail of the animation to send.
+                Thumbnail of the animation to send
 
             caption (``str``, *optional*):
-                Animation caption.
+                Animation caption
 
             caption_entities (``list``, *optional*):
-                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead.
+                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``.
+                Mode for parsing entities. Defaults to ``markdown``
 
             added_sticker_file_ids (``list``, *optional*):
-                File identifiers of the stickers added to the animation, if applicable.
+                File identifiers of the stickers added to the animation, if applicable
 
             duration (``int``, *optional*):
-                Duration of the animation, in seconds.
+                Duration of the animation, in seconds
 
             width (``int``, *optional*):
-                Width of the animation.
+                Width of the animation
 
             height (``int``, *optional*):
-                Height of the animation.
+                Height of the animation
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             has_spoiler (``bool``, *optional*):
                 True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
         Returns:
             :class:`~pytdbot.types.Result`
@@ -313,49 +313,49 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             audio (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
-                Audio to send.
+                Audio to send
 
             album_cover_thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
-                Thumbnail of the album cover to be set.
+                Thumbnail of the album cover to be set
 
             caption (``str``, *optional*):
-                Audio caption.
+                Audio caption
 
             caption_entities (``list``, *optional*):
-                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead.
+                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``.
+                Mode for parsing entities. Defaults to ``markdown``
 
             title (``str``, *optional*):
-                Title of the audio.
+                Title of the audio
 
             performer (``str``, *optional*):
-                Performer of the audio.
+                Performer of the audio
 
             duration (``int``, *optional*):
-                Duration of the audio, in seconds.
+                Duration of the audio, in seconds
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
 
         Returns:
@@ -464,43 +464,43 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             document (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
-                Document to send.
+                Document to send
 
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
-                Thumbnail of the document to be set.
+                Thumbnail of the document to be set
 
             caption (``str``, *optional*):
-                Document caption.
+                Document caption
 
             caption_entities (``list``, *optional*):
-                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead.
+                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``.
+                Mode for parsing entities. Defaults to ``markdown``
 
             disable_content_type_detection (``bool``, *optional*):
-                If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats.
+                If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
 
         Returns:
@@ -608,55 +608,55 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             photo (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
-                Photo to send.
+                Photo to send
 
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
-                Thumbnail of the photo to be set.
+                Thumbnail of the photo to be set
 
             caption (``str``, *optional*):
-                Photo caption.
+                Photo caption
 
             caption_entities (``list``, *optional*):
-                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead.
+                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``.
+                Mode for parsing entities. Defaults to ``markdown``
 
             added_sticker_file_ids (``list``, *optional*):
-                List of file identifiers of added stickers.
+                List of file identifiers of added stickers
 
             width (``int``, *optional*):
-                Photo width.
+                Photo width
 
             height (``int``, *optional*):
-                Photo height.
+                Photo height
 
             self_destruct_time (``int``, *optional*):
-                Photo self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats.
+                Photo self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             has_spoiler (``bool``, *optional*):
                 True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
 
         Returns:
@@ -770,61 +770,61 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             video (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
-                Video to send.
+                Video to send
 
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
-                Thumbnail of the video to be set.
+                Thumbnail of the video to be set
 
             caption (``str``, *optional*):
-                Video caption.
+                Video caption
 
             caption_entities (``list``, *optional*):
-                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead.
+                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``.
+                Mode for parsing entities. Defaults to ``markdown``
 
             added_sticker_file_ids (``list``, *optional*):
-                List of file identifiers of added stickers.
+                List of file identifiers of added stickers
 
             supports_streaming (``bool``, *optional*):
-                True, if the video should be tried to be streamed.
+                True, if the video should be tried to be streamed
 
             duration (``int``, *optional*):
-                Duration of sent video in seconds.
+                Duration of sent video in seconds
 
             width (``int``, *optional*):
-                Video width.
+                Video width
 
             height (``int``, *optional*):
-                Video height.
+                Video height
 
             self_destruct_time (``int``, *optional*):
-                Video self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats.
+                Video self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             has_spoiler (``bool``, *optional*):
                 True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
 
         Returns:
@@ -932,37 +932,37 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             video_note (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
-                Video note to send.
+                Video note to send
 
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
-                Thumbnail of the video note to be set.
+                Thumbnail of the video note to be set
 
             duration (``int``, *optional*):
-                Duration of sent video note in seconds.
+                Duration of sent video note in seconds
 
             length (``int``, *optional*):
-                Video width and height.
+                Video width and height
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
 
         Returns:
@@ -1045,43 +1045,43 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             voice (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
-                Voice to send.
+                Voice to send
 
             caption (``str``, *optional*):
                 Voice caption
 
             caption_entities (``list``, *optional*):
-                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption without parsing entities, use ``parse_mode`` instead.
+                List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption without parsing entities, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Parse mode for the caption. Defaults to None.
+                Parse mode for the caption. Defaults to None
 
             duration (``int``, *optional*):
-                Duration of sent voice in seconds.
+                Duration of sent voice in seconds
 
             waveform (`bytes`, *optional*):
-                Waveform representation of the voice note, in 5-bit format.
+                Waveform representation of the voice note, in 5-bit format
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
 
         Returns:
@@ -1184,40 +1184,40 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             sticker (:class:`~pytdbot.types.InputFileRemote` | :class:`~pytdbot.types.InputFileLocal` | ``str``):
-                Sticker to send.
+                Sticker to send
 
             emoji (``str``, *optional*):
-                Emoji associated with the sticker.
+                Emoji associated with the sticker
 
             thumbnail (:class:`~pytdbot.types.InputThumbnail`, *optional*):
-                Sticker thumbnail.
+                Sticker thumbnail
 
             width (``int``, *optional*):
-                Sticker width.
+                Sticker width
 
             height (``int``, *optional*):
-                Sticker height.
+                Sticker height
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
 
         Returns:
@@ -1298,43 +1298,43 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             from_chat_id (``int``):
-                Identifier for the chat this forwarded message came from.
+                Identifier for the chat this forwarded message came from
 
             message_id (``int``):
-                Identifier of the message to forward.
+                Identifier of the message to forward
 
             in_game_share (``bool``, *optional*):
-                True, if a game message is being shared from a launched game; applies only to game messages.
+                True, if a game message is being shared from a launched game; applies only to game messages
 
             replace_caption (``bool``, *optional*):
-                True, if media caption of the message copy needs to be replaced.
+                True, if media caption of the message copy needs to be replaced
 
             new_caption (``str``, *optional*):
-                New caption of the message copy.
+                New caption of the message copy
 
             new_caption_entities (``list``, *optional*):
-                List of ``MessageEntity`` objects representing entities in the new caption.
+                List of ``MessageEntity`` objects representing entities in the new caption
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities in the new caption.
+                Mode for parsing entities in the new caption
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
             protect_content (``bool``, *optional*):
-                If True, the content of the message must be protected from forwarding and saving.
+                If True, the content of the message must be protected from forwarding and saving
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent.
+                If not 0, a message thread identifier in which the message will be sent
 
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply.
+                Identifier of the message to reply
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``.
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
 
 
         Returns:
@@ -1418,19 +1418,19 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Target chat.
+                Target chat
 
             from_chat_id (``int``):
-                Identifier for the chat this forwarded message came from.
+                Identifier for the chat this forwarded message came from
 
             message_id (``int``):
-                Identifier of the message to forward.
+                Identifier of the message to forward
 
             in_game_share (``bool``, *optional*):
-                True, if a game message is being shared from a launched game; applies only to game messages.
+                True, if a game message is being shared from a launched game; applies only to game messages
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``.
+                If True, disable notification for the message. Defaults to ``False``
 
         Returns:
             :class:`~pytdbot.types.Result`
@@ -1471,25 +1471,25 @@ class Methods(TDLibFunctions):
 
         Args:
             chat_id (``int``):
-                Chat identifier.
+                Chat identifier
 
             message_id (``int``):
-                Message identifier in the chat specified in chat_id.
+                Message identifier in the chat specified in chat_id
 
             text (``str``):
-                New text of the message.
+                New text of the message
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities in the message text.
+                Mode for parsing entities in the message text
 
             entities (``list``, *optional*):
-                List of ``MessageEntity`` objects representing entities that may appear in the message text.
+                List of ``MessageEntity`` objects representing entities that may appear in the message text
 
             disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message.
+                Disables link previews for links in this message
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
-                The message reply markup.
+                The message reply markup
 
 
         Returns:
@@ -1528,20 +1528,20 @@ class Methods(TDLibFunctions):
         text: str,
         parse_mode: str = "markdownv2",
     ) -> Result:
-        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text. Can be called synchronously
+        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text
 
         Args:
             text (``str``):
                 The text to parse
 
             parse_mode (``str``):
-                Text parse mode. Currently supported: markdown, markdownv2 and html. Defaults to "markdownv2".
+                Text parse mode. Currently supported: markdown, markdownv2 and html. Defaults to "markdownv2"
 
         Returns:
             :class:`~pytdbot.types.Result`
         """
-        assert isinstance(text, str), "text must be str"
-        assert isinstance(parse_mode, str), "parse_mode must be str"
+        if not text or not parse_mode:
+            return
 
         if parse_mode.lower() == "markdown":
             _data = {"@type": "textParseModeMarkdown", "version": 1}

@@ -147,7 +147,6 @@ class Client(Decorators, Methods):
         self.workers = workers
         self.queue = asyncio.Queue()
         self.td_verbosity = td_verbosity
-        self._retry_after_prefex = "Too Many Requests: retry after "
         self.connection_state: str = None
         self.is_running = None
         self.me = None
@@ -161,6 +160,7 @@ class Client(Decorators, Methods):
         self._tdjson = TDjson(lib_path, td_verbosity)
         self._executor = ThreadPoolExecutor(5, "Pytdbot")
         self._workers_tasks = None
+        self._retry_after_prefex = "Too Many Requests: retry after "
         self.__authorization_state = None
         self.__authorization = None
         self.__login = False

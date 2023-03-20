@@ -18,10 +18,6 @@ def bold(text: str, html: bool = False, escape: bool = True) -> str:
         :py:class:`str`: The formated text
     """
 
-    assert isinstance(text, str), "text must be str"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
-
     if html:
         return "<b>{}</b>".format(text if escape is False else escape_html(text))
     else:
@@ -44,10 +40,6 @@ def italic(text: str, html: bool = False, escape: bool = True) -> str:
     Returns:
         :py:class:`str`: The formated text
     """
-
-    assert isinstance(text, str), "text must be str"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
 
     if html:
         return "<i>{}</i>".format(text if escape is False else escape_html(text))
@@ -72,10 +64,6 @@ def underline(text: str, html: bool = False, escape: bool = True) -> str:
         :py:class:`str`: The formated text
     """
 
-    assert isinstance(text, str), "text must be str"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
-
     if html:
         return "<u>{}</u>".format(text if escape is False else escape_html(text))
     else:
@@ -99,10 +87,6 @@ def strikethrough(text: str, html: bool = False, escape: bool = True) -> str:
         :py:class:`str`: The formated text
     """
 
-    assert isinstance(text, str), "text must be str"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
-
     if html:
         return "<s>{}</s>".format(text if escape is False else escape_html(text))
     else:
@@ -125,10 +109,6 @@ def spoiler(text: str, html: bool = False, escape: bool = True) -> str:
     Returns:
         :py:class:`str`: The formated text
     """
-
-    assert isinstance(text, str), "text must be str"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
 
     if html:
         return '<span class="tg-spoiler">{}</span>'.format(
@@ -158,10 +138,7 @@ def hyperlink(text: str, url: str, html: bool = False, escape: bool = True) -> s
         :py:class:`str`: The formated text
     """
 
-    assert isinstance(text, str), "text must be str"
     assert isinstance(url, str), "url must be str"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
 
     if html:
         return '<a href="{}">{}</a>'.format(
@@ -193,11 +170,6 @@ def mention(text: str, user_id: str, html: bool = False, escape: bool = True) ->
         :py:class:`str`: The formated text
     """
 
-    assert isinstance(text, str), "text must be str"
-    assert isinstance(user_id, int), "user_id must be int"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
-
     if html:
         return '<a href="tg://user?id={}">{}</a>'.format(
             user_id, text if escape is False else escape_html(text)
@@ -225,10 +197,6 @@ def code(text: str, html: bool = False, escape: bool = True) -> str:
         :py:class:`str`: The formated text
     """
 
-    assert isinstance(text, str), "text must be str"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
-
     if html:
         return "<code>{}</code>".format(text if escape is False else escape_html(text))
     else:
@@ -251,10 +219,6 @@ def pre(text: str, html: bool = False, escape: bool = True) -> str:
     Returns:
         :py:class:`str`: The formated text
     """
-
-    assert isinstance(text, str), "text must be str"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
 
     if html:
         return "<pre>{}</pre>".format(text if escape is False else escape_html(text))
@@ -282,10 +246,7 @@ def pre_code(text: str, language: str, html: bool = False, escape: bool = True) 
         :py:class:`str`: The formated text
     """
 
-    assert isinstance(text, str), "text must be str"
     assert isinstance(language, str), "text must be str"
-    assert isinstance(html, bool), "html must be bool"
-    assert isinstance(escape, bool), "escape must be bool"
 
     if html:
         return '<pre><code class="language-{}">{}</code></pre>'.format(
