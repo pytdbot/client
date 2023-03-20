@@ -389,36 +389,36 @@ class Update:
         if "content" in self.update["message"]:
             if self.update["message"]["content"]["@type"] == "messageDocument":
                 return self.update["message"]["content"]["document"]["document"][
-                    "unique_id"
-                ]["id"]
+                    "remote"
+                ]["unique_id"]
             elif self.update["message"]["content"]["@type"] == "messageVideo":
-                return self.update["message"]["content"]["video"]["video"]["unique_id"][
-                    "id"
+                return self.update["message"]["content"]["video"]["video"]["remote"][
+                    "unique_id"
                 ]
             elif self.update["message"]["content"]["@type"] == "messageAnimation":
                 return self.update["message"]["content"]["animation"]["animation"][
-                    "unique_id"
-                ]["id"]
+                    "remote"
+                ]["unique_id"]
             elif self.update["message"]["content"]["@type"] == "messageAudio":
-                return self.update["message"]["content"]["audio"]["audio"]["unique_id"][
-                    "id"
+                return self.update["message"]["content"]["audio"]["audio"]["remote"][
+                    "unique_id"
                 ]
             elif self.update["message"]["content"]["@type"] == "messageVoiceNote":
                 return self.update["message"]["content"]["voice_note"]["voice"][
-                    "unique_id"
-                ]["id"]
+                    "remote"
+                ]["unique_id"]
             elif self.update["message"]["content"]["@type"] == "messagePhoto":
                 return self.update["message"]["content"]["photo"]["sizes"][-1]["photo"][
-                    "unique_id"
-                ]["id"]
+                    "remote"
+                ]["unique_id"]
             elif self.update["message"]["content"]["@type"] == "messageSticker":
                 return self.update["message"]["content"]["sticker"]["sticker"][
-                    "unique_id"
-                ]["id"]
+                    "remote"
+                ]["unique_id"]
             elif self.update["message"]["content"]["@type"] == "messageVideoNote":
                 return self.update["message"]["content"]["video_note"]["video"][
-                    "unique_id"
-                ]["id"]
+                    "remote"
+                ]["unique_id"]
 
     @property
     def is_user(self) -> bool:
