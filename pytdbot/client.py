@@ -331,7 +331,7 @@ class Client(Decorators, Methods):
                 from pytdbot import Client
 
                 async with Client(...) as client:
-                    res = await client.invoke({"@type": "getAuthorizationState"})
+                    res = await client.invoke({"@type": "getOption", "name": "version"})
                     if not res.is_error:
                         print(res)
 
@@ -408,6 +408,32 @@ class Client(Decorators, Methods):
                     logger.error("Couldn't load chat {}".format(chat_id))
 
         return result
+
+    async def call_method(self, method: str, **kwargs) -> Result:
+        """Call a method. with keyword arguments (``kwargs``) support
+
+        Example:
+            .. code-block:: python
+
+                from pytdbot import Client
+
+                async with Client(...) as client:
+                    res = await client.call_method("getOption", name="version"})
+                    if not res.is_error:
+                        print(res)
+
+        Args:
+            method (``str``):
+                TDLib method name
+
+        Returns:
+            :class:`~pytdbot.types.Result`
+        """
+
+        data = {"@type": method}
+        data.update(**kwargs)
+
+        return await self.invoke(data)
 
     def run(self, login: bool = True) -> None:
         """Start the client and block until the client is stopped.
