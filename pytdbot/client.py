@@ -430,10 +430,9 @@ class Client(Decorators, Methods):
             :class:`~pytdbot.types.Result`
         """
 
-        data = {"@type": method}
-        data.update(**kwargs)
+        kwargs['@type'] = method
 
-        return await self.invoke(data)
+        return await self.invoke(kwargs)
 
     def run(self, login: bool = True) -> None:
         """Start the client and block until the client is stopped.
