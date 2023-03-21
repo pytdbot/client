@@ -1495,6 +1495,12 @@ class Methods(TDLibFunctions):
         Returns:
             :class:`~pytdbot.types.Result`
         """
+
+        if not self.use_message_database:
+            load_message = await self.getMessage(chat_id, message_id)
+            if load_message.is_error:
+                return load_message
+
         if entities is None:
             if parse_mode is not None:
                 parse = await self.parseText(text, parse_mode=parse_mode)
