@@ -1122,13 +1122,16 @@ class Client(Decorators, Methods):
                 self.loop.remove_signal_handler(sig)
 
         if current_thread() is main_thread():
-            for sig in (
-                signal.SIGINT,
-                signal.SIGTERM,
-                signal.SIGABRT,
-                signal.SIGSEGV,
-            ):
-                self.loop.add_signal_handler(sig, _handle_signal)
+            try:
+                for sig in (
+                    signal.SIGINT,
+                    signal.SIGTERM,
+                    signal.SIGABRT,
+                    signal.SIGSEGV,
+                ):
+                    self.loop.add_signal_handler(sig, _handle_signal)
+            except NotImplementedError: # Windows dosen't support add_signal_handler
+                pass
 
     def __ainput(self, prompt: str):
         return self.loop.run_in_executor(self._executor, input, prompt)
