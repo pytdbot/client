@@ -430,7 +430,7 @@ class Client(Decorators, Methods):
             :class:`~pytdbot.types.Result`
         """
 
-        kwargs['@type'] = method
+        kwargs["@type"] = method
 
         return await self.invoke(kwargs)
 
@@ -866,7 +866,7 @@ class Client(Decorators, Methods):
                         )
                     )
 
-                    await asyncio.sleep(retry_after)  # 0.5 just in case
+                    await asyncio.sleep(retry_after)
                     res = await self.invoke(result.request)
                     if res.is_error:
                         return result.set_result(
