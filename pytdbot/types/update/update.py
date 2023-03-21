@@ -427,8 +427,11 @@ class Update:
         Returns:
             :py:class:`bool`
         """
-        if isinstance(self.from_id, int):
+        if self.type == "updateNewMessage":
+            return self.update["message"]["sender_id"]["@type"] == "messageSenderUser"
+        elif isinstance(self.from_id, int):
             return self.from_id > 0
+
         return False
 
     @property
