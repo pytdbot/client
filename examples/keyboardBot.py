@@ -19,14 +19,14 @@ logging.basicConfig(
 )
 
 client = Client(
-    api_id=0,  # your api_id. You can get it from https://my.telegram.org/
-    api_hash="API_HASH",  # your api_hash. You can get it from https://my.telegram.org/
-    database_encryption_key="1234echobot$",  # your database encryption key.
+    api_id=0,  # Your api_id. You can get it from https://my.telegram.org/
+    api_hash="API_HASH",  # Your api_hash. You can get it from https://my.telegram.org/
+    database_encryption_key="1234echobot$",  # Your database encryption key
     token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token. You can get it from https://t.me/botfather
-    files_directory="BotDB",  # path where to store files.
-    workers=2,  # number of workers.
-    td_verbosity=2,  # TDLib verbosity level.
-    td_log=LogStreamFile("pytdbot.log"),  # Set TDLib log file path
+    files_directory="BotDB",  # Path where to store TDLib files
+    workers=2,  # Number of workers
+    td_verbosity=2,  # TDLib verbosity level
+    td_log=LogStreamFile("tdlib.log"),  # Set TDLib log file path
 )
 
 

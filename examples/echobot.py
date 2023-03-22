@@ -8,14 +8,14 @@ logging.basicConfig(
 )
 
 client = Client(
-    api_id=0,  # your api_id. You can get it from https://my.telegram.org/
-    api_hash="API_HASH",  # your api_hash. You can get it from https://my.telegram.org/
-    database_encryption_key="1234echobot$",  # your database encryption key.
+    api_id=0,  # Your api_id. You can get it from https://my.telegram.org/
+    api_hash="API_HASH",  # Your api_hash. You can get it from https://my.telegram.org/
+    database_encryption_key="1234echobot$",  # Your database encryption key
     token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token. You can get it from https://t.me/botfather
-    files_directory="BotDB",  # path where to store files.
-    workers=2,  # number of workers.
-    td_verbosity=2,  # TDLib verbosity level.
-    td_log=LogStreamFile("pytdbot.log"),  # Set TDLib log file path
+    files_directory="BotDB",  # Path where to store TDLib files
+    workers=2,  # Number of workers
+    td_verbosity=2,  # TDLib verbosity level
+    td_log=LogStreamFile("tdlib.log"),  # Set TDLib log file path
 )
 
 
@@ -31,22 +31,30 @@ async def echo(c: Client, message: Update):
 
     elif message.content_type == "messageAnimation":
         await message.reply_animation(
-            message.remote_file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id,
+            caption=message.caption,
+            caption_entities=message.entities,
         )
 
     elif message.content_type == "messageAudio":
         await message.reply_audio(
-            message.remote_file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id,
+            caption=message.caption,
+            caption_entities=message.entities,
         )
 
     elif message.content_type == "messageDocument":
         await message.reply_document(
-            message.remote_file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id,
+            caption=message.caption,
+            caption_entities=message.entities,
         )
 
     elif message.content_type == "messagePhoto":
         await message.reply_photo(
-            message.remote_file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id,
+            caption=message.caption,
+            caption_entities=message.entities,
         )
 
     elif message.content_type == "messageSticker":
@@ -54,12 +62,16 @@ async def echo(c: Client, message: Update):
 
     elif message.content_type == "messageVideo":
         await message.reply_video(
-            message.remote_file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id,
+            caption=message.caption,
+            caption_entities=message.entities,
         )
 
     elif message.content_type == "messageVoiceNote":
         await message.reply_voice(
-            message.remote_file_id, caption=message.caption, caption_entities=message.entities
+            message.remote_file_id,
+            caption=message.caption,
+            caption_entities=message.entities,
         )
     else:
         await message.reply_text("Oops! i don't know how to handle this message.")

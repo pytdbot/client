@@ -1130,7 +1130,7 @@ class Client(Decorators, Methods):
                     signal.SIGSEGV,
                 ):
                     self.loop.add_signal_handler(sig, _handle_signal)
-            except NotImplementedError: # Windows dosen't support add_signal_handler
+            except NotImplementedError:  # Windows dosen't support add_signal_handler
                 pass
 
     def __ainput(self, prompt: str):

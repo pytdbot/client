@@ -33,15 +33,17 @@ Basic example:
 ```python
 
 from pytdbot import Client, utils
-from pytdbot.types import Update
+from pytdbot.types import LogStreamFile, Update
 
 client = Client(
     api_id=0,  
     api_hash="API_HASH",  
     database_encryption_key="1234echobot$",
-    token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token or phone number if you want to login as user.
-    files_directory="BotDB",  # path where to store session and files.
-    lib_path="/path/to/libtdjson.so" # Path to TDjson shared library.
+    token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token or phone number if you want to login as user
+    files_directory="BotDB",  # Path where to store TDLib files
+    lib_path="/path/to/libtdjson.so" # Path to TDjson shared library
+    td_log=LogStreamFile("tdlib.log"),  # Set TDLib log file path
+    td_verbosity=2,  # TDLib verbosity level
 )
 
 
