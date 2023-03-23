@@ -868,16 +868,11 @@ class Client(Decorators, Methods):
 
                     await asyncio.sleep(retry_after)
                     res = await self.invoke(result.request)
-                    if res.is_error:
-                        return result.set_result(
-                            {
-                                "@type": "error",
-                                "code": update["error_code"],
-                                "message": update["error_message"],
-                            }
-                        )
 
-                    self._results[res.result["id"]] = result
+                    self._results[
+                        res.result["id"].__str__()
+                        + update["message"]["chat_id"].__str__()
+                    ] = result
             else:
                 result: Result = self._results.pop(m_id)
                 result.set_result(
