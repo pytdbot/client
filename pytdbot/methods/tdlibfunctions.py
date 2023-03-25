@@ -253,6 +253,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def resetAuthenticationEmailAddress(self) -> Result:
+        """Resets the login email address\. May return an error with a message "TASK\_ALREADY\_EXISTS" if reset is still pending\. Works only when the current authorization state is authorizationStateWaitEmailCode and authorization\_state\.can\_reset\_email\_address \=\= true
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "resetAuthenticationEmailAddress",
+        }
+
+        return await self.invoke(data)
+
     async def checkAuthenticationPassword(self, password: str) -> Result:
         """Checks the 2\-step verification password for correctness\. Works only when the current authorization state is authorizationStateWaitPassword
 
@@ -525,7 +539,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setLoginEmailAddress(self, new_login_email_address: str) -> Result:
-        """Changes the login email address of the user\. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode\. To use Apple ID/Google ID instead of a email address, call checkLoginEmailAddressCode directly
+        """Changes the login email address of the user\. The email address can be changed only if the current user already has login email and passwordState\.login\_email\_address\_pattern is non\-empty\. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode\. To use Apple ID/Google ID instead of a email address, call checkLoginEmailAddressCode directly
 
         Args:
             new_login_email_address (``str``):
@@ -4506,7 +4520,7 @@ class TDLibFunctions:
 
         Args:
             chat_id (``int``):
-                Identifier of the chat in which the Web App is opened
+                Identifier of the chat in which the Web App is opened\. The Web App can't be opened in secret chats
 
             bot_user_id (``int``):
                 Identifier of the bot, providing the Web App
@@ -4945,7 +4959,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def viewMessages(
-        self, chat_id: int, message_ids: list, source: dict, force_read: bool = None
+        self, chat_id: int, message_ids: list, force_read: bool, source: dict = None
     ) -> Result:
         """Informs TDLib that messages are being viewed by the user\. Sponsored messages must be marked as viewed only when the entire text of the message is shown on the screen \(excluding the button\)\. Many useful activities depend on whether the messages are currently being viewed or not \(e\.g\., marking messages as read, incrementing a view counter, updating a view counter, removing deleted messages in supergroups and channels\)
 
@@ -4956,11 +4970,11 @@ class TDLibFunctions:
             message_ids (``list``):
                 The identifiers of the messages being viewed
 
-            source (``MessageSource``):
-                Source of the message view
+            force_read (``bool``):
+                Pass true to mark as read the specified messages even the chat is closed
 
-            force_read (``bool``, *optional*):
-                Pass true to mark as read the specified messages even the chat is closed; pass null to guess the source based on chat open state
+            source (``MessageSource``, *optional*):
+                Source of the message view; pass null to guess the source based on chat open state
 
 
         Returns:
@@ -13318,7 +13332,7 @@ class TDLibFunctions:
     async def addApplicationChangelog(
         self, previous_application_version: str
     ) -> Result:
-        """Adds server\-provided application changelog as messages to the chat 777000 \(Telegram\); for official applications only
+        """Adds server\-provided application changelog as messages to the chat 777000 \(Telegram\); for official applications only\. Returns a 404 error if nothing changed
 
         Args:
             previous_application_version (``str``):
@@ -13738,6 +13752,20 @@ class TDLibFunctions:
             "@type": "setUserSupportInfo",
             "user_id": user_id,
             "message": message,
+        }
+
+        return await self.invoke(data)
+
+    async def getSupportName(self) -> Result:
+        """Returns localized name of the Telegram support user; for Telegram support only
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Text``)
+        """
+
+        data = {
+            "@type": "getSupportName",
         }
 
         return await self.invoke(data)
