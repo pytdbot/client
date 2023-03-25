@@ -246,7 +246,7 @@ class Client(Decorators, Methods):
         logger.info(
             "Logged in as {} {}".format(
                 self.me["first_name"],
-                ""
+                self.me['id'].__str__()
                 if "usernames" not in self.me
                 else "@" + self.me["usernames"]["editable_username"],
             )
@@ -907,7 +907,7 @@ class Client(Decorators, Methods):
             logger.info(
                 "Updating {} ({}) info".format(
                     self.me["first_name"],
-                    ""
+                    self.me['id'].__str__()
                     if "usernames" not in self.me
                     else "@" + self.me["usernames"]["editable_username"],
                 )
