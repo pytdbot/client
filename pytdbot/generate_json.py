@@ -83,3 +83,11 @@ for line in tl.split("\n"):
 
 with open("td_api.json", "w") as f:
     f.write(dumps(data, indent=4))
+    print(
+        "Classes: {}\nTypes: {}\nFunctions: {}\nUpdates: {}".format(
+            len(data["classes"]),
+            len(data["types"]),
+            len(data["functions"]),
+            len(data["updates"]),
+        )
+    )
