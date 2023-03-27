@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.12",
-    "commit_hash": "e9b6313b5685038e58060b9558b96b170e824932",
+    "version": "1.8.13",
+    "commit_hash": "17e120d7eced6ebcd23041124236c03ffd1db0d6",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -415,7 +415,7 @@
             "type": "TermsOfService"
         },
         "authorizationStateWaitTdlibParameters": {
-            "description": "Initializetion parameters are needed. Call setTdlibParameters to provide them",
+            "description": "Initialization parameters are needed. Call setTdlibParameters to provide them",
             "args": {},
             "type": "AuthorizationState"
         },
@@ -4278,7 +4278,7 @@
             "type": "NotificationSettingsScope"
         },
         "chatNotificationSettings": {
-            "description": "Contains information about notification settings for a chat or a froum topic",
+            "description": "Contains information about notification settings for a chat or a forum topic",
             "args": {
                 "use_default_mute_for": {
                     "description": "If true, mute_for is ignored and the value for the relevant type of chat or the forum chat is used instead",
@@ -7293,7 +7293,7 @@
             "type": "MessageExtendedMedia"
         },
         "messageExtendedMediaUnsupported": {
-            "description": "The media is unuspported",
+            "description": "The media is unsupported",
             "args": {
                 "caption": {
                     "description": "Media caption",
@@ -13486,7 +13486,7 @@
             "type": "PremiumFeature"
         },
         "premiumFeatureAppIcons": {
-            "description": "Allowed to set a premium appllication icons",
+            "description": "Allowed to set a premium application icons",
             "args": {},
             "type": "PremiumFeature"
         },
@@ -21807,7 +21807,7 @@
             "description": "Returns all entities (mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses) found in the text. Can be called synchronously",
             "args": {
                 "text": {
-                    "description": "The text in which to look for entites",
+                    "description": "The text in which to look for entities",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -23179,7 +23179,7 @@
             "type": "Ok"
         },
         "toggleChatIsTranslatable": {
-            "description": "Changes the tranlatable state of a chat; for Telegram Premium users only",
+            "description": "Changes the translatable state of a chat; for Telegram Premium users only",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -26148,7 +26148,7 @@
                     "type": "int64"
                 },
                 "can_accept_secret_chats": {
-                    "description": "Pass true to allow accepring secret chats by the session; pass false otherwise",
+                    "description": "Pass true to allow accepting secret chats by the session; pass false otherwise",
                     "is_optional": false,
                     "type": "Bool"
                 }

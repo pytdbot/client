@@ -3794,7 +3794,7 @@ class TDLibFunctions:
 
         Args:
             text (``str``):
-                The text in which to look for entites
+                The text in which to look for entities
 
 
         Returns:
@@ -5795,7 +5795,7 @@ class TDLibFunctions:
     async def toggleChatIsTranslatable(
         self, chat_id: int, is_translatable: bool
     ) -> Result:
-        """Changes the tranlatable state of a chat; for Telegram Premium users only
+        """Changes the translatable state of a chat; for Telegram Premium users only
 
         Args:
             chat_id (``int``):
@@ -10364,7 +10364,7 @@ class TDLibFunctions:
                 Session identifier
 
             can_accept_secret_chats (``bool``):
-                Pass true to allow accepring secret chats by the session; pass false otherwise
+                Pass true to allow accepting secret chats by the session; pass false otherwise
 
 
         Returns:
