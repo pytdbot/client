@@ -1,4 +1,5 @@
-from uuid import uuid4
+from os import urandom
+from binascii import hexlify
 from asyncio import Event
 from typing import Union
 from ujson import dumps
@@ -9,13 +10,13 @@ class Result:
 
     Args:
         request (``dict``):
-            The request object.
+            The request object
 
         request_id (``str`` | ``int`` | ``dict``, *optional*):
-            The request_id for the object.
+            An unique ID for the request
 
         remove_extra (``bool``, *optional*):
-            Remove @extra from the result. Defaults to ``True``.
+            Remove @extra from the result. Defaults to ``True``
 
     """
 
@@ -25,7 +26,7 @@ class Result:
         request_id: Union[str, int, dict] = None,
         remove_extra: bool = True,
     ) -> None:
-        self.id = uuid4().hex if request_id is None else request_id
+        self.id = hexlify(urandom(4)).decode() if request_id is None else request_id
         request["@extra"] = {"request_id": self.id}
         self.request = request
         self.remove_extra = remove_extra
@@ -37,7 +38,7 @@ class Result:
 
     def __str__(self):
         if self.result == {}:
-            return "result not processed yet."
+            return "result not processed yet"
         else:
             return dumps(self.result, indent=4)
 
@@ -60,18 +61,19 @@ class Result:
         return self.wait().__await__()
 
     async def wait(self) -> bool:
-        """Wait for the result."""
+        """Wait for the result"""
         return await self._event.wait()
 
     def set_result(self, result: dict) -> None:
-        """Set the result.
+        """Set the result
 
         Args:
-            result (``dict``): The result object.
+            result (``dict``):
+                The result object
         """
         self.result = result
-        self.is_processed = True
         self.type = result["@type"]
+        self.is_processed = True
 
         if self.type == "error":
             self.is_error = True
@@ -85,7 +87,7 @@ class Result:
         """Reset the current result flags
 
         Returns:
-            :py:class:``bool``: ``True`` on success.
+            :py:class:``bool``: ``True`` on success
         """
         self.is_error = False
         self.is_processed = False
