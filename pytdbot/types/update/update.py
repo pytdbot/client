@@ -102,6 +102,7 @@ class Update:
             :py:class:`int`
             ``None``
         """
+
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -119,6 +120,7 @@ class Update:
             :py:class:`int`
             ``None``
         """
+
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -143,6 +145,7 @@ class Update:
             :py:class:`int`
             ``None``
         """
+
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -162,6 +165,7 @@ class Update:
             :py:class:`int`
             ``None``
         """
+
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -177,6 +181,7 @@ class Update:
             :py:class:`str`
             ``None``
         """
+
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -194,6 +199,7 @@ class Update:
             :py:class:`str`
             ``None``
         """
+
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -211,6 +217,7 @@ class Update:
         Returns:
             :py:class:`str`
         """
+
         if self.type == "updateNewMessage" and self.content_type == "messageText":
             return self.update["message"]["content"]["text"]["text"]
         elif self.type == "updateMessageContent":
@@ -227,6 +234,7 @@ class Update:
             :py:class:`list`
             ``None``
         """
+
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -250,6 +258,7 @@ class Update:
             :py:class:`str`
             ``None``
         """
+
         if self.type in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -269,6 +278,7 @@ class Update:
             :py:class:`str`: The callback data
             ``None``
         """
+
         if "data" in self._store:
             return self._store["data"]
         elif self.type in ["updateNewCallbackQuery", "updateNewInlineCallbackQuery"]:
@@ -289,6 +299,7 @@ class Update:
             :py:class:`str`
             ``None``
         """
+
         if self.type in ["updateNewInlineQuery", "updateNewChosenInlineResult"]:
             return self.update["query"]
         return ""
@@ -300,6 +311,7 @@ class Update:
         Returns:
             :py:class:`int`
         """
+
         if self.type not in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -333,6 +345,7 @@ class Update:
         Returns:
             :py:class:`str`
         """
+
         if self.type not in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -380,6 +393,7 @@ class Update:
         Returns:
             :py:class:`str`
         """
+
         if self.type not in [
             "updateNewMessage",
             "updateMessageSendSucceeded",
@@ -427,6 +441,7 @@ class Update:
         Returns:
             :py:class:`bool`
         """
+
         if self.type == "updateNewMessage":
             return self.update["message"]["sender_id"]["@type"] == "messageSenderUser"
         elif isinstance(self.from_id, int):
@@ -441,6 +456,7 @@ class Update:
         Returns:
             :py:class:`bool`
         """
+
         if isinstance(self.chat_id, int):
             return self.chat_id > 0
         return False
@@ -452,6 +468,7 @@ class Update:
         Returns:
             :py:class:`bool`
         """
+
         return self.content_type in self.SERVICE_MESSAGE_TYPES
 
     @property
@@ -461,6 +478,7 @@ class Update:
         Returns:
             :py:class:`bool`
         """
+
         if isinstance(self.from_id, int):
             return self.client.options["my_id"] == self.from_id
         return False
@@ -478,6 +496,7 @@ class Update:
         Returns:
             :py:class:`str`
         """
+
         if self.from_id:
             chat = await self.client.getChat(self.from_id)
             if not chat.is_error:
@@ -493,7 +512,8 @@ class Update:
     async def getRepliedMessage(
         self,
     ) -> Result:
-        """Get the replied message."""
+        """Get the replied message"""
+
         if isinstance(self.message_id, int):
             return await self.client.getRepliedMessage(
                 self.chat_id,
@@ -502,26 +522,31 @@ class Update:
 
     async def getMessage(
         self,
-        message_id: int,
+        message_id: int = None,
     ) -> Result:
-        """Get the message by id
+        """Get message
 
         Args:
-            message_id (``int``):
-                The message id
+            message_id (``int``, *optional*):
+                The message id, If ``None``, :meth:`~pytdbot.types.Update.message_id` is used.
         """
+
+        message_id = message_id or self.message_id
+
         if isinstance(message_id, int):
             return await self.client.getMessage(self.chat_id, message_id)
 
     async def getChat(
         self,
     ) -> Result:
-        """Get chat info."""
+        """Get chat info"""
+
         if isinstance(self.chat_id, int):
             return await self.client.getChat(self.chat_id)
 
     async def getChatMember(self) -> Result:
-        """Get member info in the current chat."""
+        """Get member info in the current chat"""
+
         if isinstance(self.chat_id, int) and isinstance(self.from_id, int):
             if self.is_user:
                 member_id = {"@type": "messageSenderUser", "user_id": self.from_id}
@@ -532,12 +557,14 @@ class Update:
     async def getUser(
         self,
     ) -> Result:
-        """Get user info."""
+        """Get user info"""
+
         if self.is_user:
             return await self.client.getUser(self.from_id)
 
     async def getSupergroupId(self) -> int:
-        """Get the current chat ``supergroup_id``."""
+        """Get the current chat ``supergroup_id``"""
+
         if "supergroup_id" in self._store:
             return self._store["supergroup_id"]
         else:
@@ -564,6 +591,7 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
+
         if isinstance(self.message_id, int):
             return await self.client.pinChatMessage(
                 self.chat_id,
@@ -585,6 +613,7 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
+
         if isinstance(self.message_id, int):
             return await self.client.deleteMessages(
                 self.chat_id, [self.message_id], revoke
@@ -600,6 +629,7 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
+
         chat_id = chat_id if isinstance(chat_id, int) else self.chat_id
 
         if chat_id:
@@ -637,6 +667,7 @@ class Update:
         Returns:
             :class:`~pytdbot.types.ChatActions`
         """
+
         if isinstance(self.chat_id, int):
             return ChatActions(self.client, self.chat_id, action, message_thread_id)
         else:
@@ -652,6 +683,7 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
+
         file_id = file_id or self.local_file_id
         if isinstance(file_id, int):
             return await self.client.downloadFile(
@@ -683,6 +715,7 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
+
         if self.type != "updateNewCallbackQuery":
             return
 
@@ -715,6 +748,7 @@ class Update:
         Returns:
             :class:`~pytdbot.types.Result`
         """
+
         if (
             isinstance(self.message_id, int) or isinstance(message_id, int)
         ) and isinstance(self.chat_id, int):
