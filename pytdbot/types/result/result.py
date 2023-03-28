@@ -17,7 +17,7 @@ class Result:
         self,
         request: dict,
     ) -> None:
-        self.id = hexlify(urandom(4)).decode()
+        self.id = hexlify(urandom(9)).decode()
         request["@extra"] = {"id": self.id}
         self.request = request
         self.is_error = False
