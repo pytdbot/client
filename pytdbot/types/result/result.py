@@ -27,7 +27,7 @@ class Result:
         remove_extra: bool = True,
     ) -> None:
         self.id = hexlify(urandom(4)).decode() if request_id is None else request_id
-        request["@extra"] = {"request_id": self.id}
+        request["@extra"] = {"id": self.id}
         self.request = request
         self.remove_extra = remove_extra
         self.is_error = False

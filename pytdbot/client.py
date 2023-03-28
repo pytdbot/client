@@ -246,7 +246,7 @@ class Client(Decorators, Methods):
         logger.info(
             "Logged in as {} {}".format(
                 self.me["first_name"],
-                self.me['id'].__str__()
+                self.me["id"].__str__()
                 if "usernames" not in self.me
                 else "@" + self.me["usernames"]["editable_username"],
             )
@@ -613,8 +613,8 @@ class Client(Decorators, Methods):
                 logger.root.level >= DEBUG
             ):  # dumping all results may create performance issues.
                 logger.debug("Recieved: {}".format(dumps(update, indent=4)))
-            if update["@extra"]["request_id"] in self._results:
-                result: Result = self._results.pop(update["@extra"]["request_id"])
+            if update["@extra"]["id"] in self._results:
+                result: Result = self._results.pop(update["@extra"]["id"])
                 result.set_result(update)
             elif update["@type"] == "error" and "option" in update["@extra"]:
                 logger.error(
@@ -787,7 +787,7 @@ class Client(Decorators, Methods):
                     "@type": "setOption",
                     "name": k,
                     "value": data,
-                    "@extra": {"option": k, "value": v, "request_id": ""},
+                    "@extra": {"option": k, "value": v, "id": ""},
                 }
             )
             logger.debug("Option {} sent with value {}".format(k, str(v)))
@@ -907,7 +907,7 @@ class Client(Decorators, Methods):
             logger.info(
                 "Updating {} ({}) info".format(
                     self.me["first_name"],
-                    self.me['id'].__str__()
+                    self.me["id"].__str__()
                     if "usernames" not in self.me
                     else "@" + self.me["usernames"]["editable_username"],
                 )
