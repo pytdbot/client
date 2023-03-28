@@ -12,24 +12,16 @@ class Result:
         request (``dict``):
             The request object
 
-        request_id (``str`` | ``int`` | ``dict``, *optional*):
-            An unique ID for the request
-
-        remove_extra (``bool``, *optional*):
-            Remove @extra from the result. Defaults to ``True``
-
     """
 
     def __init__(
         self,
         request: dict,
-        request_id: Union[str, int, dict] = None,
         remove_extra: bool = True,
     ) -> None:
-        self.id = hexlify(urandom(4)).decode() if request_id is None else request_id
+        self.id = hexlify(urandom(4)).decode()
         request["@extra"] = {"id": self.id}
         self.request = request
-        self.remove_extra = remove_extra
         self.is_error = False
         self.is_processed = False
         self.result = {}
@@ -78,8 +70,7 @@ class Result:
         if self.type == "error":
             self.is_error = True
 
-        if self.remove_extra and "@extra" in self.result:
-            del self.result["@extra"]
+        del self.result["@extra"]
 
         self._event.set()
 

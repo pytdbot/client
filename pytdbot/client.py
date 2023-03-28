@@ -321,7 +321,6 @@ class Client(Decorators, Methods):
     async def invoke(
         self,
         request: dict,
-        request_id: Union[str, int, dict] = None,
     ) -> Result:
         """Invoke a new TDLib request.
 
@@ -339,14 +338,11 @@ class Client(Decorators, Methods):
             request (``dict``):
                 The request to be sent.
 
-            request_id (``str`` | ``int`` | ``dict``, *optional*):
-                Request id. Defaults to ``None`` (random).
-
         Returns:
             :class:`~pytdbot.types.Result`
         """
 
-        result = Result(request, request_id)
+        result = Result(request)
         self._results[result.id] = result
 
         if (
