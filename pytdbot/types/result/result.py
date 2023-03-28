@@ -1,7 +1,6 @@
 from os import urandom
 from binascii import hexlify
 from asyncio import Event
-from typing import Union
 from ujson import dumps
 
 
@@ -17,7 +16,6 @@ class Result:
     def __init__(
         self,
         request: dict,
-        remove_extra: bool = True,
     ) -> None:
         self.id = hexlify(urandom(4)).decode()
         request["@extra"] = {"id": self.id}
@@ -70,7 +68,8 @@ class Result:
         if self.type == "error":
             self.is_error = True
 
-        del self.result["@extra"]
+        if "@extra" in result:
+            del self.result["@extra"]
 
         self._event.set()
 
