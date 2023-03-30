@@ -79,6 +79,10 @@ class Methods(TDLibFunctions):
         """
 
         if entities is None:
+            parse_mode = (
+                parse_mode if parse_mode is not None else self.default_parse_mode
+            )
+
             if parse_mode is not None:
                 parse = await self.parseText(text, parse_mode=parse_mode)
                 if parse.is_error:
@@ -210,6 +214,7 @@ class Methods(TDLibFunctions):
 
         """
 
+        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
 
@@ -363,6 +368,7 @@ class Methods(TDLibFunctions):
 
         """
 
+        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
 
@@ -507,6 +513,7 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
+        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
 
@@ -663,6 +670,7 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
+        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
 
@@ -831,6 +839,7 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
+        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
 
@@ -1088,6 +1097,7 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
+        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
 
@@ -1340,6 +1350,8 @@ class Methods(TDLibFunctions):
         Returns:
             :class:`~pytdbot.types.Result`
         """
+
+        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(new_caption, str):
 
@@ -1502,6 +1514,10 @@ class Methods(TDLibFunctions):
                 return load_message
 
         if entities is None:
+            parse_mode = (
+                parse_mode if parse_mode is not None else self.default_parse_mode
+            )
+
             if parse_mode is not None:
                 parse = await self.parseText(text, parse_mode=parse_mode)
                 if parse.is_error:
@@ -1559,6 +1575,7 @@ class Methods(TDLibFunctions):
             raise ValueError(
                 "Invalid parse_mode. Currently supported: markdown, markdownv2, html"
             )
+
         data = {
             "@type": "parseTextEntities",
             "text": text,

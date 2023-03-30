@@ -55,6 +55,10 @@ class Client(Decorators, Methods):
         update_class (:class:`~pytdbot.types.Update`, *optional*):
             Update class to use. Defaults to :class:`~pytdbot.types.Update`.
 
+        default_parse_mode (``str``, *optional*):
+            The default ``parse_mode`` for methods: :meth:`~pytdbot.Client.sendTextMessage`, :meth:`~pytdbot.Client.sendPhoto`, :meth:`~pytdbot.Client.sendAudio`, :meth:`~pytdbot.Client.sendVideo`, :meth:`~pytdbot.Client.sendDocument`, :meth:`~pytdbot.Client.sendAnimation`, :meth:`~pytdbot.Client.sendVoice`, :meth:`~pytdbot.Client.sendCopy`, :meth:`~pytdbot.Client.editTextMessage`; Defaults to ``None`` (Don\'t parse)
+            Supported values: ``markdown``, ``markdownv2``, ``html``
+
         system_language_code (``str``, *optional*):
             System language code. Defaults to ``en``.
 
@@ -109,6 +113,7 @@ class Client(Decorators, Methods):
         lib_path: str = None,
         plugins: Plugins = None,
         update_class: Update = Update,
+        default_parse_mode: str = None,
         system_language_code: str = "en",
         device_model: str = None,
         use_test_dc: bool = False,
@@ -132,6 +137,12 @@ class Client(Decorators, Methods):
         self.lib_path = lib_path
         self.plugins = plugins
         self.update_class = update_class
+        self.default_parse_mode = (
+            default_parse_mode
+            if isinstance(default_parse_mode, str)
+            and default_parse_mode in ["markdown", "markdownv2", "html"]
+            else None
+        )
         self.system_language_code = system_language_code
         self.device_model = device_model
         self.use_test_dc = use_test_dc
