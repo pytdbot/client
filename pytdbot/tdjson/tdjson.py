@@ -10,9 +10,9 @@ from ujson import loads, dumps
 logger = getLogger(__name__)
 
 
-class TDjson:
+class TDJson:
     def __init__(self, lib_path: str = None, verbosity: int = 2) -> None:
-        """TDjson client
+        """TDJson client
 
         Args:
             lib_path (``str``, optional):
@@ -36,11 +36,11 @@ class TDjson:
             if not lib_path:
                 raise ValueError("TDLib library not found")
 
-        logger.info("Initializing TDjson client with library: %s", lib_path)
+        logger.info("Initializing TDJson client with library: %s", lib_path)
         self._build_client(lib_path, verbosity)
 
     def _build_client(self, lib_path: str, verbosity: int) -> None:
-        """Build TDjson client
+        """Build TDJson client
 
         Args:
             lib_path (``str``):
