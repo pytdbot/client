@@ -28,79 +28,79 @@ logger = getLogger(__name__)
 
 
 class Client(Decorators, Methods):
-    """Pytdbot, a TDLib client.
+    """Pytdbot, a TDLib client
 
     Args:
         api_id (``int``):
-            Identifier for Telegram API access, which can be obtained at https://my.telegram.org.
+            Identifier for Telegram API access, which can be obtained at https://my.telegram.org
 
         api_hash (``str``):
-            Identifier hash for Telegram API access, which can be obtained at https://my.telegram.org.
+            Identifier hash for Telegram API access, which can be obtained at https://my.telegram.org
 
         database_encryption_key (``str`` | ``bytes``):
-            Encryption key for database encryption.
+            Encryption key for database encryption
 
         files_directory (``str``):
-            Directory for storing files and database.
+            Directory for storing files and database
 
         token (``str``, *optional*):
-            Bot token or phone number.
+            Bot token or phone number
 
         lib_path (``str``, *optional*):
-            Path to TDLib library. Defaults to ``None`` (auto-detect).
+            Path to TDLib library. Defaults to ``None`` (auto-detect)
 
         plugins (:class:`~pytdbot.types.Plugins`, *optional*):
-            Plugins to load.
+            Plugins to load
 
         update_class (:class:`~pytdbot.types.Update`, *optional*):
-            Update class to use. Defaults to :class:`~pytdbot.types.Update`.
+            Update class to use. Defaults to :class:`~pytdbot.types.Update`
 
         default_parse_mode (``str``, *optional*):
             The default ``parse_mode`` for methods: :meth:`~pytdbot.Client.sendTextMessage`, :meth:`~pytdbot.Client.sendPhoto`, :meth:`~pytdbot.Client.sendAudio`, :meth:`~pytdbot.Client.sendVideo`, :meth:`~pytdbot.Client.sendDocument`, :meth:`~pytdbot.Client.sendAnimation`, :meth:`~pytdbot.Client.sendVoice`, :meth:`~pytdbot.Client.sendCopy`, :meth:`~pytdbot.Client.editTextMessage`; Defaults to ``None`` (Don\'t parse)
             Supported values: ``markdown``, ``markdownv2``, ``html``
 
         system_language_code (``str``, *optional*):
-            System language code. Defaults to ``en``.
+            System language code. Defaults to ``en``
 
         device_model (``str``, *optional*):
-            Device model. Defaults to ``None`` (auto-detect).
+            Device model. Defaults to ``None`` (auto-detect)
 
         use_test_dc (``bool``, *optional*):
-            If set to true, the Telegram test environment will be used instead of the production environment. Defaults to ``False``.
+            If set to true, the Telegram test environment will be used instead of the production environment. Defaults to ``False``
 
         use_file_database (``bool``, *optional*):
-            If set to true, information about downloaded and uploaded files will be saved between application restarts. Defaults to ``True``.
+            If set to true, information about downloaded and uploaded files will be saved between application restarts. Defaults to ``True``
 
         use_chat_info_database (``bool``, *optional*):
-            If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats. Implies ``use_file_database``. Defaults to ``True``.
+            If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats. Implies ``use_file_database``. Defaults to ``True``
 
         use_message_database (``bool``, *optional*):
-            If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database. Defaults to ``True``.
+            If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database. Defaults to ``True``
 
         enable_storage_optimizer (``bool``, *optional*):
-            If set to true, old files will automatically be deleted. Defaults to ``True``.
+            If set to true, old files will automatically be deleted. Defaults to ``True``
 
         ignore_file_names (``bool``, *optional*):
-            If set to true, original file names will be ignored. Otherwise, downloaded files will be saved under names as close as possible to the original name. Defaults to ``False``.
+            If set to true, original file names will be ignored. Otherwise, downloaded files will be saved under names as close as possible to the original name. Defaults to ``False``
 
         loop (:py:class:`asyncio.AbstractEventLoop`, *optional*):
-            Event loop. Defaults to ``None`` (auto-detect).
+            Event loop. Defaults to ``None`` (auto-detect)
 
         options (``dict``, *optional*):
-            Pass key-value dictionary to set TDLib options. Check the list of available options at https://core.telegram.org/tdlib/options.
+            Pass key-value dictionary to set TDLib options. Check the list of available options at https://core.telegram.org/tdlib/options
 
         sleep_threshold (``int``, *optional*):
             Sleep threshold for all ``FLOOD_WAIT_X`` a.k.a ``Too Many Requests: retry after`` errors occur to this client.
-            If any request is rate limited (flood waited) the client will repeat the request after sleeping the required amount of seconds returned by the error. If the ``retry after`` value is higher than ``sleep_threshold`` the error is returned. Defaults to ``None`` (Disabled).
+            If any request is rate limited (flood waited) the client will repeat the request after sleeping the required amount of seconds returned by the error. If the ``retry after`` value is higher than ``sleep_threshold`` the error is returned. Defaults to ``None`` (Disabled)
 
         workers (``int``, *optional*):
-            Number of workers for handling updates. Defaults to ``5``.
+            Number of workers for handling updates. Defaults to ``5``
 
         td_verbosity (``int``, *optional*):
-            Verbosity level of TDLib. Defaults to ``2``.
+            Verbosity level of TDLib. Defaults to ``2``
 
         td_log (:class:`~pytdbot.types.LogStream`, *optional*):
-            Log stream. Defaults to ``None`` (Log to ``stdout``).
+            Log stream. Defaults to ``None`` (Log to ``stdout``)
     """
 
     def __init__(
@@ -208,11 +208,11 @@ class Client(Decorators, Methods):
         return self.__authorization_state
 
     async def start(self, login: bool = True) -> None:
-        """Start pytdbot client.
+        """Start pytdbot client
 
         Args:
             login (``bool``, *optional*):
-                Login after start. Defaults to ``True``.
+                Login after start. Defaults to ``True``
         """
         if not self.is_running:
 
@@ -238,7 +238,7 @@ class Client(Decorators, Methods):
 
         self.__login = True
 
-        await self.getOption("version")  # Ping TDLib to start authorization proccess.
+        await self.getOption("version")  # Ping TDLib to start authorization proccess
 
         while self.authorization_state != "authorizationStateReady":
             await asyncio.sleep(0.1)
@@ -270,20 +270,20 @@ class Client(Decorators, Methods):
         filters: pytdbot.filters.Filter = None,
         position: int = None,
     ) -> None:
-        """Add an update handler.
+        """Add an update handler
 
         Args:
             update_type (``str``):
-                An update type.
+                An update type
 
             func (``Callable``):
-                A callable function.
+                A callable function
 
             filters (:class:`~pytdbot.filters.Filter`, *optional*):
-                message filter.
+                message filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append).
+                The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
             TypeError
@@ -305,17 +305,17 @@ class Client(Decorators, Methods):
         self._handlers[update_type].sort(key=lambda x: (x.position is None, x.position))
 
     def remove_handler(self, func: Callable) -> bool:
-        """Remove an update handler.
+        """Remove an update handler
 
         Args:
             func (``Callable``):
-                A callable function.
+                A callable function
 
         Raises:
             TypeError
 
         Returns:
-            :py:class:`bool`: True if handler was removed, False otherwise.
+            :py:class:`bool`: True if handler was removed, False otherwise
         """
         if not isinstance(func, Callable):
             raise TypeError("func must be callable")
@@ -333,7 +333,7 @@ class Client(Decorators, Methods):
         self,
         request: dict,
     ) -> Result:
-        """Invoke a new TDLib request.
+        """Invoke a new TDLib request
 
         Example:
             .. code-block:: python
@@ -347,7 +347,7 @@ class Client(Decorators, Methods):
 
         Args:
             request (``dict``):
-                The request to be sent.
+                The request to be sent
 
         Returns:
             :class:`~pytdbot.types.Result`
@@ -358,7 +358,7 @@ class Client(Decorators, Methods):
 
         if (
             logger.root.level >= DEBUG
-        ):  # dumping all requests may create performance issues.
+        ):  # dumping all requests may create performance issues
             logger.debug("Sending: {}".format(dumps(result.request, indent=4)))
 
         self.__send(result.request)
@@ -402,7 +402,7 @@ class Client(Decorators, Methods):
                         message_id = result.request["message_id"]
 
                     # If there is a message_id then
-                    # we need to load it to avoid MESSAGE_NOT_FOUND.
+                    # we need to load it to avoid MESSAGE_NOT_FOUND
                     if message_id > 0:
                         await self.getMessage(chat_id, message_id)
 
@@ -442,7 +442,7 @@ class Client(Decorators, Methods):
         return await self.invoke(kwargs)
 
     def run(self, login: bool = True) -> None:
-        """Start the client and block until the client is stopped.
+        """Start the client and block until the client is stopped
 
         Example:
             .. code-block:: python
@@ -459,7 +459,7 @@ class Client(Decorators, Methods):
 
         Args:
             login (``bool``, *optional*):
-                Login after start. Defaults to ``True``.
+                Login after start. Defaults to ``True``
         """
 
         self._register_signal_handlers()
@@ -474,14 +474,14 @@ class Client(Decorators, Methods):
             await asyncio.sleep(1)
 
     async def stop(self) -> bool:
-        """Stop the client.
+        """Stop the client
 
         Raises:
             `RuntimeError`:
-                If the instance is already stopped.
+                If the instance is already stopped
 
         Returns:
-            :py:class:`bool`: ``True`` on success.
+            :py:class:`bool`: ``True`` on success
         """
         if (
             self.is_running is False
@@ -507,7 +507,7 @@ class Client(Decorators, Methods):
     def __send(self, request: dict) -> None:
         return self._tdjson.send(
             request
-        )  # tdjson.send is asynchronous, So we don't need run_in_executor. This improves performance.
+        )  # tdjson.send is asynchronous, So we don't need run_in_executor. This improves performance
 
     async def __receive(self, timeout: float = 2.0) -> dict:
         return await self.loop.run_in_executor(
@@ -542,7 +542,7 @@ class Client(Decorators, Methods):
 
         Args:
             error_message (``str``):
-                The returned error message from TDLib.
+                The returned error message from TDLib
 
         Returns:
             py:class:`int`
@@ -618,7 +618,7 @@ class Client(Decorators, Methods):
         elif "@extra" in update:
             if (
                 logger.root.level >= DEBUG
-            ):  # dumping all results may create performance issues.
+            ):  # dumping all results may create performance issues
                 logger.debug("Recieved: {}".format(dumps(update, indent=4)))
             if update["@extra"]["id"] in self._results:
                 result: Result = self._results.pop(update["@extra"]["id"])
@@ -703,7 +703,7 @@ class Client(Decorators, Methods):
 
                 if (
                     logger.root.level >= DEBUG
-                ):  # dumping all updates can create performance issues.
+                ):  # dumping all updates can create performance issues
                     logger.debug(
                         "w{}: Received: {}".format(worker_id, dumps(update, indent=4)),
                     )

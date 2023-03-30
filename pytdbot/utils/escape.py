@@ -37,7 +37,7 @@ def escape_markdown(text: str, version: int = 2) -> str:
         :py:class:`str`: The escaped text
 
     Raises:
-        :py:class:`ValueError`: If the given markdown version is not supported.
+        :py:class:`ValueError`: If the given markdown version is not supported
     """
 
     if version == 1:

@@ -2,10 +2,10 @@ from typing import Callable
 
 
 class Filter:
-    """Filter class.
+    """Filter class
 
     A filter is a function that takes a request and returns a boolean. If the returned value is ``True`` then the handler will be called.
-    See :func:`~pytdbot.filters.create` for more information.
+    See :func:`~pytdbot.filters.create` for more information
     """
 
     def __init__(self, func: Callable):
@@ -21,7 +21,7 @@ class Filter:
 
 
 def create(func: Callable) -> Filter:
-    """A factory to create a filter.
+    """A factory to create a filter
 
     Example:
 
@@ -54,7 +54,7 @@ def create(func: Callable) -> Filter:
 
     Args:
         func (``Callable``):
-            The filter function.
+            The filter function
 
     """
     return Filter(func)

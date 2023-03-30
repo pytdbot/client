@@ -16,19 +16,19 @@ class ShowKeyboardMarkup(ReplyMarkup):
 
         Args:
             rows (``list``):
-                A list of rows of inline keyboard buttons.
+                A list of rows of inline keyboard buttons
 
             resize_keyboard (``bool``, *optional*):
-                True, if the application needs to resize the keyboard vertically. Defaults to ``False``.
+                True, if the application needs to resize the keyboard vertically. Defaults to ``False``
 
             one_time (``bool``, *optional*):
-                True, if the application needs to hide the keyboard after use. Defaults to ``False``.
+                True, if the application needs to hide the keyboard after use. Defaults to ``False``
 
             is_personal (``bool``, *optional*):
-                True, if the keyboard must automatically be shown to the current user. For outgoing messages, specify true to show the keyboard only for the mentioned users and for the target user of a reply. Defaults to ``True``.
+                True, if the keyboard must automatically be shown to the current user. For outgoing messages, specify true to show the keyboard only for the mentioned users and for the target user of a reply. Defaults to ``True``
 
             input_field_placeholder (``str``, *optional*):
-                If non-empty, the placeholder to be shown in the input field when the keyboard is active; 0-64 characters.
+                If non-empty, the placeholder to be shown in the input field when the keyboard is active; 0-64 characters
 
         """
 
@@ -39,10 +39,10 @@ class ShowKeyboardMarkup(ReplyMarkup):
         self.input_field_placeholder = input_field_placeholder
 
     def to_dict(self) -> dict:
-        """Converts the object to a dictionary.
+        """Converts the object to a dictionary
 
         Returns:
-            :py:class:`dict`: Show keyboard.
+            :py:class:`dict`: Show keyboard
         """
 
         return {
@@ -59,11 +59,11 @@ class ShowKeyboardButton:
     """Show keyboard types"""
 
     def location(text: str) -> dict:
-        """A button that sends the user's location when pressed; available only in private chats.
+        """A button that sends the user's location when pressed; available only in private chats
 
         Args:
             text (``str``):
-                Text of the button.
+                Text of the button
 
         Returns:
             :py:class:`dict`
@@ -76,11 +76,11 @@ class ShowKeyboardButton:
         }
 
     def phone_number(text: str) -> dict:
-        """A button that sends the user's phone number when pressed; available only in private chats.
+        """A button that sends the user's phone number when pressed; available only in private chats
 
         Args:
             text (``str``):
-                Text of the button.
+                Text of the button
 
         Returns:
             :py:class:`dict`
@@ -93,17 +93,17 @@ class ShowKeyboardButton:
         }
 
     def poll(text: str, force_regular: bool = None, force_quiz: bool = None) -> dict:
-        """A button that allows the user to create and send a poll when pressed; available only in private chats.
+        """A button that allows the user to create and send a poll when pressed; available only in private chats
 
         Args:
             text (``str``):
-                Text of the button.
+                Text of the button
 
             force_regular (``bool``, *optional*):
-                If True, only regular polls must be allowed to create.
+                If True, only regular polls must be allowed to create
 
             force_quiz (``bool``, *optional*):
-                If True, only polls in quiz mode must be allowed to create.
+                If True, only polls in quiz mode must be allowed to create
 
         Returns:
             :py:class:`dict`
@@ -131,7 +131,7 @@ class ShowKeyboardButton:
 
         Args:
             text (``str``):
-                Text of the button.
+                Text of the button
 
             id (``int``):
                 Unique button identifier
@@ -182,7 +182,7 @@ class ShowKeyboardButton:
 
         Args:
             text (``str``):
-                Text of the button.
+                Text of the button
 
             id (``int``):
                 Unique button identifier
@@ -237,11 +237,11 @@ class ShowKeyboardButton:
         }
 
     def text(text: str) -> dict:
-        """A simple button, with text that must be sent when the button is pressed.
+        """A simple button, with text that must be sent when the button is pressed
 
         Args:
             text (``str``):
-                Text of the button.
+                Text of the button
 
         Returns:
             :py:class:`dict`

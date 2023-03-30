@@ -17,14 +17,14 @@ class Decorators(Updates):
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> None:
-        """A decorator to initialize an event object before running other handlers.
+        """A decorator to initialize an event object before running other handlers
 
         Args:
             filters (:class:`~pytdbot.filters.Filter`, *optional*):
-                An update filter.
+                An update filter
 
             position (``int``, *optional*):
-                The function position in initializers list. Defaults to ``None`` (append).
+                The function position in initializers list. Defaults to ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -52,14 +52,14 @@ class Decorators(Updates):
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> None:
-        """A decorator to finalize an event object after running all handlers.
+        """A decorator to finalize an event object after running all handlers
 
         Args:
             filters (:class:`~pytdbot.filters.Filter`, *optional*):
-                An update filter.
+                An update filter
 
             position (``int``, *optional*):
-                The function position in finalizers list. Defaults to ``None`` (append).
+                The function position in finalizers list. Defaults to ``None`` (append)
 
         Raises:
             :py:class:`TypeError`

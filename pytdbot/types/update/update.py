@@ -528,7 +528,7 @@ class Update:
 
         Args:
             message_id (``int``, *optional*):
-                The message id, If ``None``, :meth:`~pytdbot.types.Update.message_id` is used.
+                The message id, If ``None``, :meth:`~pytdbot.types.Update.message_id` is used
         """
 
         message_id = message_id or self.message_id

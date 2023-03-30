@@ -9,10 +9,10 @@ class ForceReply(ReplyMarkup):
 
         Args:
             is_personal (``bool``, *optional*):
-                True, if a forced reply must automatically be shown to the current user. For outgoing messages, specify true to show the forced reply only for the mentioned users and for the target user of a reply. Defaults to ``True``.
+                True, if a forced reply must automatically be shown to the current user. For outgoing messages, specify true to show the forced reply only for the mentioned users and for the target user of a reply. Defaults to ``True``
 
             input_field_placeholder (``str``, *optional*):
-                If non-empty, the placeholder to be shown in the input field when the keyboard is active; 0-64 characters.
+                If non-empty, the placeholder to be shown in the input field when the keyboard is active; 0-64 characters
 
         """
 
@@ -20,10 +20,10 @@ class ForceReply(ReplyMarkup):
         self.input_field_placeholder = input_field_placeholder
 
     def to_dict(self) -> dict:
-        """Converts the object to a dictionary.
+        """Converts the object to a dictionary
 
         Returns:
-            :py:class:`dict`: Force reply.
+            :py:class:`dict`: Force reply
         """
 
         return {

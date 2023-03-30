@@ -12,17 +12,17 @@ logger = getLogger(__name__)
 
 class TDjson:
     def __init__(self, lib_path: str = None, verbosity: int = 2) -> None:
-        """TDjson client.
+        """TDjson client
 
         Args:
             lib_path (``str``, optional):
-                Path to shared library. Defaults to ``None``.
+                Path to shared library. Defaults to ``None``
 
             verbosity (``int``, optional):
-                TDLib verbosity level. Defaults to ``2``.
+                TDLib verbosity level. Defaults to ``2``
 
         Raises:
-            :py:class:``ValueError``: If library not found.
+            :py:class:``ValueError``: If library not found
         """
 
         if lib_path is None:
@@ -40,14 +40,14 @@ class TDjson:
         self._build_client(lib_path, verbosity)
 
     def _build_client(self, lib_path: str, verbosity: int) -> None:
-        """Build TDjson client.
+        """Build TDjson client
 
         Args:
             lib_path (``str``):
-                Path to shared library.
+                Path to shared library
 
             verbosity (``int``):
-                TDLib verbosity level.
+                TDLib verbosity level
         """
         self._tdjson = CDLL(lib_path)
 
@@ -92,14 +92,14 @@ class TDjson:
                 logger.error("Can't set log level: {}".format(res["message"]))
 
     def receive(self, timeout: float = 2.0) -> Union[None, dict]:
-        """Receives incoming updates and results from TDLib.
+        """Receives incoming updates and results from TDLib
 
         Args:
             timeout (``float``, *optional*):
-                The maximum number of seconds allowed to wait for new data. Defaults to 2.0.
+                The maximum number of seconds allowed to wait for new data. Defaults to 2.0
 
         Returns:
-            :py:class:``dict``: An incoming update or result to a request. If no data is received, ``None`` is returned.
+            :py:class:``dict``: An incoming update or result to a request. If no data is received, ``None`` is returned
         """
         try:
             if res := self._td_receive(self.client_id, c_double(timeout)):
@@ -109,11 +109,11 @@ class TDjson:
             raise
 
     def send(self, data: dict) -> None:
-        """Sends a request to TDLib.
+        """Sends a request to TDLib
 
         Args:
             data (``dict``):
-                The request to be sent.
+                The request to be sent
         """
         try:
             self._td_send(self.client_id, dumps(data).encode("utf-8"))
@@ -122,13 +122,13 @@ class TDjson:
             raise
 
     def execute(self, data: dict) -> Union[None, dict]:
-        """Executes a TDLib request.
+        """Executes a TDLib request
 
         Args:
-            data (``dict``): The request to be executed.
+            data (``dict``): The request to be executed
 
         Returns:
-            :py:class:``dict``: The result of the request.
+            :py:class:``dict``: The result of the request
         """
         try:
             if res := self._td_execute(dumps(data).encode("utf-8")):

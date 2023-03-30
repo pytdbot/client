@@ -9,17 +9,17 @@ class RemoveKeyboard(ReplyMarkup):
 
         Args:
             is_personal (``bool``, *optional*):
-                True, if the keyboard is removed only for the mentioned users or the target user of a reply. Defaults to ``True``.
+                True, if the keyboard is removed only for the mentioned users or the target user of a reply. Defaults to ``True``
 
         """
 
         self.is_personal = is_personal
 
     def to_dict(self) -> dict:
-        """Converts the object to a dictionary.
+        """Converts the object to a dictionary
 
         Returns:
-            :py:class:`dict`: Remove keyboard.
+            :py:class:`dict`: Remove keyboard
         """
 
         return {"@type": "replyMarkupRemoveKeyboard", "is_personal": self.is_personal}

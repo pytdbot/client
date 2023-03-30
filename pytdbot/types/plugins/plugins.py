@@ -1,9 +1,9 @@
 class Plugins:
-    """Load the plugins folder and load the plugins.
+    """Load the plugins folder and load the plugins
 
     Args:
         folder (``str``):
-            The folder to load the plugins from.
+            The folder to load the plugins from
 
     Raises:
         TypeError
