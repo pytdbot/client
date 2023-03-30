@@ -129,10 +129,10 @@ class Client(Decorators, Methods):
         td_verbosity: int = 2,
         td_log: LogStream = None,
     ) -> None:
-        self.api_id = api_id
-        self.api_hash = api_hash
-        self.token = token
-        self.database_encryption_key = database_encryption_key
+        self.__api_id = api_id
+        self.__api_hash = api_hash
+        self.__token = token
+        self.__database_encryption_key = database_encryption_key
         self.files_directory = files_directory
         self.lib_path = lib_path
         self.plugins = plugins
@@ -515,12 +515,12 @@ class Client(Decorators, Methods):
         )
 
     def _check_init_args(self):
-        if not isinstance(self.api_id, int):
+        if not isinstance(self.__api_id, int):
             raise TypeError("api_id must be int")
-        elif not isinstance(self.api_hash, str):
+        elif not isinstance(self.__api_hash, str):
             raise TypeError("api_hash must be str")
-        elif not isinstance(self.database_encryption_key, str) and not isinstance(
-            self.database_encryption_key, bytes
+        elif not isinstance(self.__database_encryption_key, str) and not isinstance(
+            self.__database_encryption_key, bytes
         ):
             raise TypeError("database_encryption_key must be str or bytes")
         elif not isinstance(self.files_directory, str):
@@ -742,13 +742,15 @@ class Client(Decorators, Methods):
         Raises:
             `AuthorizationError`
         """
-        if isinstance(self.database_encryption_key, str):
-            self.database_encryption_key = self.database_encryption_key.encode("utf-8")
+        if isinstance(self.__database_encryption_key, str):
+            self.__database_encryption_key = self.__database_encryption_key.encode(
+                "utf-8"
+            )
 
         res = await self.setTdlibParameters(
             use_test_dc=self.use_test_dc,
-            api_id=self.api_id,
-            api_hash=self.api_hash,
+            api_id=self.__api_id,
+            api_hash=self.__api_hash,
             system_language_code=self.system_language_code,
             device_model=f"{python_implementation()} {python_version()}",
             use_file_database=self.use_file_database,
@@ -759,7 +761,7 @@ class Client(Decorators, Methods):
             enable_storage_optimizer=self.enable_storage_optimizer,
             ignore_file_names=self.ignore_file_names,
             files_directory=self.files_directory,
-            database_encryption_key=b64encode(self.database_encryption_key).decode(
+            database_encryption_key=b64encode(self.__database_encryption_key).decode(
                 "utf-8"
             ),
             database_directory=join_path(self.files_directory, "database"),
@@ -769,7 +771,7 @@ class Client(Decorators, Methods):
             raise AuthorizationError(res.result["message"])
 
     async def _set_bot_token(self):
-        res = await self.checkAuthenticationBotToken(self.token)
+        res = await self.checkAuthenticationBotToken(self.__token)
         if res.is_error:
             raise AuthorizationError(res.result["message"])
 
@@ -929,7 +931,7 @@ class Client(Decorators, Methods):
         if self.authorization_state != "authorizationStateWaitPhoneNumber":
             return
 
-        if not isinstance(self.token, str):
+        if not isinstance(self.__token, str):
             while self.is_running:
                 user_input = await self.__ainput("Enter a phone number or bot token: ")
 
@@ -949,10 +951,10 @@ class Client(Decorators, Methods):
                         else:
                             break
         else:
-            if ":" in self.token:
-                res = await self.checkAuthenticationBotToken(self.token)
+            if ":" in self.__token:
+                res = await self.checkAuthenticationBotToken(self.__token)
             else:
-                res = await self.setAuthenticationPhoneNumber(self.token)
+                res = await self.setAuthenticationPhoneNumber(self.__token)
 
             if res.is_error:
                 raise AuthorizationError(res["message"])
