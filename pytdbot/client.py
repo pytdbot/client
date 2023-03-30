@@ -16,7 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 from threading import current_thread, main_thread
 from ujson import dumps
 
-from .tdjson import TDJson
+from .tdjson import TdJson
 from .handlers import Decorators, Handler
 from .methods import Methods
 from .types import Plugins, Result, LogStream, Update
@@ -168,7 +168,7 @@ class Client(Decorators, Methods):
 
         self._handlers = {"initializer": [], "finalizer": []}
         self._results = {}
-        self._tdjson = TDJson(lib_path, td_verbosity)
+        self._tdjson = TdJson(lib_path, td_verbosity)
         self._executor = ThreadPoolExecutor(5, "Pytdbot")
         self._workers_tasks = None
         self._retry_after_prefex = "Too Many Requests: retry after "
