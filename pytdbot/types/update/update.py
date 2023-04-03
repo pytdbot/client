@@ -158,6 +158,24 @@ class Update:
             return self.update["inline_message_id"]
 
     @property
+    def message_thread_id(self) -> Union[int, None]:
+        """Thread id of the message
+
+        Returns:
+            :py:class:`int`
+            ``None``
+        """
+
+        if self.type in [
+            "updateNewMessage",
+            "updateMessageSendSucceeded",
+            "updateMessageSendFailed",
+        ]:
+            return self.update["message"]["message_thread_id"]
+        elif "message_thread_id" in self.update:
+            return self.update["message_thread_id"]
+
+    @property
     def reply_to_message_id(self) -> Union[int, None]:
         """The message id of the replied message
 
