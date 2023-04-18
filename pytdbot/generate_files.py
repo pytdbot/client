@@ -57,14 +57,51 @@ def getType(_type):
         return _type
 
 
+updates_dec = """def on_{update_name}(
+    self: "pytdbot.Client" = None,
+    filters: "pytdbot.filters.Filter" = None,
+    position: int = None,
+) -> Callable:
+    \"\"\"{description}
+
+    Args:
+        filters (:class:`pytdbot.filters.Filter`, *optional*):
+            An update filter
+
+        position (``int``, *optional``):
+            The function position in handlers list. Defaults to ``None`` (append)
+
+    Raises:
+        :py:class:`TypeError`
+    \"\"\"
+
+    def decorator(func: Callable) -> Callable:
+        if hasattr(func, "_handler"):
+            return func
+        elif isinstance(self, pytdbot.Client):
+            if iscoroutinefunction(func):
+                self.add_handler("{update_name}", func, filters, position)
+            else:
+                    raise TypeError("Handler must be async")
+        elif isinstance(self, pytdbot.Filter):
+            func._handler = Handler(func, "{update_name}", self, position)
+        else:
+            func._handler = Handler(func, "{update_name}", filters, position)
+        return func
+
+    return decorator
+
+"""
+
+
 def updates():
     with open("handlers/updates.py", "w") as f:
         f.write(
-            'import pytdbot\n\nfrom .handler import Handler\nfrom typing import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated tdlib updates"""\n\n'
+            'import pytdbot\n\nfrom .handler import Handler\nfrom typing import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated TDLib updates"""\n\n'
         )
         for k, v in data["updates"].items():
             f.write(
-                '    def on_{update_name}(\n        self: "pytdbot.Client" = None,\n        filters: "pytdbot.filters.Filter" = None,\n        position: int = None,\n    ) -> Callable:\n        """{description}\n\n        Args:\n            filters (:class:`pytdbot.filters.Filter`, *optional*):\n                An update filter\n\n            position (``int``, *optional*):\n                The function position in handlers list. Defaults to ``None`` (append)\n\n        Raises:\n            :py:class:`TypeError`\n        """\n\n        def decorator(func: Callable) -> Callable:\n            if hasattr(func, "_handler"):\n                return func\n            elif isinstance(self, pytdbot.Client):\n                if iscoroutinefunction(func):\n                    self.add_handler(\n                        "{update_name}", func, filters, position\n                    )\n                else:\n                    logger.warn(\n                        \'Function "{{}}" is not a coroutine function\'.format(func)\n                    )\n            else:\n                func._handler = Handler(\n                    func, "{update_name}", filters, position\n                )\n            return func\n        return decorator\n\n'.format(
+                updates_dec.format(
                     update_name=k, description=utils.escape_markdown(v["description"])
                 )
             )
@@ -73,7 +110,7 @@ def updates():
 def functions():
     with open("methods/tdlibfunctions.py", "w") as f:
         f.write(
-            'from ..types import Result\n\nclass TDLibFunctions:\n    """Auto generated tdlib functions"""\n\n'
+            'from ..types import Result\n\nclass TDLibFunctions:\n    """Auto generated TDLib functions"""\n\n'
         )
         for k, v in data["functions"].items():
             # if k.startswith("test"):

@@ -2,7 +2,7 @@ from ..types import Result
 
 
 class TDLibFunctions:
-    """Auto generated tdlib functions"""
+    """Auto generated TDLib functions"""
 
     async def getAuthorizationState(self) -> Result:
         """Returns the current authorization state; this is an offline request\. For informational purposes only\. Use updateAuthorizationState instead to maintain the current authorization state\. Can be called before initialization

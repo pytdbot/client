@@ -37,9 +37,9 @@ class Decorators(Updates):
                 if iscoroutinefunction(func):
                     self.add_handler("initializer", func, filters, position)
                 else:
-                    logger.warn(
-                        'Function "{}" is not a coroutine function'.format(func)
-                    )
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.Filter):
+                func._handler = Handler(func, "initializer", self, position)
             else:
                 func._handler = Handler(func, "initializer", filters, position)
 
@@ -72,9 +72,9 @@ class Decorators(Updates):
                 if iscoroutinefunction(func):
                     self.add_handler("finalizer", func, filters, position)
                 else:
-                    logger.warn(
-                        'Function "{}" is not a coroutine function'.format(func)
-                    )
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.Filter):
+                func._handler = Handler(func, "initializer", self, position)
             else:
                 func._handler = Handler(func, "finalizer", filters, position)
             return func
