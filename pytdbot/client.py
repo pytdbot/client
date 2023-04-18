@@ -649,12 +649,15 @@ class Client(Decorators, Methods):
     async def __run_initializers(self, update):
         for initializer in self._handlers["initializer"]:
             try:
-                if isinstance(initializer.filter, Filter):
-                    if asyncio.iscoroutinefunction(initializer.filter.func):
-                        if not await initializer.filter.func(self, update):
+                if initializer.filter is not None:
+                    filter_func = initializer.filter.func
+
+                    if asyncio.iscoroutinefunction(filter_func):
+                        if not await filter_func(self, update):
                             continue
-                    elif not initializer.filter.func(self, update):
+                    elif not filter_func(self, update):
                         continue
+
                 await initializer.func(self, update)
             except StopHandlers as e:
                 raise e
@@ -665,12 +668,14 @@ class Client(Decorators, Methods):
         update_type = update["@type"]
         for handler in self._handlers[update_type]:
             try:
-                if isinstance(handler.filter, Filter):
-                    if asyncio.iscoroutinefunction(handler.filter.func):
-                        if not await handler.filter.func(self, update):
+                if handler.filter is not None:
+                    filter_func = handler.filter.func
+                    if asyncio.iscoroutinefunction(filter_func):
+                        if not await filter_func(self, update):
                             continue
-                    elif not handler.filter.func(self, update):
+                    elif not filter_func(self, update):
                         continue
+
                 await handler.func(self, update)
             except StopHandlers as e:
                 raise e
@@ -680,24 +685,26 @@ class Client(Decorators, Methods):
     async def __run_finalizers(self, update):
         for finalizer in self._handlers["finalizer"]:
             try:
-                if isinstance(finalizer.filter, Filter):
-                    if asyncio.iscoroutinefunction(finalizer.filter.func):
-                        if not await finalizer.filter.func(self, update):
+                if finalizer.filter is not None:
+                    filter_func = finalizer.filter.func
+
+                    if asyncio.iscoroutinefunction(filter_func):
+                        if not await filter_func(self, update):
                             continue
-                    elif not finalizer.filter.func(self, update):
+                    elif not filter_func(self, update):
                         continue
+
                 await finalizer.func(self, update)
+            except StopHandlers as e:
+                raise e
             except Exception:
                 logger.exception("Finalizer {} failed".format(finalizer))
 
     async def _update_worker(self, worker_id: int):
-        if not self.is_running:
-            self.is_running = True
-
+        self.is_running = True
         while self.is_running:
             try:
                 update = await self.queue.get()
-
                 if "@type" not in update:
                     continue
 
@@ -707,13 +714,12 @@ class Client(Decorators, Methods):
                     logger.debug(
                         "w{}: Received: {}".format(worker_id, dumps(update, indent=4)),
                     )
-                update_type = update["@type"]
 
-                if update_type in self._handlers:
+                if update["@type"] in self._handlers:
+
                     update = self.update_class(self, update)
-
                     if (
-                        update_type == "updateNewMessage"
+                        update["@type"] == "updateNewMessage"
                         and update["message"]["is_outgoing"]
                         and "sending_state" in update["message"]
                     ):
@@ -721,18 +727,11 @@ class Client(Decorators, Methods):
 
                     try:
                         await self.__run_initializers(update)
+                        await self.__run_handlers(update)
                     except StopHandlers:
-                        continue  # if initializers raised StopHandlers, we should skip this update
-                    else:
-                        try:
-                            await self.__run_handlers(update)
-                        except StopHandlers:
-                            pass
-                    finally:  # and finally run finalizers after execution of initializers and handlers
-                        try:
-                            await self.__run_finalizers(update)
-                        except StopHandlers:
-                            continue
+                        pass
+                    finally:
+                        await self.__run_finalizers(update)
             except Exception:
                 logger.exception("Exception in _update_worker")
 
