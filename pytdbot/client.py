@@ -174,6 +174,7 @@ class Client(Decorators, Methods):
         self._retry_after_prefex = "Too Many Requests: retry after "
         self.__authorization_state = None
         self.__authorization = None
+        self.__cache = {"is_coro_filter": {}}
         self.__login = False
         self.__is_closing = False
 
@@ -592,6 +593,14 @@ class Client(Decorators, Methods):
                 count += 1
         logger.info("From {} plugins got {} handlers".format(count, handlers))
 
+    def is_coro_filter(self, func: Callable) -> bool:
+        if func in self.__cache["is_coro_filter"]:
+            return self.__cache["is_coro_filter"][func]
+        else:
+            is_coro = asyncio.iscoroutinefunction(func)
+            self.__cache["is_coro_filter"][func] = is_coro
+            return is_coro
+
     async def __listen_loop(self):
         try:
             self.is_running = True
@@ -652,7 +661,7 @@ class Client(Decorators, Methods):
                 if initializer.filter is not None:
                     filter_func = initializer.filter.func
 
-                    if asyncio.iscoroutinefunction(filter_func):
+                    if self.is_coro_filter(filter_func):
                         if not await filter_func(self, update):
                             continue
                     elif not filter_func(self, update):
@@ -670,7 +679,7 @@ class Client(Decorators, Methods):
             try:
                 if handler.filter is not None:
                     filter_func = handler.filter.func
-                    if asyncio.iscoroutinefunction(filter_func):
+                    if self.is_coro_filter(filter_func):
                         if not await filter_func(self, update):
                             continue
                     elif not filter_func(self, update):
@@ -688,7 +697,7 @@ class Client(Decorators, Methods):
                 if finalizer.filter is not None:
                     filter_func = finalizer.filter.func
 
-                    if asyncio.iscoroutinefunction(filter_func):
+                    if self.is_coro_filter(filter_func):
                         if not await filter_func(self, update):
                             continue
                     elif not filter_func(self, update):
