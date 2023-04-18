@@ -57,39 +57,39 @@ def getType(_type):
         return _type
 
 
-updates_dec = """def on_{update_name}(
+updates_dec = """    def on_{update_name}(
     self: "pytdbot.Client" = None,
     filters: "pytdbot.filters.Filter" = None,
     position: int = None,
 ) -> Callable:
-    \"\"\"{description}
+        \"\"\"{description}
 
-    Args:
-        filters (:class:`pytdbot.filters.Filter`, *optional*):
-            An update filter
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
 
-        position (``int``, *optional``):
-            The function position in handlers list. Defaults to ``None`` (append)
+            position (``int``, *optional``):
+                The function position in handlers list. Defaults to ``None`` (append)
 
-    Raises:
-        :py:class:`TypeError`
-    \"\"\"
+        Raises:
+            :py:class:`TypeError`
+        \"\"\"
 
-    def decorator(func: Callable) -> Callable:
-        if hasattr(func, "_handler"):
-            return func
-        elif isinstance(self, pytdbot.Client):
-            if iscoroutinefunction(func):
-                self.add_handler("{update_name}", func, filters, position)
-            else:
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("{update_name}", func, filters, position)
+                else:
                     raise TypeError("Handler must be async")
-        elif isinstance(self, pytdbot.Filter):
-            func._handler = Handler(func, "{update_name}", self, position)
-        else:
-            func._handler = Handler(func, "{update_name}", filters, position)
-        return func
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "{update_name}", self, position)
+            else:
+                func._handler = Handler(func, "{update_name}", filters, position)
+            return func
 
-    return decorator
+        return decorator
 
 """
 
