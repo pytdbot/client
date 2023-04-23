@@ -8,7 +8,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Clone Pytdbot
@@ -25,15 +25,15 @@ jobs:
         with:
           python-version: "3.9"
 
-      - name: Install PHP 7.4
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "7.4"
+      # - name: Install PHP 7.4
+      #   uses: shivammathur/setup-php@v2
+      #   with:
+      #     php-version: "7.4"
 
-      - name: Install CMake 3.25
-        uses: jwlawson/actions-setup-cmake@v1.12
-        with:
-          cmake-version: "3.25.1"
+      # - name: Install CMake 3.25
+      #   uses: jwlawson/actions-setup-cmake@v1.12
+      #   with:
+      #     cmake-version: "3.25.1"
 
       - name: Increase swap
         run: |
@@ -49,9 +49,9 @@ jobs:
         id: td
         run: |
           sudo apt-get update
-          sudo sudo apt-get install make zlib1g-dev libssl-dev gperf clang-6.0 libc++-dev libc++abi-dev -y
-          rm -rf td/build
-          mkdir td/build
+          # sudo sudo apt-get install make zlib1g-dev libssl-dev gperf clang-6.0 libc++-dev libc++abi-dev -y
+          # rm -rf td/build
+          # mkdir td/build
 
       - name: Setup variables
         id: vars
@@ -75,21 +75,21 @@ jobs:
           echo "Current TDLib version: ${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }} (${{ steps.vars.outputs.CURRENT_TDLIB_COMMIT_HASH }})"
           echo "Latest TDLib version: ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }})"
 
-      - name: Compile
-        run: |
-          cd td/build
-          CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-6.0 CXX=/usr/bin/clang++-6.0 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib -DTD_ENABLE_LTO=ON -DCMAKE_AR=/usr/bin/llvm-ar-6.0 -DCMAKE_NM=/usr/bin/llvm-nm-6.0 -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump-6.0 -DCMAKE_RANLIB=/usr/bin/llvm-ranlib-6.0 ..
-          cmake --build . --target prepare_cross_compiling
-          cmake --build . --target install -j45
+      # - name: Compile
+      #   run: |
+      #     cd td/build
+      #     CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-6.0 CXX=/usr/bin/clang++-6.0 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=../tdlib -DTD_ENABLE_LTO=ON -DCMAKE_AR=/usr/bin/llvm-ar-6.0 -DCMAKE_NM=/usr/bin/llvm-nm-6.0 -DCMAKE_OBJDUMP=/usr/bin/llvm-objdump-6.0 -DCMAKE_RANLIB=/usr/bin/llvm-ranlib-6.0 ..
+      #     cmake --build . --target prepare_cross_compiling
+      #     cmake --build . --target install -j45
 
       - name: Copy TDLib TL
         run: |
           cp td/td/generate/scheme/td_api.tl pytdbot/td_api.tl
 
-      - name: Move libtdjson.so
-        run: |
-          mkdir -p pytdbot/lib
-          mv td/tdlib/lib/libtdjson.so.${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} pytdbot/lib/libtdjson.so
+      # - name: Move libtdjson.so
+      #   run: |
+      #     mkdir -p pytdbot/lib
+      #     mv td/tdlib/lib/libtdjson.so.${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} pytdbot/lib/libtdjson.so
 
       - name: Generate Pytdbot files
         run: |
@@ -105,13 +105,13 @@ jobs:
 
           mv _types_/ types/
 
-      - name: Commit libtdjson.so
-        uses: EndBug/add-and-commit@v9
-        with:
-          message: "Update TDLib to ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (tdlib/td@${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }})"
-          add: '["pytdbot/lib/libtdjson.so","pytdbot/td_api.tl"]'
-          committer_name: GitHub Actions
-          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+      # - name: Commit libtdjson.so
+      #   uses: EndBug/add-and-commit@v9
+      #   with:
+      #     message: "Update TDLib to ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (tdlib/td@${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }})"
+      #     add: '["pytdbot/lib/libtdjson.so","pytdbot/td_api.tl"]'
+      #     committer_name: GitHub Actions
+      #     committer_email: 41898282+github-actions[bot]@users.noreply.github.com
 
       - name: Commit generated Pytdbot files
         uses: EndBug/add-and-commit@v9

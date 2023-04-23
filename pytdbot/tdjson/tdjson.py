@@ -26,15 +26,15 @@ class TdJson:
         """
 
         if lib_path is None:
-            if system() == "Linux":
-                lib_path = find_library("tdjson") or resource_filename(
-                    "pytdbot", "lib/libtdjson.so"
-                )
-            else:
-                lib_path = find_library("tdjson")
+            # if system() == "Linux":
+            #     lib_path = find_library("tdjson") or resource_filename(
+            #         "pytdbot", "lib/libtdjson.so"
+            #     )
+            # else:
+            lib_path = find_library("tdjson")
 
-            if not lib_path:
-                raise ValueError("TDLib library not found")
+        if not lib_path:
+            raise ValueError("TDLib library not found")
 
         logger.info("Initializing TdJson client with library: %s", lib_path)
         self._build_client(lib_path, verbosity)
