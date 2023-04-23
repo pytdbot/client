@@ -1007,7 +1007,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getRepliedMessage(self, chat_id: int, message_id: int) -> Result:
-        """Returns information about a message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, and topic messages without replied message respectively
+        """Returns information about a message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground and topic messages without replied message respectively
 
         Args:
             chat_id (``int``):
@@ -4292,7 +4292,7 @@ class TDLibFunctions:
 
         Args:
             bot_user_id (``int``):
-                The identifier of the target bot
+                Identifier of the target bot
 
             chat_id (``int``):
                 Identifier of the chat where the query was sent
@@ -4490,7 +4490,7 @@ class TDLibFunctions:
                 Text of the keyboardButtonTypeWebApp button, which opened the Web App
 
             data (``str``):
-                Received data
+                The data
 
 
         Returns:
@@ -5458,73 +5458,78 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getChatFilter(self, chat_filter_id: int) -> Result:
-        """Returns information about a chat filter by its identifier
+    async def getChatFolder(self, chat_folder_id: int) -> Result:
+        """Returns information about a chat folder by its identifier
 
         Args:
-            chat_filter_id (``int``):
-                Chat filter identifier
+            chat_folder_id (``int``):
+                Chat folder identifier
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``ChatFilter``)
+            :class:`~pytdbot.types.Result` (``ChatFolder``)
         """
 
         data = {
-            "@type": "getChatFilter",
-            "chat_filter_id": chat_filter_id,
+            "@type": "getChatFolder",
+            "chat_folder_id": chat_folder_id,
         }
 
         return await self.invoke(data)
 
-    async def createChatFilter(self, filter: dict) -> Result:
-        """Creates new chat filter\. Returns information about the created chat filter\. There can be up to getOption\("chat\_filter\_count\_max"\) chat filters, but the limit can be increased with Telegram Premium
+    async def createChatFolder(self, folder: dict) -> Result:
+        """Creates new chat folder\. Returns information about the created chat folder\. There can be up to getOption\("chat\_folder\_count\_max"\) chat folders, but the limit can be increased with Telegram Premium
 
         Args:
-            filter (``chatFilter``):
-                Chat filter
+            folder (``chatFolder``):
+                The new chat folder
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``ChatFilterInfo``)
+            :class:`~pytdbot.types.Result` (``ChatFolderInfo``)
         """
 
         data = {
-            "@type": "createChatFilter",
-            "filter": filter,
+            "@type": "createChatFolder",
+            "folder": folder,
         }
 
         return await self.invoke(data)
 
-    async def editChatFilter(self, chat_filter_id: int, filter: dict) -> Result:
-        """Edits existing chat filter\. Returns information about the edited chat filter
+    async def editChatFolder(self, chat_folder_id: int, folder: dict) -> Result:
+        """Edits existing chat folder\. Returns information about the edited chat folder
 
         Args:
-            chat_filter_id (``int``):
-                Chat filter identifier
+            chat_folder_id (``int``):
+                Chat folder identifier
 
-            filter (``chatFilter``):
-                The edited chat filter
+            folder (``chatFolder``):
+                The edited chat folder
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``ChatFilterInfo``)
+            :class:`~pytdbot.types.Result` (``ChatFolderInfo``)
         """
 
         data = {
-            "@type": "editChatFilter",
-            "chat_filter_id": chat_filter_id,
-            "filter": filter,
+            "@type": "editChatFolder",
+            "chat_folder_id": chat_folder_id,
+            "folder": folder,
         }
 
         return await self.invoke(data)
 
-    async def deleteChatFilter(self, chat_filter_id: int) -> Result:
-        """Deletes existing chat filter
+    async def deleteChatFolder(
+        self, chat_folder_id: int, leave_chat_ids: list
+    ) -> Result:
+        """Deletes existing chat folder
 
         Args:
-            chat_filter_id (``int``):
-                Chat filter identifier
+            chat_folder_id (``int``):
+                Chat folder identifier
+
+            leave_chat_ids (``list``):
+                Identifiers of the chats to leave\. The chats must be pinned or always included in the folder
 
 
         Returns:
@@ -5532,23 +5537,43 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "deleteChatFilter",
-            "chat_filter_id": chat_filter_id,
+            "@type": "deleteChatFolder",
+            "chat_folder_id": chat_folder_id,
+            "leave_chat_ids": leave_chat_ids,
         }
 
         return await self.invoke(data)
 
-    async def reorderChatFilters(
-        self, chat_filter_ids: list, main_chat_list_position: int
-    ) -> Result:
-        """Changes the order of chat filters
+    async def getChatFolderChatsToLeave(self, chat_folder_id: int) -> Result:
+        """Returns identifiers of pinned or always included chats from a chat folder, which are suggested to be left when the chat folder is deleted
 
         Args:
-            chat_filter_ids (``list``):
-                Identifiers of chat filters in the new correct order
+            chat_folder_id (``int``):
+                Chat folder identifier
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Chats``)
+        """
+
+        data = {
+            "@type": "getChatFolderChatsToLeave",
+            "chat_folder_id": chat_folder_id,
+        }
+
+        return await self.invoke(data)
+
+    async def reorderChatFolders(
+        self, chat_folder_ids: list, main_chat_list_position: int
+    ) -> Result:
+        """Changes the order of chat folders
+
+        Args:
+            chat_folder_ids (``list``):
+                Identifiers of chat folders in the new correct order
 
             main_chat_list_position (``int``):
-                Position of the main chat list among chat filters, 0\-based\. Can be non\-zero only for Premium users
+                Position of the main chat list among chat folders, 0\-based\. Can be non\-zero only for Premium users
 
 
         Returns:
@@ -5556,42 +5581,255 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "reorderChatFilters",
-            "chat_filter_ids": chat_filter_ids,
+            "@type": "reorderChatFolders",
+            "chat_folder_ids": chat_folder_ids,
             "main_chat_list_position": main_chat_list_position,
         }
 
         return await self.invoke(data)
 
-    async def getRecommendedChatFilters(self) -> Result:
-        """Returns recommended chat filters for the current user
+    async def getRecommendedChatFolders(self) -> Result:
+        """Returns recommended chat folders for the current user
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``RecommendedChatFilters``)
+            :class:`~pytdbot.types.Result` (``RecommendedChatFolders``)
         """
 
         data = {
-            "@type": "getRecommendedChatFilters",
+            "@type": "getRecommendedChatFolders",
         }
 
         return await self.invoke(data)
 
-    async def getChatFilterDefaultIconName(self, filter: dict) -> Result:
-        """Returns default icon name for a filter\. Can be called synchronously
+    async def getChatFolderDefaultIconName(self, folder: dict) -> Result:
+        """Returns default icon name for a folder\. Can be called synchronously
 
         Args:
-            filter (``chatFilter``):
-                Chat filter
+            folder (``chatFolder``):
+                Chat folder
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``Text``)
+            :class:`~pytdbot.types.Result` (``ChatFolderIcon``)
         """
 
         data = {
-            "@type": "getChatFilterDefaultIconName",
-            "filter": filter,
+            "@type": "getChatFolderDefaultIconName",
+            "folder": folder,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatsForChatFolderInviteLink(self, chat_folder_id: int) -> Result:
+        """Returns identifiers of chats from a chat folder, suitable for adding to a chat folder invite link
+
+        Args:
+            chat_folder_id (``int``):
+                Chat folder identifier
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Chats``)
+        """
+
+        data = {
+            "@type": "getChatsForChatFolderInviteLink",
+            "chat_folder_id": chat_folder_id,
+        }
+
+        return await self.invoke(data)
+
+    async def createChatFolderInviteLink(
+        self, chat_folder_id: int, name: str, chat_ids: list
+    ) -> Result:
+        """Creates a new invite link for a chat folder\. A link can be created for a chat folder if it has only pinned and included chats
+
+        Args:
+            chat_folder_id (``int``):
+                Chat folder identifier
+
+            name (``str``):
+                Name of the link; 0\-32 characters
+
+            chat_ids (``list``):
+                Identifiers of chats to be accessible by the invite link\. Use getChatsForChatFolderInviteLink to get suitable chats\. Basic groups will be automatically converted to supergroups before link creation
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatFolderInviteLink``)
+        """
+
+        data = {
+            "@type": "createChatFolderInviteLink",
+            "chat_folder_id": chat_folder_id,
+            "name": name,
+            "chat_ids": chat_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatFolderInviteLinks(self, chat_folder_id: int) -> Result:
+        """Returns invite links created by the current user for a shareable chat folder
+
+        Args:
+            chat_folder_id (``int``):
+                Chat folder identifier
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatFolderInviteLinks``)
+        """
+
+        data = {
+            "@type": "getChatFolderInviteLinks",
+            "chat_folder_id": chat_folder_id,
+        }
+
+        return await self.invoke(data)
+
+    async def editChatFolderInviteLink(
+        self, chat_folder_id: int, invite_link: str, name: str, chat_ids: list
+    ) -> Result:
+        """Edits an invite link for a chat folder
+
+        Args:
+            chat_folder_id (``int``):
+                Chat folder identifier
+
+            invite_link (``str``):
+                Invite link to be edited
+
+            name (``str``):
+                New name of the link; 0\-32 characters
+
+            chat_ids (``list``):
+                New identifiers of chats to be accessible by the invite link\. Use getChatsForChatFolderInviteLink to get suitable chats\. Basic groups will be automatically converted to supergroups before link editing
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatFolderInviteLink``)
+        """
+
+        data = {
+            "@type": "editChatFolderInviteLink",
+            "chat_folder_id": chat_folder_id,
+            "invite_link": invite_link,
+            "name": name,
+            "chat_ids": chat_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteChatFolderInviteLink(
+        self, chat_folder_id: int, invite_link: str
+    ) -> Result:
+        """Deletes an invite link for a chat folder
+
+        Args:
+            chat_folder_id (``int``):
+                Chat folder identifier
+
+            invite_link (``str``):
+                Invite link to be deleted
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteChatFolderInviteLink",
+            "chat_folder_id": chat_folder_id,
+            "invite_link": invite_link,
+        }
+
+        return await self.invoke(data)
+
+    async def checkChatFolderInviteLink(self, invite_link: str) -> Result:
+        """Checks the validity of an invite link for a chat folder and returns information about the corresponding chat folder
+
+        Args:
+            invite_link (``str``):
+                Invite link to be checked
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatFolderInviteLinkInfo``)
+        """
+
+        data = {
+            "@type": "checkChatFolderInviteLink",
+            "invite_link": invite_link,
+        }
+
+        return await self.invoke(data)
+
+    async def addChatFolderByInviteLink(
+        self, invite_link: str, chat_ids: list
+    ) -> Result:
+        """Adds a chat folder by an invite link
+
+        Args:
+            invite_link (``str``):
+                Invite link for the chat folder
+
+            chat_ids (``list``):
+                Identifiers of the chats added to the chat folder\. The chats are automatically joined if they aren't joined yet
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "addChatFolderByInviteLink",
+            "invite_link": invite_link,
+            "chat_ids": chat_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatFolderNewChats(self, chat_folder_id: int) -> Result:
+        """Returns new chats added to a shareable chat folder by its owner\. The method must be called at most once in getOption\("chat\_folder\_new\_chats\_update\_period"\) for the given chat folder
+
+        Args:
+            chat_folder_id (``int``):
+                Chat folder identifier
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Chats``)
+        """
+
+        data = {
+            "@type": "getChatFolderNewChats",
+            "chat_folder_id": chat_folder_id,
+        }
+
+        return await self.invoke(data)
+
+    async def processChatFolderNewChats(
+        self, chat_folder_id: int, added_chat_ids: list
+    ) -> Result:
+        """Process new chats added to a shareable chat folder by its owner
+
+        Args:
+            chat_folder_id (``int``):
+                Chat folder identifier
+
+            added_chat_ids (``list``):
+                Identifiers of the new chats, which are added to the chat folder\. The chats are automatically joined if they aren't joined yet
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "processChatFolderNewChats",
+            "chat_folder_id": chat_folder_id,
+            "added_chat_ids": added_chat_ids,
         }
 
         return await self.invoke(data)
@@ -5686,6 +5924,43 @@ class TDLibFunctions:
             "@type": "setChatPermissions",
             "chat_id": chat_id,
             "permissions": permissions,
+        }
+
+        return await self.invoke(data)
+
+    async def setChatBackground(
+        self,
+        chat_id: int,
+        dark_theme_dimming: int,
+        background: dict = None,
+        type: dict = None,
+    ) -> Result:
+        """Changes the background in a specific chat\. Supported only in private and secret chats with non\-deleted users
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            dark_theme_dimming (``int``):
+                Dimming of the background in dark themes, as a percentage; 0\-100
+
+            background (``InputBackground``, *optional*):
+                The input background to use; pass null to create a new filled background or to remove the current background
+
+            type (``BackgroundType``, *optional*):
+                Background type; pass null to remove the current background
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setChatBackground",
+            "chat_id": chat_id,
+            "background": background,
+            "type": type,
+            "dark_theme_dimming": dark_theme_dimming,
         }
 
         return await self.invoke(data)
@@ -6608,6 +6883,25 @@ class TDLibFunctions:
             "@type": "setPinnedChats",
             "chat_list": chat_list,
             "chat_ids": chat_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def readChatList(self, chat_list: dict) -> Result:
+        """Traverse all chats in a chat list and marks all messages in the chats as read
+
+        Args:
+            chat_list (``ChatList``):
+                Chat list in which to mark all chats as read
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "readChatList",
+            "chat_list": chat_list,
         }
 
         return await self.invoke(data)
@@ -10194,12 +10488,144 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def setBotInfoDescription(
-        self, language_code: str, description: str
+    async def setBotName(
+        self, bot_user_id: int, language_code: str, name: str
     ) -> Result:
-        """Sets the text shown in the chat with the bot if the chat is empty; bots only
+        """Sets the name of a bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+            language_code (``str``):
+                A two\-letter ISO 639\-1 language code\. If empty, the description will be shown to all users, for which language there are no dedicated description
+
+            name (``str``):
+                New bot's name on the specified language; 0\-64 characters; must be non\-empty if language code is empty
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBotName",
+            "bot_user_id": bot_user_id,
+            "language_code": language_code,
+            "name": name,
+        }
+
+        return await self.invoke(data)
+
+    async def getBotName(self, bot_user_id: int, language_code: str) -> Result:
+        """Returns the name of a bot in the given language\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+            language_code (``str``):
+                A two\-letter ISO 639\-1 language code or an empty string
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Text``)
+        """
+
+        data = {
+            "@type": "getBotName",
+            "bot_user_id": bot_user_id,
+            "language_code": language_code,
+        }
+
+        return await self.invoke(data)
+
+    async def setBotProfilePhoto(self, bot_user_id: int, photo: dict = None) -> Result:
+        """Changes a profile photo for a bot
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+            photo (``InputChatPhoto``, *optional*):
+                Profile photo to set; pass null to delete the chat photo
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBotProfilePhoto",
+            "bot_user_id": bot_user_id,
+            "photo": photo,
+        }
+
+        return await self.invoke(data)
+
+    async def toggleBotUsernameIsActive(
+        self, bot_user_id: int, username: str, is_active: bool
+    ) -> Result:
+        """Changes active state for a username of a bot\. The editable username can't be disabled\. May return an error with a message "USERNAMES\_ACTIVE\_TOO\_MUCH" if the maximum number of active usernames has been reached\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+            username (``str``):
+                The username to change
+
+            is_active (``bool``):
+                Pass true to activate the username; pass false to disable it
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "toggleBotUsernameIsActive",
+            "bot_user_id": bot_user_id,
+            "username": username,
+            "is_active": is_active,
+        }
+
+        return await self.invoke(data)
+
+    async def reorderActiveBotUsernames(
+        self, bot_user_id: int, usernames: list
+    ) -> Result:
+        """Changes order of active usernames of a bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+            usernames (``list``):
+                The new order of active usernames\. All currently active usernames must be specified
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "reorderActiveBotUsernames",
+            "bot_user_id": bot_user_id,
+            "usernames": usernames,
+        }
+
+        return await self.invoke(data)
+
+    async def setBotInfoDescription(
+        self, bot_user_id: int, language_code: str, description: str
+    ) -> Result:
+        """Sets the text shown in the chat with a bot if the chat is empty\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
             language_code (``str``):
                 A two\-letter ISO 639\-1 language code\. If empty, the description will be shown to all users, for which language there are no dedicated description
 
@@ -10213,16 +10639,22 @@ class TDLibFunctions:
 
         data = {
             "@type": "setBotInfoDescription",
+            "bot_user_id": bot_user_id,
             "language_code": language_code,
             "description": description,
         }
 
         return await self.invoke(data)
 
-    async def getBotInfoDescription(self, language_code: str) -> Result:
-        """Returns the text shown in the chat with the bot if the chat is empty in the given language; bots only
+    async def getBotInfoDescription(
+        self, bot_user_id: int, language_code: str
+    ) -> Result:
+        """Returns the text shown in the chat with a bot if the chat is empty in the given language\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
             language_code (``str``):
                 A two\-letter ISO 639\-1 language code or an empty string
 
@@ -10233,17 +10665,21 @@ class TDLibFunctions:
 
         data = {
             "@type": "getBotInfoDescription",
+            "bot_user_id": bot_user_id,
             "language_code": language_code,
         }
 
         return await self.invoke(data)
 
     async def setBotInfoShortDescription(
-        self, language_code: str, short_description: str
+        self, bot_user_id: int, language_code: str, short_description: str
     ) -> Result:
-        """Sets the text shown on the bot's profile page and sent together with the link when users share the bot; bots only
+        """Sets the text shown on a bot's profile page and sent together with the link when users share the bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
             language_code (``str``):
                 A two\-letter ISO 639\-1 language code\. If empty, the short description will be shown to all users, for which language there are no dedicated description
 
@@ -10257,16 +10693,22 @@ class TDLibFunctions:
 
         data = {
             "@type": "setBotInfoShortDescription",
+            "bot_user_id": bot_user_id,
             "language_code": language_code,
             "short_description": short_description,
         }
 
         return await self.invoke(data)
 
-    async def getBotInfoShortDescription(self, language_code: str) -> Result:
-        """Returns the text shown on the bot's profile page and sent together with the link when users share the bot in the given language; bots only
+    async def getBotInfoShortDescription(
+        self, bot_user_id: int, language_code: str
+    ) -> Result:
+        """Returns the text shown on a bot's profile page and sent together with the link when users share the bot in the given language\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
             language_code (``str``):
                 A two\-letter ISO 639\-1 language code or an empty string
 
@@ -10277,6 +10719,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "getBotInfoShortDescription",
+            "bot_user_id": bot_user_id,
             "language_code": language_code,
         }
 
@@ -11177,7 +11620,7 @@ class TDLibFunctions:
                 Pass true if the background is changed for a dark theme
 
             background (``InputBackground``, *optional*):
-                The input background to use; pass null to create a new filled backgrounds or to remove the current background
+                The input background to use; pass null to create a new filled background or to remove the current background
 
             type (``BackgroundType``, *optional*):
                 Background type; pass null to use the default type of the remote background or to remove the current background

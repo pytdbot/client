@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.13",
-    "commit_hash": "c95598e5e1493881d31211c1329bdbe4630f6136",
+    "version": "1.8.14",
+    "commit_hash": "328b8649d859c5ed4088a875cbb059db6029dc0d",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -1234,7 +1234,7 @@
                     "type": "int64"
                 },
                 "set_id": {
-                    "description": "The identifier of the sticker set to which the sticker belongs; 0 if none",
+                    "description": "Identifier of the sticker set to which the sticker belongs; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -1656,6 +1656,69 @@
             },
             "type": "Poll"
         },
+        "background": {
+            "description": "Describes a chat background",
+            "args": {
+                "id": {
+                    "description": "Unique background identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "is_default": {
+                    "description": "True, if this is one of default backgrounds",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_dark": {
+                    "description": "True, if the background is dark and is recommended to be used with dark theme",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "name": {
+                    "description": "Unique background name",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "document": {
+                    "description": "Document with the background; may be null. Null only for filled backgrounds",
+                    "is_optional": true,
+                    "type": "document"
+                },
+                "type": {
+                    "description": "Type of the background",
+                    "is_optional": false,
+                    "type": "BackgroundType"
+                }
+            },
+            "type": "Background"
+        },
+        "backgrounds": {
+            "description": "Contains a list of backgrounds",
+            "args": {
+                "backgrounds": {
+                    "description": "A list of backgrounds",
+                    "is_optional": false,
+                    "type": "vector<background>"
+                }
+            },
+            "type": "Backgrounds"
+        },
+        "chatBackground": {
+            "description": "Describes a background set for a specific chat",
+            "args": {
+                "background": {
+                    "description": "The background",
+                    "is_optional": false,
+                    "type": "background"
+                },
+                "dark_theme_dimming": {
+                    "description": "Dimming of the background in dark themes, as a percentage; 0-100",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChatBackground"
+        },
         "profilePhoto": {
             "description": "Describes a user profile photo",
             "args": {
@@ -1736,6 +1799,11 @@
         "userTypeBot": {
             "description": "A bot (see https://core.telegram.org/bots)",
             "args": {
+                "can_be_edited": {
+                    "description": "True, if the bot is owned by the current user and can be edited using the methods toggleBotUsernameIsActive, reorderBotActiveUsernames, setBotProfilePhoto, setBotName, setBotInfoDescription, and setBotInfoShortDescription",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_join_groups": {
                     "description": "True, if the bot can be invited to basic group and supergroup chats",
                     "is_optional": false,
@@ -2238,17 +2306,17 @@
             "description": "Describes usernames assigned to a user, a supergroup, or a channel",
             "args": {
                 "active_usernames": {
-                    "description": "List of active usernames; the first one must be shown as the primary username. The order of active usernames can be changed with reorderActiveUsernames or reorderSupergroupActiveUsernames",
+                    "description": "List of active usernames; the first one must be shown as the primary username. The order of active usernames can be changed with reorderActiveUsernames, reorderBotActiveUsernames or reorderSupergroupActiveUsernames",
                     "is_optional": false,
                     "type": "vector<string>"
                 },
                 "disabled_usernames": {
-                    "description": "List of currently disabled usernames; the username can be activated with toggleUsernameIsActive/toggleSupergroupUsernameIsActive",
+                    "description": "List of currently disabled usernames; the username can be activated with toggleUsernameIsActive, toggleBotUsernameIsActive, or toggleSupergroupUsernameIsActive",
                     "is_optional": false,
                     "type": "vector<string>"
                 },
                 "editable_username": {
-                    "description": "The active username, which can be changed with setUsername/setSupergroupUsername",
+                    "description": "The active username, which can be changed with setUsername or setSupergroupUsername",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -2403,6 +2471,26 @@
                     "description": "Default administrator rights for adding the bot to channels; may be null",
                     "is_optional": true,
                     "type": "chatAdministratorRights"
+                },
+                "edit_commands_link": {
+                    "description": "The internal link, which can be used to edit bot commands; may be null",
+                    "is_optional": true,
+                    "type": "InternalLinkType"
+                },
+                "edit_description_link": {
+                    "description": "The internal link, which can be used to edit bot description; may be null",
+                    "is_optional": true,
+                    "type": "InternalLinkType"
+                },
+                "edit_description_media_link": {
+                    "description": "The internal link, which can be used to edit the photo or animation shown in the chat with the bot if the chat is empty; may be null",
+                    "is_optional": true,
+                    "type": "InternalLinkType"
+                },
+                "edit_settings_link": {
+                    "description": "The internal link, which can be used to edit bot settings; may be null",
+                    "is_optional": true,
+                    "type": "InternalLinkType"
                 }
             },
             "type": "BotInfo"
@@ -2900,6 +2988,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "via_chat_folder_invite_link": {
+                    "description": "True, if the user has joined the chat using an invite link for a chat folder",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "approver_user_id": {
                     "description": "User identifier of the chat administrator, approved user join request",
                     "is_optional": false,
@@ -3134,7 +3227,7 @@
                     "type": "ChatMemberStatus"
                 },
                 "member_count": {
-                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through searchPublicChats, searchChatsNearby, getInactiveSupergroupChats, getSuitableDiscussionChats, getGroupsInCommon, or getUserPrivacySettingRules",
+                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through searchPublicChats, searchChatsNearby, getInactiveSupergroupChats, getSuitableDiscussionChats, getGroupsInCommon, getUserPrivacySettingRules, or in chatFolderInviteLinkInfo.missing_chat_ids",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -4439,31 +4532,47 @@
             },
             "type": "ChatType"
         },
-        "chatFilter": {
-            "description": "Represents a filter of user chats",
+        "chatFolderIcon": {
+            "description": "Represents an icon for a chat folder",
+            "args": {
+                "name": {
+                    "description": "The chosen icon name for short folder representation; one of \"All\", \"Unread\", \"Unmuted\", \"Bots\", \"Channels\", \"Groups\", \"Private\", \"Custom\", \"Setup\", \"Cat\", \"Crown\", \"Favorite\", \"Flower\", \"Game\", \"Home\", \"Love\", \"Mask\", \"Party\", \"Sport\", \"Study\", \"Trade\", \"Travel\", \"Work\", \"Airplane\", \"Book\", \"Light\", \"Like\", \"Money\", \"Note\", \"Palette\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "ChatFolderIcon"
+        },
+        "chatFolder": {
+            "description": "Represents a folder for user chats",
             "args": {
                 "title": {
-                    "description": "The title of the filter; 1-12 characters without line feeds",
+                    "description": "The title of the folder; 1-12 characters without line feeds",
                     "is_optional": false,
                     "type": "string"
                 },
-                "icon_name": {
-                    "description": "The chosen icon name for short filter representation. If non-empty, must be one of \"All\", \"Unread\", \"Unmuted\", \"Bots\", \"Channels\", \"Groups\", \"Private\", \"Custom\", \"Setup\", \"Cat\", \"Crown\", \"Favorite\", \"Flower\", \"Game\", \"Home\", \"Love\", \"Mask\", \"Party\", \"Sport\", \"Study\", \"Trade\", \"Travel\", \"Work\", \"Airplane\", \"Book\", \"Light\", \"Like\", \"Money\", \"Note\", \"Palette\". If empty, use getChatFilterDefaultIconName to get default icon name for the filter",
+                "icon": {
+                    "description": "The chosen icon for the chat folder; may be null. If null, use getChatFolderDefaultIconName to get default icon name for the folder",
                     "is_optional": true,
-                    "type": "string"
+                    "type": "chatFolderIcon"
+                },
+                "is_shareable": {
+                    "description": "True, if at least one link has been created for the folder",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "pinned_chat_ids": {
-                    "description": "The chat identifiers of pinned chats in the filtered chat list. There can be up to getOption(\"chat_filter_chosen_chat_count_max\") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
+                    "description": "The chat identifiers of pinned chats in the folder. There can be up to getOption(\"chat_folder_chosen_chat_count_max\") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
                 "included_chat_ids": {
-                    "description": "The chat identifiers of always included chats in the filtered chat list. There can be up to getOption(\"chat_filter_chosen_chat_count_max\") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
+                    "description": "The chat identifiers of always included chats in the folder. There can be up to getOption(\"chat_folder_chosen_chat_count_max\") pinned and always included non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
                 "excluded_chat_ids": {
-                    "description": "The chat identifiers of always excluded chats in the filtered chat list. There can be up to getOption(\"chat_filter_chosen_chat_count_max\") always excluded non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
+                    "description": "The chat identifiers of always excluded chats in the folder. There can be up to getOption(\"chat_folder_chosen_chat_count_max\") always excluded non-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
@@ -4508,55 +4617,113 @@
                     "type": "Bool"
                 }
             },
-            "type": "ChatFilter"
+            "type": "ChatFolder"
         },
-        "chatFilterInfo": {
-            "description": "Contains basic information about a chat filter",
+        "chatFolderInfo": {
+            "description": "Contains basic information about a chat folder",
             "args": {
                 "id": {
-                    "description": "Unique chat filter identifier",
+                    "description": "Unique chat folder identifier",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "title": {
-                    "description": "The title of the filter; 1-12 characters without line feeds",
+                    "description": "The title of the folder; 1-12 characters without line feeds",
                     "is_optional": false,
                     "type": "string"
                 },
-                "icon_name": {
-                    "description": "The chosen or default icon name for short filter representation. One of \"All\", \"Unread\", \"Unmuted\", \"Bots\", \"Channels\", \"Groups\", \"Private\", \"Custom\", \"Setup\", \"Cat\", \"Crown\", \"Favorite\", \"Flower\", \"Game\", \"Home\", \"Love\", \"Mask\", \"Party\", \"Sport\", \"Study\", \"Trade\", \"Travel\", \"Work\", \"Airplane\", \"Book\", \"Light\", \"Like\", \"Money\", \"Note\", \"Palette\"",
+                "icon": {
+                    "description": "The chosen or default icon for the chat folder",
                     "is_optional": false,
-                    "type": "string"
+                    "type": "chatFolderIcon"
+                },
+                "has_my_invite_links": {
+                    "description": "True, if the chat folder has invite links created by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
-            "type": "ChatFilterInfo"
+            "type": "ChatFolderInfo"
         },
-        "recommendedChatFilter": {
-            "description": "Describes a recommended chat filter",
+        "chatFolderInviteLink": {
+            "description": "Contains a chat folder invite link",
             "args": {
-                "filter": {
-                    "description": "The chat filter",
+                "invite_link": {
+                    "description": "The chat folder invite link",
                     "is_optional": false,
-                    "type": "chatFilter"
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the link",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_ids": {
+                    "description": "Identifiers of chats, included in the link",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "ChatFolderInviteLink"
+        },
+        "chatFolderInviteLinks": {
+            "description": "Represents a list of chat folder invite links",
+            "args": {
+                "invite_links": {
+                    "description": "List of the invite links",
+                    "is_optional": false,
+                    "type": "vector<chatFolderInviteLink>"
+                }
+            },
+            "type": "ChatFolderInviteLinks"
+        },
+        "chatFolderInviteLinkInfo": {
+            "description": "Contains information about an invite link to a chat folder",
+            "args": {
+                "chat_folder_info": {
+                    "description": "Basic information about the chat folder; chat folder identifier will be 0 if the user didn't have the chat folder yet",
+                    "is_optional": false,
+                    "type": "chatFolderInfo"
+                },
+                "missing_chat_ids": {
+                    "description": "Identifiers of the chats from the link, which aren't added to the folder yet",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                },
+                "added_chat_ids": {
+                    "description": "Identifiers of the chats from the link, which are added to the folder already",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "ChatFolderInviteLinkInfo"
+        },
+        "recommendedChatFolder": {
+            "description": "Describes a recommended chat folder",
+            "args": {
+                "folder": {
+                    "description": "The chat folder",
+                    "is_optional": false,
+                    "type": "chatFolder"
                 },
                 "description": {
-                    "description": "Chat filter description",
+                    "description": "Chat folder description",
                     "is_optional": false,
                     "type": "string"
                 }
             },
-            "type": "RecommendedChatFilter"
+            "type": "RecommendedChatFolder"
         },
-        "recommendedChatFilters": {
-            "description": "Contains a list of recommended chat filters",
+        "recommendedChatFolders": {
+            "description": "Contains a list of recommended chat folders",
             "args": {
-                "chat_filters": {
-                    "description": "List of recommended chat filters",
+                "chat_folders": {
+                    "description": "List of recommended chat folders",
                     "is_optional": false,
-                    "type": "vector<recommendedChatFilter>"
+                    "type": "vector<recommendedChatFolder>"
                 }
             },
-            "type": "RecommendedChatFilters"
+            "type": "RecommendedChatFolders"
         },
         "chatListMain": {
             "description": "A main list of chats",
@@ -4568,11 +4735,11 @@
             "args": {},
             "type": "ChatList"
         },
-        "chatListFilter": {
-            "description": "A list of chats belonging to a chat filter",
+        "chatListFolder": {
+            "description": "A list of chats added to a chat folder",
             "args": {
-                "chat_filter_id": {
-                    "description": "Chat filter identifier",
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -4801,6 +4968,11 @@
                     "description": "Current message auto-delete or self-destruct timer setting for the chat, in seconds; 0 if disabled. Self-destruct timer in secret chats starts after the message or its content is viewed. Auto-delete timer in other chats starts from the send date",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "background": {
+                    "description": "Background set for the chat; may be null if none",
+                    "is_optional": true,
+                    "type": "chatBackground"
                 },
                 "theme_name": {
                     "description": "If non-empty, name of a theme, set for the chat",
@@ -5189,10 +5361,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "in_current_chat": {
-                    "description": "True, if the inline query must be sent from the current chat",
+                "target_chat": {
+                    "description": "Target chat from which to send the inline query",
                     "is_optional": false,
-                    "type": "Bool"
+                    "type": "TargetChat"
                 }
             },
             "type": "InlineKeyboardButtonType"
@@ -8793,6 +8965,22 @@
             "args": {},
             "type": "MessageContent"
         },
+        "messageChatSetBackground": {
+            "description": "A new background was set in the chat",
+            "args": {
+                "old_background_message_id": {
+                    "description": "Identifier of the message with a previously set same background; 0 if none. Can be an identifier of a deleted message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "background": {
+                    "description": "The new background",
+                    "is_optional": false,
+                    "type": "chatBackground"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messageChatSetTheme": {
             "description": "A theme in the chat has been changed",
             "args": {
@@ -9017,6 +9205,11 @@
         "messageGiftedPremium": {
             "description": "Telegram Premium was gifted to the user",
             "args": {
+                "gifter_user_id": {
+                    "description": "The identifier of a user that gifted Telegram Premium; 0 if the gift was anonymous",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "currency": {
                     "description": "Currency for the paid amount",
                     "is_optional": false,
@@ -9026,6 +9219,16 @@
                     "description": "The paid amount, in the smallest units of the currency",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "cryptocurrency": {
+                    "description": "Cryptocurrency used to pay for the gift; may be empty if none",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "cryptocurrency_amount": {
+                    "description": "The paid amount, in the smallest units of the cryptocurrency",
+                    "is_optional": false,
+                    "type": "int64"
                 },
                 "month_count": {
                     "description": "Number of month the Telegram Premium subscription will be active",
@@ -9119,7 +9322,7 @@
                     "type": "string"
                 },
                 "data": {
-                    "description": "Received data",
+                    "description": "The data",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -11357,7 +11560,7 @@
             "description": "The speech recognition failed",
             "args": {
                 "error": {
-                    "description": "Received error",
+                    "description": "Recognition error",
                     "is_optional": false,
                     "type": "error"
                 }
@@ -12581,6 +12784,11 @@
                     "description": "Invite link used to join the chat",
                     "is_optional": false,
                     "type": "chatInviteLink"
+                },
+                "via_chat_folder_invite_link": {
+                    "description": "True, if the user has joined the chat using an invite link for a chat folder",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "ChatEventAction"
@@ -13395,13 +13603,13 @@
             "args": {},
             "type": "PremiumLimitType"
         },
-        "premiumLimitTypeChatFilterCount": {
-            "description": "The maximum number of chat filters",
+        "premiumLimitTypeChatFolderCount": {
+            "description": "The maximum number of chat folders",
             "args": {},
             "type": "PremiumLimitType"
         },
-        "premiumLimitTypeChatFilterChosenChatCount": {
-            "description": "The maximum number of pinned and always included, or always excluded chats in a chat filter",
+        "premiumLimitTypeChatFolderChosenChatCount": {
+            "description": "The maximum number of pinned and always included, or always excluded chats in a chat folder",
             "args": {},
             "type": "PremiumLimitType"
         },
@@ -13417,6 +13625,16 @@
         },
         "premiumLimitTypeBioLength": {
             "description": "The maximum length of the user's bio",
+            "args": {},
+            "type": "PremiumLimitType"
+        },
+        "premiumLimitTypeChatFolderInviteLinkCount": {
+            "description": "The maximum number of invite links for a chat folder",
+            "args": {},
+            "type": "PremiumLimitType"
+        },
+        "premiumLimitTypeShareableChatFolderCount": {
+            "description": "The maximum number of added shareable chat folders",
             "args": {},
             "type": "PremiumLimitType"
         },
@@ -13923,53 +14141,6 @@
             },
             "type": "BackgroundType"
         },
-        "background": {
-            "description": "Describes a chat background",
-            "args": {
-                "id": {
-                    "description": "Unique background identifier",
-                    "is_optional": false,
-                    "type": "int64"
-                },
-                "is_default": {
-                    "description": "True, if this is one of default backgrounds",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "is_dark": {
-                    "description": "True, if the background is dark and is recommended to be used with dark theme",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "name": {
-                    "description": "Unique background name",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "document": {
-                    "description": "Document with the background; may be null. Null only for filled backgrounds",
-                    "is_optional": true,
-                    "type": "document"
-                },
-                "type": {
-                    "description": "Type of the background",
-                    "is_optional": false,
-                    "type": "BackgroundType"
-                }
-            },
-            "type": "Background"
-        },
-        "backgrounds": {
-            "description": "Contains a list of backgrounds",
-            "args": {
-                "backgrounds": {
-                    "description": "A list of backgrounds",
-                    "is_optional": false,
-                    "type": "vector<background>"
-                }
-            },
-            "type": "Backgrounds"
-        },
         "inputBackgroundLocal": {
             "description": "A background from a local file",
             "args": {
@@ -13988,6 +14159,17 @@
                     "description": "The background identifier",
                     "is_optional": false,
                     "type": "int64"
+                }
+            },
+            "type": "InputBackground"
+        },
+        "inputBackgroundPrevious": {
+            "description": "A background previously set in the chat; for chat backgrounds only",
+            "args": {
+                "message_id": {
+                    "description": "Identifier of the message with the background",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "InputBackground"
@@ -14525,6 +14707,17 @@
                     "description": "New chat title",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "PushMessageContent"
+        },
+        "pushMessageContentChatSetBackground": {
+            "description": "A chat background was edited",
+            "args": {
+                "is_same": {
+                    "description": "True, if the set background is the same as the background of the current user",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "PushMessageContent"
@@ -15534,6 +15727,22 @@
             "args": {},
             "type": "InternalLinkType"
         },
+        "internalLinkTypeChatFolderInvite": {
+            "description": "The link is an invite link to a chat folder. Call checkChatFolderInviteLink with the given invite link to process the link",
+            "args": {
+                "invite_link": {
+                    "description": "Internal representation of the invite link",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeChatFolderSettings": {
+            "description": "The link is a link to the folder section of the app settings",
+            "args": {},
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeChatInvite": {
             "description": "The link is a chat invite link. Call checkChatInviteLink with the given invite link to process the link",
             "args": {
@@ -15552,11 +15761,6 @@
         },
         "internalLinkTypeEditProfileSettings": {
             "description": "The link is a link to the edit profile section of the app settings",
-            "args": {},
-            "type": "InternalLinkType"
-        },
-        "internalLinkTypeFilterSettings": {
-            "description": "The link is a link to the filter section of the app settings",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -17865,6 +18069,22 @@
             },
             "type": "Update"
         },
+        "updateChatBackground": {
+            "description": "The chat background was changed",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "background": {
+                    "description": "The new chat background; may be null if background was reset to default",
+                    "is_optional": true,
+                    "type": "chatBackground"
+                }
+            },
+            "type": "Update"
+        },
         "updateChatTheme": {
             "description": "The chat theme was changed",
             "args": {
@@ -18025,16 +18245,16 @@
             },
             "type": "Update"
         },
-        "updateChatFilters": {
-            "description": "The list of chat filters or a chat filter has changed",
+        "updateChatFolders": {
+            "description": "The list of chat folders or a chat folder has changed",
             "args": {
-                "chat_filters": {
-                    "description": "The new list of chat filters",
+                "chat_folders": {
+                    "description": "The new list of chat folders",
                     "is_optional": false,
-                    "type": "vector<chatFilterInfo>"
+                    "type": "vector<chatFolderInfo>"
                 },
                 "main_chat_list_position": {
-                    "description": "Position of the main chat list among chat filters, 0-based",
+                    "description": "Position of the main chat list among chat folders, 0-based",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -19230,6 +19450,11 @@
                     "is_optional": true,
                     "type": "chatInviteLink"
                 },
+                "via_chat_folder_invite_link": {
+                    "description": "True, if the user has joined the chat using an invite link for a chat folder",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "old_chat_member": {
                     "description": "Previous chat member",
                     "is_optional": false,
@@ -19871,7 +20096,7 @@
             "type": "Message"
         },
         "getRepliedMessage": {
-            "description": "Returns information about a message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, and topic messages without replied message respectively",
+            "description": "Returns information about a message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground and topic messages without replied message respectively",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat the message belongs to",
@@ -22141,7 +22366,7 @@
             "description": "Sends an inline query to a bot and returns its results. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires",
             "args": {
                 "bot_user_id": {
-                    "description": "The identifier of the target bot",
+                    "description": "Identifier of the target bot",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -22301,7 +22526,7 @@
                     "type": "string"
                 },
                 "data": {
-                    "description": "Received data",
+                    "description": "The data",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -22964,86 +23189,241 @@
             },
             "type": "Ok"
         },
-        "getChatFilter": {
-            "description": "Returns information about a chat filter by its identifier",
+        "getChatFolder": {
+            "description": "Returns information about a chat folder by its identifier",
             "args": {
-                "chat_filter_id": {
-                    "description": "Chat filter identifier",
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "ChatFilter"
+            "type": "ChatFolder"
         },
-        "createChatFilter": {
-            "description": "Creates new chat filter. Returns information about the created chat filter. There can be up to getOption(\"chat_filter_count_max\") chat filters, but the limit can be increased with Telegram Premium",
+        "createChatFolder": {
+            "description": "Creates new chat folder. Returns information about the created chat folder. There can be up to getOption(\"chat_folder_count_max\") chat folders, but the limit can be increased with Telegram Premium",
             "args": {
-                "filter": {
-                    "description": "Chat filter",
+                "folder": {
+                    "description": "The new chat folder",
                     "is_optional": false,
-                    "type": "chatFilter"
+                    "type": "chatFolder"
                 }
             },
-            "type": "ChatFilterInfo"
+            "type": "ChatFolderInfo"
         },
-        "editChatFilter": {
-            "description": "Edits existing chat filter. Returns information about the edited chat filter",
+        "editChatFolder": {
+            "description": "Edits existing chat folder. Returns information about the edited chat folder",
             "args": {
-                "chat_filter_id": {
-                    "description": "Chat filter identifier",
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "filter": {
-                    "description": "The edited chat filter",
+                "folder": {
+                    "description": "The edited chat folder",
                     "is_optional": false,
-                    "type": "chatFilter"
+                    "type": "chatFolder"
                 }
             },
-            "type": "ChatFilterInfo"
+            "type": "ChatFolderInfo"
         },
-        "deleteChatFilter": {
-            "description": "Deletes existing chat filter",
+        "deleteChatFolder": {
+            "description": "Deletes existing chat folder",
             "args": {
-                "chat_filter_id": {
-                    "description": "Chat filter identifier",
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "leave_chat_ids": {
+                    "description": "Identifiers of the chats to leave. The chats must be pinned or always included in the folder",
+                    "is_optional": false,
+                    "type": "vector<int53>"
                 }
             },
             "type": "Ok"
         },
-        "reorderChatFilters": {
-            "description": "Changes the order of chat filters",
+        "getChatFolderChatsToLeave": {
+            "description": "Returns identifiers of pinned or always included chats from a chat folder, which are suggested to be left when the chat folder is deleted",
             "args": {
-                "chat_filter_ids": {
-                    "description": "Identifiers of chat filters in the new correct order",
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Chats"
+        },
+        "reorderChatFolders": {
+            "description": "Changes the order of chat folders",
+            "args": {
+                "chat_folder_ids": {
+                    "description": "Identifiers of chat folders in the new correct order",
                     "is_optional": false,
                     "type": "vector<int32>"
                 },
                 "main_chat_list_position": {
-                    "description": "Position of the main chat list among chat filters, 0-based. Can be non-zero only for Premium users",
+                    "description": "Position of the main chat list among chat folders, 0-based. Can be non-zero only for Premium users",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
             "type": "Ok"
         },
-        "getRecommendedChatFilters": {
-            "description": "Returns recommended chat filters for the current user",
+        "getRecommendedChatFolders": {
+            "description": "Returns recommended chat folders for the current user",
             "args": {},
-            "type": "RecommendedChatFilters"
+            "type": "RecommendedChatFolders"
         },
-        "getChatFilterDefaultIconName": {
-            "description": "Returns default icon name for a filter. Can be called synchronously",
+        "getChatFolderDefaultIconName": {
+            "description": "Returns default icon name for a folder. Can be called synchronously",
             "args": {
-                "filter": {
-                    "description": "Chat filter",
+                "folder": {
+                    "description": "Chat folder",
                     "is_optional": false,
-                    "type": "chatFilter"
+                    "type": "chatFolder"
                 }
             },
-            "type": "Text"
+            "type": "ChatFolderIcon"
+        },
+        "getChatsForChatFolderInviteLink": {
+            "description": "Returns identifiers of chats from a chat folder, suitable for adding to a chat folder invite link",
+            "args": {
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Chats"
+        },
+        "createChatFolderInviteLink": {
+            "description": "Creates a new invite link for a chat folder. A link can be created for a chat folder if it has only pinned and included chats",
+            "args": {
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "name": {
+                    "description": "Name of the link; 0-32 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_ids": {
+                    "description": "Identifiers of chats to be accessible by the invite link. Use getChatsForChatFolderInviteLink to get suitable chats. Basic groups will be automatically converted to supergroups before link creation",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "ChatFolderInviteLink"
+        },
+        "getChatFolderInviteLinks": {
+            "description": "Returns invite links created by the current user for a shareable chat folder",
+            "args": {
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChatFolderInviteLinks"
+        },
+        "editChatFolderInviteLink": {
+            "description": "Edits an invite link for a chat folder",
+            "args": {
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "invite_link": {
+                    "description": "Invite link to be edited",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "name": {
+                    "description": "New name of the link; 0-32 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_ids": {
+                    "description": "New identifiers of chats to be accessible by the invite link. Use getChatsForChatFolderInviteLink to get suitable chats. Basic groups will be automatically converted to supergroups before link editing",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "ChatFolderInviteLink"
+        },
+        "deleteChatFolderInviteLink": {
+            "description": "Deletes an invite link for a chat folder",
+            "args": {
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "invite_link": {
+                    "description": "Invite link to be deleted",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "checkChatFolderInviteLink": {
+            "description": "Checks the validity of an invite link for a chat folder and returns information about the corresponding chat folder",
+            "args": {
+                "invite_link": {
+                    "description": "Invite link to be checked",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "ChatFolderInviteLinkInfo"
+        },
+        "addChatFolderByInviteLink": {
+            "description": "Adds a chat folder by an invite link",
+            "args": {
+                "invite_link": {
+                    "description": "Invite link for the chat folder",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_ids": {
+                    "description": "Identifiers of the chats added to the chat folder. The chats are automatically joined if they aren't joined yet",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "Ok"
+        },
+        "getChatFolderNewChats": {
+            "description": "Returns new chats added to a shareable chat folder by its owner. The method must be called at most once in getOption(\"chat_folder_new_chats_update_period\") for the given chat folder",
+            "args": {
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Chats"
+        },
+        "processChatFolderNewChats": {
+            "description": "Process new chats added to a shareable chat folder by its owner",
+            "args": {
+                "chat_folder_id": {
+                    "description": "Chat folder identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "added_chat_ids": {
+                    "description": "Identifiers of the new chats, which are added to the chat folder. The chats are automatically joined if they aren't joined yet",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "Ok"
         },
         "setChatTitle": {
             "description": "Changes the chat title. Supported only for basic groups, supergroups and channels. Requires can_change_info administrator right",
@@ -23105,6 +23485,32 @@
                     "description": "New non-administrator members permissions in the chat",
                     "is_optional": false,
                     "type": "chatPermissions"
+                }
+            },
+            "type": "Ok"
+        },
+        "setChatBackground": {
+            "description": "Changes the background in a specific chat. Supported only in private and secret chats with non-deleted users",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "background": {
+                    "description": "The input background to use; pass null to create a new filled background or to remove the current background",
+                    "is_optional": true,
+                    "type": "InputBackground"
+                },
+                "type": {
+                    "description": "Background type; pass null to remove the current background",
+                    "is_optional": true,
+                    "type": "BackgroundType"
+                },
+                "dark_theme_dimming": {
+                    "description": "Dimming of the background in dark themes, as a percentage; 0-100",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "Ok"
@@ -23706,6 +24112,17 @@
                     "description": "The new list of pinned chats",
                     "is_optional": false,
                     "type": "vector<int53>"
+                }
+            },
+            "type": "Ok"
+        },
+        "readChatList": {
+            "description": "Traverse all chats in a chat list and marks all messages in the chats as read",
+            "args": {
+                "chat_list": {
+                    "description": "Chat list in which to mark all chats as read",
+                    "is_optional": false,
+                    "type": "ChatList"
                 }
             },
             "type": "Ok"
@@ -26048,9 +26465,104 @@
             },
             "type": "Ok"
         },
-        "setBotInfoDescription": {
-            "description": "Sets the text shown in the chat with the bot if the chat is empty; bots only",
+        "setBotName": {
+            "description": "Sets the name of a bot. Can be called only if userTypeBot.can_be_edited == true",
             "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "language_code": {
+                    "description": "A two-letter ISO 639-1 language code. If empty, the description will be shown to all users, for which language there are no dedicated description",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "name": {
+                    "description": "New bot's name on the specified language; 0-64 characters; must be non-empty if language code is empty",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "getBotName": {
+            "description": "Returns the name of a bot in the given language. Can be called only if userTypeBot.can_be_edited == true",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "language_code": {
+                    "description": "A two-letter ISO 639-1 language code or an empty string",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Text"
+        },
+        "setBotProfilePhoto": {
+            "description": "Changes a profile photo for a bot",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "photo": {
+                    "description": "Profile photo to set; pass null to delete the chat photo",
+                    "is_optional": true,
+                    "type": "InputChatPhoto"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleBotUsernameIsActive": {
+            "description": "Changes active state for a username of a bot. The editable username can't be disabled. May return an error with a message \"USERNAMES_ACTIVE_TOO_MUCH\" if the maximum number of active usernames has been reached. Can be called only if userTypeBot.can_be_edited == true",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "username": {
+                    "description": "The username to change",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_active": {
+                    "description": "Pass true to activate the username; pass false to disable it",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "reorderActiveBotUsernames": {
+            "description": "Changes order of active usernames of a bot. Can be called only if userTypeBot.can_be_edited == true",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "usernames": {
+                    "description": "The new order of active usernames. All currently active usernames must be specified",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "Ok"
+        },
+        "setBotInfoDescription": {
+            "description": "Sets the text shown in the chat with a bot if the chat is empty. Can be called only if userTypeBot.can_be_edited == true",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "language_code": {
                     "description": "A two-letter ISO 639-1 language code. If empty, the description will be shown to all users, for which language there are no dedicated description",
                     "is_optional": false,
@@ -26065,8 +26577,13 @@
             "type": "Ok"
         },
         "getBotInfoDescription": {
-            "description": "Returns the text shown in the chat with the bot if the chat is empty in the given language; bots only",
+            "description": "Returns the text shown in the chat with a bot if the chat is empty in the given language. Can be called only if userTypeBot.can_be_edited == true",
             "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "language_code": {
                     "description": "A two-letter ISO 639-1 language code or an empty string",
                     "is_optional": false,
@@ -26076,8 +26593,13 @@
             "type": "Text"
         },
         "setBotInfoShortDescription": {
-            "description": "Sets the text shown on the bot's profile page and sent together with the link when users share the bot; bots only",
+            "description": "Sets the text shown on a bot's profile page and sent together with the link when users share the bot. Can be called only if userTypeBot.can_be_edited == true",
             "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "language_code": {
                     "description": "A two-letter ISO 639-1 language code. If empty, the short description will be shown to all users, for which language there are no dedicated description",
                     "is_optional": false,
@@ -26092,8 +26614,13 @@
             "type": "Ok"
         },
         "getBotInfoShortDescription": {
-            "description": "Returns the text shown on the bot's profile page and sent together with the link when users share the bot in the given language; bots only",
+            "description": "Returns the text shown on a bot's profile page and sent together with the link when users share the bot in the given language. Can be called only if userTypeBot.can_be_edited == true",
             "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "language_code": {
                     "description": "A two-letter ISO 639-1 language code or an empty string",
                     "is_optional": false,
@@ -26657,7 +27184,7 @@
             "description": "Changes the background selected by the user; adds background to the list of installed backgrounds",
             "args": {
                 "background": {
-                    "description": "The input background to use; pass null to create a new filled backgrounds or to remove the current background",
+                    "description": "The input background to use; pass null to create a new filled background or to remove the current background",
                     "is_optional": true,
                     "type": "InputBackground"
                 },
