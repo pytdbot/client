@@ -105,13 +105,13 @@ jobs:
 
           mv _types_/ types/
 
-      # - name: Commit libtdjson.so
-      #   uses: EndBug/add-and-commit@v9
-      #   with:
-      #     message: "Update TDLib to ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (tdlib/td@${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }})"
-      #     add: '["pytdbot/lib/libtdjson.so","pytdbot/td_api.tl"]'
-      #     committer_name: GitHub Actions
-      #     committer_email: 41898282+github-actions[bot]@users.noreply.github.com
+      - name: Commit TDLib files
+        uses: EndBug/add-and-commit@v9
+        with:
+          message: "Update TDLib to ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (tdlib/td@${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }})"
+          add: '["pytdbot/td_api.tl"]'
+          committer_name: GitHub Actions
+          committer_email: 41898282+github-actions[bot]@users.noreply.github.com
 
       - name: Commit generated Pytdbot files
         uses: EndBug/add-and-commit@v9
