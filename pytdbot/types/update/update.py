@@ -3,6 +3,7 @@ import pytdbot
 from base64 import b64decode
 from typing import Union
 from ujson import dumps
+from functools import lru_cache
 from pytdbot.utils import escape_html, escape_markdown
 from pytdbot.types import (
     Result,
@@ -96,6 +97,7 @@ class Update:
         return dumps(self.update, indent=4)
 
     @property
+    @lru_cache(1)
     def chat_id(self) -> Union[int, None]:
         """The chat id of the update
 
@@ -114,6 +116,7 @@ class Update:
             return self.update["chat_id"]
 
     @property
+    @lru_cache(1)
     def from_id(self) -> Union[int, None]:
         """The user id of the sender of the update
 
@@ -139,6 +142,7 @@ class Update:
             return self.update["actor_user_id"]
 
     @property
+    @lru_cache(1)
     def message_id(self) -> Union[int, None]:
         """The message id of the received update
 
@@ -159,6 +163,7 @@ class Update:
             return self.update["inline_message_id"]
 
     @property
+    @lru_cache(1)
     def message_thread_id(self) -> Union[int, None]:
         """Thread id of the message
 
@@ -177,6 +182,7 @@ class Update:
             return self.update["message_thread_id"]
 
     @property
+    @lru_cache(1)
     def reply_to_message_id(self) -> Union[int, None]:
         """The message id of the replied message
 
@@ -193,6 +199,7 @@ class Update:
             return self.update["message"]["reply_to_message_id"]
 
     @property
+    @lru_cache(1)
     def content_type(self) -> Union[str, None]:
         """The content type of the received message
 
@@ -211,6 +218,7 @@ class Update:
             return self.update["new_content"]["@type"]
 
     @property
+    @lru_cache(1)
     def sender_type(self) -> Union[str, None]:
         """The message sender type of received message
 
@@ -230,6 +238,7 @@ class Update:
                 return "user"
 
     @property
+    @lru_cache(1)
     def text(self) -> str:
         """The text of the message
 
@@ -246,6 +255,7 @@ class Update:
         return ""
 
     @property
+    @lru_cache(1)
     def entities(self) -> Union[list, None]:
         """The entities of the message
 
@@ -270,6 +280,7 @@ class Update:
                 return self.update["new_content"]["caption"]["entities"]
 
     @property
+    @lru_cache(1)
     def caption(self) -> Union[str, None]:
         """The caption of the received media
 
@@ -290,6 +301,7 @@ class Update:
                 return self.update["new_content"]["caption"]["text"]
 
     @property
+    @lru_cache(1)
     def data(self) -> Union[str, None]:
         """The callback data
 
@@ -298,19 +310,16 @@ class Update:
             ``None``
         """
 
-        if "data" in self._store:
-            return self._store["data"]
-        elif self.type in ["updateNewCallbackQuery", "updateNewInlineCallbackQuery"]:
+        if self.type in ["updateNewCallbackQuery", "updateNewInlineCallbackQuery"]:
             if self.update["payload"]["@type"] in [
                 "callbackQueryPayloadData",
                 "callbackQueryPayloadDataWithPassword",
             ]:
-                decoded_data = b64decode(self.update["payload"]["data"]).decode("utf-8")
-                self._store["data"] = decoded_data
-                return decoded_data
+                return b64decode(self.update["payload"]["data"]).decode("utf-8")
         return ""
 
     @property
+    @lru_cache(1)
     def query(self) -> Union[str, None]:
         """The query of the inline query or the chosen inline result
 
@@ -324,6 +333,7 @@ class Update:
         return ""
 
     @property
+    @lru_cache(1)
     def local_file_id(self) -> int:
         """Local file id
 
@@ -358,6 +368,7 @@ class Update:
                 return self.update["message"]["content"]["video_note"]["video"]["id"]
 
     @property
+    @lru_cache(1)
     def remote_file_id(self) -> str:
         """Remote file id
 
@@ -406,6 +417,7 @@ class Update:
                 ]["id"]
 
     @property
+    @lru_cache(1)
     def remote_unique_id(self) -> str:
         """Remote unique id
 
@@ -454,6 +466,7 @@ class Update:
                 ]["unique_id"]
 
     @property
+    @lru_cache(1)
     def is_user(self) -> bool:
         """True, if the update is sent by regular user
 
@@ -469,6 +482,7 @@ class Update:
         return False
 
     @property
+    @lru_cache(1)
     def is_private(self) -> bool:
         """True, if the update is sent on private chat
 
@@ -481,6 +495,7 @@ class Update:
         return False
 
     @property
+    @lru_cache(1)
     def is_service(self) -> bool:
         """True, if the update is service message
 
@@ -491,6 +506,7 @@ class Update:
         return self.content_type in self.SERVICE_MESSAGE_TYPES
 
     @property
+    @lru_cache(1)
     def is_self(self) -> bool:
         """True, if the message is sent by the current user
 
