@@ -68,6 +68,7 @@ class Update:
         "messageProximityAlertTriggered",
         "messageUserShared",
         "messageChatShared",
+        "messageChatSetBackground",
     ]
 
     def __init__(self, client: "pytdbot.Client", update: dict) -> None:
