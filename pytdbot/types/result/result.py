@@ -3,6 +3,8 @@ from binascii import hexlify
 from asyncio import Event
 from ujson import dumps
 
+RETRY_AFTER_PREFEX = "Too Many Requests: retry after "
+
 
 class Result:
     """Result object.
@@ -20,8 +22,10 @@ class Result:
         self.id = hexlify(urandom(9)).decode()
         request["@extra"] = {"id": self.id}
         self.request = request
-        self.is_error = False
         self.is_processed = False
+        self.is_error = False
+        self.is_limited = False
+        self.limited_seconds = 0
         self.result = {}
         self.type = None
         self._event = Event()
@@ -61,12 +65,19 @@ class Result:
             result (``dict``):
                 The result object
         """
+
         self.result = result
         self.type = result["@type"]
         self.is_processed = True
 
         if self.type == "error":
             self.is_error = True
+
+            if RETRY_AFTER_PREFEX in self.result["message"]:
+                self.is_limited = True
+                self.limited_seconds = int(
+                    self.result["message"].removeprefix(RETRY_AFTER_PREFEX)
+                )
 
         if "@extra" in result:
             del self.result["@extra"]
@@ -79,6 +90,7 @@ class Result:
         Returns:
             :py:class:``bool``: ``True`` on success
         """
+
         self.is_error = False
         self.is_processed = False
         self.result = {}
