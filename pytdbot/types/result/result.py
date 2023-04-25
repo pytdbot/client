@@ -31,7 +31,7 @@ class Result:
         self._event = Event()
 
     def __str__(self):
-        if self.result == {}:
+        if not self.is_processed:
             return "result not processed yet"
         else:
             return dumps(self.result, indent=4)
