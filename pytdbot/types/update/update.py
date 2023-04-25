@@ -704,6 +704,7 @@ class Update:
         """
 
         if isinstance(self.chat_id, int):
+            message_thread_id = message_thread_id or self.message_thread_id
             return ChatActions(self.client, self.chat_id, action, message_thread_id)
         else:
             raise ValueError("Unknown chat_id")
@@ -877,6 +878,7 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
+            message_thread_id = message_thread_id or self.message_thread_id
             return await self.client.sendTextMessage(
                 self.chat_id,
                 text,
@@ -993,6 +995,7 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
+            message_thread_id = message_thread_id or self.message_thread_id
             return await self.client.sendAnimation(
                 self.chat_id,
                 animation,
@@ -1106,6 +1109,7 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
+            message_thread_id = message_thread_id or self.message_thread_id
             return await self.client.sendAudio(
                 self.chat_id,
                 audio,
@@ -1205,6 +1209,7 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
+            message_thread_id = message_thread_id or self.message_thread_id
             return await self.client.sendDocument(
                 self.chat_id,
                 document,
@@ -1293,6 +1298,7 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
+            message_thread_id = message_thread_id or self.message_thread_id
             return await self.client.sendSticker(
                 self.chat_id,
                 sticker,
@@ -1403,6 +1409,7 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
+            message_thread_id = message_thread_id or self.message_thread_id
             return await self.client.sendVideo(
                 self.chat_id,
                 video,
@@ -1503,6 +1510,7 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
+            message_thread_id = message_thread_id or self.message_thread_id
             return await self.client.sendPhoto(
                 self.chat_id,
                 photo,
@@ -1603,6 +1611,7 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
+            message_thread_id = message_thread_id or self.message_thread_id
             return await self.client.sendVoice(
                 self.chat_id,
                 voice,
