@@ -548,7 +548,6 @@ class Client(Decorators, Methods):
         Returns:
             py:class:`int`
         """
-        assert isinstance(error_message, str), "error_message must be str"
 
         try:
             return int(error_message.removeprefix(self._retry_after_prefex))
