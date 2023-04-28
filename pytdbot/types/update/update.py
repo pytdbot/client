@@ -16,6 +16,50 @@ from pytdbot.types import (
 )
 from .chatActions import ChatActions
 
+SERVICE_MESSAGE_TYPES = [
+    "messageChatAddMembers",
+    "messageBasicGroupChatCreate",
+    "messageChatChangePhoto",
+    "messageChatChangeTitle",
+    "messageChatDeleteMember",
+    "messageChatDeletePhoto",
+    "messageChatJoinByLink",
+    "messageChatJoinByRequest",
+    "messageChatSetTheme",
+    "messageChatUpgradeFrom",
+    "messageChatUpgradeTo",
+    "messageCustomServiceAction",
+    "messageGameScore",
+    "messageInviteVideoChatParticipants",
+    "messagePinMessage",
+    "messageSupergroupChatCreate",
+    "messageVideoChatEnded",
+    "messageVideoChatScheduled",
+    "messageVideoChatStarted",
+    "messageBotWriteAccessAllowed",
+    "messageScreenshotTaken",
+    "messageChatSetTheme",
+    "messageChatSetMessageAutoDeleteTime",
+    "messageForumTopicCreated",
+    "messageForumTopicEdited",
+    "messageForumTopicIsClosedToggled",
+    "messageForumTopicIsHiddenToggled",
+    "messageSuggestProfilePhoto",
+    "messagePaymentSuccessful",
+    "messagePaymentSuccessfulBot",
+    "messageGiftedPremium",
+    "messageContactRegistered",
+    "messageWebsiteConnected",
+    "messageWebAppDataSent",
+    "messageWebAppDataReceived",
+    "messagePassportDataSent",
+    "messagePassportDataReceived",
+    "messageProximityAlertTriggered",
+    "messageUserShared",
+    "messageChatShared",
+    "messageChatSetBackground",
+]
+
 
 class Update:
     """Wrapper for the updates
@@ -27,50 +71,6 @@ class Update:
         update (``dict``):
             The update received from TDLib
     """
-
-    SERVICE_MESSAGE_TYPES = [
-        "messageChatAddMembers",
-        "messageBasicGroupChatCreate",
-        "messageChatChangePhoto",
-        "messageChatChangeTitle",
-        "messageChatDeleteMember",
-        "messageChatDeletePhoto",
-        "messageChatJoinByLink",
-        "messageChatJoinByRequest",
-        "messageChatSetTheme",
-        "messageChatUpgradeFrom",
-        "messageChatUpgradeTo",
-        "messageCustomServiceAction",
-        "messageGameScore",
-        "messageInviteVideoChatParticipants",
-        "messagePinMessage",
-        "messageSupergroupChatCreate",
-        "messageVideoChatEnded",
-        "messageVideoChatScheduled",
-        "messageVideoChatStarted",
-        "messageBotWriteAccessAllowed",
-        "messageScreenshotTaken",
-        "messageChatSetTheme",
-        "messageChatSetMessageAutoDeleteTime",
-        "messageForumTopicCreated",
-        "messageForumTopicEdited",
-        "messageForumTopicIsClosedToggled",
-        "messageForumTopicIsHiddenToggled",
-        "messageSuggestProfilePhoto",
-        "messagePaymentSuccessful",
-        "messagePaymentSuccessfulBot",
-        "messageGiftedPremium",
-        "messageContactRegistered",
-        "messageWebsiteConnected",
-        "messageWebAppDataSent",
-        "messageWebAppDataReceived",
-        "messagePassportDataSent",
-        "messagePassportDataReceived",
-        "messageProximityAlertTriggered",
-        "messageUserShared",
-        "messageChatShared",
-        "messageChatSetBackground",
-    ]
 
     def __init__(self, client: "pytdbot.Client", update: dict) -> None:
         self.client = client
@@ -503,7 +503,7 @@ class Update:
             :py:class:`bool`
         """
 
-        return self.content_type in self.SERVICE_MESSAGE_TYPES
+        return self.content_type in SERVICE_MESSAGE_TYPES
 
     @property
     @lru_cache(1)
