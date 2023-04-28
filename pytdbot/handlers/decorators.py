@@ -74,7 +74,7 @@ class Decorators(Updates):
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "initializer", self, position)
+                func._handler = Handler(func, "finalizer", self, position)
             else:
                 func._handler = Handler(func, "finalizer", filters, position)
             return func
