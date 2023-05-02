@@ -1,5 +1,4 @@
-from os import urandom
-from binascii import hexlify
+from secrets import token_hex
 from asyncio import Event
 from ujson import dumps
 
@@ -19,7 +18,7 @@ class Result:
         self,
         request: dict,
     ) -> None:
-        self.id = hexlify(urandom(9)).decode()
+        self.id = token_hex(16)
         request["@extra"] = {"id": self.id}
         self.request = request
         self.is_processed = False
