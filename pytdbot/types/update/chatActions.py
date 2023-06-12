@@ -41,7 +41,7 @@ class ChatActions:
         elif action == "upload_video_note" or action == "chatActionUploadingVideoNote":
             self.action = "chatActionUploadingVideoNote"
         else:
-            raise ValueError("Unknown action type {}".format(action))
+            raise ValueError(f"Unknown action type {action}")
 
     async def sendAction(self):
         return await self.client.sendChatAction(

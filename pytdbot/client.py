@@ -216,7 +216,6 @@ class Client(Decorators, Methods):
                 Login after start. Defaults to ``True``
         """
         if not self.is_running:
-
             logger.info("Starting pytdbot client...")
 
             self._workers_tasks = [
@@ -251,14 +250,14 @@ class Client(Decorators, Methods):
 
         self.me = await self.getMe()
         if self.me.is_error:
-            logger.error("Get me error: {}".format(self.me["message"]))
+            logger.error(f"Get me error: {self.me['message']}")
 
         self.me = self.me.result
         self.is_authenticated = True
         logger.info(
             "Logged in as {} {}".format(
                 self.me["first_name"],
-                self.me["id"].__str__()
+                str(self.me["id"])
                 if "usernames" not in self.me
                 else "@" + self.me["usernames"]["editable_username"],
             )
@@ -360,7 +359,7 @@ class Client(Decorators, Methods):
         if (
             logger.root.level >= DEBUG
         ):  # dumping all requests may create performance issues
-            logger.debug("Sending: {}".format(dumps(result.request, indent=4)))
+            logger.debug(f"Sending: {dumps(result.request, indent=4)}")
 
         self.__send(result.request)
         await result
@@ -373,9 +372,7 @@ class Client(Decorators, Methods):
                     result.reset()
 
                     logger.error(
-                        "Sleeping for {}s (Caused by {})".format(
-                            retry_after, result.request["@type"]
-                        )
+                        f"Sleeping for {retry_after}s (Caused by {result.request['@type']})"
                     )
 
                     await asyncio.sleep(retry_after)
@@ -389,18 +386,16 @@ class Client(Decorators, Methods):
             ):
                 chat_id = result.request["chat_id"]
 
-                logger.debug("Attempt to load chat {}".format(chat_id))
+                logger.debug(f"Attempt to load chat {chat_id}")
 
                 load_chat = await self.getChat(chat_id)
 
                 if not load_chat.is_error:
-                    logger.debug("Chat {} is loaded".format(chat_id))
+                    logger.debug(f"Chat {chat_id} is loaded")
 
-                    message_id = 0
-                    if "reply_to_message_id" in result.request:
-                        message_id = result.request["reply_to_message_id"]
-                    elif "message_id" in result.request:
-                        message_id = result.request["message_id"]
+                    message_id = result.request.get(
+                        "reply_to_message_id", 0
+                    ) or result.request.get("message_id", 0)
 
                     # If there is a message_id then
                     # we need to load it to avoid MESSAGE_NOT_FOUND
@@ -413,7 +408,7 @@ class Client(Decorators, Methods):
                     self.__send(result.request)
                     await result
                 else:
-                    logger.error("Couldn't load chat {}".format(chat_id))
+                    logger.error(f"Couldn't load chat {chat_id}")
 
         return result
 
@@ -562,9 +557,9 @@ class Client(Decorators, Methods):
             try:
                 module = import_module(module_path)
             except Exception:
-                logger.exception("Failed to load plugin {}".format(module_path))
+                logger.exception(f"Failed to load plugin {module_path}")
             else:
-                logger.debug("Plugin {} loaded".format(module_path))
+                logger.debug(f"Plugin {module_path} loaded")
                 for name in dir(module):
                     obj = getattr(module, name)
                     if hasattr(obj, "_handler") and isinstance(obj._handler, Handler):
@@ -576,21 +571,15 @@ class Client(Decorators, Methods):
                                 obj._handler.position,
                             )
                             logger.debug(
-                                "Handler {} added from {}".format(
-                                    obj._handler.func,
-                                    module_path,
-                                )
+                                f"Handler {obj._handler.func} added from {module_path}"
                             )
                             handlers += 1
                         else:
                             logger.warn(
-                                "Handler {} is not an async function from module {}".format(
-                                    obj._handler.func,
-                                    module_path,
-                                )
+                                f"Handler {obj._handler.func} is not an async function from module {module_path}"
                             )
                 count += 1
-        logger.info("From {} plugins got {} handlers".format(count, handlers))
+        logger.info(f"From {count} plugins got {handlers} handlers")
 
     def is_coro_filter(self, func: Callable) -> bool:
         if func in self.__cache["is_coro_filter"]:
@@ -621,23 +610,18 @@ class Client(Decorators, Methods):
             del update["@client_id"]
 
         if "@type" not in update:
-            logger.error("Unexpected update received: {}".format(update))
+            logger.error(f"Unexpected update received: {update}")
             return
         elif "@extra" in update:
             if (
                 logger.root.level >= DEBUG
             ):  # dumping all results may create performance issues
-                logger.debug("Recieved: {}".format(dumps(update, indent=4)))
+                logger.debug(f"Received: {dumps(update, indent=4)}")
             if update["@extra"]["id"] in self._results:
                 result: Result = self._results.pop(update["@extra"]["id"])
                 result.set_result(update)
             elif update["@type"] == "error" and "option" in update["@extra"]:
-                logger.error(
-                    "{}: {}".format(
-                        update["@extra"]["option"],
-                        update["message"],
-                    )
-                )
+                logger.error(f"{update['@extra']['option']}: {update['message']}")
         else:
             if update["@type"] == "updateAuthorizationState":
                 self.loop.create_task(self.__handle_authorization_state(update))
@@ -670,7 +654,7 @@ class Client(Decorators, Methods):
             except StopHandlers as e:
                 raise e
             except Exception:
-                logger.exception("Initializer {} failed".format(initializer))
+                logger.exception(f"Initializer {initializer} failed")
 
     async def __run_handlers(self, update):
         update_type = update["@type"]
@@ -688,7 +672,7 @@ class Client(Decorators, Methods):
             except StopHandlers as e:
                 raise e
             except Exception:
-                logger.exception("Exception in {}".format(handler))
+                logger.exception(f"Exception in {handler}")
 
     async def __run_finalizers(self, update):
         for finalizer in self._handlers["finalizer"]:
@@ -706,7 +690,7 @@ class Client(Decorators, Methods):
             except StopHandlers as e:
                 raise e
             except Exception:
-                logger.exception("Finalizer {} failed".format(finalizer))
+                logger.exception(f"Finalizer {finalizer} failed")
 
     async def _update_worker(self, worker_id: int):
         self.is_running = True
@@ -720,11 +704,10 @@ class Client(Decorators, Methods):
                     logger.root.level >= DEBUG
                 ):  # dumping all updates can create performance issues
                     logger.debug(
-                        "w{}: Received: {}".format(worker_id, dumps(update, indent=4)),
+                        f"w{worker_id}: Received: {dumps(update, indent=4)}",
                     )
 
                 if update["@type"] in self._handlers:
-
                     update = self.update_class(self, update)
                     if (
                         update["@type"] == "updateNewMessage"
@@ -806,7 +789,7 @@ class Client(Decorators, Methods):
                     "@extra": {"option": k, "value": v, "id": ""},
                 }
             )
-            logger.debug("Option {} sent with value {}".format(k, str(v)))
+            logger.debug(f"Option {k} sent with value {v}")
 
     async def __handle_authorization_state(self, update):
         if update["@type"] == "updateAuthorizationState":
@@ -815,9 +798,7 @@ class Client(Decorators, Methods):
             self.__authorization = update["authorization_state"]
 
             logger.info(
-                "Authorization state changed to {}".format(
-                    self.authorization_state.removeprefix("authorizationState"),
-                )
+                f"Authorization state changed to {self.authorization_state.removeprefix('authorizationState')}"
             )
 
             if self.__login:
@@ -850,24 +831,18 @@ class Client(Decorators, Methods):
         if update["@type"] == "updateConnectionState":
             self.connection_state: str = update["state"]["@type"]
             logger.info(
-                "Connection state changed to {}".format(
-                    self.connection_state.removeprefix("connectionState"),
-                )
+                f"Connection state changed to {self.connection_state.removeprefix('connectionState')}"
             )
 
     async def __handle_update_message_succeeded(self, update):
-        m_id = (
-            update["old_message_id"].__str__() + update["message"]["chat_id"].__str__()
-        )
+        m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
 
         if m_id in self._results:
             result: Result = self._results.pop(m_id)
             result.set_result(update["message"])
 
     async def __handle_update_message_failed(self, update):
-        m_id = (
-            update["old_message_id"].__str__() + update["message"]["chat_id"].__str__()
-        )
+        m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
 
         if m_id in self._results:
             if update["error_code"] == 429:
@@ -877,17 +852,14 @@ class Client(Decorators, Methods):
                     result: Result = self._results.pop(m_id)
 
                     logger.error(
-                        "Sleeping for {}s (Caused by {})".format(
-                            int(retry_after), result.request["@type"]
-                        )
+                        f"Sleeping for {retry_after}s (Caused by {result.request['@type']})"
                     )
 
                     await asyncio.sleep(retry_after)
                     res = await self.invoke(result.request)
 
                     self._results[
-                        res.result["id"].__str__()
-                        + update["message"]["chat_id"].__str__()
+                        str(res.result["id"]) + str(update["message"]["chat_id"])
                     ] = result
             else:
                 result: Result = self._results.pop(m_id)
@@ -900,7 +872,6 @@ class Client(Decorators, Methods):
                 )
 
     async def __handle_update_option(self, update):
-
         if update["value"]["@type"] == "optionValueBoolean":
             self.options[update["name"]] = bool(update["value"]["value"])
         elif update["value"]["@type"] == "optionValueEmpty":
@@ -912,10 +883,7 @@ class Client(Decorators, Methods):
 
         if self.is_authenticated:
             logger.info(
-                "Option {} changed to {}".format(
-                    update["name"],
-                    self.options[update["name"]],
-                )
+                f"Option {update['name']} changed to {self.options[update['name']]}"
             )
 
     async def __handle_update_user(self, update):
@@ -923,7 +891,7 @@ class Client(Decorators, Methods):
             logger.info(
                 "Updating {} ({}) info".format(
                     self.me["first_name"],
-                    self.me["id"].__str__()
+                    str(self.me["id"])
                     if "usernames" not in self.me
                     else "@" + self.me["usernames"]["editable_username"],
                 )
@@ -943,9 +911,7 @@ class Client(Decorators, Methods):
                 user_input = await self.__ainput("Enter a phone number or bot token: ")
 
                 if user_input:
-                    y_n = await self.__ainput(
-                        'Is "{}" correct? (y/n): '.format(user_input),
-                    )
+                    y_n = await self.__ainput(f'Is "{user_input}" correct? (y/n): ')
 
                     if y_n == "" or y_n.lower() in ["y", "yes"]:
                         if ":" in user_input:
@@ -1017,7 +983,7 @@ class Client(Decorators, Methods):
 
         while self.is_running:
             code = await self.__ainput(
-                "Enter the login code received via {}: ".format(code_type),
+                f"Enter the login code received via {code_type}: "
             )
 
             res = await self.checkAuthenticationCode(code=code)
@@ -1045,11 +1011,7 @@ class Client(Decorators, Methods):
             return
 
         if self.__authorization["password_hint"]:
-            print(
-                "Your 2FA password hint is: {}".format(
-                    self.__authorization["password_hint"]
-                )
-            )
+            print(f"Your 2FA password hint is: {self.__authorization['password_hint']}")
 
         while self.is_running:
             password = await self.loop.run_in_executor(
@@ -1076,11 +1038,7 @@ class Client(Decorators, Methods):
                         else:
                             while True:
                                 recovery_code = await self.__ainput(
-                                    "Enter your recovery code sent to {}: ".format(
-                                        self.__authorization[
-                                            "recovery_email_address_pattern"
-                                        ]
-                                    ),
+                                    f"Enter your recovery code sent to {self.__authorization['recovery_email_address_pattern']}: "
                                 )
 
                                 res = (
@@ -1148,15 +1106,9 @@ class Client(Decorators, Methods):
         return self.loop.run_in_executor(self._executor, input, prompt)
 
     def _print_welcome(self):
+        print(f"Welcome to Pytdbot (v{pytdbot.__version__}). {pytdbot.__copyright__}")
         print(
-            "Welcome to Pytdbot (v{}). {}".format(
-                pytdbot.__version__, pytdbot.__copyright__
-            )
-        )
-        print(
-            "Pytdbot is free software and comes with ABSOLUTELY NO WARRANTY. Licensed under the terms of {}.\n\n".format(
-                pytdbot.__license__
-            )
+            f"Pytdbot is free software and comes with ABSOLUTELY NO WARRANTY. Licensed under the terms of {pytdbot.__license__}.\n\n"
         )
 
 
@@ -1169,7 +1121,7 @@ def deepdiff(d1, d2):
     for parent in deep.keys():
         for diff in deep[parent]:
             difflist = diff.path(output_format="list")
-            key = ".".join(v.__str__() for v in difflist)
+            key = ".".join(str(v) for v in difflist)
 
             if parent in ["dictionary_item_added", "values_changed"]:
                 logger.info(f"{key} changed to {diff.t2}")

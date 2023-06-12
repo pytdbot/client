@@ -1,5 +1,5 @@
 from html import escape as _html_escape
-from re import escape as _re_escape, compile as _re_compile
+import re
 
 
 def escape_html(text: str, quote: bool = True) -> str:
@@ -19,8 +19,8 @@ def escape_html(text: str, quote: bool = True) -> str:
     return _html_escape(text, quote=quote)
 
 
-special_chars_v1 = _re_compile("([{}])".format(_re_escape(r"_\*`\[")))
-special_chars_v2 = _re_compile("([{}])".format(_re_escape(r"\_*[]()~`>#+-=|{}.!")))
+special_chars_v1 = re.compile("([{}])".format(re.escape(r"_\*`\[")))
+special_chars_v2 = re.compile("([{}])".format(re.escape(r"\_*[]()~`>#+-=|{}.!")))
 
 
 def escape_markdown(text: str, version: int = 2) -> str:

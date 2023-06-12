@@ -1,6 +1,6 @@
-from secrets import token_hex
 from asyncio import Event
 from ujson import dumps
+import binascii, os
 
 RETRY_AFTER_PREFEX = "Too Many Requests: retry after "
 
@@ -18,8 +18,9 @@ class Result:
         self,
         request: dict,
     ) -> None:
-        self.id = token_hex(16)
+        self.id = binascii.hexlify(os.urandom(9)).decode()
         request["@extra"] = {"id": self.id}
+
         self.request = request
         self.is_processed = False
         self.is_error = False
