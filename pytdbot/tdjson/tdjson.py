@@ -114,12 +114,8 @@ class TdJson:
         Returns:
             :py:class:``dict``: An incoming update or result to a request. If no data is received, ``None`` is returned
         """
-        try:
-            if res := self._td_receive(self.client_id, c_double(timeout)):
-                return json.loads(res)
-        except Exception:
-            logger.exception("Exception while receiving")
-            raise
+        if res := self._td_receive(self.client_id, c_double(timeout)):
+            return json.loads(res)
 
     def send(self, data: dict) -> None:
         """Sends a request to TDLib
