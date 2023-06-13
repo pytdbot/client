@@ -2,7 +2,7 @@ import pytdbot
 
 from base64 import b64decode
 from typing import Union
-from ujson import dumps
+from json import dumps
 from functools import lru_cache
 from pytdbot.utils import escape_html, escape_markdown
 from pytdbot.types import (

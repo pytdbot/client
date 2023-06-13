@@ -14,7 +14,7 @@ from base64 import b64encode
 from deepdiff import DeepDiff
 from concurrent.futures import ThreadPoolExecutor
 from threading import current_thread, main_thread
-from ujson import dumps
+from json import dumps
 
 from .tdjson import TdJson
 from .handlers import Decorators, Handler

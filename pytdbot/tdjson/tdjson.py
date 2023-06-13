@@ -4,10 +4,23 @@ from logging import getLogger
 from typing import Union
 from platform import system
 from pkg_resources import resource_filename
-from ujson import loads, dumps
 
+try:
+    import orjson as json
+except ImportError:
+    try:
+        import ujson as json
+    except ImportError:
+        import json
 
 logger = getLogger(__name__)
+
+
+def dumps(obj) -> bytes:
+    if json.__name__ == "orjson":
+        return json.dumps(obj).decode().encode("utf-8")
+    else:
+        return json.dumps(obj).encode("utf-8")
 
 
 class TdJson:
@@ -36,7 +49,8 @@ class TdJson:
         if not lib_path:
             raise ValueError("TDLib library not found")
 
-        logger.info("Initializing TdJson client with library: %s", lib_path)
+        logger.debug(f'Using "{json.__name__}" module as JSON encoder')
+        logger.info(f"Initializing TdJson client with library: {lib_path}")
         self._build_client(lib_path, verbosity)
 
     def _build_client(self, lib_path: str, verbosity: int) -> None:
@@ -77,10 +91,9 @@ class TdJson:
         td_version, td_commit_hash = self.execute(
             {"@type": "getOption", "name": "version"}
         ), self.execute({"@type": "getOption", "name": "commit_hash"})
+
         logger.info(
-            "Using TDLib {} ({})".format(
-                td_version["value"], td_commit_hash["value"][:9]
-            )
+            f"Using TDLib {td_version['value']} ({td_commit_hash['value'][:9]})"
         )
 
         if isinstance(verbosity, int):
@@ -103,7 +116,7 @@ class TdJson:
         """
         try:
             if res := self._td_receive(self.client_id, c_double(timeout)):
-                return loads(res.decode("utf-8"))
+                return json.loads(res)
         except Exception:
             logger.exception("Exception while receiving")
             raise
@@ -116,9 +129,9 @@ class TdJson:
                 The request to be sent
         """
         try:
-            self._td_send(self.client_id, dumps(data).encode("utf-8"))
+            self._td_send(self.client_id, dumps(data))
         except Exception:
-            logger.exception("Exception while sending", data)
+            logger.exception(f"Exception while sending: {data}")
             raise
 
     def execute(self, data: dict) -> Union[None, dict]:
@@ -131,8 +144,8 @@ class TdJson:
             :py:class:``dict``: The result of the request
         """
         try:
-            if res := self._td_execute(dumps(data).encode("utf-8")):
-                return loads(res.decode("utf-8"))
+            if res := self._td_execute(dumps(data)):
+                return json.loads(res)
         except Exception:
             logger.exception("Exception while executing")
             raise
