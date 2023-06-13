@@ -18,7 +18,8 @@ logger = getLogger(__name__)
 
 def dumps(obj) -> bytes:
     if json.__name__ == "orjson":
-        return json.dumps(obj).decode().encode("utf-8")
+        # Null-terminated string is needed for orjson with c_char_p
+        return json.dumps(obj) + b"\0"
     else:
         return json.dumps(obj).encode("utf-8")
 
