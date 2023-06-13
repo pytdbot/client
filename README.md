@@ -16,9 +16,9 @@ Pytdbot (Python TDLib) is an asynchronous [**TDLib**](https://github.com/tdlib/t
 - Telegram [API key](https://my.telegram.org/apps)
 - [tdjson](https://github.com/tdlib/td#building)
 - [deepdiff](https://github.com/seperman/deepdiff)
-- [ujson](https://github.com/ultrajson/ultrajson)
 
 ### Installation
+> For better performance, it's recommended to install [orjson](https://github.com/ijl/orjson#install) or [ujson](https://github.com/ultrajson/ultrajson#ultrajson).
 
 ```bash
 pip install pytdbot
