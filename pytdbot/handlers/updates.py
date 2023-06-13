@@ -22,7 +22,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -62,7 +62,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -96,7 +96,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -136,7 +136,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -176,7 +176,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -212,7 +212,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -246,7 +246,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -280,7 +280,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -316,7 +316,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -356,7 +356,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -396,7 +396,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -436,7 +436,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -476,7 +476,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -516,7 +516,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -550,7 +550,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -584,7 +584,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -618,7 +618,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -654,7 +654,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -690,7 +690,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -724,7 +724,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -758,7 +758,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -792,7 +792,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -826,7 +826,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -866,7 +866,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -902,7 +902,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -938,7 +938,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -978,7 +978,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1018,7 +1018,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1058,7 +1058,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1094,7 +1094,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1128,7 +1128,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1162,7 +1162,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1202,7 +1202,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1242,7 +1242,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1276,7 +1276,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1316,7 +1316,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1356,7 +1356,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1396,7 +1396,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1436,7 +1436,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1470,7 +1470,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1510,7 +1510,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1544,7 +1544,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1584,7 +1584,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1618,7 +1618,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1658,7 +1658,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1692,7 +1692,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1728,7 +1728,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1768,7 +1768,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1808,7 +1808,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1842,7 +1842,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1876,7 +1876,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1910,7 +1910,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1944,7 +1944,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -1978,7 +1978,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2012,7 +2012,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2046,7 +2046,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2080,7 +2080,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2120,7 +2120,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2160,7 +2160,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2200,7 +2200,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2234,7 +2234,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2274,7 +2274,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2314,7 +2314,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2348,7 +2348,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2388,7 +2388,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2422,7 +2422,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2462,7 +2462,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2496,7 +2496,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2530,7 +2530,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2570,7 +2570,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2610,7 +2610,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2650,7 +2650,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2690,7 +2690,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2726,7 +2726,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2760,7 +2760,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2794,7 +2794,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2834,7 +2834,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2874,7 +2874,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2908,7 +2908,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2944,7 +2944,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -2980,7 +2980,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3020,7 +3020,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3060,7 +3060,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3094,7 +3094,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3134,7 +3134,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3170,7 +3170,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3204,7 +3204,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3238,7 +3238,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3278,7 +3278,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3314,7 +3314,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3354,7 +3354,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3394,7 +3394,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3428,7 +3428,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3468,7 +3468,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3508,7 +3508,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3544,7 +3544,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3584,7 +3584,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3620,7 +3620,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3654,7 +3654,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3694,7 +3694,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3730,7 +3730,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3770,7 +3770,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3806,7 +3806,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3846,7 +3846,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3880,7 +3880,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3914,7 +3914,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3948,7 +3948,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -3982,7 +3982,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -4016,7 +4016,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
@@ -4056,7 +4056,7 @@ class Updates:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
-            position (``int``, *optional``):
+            position (``int``, *optional*):
                 The function position in handlers list. Defaults to ``None`` (append)
 
         Raises:
