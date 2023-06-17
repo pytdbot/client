@@ -50,7 +50,7 @@ class TdJson:
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.destroy()
+        pass
 
     def _build_client(self, lib_path: str, verbosity: int) -> None:
         """Build TdJson client
@@ -68,10 +68,6 @@ class TdJson:
         self._td_create_client_id = self._tdjson.td_create_client_id
         self._td_create_client_id.restype = c_int
         self._td_create_client_id.argtypes = []
-
-        self._td_client_destroy = self._tdjson.td_json_client_destroy
-        self._td_client_destroy.restype = None
-        self._td_client_destroy.argtypes = [c_void_p]
 
         self._td_receive = self._tdjson.td_receive
         self._td_receive.restype = c_char_p
@@ -144,7 +140,3 @@ class TdJson:
         except Exception:
             logger.exception("Exception while executing")
             raise
-
-    def destroy(self) -> None:
-        """Destroys the TDLib client."""
-        self._td_client_destroy(self.client_id)
