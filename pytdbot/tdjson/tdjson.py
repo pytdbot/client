@@ -2,8 +2,6 @@ from ctypes.util import find_library
 from ctypes import c_int, c_double, c_void_p, c_char_p, CDLL
 from logging import getLogger
 from typing import Union
-from platform import system
-from pkg_resources import resource_filename
 
 try:
     import orjson as json
@@ -40,11 +38,6 @@ class TdJson:
         """
 
         if lib_path is None:
-            # if system() == "Linux":
-            #     lib_path = find_library("tdjson") or resource_filename(
-            #         "pytdbot", "lib/libtdjson.so"
-            #     )
-            # else:
             lib_path = find_library("tdjson")
 
         if not lib_path:
@@ -52,6 +45,12 @@ class TdJson:
 
         logger.info(f"Initializing TdJson client with library: {lib_path}")
         self._build_client(lib_path, verbosity)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.destroy()
 
     def _build_client(self, lib_path: str, verbosity: int) -> None:
         """Build TdJson client
