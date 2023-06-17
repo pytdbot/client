@@ -50,7 +50,6 @@ class TdJson:
         if not lib_path:
             raise ValueError("TDLib library not found")
 
-        logger.debug(f'Using "{json.__name__}" module as JSON encoder')
         logger.info(f"Initializing TdJson client with library: {lib_path}")
         self._build_client(lib_path, verbosity)
 
@@ -94,7 +93,7 @@ class TdJson:
         ), self.execute({"@type": "getOption", "name": "commit_hash"})
 
         logger.info(
-            f"Using TDLib {td_version['value']} ({td_commit_hash['value'][:9]})"
+            f"Using TDLib {td_version['value']} ({td_commit_hash['value'][:9]}) with {json.__name__} encoder"
         )
 
         if isinstance(verbosity, int):
