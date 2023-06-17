@@ -20,10 +20,11 @@ Pytdbot (Python TDLib) is an asynchronous [**TDLib**](https://github.com/tdlib/t
 ### Installation
 > For better performance, it's recommended to install [orjson](https://github.com/ijl/orjson#install) or [ujson](https://github.com/ultrajson/ultrajson#ultrajson).
 
+You can install Pytdbot using pip:
 ```bash
 pip install pytdbot
 ```
-From github (dev version)
+To install the development version from Github, use the following command:
 ```bash
 pip install git+https://github.com/pytdbot/client.git
 ```
