@@ -734,7 +734,10 @@ class Client(Decorators, Methods):
     async def _queue_update_worker(self):
         self.is_running = True
         while self.is_running:
-            await self._handle_update(await self.queue.get())
+            try:
+                await self._handle_update(await self.queue.get())
+            except Exception:
+                logger.exception("Got worker exception")
 
     async def set_td_paramaters(self):
         """Make a call to :meth:`~pytdbot.Client.setTdlibParameters` with the current client init parameters
