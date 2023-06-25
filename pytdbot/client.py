@@ -94,7 +94,7 @@ class Client(Decorators, Methods):
             If any request is rate limited (flood waited) the client will repeat the request after sleeping the required amount of seconds returned by the error. If the ``retry after`` value is higher than ``sleep_threshold`` the error is returned. Defaults to ``None`` (Disabled)
 
         workers (``int``, *optional*):
-            Number of workers for handling updates. Defaults to ``5``
+            Number of workers to handle updates. Defaults to ``5``. If set to ``None``, updates will be immediately handled instead of being queued, which can impact performance.
 
         td_verbosity (``int``, *optional*):
             Verbosity level of TDLib. Defaults to ``2``
@@ -218,12 +218,17 @@ class Client(Decorators, Methods):
         if not self.is_running:
             logger.info("Starting pytdbot client...")
 
-            self._workers_tasks = [
-                self.loop.create_task(self._update_worker(x + 1))
-                for x in range(self.workers)
-            ]
+            if isinstance(self.workers, int):
+                self._workers_tasks = [
+                    self.loop.create_task(self._queue_update_worker())
+                    for x in range(self.workers)
+                ]
+                self.__is_queue_worker = True
 
-            logger.info("Started with %s workers", self.workers)
+                logger.info("Started with %s workers", self.workers)
+            else:
+                self.__is_queue_worker = False
+                logger.info("Started with unlimited updates processes")
 
             self.loop.create_task(self.__listen_loop())
 
@@ -238,7 +243,7 @@ class Client(Decorators, Methods):
 
         self.__login = True
 
-        await self.getOption("version")  # Ping TDLib to start authorization proccess
+        await self.getOption("version")  # Ping TDLib to start authorization process
 
         while self.authorization_state != "authorizationStateReady":
             await asyncio.sleep(0.1)
@@ -503,7 +508,7 @@ class Client(Decorators, Methods):
     def __send(self, request: dict) -> None:
         return self._tdjson.send(
             request
-        )  # tdjson.send is asynchronous, So we don't need run_in_executor. This improves performance
+        )  # tdjson.send is non-blocking method, So we don't need run_in_executor. This improves performance
 
     async def __receive(self, timeout: float = 2.0) -> dict:
         return await self.loop.run_in_executor(
@@ -523,14 +528,12 @@ class Client(Decorators, Methods):
             raise TypeError("files_directory must be str")
         elif not isinstance(self.td_verbosity, int):
             raise TypeError("td_verbosity must be int")
-        elif not isinstance(self.workers, int):
-            raise TypeError("workers must be int")
         elif type(Update) is not type(self.update_class):
             raise TypeError(
                 "update_class must be instance of class pytdbot.types.Update"
             )
 
-        if self.workers < 1:
+        if isinstance(self.workers, int) and self.workers < 1:
             raise ValueError("workers must be greater than 0")
 
     def get_retry_after_time(self, error_message: str) -> int:
@@ -636,7 +639,10 @@ class Client(Decorators, Methods):
             elif update["@type"] == "updateUser":
                 self.loop.create_task(self.__handle_update_user(update))
 
-            self.queue.put_nowait(update)
+            if self.__is_queue_worker:
+                self.queue.put_nowait(update)
+            else:
+                self.loop.create_task(self._handle_update(update))
 
     async def __run_initializers(self, update):
         for initializer in self._handlers["initializer"]:
@@ -692,39 +698,35 @@ class Client(Decorators, Methods):
             except Exception:
                 logger.exception(f"Finalizer {finalizer} failed")
 
-    async def _update_worker(self, worker_id: int):
+    async def _handle_update(self, update):
+        if (
+            logger.root.level >= DEBUG
+        ):  # dumping all updates can create performance issues
+            logger.debug(
+                f"Received: {dumps(update, indent=4)}",
+            )
+
+        if update["@type"] in self._handlers:
+            update = self.update_class(self, update)
+            if (
+                update["@type"] == "updateNewMessage"
+                and update["message"]["is_outgoing"]
+                and "sending_state" in update["message"]
+            ):
+                return
+
+            try:
+                await self.__run_initializers(update)
+                await self.__run_handlers(update)
+            except StopHandlers:
+                pass
+            finally:
+                await self.__run_finalizers(update)
+
+    async def _queue_update_worker(self):
         self.is_running = True
         while self.is_running:
-            try:
-                update = await self.queue.get()
-                if "@type" not in update:
-                    continue
-
-                if (
-                    logger.root.level >= DEBUG
-                ):  # dumping all updates can create performance issues
-                    logger.debug(
-                        f"w{worker_id}: Received: {dumps(update, indent=4)}",
-                    )
-
-                if update["@type"] in self._handlers:
-                    update = self.update_class(self, update)
-                    if (
-                        update["@type"] == "updateNewMessage"
-                        and update["message"]["is_outgoing"]
-                        and "sending_state" in update["message"]
-                    ):
-                        continue
-
-                    try:
-                        await self.__run_initializers(update)
-                        await self.__run_handlers(update)
-                    except StopHandlers:
-                        pass
-                    finally:
-                        await self.__run_finalizers(update)
-            except Exception:
-                logger.exception("Exception in _update_worker")
+            await self._handle_update(await self.queue.get())
 
     async def set_td_paramaters(self):
         """Make a call to :meth:`~pytdbot.Client.setTdlibParameters` with the current client init parameters
@@ -1074,8 +1076,9 @@ class Client(Decorators, Methods):
         self.is_authenticated = False
         self.is_running = False
 
-        for worker_task in self._workers_tasks:
-            worker_task.cancel()
+        if self.__is_queue_worker:
+            for worker_task in self._workers_tasks:
+                worker_task.cancel()
 
         self._executor.shutdown(wait=False, cancel_futures=True)
 
