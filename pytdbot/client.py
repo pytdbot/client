@@ -12,8 +12,7 @@ from typing import Callable, Union
 from logging import getLogger, DEBUG
 from base64 import b64encode
 from deepdiff import DeepDiff
-from concurrent.futures import ThreadPoolExecutor
-from threading import current_thread, main_thread
+from threading import current_thread, main_thread, Thread
 from json import dumps
 
 from .tdjson import TdJson
@@ -140,7 +139,7 @@ class Client(Decorators, Methods):
         self.default_parse_mode = (
             default_parse_mode
             if isinstance(default_parse_mode, str)
-            and default_parse_mode in ["markdown", "markdownv2", "html"]
+            and default_parse_mode in ("markdown", "markdownv2", "html")
             else None
         )
         self.system_language_code = system_language_code
@@ -169,9 +168,9 @@ class Client(Decorators, Methods):
         self._handlers = {"initializer": [], "finalizer": []}
         self._results = {}
         self._tdjson = TdJson(lib_path, td_verbosity)
-        self._executor = ThreadPoolExecutor(5, "Pytdbot")
-        self._workers_tasks = None
         self._retry_after_prefex = "Too Many Requests: retry after "
+        self._workers_tasks = None
+        self.__listen_loop_thread = Thread(target=self.__listen_loop, daemon=True)
         self.__authorization_state = None
         self.__authorization = None
         self.__cache = {"is_coro_filter": {}}
@@ -230,7 +229,7 @@ class Client(Decorators, Methods):
                 self.__is_queue_worker = False
                 logger.info("Started with unlimited updates processes")
 
-            self.loop.create_task(self.__listen_loop())
+            self.__listen_loop_thread.start()
 
         if login:
             await self.login()
@@ -510,11 +509,6 @@ class Client(Decorators, Methods):
             request
         )  # tdjson.send is non-blocking method, So we don't need run_in_executor. This improves performance
 
-    async def __receive(self, timeout: float = 2.0) -> dict:
-        return await self.loop.run_in_executor(
-            self._executor, self._tdjson.receive, timeout
-        )
-
     def _check_init_args(self):
         if not isinstance(self.__api_id, int):
             raise TypeError("api_id must be int")
@@ -592,13 +586,13 @@ class Client(Decorators, Methods):
             self.__cache["is_coro_filter"][func] = is_coro
             return is_coro
 
-    async def __listen_loop(self):
+    def __listen_loop(self):
         try:
             self.is_running = True
             logger.info("Listening to updates...")
 
             while self.is_running:
-                update = await self.__receive(100000.0)  # seconds
+                update = self._tdjson.receive(100000.0)  # seconds
                 if update is None:
                     continue
                 self._process_update(update)
@@ -627,22 +621,36 @@ class Client(Decorators, Methods):
                 logger.error(f"{update['@extra']['option']}: {update['message']}")
         else:
             if update["@type"] == "updateAuthorizationState":
-                self.loop.create_task(self.__handle_authorization_state(update))
+                asyncio.run_coroutine_threadsafe(
+                    self.__handle_authorization_state(update), loop=self.loop
+                )
             elif update["@type"] == "updateMessageSendSucceeded":
-                self.loop.create_task(self.__handle_update_message_succeeded(update))
+                asyncio.run_coroutine_threadsafe(
+                    self.__handle_update_message_succeeded(update), loop=self.loop
+                )
             elif update["@type"] == "updateMessageSendFailed":
-                self.loop.create_task(self.__handle_update_message_failed(update))
+                asyncio.run_coroutine_threadsafe(
+                    self.__handle_update_message_failed(update), loop=self.loop
+                )
             elif update["@type"] == "updateConnectionState":
-                self.loop.create_task(self.__handle_connection_state(update))
+                asyncio.run_coroutine_threadsafe(
+                    self.__handle_connection_state(update), loop=self.loop
+                )
             elif update["@type"] == "updateOption":
-                self.loop.create_task(self.__handle_update_option(update))
+                asyncio.run_coroutine_threadsafe(
+                    self.__handle_update_option(update), loop=self.loop
+                )
             elif update["@type"] == "updateUser":
-                self.loop.create_task(self.__handle_update_user(update))
+                asyncio.run_coroutine_threadsafe(
+                    self.__handle_update_user(update), loop=self.loop
+                )
 
             if self.__is_queue_worker:
                 self.queue.put_nowait(update)
             else:
-                self.loop.create_task(self._handle_update(update))
+                asyncio.run_coroutine_threadsafe(
+                    self._handle_update(update), loop=self.loop
+                )
 
     async def __run_initializers(self, update):
         for initializer in self._handlers["initializer"]:
@@ -1016,8 +1024,7 @@ class Client(Decorators, Methods):
             print(f"Your 2FA password hint is: {self.__authorization['password_hint']}")
 
         while self.is_running:
-            password = await self.loop.run_in_executor(
-                self._executor,
+            password = await asyncio.to_thread(
                 getpass,
                 "Enter your 2FA password {}: ".format(
                     "(empty to recover)"
@@ -1080,8 +1087,6 @@ class Client(Decorators, Methods):
             for worker_task in self._workers_tasks:
                 worker_task.cancel()
 
-        self._executor.shutdown(wait=False, cancel_futures=True)
-
     def _register_signal_handlers(self):
         def _handle_signal():
             self.loop.create_task(self.stop())
@@ -1106,7 +1111,7 @@ class Client(Decorators, Methods):
                 pass
 
     def __ainput(self, prompt: str):
-        return self.loop.run_in_executor(self._executor, input, prompt)
+        return asyncio.to_thread(input, prompt)
 
     def _print_welcome(self):
         print(f"Welcome to Pytdbot (v{pytdbot.__version__}). {pytdbot.__copyright__}")
