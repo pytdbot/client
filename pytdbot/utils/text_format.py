@@ -170,6 +170,29 @@ def mention(text: str, user_id: str, html: bool = False, escape: bool = True) ->
         return f"[{text if escape is False else escape_markdown(text)}](tg://user?id={user_id})"
 
 
+def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = False) -> str:
+    """Convert the given emoji to custom emoji format
+
+    Args:
+        emoji (``str``):
+            The emoji of the custom emoji
+
+        custom_emoji_id (``str``):
+            Identifier of the custom emoji
+
+        html (``bool``, *optional*):
+            Pass ``True`` to return text in ``html`` format. Defaults to ``False`` (``markdownv2``)
+
+    Returns:
+        :py:class:`str`: The formated text
+    """
+
+    if html:
+        return f'<tg-emoji emoji-id="{custom_emoji_id}">{emoji}</tg-emoji>'
+    else:
+        return f"![{emoji}](tg://emoji?id={custom_emoji_id})"
+
+
 def code(text: str, html: bool = False, escape: bool = True) -> str:
     """Convert the given text to code format
 
