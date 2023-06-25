@@ -1,5 +1,4 @@
 from html import escape as _html_escape
-import re
 
 
 def escape_html(text: str, quote: bool = True) -> str:
@@ -19,8 +18,8 @@ def escape_html(text: str, quote: bool = True) -> str:
     return _html_escape(text, quote=quote)
 
 
-special_chars_v1 = re.compile("([{}])".format(re.escape(r"_\*`\[")))
-special_chars_v2 = re.compile("([{}])".format(re.escape(r"\_*[]()~`>#+-=|{}.!")))
+special_chars_v1 = r"_\*`\["
+special_chars_v2 = r"\_*[]()~`>#+-=|{}.!"
 
 
 def escape_markdown(text: str, version: int = 2) -> str:
@@ -39,7 +38,6 @@ def escape_markdown(text: str, version: int = 2) -> str:
     Raises:
         :py:class:`ValueError`: If the given markdown version is not supported
     """
-
     if version == 1:
         chars = special_chars_v1
     elif version == 2:
@@ -47,4 +45,4 @@ def escape_markdown(text: str, version: int = 2) -> str:
     else:
         raise ValueError("Invalid version. Must be 1 or 2.")
 
-    return chars.sub(r"\\\1", text)
+    return "".join("\\" + c if c in chars else c for c in text)
