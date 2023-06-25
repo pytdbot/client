@@ -1,11 +1,11 @@
-__all__ = [
+__all__ = (
     "InputFile",
     "InputFileGenerated",
     "InputFileId",
     "InputFileLocal",
     "InputFileRemote",
     "InputThumbnail",
-]
+)
 
 from .base import InputFile
 from .input_file_generated import InputFileGenerated

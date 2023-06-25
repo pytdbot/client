@@ -1,4 +1,4 @@
-__all__ = [
+__all__ = (
     "Plugins",
     "ReplyMarkup",
     "ForceReply",
@@ -19,7 +19,7 @@ __all__ = [
     "InputThumbnail",
     "Result",
     "Update",
-]
+)
 
 
 from .plugins import Plugins

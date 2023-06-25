@@ -1,4 +1,4 @@
-_all__ = [
+_all__ = (
     "ReplyMarkup",
     "InlineKeyboardMarkup",
     "InlineKeyboardButton",
@@ -6,7 +6,7 @@ _all__ = [
     "ShowKeyboardButton",
     "ForceReply",
     "RemoveKeyboard",
-]
+)
 
 from .base import ReplyMarkup
 from .inline_keyboard import InlineKeyboardMarkup, InlineKeyboardButton

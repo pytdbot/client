@@ -1,3 +1,3 @@
-__all__ = ["Result"]
+__all__ = ("Result",)
 
 from .result import Result

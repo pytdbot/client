@@ -1,4 +1,4 @@
-__all__ = ["LogStream", "LogStreamDefault", "LogStreamEmpty", "LogStreamFile"]
+__all__ = ("LogStream", "LogStreamDefault", "LogStreamEmpty", "LogStreamFile")
 
 
 from .base import LogStream

@@ -1,3 +1,3 @@
-__all__ = ["Plugins"]
+__all__ = ("Plugins",)
 
 from .plugins import Plugins
