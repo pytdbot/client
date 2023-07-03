@@ -139,7 +139,7 @@ class Client(Decorators, Methods):
         self.default_parse_mode = (
             default_parse_mode
             if isinstance(default_parse_mode, str)
-            and default_parse_mode in ("markdown", "markdownv2", "html")
+            and default_parse_mode in {"markdown", "markdownv2", "html"}
             else None
         )
         self.system_language_code = system_language_code
@@ -926,7 +926,7 @@ class Client(Decorators, Methods):
                 if user_input:
                     y_n = await self.__ainput(f'Is "{user_input}" correct? (y/n): ')
 
-                    if y_n == "" or y_n.lower() in ["y", "yes"]:
+                    if y_n == "" or y_n.lower() in {"y", "yes"}:
                         if ":" in user_input:
                             res = await self.checkAuthenticationBotToken(user_input)
                         else:
@@ -1042,7 +1042,7 @@ class Client(Decorators, Methods):
                         "Are you sure you want to recover your 2FA password? (y/n): ",
                     )
 
-                    if y_n.lower() in ["y", "yes"]:
+                    if y_n.lower() in {"y", "yes"}:
                         res = await self.requestAuthenticationPasswordRecovery()
 
                         if res.is_error:
@@ -1093,22 +1093,22 @@ class Client(Decorators, Methods):
     def _register_signal_handlers(self):
         def _handle_signal():
             self.loop.create_task(self.stop())
-            for sig in (
+            for sig in {
                 signal.SIGINT,
                 signal.SIGTERM,
                 signal.SIGABRT,
                 signal.SIGSEGV,
-            ):
+            }:
                 self.loop.remove_signal_handler(sig)
 
         if current_thread() is main_thread():
             try:
-                for sig in (
+                for sig in {
                     signal.SIGINT,
                     signal.SIGTERM,
                     signal.SIGABRT,
                     signal.SIGSEGV,
-                ):
+                }:
                     self.loop.add_signal_handler(sig, _handle_signal)
             except NotImplementedError:  # Windows dosen't support add_signal_handler
                 pass
@@ -1134,7 +1134,7 @@ def deepdiff(d1, d2):
             difflist = diff.path(output_format="list")
             key = ".".join(str(v) for v in difflist)
 
-            if parent in ["dictionary_item_added", "values_changed"]:
+            if parent in {"dictionary_item_added", "values_changed"}:
                 logger.info(f"{key} changed to {diff.t2}")
             elif parent == "dictionary_item_removed":
                 logger.info(f"{key} removed")

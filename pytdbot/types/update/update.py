@@ -16,7 +16,7 @@ from pytdbot.types import (
 )
 from .chatActions import ChatActions
 
-SERVICE_MESSAGE_TYPES = (
+SERVICE_MESSAGE_TYPES = {
     "messageChatAddMembers",
     "messageBasicGroupChatCreate",
     "messageChatChangePhoto",
@@ -58,7 +58,7 @@ SERVICE_MESSAGE_TYPES = (
     "messageUserShared",
     "messageChatShared",
     "messageChatSetBackground",
-)
+}
 
 
 class Update:
@@ -106,11 +106,11 @@ class Update:
             ``None``
         """
 
-        if self.type in (
+        if self.type in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             return self.update["message"]["chat_id"]
         elif "chat_id" in self.update:
             return self.update["chat_id"]
@@ -125,11 +125,11 @@ class Update:
             ``None``
         """
 
-        if self.type in (
+        if self.type in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             if self.update["message"]["sender_id"]["@type"] == "messageSenderChat":
                 return self.update["message"]["sender_id"]["chat_id"]
             else:
@@ -151,11 +151,11 @@ class Update:
             ``None``
         """
 
-        if self.type in (
+        if self.type in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             return self.update["message"]["id"]
         elif "message_id" in self.update:
             return self.update["message_id"]
@@ -172,11 +172,11 @@ class Update:
             ``None``
         """
 
-        if self.type in (
+        if self.type in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             return self.update["message"]["message_thread_id"]
         elif "message_thread_id" in self.update:
             return self.update["message_thread_id"]
@@ -191,11 +191,11 @@ class Update:
             ``None``
         """
 
-        if self.type in (
+        if self.type in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             return self.update["message"]["reply_to_message_id"]
 
     @property
@@ -208,11 +208,11 @@ class Update:
             ``None``
         """
 
-        if self.type in (
+        if self.type in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             return self.update["message"]["content"]["@type"]
         elif self.type == "updateMessageContent":
             return self.update["new_content"]["@type"]
@@ -227,11 +227,11 @@ class Update:
             ``None``
         """
 
-        if self.type in (
+        if self.type in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             if self.update["message"]["sender_id"]["@type"] == "messageSenderChat":
                 return "chat"
             else:
@@ -264,11 +264,11 @@ class Update:
             ``None``
         """
 
-        if self.type in (
+        if self.type in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             if self.content_type == "messageText":
                 return self.update["message"]["content"]["text"]["entities"]
             elif "caption" in self.update["message"]["content"]:
@@ -289,11 +289,11 @@ class Update:
             ``None``
         """
 
-        if self.type in (
+        if self.type in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             if "caption" in self.update["message"]["content"]:
                 return self.update["message"]["content"]["caption"]["text"]
         elif self.type == "updateMessageContent":
@@ -310,11 +310,11 @@ class Update:
             ``None``
         """
 
-        if self.type in ("updateNewCallbackQuery", "updateNewInlineCallbackQuery"):
-            if self.update["payload"]["@type"] in (
+        if self.type in {"updateNewCallbackQuery", "updateNewInlineCallbackQuery"}:
+            if self.update["payload"]["@type"] in {
                 "callbackQueryPayloadData",
                 "callbackQueryPayloadDataWithPassword",
-            ):
+            }:
                 return b64decode(self.update["payload"]["data"]).decode("utf-8")
         return ""
 
@@ -328,7 +328,7 @@ class Update:
             ``None``
         """
 
-        if self.type in ("updateNewInlineQuery", "updateNewChosenInlineResult"):
+        if self.type in {"updateNewInlineQuery", "updateNewChosenInlineResult"}:
             return self.update["query"]
         return ""
 
@@ -341,11 +341,11 @@ class Update:
             :py:class:`int`
         """
 
-        if self.type not in (
+        if self.type not in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             return
         if "content" in self.update["message"]:
             if self.update["message"]["content"]["@type"] == "messageDocument":
@@ -376,11 +376,11 @@ class Update:
             :py:class:`str`
         """
 
-        if self.type not in (
+        if self.type not in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             return
         if "content" in self.update["message"]:
             if self.update["message"]["content"]["@type"] == "messageDocument":
@@ -425,11 +425,11 @@ class Update:
             :py:class:`str`
         """
 
-        if self.type not in (
+        if self.type not in {
             "updateNewMessage",
             "updateMessageSendSucceeded",
             "updateMessageSendFailed",
-        ):
+        }:
             return
         if "content" in self.update["message"]:
             if self.update["message"]["content"]["@type"] == "messageDocument":
