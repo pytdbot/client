@@ -4,7 +4,7 @@ from base64 import b64decode
 from typing import Union
 from json import dumps
 from functools import lru_cache
-from pytdbot.utils import escape_html, escape_markdown
+from pytdbot.utils import mention as format_mention
 from pytdbot.types import (
     Result,
     InlineKeyboardMarkup,
@@ -59,6 +59,11 @@ SERVICE_MESSAGE_TYPES = {
     "messageChatShared",
     "messageChatSetBackground",
 }
+MESSAGE_CHECK_TYPES = {
+    "updateNewMessage",
+    "updateMessageSendSucceeded",
+    "updateMessageSendFailed",
+}
 
 
 class Update:
@@ -106,11 +111,7 @@ class Update:
             ``None``
         """
 
-        if self.type in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type in MESSAGE_CHECK_TYPES:
             return self.update["message"]["chat_id"]
         elif "chat_id" in self.update:
             return self.update["chat_id"]
@@ -125,11 +126,7 @@ class Update:
             ``None``
         """
 
-        if self.type in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type in MESSAGE_CHECK_TYPES:
             if self.update["message"]["sender_id"]["@type"] == "messageSenderChat":
                 return self.update["message"]["sender_id"]["chat_id"]
             else:
@@ -151,11 +148,7 @@ class Update:
             ``None``
         """
 
-        if self.type in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type in MESSAGE_CHECK_TYPES:
             return self.update["message"]["id"]
         elif "message_id" in self.update:
             return self.update["message_id"]
@@ -172,11 +165,7 @@ class Update:
             ``None``
         """
 
-        if self.type in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type in MESSAGE_CHECK_TYPES:
             return self.update["message"]["message_thread_id"]
         elif "message_thread_id" in self.update:
             return self.update["message_thread_id"]
@@ -191,11 +180,7 @@ class Update:
             ``None``
         """
 
-        if self.type in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type in MESSAGE_CHECK_TYPES:
             return self.update["message"]["reply_to_message_id"]
 
     @property
@@ -208,11 +193,7 @@ class Update:
             ``None``
         """
 
-        if self.type in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type in MESSAGE_CHECK_TYPES:
             return self.update["message"]["content"]["@type"]
         elif self.type == "updateMessageContent":
             return self.update["new_content"]["@type"]
@@ -227,11 +208,7 @@ class Update:
             ``None``
         """
 
-        if self.type in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type in MESSAGE_CHECK_TYPES:
             if self.update["message"]["sender_id"]["@type"] == "messageSenderChat":
                 return "chat"
             else:
@@ -264,11 +241,7 @@ class Update:
             ``None``
         """
 
-        if self.type in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type in MESSAGE_CHECK_TYPES:
             if self.content_type == "messageText":
                 return self.update["message"]["content"]["text"]["entities"]
             elif "caption" in self.update["message"]["content"]:
@@ -289,11 +262,7 @@ class Update:
             ``None``
         """
 
-        if self.type in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type in MESSAGE_CHECK_TYPES:
             if "caption" in self.update["message"]["content"]:
                 return self.update["message"]["content"]["caption"]["text"]
         elif self.type == "updateMessageContent":
@@ -341,11 +310,7 @@ class Update:
             :py:class:`int`
         """
 
-        if self.type not in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type not in MESSAGE_CHECK_TYPES:
             return
         if "content" in self.update["message"]:
             if self.update["message"]["content"]["@type"] == "messageDocument":
@@ -376,11 +341,7 @@ class Update:
             :py:class:`str`
         """
 
-        if self.type not in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type not in MESSAGE_CHECK_TYPES:
             return
         if "content" in self.update["message"]:
             if self.update["message"]["content"]["@type"] == "messageDocument":
@@ -425,11 +386,7 @@ class Update:
             :py:class:`str`
         """
 
-        if self.type not in {
-            "updateNewMessage",
-            "updateMessageSendSucceeded",
-            "updateMessageSendFailed",
-        }:
+        if self.type not in MESSAGE_CHECK_TYPES:
             return
         if "content" in self.update["message"]:
             if self.update["message"]["content"]["@type"] == "messageDocument":
@@ -518,15 +475,12 @@ class Update:
             return self.client.options["my_id"] == self.from_id
         return False
 
-    async def mention(self, parse_mode: str = "markdown", version: int = 2) -> str:
+    async def mention(self, parse_mode: str = "markdownv2") -> str:
         """Get the text_mention of the message sender
 
         Args:
             parse_mode (``str``, *optional*):
                 The parse mode of the mention. Defaults to ``markdown``
-
-            version (``int``, *optional*):
-                If the parse mode is ``markdown``, pass the version of the markdown. Defaults to ``2``
 
         Returns:
             :py:class:`str`
@@ -537,12 +491,11 @@ class Update:
             if not chat.is_error:
                 name = chat["title"]
 
-                if parse_mode == "html":
-                    return (
-                        f"<a href='tg://user?id={self.from_id}'>{escape_html(name)}</a>"
-                    )
-                elif parse_mode == "markdown":
-                    return f"[{escape_markdown(name, version=version)}](tg://user?id={self.from_id})"
+                return format_mention(
+                    name,
+                    self.from_id,
+                    html=True if parse_mode.lower() == "html" else False,
+                )
 
     async def getRepliedMessage(
         self,
