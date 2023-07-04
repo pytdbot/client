@@ -12,6 +12,7 @@ except ImportError:
         import json
 
 logger = getLogger(__name__)
+logger.info(f"Using {json.__name__} encoder")
 
 
 def dumps(obj) -> bytes:
@@ -88,7 +89,7 @@ class TdJson:
         ), self.execute({"@type": "getOption", "name": "commit_hash"})
 
         logger.info(
-            f"Using TDLib {td_version['value']} ({td_commit_hash['value'][:9]}) with {json.__name__} encoder"
+            f"Using TDLib {td_version['value']} ({td_commit_hash['value'][:9]})"
         )
 
         if isinstance(verbosity, int):
