@@ -1,3 +1,3 @@
-__all__ = ["Methods"]
+__all__ = ("Methods",)
 
 from .methods import Methods

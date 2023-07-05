@@ -686,15 +686,15 @@ class Client(Decorators, Methods):
         for initializer in self._handlers["initializer"]:
             try:
                 if initializer.filter is not None:
-                    filter_func = initializer.filter.func
+                    filter_function = initializer.filter.func
 
-                    if self.is_coro_filter(filter_func):
-                        if not await filter_func(self, update):
+                    if self.is_coro_filter(filter_function):
+                        if not await filter_function(self, update):
                             continue
-                    elif not filter_func(self, update):
+                    elif not filter_function(self, update):
                         continue
 
-                await initializer.func(self, update)
+                await initializer(self, update)
             except StopHandlers as e:
                 raise e
             except Exception:
@@ -705,14 +705,14 @@ class Client(Decorators, Methods):
         for handler in self._handlers[update_type]:
             try:
                 if handler.filter is not None:
-                    filter_func = handler.filter.func
-                    if self.is_coro_filter(filter_func):
-                        if not await filter_func(self, update):
+                    filter_function = handler.filter.func
+                    if self.is_coro_filter(filter_function):
+                        if not await filter_function(self, update):
                             continue
-                    elif not filter_func(self, update):
+                    elif not filter_function(self, update):
                         continue
 
-                await handler.func(self, update)
+                await handler(self, update)
             except StopHandlers as e:
                 raise e
             except Exception:
@@ -722,15 +722,15 @@ class Client(Decorators, Methods):
         for finalizer in self._handlers["finalizer"]:
             try:
                 if finalizer.filter is not None:
-                    filter_func = finalizer.filter.func
+                    filter_function = finalizer.filter.func
 
-                    if self.is_coro_filter(filter_func):
-                        if not await filter_func(self, update):
+                    if self.is_coro_filter(filter_function):
+                        if not await filter_function(self, update):
                             continue
-                    elif not filter_func(self, update):
+                    elif not filter_function(self, update):
                         continue
 
-                await finalizer.func(self, update)
+                await finalizer(self, update)
             except StopHandlers as e:
                 raise e
             except Exception:

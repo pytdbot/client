@@ -1,4 +1,4 @@
-__all__ = ["StopHandlers", "AuthorizationError"]
+__all__ = ("StopHandlers", "AuthorizationError")
 
 
 class StopHandlers(Exception):

@@ -1,4 +1,4 @@
-__all__ = ["Decorators", "Handler"]
+__all__ = ("Decorators", "Handler")
 
 from .decorators import Decorators
 from .handler import Handler
