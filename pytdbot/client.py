@@ -676,7 +676,10 @@ class Client(Decorators, Methods):
                 )
 
             if self.__is_queue_worker:
-                self.queue.put_nowait(update)
+                self.loop.call_soon_threadsafe(
+                    self.queue.put_nowait,
+                    update,
+                )
             else:
                 asyncio.run_coroutine_threadsafe(
                     self._handle_update(update), loop=self.loop
