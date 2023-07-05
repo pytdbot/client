@@ -549,33 +549,63 @@ class Client(Decorators, Methods):
     def _load_plugins(self):
         count = 0
         handlers = 0
-        for path in sorted(Path(self.plugins.folder).rglob("*.py")):
+        plugin_paths = sorted(Path(self.plugins.folder).rglob("*.py"))
+
+        if self.plugins.include:
+            plugin_paths = [
+                path
+                for path in plugin_paths
+                if ".".join(path.parent.parts + (path.stem,)) in self.plugins.include
+            ]
+        elif self.plugins.exclude:
+            plugin_paths = [
+                path
+                for path in plugin_paths
+                if ".".join(path.parent.parts + (path.stem,))
+                not in self.plugins.exclude
+            ]
+
+        for path in plugin_paths:
             module_path = ".".join(path.parent.parts + (path.stem,))
+
             try:
                 module = import_module(module_path)
             except Exception:
-                logger.exception(f"Failed to load plugin {module_path}")
-            else:
-                logger.debug(f"Plugin {module_path} loaded")
-                for name in dir(module):
-                    obj = getattr(module, name)
-                    if hasattr(obj, "_handler") and isinstance(obj._handler, Handler):
-                        if asyncio.iscoroutinefunction(obj._handler.func):
-                            self.add_handler(
-                                obj._handler.update_type,
-                                obj._handler.func,
-                                obj._handler.filter,
-                                obj._handler.position,
-                            )
-                            logger.debug(
-                                f"Handler {obj._handler.func} added from {module_path}"
-                            )
-                            handlers += 1
-                        else:
-                            logger.warn(
-                                f"Handler {obj._handler.func} is not an async function from module {module_path}"
-                            )
-                count += 1
+                logger.exception(f"Failed to import plugin {module_path}")
+                continue
+
+            plugin_handlers_count = 0
+            handlers_to_load = []
+            handlers_to_load += [
+                obj._handler
+                for obj in vars(module).values()
+                if hasattr(obj, "_handler")
+                and isinstance(obj._handler, Handler)
+                and obj._handler not in handlers_to_load
+            ]
+
+            for handler in handlers_to_load:
+                if asyncio.iscoroutinefunction(handler.func):
+                    self.add_handler(
+                        handler.update_type,
+                        handler.func,
+                        handler.filter,
+                        handler.position,
+                    )
+                    handlers += 1
+                    plugin_handlers_count += 1
+
+                    logger.debug(f"Handler {handler.func} added from {module_path}")
+                else:
+                    logger.warning(
+                        f"Handler {handler.func} is not an async function from module {module_path}"
+                    )
+            count += 1
+
+            logger.debug(
+                f"Plugin {module_path} is fully imported with {plugin_handlers_count} handlers"
+            )
+
         logger.info(f"From {count} plugins got {handlers} handlers")
 
     def is_coro_filter(self, func: Callable) -> bool:
