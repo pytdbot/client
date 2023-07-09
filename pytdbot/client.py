@@ -174,6 +174,14 @@ class Client(Decorators, Methods):
         self.__authorization_state = None
         self.__authorization = None
         self.__cache = {"is_coro_filter": {}}
+        self.__local_handlers = {
+            "updateAuthorizationState": self.__handle_authorization_state,
+            "updateMessageSendSucceeded": self.__handle_update_message_succeeded,
+            "updateMessageSendFailed": self.__handle_update_message_failed,
+            "updateConnectionState": self.__handle_connection_state,
+            "updateOption": self.__handle_update_option,
+            "updateUser": self.__handle_update_user,
+        }
         self.__login = False
         self.__is_closing = False
 
@@ -628,21 +636,17 @@ class Client(Decorators, Methods):
                     )
                     if update is None:
                         continue
-                    self._process_update(update)
+                    self.loop.create_task(self._process_update(update))
 
             except Exception:
                 logger.exception("Exception in __listen_loop")
             finally:
                 self.is_running = False
 
-    def _process_update(self, update):
-        if "@client_id" in update:
-            del update["@client_id"]
+    async def _process_update(self, update):
+        del update["@client_id"]
 
-        if "@type" not in update:
-            logger.error(f"Unexpected update received: {update}")
-            return
-        elif "@extra" in update:
+        if "@extra" in update:
             if (
                 logger.root.level >= DEBUG
             ):  # dumping all results may create performance issues
@@ -653,37 +657,14 @@ class Client(Decorators, Methods):
             elif update["@type"] == "error" and "option" in update["@extra"]:
                 logger.error(f"{update['@extra']['option']}: {update['message']}")
         else:
-            if update["@type"] == "updateAuthorizationState":
-                self.loop.create_task(
-                    self.__handle_authorization_state(update),
-                )
-            elif update["@type"] == "updateMessageSendSucceeded":
-                self.loop.create_task(
-                    self.__handle_update_message_succeeded(update),
-                )
-            elif update["@type"] == "updateMessageSendFailed":
-                self.loop.create_task(
-                    self.__handle_update_message_failed(update),
-                )
-            elif update["@type"] == "updateConnectionState":
-                self.loop.create_task(
-                    self.__handle_connection_state(update),
-                )
-            elif update["@type"] == "updateOption":
-                self.loop.create_task(
-                    self.__handle_update_option(update),
-                )
-            elif update["@type"] == "updateUser":
-                self.loop.create_task(
-                    self.__handle_update_user(update),
-                )
+            update_handler = self.__local_handlers.get(update["@type"])
+            if update_handler:
+                self.loop.create_task(update_handler(update))
 
             if self.__is_queue_worker:
                 self.queue.put_nowait(update)
             else:
-                self.loop.create_task(
-                    self._handle_update(update),
-                )
+                await self._handle_update(update)
 
     async def __run_initializers(self, update):
         for initializer in self._handlers["initializer"]:
