@@ -12,7 +12,8 @@ from typing import Callable, Union
 from logging import getLogger, DEBUG
 from base64 import b64encode
 from deepdiff import DeepDiff
-from threading import current_thread, main_thread, Thread
+from concurrent.futures import ThreadPoolExecutor
+from threading import current_thread, main_thread
 from json import dumps
 
 from .tdjson import TdJson
@@ -170,7 +171,6 @@ class Client(Decorators, Methods):
         self._tdjson = TdJson(lib_path, td_verbosity)
         self._retry_after_prefex = "Too Many Requests: retry after "
         self._workers_tasks = None
-        self.__listen_loop_thread = Thread(target=self.__listen_loop, daemon=True)
         self.__authorization_state = None
         self.__authorization = None
         self.__cache = {"is_coro_filter": {}}
@@ -229,7 +229,7 @@ class Client(Decorators, Methods):
                 self.__is_queue_worker = False
                 logger.info("Started with unlimited updates processes")
 
-            self.__listen_loop_thread.start()
+            self.loop.create_task(self.__listen_loop())
 
         if login:
             await self.login()
@@ -616,21 +616,24 @@ class Client(Decorators, Methods):
             self.__cache["is_coro_filter"][func] = is_coro
             return is_coro
 
-    def __listen_loop(self):
-        try:
-            self.is_running = True
-            logger.info("Listening to updates...")
+    async def __listen_loop(self):
+        with ThreadPoolExecutor(1, "pytdbot_listener") as thread:
+            try:
+                self.is_running = True
+                logger.info("Listening to updates...")
 
-            while self.is_running:
-                update = self._tdjson.receive(100000.0)  # seconds
-                if update is None:
-                    continue
-                self._process_update(update)
+                while self.is_running:
+                    update = await self.loop.run_in_executor(
+                        thread, self._tdjson.receive, 100000.0  # Seconds
+                    )
+                    if update is None:
+                        continue
+                    self._process_update(update)
 
-        except Exception:
-            logger.exception("Exception in __listen_loop")
-        finally:
-            self.is_running = False
+            except Exception:
+                logger.exception("Exception in __listen_loop")
+            finally:
+                self.is_running = False
 
     def _process_update(self, update):
         if "@client_id" in update:
@@ -651,38 +654,35 @@ class Client(Decorators, Methods):
                 logger.error(f"{update['@extra']['option']}: {update['message']}")
         else:
             if update["@type"] == "updateAuthorizationState":
-                asyncio.run_coroutine_threadsafe(
-                    self.__handle_authorization_state(update), loop=self.loop
+                self.loop.create_task(
+                    self.__handle_authorization_state(update),
                 )
             elif update["@type"] == "updateMessageSendSucceeded":
-                asyncio.run_coroutine_threadsafe(
-                    self.__handle_update_message_succeeded(update), loop=self.loop
+                self.loop.create_task(
+                    self.__handle_update_message_succeeded(update),
                 )
             elif update["@type"] == "updateMessageSendFailed":
-                asyncio.run_coroutine_threadsafe(
-                    self.__handle_update_message_failed(update), loop=self.loop
+                self.loop.create_task(
+                    self.__handle_update_message_failed(update),
                 )
             elif update["@type"] == "updateConnectionState":
-                asyncio.run_coroutine_threadsafe(
-                    self.__handle_connection_state(update), loop=self.loop
+                self.loop.create_task(
+                    self.__handle_connection_state(update),
                 )
             elif update["@type"] == "updateOption":
-                asyncio.run_coroutine_threadsafe(
-                    self.__handle_update_option(update), loop=self.loop
+                self.loop.create_task(
+                    self.__handle_update_option(update),
                 )
             elif update["@type"] == "updateUser":
-                asyncio.run_coroutine_threadsafe(
-                    self.__handle_update_user(update), loop=self.loop
+                self.loop.create_task(
+                    self.__handle_update_user(update),
                 )
 
             if self.__is_queue_worker:
-                self.loop.call_soon_threadsafe(
-                    self.queue.put_nowait,
-                    update,
-                )
+                self.queue.put_nowait(update)
             else:
-                asyncio.run_coroutine_threadsafe(
-                    self._handle_update(update), loop=self.loop
+                self.loop.create_task(
+                    self._handle_update(update),
                 )
 
     async def __run_initializers(self, update):
