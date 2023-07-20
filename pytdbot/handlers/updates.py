@@ -2715,6 +2715,150 @@ class Updates:
 
         return decorator
 
+    def on_updateStory(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A story was changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateStory", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateStory", self, position)
+            else:
+                func._handler = Handler(func, "updateStory", filters, position)
+            return func
+
+        return decorator
+
+    def on_updateStoryDeleted(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A story became inaccessible
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateStoryDeleted", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateStoryDeleted", self, position)
+            else:
+                func._handler = Handler(func, "updateStoryDeleted", filters, position)
+            return func
+
+        return decorator
+
+    def on_updateChatActiveStories(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The list of active stories posted by a specific chat has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateChatActiveStories", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateChatActiveStories", self, position)
+            else:
+                func._handler = Handler(
+                    func, "updateChatActiveStories", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateStoryListChatCount(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Number of chats in a story list has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Defaults to ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateStoryListChatCount", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateStoryListChatCount", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateStoryListChatCount", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateOption(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,

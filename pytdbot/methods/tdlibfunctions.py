@@ -942,7 +942,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChat(self, chat_id: int) -> Result:
-        """Returns information about a chat by its identifier, this is an offline request if the current user is not a bot
+        """Returns information about a chat by its identifier; this is an offline request if the current user is not a bot
 
         Args:
             chat_id (``int``):
@@ -1275,7 +1275,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def searchChats(self, query: str, limit: int) -> Result:
-        """Searches for the specified query in the title and username of already known chats, this is an offline request\. Returns chats in the order seen in the main chat list
+        """Searches for the specified query in the title and username of already known chats; this is an offline request\. Returns chats in the order seen in the main chat list
 
         Args:
             query (``str``):
@@ -1385,6 +1385,29 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def searchRecentlyFoundChats(self, query: str, limit: int) -> Result:
+        """Searches for the specified query in the title and username of up to 50 recently found chats; this is an offline request
+
+        Args:
+            query (``str``):
+                Query to search for
+
+            limit (``int``):
+                The maximum number of chats to be returned
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Chats``)
+        """
+
+        data = {
+            "@type": "searchRecentlyFoundChats",
+            "query": query,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
     async def addRecentlyFoundChat(self, chat_id: int) -> Result:
         """Adds a chat to the list of recently found chats\. The chat is added to the beginning of the list\. If the chat is already in the list, it will be removed from the list first
 
@@ -1438,7 +1461,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getRecentlyOpenedChats(self, limit: int) -> Result:
-        """Returns recently opened chats, this is an offline request\. Returns chats in the order of last opening
+        """Returns recently opened chats; this is an offline request\. Returns chats in the order of last opening
 
         Args:
             limit (``int``):
@@ -2180,6 +2203,29 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def clickChatSponsoredMessage(self, chat_id: int, message_id: int) -> Result:
+        """Informs TDLib that the user opened the sponsored chat via the button, the name, the photo, or a mention in the sponsored message
+
+        Args:
+            chat_id (``int``):
+                Chat identifier of the sponsored message
+
+            message_id (``int``):
+                Identifier of the sponsored message
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "clickChatSponsoredMessage",
+            "chat_id": chat_id,
+            "message_id": message_id,
+        }
+
+        return await self.invoke(data)
+
     async def removeNotification(
         self, notification_group_id: int, notification_id: int
     ) -> Result:
@@ -2472,8 +2518,8 @@ class TDLibFunctions:
         self,
         chat_id: int,
         message_thread_id: int,
-        reply_to_message_id: int,
         input_message_content: dict,
+        reply_to: dict = None,
         options: dict = None,
         reply_markup: dict = None,
     ) -> Result:
@@ -2486,11 +2532,11 @@ class TDLibFunctions:
             message_thread_id (``int``):
                 If not 0, a message thread identifier in which the message will be sent
 
-            reply_to_message_id (``int``):
-                Identifier of the replied message; 0 if none
-
             input_message_content (``InputMessageContent``):
                 The content of the message to be sent
+
+            reply_to (``MessageReplyTo``, *optional*):
+                Identifier of the replied message or story; pass null if none
 
             options (``messageSendOptions``, *optional*):
                 Options to be used to send the message; pass null to use default options
@@ -2507,7 +2553,7 @@ class TDLibFunctions:
             "@type": "sendMessage",
             "chat_id": chat_id,
             "message_thread_id": message_thread_id,
-            "reply_to_message_id": reply_to_message_id,
+            "reply_to": reply_to,
             "options": options,
             "reply_markup": reply_markup,
             "input_message_content": input_message_content,
@@ -2519,9 +2565,9 @@ class TDLibFunctions:
         self,
         chat_id: int,
         message_thread_id: int,
-        reply_to_message_id: int,
         input_message_contents: list,
         only_preview: bool,
+        reply_to: dict = None,
         options: dict = None,
     ) -> Result:
         """Sends 2\-10 messages grouped together into an album\. Currently, only audio, document, photo and video messages can be grouped into an album\. Documents and audio files can be only grouped in an album with messages of the same type\. Returns sent messages
@@ -2533,14 +2579,14 @@ class TDLibFunctions:
             message_thread_id (``int``):
                 If not 0, a message thread identifier in which the messages will be sent
 
-            reply_to_message_id (``int``):
-                Identifier of a replied message; 0 if none
-
             input_message_contents (``list``):
                 Contents of messages to be sent\. At most 10 messages can be added to an album
 
             only_preview (``bool``):
                 Pass true to get fake messages instead of actually sending them
+
+            reply_to (``MessageReplyTo``, *optional*):
+                Identifier of the replied message or story; pass null if none
 
             options (``messageSendOptions``, *optional*):
                 Options to be used to send the messages; pass null to use default options
@@ -2554,7 +2600,7 @@ class TDLibFunctions:
             "@type": "sendMessageAlbum",
             "chat_id": chat_id,
             "message_thread_id": message_thread_id,
-            "reply_to_message_id": reply_to_message_id,
+            "reply_to": reply_to,
             "options": options,
             "input_message_contents": input_message_contents,
             "only_preview": only_preview,
@@ -2595,10 +2641,10 @@ class TDLibFunctions:
         self,
         chat_id: int,
         message_thread_id: int,
-        reply_to_message_id: int,
         query_id: int,
         result_id: str,
         hide_via_bot: bool,
+        reply_to: dict = None,
         options: dict = None,
     ) -> Result:
         """Sends the result of an inline query as a message\. Returns the sent message\. Always clears a chat draft message
@@ -2610,9 +2656,6 @@ class TDLibFunctions:
             message_thread_id (``int``):
                 If not 0, a message thread identifier in which the message will be sent
 
-            reply_to_message_id (``int``):
-                Identifier of a replied message; 0 if none
-
             query_id (``int``):
                 Identifier of the inline query
 
@@ -2621,6 +2664,9 @@ class TDLibFunctions:
 
             hide_via_bot (``bool``):
                 Pass true to hide the bot, via which the message is sent\. Can be used only for bots getOption\("animation\_search\_bot\_username"\), getOption\("photo\_search\_bot\_username"\), and getOption\("venue\_search\_bot\_username"\)
+
+            reply_to (``MessageReplyTo``, *optional*):
+                Identifier of the replied message or story; pass null if none
 
             options (``messageSendOptions``, *optional*):
                 Options to be used to send the message; pass null to use default options
@@ -2634,7 +2680,7 @@ class TDLibFunctions:
             "@type": "sendInlineQueryResultMessage",
             "chat_id": chat_id,
             "message_thread_id": message_thread_id,
-            "reply_to_message_id": reply_to_message_id,
+            "reply_to": reply_to,
             "options": options,
             "query_id": query_id,
             "result_id": result_id,
@@ -2723,32 +2769,13 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def sendChatScreenshotTakenNotification(self, chat_id: int) -> Result:
-        """Sends a notification about a screenshot taken in a chat\. Supported only in private and secret chats
-
-        Args:
-            chat_id (``int``):
-                Chat identifier
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``Ok``)
-        """
-
-        data = {
-            "@type": "sendChatScreenshotTakenNotification",
-            "chat_id": chat_id,
-        }
-
-        return await self.invoke(data)
-
     async def addLocalMessage(
         self,
         chat_id: int,
         sender_id: dict,
-        reply_to_message_id: int,
         disable_notification: bool,
         input_message_content: dict,
+        reply_to: dict = None,
     ) -> Result:
         """Adds a local message to a chat\. The message is persistent across application restarts only if the message database is used\. Returns the added message
 
@@ -2759,14 +2786,14 @@ class TDLibFunctions:
             sender_id (``MessageSender``):
                 Identifier of the sender of the message
 
-            reply_to_message_id (``int``):
-                Identifier of the replied message; 0 if none
-
             disable_notification (``bool``):
                 Pass true to disable notification for the message
 
             input_message_content (``InputMessageContent``):
                 The content of the message to be added
+
+            reply_to (``MessageReplyTo``, *optional*):
+                Identifier of the replied message or story; pass null if none
 
 
         Returns:
@@ -2777,7 +2804,7 @@ class TDLibFunctions:
             "@type": "addLocalMessage",
             "chat_id": chat_id,
             "sender_id": sender_id,
-            "reply_to_message_id": reply_to_message_id,
+            "reply_to": reply_to,
             "disable_notification": disable_notification,
             "input_message_content": input_message_content,
         }
@@ -4052,7 +4079,7 @@ class TDLibFunctions:
     async def getPollVoters(
         self, chat_id: int, message_id: int, option_id: int, offset: int, limit: int
     ) -> Result:
-        """Returns users voted for the specified option in a non\-anonymous polls\. For optimal performance, the number of returned users is chosen by TDLib
+        """Returns message senders voted for the specified option in a non\-anonymous polls\. For optimal performance, the number of returned users is chosen by TDLib
 
         Args:
             chat_id (``int``):
@@ -4065,14 +4092,14 @@ class TDLibFunctions:
                 0\-based identifier of the answer option
 
             offset (``int``):
-                Number of users to skip in the result; must be non\-negative
+                Number of voters to skip in the result; must be non\-negative
 
             limit (``int``):
-                The maximum number of users to be returned; must be positive and can't be greater than 50\. For optimal performance, the number of returned users is chosen by TDLib and can be smaller than the specified limit, even if the end of the voter list has not been reached
+                The maximum number of voters to be returned; must be positive and can't be greater than 50\. For optimal performance, the number of returned voters is chosen by TDLib and can be smaller than the specified limit, even if the end of the voter list has not been reached
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``Users``)
+            :class:`~pytdbot.types.Result` (``MessageSenders``)
         """
 
         data = {
@@ -4513,8 +4540,8 @@ class TDLibFunctions:
         url: str,
         application_name: str,
         message_thread_id: int,
-        reply_to_message_id: int,
         theme: dict = None,
+        reply_to: dict = None,
     ) -> Result:
         """Informs TDLib that a Web App is being opened from attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button\. For each bot, a confirmation alert about data sent to the bot must be shown once
 
@@ -4534,11 +4561,11 @@ class TDLibFunctions:
             message_thread_id (``int``):
                 If not 0, a message thread identifier in which the message will be sent
 
-            reply_to_message_id (``int``):
-                Identifier of the replied message for the message sent by the Web App; 0 if none
-
             theme (``themeParameters``, *optional*):
                 Preferred Web App theme; pass null to use the default theme
+
+            reply_to (``MessageReplyTo``, *optional*):
+                Identifier of the replied message or story for the message sent by the Web App; pass null if none
 
 
         Returns:
@@ -4553,7 +4580,7 @@ class TDLibFunctions:
             "theme": theme,
             "application_name": application_name,
             "message_thread_id": message_thread_id,
-            "reply_to_message_id": reply_to_message_id,
+            "reply_to": reply_to,
         }
 
         return await self.invoke(data)
@@ -5563,6 +5590,25 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getChatFolderChatCount(self, folder: dict) -> Result:
+        """Returns approximate number of chats in a being created chat folder\. Main and archive chat lists must be fully preloaded for this function to work correctly
+
+        Args:
+            folder (``chatFolder``):
+                The new chat folder
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Count``)
+        """
+
+        data = {
+            "@type": "getChatFolderChatCount",
+            "folder": folder,
+        }
+
+        return await self.invoke(data)
+
     async def reorderChatFolders(
         self, chat_folder_ids: list, main_chat_list_position: int
     ) -> Result:
@@ -5830,6 +5876,39 @@ class TDLibFunctions:
             "@type": "processChatFolderNewChats",
             "chat_folder_id": chat_folder_id,
             "added_chat_ids": added_chat_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def getArchiveChatListSettings(self) -> Result:
+        """Returns settings for automatic moving of chats to and from the Archive chat lists
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ArchiveChatListSettings``)
+        """
+
+        data = {
+            "@type": "getArchiveChatListSettings",
+        }
+
+        return await self.invoke(data)
+
+    async def setArchiveChatListSettings(self, settings: dict) -> Result:
+        """Changes settings for automatic moving of chats to and from the Archive chat lists
+
+        Args:
+            settings (``archiveChatListSettings``):
+                New settings
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setArchiveChatListSettings",
+            "settings": settings,
         }
 
         return await self.invoke(data)
@@ -6755,7 +6834,7 @@ class TDLibFunctions:
     async def getChatNotificationSettingsExceptions(
         self, compare_sound: bool, scope: dict = None
     ) -> Result:
-        """Returns list of chats with non\-default notification settings
+        """Returns list of chats with non\-default notification settings for new messages
 
         Args:
             compare_sound (``bool``):
@@ -6902,6 +6981,413 @@ class TDLibFunctions:
         data = {
             "@type": "readChatList",
             "chat_list": chat_list,
+        }
+
+        return await self.invoke(data)
+
+    async def getStory(
+        self, story_sender_chat_id: int, story_id: int, only_local: bool
+    ) -> Result:
+        """Returns a story
+
+        Args:
+            story_sender_chat_id (``int``):
+                Identifier of the chat that posted the story
+
+            story_id (``int``):
+                Story identifier
+
+            only_local (``bool``):
+                Pass true to get only locally available information without sending network requests
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Story``)
+        """
+
+        data = {
+            "@type": "getStory",
+            "story_sender_chat_id": story_sender_chat_id,
+            "story_id": story_id,
+            "only_local": only_local,
+        }
+
+        return await self.invoke(data)
+
+    async def sendStory(
+        self,
+        content: dict,
+        privacy_settings: dict,
+        active_period: int,
+        is_pinned: bool,
+        protect_content: bool,
+        caption: dict = None,
+    ) -> Result:
+        """Sends a new story\. Returns a temporary story with identifier 0
+
+        Args:
+            content (``InputStoryContent``):
+                Content of the story
+
+            privacy_settings (``StoryPrivacySettings``):
+                The privacy settings for the story
+
+            active_period (``int``):
+                Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, 2 \* 86400, 3 \* 86400, or 7 \* 86400 for Telegram Premium users, and 86400 otherwise
+
+            is_pinned (``bool``):
+                Pass true to keep the story accessible after expiration
+
+            protect_content (``bool``):
+                Pass true if the content of the story must be protected from forwarding and screenshotting
+
+            caption (``formattedText``, *optional*):
+                Story caption; pass null to use an empty caption; 0\-getOption\("story\_caption\_length\_max"\) characters
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Story``)
+        """
+
+        data = {
+            "@type": "sendStory",
+            "content": content,
+            "caption": caption,
+            "privacy_settings": privacy_settings,
+            "active_period": active_period,
+            "is_pinned": is_pinned,
+            "protect_content": protect_content,
+        }
+
+        return await self.invoke(data)
+
+    async def editStory(
+        self, story_id: int, content: dict = None, caption: dict = None
+    ) -> Result:
+        """Changes content and caption of a previously sent story
+
+        Args:
+            story_id (``int``):
+                Identifier of the story to edit
+
+            content (``InputStoryContent``, *optional*):
+                New content of the story; pass null to keep the current content
+
+            caption (``formattedText``, *optional*):
+                New story caption; pass null to keep the current caption
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "editStory",
+            "story_id": story_id,
+            "content": content,
+            "caption": caption,
+        }
+
+        return await self.invoke(data)
+
+    async def setStoryPrivacySettings(
+        self, story_id: int, privacy_settings: dict
+    ) -> Result:
+        """Changes privacy settings of a previously sent story
+
+        Args:
+            story_id (``int``):
+                Identifier of the story
+
+            privacy_settings (``StoryPrivacySettings``):
+                The new privacy settigs for the story
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setStoryPrivacySettings",
+            "story_id": story_id,
+            "privacy_settings": privacy_settings,
+        }
+
+        return await self.invoke(data)
+
+    async def toggleStoryIsPinned(self, story_id: int, is_pinned: bool) -> Result:
+        """Toggles whether a story is accessible after expiration
+
+        Args:
+            story_id (``int``):
+                Identifier of the story
+
+            is_pinned (``bool``):
+                Pass true to make the story accessible after expiration; pass false to make it private
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "toggleStoryIsPinned",
+            "story_id": story_id,
+            "is_pinned": is_pinned,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteStory(self, story_id: int) -> Result:
+        """Deletes a previously sent story
+
+        Args:
+            story_id (``int``):
+                Identifier of the story to delete
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteStory",
+            "story_id": story_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getStoryNotificationSettingsExceptions(self) -> Result:
+        """Returns list of chats with non\-default notification settings for stories
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Chats``)
+        """
+
+        data = {
+            "@type": "getStoryNotificationSettingsExceptions",
+        }
+
+        return await self.invoke(data)
+
+    async def loadActiveStories(self, story_list: dict) -> Result:
+        """Loads more active stories from a story list\. The loaded stories will be sent through updates\. Active stories are sorted by the pair \(active\_stories\.order, active\_stories\.story\_sender\_chat\_id\) in descending order\. Returns a 404 error if all active stories have been loaded
+
+        Args:
+            story_list (``StoryList``):
+                The story list in which to load active stories
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "loadActiveStories",
+            "story_list": story_list,
+        }
+
+        return await self.invoke(data)
+
+    async def setChatActiveStoriesList(self, chat_id: int, story_list: dict) -> Result:
+        """Changes story list in which stories from the chat are shown
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat that posted stories
+
+            story_list (``StoryList``):
+                New list for active stories posted by the chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setChatActiveStoriesList",
+            "chat_id": chat_id,
+            "story_list": story_list,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatActiveStories(self, chat_id: int) -> Result:
+        """Returns the list of active stories posted by the given chat
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatActiveStories``)
+        """
+
+        data = {
+            "@type": "getChatActiveStories",
+            "chat_id": chat_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatPinnedStories(
+        self, chat_id: int, from_story_id: int, limit: int
+    ) -> Result:
+        """Returns the list of pinned stories posted by the given chat\. The stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            from_story_id (``int``):
+                Identifier of the story starting from which stories must be returned; use 0 to get results from the last story
+
+            limit (``int``):
+                The maximum number of stories to be returned For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Stories``)
+        """
+
+        data = {
+            "@type": "getChatPinnedStories",
+            "chat_id": chat_id,
+            "from_story_id": from_story_id,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getArchivedStories(self, from_story_id: int, limit: int) -> Result:
+        """Returns the list of all stories of the current user\. The stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+
+        Args:
+            from_story_id (``int``):
+                Identifier of the story starting from which stories must be returned; use 0 to get results from the last story
+
+            limit (``int``):
+                The maximum number of stories to be returned For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Stories``)
+        """
+
+        data = {
+            "@type": "getArchivedStories",
+            "from_story_id": from_story_id,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def openStory(self, story_sender_chat_id: int, story_id: int) -> Result:
+        """Informs TDLib that a story is opened and is being viewed by the user
+
+        Args:
+            story_sender_chat_id (``int``):
+                The identifier of the sender of the opened story
+
+            story_id (``int``):
+                The identifier of the story
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "openStory",
+            "story_sender_chat_id": story_sender_chat_id,
+            "story_id": story_id,
+        }
+
+        return await self.invoke(data)
+
+    async def closeStory(self, story_sender_chat_id: int, story_id: int) -> Result:
+        """Informs TDLib that a story is closed by the user
+
+        Args:
+            story_sender_chat_id (``int``):
+                The identifier of the sender of the story to close
+
+            story_id (``int``):
+                The identifier of the story
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "closeStory",
+            "story_sender_chat_id": story_sender_chat_id,
+            "story_id": story_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getStoryViewers(
+        self, story_id: int, limit: int, offset_viewer: dict = None
+    ) -> Result:
+        """Returns viewers of a recent outgoing story\. The method can be called if story\.can\_get\_viewers \=\= true\. The views are returned in a reverse chronological order \(i\.e\., in order of decreasing view\_date\) For optimal performance, the number of returned stories is chosen by TDLib
+
+        Args:
+            story_id (``int``):
+                Story identifier
+
+            limit (``int``):
+                The maximum number of story viewers to return For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+            offset_viewer (``messageViewer``, *optional*):
+                A viewer from which to return next viewers; pass null to get results from the beginning
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``MessageViewers``)
+        """
+
+        data = {
+            "@type": "getStoryViewers",
+            "story_id": story_id,
+            "offset_viewer": offset_viewer,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def reportStory(
+        self, story_sender_chat_id: int, story_id: int, reason: dict, text: str
+    ) -> Result:
+        """Reports a story to the Telegram moderators
+
+        Args:
+            story_sender_chat_id (``int``):
+                The identifier of the sender of the story to report
+
+            story_id (``int``):
+                The identifier of the story to report
+
+            reason (``ReportReason``):
+                The reason for reporting the story
+
+            text (``str``):
+                Additional report details; 0\-1024 characters
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "reportStory",
+            "story_sender_chat_id": story_sender_chat_id,
+            "story_id": story_id,
+            "reason": reason,
+            "text": text,
         }
 
         return await self.invoke(data)
@@ -8736,7 +9222,7 @@ class TDLibFunctions:
                 Participant identifier
 
             is_muted (``bool``):
-                Pass true to mute the user; pass false to unmute the them
+                Pass true to mute the user; pass false to unmute them
 
 
         Returns:
@@ -9060,7 +9546,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getContacts(self) -> Result:
-        """Returns all user contacts
+        """Returns all contacts of the user
 
 
         Returns:
@@ -9158,6 +9644,39 @@ class TDLibFunctions:
 
         data = {
             "@type": "clearImportedContacts",
+        }
+
+        return await self.invoke(data)
+
+    async def setCloseFriends(self, user_ids: list) -> Result:
+        """Changes the list of close friends of the current user
+
+        Args:
+            user_ids (``list``):
+                User identifiers of close friends; the users must be contacts of the current user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setCloseFriends",
+            "user_ids": user_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def getCloseFriends(self) -> Result:
+        """Returns all close friends of the current user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Users``)
+        """
+
+        data = {
+            "@type": "getCloseFriends",
         }
 
         return await self.invoke(data)
@@ -10196,13 +10715,10 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def setEmojiStatus(self, duration: int, emoji_status: dict = None) -> Result:
+    async def setEmojiStatus(self, emoji_status: dict = None) -> Result:
         """Changes the emoji status of the current user; for Telegram Premium users only
 
         Args:
-            duration (``int``):
-                Duration of the status, in seconds; pass 0 to keep the status active until it will be changed manually
-
             emoji_status (``emojiStatus``, *optional*):
                 New emoji status; pass null to switch to the default badge
 
@@ -10214,7 +10730,6 @@ class TDLibFunctions:
         data = {
             "@type": "setEmojiStatus",
             "emoji_status": emoji_status,
-            "duration": duration,
         }
 
         return await self.invoke(data)
@@ -10241,7 +10756,7 @@ class TDLibFunctions:
     async def changePhoneNumber(
         self, phone_number: str, settings: dict = None
     ) -> Result:
-        """Changes the phone number of the user and sends an authentication code to the user's new phone number\. On success, returns information about the sent code
+        """Changes the phone number of the user and sends an authentication code to the user's new phone number; for official Android and iOS applications only\. On success, returns information about the sent code
 
         Args:
             phone_number (``str``):
@@ -10498,7 +11013,7 @@ class TDLibFunctions:
                 Identifier of the target bot
 
             language_code (``str``):
-                A two\-letter ISO 639\-1 language code\. If empty, the description will be shown to all users, for which language there are no dedicated description
+                A two\-letter ISO 639\-1 language code\. If empty, the name will be shown to all users for whose languages there is no dedicated name
 
             name (``str``):
                 New bot's name on the specified language; 0\-64 characters; must be non\-empty if language code is empty
@@ -10592,7 +11107,7 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def reorderActiveBotUsernames(
+    async def reorderBotActiveUsernames(
         self, bot_user_id: int, usernames: list
     ) -> Result:
         """Changes order of active usernames of a bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
@@ -10610,7 +11125,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "reorderActiveBotUsernames",
+            "@type": "reorderBotActiveUsernames",
             "bot_user_id": bot_user_id,
             "usernames": usernames,
         }
@@ -10627,7 +11142,7 @@ class TDLibFunctions:
                 Identifier of the target bot
 
             language_code (``str``):
-                A two\-letter ISO 639\-1 language code\. If empty, the description will be shown to all users, for which language there are no dedicated description
+                A two\-letter ISO 639\-1 language code\. If empty, the description will be shown to all users for whose languages there is no dedicated description
 
             description (``str``):
                 New bot's description on the specified language
@@ -10681,7 +11196,7 @@ class TDLibFunctions:
                 Identifier of the target bot
 
             language_code (``str``):
-                A two\-letter ISO 639\-1 language code\. If empty, the short description will be shown to all users, for which language there are no dedicated description
+                A two\-letter ISO 639\-1 language code\. If empty, the short description will be shown to all users for whose languages there is no dedicated description
 
             short_description (``str``):
                 New bot's short description on the specified language
@@ -12140,7 +12655,7 @@ class TDLibFunctions:
             chat_id (``int``):
                 Chat identifier
 
-            reason (``ChatReportReason``):
+            reason (``ReportReason``):
                 The reason for reporting the chat
 
             text (``str``):
@@ -12176,7 +12691,7 @@ class TDLibFunctions:
             file_id (``int``):
                 Identifier of the photo to report\. Only full photos from chatPhoto can be reported
 
-            reason (``ChatReportReason``):
+            reason (``ReportReason``):
                 The reason for reporting the chat photo
 
             text (``str``):
@@ -13775,7 +14290,7 @@ class TDLibFunctions:
     async def addApplicationChangelog(
         self, previous_application_version: str
     ) -> Result:
-        """Adds server\-provided application changelog as messages to the chat 777000 \(Telegram\); for official applications only\. Returns a 404 error if nothing changed
+        """Adds server\-provided application changelog as messages to the chat 777000 \(Telegram\) or as a stories; for official applications only\. Returns a 404 error if nothing changed
 
         Args:
             previous_application_version (``str``):
