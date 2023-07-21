@@ -172,6 +172,19 @@ class Update:
 
     @property
     @lru_cache(1)
+    def reply_to(self) -> Union[dict, None]:
+        """Information about the replied message
+
+        Returns:
+            :py:class:`int`
+            ``None``
+        """
+
+        if self.type in MESSAGE_CHECK_TYPES:
+            return self.update["message"].get("reply_to")
+
+    @property
+    @lru_cache(1)
     def reply_to_message_id(self) -> Union[int, None]:
         """The message id of the replied message
 
@@ -181,7 +194,7 @@ class Update:
         """
 
         if self.type in MESSAGE_CHECK_TYPES:
-            return self.update["message"]["reply_to_message_id"]
+            return self.update["message"].get("reply_to", {}).get("message_id")
 
     @property
     @lru_cache(1)

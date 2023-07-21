@@ -29,6 +29,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
@@ -65,8 +66,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -94,22 +98,26 @@ class Methods(TDLibFunctions):
         else:
             _text = {"@type": "formattedText", "text": text, "entities": entities}
 
-        if load_replied_message == None and not self.use_message_database:
+        if not load_replied_message and not self.use_message_database:
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "options": {
                 "@type": "messageSendOptions",
@@ -123,6 +131,15 @@ class Methods(TDLibFunctions):
                 "clear_draft": clear_draft,
             },
         }
+
+        if reply_to is not None:
+            data["reply_to"] = reply_to
+        elif reply_to_message_id > 0:
+            data["reply_to"] = {
+                "@type": "messageReplyToMessage",
+                "message_id": reply_to_message_id,
+            }
+
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
         res = await self.invoke(data)
@@ -149,6 +166,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
@@ -200,8 +218,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -217,7 +238,6 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
-
             if isinstance(caption_entities, list):
                 _caption = {
                     "@type": "formattedText",
@@ -241,18 +261,22 @@ class Methods(TDLibFunctions):
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "options": {
                 "@type": "messageSendOptions",
@@ -269,6 +293,14 @@ class Methods(TDLibFunctions):
                 "has_spoiler": has_spoiler,
             },
         }
+
+        if reply_to is not None:
+            data["reply_to"] = reply_to
+        elif reply_to_message_id > 0:
+            data["reply_to"] = {
+                "@type": "messageReplyToMessage",
+                "message_id": reply_to_message_id,
+            }
 
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
@@ -308,6 +340,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
@@ -353,8 +386,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -371,7 +407,6 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
-
             if isinstance(caption_entities, list):
                 _caption = {
                     "@type": "formattedText",
@@ -395,18 +430,22 @@ class Methods(TDLibFunctions):
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "options": {
                 "@type": "messageSendOptions",
@@ -421,6 +460,14 @@ class Methods(TDLibFunctions):
                 "caption": _caption,
             },
         }
+
+        if reply_to is not None:
+            data["reply_to"] = reply_to
+        elif reply_to_message_id > 0:
+            data["reply_to"] = {
+                "@type": "messageReplyToMessage",
+                "message_id": reply_to_message_id,
+            }
 
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
@@ -460,6 +507,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
@@ -499,8 +547,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -516,7 +567,6 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
-
             if isinstance(caption_entities, list):
                 _caption = {
                     "@type": "formattedText",
@@ -540,18 +590,22 @@ class Methods(TDLibFunctions):
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "options": {
                 "@type": "messageSendOptions",
@@ -564,6 +618,14 @@ class Methods(TDLibFunctions):
                 "caption": _caption,
             },
         }
+
+        if reply_to is not None:
+            data["reply_to"] = reply_to
+        elif reply_to_message_id > 0:
+            data["reply_to"] = {
+                "@type": "messageReplyToMessage",
+                "message_id": reply_to_message_id,
+            }
 
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
@@ -605,6 +667,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
@@ -656,8 +719,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -673,7 +739,6 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
-
             if isinstance(caption_entities, list):
                 _caption = {
                     "@type": "formattedText",
@@ -697,18 +762,22 @@ class Methods(TDLibFunctions):
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "options": {
                 "@type": "messageSendOptions",
@@ -725,6 +794,14 @@ class Methods(TDLibFunctions):
                 "has_spoiler": has_spoiler,
             },
         }
+
+        if reply_to is not None:
+            data["reply_to"] = reply_to
+        elif reply_to_message_id > 0:
+            data["reply_to"] = {
+                "@type": "messageReplyToMessage",
+                "message_id": reply_to_message_id,
+            }
 
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
@@ -768,6 +845,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
@@ -825,8 +903,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -842,7 +923,6 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
-
             if isinstance(caption_entities, list):
                 _caption = {
                     "@type": "formattedText",
@@ -866,18 +946,22 @@ class Methods(TDLibFunctions):
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "options": {
                 "@type": "messageSendOptions",
@@ -896,6 +980,14 @@ class Methods(TDLibFunctions):
                 "has_spoiler": has_spoiler,
             },
         }
+
+        if reply_to is not None:
+            data["reply_to"] = reply_to
+        elif reply_to_message_id > 0:
+            data["reply_to"] = {
+                "@type": "messageReplyToMessage",
+                "message_id": reply_to_message_id,
+            }
 
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
@@ -931,6 +1023,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
@@ -964,8 +1057,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -983,18 +1079,22 @@ class Methods(TDLibFunctions):
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "options": {
                 "@type": "messageSendOptions",
@@ -1007,6 +1107,14 @@ class Methods(TDLibFunctions):
                 "length": length,
             },
         }
+
+        if reply_to is not None:
+            data["reply_to"] = reply_to
+        elif reply_to_message_id > 0:
+            data["reply_to"] = {
+                "@type": "messageReplyToMessage",
+                "message_id": reply_to_message_id,
+            }
 
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
@@ -1044,6 +1152,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
@@ -1083,8 +1192,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -1100,7 +1212,6 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(caption, str):
-
             if isinstance(caption_entities, list):
                 _caption = {
                     "@type": "formattedText",
@@ -1124,18 +1235,22 @@ class Methods(TDLibFunctions):
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "options": {
                 "@type": "messageSendOptions",
@@ -1148,6 +1263,14 @@ class Methods(TDLibFunctions):
                 "caption": _caption,
             },
         }
+
+        if reply_to is not None:
+            data["reply_to"] = reply_to
+        elif reply_to_message_id > 0:
+            data["reply_to"] = {
+                "@type": "messageReplyToMessage",
+                "message_id": reply_to_message_id,
+            }
 
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
@@ -1184,6 +1307,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
@@ -1220,8 +1344,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -1238,18 +1365,22 @@ class Methods(TDLibFunctions):
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
             "chat_id": chat_id,
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "options": {
                 "@type": "messageSendOptions",
@@ -1263,6 +1394,14 @@ class Methods(TDLibFunctions):
                 "height": height,
             },
         }
+
+        if reply_to is not None:
+            data["reply_to"] = reply_to
+        elif reply_to_message_id > 0:
+            data["reply_to"] = {
+                "@type": "messageReplyToMessage",
+                "message_id": reply_to_message_id,
+            }
 
         if isinstance(reply_markup, ReplyMarkup):
             data["reply_markup"] = reply_markup.to_dict()
@@ -1301,6 +1440,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
     ) -> Result:
@@ -1340,8 +1480,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
+            reply_to (``dict``, *optional*):
+                Dict object of TDLib ``MessageReplyTo`` for replying
+
             reply_to_message_id (``int``, *optional*):
-                Identifier of the message to reply
+                Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
@@ -1354,7 +1497,6 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
         _caption = None
         if isinstance(new_caption, str):
-
             if isinstance(new_caption_entities, list):
                 _caption = {
                     "@type": "formattedText",
@@ -1378,13 +1520,18 @@ class Methods(TDLibFunctions):
             load_replied_message = True
 
         if (
-            load_replied_message == True
-            and isinstance(reply_to_message_id, int)
-            and reply_to_message_id > 0
+            load_replied_message
+            and (
+                isinstance(reply_to, dict)
+                and reply_to.get("@type") == "messageReplyToMessage"
+            )
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
-            # Because TDLib will ignore `reply_to_message_id`
-            # if the message isn't loaded in memory
-            await self.getMessage(chat_id, reply_to_message_id)
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
+            )
 
         data = {
             "@type": "sendMessage",
@@ -1394,7 +1541,6 @@ class Methods(TDLibFunctions):
                 "disable_notification": disable_notification,
                 "protect_content": protect_content,
             },
-            "reply_to_message_id": reply_to_message_id,
             "message_thread_id": message_thread_id,
             "input_message_content": {
                 "@type": "inputMessageForwarded",
