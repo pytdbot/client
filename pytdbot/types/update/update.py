@@ -193,8 +193,8 @@ class Update:
             ``None``
         """
 
-        if self.type in MESSAGE_CHECK_TYPES:
-            return self.update["message"].get("reply_to", {}).get("message_id")
+        if self.reply_to:
+            return self.reply_to.get("message_id")
 
     @property
     @lru_cache(1)
@@ -493,7 +493,7 @@ class Update:
 
         Args:
             parse_mode (``str``, *optional*):
-                The parse mode of the mention. Defaults to ``markdown``
+                The parse mode of the mention. Default is ``markdown``
 
         Returns:
             :py:class:`str`
@@ -625,7 +625,7 @@ class Update:
 
         Args:
             chat_id (``int``, *optional*):
-                The chat to leave. Defaults to the current chat
+                The chat to leave. Default is the current chat
 
         Returns:
             :class:`~pytdbot.types.Result`
@@ -663,7 +663,7 @@ class Update:
                 Type of action to broadcast. Choose one, depending on what the user is about to receive: ``typing`` for text messages, ``upload_photo`` for photos, ``record_video`` or ``upload_video`` for videos, ``record_voice`` or ``upload_voice`` for voice notes, ``upload_document`` for general files, ``choose_sticker`` for stickers, ``find_location` for location data, ``record_video_note`` or ``upload_video_note`` for video notes
 
             message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the action was performed. Defaults to ``None``
+                If not 0, a message thread identifier in which the action was performed. Default is ``None``
 
         Returns:
             :class:`~pytdbot.types.ChatActions`
@@ -680,7 +680,7 @@ class Update:
 
         Args:
             file_id (``int``, *optional*):
-                File identifier to download. Defaults to None (:meth:`~pytdbot.types.Update.local_file_id`)
+                File identifier to download. Default is None (:meth:`~pytdbot.types.Update.local_file_id`)
 
         Returns:
             :class:`~pytdbot.types.Result`
@@ -706,7 +706,7 @@ class Update:
                 Text of the answer
 
             show_alert (``bool``, *optional*):
-                Pass true to show an alert to the user instead of a toast notification. Defaults to ``False``
+                Pass true to show an alert to the user instead of a toast notification. Default is ``False``
 
             url (``str``, *optional*):
                 URL to be opened
@@ -739,7 +739,7 @@ class Update:
                 The chat id
 
             message_id (``int``, *optional*):
-                The message id. If ``None``, the current message will be forwarded. Defaults to ``None``
+                The message id. If ``None``, the current message will be forwarded. Default is ``None``
 
             in_game_share (``bool``, *optional*):
                 True, if a game message is being shared from a launched game; applies only to game messages
@@ -808,7 +808,7 @@ class Update:
                 List of ``MessageEntity`` objects to parse in the text. If you want to send a text with formatting, use *parse_mode* instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``None``
+                Mode for parsing entities. Default is ``None``
 
             disable_web_page_preview (``bool``, *optional*):
                 Disables link previews for links in this message
@@ -916,7 +916,7 @@ class Update:
                 List of ``MessageEntity`` objects to parse in the animation caption
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``None``
+                Mode for parsing entities. Default is ``None``
 
             added_sticker_file_ids (``list``, *optional*):
                 List of file identifiers of new sticker set that should be added to the current sticker set
@@ -1033,7 +1033,7 @@ class Update:
                 List of ``MessageEntity`` objects to parse in the audio caption
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``None``
+                Mode for parsing entities. Default is ``None``
 
             duration (``int``, *optional*):
                 Duration of the audio in seconds
@@ -1142,7 +1142,7 @@ class Update:
                 List of ``MessageEntity`` objects to parse in the document caption
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``None``
+                Mode for parsing entities. Default is ``None``
 
             disable_notification (``bool``, *optional*):
                 If True, disable notification for the message
@@ -1339,7 +1339,7 @@ class Update:
                 List of ``MessageEntity`` objects to parse in the document caption
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``None``
+                Mode for parsing entities. Default is ``None``
 
             supports_streaming (``bool``, *optional*):
                 Pass True, if the uploaded video is suitable for streaming
@@ -1443,7 +1443,7 @@ class Update:
                 List of ``MessageEntity`` objects to parse in the document caption
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``None``
+                Mode for parsing entities. Default is ``None``
 
             disable_notification (``bool``, *optional*):
                 If True, disable notification for the message
@@ -1541,7 +1541,7 @@ class Update:
                 List of ``MessageEntity`` objects to parse in the voice caption
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``None``
+                Mode for parsing entities. Default is ``None``
 
             duration (``int``, *optional*):
                 Duration of sent voice in seconds
@@ -1630,7 +1630,7 @@ class Update:
                 List of ``MessageEntity`` objects to parse in the text. If you want to send a text with formatting, use *parse_mode* instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``None``
+                Mode for parsing entities. Default is ``None``
 
             disable_web_page_preview (``bool``, *optional*):
                 Disables link previews for links in this message

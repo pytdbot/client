@@ -9,7 +9,7 @@ def escape_html(text: str, quote: bool = True) -> str:
             The text to escape
 
         quote (``bool``, *optional*):
-            Whether to escape double quotes. Defaults to ``True``
+            Whether to escape double quotes. Default is ``True``
 
     Returns:
         :py:class:`str`: The escaped text
@@ -30,7 +30,7 @@ def escape_markdown(text: str, version: int = 2) -> str:
             The text to escape
 
         version (``int``, *optional*):
-            The Markdown version to escape. Defaults to ``2``
+            The Markdown version to escape. Default is ``2``
 
     Returns:
         :py:class:`str`: The escaped text

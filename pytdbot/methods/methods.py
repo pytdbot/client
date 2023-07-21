@@ -49,16 +49,16 @@ class Methods(TDLibFunctions):
                 List of ``MessageEntity`` objects to parse in the text. If you want to send a text with formatting, use ```parse_mode``` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``
+                Mode for parsing entities. Default is ``markdown``
 
             disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message. Defaults to ``False``
+                Disables link previews for links in this message. Default is ``False``
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             clear_draft (``bool``, *optional*):
-                True, if a chat message draft must be deleted. Defaults to ``False``
+                True, if a chat message draft must be deleted. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -73,7 +73,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -82,21 +82,20 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
-        if entities is None:
-            parse_mode = (
-                parse_mode if parse_mode is not None else self.default_parse_mode
-            )
-
-            if parse_mode is not None:
-                parse = await self.parseText(text, parse_mode=parse_mode)
-                if parse.is_error:
-                    return parse
-                else:
-                    _text = parse.result
-            else:
-                _text = {"@type": "formattedText", "text": text, "entities": []}
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(entities, list):
+            text = {
+                "@type": "formattedText",
+                "text": text,
+                "entities": entities,
+            }
+        elif isinstance(parse_mode, str):
+            parse = await self.parseText(text, parse_mode=parse_mode)
+            if parse.is_error:
+                return parse
+            text = parse.result
         else:
-            _text = {"@type": "formattedText", "text": text, "entities": entities}
+            text = {"@type": "formattedText", "text": text, "entities": []}
 
         if not load_replied_message and not self.use_message_database:
             load_replied_message = True
@@ -126,7 +125,7 @@ class Methods(TDLibFunctions):
             },
             "input_message_content": {
                 "@type": "inputMessageText",
-                "text": _text,
+                "text": text,
                 "disable_web_page_preview": disable_web_page_preview,
                 "clear_draft": clear_draft,
             },
@@ -145,10 +144,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def sendAnimation(
         self,
@@ -192,7 +191,7 @@ class Methods(TDLibFunctions):
                 List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``
+                Mode for parsing entities. Default is ``markdown``
 
             added_sticker_file_ids (``list``, *optional*):
                 File identifiers of the stickers added to the animation, if applicable
@@ -207,7 +206,7 @@ class Methods(TDLibFunctions):
                 Height of the animation
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -225,7 +224,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -235,11 +234,10 @@ class Methods(TDLibFunctions):
 
         """
 
-        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
-        _caption = None
+        parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption, str):
             if isinstance(caption_entities, list):
-                _caption = {
+                caption = {
                     "@type": "formattedText",
                     "text": caption,
                     "entities": caption_entities,
@@ -248,14 +246,9 @@ class Methods(TDLibFunctions):
                 parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
-                else:
-                    _caption = parse.result
+                caption = parse.result
             else:
-                _caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": [],
-                }
+                caption = {"@type": "formattedText", "text": caption, "entities": []}
 
         if load_replied_message == None and not self.use_message_database:
             load_replied_message = True
@@ -289,7 +282,7 @@ class Methods(TDLibFunctions):
                 "duration": duration,
                 "width": width,
                 "height": height,
-                "caption": _caption,
+                "caption": caption,
                 "has_spoiler": has_spoiler,
             },
         }
@@ -321,10 +314,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def sendAudio(
         self,
@@ -366,7 +359,7 @@ class Methods(TDLibFunctions):
                 List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``
+                Mode for parsing entities. Default is ``markdown``
 
             title (``str``, *optional*):
                 Title of the audio
@@ -378,7 +371,7 @@ class Methods(TDLibFunctions):
                 Duration of the audio, in seconds
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -393,7 +386,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -404,11 +397,10 @@ class Methods(TDLibFunctions):
 
         """
 
-        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
-        _caption = None
+        parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption, str):
             if isinstance(caption_entities, list):
-                _caption = {
+                caption = {
                     "@type": "formattedText",
                     "text": caption,
                     "entities": caption_entities,
@@ -417,14 +409,9 @@ class Methods(TDLibFunctions):
                 parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
-                else:
-                    _caption = parse.result
+                caption = parse.result
             else:
-                _caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": [],
-                }
+                caption = {"@type": "formattedText", "text": caption, "entities": []}
 
         if load_replied_message == None and not self.use_message_database:
             load_replied_message = True
@@ -457,7 +444,7 @@ class Methods(TDLibFunctions):
                 "title": title,
                 "performer": performer,
                 "duration": duration,
-                "caption": _caption,
+                "caption": caption,
             },
         }
 
@@ -490,10 +477,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def sendDocument(
         self,
@@ -533,13 +520,13 @@ class Methods(TDLibFunctions):
                 List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``
+                Mode for parsing entities. Default is ``markdown``
 
             disable_content_type_detection (``bool``, *optional*):
                 If true, automatic file type detection will be disabled and the document will be always sent as file. Always true for files sent to secret chats
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -554,7 +541,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -564,11 +551,10 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
-        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
-        _caption = None
+        parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption, str):
             if isinstance(caption_entities, list):
-                _caption = {
+                caption = {
                     "@type": "formattedText",
                     "text": caption,
                     "entities": caption_entities,
@@ -577,14 +563,9 @@ class Methods(TDLibFunctions):
                 parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
-                else:
-                    _caption = parse.result
+                caption = parse.result
             else:
-                _caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": [],
-                }
+                caption = {"@type": "formattedText", "text": caption, "entities": []}
 
         if load_replied_message == None and not self.use_message_database:
             load_replied_message = True
@@ -615,7 +596,7 @@ class Methods(TDLibFunctions):
             "input_message_content": {
                 "@type": "inputMessageDocument",
                 "disable_content_type_detection": disable_content_type_detection,
-                "caption": _caption,
+                "caption": caption,
             },
         }
 
@@ -646,10 +627,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def sendPhoto(
         self,
@@ -693,7 +674,7 @@ class Methods(TDLibFunctions):
                 List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``
+                Mode for parsing entities. Default is ``markdown``
 
             added_sticker_file_ids (``list``, *optional*):
                 List of file identifiers of added stickers
@@ -708,7 +689,7 @@ class Methods(TDLibFunctions):
                 Photo self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -726,7 +707,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -736,11 +717,10 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
-        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
-        _caption = None
+        parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption, str):
             if isinstance(caption_entities, list):
-                _caption = {
+                caption = {
                     "@type": "formattedText",
                     "text": caption,
                     "entities": caption_entities,
@@ -749,14 +729,9 @@ class Methods(TDLibFunctions):
                 parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
-                else:
-                    _caption = parse.result
+                caption = parse.result
             else:
-                _caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": [],
-                }
+                caption = {"@type": "formattedText", "text": caption, "entities": []}
 
         if load_replied_message == None and not self.use_message_database:
             load_replied_message = True
@@ -789,7 +764,7 @@ class Methods(TDLibFunctions):
                 "added_sticker_file_ids": added_sticker_file_ids,
                 "width": width,
                 "height": height,
-                "caption": _caption,
+                "caption": caption,
                 "self_destruct_time": self_destruct_time,
                 "has_spoiler": has_spoiler,
             },
@@ -822,10 +797,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def sendVideo(
         self,
@@ -871,7 +846,7 @@ class Methods(TDLibFunctions):
                 List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption with formatting, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Mode for parsing entities. Defaults to ``markdown``
+                Mode for parsing entities. Default is ``markdown``
 
             added_sticker_file_ids (``list``, *optional*):
                 List of file identifiers of added stickers
@@ -892,7 +867,7 @@ class Methods(TDLibFunctions):
                 Video self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -910,7 +885,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -920,11 +895,10 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
-        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
-        _caption = None
+        parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption, str):
             if isinstance(caption_entities, list):
-                _caption = {
+                caption = {
                     "@type": "formattedText",
                     "text": caption,
                     "entities": caption_entities,
@@ -933,14 +907,9 @@ class Methods(TDLibFunctions):
                 parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
-                else:
-                    _caption = parse.result
+                caption = parse.result
             else:
-                _caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": [],
-                }
+                caption = {"@type": "formattedText", "text": caption, "entities": []}
 
         if load_replied_message == None and not self.use_message_database:
             load_replied_message = True
@@ -975,7 +944,7 @@ class Methods(TDLibFunctions):
                 "duration": duration,
                 "width": width,
                 "height": height,
-                "caption": _caption,
+                "caption": caption,
                 "self_destruct_time": self_destruct_time,
                 "has_spoiler": has_spoiler,
             },
@@ -1008,10 +977,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def sendVideoNote(
         self,
@@ -1049,7 +1018,7 @@ class Methods(TDLibFunctions):
                 Video width and height
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -1064,7 +1033,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -1135,10 +1104,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def sendVoice(
         self,
@@ -1175,7 +1144,7 @@ class Methods(TDLibFunctions):
                 List of ``MessageEntity`` objects to parse in the caption. If you want to send a caption without parsing entities, use ``parse_mode`` instead
 
             parse_mode (``str``, *optional*):
-                Parse mode for the caption. Defaults to None
+                Parse mode for the caption. Default is None
 
             duration (``int``, *optional*):
                 Duration of sent voice in seconds
@@ -1184,7 +1153,7 @@ class Methods(TDLibFunctions):
                 Waveform representation of the voice note, in 5-bit format
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -1199,7 +1168,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -1209,11 +1178,10 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
-        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
-        _caption = None
+        parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption, str):
             if isinstance(caption_entities, list):
-                _caption = {
+                caption = {
                     "@type": "formattedText",
                     "text": caption,
                     "entities": caption_entities,
@@ -1222,14 +1190,9 @@ class Methods(TDLibFunctions):
                 parse = await self.parseText(caption, parse_mode=parse_mode)
                 if parse.is_error:
                     return parse
-                else:
-                    _caption = parse.result
+                caption = parse.result
             else:
-                _caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": [],
-                }
+                caption = {"@type": "formattedText", "text": caption, "entities": []}
 
         if load_replied_message == None and not self.use_message_database:
             load_replied_message = True
@@ -1260,7 +1223,7 @@ class Methods(TDLibFunctions):
             "input_message_content": {
                 "@type": "inputMessageVoiceNote",
                 "duration": duration,
-                "caption": _caption,
+                "caption": caption,
             },
         }
 
@@ -1291,10 +1254,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def sendSticker(
         self,
@@ -1336,7 +1299,7 @@ class Methods(TDLibFunctions):
                 Sticker height
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -1351,7 +1314,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -1422,10 +1385,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def sendCopy(
         self,
@@ -1472,7 +1435,7 @@ class Methods(TDLibFunctions):
                 Mode for parsing entities in the new caption
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -1487,7 +1450,7 @@ class Methods(TDLibFunctions):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
             load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Defaults to ``None``
+                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
 
         Returns:
@@ -1559,10 +1522,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def forwardMessage(
         self,
@@ -1588,7 +1551,7 @@ class Methods(TDLibFunctions):
                 True, if a game message is being shared from a launched game; applies only to game messages
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Defaults to ``False``
+                If True, disable notification for the message. Default is ``False``
 
         Returns:
             :class:`~pytdbot.types.Result`
@@ -1610,10 +1573,10 @@ class Methods(TDLibFunctions):
         res = await self.invoke(data)
         if res.is_error:
             return res
-        _new = Result(data)
-        self._results[str(res.result["id"]) + str(res.result["chat_id"])] = _new
-        await _new.wait()
-        return _new
+        new_result = Result(data)
+        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
+        await new_result
+        return new_result
 
     async def editTextMessage(
         self,
@@ -1703,7 +1666,7 @@ class Methods(TDLibFunctions):
                 The text to parse
 
             parse_mode (``str``):
-                Text parse mode. Currently supported: markdown, markdownv2 and html. Defaults to "markdownv2"
+                Text parse mode. Currently supported: markdown, markdownv2 and html. Default is "markdownv2"
 
         Returns:
             :class:`~pytdbot.types.Result`

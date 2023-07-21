@@ -24,7 +24,7 @@ class Decorators(Updates):
                 An update filter
 
             position (``int``, *optional*):
-                The function position in initializers list. Defaults to ``None`` (append)
+                The function position in initializers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -59,7 +59,7 @@ class Decorators(Updates):
                 An update filter
 
             position (``int``, *optional*):
-                The function position in finalizers list. Defaults to ``None`` (append)
+                The function position in finalizers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`

@@ -11,10 +11,10 @@ class LogStreamFile(LogStream):
             Path to the file to where the internal TDLib log will be written
 
         max_file_size (``int``, *optional*):
-            The maximum size of the file to where the internal TDLib log is written before the file will automatically be rotated, in bytes. Defaults to ``104857600`` (100MB)
+            The maximum size of the file to where the internal TDLib log is written before the file will automatically be rotated, in bytes. Default is ``104857600`` (100MB)
 
         redirect_stderr (``bool``, *optional*):
-            Pass true to additionally redirect stderr to the log file. Ignored on Windows. Defaults to ``False``
+            Pass true to additionally redirect stderr to the log file. Ignored on Windows. Default is ``False``
     """
 
     def __init__(
@@ -23,7 +23,6 @@ class LogStreamFile(LogStream):
         max_file_size: int = 104857600,
         redirect_stderr: bool = False,
     ) -> None:
-
         self.path = path
         self.max_file_size = max_file_size
         self.redirect_stderr = redirect_stderr

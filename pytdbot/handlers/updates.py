@@ -23,7 +23,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -63,7 +63,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -97,7 +97,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -137,7 +137,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -177,7 +177,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -213,7 +213,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -247,7 +247,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -281,7 +281,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -317,7 +317,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -357,7 +357,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -397,7 +397,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -437,7 +437,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -477,7 +477,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -517,7 +517,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -551,7 +551,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -585,7 +585,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -619,7 +619,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -655,7 +655,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -691,7 +691,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -725,7 +725,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -759,7 +759,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -793,7 +793,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -827,7 +827,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -867,7 +867,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -903,7 +903,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -939,7 +939,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -979,7 +979,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1019,7 +1019,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1059,7 +1059,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1095,7 +1095,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1129,7 +1129,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1163,7 +1163,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1203,7 +1203,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1243,7 +1243,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1277,7 +1277,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1317,7 +1317,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1357,7 +1357,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1397,7 +1397,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1437,7 +1437,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1471,7 +1471,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1511,7 +1511,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1545,7 +1545,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1585,7 +1585,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1619,7 +1619,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1659,7 +1659,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1693,7 +1693,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1729,7 +1729,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1769,7 +1769,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1809,7 +1809,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1843,7 +1843,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1877,7 +1877,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1911,7 +1911,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1945,7 +1945,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -1979,7 +1979,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2013,7 +2013,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2047,7 +2047,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2081,7 +2081,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2121,7 +2121,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2161,7 +2161,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2201,7 +2201,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2235,7 +2235,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2275,7 +2275,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2315,7 +2315,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2349,7 +2349,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2389,7 +2389,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2423,7 +2423,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2463,7 +2463,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2497,7 +2497,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2531,7 +2531,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2571,7 +2571,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2611,7 +2611,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2651,7 +2651,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2691,7 +2691,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2727,7 +2727,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2761,7 +2761,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2795,7 +2795,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2831,7 +2831,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2871,7 +2871,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2905,7 +2905,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2939,7 +2939,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -2979,7 +2979,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3019,7 +3019,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3053,7 +3053,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3089,7 +3089,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3125,7 +3125,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3165,7 +3165,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3205,7 +3205,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3239,7 +3239,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3279,7 +3279,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3315,7 +3315,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3349,7 +3349,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3383,7 +3383,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3423,7 +3423,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3459,7 +3459,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3499,7 +3499,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3539,7 +3539,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3573,7 +3573,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3613,7 +3613,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3653,7 +3653,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3689,7 +3689,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3729,7 +3729,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3765,7 +3765,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3799,7 +3799,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3839,7 +3839,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3875,7 +3875,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3915,7 +3915,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3951,7 +3951,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -3991,7 +3991,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -4025,7 +4025,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -4059,7 +4059,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -4093,7 +4093,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -4127,7 +4127,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -4161,7 +4161,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`
@@ -4201,7 +4201,7 @@ class Updates:
                 An update filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             :py:class:`TypeError`

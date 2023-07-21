@@ -28,10 +28,10 @@ class TdJson:
 
         Args:
             lib_path (``str``, optional):
-                Path to shared library. Defaults to ``None``
+                Path to shared library. Default is ``None``
 
             verbosity (``int``, optional):
-                TDLib verbosity level. Defaults to ``2``
+                TDLib verbosity level. Default is ``2``
 
         Raises:
             :py:class:``ValueError``: If library not found
@@ -104,7 +104,7 @@ class TdJson:
 
         Args:
             timeout (``float``, *optional*):
-                The maximum number of seconds allowed to wait for new data. Defaults to 2.0
+                The maximum number of seconds allowed to wait for new data. Default is ``2.0``
 
         Returns:
             :py:class:``dict``: An incoming update or result to a request. If no data is received, ``None`` is returned

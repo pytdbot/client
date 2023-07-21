@@ -9,10 +9,10 @@ class InputThumbnail:
             Thumbnail file to send
 
         width (``int``, *optional*):
-            Thumbnail width, usually shouldn't exceed 320. Use 0 if unknown. Defaults to ``0``
+            Thumbnail width, usually shouldn't exceed 320. Use 0 if unknown. Default is ``0``
 
         height (``int``, *optional*):
-            Thumbnail height, usually shouldn't exceed 320. Use 0 if unknown. Defaults to ``0``
+            Thumbnail height, usually shouldn't exceed 320. Use 0 if unknown. Default is ``0``
     """
 
     def __init__(self, f: InputFileLocal, width: int = 0, height: int = 0) -> None:

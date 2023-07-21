@@ -9,7 +9,7 @@ class RemoveKeyboard(ReplyMarkup):
 
         Args:
             is_personal (``bool``, *optional*):
-                True, if the keyboard is removed only for the mentioned users or the target user of a reply. Defaults to ``True``
+                True, if the keyboard is removed only for the mentioned users or the target user of a reply. Default is ``True``
 
         """
 

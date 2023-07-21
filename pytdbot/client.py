@@ -47,60 +47,60 @@ class Client(Decorators, Methods):
             Bot token or phone number
 
         lib_path (``str``, *optional*):
-            Path to TDLib library. Defaults to ``None`` (auto-detect)
+            Path to TDLib library. Default is ``None`` (auto-detect)
 
         plugins (:class:`~pytdbot.types.Plugins`, *optional*):
             Plugins to load
 
         update_class (:class:`~pytdbot.types.Update`, *optional*):
-            Update class to use. Defaults to :class:`~pytdbot.types.Update`
+            Update class to use. Default is :class:`~pytdbot.types.Update`
 
         default_parse_mode (``str``, *optional*):
-            The default ``parse_mode`` for methods: :meth:`~pytdbot.Client.sendTextMessage`, :meth:`~pytdbot.Client.sendPhoto`, :meth:`~pytdbot.Client.sendAudio`, :meth:`~pytdbot.Client.sendVideo`, :meth:`~pytdbot.Client.sendDocument`, :meth:`~pytdbot.Client.sendAnimation`, :meth:`~pytdbot.Client.sendVoice`, :meth:`~pytdbot.Client.sendCopy`, :meth:`~pytdbot.Client.editTextMessage`; Defaults to ``None`` (Don\'t parse)
+            The default ``parse_mode`` for methods: :meth:`~pytdbot.Client.sendTextMessage`, :meth:`~pytdbot.Client.sendPhoto`, :meth:`~pytdbot.Client.sendAudio`, :meth:`~pytdbot.Client.sendVideo`, :meth:`~pytdbot.Client.sendDocument`, :meth:`~pytdbot.Client.sendAnimation`, :meth:`~pytdbot.Client.sendVoice`, :meth:`~pytdbot.Client.sendCopy`, :meth:`~pytdbot.Client.editTextMessage`; Default is ``None`` (Don\'t parse)
             Supported values: ``markdown``, ``markdownv2``, ``html``
 
         system_language_code (``str``, *optional*):
-            System language code. Defaults to ``en``
+            System language code. Default is ``en``
 
         device_model (``str``, *optional*):
-            Device model. Defaults to ``None`` (auto-detect)
+            Device model. Default is ``None`` (auto-detect)
 
         use_test_dc (``bool``, *optional*):
-            If set to true, the Telegram test environment will be used instead of the production environment. Defaults to ``False``
+            If set to true, the Telegram test environment will be used instead of the production environment. Default is ``False``
 
         use_file_database (``bool``, *optional*):
-            If set to true, information about downloaded and uploaded files will be saved between application restarts. Defaults to ``True``
+            If set to true, information about downloaded and uploaded files will be saved between application restarts. Default is ``True``
 
         use_chat_info_database (``bool``, *optional*):
-            If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats. Implies ``use_file_database``. Defaults to ``True``
+            If set to true, the library will maintain a cache of users, basic groups, supergroups, channels and secret chats. Implies ``use_file_database``. Default is ``True``
 
         use_message_database (``bool``, *optional*):
-            If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database. Defaults to ``True``
+            If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database. Default is ``True``
 
         enable_storage_optimizer (``bool``, *optional*):
-            If set to true, old files will automatically be deleted. Defaults to ``True``
+            If set to true, old files will automatically be deleted. Default is ``True``
 
         ignore_file_names (``bool``, *optional*):
-            If set to true, original file names will be ignored. Otherwise, downloaded files will be saved under names as close as possible to the original name. Defaults to ``False``
+            If set to true, original file names will be ignored. Otherwise, downloaded files will be saved under names as close as possible to the original name. Default is ``False``
 
         loop (:py:class:`asyncio.AbstractEventLoop`, *optional*):
-            Event loop. Defaults to ``None`` (auto-detect)
+            Event loop. Default is ``None`` (auto-detect)
 
         options (``dict``, *optional*):
             Pass key-value dictionary to set TDLib options. Check the list of available options at https://core.telegram.org/tdlib/options
 
         sleep_threshold (``int``, *optional*):
             Sleep threshold for all ``FLOOD_WAIT_X`` a.k.a ``Too Many Requests: retry after`` errors occur to this client.
-            If any request is rate limited (flood waited) the client will repeat the request after sleeping the required amount of seconds returned by the error. If the ``retry after`` value is higher than ``sleep_threshold`` the error is returned. Defaults to ``None`` (Disabled)
+            If any request is rate limited (flood waited) the client will repeat the request after sleeping the required amount of seconds returned by the error. If the ``retry after`` value is higher than ``sleep_threshold`` the error is returned. Default is ``None`` (Disabled)
 
         workers (``int``, *optional*):
-            Number of workers to handle updates. Defaults to ``5``. If set to ``None``, updates will be immediately handled instead of being queued, which can impact performance.
+            Number of workers to handle updates. Default is ``5``. If set to ``None``, updates will be immediately handled instead of being queued, which can impact performance.
 
         td_verbosity (``int``, *optional*):
-            Verbosity level of TDLib. Defaults to ``2``
+            Verbosity level of TDLib. Default is ``2``
 
         td_log (:class:`~pytdbot.types.LogStream`, *optional*):
-            Log stream. Defaults to ``None`` (Log to ``stdout``)
+            Log stream. Default is ``None`` (Log to ``stdout``)
     """
 
     def __init__(
@@ -220,7 +220,7 @@ class Client(Decorators, Methods):
 
         Args:
             login (``bool``, *optional*):
-                Login after start. Defaults to ``True``
+                Login after start. Default is ``True``
         """
         if not self.is_running:
             logger.info("Starting pytdbot client...")
@@ -295,7 +295,7 @@ class Client(Decorators, Methods):
                 message filter
 
             position (``int``, *optional*):
-                The function position in handlers list. Defaults to ``None`` (append)
+                The function position in handlers list. Default is ``None`` (append)
 
         Raises:
             TypeError
@@ -405,12 +405,12 @@ class Client(Decorators, Methods):
                 if not load_chat.is_error:
                     logger.debug(f"Chat {chat_id} is loaded")
 
-                    message_id = result.request.get(
-                        "reply_to_message_id", 0
-                    ) or result.request.get("message_id", 0)
+                    message_id = result.request.get("reply_to", {}).get(
+                        "message_id", result.request.get("message_id", 0)
+                    )
 
                     # If there is a message_id then
-                    # we need to load it to avoid MESSAGE_NOT_FOUND
+                    # we need to load it to avoid "Message not found"
                     if message_id > 0:
                         await self.getMessage(chat_id, message_id)
 
@@ -467,7 +467,7 @@ class Client(Decorators, Methods):
 
         Args:
             login (``bool``, *optional*):
-                Login after start. Defaults to ``True``
+                Login after start. Default is ``True``
         """
 
         self._register_signal_handlers()
@@ -862,14 +862,14 @@ class Client(Decorators, Methods):
             )
 
     async def __handle_update_message_succeeded(self, update):
-        m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
+        m_id = f'{update["old_message_id"]}{update["message"]["chat_id"]}'
 
         if m_id in self._results:
             result: Result = self._results.pop(m_id)
             result.set_result(update["message"])
 
     async def __handle_update_message_failed(self, update):
-        m_id = str(update["old_message_id"]) + str(update["message"]["chat_id"])
+        m_id = f'{update["old_message_id"]}{update["message"]["chat_id"]}'
 
         if m_id in self._results:
             if update["error_code"] == 429:
@@ -886,7 +886,7 @@ class Client(Decorators, Methods):
                     res = await self.invoke(result.request)
 
                     self._results[
-                        str(res.result["id"]) + str(update["message"]["chat_id"])
+                        f'{res.result["id"]}{update["message"]["chat_id"]}'
                     ] = result
             else:
                 result: Result = self._results.pop(m_id)

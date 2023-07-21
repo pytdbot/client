@@ -151,7 +151,7 @@ class InlineKeyboardButton:
                 Inline query to be sent to the bot
 
             in_current_chat (``str``, *optional*):
-                True, if the inline query must be sent from the current chat. Defaults to ``False``
+                True, if the inline query must be sent from the current chat. Default is ``False``
 
         Returns:
             :py:class:`dict`

@@ -19,13 +19,13 @@ class ShowKeyboardMarkup(ReplyMarkup):
                 A list of rows of inline keyboard buttons
 
             resize_keyboard (``bool``, *optional*):
-                True, if the application needs to resize the keyboard vertically. Defaults to ``False``
+                True, if the application needs to resize the keyboard vertically. Default is ``False``
 
             one_time (``bool``, *optional*):
-                True, if the application needs to hide the keyboard after use. Defaults to ``False``
+                True, if the application needs to hide the keyboard after use. Default is ``False``
 
             is_personal (``bool``, *optional*):
-                True, if the keyboard must automatically be shown to the current user. For outgoing messages, specify true to show the keyboard only for the mentioned users and for the target user of a reply. Defaults to ``True``
+                True, if the keyboard must automatically be shown to the current user. For outgoing messages, specify true to show the keyboard only for the mentioned users and for the target user of a reply. Default is ``True``
 
             input_field_placeholder (``str``, *optional*):
                 If non-empty, the placeholder to be shown in the input field when the keyboard is active; 0-64 characters
