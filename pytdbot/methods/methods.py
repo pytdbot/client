@@ -106,7 +106,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
@@ -133,7 +133,7 @@ class Methods(TDLibFunctions):
 
         if reply_to is not None:
             data["reply_to"] = reply_to
-        elif reply_to_message_id > 0:
+        elif isinstance(reply_to_message_id, int):
             data["reply_to"] = {
                 "@type": "messageReplyToMessage",
                 "message_id": reply_to_message_id,
@@ -259,7 +259,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
@@ -289,7 +289,7 @@ class Methods(TDLibFunctions):
 
         if reply_to is not None:
             data["reply_to"] = reply_to
-        elif reply_to_message_id > 0:
+        elif isinstance(reply_to_message_id, int):
             data["reply_to"] = {
                 "@type": "messageReplyToMessage",
                 "message_id": reply_to_message_id,
@@ -422,7 +422,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
@@ -450,7 +450,7 @@ class Methods(TDLibFunctions):
 
         if reply_to is not None:
             data["reply_to"] = reply_to
-        elif reply_to_message_id > 0:
+        elif isinstance(reply_to_message_id, int):
             data["reply_to"] = {
                 "@type": "messageReplyToMessage",
                 "message_id": reply_to_message_id,
@@ -576,7 +576,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
@@ -602,7 +602,7 @@ class Methods(TDLibFunctions):
 
         if reply_to is not None:
             data["reply_to"] = reply_to
-        elif reply_to_message_id > 0:
+        elif isinstance(reply_to_message_id, int):
             data["reply_to"] = {
                 "@type": "messageReplyToMessage",
                 "message_id": reply_to_message_id,
@@ -742,7 +742,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
@@ -772,7 +772,7 @@ class Methods(TDLibFunctions):
 
         if reply_to is not None:
             data["reply_to"] = reply_to
-        elif reply_to_message_id > 0:
+        elif isinstance(reply_to_message_id, int):
             data["reply_to"] = {
                 "@type": "messageReplyToMessage",
                 "message_id": reply_to_message_id,
@@ -920,7 +920,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
@@ -952,7 +952,7 @@ class Methods(TDLibFunctions):
 
         if reply_to is not None:
             data["reply_to"] = reply_to
-        elif reply_to_message_id > 0:
+        elif isinstance(reply_to_message_id, int):
             data["reply_to"] = {
                 "@type": "messageReplyToMessage",
                 "message_id": reply_to_message_id,
@@ -1053,7 +1053,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
@@ -1079,7 +1079,7 @@ class Methods(TDLibFunctions):
 
         if reply_to is not None:
             data["reply_to"] = reply_to
-        elif reply_to_message_id > 0:
+        elif isinstance(reply_to_message_id, int):
             data["reply_to"] = {
                 "@type": "messageReplyToMessage",
                 "message_id": reply_to_message_id,
@@ -1203,7 +1203,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
@@ -1229,7 +1229,7 @@ class Methods(TDLibFunctions):
 
         if reply_to is not None:
             data["reply_to"] = reply_to
-        elif reply_to_message_id > 0:
+        elif isinstance(reply_to_message_id, int):
             data["reply_to"] = {
                 "@type": "messageReplyToMessage",
                 "message_id": reply_to_message_id,
@@ -1333,7 +1333,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
@@ -1360,7 +1360,7 @@ class Methods(TDLibFunctions):
 
         if reply_to is not None:
             data["reply_to"] = reply_to
-        elif reply_to_message_id > 0:
+        elif isinstance(reply_to_message_id, int):
             data["reply_to"] = {
                 "@type": "messageReplyToMessage",
                 "message_id": reply_to_message_id,
@@ -1488,7 +1488,7 @@ class Methods(TDLibFunctions):
                 isinstance(reply_to, dict)
                 and reply_to.get("@type") == "messageReplyToMessage"
             )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+            or (isinstance(reply_to_message_id, int))
         ):
             # Because TDLib will not reply to
             # a message isn't loaded in memory
