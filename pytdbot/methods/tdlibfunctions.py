@@ -2660,7 +2660,7 @@ class TDLibFunctions:
                 Identifier of the inline query
 
             result_id (``str``):
-                Identifier of the inline result
+                Identifier of the inline query result
 
             hide_via_bot (``bool``):
                 Pass true to hide the bot, via which the message is sent\. Can be used only for bots getOption\("animation\_search\_bot\_username"\), getOption\("photo\_search\_bot\_username"\), and getOption\("venue\_search\_bot\_username"\)
@@ -4328,7 +4328,7 @@ class TDLibFunctions:
                 Text of the query
 
             offset (``str``):
-                Offset of the first entry to return
+                Offset of the first entry to return; use empty string to get the first chunk of results
 
             user_location (``location``, *optional*):
                 Location of the user; pass null if unknown or the bot doesn't need user's location
@@ -7014,6 +7014,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def canSendStory(self) -> Result:
+        """Checks whether the current user can send a story
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``CanSendStoryResult``)
+        """
+
+        data = {
+            "@type": "canSendStory",
+        }
+
+        return await self.invoke(data)
+
     async def sendStory(
         self,
         content: dict,
@@ -7021,9 +7035,10 @@ class TDLibFunctions:
         active_period: int,
         is_pinned: bool,
         protect_content: bool,
+        areas: dict = None,
         caption: dict = None,
     ) -> Result:
-        """Sends a new story\. Returns a temporary story with identifier 0
+        """Sends a new story\. Returns a temporary story
 
         Args:
             content (``InputStoryContent``):
@@ -7033,13 +7048,16 @@ class TDLibFunctions:
                 The privacy settings for the story
 
             active_period (``int``):
-                Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, 2 \* 86400, 3 \* 86400, or 7 \* 86400 for Telegram Premium users, and 86400 otherwise
+                Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, or 2 \* 86400 for Telegram Premium users, and 86400 otherwise
 
             is_pinned (``bool``):
                 Pass true to keep the story accessible after expiration
 
             protect_content (``bool``):
                 Pass true if the content of the story must be protected from forwarding and screenshotting
+
+            areas (``inputStoryAreas``, *optional*):
+                Clickable rectangle areas to be shown on the story media; pass null if none
 
             caption (``formattedText``, *optional*):
                 Story caption; pass null to use an empty caption; 0\-getOption\("story\_caption\_length\_max"\) characters
@@ -7052,6 +7070,7 @@ class TDLibFunctions:
         data = {
             "@type": "sendStory",
             "content": content,
+            "areas": areas,
             "caption": caption,
             "privacy_settings": privacy_settings,
             "active_period": active_period,
@@ -7062,7 +7081,11 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def editStory(
-        self, story_id: int, content: dict = None, caption: dict = None
+        self,
+        story_id: int,
+        content: dict = None,
+        areas: dict = None,
+        caption: dict = None,
     ) -> Result:
         """Changes content and caption of a previously sent story
 
@@ -7072,6 +7095,9 @@ class TDLibFunctions:
 
             content (``InputStoryContent``, *optional*):
                 New content of the story; pass null to keep the current content
+
+            areas (``inputStoryAreas``, *optional*):
+                New clickable rectangle areas to be shown on the story media; pass null to keep the current areas
 
             caption (``formattedText``, *optional*):
                 New story caption; pass null to keep the current caption
@@ -7085,6 +7111,7 @@ class TDLibFunctions:
             "@type": "editStory",
             "story_id": story_id,
             "content": content,
+            "areas": areas,
             "caption": caption,
         }
 
@@ -7330,30 +7357,104 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getStoryViewers(
-        self, story_id: int, limit: int, offset_viewer: dict = None
+    async def getStoryAvailableReactions(self, row_size: int) -> Result:
+        """Returns reactions, which can be chosen for a story
+
+        Args:
+            row_size (``int``):
+                Number of reaction per row, 5\-25
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``AvailableReactions``)
+        """
+
+        data = {
+            "@type": "getStoryAvailableReactions",
+            "row_size": row_size,
+        }
+
+        return await self.invoke(data)
+
+    async def setStoryReaction(
+        self,
+        story_sender_chat_id: int,
+        story_id: int,
+        update_recent_reactions: bool,
+        reaction_type: dict = None,
     ) -> Result:
-        """Returns viewers of a recent outgoing story\. The method can be called if story\.can\_get\_viewers \=\= true\. The views are returned in a reverse chronological order \(i\.e\., in order of decreasing view\_date\) For optimal performance, the number of returned stories is chosen by TDLib
+        """Changes chosen reaction on a story
+
+        Args:
+            story_sender_chat_id (``int``):
+                The identifier of the sender of the story
+
+            story_id (``int``):
+                The identifier of the story
+
+            update_recent_reactions (``bool``):
+                Pass true if the reaction needs to be added to recent reactions
+
+            reaction_type (``ReactionType``, *optional*):
+                Type of the reaction to set; pass null to remove the reaction\. \`reactionTypeCustomEmoji\` reactions can be used only by Telegram Premium users
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setStoryReaction",
+            "story_sender_chat_id": story_sender_chat_id,
+            "story_id": story_id,
+            "reaction_type": reaction_type,
+            "update_recent_reactions": update_recent_reactions,
+        }
+
+        return await self.invoke(data)
+
+    async def getStoryViewers(
+        self,
+        story_id: int,
+        only_contacts: bool,
+        prefer_with_reaction: bool,
+        offset: str,
+        limit: int,
+        query: str = None,
+    ) -> Result:
+        """Returns viewers of a story\. The method can be called if story\.can\_get\_viewers \=\= true
 
         Args:
             story_id (``int``):
                 Story identifier
 
-            limit (``int``):
-                The maximum number of story viewers to return For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+            only_contacts (``bool``):
+                Pass true to get only contacts; pass false to get all relevant viewers
 
-            offset_viewer (``messageViewer``, *optional*):
-                A viewer from which to return next viewers; pass null to get results from the beginning
+            prefer_with_reaction (``bool``):
+                Pass true to get viewers with reaction first; pass false to get viewers sorted just by view\_date
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of story viewers to return
+
+            query (``str``, *optional*):
+                Query to search for in names and usernames of the viewers; may be empty to get all relevant viewers
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``MessageViewers``)
+            :class:`~pytdbot.types.Result` (``StoryViewers``)
         """
 
         data = {
             "@type": "getStoryViewers",
             "story_id": story_id,
-            "offset_viewer": offset_viewer,
+            "query": query,
+            "only_contacts": only_contacts,
+            "prefer_with_reaction": prefer_with_reaction,
+            "offset": offset,
             "limit": limit,
         }
 
@@ -7388,6 +7489,20 @@ class TDLibFunctions:
             "story_id": story_id,
             "reason": reason,
             "text": text,
+        }
+
+        return await self.invoke(data)
+
+    async def activateStoryStealthMode(self) -> Result:
+        """Activates stealth mode for stories, which hides all views of stories from the current user in the last "story\_stealth\_mode\_past\_period" seconds and for the next "story\_stealth\_mode\_future\_period" seconds; for Telegram Premium users only
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "activateStoryStealthMode",
         }
 
         return await self.invoke(data)
@@ -9418,17 +9533,17 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def toggleMessageSenderIsBlocked(
-        self, sender_id: dict, is_blocked: bool
+    async def setMessageSenderBlockList(
+        self, sender_id: dict, block_list: dict = None
     ) -> Result:
-        """Changes the block state of a message sender\. Currently, only users and supergroup chats can be blocked
+        """Changes the block list of a message sender\. Currently, only users and supergroup chats can be blocked
 
         Args:
             sender_id (``MessageSender``):
                 Identifier of a message sender to block/unblock
 
-            is_blocked (``bool``):
-                New value of is\_blocked
+            block_list (``BlockList``, *optional*):
+                New block list for the message sender; pass null to unblock the message sender
 
 
         Returns:
@@ -9436,9 +9551,9 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "toggleMessageSenderIsBlocked",
+            "@type": "setMessageSenderBlockList",
             "sender_id": sender_id,
-            "is_blocked": is_blocked,
+            "block_list": block_list,
         }
 
         return await self.invoke(data)
@@ -9480,10 +9595,15 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getBlockedMessageSenders(self, offset: int, limit: int) -> Result:
+    async def getBlockedMessageSenders(
+        self, block_list: dict, offset: int, limit: int
+    ) -> Result:
         """Returns users and chats that were blocked by the current user
 
         Args:
+            block_list (``BlockList``):
+                Block list from which to return users
+
             offset (``int``):
                 Number of users and chats to skip in the result; must be non\-negative
 
@@ -9497,6 +9617,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "getBlockedMessageSenders",
+            "block_list": block_list,
             "offset": offset,
             "limit": limit,
         }
@@ -10968,7 +11089,7 @@ class TDLibFunctions:
 
         Args:
             default_group_administrator_rights (``chatAdministratorRights``, *optional*):
-                Default administrator rights for adding the bot to basic group and supergroup chats; may be null
+                Default administrator rights for adding the bot to basic group and supergroup chats; pass null to remove default rights
 
 
         Returns:
@@ -10989,7 +11110,7 @@ class TDLibFunctions:
 
         Args:
             default_channel_administrator_rights (``chatAdministratorRights``, *optional*):
-                Default administrator rights for adding the bot to channels; may be null
+                Default administrator rights for adding the bot to channels; pass null to remove default rights
 
 
         Returns:

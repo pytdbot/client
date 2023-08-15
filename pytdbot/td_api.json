@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.15",
-    "commit_hash": "2e5319ff360cd2d6dab638a7e0370fe959e4201b",
+    "version": "1.8.16",
+    "commit_hash": "cde095db6c75827fe4bd237039574aad373ad96b",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -76,12 +76,14 @@
         "LanguagePackStringValue": "Represents the value of a string in a language pack",
         "PremiumLimitType": "Describes type of a limit, increased for Premium users",
         "PremiumFeature": "Describes a feature available to Premium users",
+        "PremiumStoryFeature": "Describes a story feature available to Premium users",
         "PremiumSource": "Describes a source from which the Premium features screen is opened",
         "StorePaymentPurpose": "Describes a purpose of an in-store payment",
         "DeviceToken": "Represents a data needed to subscribe for push notifications through registerDevice method. To use specific push notification service, the correct application platform must be specified and a valid server authentication data must be uploaded at https://my.telegram.org",
         "BackgroundFill": "Describes a fill of a background",
         "BackgroundType": "Describes the type of a background",
         "InputBackground": "Contains information about background to set",
+        "CanSendStoryResult": "Represents result of checking whether the current user can send a story",
         "CanTransferOwnershipResult": "Represents result of checking whether the current session can be used to transfer a chat ownership to another user",
         "CheckChatUsernameResult": "Represents result of checking whether a username can be set for a chat",
         "CheckStickerSetNameResult": "Represents result of checking whether a name can be used for a new sticker set",
@@ -99,9 +101,12 @@
         "ReportReason": "Describes the reason why a chat is reported",
         "TargetChat": "Describes the target chat to be opened",
         "InternalLinkType": "Describes an internal https://t.me or tg: link, which must be processed by the application in a special way",
+        "StoryAreaType": "Describes type of a clickable rectangle area on a story media",
+        "InputStoryAreaType": "Describes type of a clickable rectangle area on a story media to be added",
         "StoryContent": "Contains the content of a story",
         "InputStoryContent": "The content of a story to send",
         "StoryList": "Describes a list of stories",
+        "BlockList": "Describes a type of a block list",
         "FileType": "Represents the type of a file",
         "NetworkType": "Represents the type of a network",
         "NetworkStatisticsEntry": "Contains statistics about network usage",
@@ -839,7 +844,7 @@
             "type": "ThumbnailFormat"
         },
         "thumbnailFormatGif": {
-            "description": "The thumbnail is in static GIF format. It will be used only for some bot inline results",
+            "description": "The thumbnail is in static GIF format. It will be used only for some bot inline query results",
             "args": {},
             "type": "ThumbnailFormat"
         },
@@ -2539,10 +2544,10 @@
                     "is_optional": true,
                     "type": "chatPhoto"
                 },
-                "is_blocked": {
-                    "description": "True, if the user is blocked by the current user",
-                    "is_optional": false,
-                    "type": "Bool"
+                "block_list": {
+                    "description": "Block list to which the user is added; may be null if none",
+                    "is_optional": true,
+                    "type": "BlockList"
                 },
                 "can_be_called": {
                     "description": "True, if the user can be called",
@@ -2595,7 +2600,7 @@
                     "type": "int32"
                 },
                 "bot_info": {
-                    "description": "For bots, information about the bot; may be null",
+                    "description": "For bots, information about the bot; may be null if the user isn't a bot",
                     "is_optional": true,
                     "type": "botInfo"
                 }
@@ -3429,7 +3434,7 @@
                     "type": "int64"
                 },
                 "location": {
-                    "description": "Location to which the supergroup is connected; may be null",
+                    "description": "Location to which the supergroup is connected; may be null if none",
                     "is_optional": true,
                     "type": "chatLocation"
                 },
@@ -3919,12 +3924,12 @@
                     "type": "int53"
                 },
                 "sending_state": {
-                    "description": "The sending state of the message; may be null",
+                    "description": "The sending state of the message; may be null if the message isn't being sent and didn't fail to be sent",
                     "is_optional": true,
                     "type": "MessageSendingState"
                 },
                 "scheduling_state": {
-                    "description": "The scheduling state of the message; may be null",
+                    "description": "The scheduling state of the message; may be null if the message isn't scheduled",
                     "is_optional": true,
                     "type": "MessageSchedulingState"
                 },
@@ -4024,12 +4029,12 @@
                     "type": "int32"
                 },
                 "forward_info": {
-                    "description": "Information about the initial message sender; may be null",
+                    "description": "Information about the initial message sender; may be null if none or unknown",
                     "is_optional": true,
                     "type": "messageForwardInfo"
                 },
                 "interaction_info": {
-                    "description": "Information about interactions with the message; may be null",
+                    "description": "Information about interactions with the message; may be null if none",
                     "is_optional": true,
                     "type": "messageInteractionInfo"
                 },
@@ -4089,7 +4094,7 @@
                     "type": "MessageContent"
                 },
                 "reply_markup": {
-                    "description": "Reply markup for the message; may be null",
+                    "description": "Reply markup for the message; may be null if none",
                     "is_optional": true,
                     "type": "ReplyMarkup"
                 }
@@ -5069,7 +5074,7 @@
                     "type": "chatPermissions"
                 },
                 "last_message": {
-                    "description": "Last message in the chat; may be null",
+                    "description": "Last message in the chat; may be null if none or unknown",
                     "is_optional": true,
                     "type": "message"
                 },
@@ -5083,6 +5088,11 @@
                     "is_optional": true,
                     "type": "MessageSender"
                 },
+                "block_list": {
+                    "description": "Block list to which the chat is added; may be null if none",
+                    "is_optional": true,
+                    "type": "BlockList"
+                },
                 "has_protected_content": {
                     "description": "True, if chat content can't be saved locally, forwarded, or copied",
                     "is_optional": false,
@@ -5095,11 +5105,6 @@
                 },
                 "is_marked_as_unread": {
                     "description": "True, if the chat is marked as unread",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "is_blocked": {
-                    "description": "True, if the chat is blocked by the current user and private messages from the chat can't be received",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -5179,7 +5184,7 @@
                     "type": "string"
                 },
                 "action_bar": {
-                    "description": "Information about actions which must be possible to do through the chat action bar; may be null",
+                    "description": "Information about actions which must be possible to do through the chat action bar; may be null if none",
                     "is_optional": true,
                     "type": "ChatActionBar"
                 },
@@ -5189,7 +5194,7 @@
                     "type": "videoChat"
                 },
                 "pending_join_requests": {
-                    "description": "Information about pending join requests; may be null",
+                    "description": "Information about pending join requests; may be null if none",
                     "is_optional": true,
                     "type": "chatJoinRequestsInfo"
                 },
@@ -5199,7 +5204,7 @@
                     "type": "int53"
                 },
                 "draft_message": {
-                    "description": "A draft of a message in the chat; may be null",
+                    "description": "A draft of a message in the chat; may be null if none",
                     "is_optional": true,
                     "type": "draftMessage"
                 },
@@ -5291,7 +5296,7 @@
             "type": "ChatActionBar"
         },
         "chatActionBarReportAddBlock": {
-            "description": "The chat is a private or secret chat, which can be reported using the method reportChat, or the other user can be blocked using the method toggleMessageSenderIsBlocked, or the other user can be added to the contact list using the method addContact. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown",
+            "description": "The chat is a private or secret chat, which can be reported using the method reportChat, or the other user can be blocked using the method setMessageSenderBlockList, or the other user can be added to the contact list using the method addContact. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown",
             "args": {
                 "can_unarchive": {
                     "description": "If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings",
@@ -5782,7 +5787,7 @@
                     "type": "vector<message>"
                 },
                 "draft_message": {
-                    "description": "A draft of a message in the message thread; may be null",
+                    "description": "A draft of a message in the message thread; may be null if none",
                     "is_optional": true,
                     "type": "draftMessage"
                 }
@@ -5905,7 +5910,7 @@
                     "type": "chatNotificationSettings"
                 },
                 "draft_message": {
-                    "description": "A draft of a message in the topic; may be null",
+                    "description": "A draft of a message in the topic; may be null if none",
                     "is_optional": true,
                     "type": "draftMessage"
                 }
@@ -13889,6 +13894,21 @@
             "args": {},
             "type": "PremiumLimitType"
         },
+        "premiumLimitTypeWeeklySentStoryCount": {
+            "description": "The maximum number of stories sent per week",
+            "args": {},
+            "type": "PremiumLimitType"
+        },
+        "premiumLimitTypeMonthlySentStoryCount": {
+            "description": "The maximum number of stories sent per month",
+            "args": {},
+            "type": "PremiumLimitType"
+        },
+        "premiumLimitTypeStoryCaptionLength": {
+            "description": "The maximum length of captions of sent stories",
+            "args": {},
+            "type": "PremiumLimitType"
+        },
         "premiumFeatureIncreasedLimits": {
             "description": "Increased limits",
             "args": {},
@@ -13940,7 +13960,7 @@
             "type": "PremiumFeature"
         },
         "premiumFeatureEmojiStatus": {
-            "description": "A emoji status shown along with the user's name",
+            "description": "An emoji status shown along with the user's name",
             "args": {},
             "type": "PremiumFeature"
         },
@@ -13963,6 +13983,41 @@
             "description": "Allowed to translate chat messages real-time",
             "args": {},
             "type": "PremiumFeature"
+        },
+        "premiumFeatureUpgradedStories": {
+            "description": "Allowed to use many additional features for stories",
+            "args": {},
+            "type": "PremiumFeature"
+        },
+        "premiumStoryFeaturePriorityOrder": {
+            "description": "User stories are displayed before stories of non-premium contacts",
+            "args": {},
+            "type": "PremiumStoryFeature"
+        },
+        "premiumStoryFeatureStealthMode": {
+            "description": "The ability to hide the fact that the user viewed other's stories",
+            "args": {},
+            "type": "PremiumStoryFeature"
+        },
+        "premiumStoryFeaturePermanentViewsHistory": {
+            "description": "The ability to check who opened the current user's stories after they expire",
+            "args": {},
+            "type": "PremiumStoryFeature"
+        },
+        "premiumStoryFeatureCustomExpirationDuration": {
+            "description": "The ability to set custom expiration duration for stories",
+            "args": {},
+            "type": "PremiumStoryFeature"
+        },
+        "premiumStoryFeatureSaveStories": {
+            "description": "The ability to save other's unprotected stories",
+            "args": {},
+            "type": "PremiumStoryFeature"
+        },
+        "premiumStoryFeatureLinksAndFormatting": {
+            "description": "The ability to use links and formatting in story caption",
+            "args": {},
+            "type": "PremiumStoryFeature"
         },
         "premiumLimit": {
             "description": "Contains information about a limit, increased for Premium users",
@@ -14024,6 +14079,17 @@
                     "description": "The used feature",
                     "is_optional": false,
                     "type": "PremiumFeature"
+                }
+            },
+            "type": "PremiumSource"
+        },
+        "premiumSourceStoryFeature": {
+            "description": "A user tried to use a Premium story feature",
+            "args": {
+                "feature": {
+                    "description": "The used feature",
+                    "is_optional": false,
+                    "type": "PremiumStoryFeature"
                 }
             },
             "type": "PremiumSource"
@@ -14487,6 +14553,43 @@
                 }
             },
             "type": "Hashtags"
+        },
+        "canSendStoryResultOk": {
+            "description": "A story can be sent",
+            "args": {},
+            "type": "CanSendStoryResult"
+        },
+        "canSendStoryResultPremiumNeeded": {
+            "description": "The user must subscribe to Telegram Premium to be able to post stories",
+            "args": {},
+            "type": "CanSendStoryResult"
+        },
+        "canSendStoryResultActiveStoryLimitExceeded": {
+            "description": "The limit for the number of active stories exceeded. The user can buy Telegram Premium, delete an active story, or wait for the oldest story to expire",
+            "args": {},
+            "type": "CanSendStoryResult"
+        },
+        "canSendStoryResultWeeklyLimitExceeded": {
+            "description": "The weekly limit for the number of posted stories exceeded. The user needs to buy Telegram Premium or wait specified time",
+            "args": {
+                "retry_after": {
+                    "description": "Time left before the user can send the next story",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "CanSendStoryResult"
+        },
+        "canSendStoryResultMonthlyLimitExceeded": {
+            "description": "The monthly limit for the number of posted stories exceeded. The user needs to buy Telegram Premium or wait specified time",
+            "args": {
+                "retry_after": {
+                    "description": "Time left before the user can send the next story",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "CanSendStoryResult"
         },
         "canTransferOwnershipResultOk": {
             "description": "The session can be used",
@@ -15387,14 +15490,20 @@
         },
         "storyPrivacySettingsEveryone": {
             "description": "The story can be viewed by everyone",
-            "args": {},
+            "args": {
+                "except_user_ids": {
+                    "description": "Identifiers of the users that can't see the story; always unknown and empty for non-owned stories",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
             "type": "StoryPrivacySettings"
         },
         "storyPrivacySettingsContacts": {
             "description": "The story can be viewed by all contacts except chosen users",
             "args": {
                 "except_user_ids": {
-                    "description": "User identifiers of the contacts that can't see the story; always empty for non-owned stories",
+                    "description": "User identifiers of the contacts that can't see the story; always unknown and empty for non-owned stories",
                     "is_optional": false,
                     "type": "vector<int53>"
                 }
@@ -15410,7 +15519,7 @@
             "description": "The story can be viewed by certain specified users",
             "args": {
                 "user_ids": {
-                    "description": "Identifiers of the users; always empty for non-owned stories",
+                    "description": "Identifiers of the users; always unknown and empty for non-owned stories",
                     "is_optional": false,
                     "type": "vector<int53>"
                 }
@@ -16439,6 +16548,192 @@
             },
             "type": "MessageLinkInfo"
         },
+        "storyViewer": {
+            "description": "Represents a viewer of a story",
+            "args": {
+                "user_id": {
+                    "description": "User identifier of the viewer",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "view_date": {
+                    "description": "Approximate point in time (Unix timestamp) when the story was viewed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "block_list": {
+                    "description": "Block list to which the user is added; may be null if none",
+                    "is_optional": true,
+                    "type": "BlockList"
+                },
+                "chosen_reaction_type": {
+                    "description": "Type of the reaction that was chosen by the user; may be null if none",
+                    "is_optional": true,
+                    "type": "ReactionType"
+                }
+            },
+            "type": "StoryViewer"
+        },
+        "storyViewers": {
+            "description": "Represents a list of story viewers",
+            "args": {
+                "total_count": {
+                    "description": "Approximate total number of story viewers found",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "viewers": {
+                    "description": "List of story viewers",
+                    "is_optional": false,
+                    "type": "vector<storyViewer>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StoryViewers"
+        },
+        "storyAreaPosition": {
+            "description": "Describes position of a clickable rectangle area on a story media",
+            "args": {
+                "x_percentage": {
+                    "description": "The abscissa of the rectangle's center, as a percentage of the media width",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "y_percentage": {
+                    "description": "The ordinate of the rectangle's center, as a percentage of the media height",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "width_percentage": {
+                    "description": "The width of the rectangle, as a percentage of the media width",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "height_percentage": {
+                    "description": "The ordinate of the rectangle's center, as a percentage of the media height",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "rotation_angle": {
+                    "description": "Clockwise rotation angle of the rectangle, in degrees; 0-360",
+                    "is_optional": false,
+                    "type": "double"
+                }
+            },
+            "type": "StoryAreaPosition"
+        },
+        "storyAreaTypeLocation": {
+            "description": "An area pointing to a location",
+            "args": {
+                "location": {
+                    "description": "The location",
+                    "is_optional": false,
+                    "type": "location"
+                }
+            },
+            "type": "StoryAreaType"
+        },
+        "storyAreaTypeVenue": {
+            "description": "An area pointing to a venue",
+            "args": {
+                "venue": {
+                    "description": "Information about the venue",
+                    "is_optional": false,
+                    "type": "venue"
+                }
+            },
+            "type": "StoryAreaType"
+        },
+        "storyArea": {
+            "description": "Describes a clickable rectangle area on a story media",
+            "args": {
+                "position": {
+                    "description": "Position of the area",
+                    "is_optional": false,
+                    "type": "storyAreaPosition"
+                },
+                "type": {
+                    "description": "Type of the area",
+                    "is_optional": false,
+                    "type": "StoryAreaType"
+                }
+            },
+            "type": "StoryArea"
+        },
+        "inputStoryAreaTypeLocation": {
+            "description": "An area pointing to a location",
+            "args": {
+                "location": {
+                    "description": "The location",
+                    "is_optional": false,
+                    "type": "location"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
+        "inputStoryAreaTypeFoundVenue": {
+            "description": "An area pointing to a venue found by the bot getOption(\"venue_search_bot_username\")",
+            "args": {
+                "query_id": {
+                    "description": "Identifier of the inline query, used to found the venue",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "result_id": {
+                    "description": "Identifier of the inline query result",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
+        "inputStoryAreaTypePreviousVenue": {
+            "description": "An area pointing to a venue already added to the story",
+            "args": {
+                "venue_provider": {
+                    "description": "Provider of the venue",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "venue_id": {
+                    "description": "Identifier of the venue in the provider database",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
+        "inputStoryArea": {
+            "description": "Describes a clickable rectangle area on a story media to be added",
+            "args": {
+                "position": {
+                    "description": "Position of the area",
+                    "is_optional": false,
+                    "type": "storyAreaPosition"
+                },
+                "type": {
+                    "description": "Type of the area",
+                    "is_optional": false,
+                    "type": "InputStoryAreaType"
+                }
+            },
+            "type": "InputStoryArea"
+        },
+        "inputStoryAreas": {
+            "description": "Contains a list of story areas to be added",
+            "args": {
+                "areas": {
+                    "description": "List of input story areas",
+                    "is_optional": false,
+                    "type": "vector<inputStoryArea>"
+                }
+            },
+            "type": "InputStoryAreas"
+        },
         "storyVideo": {
             "description": "Describes a video file sent in a story",
             "args": {
@@ -16526,7 +16821,7 @@
             "description": "A photo story",
             "args": {
                 "photo": {
-                    "description": "Photo to send. The photo must be at most 10 MB in size. The photo size must be 720x1280",
+                    "description": "Photo to send. The photo must be at most 10 MB in size. The photo size must be 1080x1920",
                     "is_optional": false,
                     "type": "InputFile"
                 },
@@ -16582,6 +16877,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "reaction_count": {
+                    "description": "Number of reactions added to the story",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "recent_viewer_user_ids": {
                     "description": "Identifiers of at most 3 recent viewers of the story",
                     "is_optional": false,
@@ -16607,6 +16907,11 @@
                     "description": "Point in time (Unix timestamp) when the story was published",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "is_being_sent": {
+                    "description": "True, if the story is being sent by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "is_being_edited": {
                     "description": "True, if the story is being edited by the current user",
@@ -16653,6 +16958,11 @@
                     "is_optional": true,
                     "type": "storyInteractionInfo"
                 },
+                "chosen_reaction_type": {
+                    "description": "Type of the chosen reaction; may be null if none",
+                    "is_optional": true,
+                    "type": "ReactionType"
+                },
                 "privacy_settings": {
                     "description": "Privacy rules affecting story visibility; may be approximate for non-owned stories",
                     "is_optional": false,
@@ -16662,6 +16972,11 @@
                     "description": "Content of the story",
                     "is_optional": false,
                     "type": "StoryContent"
+                },
+                "areas": {
+                    "description": "Clickable areas to be shown on the story content",
+                    "is_optional": false,
+                    "type": "vector<storyArea>"
                 },
                 "caption": {
                     "description": "Caption of the story",
@@ -16738,6 +17053,16 @@
                 }
             },
             "type": "ChatActiveStories"
+        },
+        "blockListMain": {
+            "description": "The main block list that disallows writing messages to the current user, receiving their status and photo, viewing of stories, and some other actions",
+            "args": {},
+            "type": "BlockList"
+        },
+        "blockListStories": {
+            "description": "The block list that disallows viewing of stories of the current user",
+            "args": {},
+            "type": "BlockList"
         },
         "filePart": {
             "description": "Contains a part of a file",
@@ -18848,7 +19173,7 @@
             },
             "type": "Update"
         },
-        "updateChatIsBlocked": {
+        "updateChatBlockList": {
             "description": "A chat was blocked or unblocked",
             "args": {
                 "chat_id": {
@@ -18856,10 +19181,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "is_blocked": {
-                    "description": "New value of is_blocked",
-                    "is_optional": false,
-                    "type": "Bool"
+                "block_list": {
+                    "description": "Block list to which the chat is added; may be null if none",
+                    "is_optional": true,
+                    "type": "BlockList"
                 }
             },
             "type": "Update"
@@ -19490,6 +19815,48 @@
             },
             "type": "Update"
         },
+        "updateStorySendSucceeded": {
+            "description": "A story has been successfully sent",
+            "args": {
+                "story": {
+                    "description": "The sent story",
+                    "is_optional": false,
+                    "type": "story"
+                },
+                "old_story_id": {
+                    "description": "The previous temporary story identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Update"
+        },
+        "updateStorySendFailed": {
+            "description": "A story failed to send. If the story sending is canceled, then updateStoryDeleted will be received instead of this update",
+            "args": {
+                "story": {
+                    "description": "The failed to send story",
+                    "is_optional": false,
+                    "type": "story"
+                },
+                "error": {
+                    "description": "The cause of the failure; may be null if unknown",
+                    "is_optional": true,
+                    "type": "CanSendStoryResult"
+                },
+                "error_code": {
+                    "description": "An error code",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "error_message": {
+                    "description": "Error message",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Update"
+        },
         "updateChatActiveStories": {
             "description": "The list of active stories posted by a specific chat has changed",
             "args": {
@@ -19511,6 +19878,22 @@
                 },
                 "chat_count": {
                     "description": "Approximate total number of chats with active stories in the list",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Update"
+        },
+        "updateStoryStealthMode": {
+            "description": "Story stealth mode settings have changed",
+            "args": {
+                "active_until_date": {
+                    "description": "Point in time (Unix timestamp) until stealth mode is active; 0 if it is disabled",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "cooldown_until_date": {
+                    "description": "Point in time (Unix timestamp) when stealth mode can be enabled again; 0 if there is no active cooldown",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -21932,7 +22315,7 @@
                     "type": "int64"
                 },
                 "result_id": {
-                    "description": "Identifier of the inline result",
+                    "description": "Identifier of the inline query result",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -23096,7 +23479,7 @@
                     "type": "string"
                 },
                 "offset": {
-                    "description": "Offset of the first entry to return",
+                    "description": "Offset of the first entry to return; use empty string to get the first chunk of results",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -24885,13 +25268,23 @@
             },
             "type": "Story"
         },
+        "canSendStory": {
+            "description": "Checks whether the current user can send a story",
+            "args": {},
+            "type": "CanSendStoryResult"
+        },
         "sendStory": {
-            "description": "Sends a new story. Returns a temporary story with identifier 0",
+            "description": "Sends a new story. Returns a temporary story",
             "args": {
                 "content": {
                     "description": "Content of the story",
                     "is_optional": false,
                     "type": "InputStoryContent"
+                },
+                "areas": {
+                    "description": "Clickable rectangle areas to be shown on the story media; pass null if none",
+                    "is_optional": true,
+                    "type": "inputStoryAreas"
                 },
                 "caption": {
                     "description": "Story caption; pass null to use an empty caption; 0-getOption(\"story_caption_length_max\") characters",
@@ -24904,7 +25297,7 @@
                     "type": "StoryPrivacySettings"
                 },
                 "active_period": {
-                    "description": "Period after which the story is moved to archive, in seconds; must be one of 6 * 3600, 12 * 3600, 86400, 2 * 86400, 3 * 86400, or 7 * 86400 for Telegram Premium users, and 86400 otherwise",
+                    "description": "Period after which the story is moved to archive, in seconds; must be one of 6 * 3600, 12 * 3600, 86400, or 2 * 86400 for Telegram Premium users, and 86400 otherwise",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -24933,6 +25326,11 @@
                     "description": "New content of the story; pass null to keep the current content",
                     "is_optional": true,
                     "type": "InputStoryContent"
+                },
+                "areas": {
+                    "description": "New clickable rectangle areas to be shown on the story media; pass null to keep the current areas",
+                    "is_optional": true,
+                    "type": "inputStoryAreas"
                 },
                 "caption": {
                     "description": "New story caption; pass null to keep the current caption",
@@ -25097,26 +25495,78 @@
             },
             "type": "Ok"
         },
+        "getStoryAvailableReactions": {
+            "description": "Returns reactions, which can be chosen for a story",
+            "args": {
+                "row_size": {
+                    "description": "Number of reaction per row, 5-25",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "AvailableReactions"
+        },
+        "setStoryReaction": {
+            "description": "Changes chosen reaction on a story",
+            "args": {
+                "story_sender_chat_id": {
+                    "description": "The identifier of the sender of the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_id": {
+                    "description": "The identifier of the story",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "reaction_type": {
+                    "description": "Type of the reaction to set; pass null to remove the reaction. `reactionTypeCustomEmoji` reactions can be used only by Telegram Premium users",
+                    "is_optional": true,
+                    "type": "ReactionType"
+                },
+                "update_recent_reactions": {
+                    "description": "Pass true if the reaction needs to be added to recent reactions",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
         "getStoryViewers": {
-            "description": "Returns viewers of a recent outgoing story. The method can be called if story.can_get_viewers == true. The views are returned in a reverse chronological order (i.e., in order of decreasing view_date) For optimal performance, the number of returned stories is chosen by TDLib",
+            "description": "Returns viewers of a story. The method can be called if story.can_get_viewers == true",
             "args": {
                 "story_id": {
                     "description": "Story identifier",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "offset_viewer": {
-                    "description": "A viewer from which to return next viewers; pass null to get results from the beginning",
+                "query": {
+                    "description": "Query to search for in names and usernames of the viewers; may be empty to get all relevant viewers",
                     "is_optional": true,
-                    "type": "messageViewer"
+                    "type": "string"
+                },
+                "only_contacts": {
+                    "description": "Pass true to get only contacts; pass false to get all relevant viewers",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "prefer_with_reaction": {
+                    "description": "Pass true to get viewers with reaction first; pass false to get viewers sorted just by view_date",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
                 },
                 "limit": {
-                    "description": "The maximum number of story viewers to return For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
+                    "description": "The maximum number of story viewers to return",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "MessageViewers"
+            "type": "StoryViewers"
         },
         "reportStory": {
             "description": "Reports a story to the Telegram moderators",
@@ -25142,6 +25592,11 @@
                     "type": "string"
                 }
             },
+            "type": "Ok"
+        },
+        "activateStoryStealthMode": {
+            "description": "Activates stealth mode for stories, which hides all views of stories from the current user in the last \"story_stealth_mode_past_period\" seconds and for the next \"story_stealth_mode_future_period\" seconds; for Telegram Premium users only",
+            "args": {},
             "type": "Ok"
         },
         "getAttachmentMenuBot": {
@@ -26523,18 +26978,18 @@
             },
             "type": "FilePart"
         },
-        "toggleMessageSenderIsBlocked": {
-            "description": "Changes the block state of a message sender. Currently, only users and supergroup chats can be blocked",
+        "setMessageSenderBlockList": {
+            "description": "Changes the block list of a message sender. Currently, only users and supergroup chats can be blocked",
             "args": {
                 "sender_id": {
                     "description": "Identifier of a message sender to block/unblock",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
-                "is_blocked": {
-                    "description": "New value of is_blocked",
-                    "is_optional": false,
-                    "type": "Bool"
+                "block_list": {
+                    "description": "New block list for the message sender; pass null to unblock the message sender",
+                    "is_optional": true,
+                    "type": "BlockList"
                 }
             },
             "type": "Ok"
@@ -26568,6 +27023,11 @@
         "getBlockedMessageSenders": {
             "description": "Returns users and chats that were blocked by the current user",
             "args": {
+                "block_list": {
+                    "description": "Block list from which to return users",
+                    "is_optional": false,
+                    "type": "BlockList"
+                },
                 "offset": {
                     "description": "Number of users and chats to skip in the result; must be non-negative",
                     "is_optional": false,
@@ -27475,7 +27935,7 @@
             "description": "Sets default administrator rights for adding the bot to basic group and supergroup chats; for bots only",
             "args": {
                 "default_group_administrator_rights": {
-                    "description": "Default administrator rights for adding the bot to basic group and supergroup chats; may be null",
+                    "description": "Default administrator rights for adding the bot to basic group and supergroup chats; pass null to remove default rights",
                     "is_optional": true,
                     "type": "chatAdministratorRights"
                 }
@@ -27486,7 +27946,7 @@
             "description": "Sets default administrator rights for adding the bot to channel chats; for bots only",
             "args": {
                 "default_channel_administrator_rights": {
-                    "description": "Default administrator rights for adding the bot to channels; may be null",
+                    "description": "Default administrator rights for adding the bot to channels; pass null to remove default rights",
                     "is_optional": true,
                     "type": "chatAdministratorRights"
                 }
