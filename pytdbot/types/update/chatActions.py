@@ -17,7 +17,14 @@ class ChatActions:
         self.message_thread_id = message_thread_id or 0
 
         assert isinstance(self.message_thread_id, int), "message_thread_id must be int"
+        self.setAction(action)
 
+    async def sendAction(self):
+        return await self.client.sendChatAction(
+            self.chat_id, self.message_thread_id, {"@type": self.action}
+        )
+
+    def setAction(self, action: str):
         if action == "typing" or action == "chatActionTyping":
             self.action = "chatActionTyping"
         elif action == "upload_photo" or action == "chatActionUploadingPhoto":
@@ -42,11 +49,6 @@ class ChatActions:
             self.action = "chatActionUploadingVideoNote"
         else:
             raise ValueError(f"Unknown action type {action}")
-
-    async def sendAction(self):
-        return await self.client.sendChatAction(
-            self.chat_id, self.message_thread_id, {"@type": self.action}
-        )
 
     def __await__(self):
         return self.sendAction().__await__()
