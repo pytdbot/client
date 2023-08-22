@@ -644,9 +644,10 @@ class Update:
 
             .. code-block:: python
 
-                async with update.action("typing")
+                async with update.action("record_video") as action:
                     # Anything that takes more than 4 seconds to produce
                     await asyncio.sleep(10)
+                    action.setAction("upload_video") # change the action to uploading a video
 
         Or
 

@@ -61,6 +61,7 @@ class ChatActions:
     async def __aenter__(self):
         await self.sendAction()
         self.task = self.client.loop.create_task(self._loop_action())
+        return self
 
     async def __aexit__(self, exc_type, exc, traceback):
         self.task.cancel()
