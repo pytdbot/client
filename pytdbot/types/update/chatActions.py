@@ -13,13 +13,24 @@ class ChatActions:
         self.client = client
         self.chat_id = chat_id
         self.action = None
-        self.task = None
+        self.__task = None
         self.message_thread_id = message_thread_id or 0
 
         assert isinstance(self.message_thread_id, int), "message_thread_id must be int"
         self.setAction(action)
 
-    async def sendAction(self):
+    def __await__(self):
+        return self.__sendAction().__await__()
+
+    async def __aenter__(self):
+        await self.sendAction()
+        self.__task = self.client.loop.create_task(self.__loop_action())
+        return self
+
+    async def __aexit__(self, exc_type, exc, traceback):
+        self.__task.cancel()
+
+    async def __sendAction(self):
         return await self.client.sendChatAction(
             self.chat_id, self.message_thread_id, {"@type": self.action}
         )
@@ -47,21 +58,16 @@ class ChatActions:
             self.action = "chatActionRecordingVideoNote"
         elif action == "upload_video_note" or action == "chatActionUploadingVideoNote":
             self.action = "chatActionUploadingVideoNote"
+        elif action == "cancel" or action == "chatActionCancel":
+            self.action = "chatActionCancel"
         else:
             raise ValueError(f"Unknown action type {action}")
 
-    def __await__(self):
-        return self.sendAction().__await__()
-
-    async def _loop_action(self):
+    async def __loop_action(self):
         while True:
             await sleep(4)
-            await self.sendAction()
+            await self.__sendAction()
 
-    async def __aenter__(self):
-        await self.sendAction()
-        self.task = self.client.loop.create_task(self._loop_action())
-        return self
-
-    async def __aexit__(self, exc_type, exc, traceback):
-        self.task.cancel()
+    def stop(self):
+        self.setAction("cancel")
+        self.__task.cancel()
