@@ -23,7 +23,7 @@ class ChatActions:
         return self.__sendAction().__await__()
 
     async def __aenter__(self):
-        await self.sendAction()
+        await self.__sendAction()
         self.__task = self.client.loop.create_task(self.__loop_action())
         return self
 
