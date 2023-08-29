@@ -20,17 +20,17 @@ class ChatActions:
         self.setAction(action)
 
     def __await__(self):
-        return self.__sendAction().__await__()
+        return self.sendAction().__await__()
 
     async def __aenter__(self):
-        await self.__sendAction()
+        await self.sendAction()
         self.__task = self.client.loop.create_task(self.__loop_action())
         return self
 
     async def __aexit__(self, exc_type, exc, traceback):
         self.__task.cancel()
 
-    async def __sendAction(self):
+    async def sendAction(self):
         return await self.client.sendChatAction(
             self.chat_id, self.message_thread_id, {"@type": self.action}
         )
@@ -66,7 +66,7 @@ class ChatActions:
     async def __loop_action(self):
         while True:
             await sleep(4)
-            await self.__sendAction()
+            await self.sendAction()
 
     def stop(self):
         self.setAction("cancel")
