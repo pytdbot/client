@@ -185,16 +185,16 @@ class Update:
 
     @property
     @lru_cache(1)
-    def reply_to_message_id(self) -> Union[int, None]:
+    def reply_to_message_id(self) -> int:
         """The message id of the replied message
 
         Returns:
             :py:class:`int`
-            ``None``
         """
 
         if self.reply_to:
             return self.reply_to.get("message_id")
+        return 0
 
     @property
     @lru_cache(1)
