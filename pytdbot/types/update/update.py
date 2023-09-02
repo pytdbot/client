@@ -862,7 +862,7 @@ class Update:
                 disable_web_page_preview=disable_web_page_preview,
                 disable_notification=disable_notification,
                 protect_content=protect_content,
-                message_thread_id=message_thread_id,
+                message_thread_id=message_thread_id if reply_to_message_id > 0 else 0,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
             )
@@ -988,7 +988,7 @@ class Update:
                 height=height,
                 disable_notification=disable_notification,
                 protect_content=protect_content,
-                message_thread_id=message_thread_id,
+                message_thread_id=message_thread_id if reply_to_message_id > 0 else 0,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
             )
@@ -1104,7 +1104,7 @@ class Update:
                 title=title,
                 disable_notification=disable_notification,
                 protect_content=protect_content,
-                message_thread_id=message_thread_id,
+                message_thread_id=message_thread_id if reply_to_message_id > 0 else 0,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
             )
@@ -1205,7 +1205,7 @@ class Update:
                 parse_mode=parse_mode,
                 disable_notification=disable_notification,
                 protect_content=protect_content,
-                message_thread_id=message_thread_id,
+                message_thread_id=message_thread_id if reply_to_message_id > 0 else 0,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
             )
@@ -1296,7 +1296,7 @@ class Update:
                 emoji=emoji,
                 disable_notification=disable_notification,
                 protect_content=protect_content,
-                message_thread_id=message_thread_id,
+                message_thread_id=message_thread_id if reply_to_message_id > 0 else 0,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
             )
@@ -1417,7 +1417,7 @@ class Update:
                 supports_streaming=supports_streaming,
                 disable_notification=disable_notification,
                 protect_content=protect_content,
-                message_thread_id=message_thread_id,
+                message_thread_id=message_thread_id if reply_to_message_id > 0 else 0,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
             )
@@ -1518,7 +1518,7 @@ class Update:
                 parse_mode=parse_mode,
                 disable_notification=disable_notification,
                 protect_content=protect_content,
-                message_thread_id=message_thread_id,
+                message_thread_id=message_thread_id if reply_to_message_id > 0 else 0,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
             )
@@ -1624,7 +1624,7 @@ class Update:
                 duration=duration,
                 disable_notification=disable_notification,
                 protect_content=protect_content,
-                message_thread_id=message_thread_id,
+                message_thread_id=message_thread_id if reply_to_message_id > 0 else 0,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=reply_markup,
             )
