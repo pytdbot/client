@@ -671,7 +671,11 @@ class Update:
         """
 
         if isinstance(self.chat_id, int):
-            message_thread_id = message_thread_id or self.message_thread_id
+            message_thread_id = (
+                message_thread_id
+                if isinstance(message_thread_id, int)
+                else self.message_thread_id
+            )
             return ChatActions(self.client, self.chat_id, action, message_thread_id)
         else:
             raise ValueError("Unknown chat_id")
@@ -772,7 +776,7 @@ class Update:
         disable_web_page_preview: bool = False,
         disable_notification: dict = False,
         protect_content: bool = False,
-        message_thread_id: int = 0,
+        message_thread_id: int = None,
         reply_to_message_id: int = 0,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
@@ -845,7 +849,11 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
-            message_thread_id = message_thread_id or self.message_thread_id
+            message_thread_id = (
+                message_thread_id
+                if isinstance(message_thread_id, int)
+                else self.message_thread_id
+            )
             return await self.client.sendTextMessage(
                 self.chat_id,
                 text,
@@ -873,7 +881,7 @@ class Update:
         height: int = None,
         disable_notification: bool = False,
         protect_content: bool = False,
-        message_thread_id: int = 0,
+        message_thread_id: int = None,
         reply_to_message_id: int = 0,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
@@ -962,7 +970,11 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
-            message_thread_id = message_thread_id or self.message_thread_id
+            message_thread_id = (
+                message_thread_id
+                if isinstance(message_thread_id, int)
+                else self.message_thread_id
+            )
             return await self.client.sendAnimation(
                 self.chat_id,
                 animation,
@@ -993,7 +1005,7 @@ class Update:
         title: str = None,
         disable_notification: bool = False,
         protect_content: bool = False,
-        message_thread_id: int = 0,
+        message_thread_id: int = None,
         reply_to_message_id: int = 0,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
@@ -1076,7 +1088,11 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
-            message_thread_id = message_thread_id or self.message_thread_id
+            message_thread_id = (
+                message_thread_id
+                if isinstance(message_thread_id, int)
+                else self.message_thread_id
+            )
             return await self.client.sendAudio(
                 self.chat_id,
                 audio,
@@ -1102,7 +1118,7 @@ class Update:
         parse_mode: str = None,
         disable_notification: bool = False,
         protect_content: bool = False,
-        message_thread_id: int = 0,
+        message_thread_id: int = None,
         reply_to_message_id: int = 0,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
@@ -1176,7 +1192,11 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
-            message_thread_id = message_thread_id or self.message_thread_id
+            message_thread_id = (
+                message_thread_id
+                if isinstance(message_thread_id, int)
+                else self.message_thread_id
+            )
             return await self.client.sendDocument(
                 self.chat_id,
                 document,
@@ -1197,7 +1217,7 @@ class Update:
         quote: bool = None,
         disable_notification: bool = False,
         protect_content: bool = False,
-        message_thread_id: int = 0,
+        message_thread_id: int = None,
         reply_to_message_id: int = 0,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
@@ -1265,7 +1285,11 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
-            message_thread_id = message_thread_id or self.message_thread_id
+            message_thread_id = (
+                message_thread_id
+                if isinstance(message_thread_id, int)
+                else self.message_thread_id
+            )
             return await self.client.sendSticker(
                 self.chat_id,
                 sticker,
@@ -1290,7 +1314,7 @@ class Update:
         supports_streaming: bool = False,
         disable_notification: bool = False,
         protect_content: bool = False,
-        message_thread_id: int = 0,
+        message_thread_id: int = None,
         reply_to_message_id: int = 0,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
@@ -1376,7 +1400,11 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
-            message_thread_id = message_thread_id or self.message_thread_id
+            message_thread_id = (
+                message_thread_id
+                if isinstance(message_thread_id, int)
+                else self.message_thread_id
+            )
             return await self.client.sendVideo(
                 self.chat_id,
                 video,
@@ -1403,7 +1431,7 @@ class Update:
         parse_mode: str = None,
         disable_notification: bool = False,
         protect_content: bool = False,
-        message_thread_id: int = 0,
+        message_thread_id: int = None,
         reply_to_message_id: int = 0,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
@@ -1477,7 +1505,11 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
-            message_thread_id = message_thread_id or self.message_thread_id
+            message_thread_id = (
+                message_thread_id
+                if isinstance(message_thread_id, int)
+                else self.message_thread_id
+            )
             return await self.client.sendPhoto(
                 self.chat_id,
                 photo,
@@ -1501,7 +1533,7 @@ class Update:
         duration: int = None,
         disable_notification: bool = False,
         protect_content: bool = False,
-        message_thread_id: int = 0,
+        message_thread_id: int = None,
         reply_to_message_id: int = 0,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
@@ -1578,7 +1610,11 @@ class Update:
                     reply_to_message_id = self.message_id
 
         if isinstance(self.chat_id, int):
-            message_thread_id = message_thread_id or self.message_thread_id
+            message_thread_id = (
+                message_thread_id
+                if isinstance(message_thread_id, int)
+                else self.message_thread_id
+            )
             return await self.client.sendVoice(
                 self.chat_id,
                 voice,
