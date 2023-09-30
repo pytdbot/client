@@ -643,7 +643,7 @@ class Methods(TDLibFunctions):
         added_sticker_file_ids: list = None,
         width: int = None,
         height: int = None,
-        self_destruct_time: int = None,
+        self_destruct_type: dict = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         has_spoiler: bool = False,
@@ -685,8 +685,8 @@ class Methods(TDLibFunctions):
             height (``int``, *optional*):
                 Photo height
 
-            self_destruct_time (``int``, *optional*):
-                Photo self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats
+            self_destruct_type (``dict``, *optional*):
+                Photo self-destruct type; pass null if none; private chats only
 
             disable_notification (``bool``, *optional*):
                 If True, disable notification for the message. Default is ``False``
@@ -765,7 +765,7 @@ class Methods(TDLibFunctions):
                 "width": width,
                 "height": height,
                 "caption": caption,
-                "self_destruct_time": self_destruct_time,
+                "self_destruct_type": self_destruct_type,
                 "has_spoiler": has_spoiler,
             },
         }
@@ -815,7 +815,7 @@ class Methods(TDLibFunctions):
         duration: int = None,
         width: int = None,
         height: int = None,
-        self_destruct_time: int = None,
+        self_destruct_type: dict = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         has_spoiler: bool = False,
@@ -863,8 +863,8 @@ class Methods(TDLibFunctions):
             height (``int``, *optional*):
                 Video height
 
-            self_destruct_time (``int``, *optional*):
-                Video self-destruct time (Time To Live), in seconds (0-60). A non-zero self-destruct time can be specified only in private chats
+            self_destruct_type (``dict``, *optional*):
+                Video self-destruct type; pass null if none; private chats only
 
             disable_notification (``bool``, *optional*):
                 If True, disable notification for the message. Default is ``False``
