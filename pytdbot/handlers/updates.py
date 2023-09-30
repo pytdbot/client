@@ -3483,12 +3483,52 @@ class Updates:
 
         return decorator
 
+    def on_updateUnconfirmedSession(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The first unconfirmed session has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateUnconfirmedSession", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateUnconfirmedSession", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateUnconfirmedSession", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateAttachmentMenuBots(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of bots added to attachment menu has changed
+        """The list of bots added to attachment or side menu has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):

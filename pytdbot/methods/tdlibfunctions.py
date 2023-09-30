@@ -1168,7 +1168,7 @@ class TDLibFunctions:
     async def getRemoteFile(
         self, remote_file_id: str, file_type: dict = None
     ) -> Result:
-        """Returns information about a file by its remote ID; this is an offline request\. Can be used to register a URL as a file for further uploading, or sending as a message\. Even the request succeeds, the file can be used only if it is still accessible to the user\. For example, if the file is from a message, then the message must be not deleted and accessible to the user\. If the file database is disabled, then the corresponding object with the file must be preloaded by the application
+        """Returns information about a file by its remote identifier; this is an offline request\. Can be used to register a URL as a file for further uploading, or sending as a message\. Even the request succeeds, the file can be used only if it is still accessible to the user\. For example, if the file is from a message, then the message must be not deleted and accessible to the user\. If the file database is disabled, then the corresponding object with the file must be preloaded by the application
 
         Args:
             remote_file_id (``str``):
@@ -1340,7 +1340,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getTopChats(self, category: dict, limit: int) -> Result:
-        """Returns a list of frequently used chats\. Supported only if the chat info database is enabled
+        """Returns a list of frequently used chats
 
         Args:
             category (``TopChatCategory``):
@@ -1484,7 +1484,7 @@ class TDLibFunctions:
 
         Args:
             chat_id (``int``):
-                Chat identifier; must be identifier of a supergroup chat, or a channel chat, or a private chat with self, or zero if the chat is being created
+                Chat identifier; must be identifier of a supergroup chat, or a channel chat, or a private chat with self, or 0 if the chat is being created
 
             username (``str``):
                 Username to be checked
@@ -2151,39 +2151,6 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getMessagePublicForwards(
-        self, chat_id: int, message_id: int, offset: str, limit: int
-    ) -> Result:
-        """Returns forwarded copies of a channel message to different public channels\. For optimal performance, the number of returned messages is chosen by TDLib
-
-        Args:
-            chat_id (``int``):
-                Chat identifier of the message
-
-            message_id (``int``):
-                Message identifier
-
-            offset (``str``):
-                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
-
-            limit (``int``):
-                The maximum number of messages to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``FoundMessages``)
-        """
-
-        data = {
-            "@type": "getMessagePublicForwards",
-            "chat_id": chat_id,
-            "message_id": message_id,
-            "offset": offset,
-            "limit": limit,
-        }
-
-        return await self.invoke(data)
-
     async def getChatSponsoredMessages(self, chat_id: int) -> Result:
         """Returns sponsored messages to be shown in a chat; for channel chats only
 
@@ -2294,7 +2261,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             media_timestamp (``int``):
-                If not 0, timestamp from which the video/audio/video note/voice note playing must start, in seconds\. The media can be in the message content or in its web page preview
+                If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the message content or in its web page preview
 
             for_album (``bool``):
                 Pass true to create a link for the whole media album
@@ -4116,7 +4083,7 @@ class TDLibFunctions:
     async def stopPoll(
         self, chat_id: int, message_id: int, reply_markup: dict = None
     ) -> Result:
-        """Stops a poll\. A poll in a message can be stopped when the message has can\_be\_edited flag set
+        """Stops a poll\. A poll in a message can be stopped when the message has can\_be\_edited flag is set
 
         Args:
             chat_id (``int``):
@@ -4474,14 +4441,14 @@ class TDLibFunctions:
     async def getWebAppUrl(
         self, bot_user_id: int, url: str, application_name: str, theme: dict = None
     ) -> Result:
-        """Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button is pressed
+        """Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, an inlineQueryResultsButtonTypeWebApp button, or an internalLinkTypeSideMenuBot link
 
         Args:
             bot_user_id (``int``):
                 Identifier of the target bot
 
             url (``str``):
-                The URL from the keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button
+                The URL from a keyboardButtonTypeWebApp button, inlineQueryResultsButtonTypeWebApp button, an internalLinkTypeSideMenuBot link, or an empty when the bot is opened from the side menu
 
             application_name (``str``):
                 Short name of the application; 0\-64 English letters, digits, and underscores
@@ -4543,7 +4510,7 @@ class TDLibFunctions:
         theme: dict = None,
         reply_to: dict = None,
     ) -> Result:
-        """Informs TDLib that a Web App is being opened from attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button\. For each bot, a confirmation alert about data sent to the bot must be shown once
+        """Informs TDLib that a Web App is being opened from the attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button\. For each bot, a confirmation alert about data sent to the bot must be shown once
 
         Args:
             chat_id (``int``):
@@ -4553,7 +4520,7 @@ class TDLibFunctions:
                 Identifier of the bot, providing the Web App
 
             url (``str``):
-                The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, or an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
+                The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
 
             application_name (``str``):
                 Short name of the application; 0\-64 English letters, digits, and underscores
@@ -5382,7 +5349,7 @@ class TDLibFunctions:
                 Message auto\-delete time value, in seconds; must be from 0 up to 365 \* 86400 and be divisible by 86400\. If 0, then messages aren't deleted automatically
 
             for_import (``bool``):
-                Pass true to create a supergroup for importing messages using importMessage
+                Pass true to create a supergroup for importing messages using importMessages
 
             location (``chatLocation``, *optional*):
                 Chat location if a location\-based supergroup is being created; pass null to create an ordinary supergroup chat
@@ -7014,8 +6981,26 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def canSendStory(self) -> Result:
-        """Checks whether the current user can send a story
+    async def getChatsToSendStories(self) -> Result:
+        """Returns channel chats in which the current user has the right to post stories\. The chats must be rechecked with canSendStory before actually trying to post a story there
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Chats``)
+        """
+
+        data = {
+            "@type": "getChatsToSendStories",
+        }
+
+        return await self.invoke(data)
+
+    async def canSendStory(self, chat_id: int) -> Result:
+        """Checks whether the current user can send a story on behalf of a chat; requires can\_post\_stories rights for channel chats
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
 
 
         Returns:
@@ -7024,12 +7009,14 @@ class TDLibFunctions:
 
         data = {
             "@type": "canSendStory",
+            "chat_id": chat_id,
         }
 
         return await self.invoke(data)
 
     async def sendStory(
         self,
+        chat_id: int,
         content: dict,
         privacy_settings: dict,
         active_period: int,
@@ -7038,9 +7025,12 @@ class TDLibFunctions:
         areas: dict = None,
         caption: dict = None,
     ) -> Result:
-        """Sends a new story\. Returns a temporary story
+        """Sends a new story to a chat; requires can\_post\_stories rights for channel chats\. Returns a temporary story
 
         Args:
+            chat_id (``int``):
+                Identifier of the chat that will post the story
+
             content (``InputStoryContent``):
                 Content of the story
 
@@ -7069,6 +7059,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "sendStory",
+            "chat_id": chat_id,
             "content": content,
             "areas": areas,
             "caption": caption,
@@ -7082,14 +7073,18 @@ class TDLibFunctions:
 
     async def editStory(
         self,
+        story_sender_chat_id: int,
         story_id: int,
         content: dict = None,
         areas: dict = None,
         caption: dict = None,
     ) -> Result:
-        """Changes content and caption of a previously sent story
+        """Changes content and caption of a story\. Can be called only if story\.can\_be\_edited \=\= true
 
         Args:
+            story_sender_chat_id (``int``):
+                Identifier of the chat that posted the story
+
             story_id (``int``):
                 Identifier of the story to edit
 
@@ -7097,7 +7092,7 @@ class TDLibFunctions:
                 New content of the story; pass null to keep the current content
 
             areas (``inputStoryAreas``, *optional*):
-                New clickable rectangle areas to be shown on the story media; pass null to keep the current areas
+                New clickable rectangle areas to be shown on the story media; pass null to keep the current areas\. Areas can't be edited if story content isn't changed
 
             caption (``formattedText``, *optional*):
                 New story caption; pass null to keep the current caption
@@ -7109,6 +7104,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "editStory",
+            "story_sender_chat_id": story_sender_chat_id,
             "story_id": story_id,
             "content": content,
             "areas": areas,
@@ -7118,11 +7114,14 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setStoryPrivacySettings(
-        self, story_id: int, privacy_settings: dict
+        self, story_sender_chat_id: int, story_id: int, privacy_settings: dict
     ) -> Result:
-        """Changes privacy settings of a previously sent story
+        """Changes privacy settings of a story\. Can be called only if story\.can\_be\_edited \=\= true
 
         Args:
+            story_sender_chat_id (``int``):
+                Identifier of the chat that posted the story
+
             story_id (``int``):
                 Identifier of the story
 
@@ -7136,16 +7135,22 @@ class TDLibFunctions:
 
         data = {
             "@type": "setStoryPrivacySettings",
+            "story_sender_chat_id": story_sender_chat_id,
             "story_id": story_id,
             "privacy_settings": privacy_settings,
         }
 
         return await self.invoke(data)
 
-    async def toggleStoryIsPinned(self, story_id: int, is_pinned: bool) -> Result:
-        """Toggles whether a story is accessible after expiration
+    async def toggleStoryIsPinned(
+        self, story_sender_chat_id: int, story_id: int, is_pinned: bool
+    ) -> Result:
+        """Toggles whether a story is accessible after expiration\. Can be called only if story\.can\_toggle\_is\_pinned \=\= true
 
         Args:
+            story_sender_chat_id (``int``):
+                Identifier of the chat that posted the story
+
             story_id (``int``):
                 Identifier of the story
 
@@ -7159,16 +7164,20 @@ class TDLibFunctions:
 
         data = {
             "@type": "toggleStoryIsPinned",
+            "story_sender_chat_id": story_sender_chat_id,
             "story_id": story_id,
             "is_pinned": is_pinned,
         }
 
         return await self.invoke(data)
 
-    async def deleteStory(self, story_id: int) -> Result:
-        """Deletes a previously sent story
+    async def deleteStory(self, story_sender_chat_id: int, story_id: int) -> Result:
+        """Deletes a previously sent story\. Can be called only if story\.can\_be\_deleted \=\= true
 
         Args:
+            story_sender_chat_id (``int``):
+                Identifier of the chat that posted the story
+
             story_id (``int``):
                 Identifier of the story to delete
 
@@ -7179,6 +7188,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "deleteStory",
+            "story_sender_chat_id": story_sender_chat_id,
             "story_id": story_id,
         }
 
@@ -7288,10 +7298,15 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getArchivedStories(self, from_story_id: int, limit: int) -> Result:
-        """Returns the list of all stories of the current user\. The stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+    async def getChatArchivedStories(
+        self, chat_id: int, from_story_id: int, limit: int
+    ) -> Result:
+        """Returns the list of all stories posted by the given chat; requires can\_edit\_stories rights for channel chats\. The stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Args:
+            chat_id (``int``):
+                Chat identifier
+
             from_story_id (``int``):
                 Identifier of the story starting from which stories must be returned; use 0 to get results from the last story
 
@@ -7304,7 +7319,8 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "getArchivedStories",
+            "@type": "getChatArchivedStories",
+            "chat_id": chat_id,
             "from_story_id": from_story_id,
             "limit": limit,
         }
@@ -7422,7 +7438,7 @@ class TDLibFunctions:
         limit: int,
         query: str = None,
     ) -> Result:
-        """Returns viewers of a story\. The method can be called if story\.can\_get\_viewers \=\= true
+        """Returns viewers of a story\. The method can be called only for stories posted on behalf of the current user
 
         Args:
             story_id (``int``):
@@ -7507,8 +7523,130 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getChatBoostStatus(self, chat_id: int) -> Result:
+        """Returns the current boost status for a channel chat
+
+        Args:
+            chat_id (``int``):
+                Identifier of the channel chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatBoostStatus``)
+        """
+
+        data = {
+            "@type": "getChatBoostStatus",
+            "chat_id": chat_id,
+        }
+
+        return await self.invoke(data)
+
+    async def canBoostChat(self, chat_id: int) -> Result:
+        """Checks whether the current user can boost a chat
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``CanBoostChatResult``)
+        """
+
+        data = {
+            "@type": "canBoostChat",
+            "chat_id": chat_id,
+        }
+
+        return await self.invoke(data)
+
+    async def boostChat(self, chat_id: int) -> Result:
+        """Boosts a chat
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "boostChat",
+            "chat_id": chat_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatBoostLink(self, chat_id: int) -> Result:
+        """Returns an HTTPS link to boost the specified channel chat
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatBoostLink``)
+        """
+
+        data = {
+            "@type": "getChatBoostLink",
+            "chat_id": chat_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatBoostLinkInfo(self, url: str) -> Result:
+        """Returns information about a link to boost a chat\. Can be called for any internal link of the type internalLinkTypeChatBoost
+
+        Args:
+            url (``str``):
+                The link to boost a chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatBoostLinkInfo``)
+        """
+
+        data = {
+            "@type": "getChatBoostLinkInfo",
+            "url": url,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatBoosts(self, chat_id: int, offset: str, limit: int) -> Result:
+        """Returns list of boosts applied to a chat\. The user must be an administrator in the channel chat to get the list of boosts
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of boosts to be returned; up to 100\. For optimal performance, the number of returned boosts can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundChatBoosts``)
+        """
+
+        data = {
+            "@type": "getChatBoosts",
+            "chat_id": chat_id,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
     async def getAttachmentMenuBot(self, bot_user_id: int) -> Result:
-        """Returns information about a bot that can be added to attachment menu
+        """Returns information about a bot that can be added to attachment or side menu
 
         Args:
             bot_user_id (``int``):
@@ -7529,7 +7667,7 @@ class TDLibFunctions:
     async def toggleBotIsAddedToAttachmentMenu(
         self, bot_user_id: int, is_added: bool, allow_write_access: bool
     ) -> Result:
-        """Adds or removes a bot to attachment menu\. Bot can be added to attachment menu, only if userTypeBot\.can\_be\_added\_to\_attachment\_menu \=\= true
+        """Adds or removes a bot to attachment and side menu\. Bot can be added to the menu, only if userTypeBot\.can\_be\_added\_to\_attachment\_menu \=\= true
 
         Args:
             bot_user_id (``int``):
@@ -9123,7 +9261,7 @@ class TDLibFunctions:
     async def inviteGroupCallParticipants(
         self, group_call_id: int, user_ids: list
     ) -> Result:
-        """Invites users to an active group call\. Sends a service message of type messageInviteToGroupCall for video chats
+        """Invites users to an active group call\. Sends a service message of type messageInviteVideoChatParticipants for video chats
 
         Args:
             group_call_id (``int``):
@@ -9946,6 +10084,39 @@ class TDLibFunctions:
             "query": query,
             "limit": limit,
             "chat_id": chat_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getAllStickerEmojis(
+        self, sticker_type: dict, query: str, chat_id: int, return_only_main_emoji: bool
+    ) -> Result:
+        """Returns unique emoji that correspond to stickers to be found by the getStickers\(sticker\_type, query, 1000000, chat\_id\)
+
+        Args:
+            sticker_type (``StickerType``):
+                Type of the stickers to search for
+
+            query (``str``):
+                Search query
+
+            chat_id (``int``):
+                Chat identifier for which to find stickers
+
+            return_only_main_emoji (``bool``):
+                Pass true if only main emoji for each found sticker must be included in the result
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Emojis``)
+        """
+
+        data = {
+            "@type": "getAllStickerEmojis",
+            "sticker_type": sticker_type,
+            "query": query,
+            "chat_id": chat_id,
+            "return_only_main_emoji": return_only_main_emoji,
         }
 
         return await self.invoke(data)
@@ -11124,6 +11295,73 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def canBotSendMessages(self, bot_user_id: int) -> Result:
+        """Checks whether the specified bot can send messages to the user\. Returns a 404 error if can't and the access can be granted by call to allowBotToSendMessages
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "canBotSendMessages",
+            "bot_user_id": bot_user_id,
+        }
+
+        return await self.invoke(data)
+
+    async def allowBotToSendMessages(self, bot_user_id: int) -> Result:
+        """Allows the specified bot to send messages to the user
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "allowBotToSendMessages",
+            "bot_user_id": bot_user_id,
+        }
+
+        return await self.invoke(data)
+
+    async def sendWebAppCustomRequest(
+        self, bot_user_id: int, method: str, parameters: str
+    ) -> Result:
+        """Sends a custom request from a Web App
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the bot
+
+            method (``str``):
+                The method name
+
+            parameters (``str``):
+                JSON\-serialized method parameters
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``CustomRequestResult``)
+        """
+
+        data = {
+            "@type": "sendWebAppCustomRequest",
+            "bot_user_id": bot_user_id,
+            "method": method,
+            "parameters": parameters,
+        }
+
+        return await self.invoke(data)
+
     async def setBotName(
         self, bot_user_id: int, language_code: str, name: str
     ) -> Result:
@@ -11404,6 +11642,25 @@ class TDLibFunctions:
 
         data = {
             "@type": "terminateAllOtherSessions",
+        }
+
+        return await self.invoke(data)
+
+    async def confirmSession(self, session_id: int) -> Result:
+        """Confirms an unconfirmed session of the current user from another device
+
+        Args:
+            session_id (``int``):
+                Session identifier
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "confirmSession",
+            "session_id": session_id,
         }
 
         return await self.invoke(data)
@@ -11989,7 +12246,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getPaymentForm(self, input_invoice: dict, theme: dict = None) -> Result:
-        """Returns an invoice payment form\. This method must be called when the user presses inlineKeyboardButtonBuy
+        """Returns an invoice payment form\. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy
 
         Args:
             input_invoice (``InputInvoice``):
@@ -12412,7 +12669,7 @@ class TDLibFunctions:
 
         Args:
             info (``languagePackInfo``):
-                Information about the language pack\. Language pack ID must start with 'X', consist only of English letters, digits and hyphens, and must not exceed 64 characters\. Can be called before authorization
+                Information about the language pack\. Language pack identifier must start with 'X', consist only of English letters, digits and hyphens, and must not exceed 64 characters\. Can be called before authorization
 
             strings (``list``):
                 Strings of the new language pack
@@ -12910,6 +13167,39 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "message_id": message_id,
             "is_dark": is_dark,
+        }
+
+        return await self.invoke(data)
+
+    async def getMessagePublicForwards(
+        self, chat_id: int, message_id: int, offset: str, limit: int
+    ) -> Result:
+        """Returns forwarded copies of a channel message to different public channels\. Can be used only if message\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages is chosen by TDLib
+
+        Args:
+            chat_id (``int``):
+                Chat identifier of the message
+
+            message_id (``int``):
+                Message identifier
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundMessages``)
+        """
+
+        data = {
+            "@type": "getMessagePublicForwards",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "offset": offset,
+            "limit": limit,
         }
 
         return await self.invoke(data)
@@ -14238,6 +14528,39 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def searchStringsByPrefix(
+        self, strings: list, query: str, limit: int, return_none_for_empty_query: bool
+    ) -> Result:
+        """Searches specified query by word prefixes in the provided strings\. Returns 0\-based positions of strings that matched\. Can be called synchronously
+
+        Args:
+            strings (``list``):
+                The strings to search in for the query
+
+            query (``str``):
+                Query to search for
+
+            limit (``int``):
+                The maximum number of objects to return
+
+            return_none_for_empty_query (``bool``):
+                Pass true to receive no results for an empty query
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundPositions``)
+        """
+
+        data = {
+            "@type": "searchStringsByPrefix",
+            "strings": strings,
+            "query": query,
+            "limit": limit,
+            "return_none_for_empty_query": return_none_for_empty_query,
+        }
+
+        return await self.invoke(data)
+
     async def sendCustomRequest(self, method: str, parameters: str) -> Result:
         """Sends a custom request; for bots only
 
@@ -14479,7 +14802,7 @@ class TDLibFunctions:
 
         Args:
             server (``str``):
-                Proxy server IP address
+                Proxy server domain or IP address
 
             port (``int``):
                 Proxy server port
@@ -14515,7 +14838,7 @@ class TDLibFunctions:
                 Proxy identifier
 
             server (``str``):
-                Proxy server IP address
+                Proxy server domain or IP address
 
             port (``int``):
                 Proxy server port
@@ -15017,7 +15340,7 @@ class TDLibFunctions:
 
         Args:
             server (``str``):
-                Proxy server IP address
+                Proxy server domain or IP address
 
             port (``int``):
                 Proxy server port

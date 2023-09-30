@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.16",
-    "commit_hash": "cde095db6c75827fe4bd237039574aad373ad96b",
+    "version": "1.8.19",
+    "commit_hash": "97ec3eacf4820e05d09c9c2eade995522509cbe0",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -20,6 +20,7 @@
         "ChatMemberStatus": "Provides information about the status of a member in a chat",
         "ChatMembersFilter": "Specifies the kind of chat members to return in searchChatMembers",
         "SupergroupMembersFilter": "Specifies the kind of chat members to return in getSupergroupMembers",
+        "InviteLinkChatType": "Describes the type of a chat to which points an invite link",
         "SecretChatState": "Describes the current secret chat state",
         "MessageSender": "Contains information about the sender of a message",
         "MessageForwardOrigin": "Contains information about the origin of a forwarded message",
@@ -55,11 +56,17 @@
         "MessageContent": "Contains the content of a message",
         "TextEntityType": "Represents a part of the text which must be formatted differently",
         "MessageSchedulingState": "Contains information about the time when a scheduled message will be sent",
+        "MessageSelfDestructType": "Describes when a message will be self-destructed",
         "InputMessageContent": "The content of a message to send",
         "SearchMessagesFilter": "Represents a filter for message search results",
         "ChatAction": "Describes the different types of activity in a chat",
         "UserStatus": "Describes the last time the user was online",
         "EmojiCategoryType": "Describes type of an emoji category",
+        "StoryAreaType": "Describes type of a clickable rectangle area on a story media",
+        "InputStoryAreaType": "Describes type of a clickable rectangle area on a story media to be added",
+        "StoryContent": "Contains the content of a story",
+        "InputStoryContent": "The content of a story to send",
+        "StoryList": "Describes a list of stories",
         "CallDiscardReason": "Describes the reason why a call was discarded",
         "CallServerType": "Describes the type of a call server",
         "CallState": "Describes the current call state",
@@ -83,7 +90,8 @@
         "BackgroundFill": "Describes a fill of a background",
         "BackgroundType": "Describes the type of a background",
         "InputBackground": "Contains information about background to set",
-        "CanSendStoryResult": "Represents result of checking whether the current user can send a story",
+        "CanSendStoryResult": "Represents result of checking whether the current user can send a story in the specific chat",
+        "CanBoostChatResult": "Represents result of checking whether the current user can boost the specific chat",
         "CanTransferOwnershipResult": "Represents result of checking whether the current session can be used to transfer a chat ownership to another user",
         "CheckChatUsernameResult": "Represents result of checking whether a username can be set for a chat",
         "CheckStickerSetNameResult": "Represents result of checking whether a name can be used for a new sticker set",
@@ -101,11 +109,6 @@
         "ReportReason": "Describes the reason why a chat is reported",
         "TargetChat": "Describes the target chat to be opened",
         "InternalLinkType": "Describes an internal https://t.me or tg: link, which must be processed by the application in a special way",
-        "StoryAreaType": "Describes type of a clickable rectangle area on a story media",
-        "InputStoryAreaType": "Describes type of a clickable rectangle area on a story media to be added",
-        "StoryContent": "Contains the content of a story",
-        "InputStoryContent": "The content of a story to send",
-        "StoryList": "Describes a list of stories",
         "BlockList": "Describes a type of a block list",
         "FileType": "Represents the type of a file",
         "NetworkType": "Represents the type of a network",
@@ -674,7 +677,7 @@
             "description": "Represents a remote file",
             "args": {
                 "id": {
-                    "description": "Remote file identifier; may be empty. Can be used by the current user across application restarts or even from other devices. Uniquely identifies a file, but a file can have a lot of different valid identifiers. If the ID starts with \"http://\" or \"https://\", it represents the HTTP URL of the file. TDLib is currently unable to download files if only their URL is known. If downloadFile/addFileToDownloads is called on such a file or if it is sent to a secret chat, TDLib starts a file generation process by sending updateFileGenerationStart to the application with the HTTP URL in the original_path and \"#url#\" as the conversion string. Application must generate the file by downloading it to the specified location",
+                    "description": "Remote file identifier; may be empty. Can be used by the current user across application restarts or even from other devices. Uniquely identifies a file, but a file can have a lot of different valid identifiers. If the identifier starts with \"http://\" or \"https://\", it represents the HTTP URL of the file. TDLib is currently unable to download files if only their URL is known. If downloadFile/addFileToDownloads is called on such a file or if it is sent to a secret chat, TDLib starts a file generation process by sending updateFileGenerationStart to the application with the HTTP URL in the original_path and \"#url#\" as the conversion string. Application must generate the file by downloading it to the specified location",
                     "is_optional": true,
                     "type": "string"
                 },
@@ -733,7 +736,7 @@
             "type": "File"
         },
         "inputFileId": {
-            "description": "A file defined by its unique ID",
+            "description": "A file defined by its unique identifier",
             "args": {
                 "id": {
                     "description": "Unique file identifier",
@@ -744,7 +747,7 @@
             "type": "InputFile"
         },
         "inputFileRemote": {
-            "description": "A file defined by its remote ID. The remote ID is guaranteed to be usable only if the corresponding file is still accessible to the user and known to TDLib. For example, if the file is from a message, then the message must be not deleted and accessible to the user. If the file database is disabled, then the corresponding object with the file must be preloaded by the application",
+            "description": "A file defined by its remote identifier. The remote identifier is guaranteed to be usable only if the corresponding file is still accessible to the user and known to TDLib. For example, if the file is from a message, then the message must be not deleted and accessible to the user. If the file database is disabled, then the corresponding object with the file must be preloaded by the application",
             "args": {
                 "id": {
                     "description": "Remote file identifier",
@@ -1841,7 +1844,7 @@
                     "type": "Bool"
                 },
                 "can_be_added_to_attachment_menu": {
-                    "description": "True, if the bot can be added to attachment menu",
+                    "description": "True, if the bot can be added to attachment or side menu",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -2106,12 +2109,12 @@
                     "type": "Bool"
                 },
                 "can_send_photos": {
-                    "description": "True, if the user can send audio photos",
+                    "description": "True, if the user can send photos",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "can_send_videos": {
-                    "description": "True, if the user can send audio videos",
+                    "description": "True, if the user can send videos",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -2167,7 +2170,7 @@
             "description": "Describes rights of the administrator",
             "args": {
                 "can_manage_chat": {
-                    "description": "True, if the administrator can get chat event log, get chat statistics, get message statistics in channels, get channel members, see anonymous administrators in supergroups and ignore slow mode. Implied by any other privilege; applicable to supergroups and channels only",
+                    "description": "True, if the administrator can get chat event log, get chat boosts in channels, get channel members, report supergroup spam messages, see anonymous administrators in supergroups and ignore slow mode. Implied by any other privilege; applicable to supergroups and channels only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -2177,7 +2180,7 @@
                     "type": "Bool"
                 },
                 "can_post_messages": {
-                    "description": "True, if the administrator can create channel posts; applicable to channels only",
+                    "description": "True, if the administrator can create channel posts or view channel statistics; applicable to channels only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -2197,7 +2200,7 @@
                     "type": "Bool"
                 },
                 "can_restrict_members": {
-                    "description": "True, if the administrator can restrict, ban, or unban chat members; always true for channels",
+                    "description": "True, if the administrator can restrict, ban, or unban chat members or view supergroup statistics; always true for channels",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -2218,6 +2221,21 @@
                 },
                 "can_manage_video_chats": {
                     "description": "True, if the administrator can manage video chats",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_post_stories": {
+                    "description": "True, if the administrator can create new channel stories, or edit and delete posted stories; applicable to channels only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_edit_stories": {
+                    "description": "True, if the administrator can edit stories posted by other users, pin stories and access story archive; applicable to channels only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_delete_stories": {
+                    "description": "True, if the administrator can delete stories posted by other users; applicable to channels only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3053,6 +3071,21 @@
             },
             "type": "ChatInviteLinkMembers"
         },
+        "inviteLinkChatTypeBasicGroup": {
+            "description": "The link is an invite link for a basic group",
+            "args": {},
+            "type": "InviteLinkChatType"
+        },
+        "inviteLinkChatTypeSupergroup": {
+            "description": "The link is an invite link for a supergroup",
+            "args": {},
+            "type": "InviteLinkChatType"
+        },
+        "inviteLinkChatTypeChannel": {
+            "description": "The link is an invite link for a channel",
+            "args": {},
+            "type": "InviteLinkChatType"
+        },
         "chatInviteLinkInfo": {
             "description": "Contains information about a chat invite link",
             "args": {
@@ -3069,7 +3102,7 @@
                 "type": {
                     "description": "Type of the chat",
                     "is_optional": false,
-                    "type": "ChatType"
+                    "type": "InviteLinkChatType"
                 },
                 "title": {
                     "description": "Title of the chat",
@@ -3103,6 +3136,21 @@
                 },
                 "is_public": {
                     "description": "True, if the chat is a public supergroup or channel, i.e. it has a username or it is a location-based supergroup",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_verified": {
+                    "description": "True, if the chat is verified",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_scam": {
+                    "description": "True, if many users reported this chat as a scam",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_fake": {
+                    "description": "True, if many users reported this chat as a fake account",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -3331,6 +3379,16 @@
                     "description": "True, if many users reported this supergroup or channel as a fake account",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "has_active_stories": {
+                    "description": "True, if the channel has non-expired stories available to the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_unread_active_stories": {
+                    "description": "True, if the channel has unread non-expired stories available to the current user",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Supergroup"
@@ -3425,6 +3483,11 @@
                 },
                 "has_aggressive_anti_spam_enabled": {
                     "description": "True, if aggressive anti-spam checks are enabled in the supergroup. The value of this field is only available to chat administrators",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_pinned_stories": {
+                    "description": "True, if the channel has pinned stories",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3845,15 +3908,10 @@
         "messageSendingStateFailed": {
             "description": "The message failed to be sent",
             "args": {
-                "error_code": {
-                    "description": "An error code; 0 if unknown",
+                "error": {
+                    "description": "The cause of the message sending failure",
                     "is_optional": false,
-                    "type": "int32"
-                },
-                "error_message": {
-                    "description": "Error message",
-                    "is_optional": false,
-                    "type": "string"
+                    "type": "error"
                 },
                 "can_retry": {
                     "description": "True, if the message can be re-sent",
@@ -4053,18 +4111,18 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "self_destruct_time": {
-                    "description": "The message's self-destruct time, in seconds; 0 if none. TDLib will send updateDeleteMessages or updateMessageContent once the time expires",
-                    "is_optional": false,
-                    "type": "int32"
+                "self_destruct_type": {
+                    "description": "The message's self-destruct type; may be null if none",
+                    "is_optional": true,
+                    "type": "MessageSelfDestructType"
                 },
                 "self_destruct_in": {
-                    "description": "Time left before the message self-destruct timer expires, in seconds. If the self-destruct timer isn't started yet, equals to the value of the self_destruct_time field",
+                    "description": "Time left before the message self-destruct timer expires, in seconds; 0 if self-desctruction isn't scheduled yet",
                     "is_optional": false,
                     "type": "double"
                 },
                 "auto_delete_in": {
-                    "description": "Time left before the message will be automatically deleted by message_auto_delete_time setting of the chat, in seconds; 0 if never. TDLib will send updateDeleteMessages or updateMessageContent once the time expires",
+                    "description": "Time left before the message will be automatically deleted by message_auto_delete_time setting of the chat, in seconds; 0 if never",
                     "is_optional": false,
                     "type": "double"
                 },
@@ -4537,7 +4595,7 @@
                     "type": "Bool"
                 },
                 "mute_stories": {
-                    "description": "True, if story notifications are received without sound",
+                    "description": "True, if story notifications are disabled for the chat",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4603,12 +4661,12 @@
                     "type": "Bool"
                 },
                 "use_default_mute_stories": {
-                    "description": "If true, mute_stories is ignored and stories are unmuted only for the first 5 chats from topChatCategoryUsers",
+                    "description": "If true, mute_stories is ignored and story notifications are received only for the first 5 chats from topChatCategoryUsers",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "mute_stories": {
-                    "description": "True, if story notifications are received without sound",
+                    "description": "True, if story notifications are disabled for the chat",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -5728,6 +5786,11 @@
                     "description": "The Web App",
                     "is_optional": false,
                     "type": "webApp"
+                },
+                "supports_settings": {
+                    "description": "True, if the app supports \"settings_button_pressed\" event",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "request_write_access": {
                     "description": "True, if the user must be asked for the permission to the bot to send them messages",
@@ -7202,6 +7265,11 @@
                 },
                 "recurring_payment_terms_of_service_url": {
                     "description": "An HTTP URL with terms of service for recurring payments. If non-empty, the invoice payment will result in recurring payments and the user must accept the terms of service before allowed to pay",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "terms_of_service_url": {
+                    "description": "An HTTP URL with terms of service for non-recurring payments. If non-empty, then the user must accept the terms of service before allowed to pay",
                     "is_optional": true,
                     "type": "string"
                 },
@@ -9533,6 +9601,11 @@
                     "description": "Information about the Web App, which requested the access; may be null if none or the Web App was opened from the attachment menu",
                     "is_optional": true,
                     "type": "webApp"
+                },
+                "by_request": {
+                    "description": "True, if user allowed the bot to send messages by an explicit call to allowBotToSendMessages",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "MessageContent"
@@ -9740,7 +9813,7 @@
             "description": "A media timestamp",
             "args": {
                 "media_timestamp": {
-                    "description": "Timestamp from which a video/audio/video note/voice note playing must start, in seconds. The media can be in the content or the web page preview of the current message, or in the same places in the replied message",
+                    "description": "Timestamp from which a video/audio/video note/voice note/story playing must start, in seconds. The media can be in the content or the web page preview of the current message, or in the same places in the replied message",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -9783,6 +9856,22 @@
             "description": "The message will be sent when the peer will be online. Applicable to private chats only and when the exact online status of the peer is known",
             "args": {},
             "type": "MessageSchedulingState"
+        },
+        "messageSelfDestructTypeTimer": {
+            "description": "The message will be self-destructed in the specified time after its content was opened",
+            "args": {
+                "self_destruct_time": {
+                    "description": "The message's self-destruct time, in seconds; must be between 0 and 60 in private chats",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageSelfDestructType"
+        },
+        "messageSelfDestructTypeImmediately": {
+            "description": "The message can be opened only once and will be self-destructed once closed",
+            "args": {},
+            "type": "MessageSelfDestructType"
         },
         "messageSendOptions": {
             "description": "Options to be used when a message is sent",
@@ -10003,10 +10092,10 @@
                     "is_optional": true,
                     "type": "formattedText"
                 },
-                "self_destruct_time": {
-                    "description": "Photo self-destruct time, in seconds (0-60). A non-zero self-destruct time can be specified only in private chats",
-                    "is_optional": false,
-                    "type": "int32"
+                "self_destruct_type": {
+                    "description": "Photo self-destruct type; pass null if none; private chats only",
+                    "is_optional": true,
+                    "type": "MessageSelfDestructType"
                 },
                 "has_spoiler": {
                     "description": "True, if the photo preview must be covered by a spoiler animation; not supported in secret chats",
@@ -10090,10 +10179,10 @@
                     "is_optional": true,
                     "type": "formattedText"
                 },
-                "self_destruct_time": {
-                    "description": "Video self-destruct time, in seconds (0-60). A non-zero self-destruct time can be specified only in private chats",
-                    "is_optional": false,
-                    "type": "int32"
+                "self_destruct_type": {
+                    "description": "Video self-destruct type; pass null if none; private chats only",
+                    "is_optional": true,
+                    "type": "MessageSelfDestructType"
                 },
                 "has_spoiler": {
                     "description": "True, if the video preview must be covered by a spoiler animation; not supported in secret chats",
@@ -10869,6 +10958,662 @@
             "description": "The category must be used for chat photo emoji selection",
             "args": {},
             "type": "EmojiCategoryType"
+        },
+        "storyViewer": {
+            "description": "Represents a viewer of a story",
+            "args": {
+                "user_id": {
+                    "description": "User identifier of the viewer",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "view_date": {
+                    "description": "Approximate point in time (Unix timestamp) when the story was viewed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "block_list": {
+                    "description": "Block list to which the user is added; may be null if none",
+                    "is_optional": true,
+                    "type": "BlockList"
+                },
+                "chosen_reaction_type": {
+                    "description": "Type of the reaction that was chosen by the user; may be null if none",
+                    "is_optional": true,
+                    "type": "ReactionType"
+                }
+            },
+            "type": "StoryViewer"
+        },
+        "storyViewers": {
+            "description": "Represents a list of story viewers",
+            "args": {
+                "total_count": {
+                    "description": "Approximate total number of story viewers found",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "total_reaction_count": {
+                    "description": "Approximate total number of reactions set by found story viewers",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "viewers": {
+                    "description": "List of story viewers",
+                    "is_optional": false,
+                    "type": "vector<storyViewer>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StoryViewers"
+        },
+        "storyAreaPosition": {
+            "description": "Describes position of a clickable rectangle area on a story media",
+            "args": {
+                "x_percentage": {
+                    "description": "The abscissa of the rectangle's center, as a percentage of the media width",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "y_percentage": {
+                    "description": "The ordinate of the rectangle's center, as a percentage of the media height",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "width_percentage": {
+                    "description": "The width of the rectangle, as a percentage of the media width",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "height_percentage": {
+                    "description": "The ordinate of the rectangle's center, as a percentage of the media height",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "rotation_angle": {
+                    "description": "Clockwise rotation angle of the rectangle, in degrees; 0-360",
+                    "is_optional": false,
+                    "type": "double"
+                }
+            },
+            "type": "StoryAreaPosition"
+        },
+        "storyAreaTypeLocation": {
+            "description": "An area pointing to a location",
+            "args": {
+                "location": {
+                    "description": "The location",
+                    "is_optional": false,
+                    "type": "location"
+                }
+            },
+            "type": "StoryAreaType"
+        },
+        "storyAreaTypeVenue": {
+            "description": "An area pointing to a venue",
+            "args": {
+                "venue": {
+                    "description": "Information about the venue",
+                    "is_optional": false,
+                    "type": "venue"
+                }
+            },
+            "type": "StoryAreaType"
+        },
+        "storyAreaTypeSuggestedReaction": {
+            "description": "An area pointing to a suggested reaction. App needs to show a clickable reaction on the area and call setStoryReaction when the are is clicked",
+            "args": {
+                "reaction_type": {
+                    "description": "Type of the reaction",
+                    "is_optional": false,
+                    "type": "ReactionType"
+                },
+                "total_count": {
+                    "description": "Number of times the reaction was added",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_dark": {
+                    "description": "True, if reaction has a dark background",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_flipped": {
+                    "description": "True, if reaction corner is flipped",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StoryAreaType"
+        },
+        "storyArea": {
+            "description": "Describes a clickable rectangle area on a story media",
+            "args": {
+                "position": {
+                    "description": "Position of the area",
+                    "is_optional": false,
+                    "type": "storyAreaPosition"
+                },
+                "type": {
+                    "description": "Type of the area",
+                    "is_optional": false,
+                    "type": "StoryAreaType"
+                }
+            },
+            "type": "StoryArea"
+        },
+        "inputStoryAreaTypeLocation": {
+            "description": "An area pointing to a location",
+            "args": {
+                "location": {
+                    "description": "The location",
+                    "is_optional": false,
+                    "type": "location"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
+        "inputStoryAreaTypeFoundVenue": {
+            "description": "An area pointing to a venue found by the bot getOption(\"venue_search_bot_username\")",
+            "args": {
+                "query_id": {
+                    "description": "Identifier of the inline query, used to found the venue",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "result_id": {
+                    "description": "Identifier of the inline query result",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
+        "inputStoryAreaTypePreviousVenue": {
+            "description": "An area pointing to a venue already added to the story",
+            "args": {
+                "venue_provider": {
+                    "description": "Provider of the venue",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "venue_id": {
+                    "description": "Identifier of the venue in the provider database",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
+        "inputStoryAreaTypeSuggestedReaction": {
+            "description": "An area pointing to a suggested reaction",
+            "args": {
+                "reaction_type": {
+                    "description": "Type of the reaction",
+                    "is_optional": false,
+                    "type": "ReactionType"
+                },
+                "is_dark": {
+                    "description": "True, if reaction has a dark background",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_flipped": {
+                    "description": "True, if reaction corner is flipped",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
+        "inputStoryArea": {
+            "description": "Describes a clickable rectangle area on a story media to be added",
+            "args": {
+                "position": {
+                    "description": "Position of the area",
+                    "is_optional": false,
+                    "type": "storyAreaPosition"
+                },
+                "type": {
+                    "description": "Type of the area",
+                    "is_optional": false,
+                    "type": "InputStoryAreaType"
+                }
+            },
+            "type": "InputStoryArea"
+        },
+        "inputStoryAreas": {
+            "description": "Contains a list of story areas to be added",
+            "args": {
+                "areas": {
+                    "description": "List of 0-10 input story areas",
+                    "is_optional": false,
+                    "type": "vector<inputStoryArea>"
+                }
+            },
+            "type": "InputStoryAreas"
+        },
+        "storyVideo": {
+            "description": "Describes a video file sent in a story",
+            "args": {
+                "duration": {
+                    "description": "Duration of the video, in seconds",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "width": {
+                    "description": "Video width",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "height": {
+                    "description": "Video height",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "has_stickers": {
+                    "description": "True, if stickers were added to the video. The list of corresponding sticker sets can be received using getAttachedStickerSets",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_animation": {
+                    "description": "True, if the video has no sound",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "minithumbnail": {
+                    "description": "Video minithumbnail; may be null",
+                    "is_optional": true,
+                    "type": "minithumbnail"
+                },
+                "thumbnail": {
+                    "description": "Video thumbnail in JPEG or MPEG4 format; may be null",
+                    "is_optional": true,
+                    "type": "thumbnail"
+                },
+                "preload_prefix_size": {
+                    "description": "Size of file prefix, which is supposed to be preloaded, in bytes",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "video": {
+                    "description": "File containing the video",
+                    "is_optional": false,
+                    "type": "file"
+                }
+            },
+            "type": "StoryVideo"
+        },
+        "storyContentPhoto": {
+            "description": "A photo story",
+            "args": {
+                "photo": {
+                    "description": "The photo",
+                    "is_optional": false,
+                    "type": "photo"
+                }
+            },
+            "type": "StoryContent"
+        },
+        "storyContentVideo": {
+            "description": "A video story",
+            "args": {
+                "video": {
+                    "description": "The video in MPEG4 format",
+                    "is_optional": false,
+                    "type": "storyVideo"
+                },
+                "alternative_video": {
+                    "description": "Alternative version of the video in MPEG4 format, encoded by x264 codec; may be null",
+                    "is_optional": true,
+                    "type": "storyVideo"
+                }
+            },
+            "type": "StoryContent"
+        },
+        "storyContentUnsupported": {
+            "description": "A story content that is not supported in the current TDLib version",
+            "args": {},
+            "type": "StoryContent"
+        },
+        "inputStoryContentPhoto": {
+            "description": "A photo story",
+            "args": {
+                "photo": {
+                    "description": "Photo to send. The photo must be at most 10 MB in size. The photo size must be 1080x1920",
+                    "is_optional": false,
+                    "type": "InputFile"
+                },
+                "added_sticker_file_ids": {
+                    "description": "File identifiers of the stickers added to the photo, if applicable",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "InputStoryContent"
+        },
+        "inputStoryContentVideo": {
+            "description": "A video story",
+            "args": {
+                "video": {
+                    "description": "Video to be sent. The video size must be 720x1280. The video must be streamable and stored in MPEG4 format, after encoding with x265 codec and key frames added each second",
+                    "is_optional": false,
+                    "type": "InputFile"
+                },
+                "added_sticker_file_ids": {
+                    "description": "File identifiers of the stickers added to the video, if applicable",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                },
+                "duration": {
+                    "description": "Precise duration of the video, in seconds; 0-60",
+                    "is_optional": false,
+                    "type": "double"
+                },
+                "is_animation": {
+                    "description": "True, if the video has no sound",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "InputStoryContent"
+        },
+        "storyListMain": {
+            "description": "The list of stories, shown in the main chat list and folder chat lists",
+            "args": {},
+            "type": "StoryList"
+        },
+        "storyListArchive": {
+            "description": "The list of stories, shown in the Arvhive chat list",
+            "args": {},
+            "type": "StoryList"
+        },
+        "storyInteractionInfo": {
+            "description": "Contains information about interactions with a story",
+            "args": {
+                "view_count": {
+                    "description": "Number of times the story was viewed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "forward_count": {
+                    "description": "Number of times the story was forwarded; 0 if none or unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "reaction_count": {
+                    "description": "Number of reactions added to the story; 0 if none or unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "recent_viewer_user_ids": {
+                    "description": "Identifiers of at most 3 recent viewers of the story",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "StoryInteractionInfo"
+        },
+        "story": {
+            "description": "Represents a story",
+            "args": {
+                "id": {
+                    "description": "Unique story identifier among stories of the given sender",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "sender_chat_id": {
+                    "description": "Identifier of the chat that posted the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the story was published",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_being_sent": {
+                    "description": "True, if the story is being sent by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_being_edited": {
+                    "description": "True, if the story is being edited by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_edited": {
+                    "description": "True, if the story was edited",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_pinned": {
+                    "description": "True, if the story is saved in the sender's profile and will be available there after expiration",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_visible_only_for_self": {
+                    "description": "True, if the story is visible only for the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_be_deleted": {
+                    "description": "True, if the story can be deleted",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_be_edited": {
+                    "description": "True, if the story can be edited",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_be_forwarded": {
+                    "description": "True, if the story can be forwarded as a message. Otherwise, screenshots and saving of the story content must be also forbidden",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_be_replied": {
+                    "description": "True, if the story can be replied in the chat with the story sender",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_toggle_is_pinned": {
+                    "description": "True, if the story's is_pinned value can be changed",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_get_viewers": {
+                    "description": "True, if users viewed the story can be received through getStoryViewers",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_expired_viewers": {
+                    "description": "True, if users viewed the story can't be received, because the story has expired more than getOption(\"story_viewers_expiration_delay\") seconds ago",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "interaction_info": {
+                    "description": "Information about interactions with the story; may be null if the story isn't owned or there were no interactions",
+                    "is_optional": true,
+                    "type": "storyInteractionInfo"
+                },
+                "chosen_reaction_type": {
+                    "description": "Type of the chosen reaction; may be null if none",
+                    "is_optional": true,
+                    "type": "ReactionType"
+                },
+                "privacy_settings": {
+                    "description": "Privacy rules affecting story visibility; may be approximate for non-owned stories",
+                    "is_optional": false,
+                    "type": "StoryPrivacySettings"
+                },
+                "content": {
+                    "description": "Content of the story",
+                    "is_optional": false,
+                    "type": "StoryContent"
+                },
+                "areas": {
+                    "description": "Clickable areas to be shown on the story content",
+                    "is_optional": false,
+                    "type": "vector<storyArea>"
+                },
+                "caption": {
+                    "description": "Caption of the story",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "Story"
+        },
+        "stories": {
+            "description": "Represents a list of stories",
+            "args": {
+                "total_count": {
+                    "description": "Approximate total number of stories found",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "stories": {
+                    "description": "The list of stories",
+                    "is_optional": false,
+                    "type": "vector<story>"
+                }
+            },
+            "type": "Stories"
+        },
+        "storyInfo": {
+            "description": "Contains basic information about a story",
+            "args": {
+                "story_id": {
+                    "description": "Unique story identifier among stories of the given sender",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the story was published",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_for_close_friends": {
+                    "description": "True, if the story is available only to close friends",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StoryInfo"
+        },
+        "chatActiveStories": {
+            "description": "Describes active stories posted by a chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that posted the stories",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "list": {
+                    "description": "Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list",
+                    "is_optional": true,
+                    "type": "StoryList"
+                },
+                "order": {
+                    "description": "A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list. Stories must be sorted by the pair (order, story_sender_chat_id) in descending order",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "max_read_story_id": {
+                    "description": "Identifier of the last read active story",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "stories": {
+                    "description": "Basic information about the stories; use getStory to get full information about the stories. The stories are in a chronological order (i.e., in order of increasing story identifiers)",
+                    "is_optional": false,
+                    "type": "vector<storyInfo>"
+                }
+            },
+            "type": "ChatActiveStories"
+        },
+        "chatBoostStatus": {
+            "description": "Describes current boost status of a chat",
+            "args": {
+                "is_boosted": {
+                    "description": "True, if the current user has already boosted the chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "level": {
+                    "description": "Current boost level of the chat",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "boost_count": {
+                    "description": "The number of times the chat was boosted",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "current_level_boost_count": {
+                    "description": "The number of boosts added to reach the current level",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "next_level_boost_count": {
+                    "description": "The number of boosts needed to reach the next level; 0 if the next level isn't available",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "premium_member_count": {
+                    "description": "Approximate number of Telegram Premium subscribers joined the chat; always 0 if the current user isn't an administrator in the chat",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "premium_member_percentage": {
+                    "description": "A percentage of Telegram Premium subscribers joined the chat; always 0 if the current user isn't an administrator in the chat",
+                    "is_optional": false,
+                    "type": "double"
+                }
+            },
+            "type": "ChatBoostStatus"
+        },
+        "chatBoost": {
+            "description": "Describes a boost of a chat",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of a user that boosted the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "expiration_date": {
+                    "description": "Point in time (Unix timestamp) when the boost will automatically expire if the user will not prolongate their Telegram Premium subscription",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChatBoost"
+        },
+        "foundChatBoosts": {
+            "description": "Contains a list of boosts applied to a chat",
+            "args": {
+                "total_count": {
+                    "description": "Total number of boosts applied to the chat",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "boosts": {
+                    "description": "List of boosts",
+                    "is_optional": false,
+                    "type": "vector<chatBoost>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "FoundChatBoosts"
         },
         "callDiscardReasonEmpty": {
             "description": "The call wasn't discarded, or the reason is unknown",
@@ -11835,10 +12580,10 @@
             "type": "AttachmentMenuBotColor"
         },
         "attachmentMenuBot": {
-            "description": "Represents a bot, which can be added to attachment menu",
+            "description": "Represents a bot, which can be added to attachment or side menu",
             "args": {
                 "bot_user_id": {
-                    "description": "User identifier of the bot added to attachment menu",
+                    "description": "User identifier of the bot",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -11873,7 +12618,27 @@
                     "type": "Bool"
                 },
                 "request_write_access": {
-                    "description": "True, if the user must be asked for the permission to the bot to send them messages",
+                    "description": "True, if the user must be asked for the permission to send messages to the bot",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_added": {
+                    "description": "True, if the bot was explicitly added by the user. If the bot isn't added, then on the first bot launch toggleBotIsAddedToAttachmentMenu must be called and the bot must be added or removed",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "show_in_attachment_menu": {
+                    "description": "True, if the bot must be shown in the attachment menu",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "show_in_side_menu": {
+                    "description": "True, if the bot must be shown in the side menu",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "show_disclaimer_in_side_menu": {
+                    "description": "True, if a disclaimer, why the bot is shown in the side menu, is needed",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -11888,27 +12653,42 @@
                     "type": "attachmentMenuBotColor"
                 },
                 "default_icon": {
-                    "description": "Default attachment menu icon for the bot in SVG format; may be null",
+                    "description": "Default icon for the bot in SVG format; may be null",
                     "is_optional": true,
                     "type": "file"
                 },
                 "ios_static_icon": {
-                    "description": "Attachment menu icon for the bot in SVG format for the official iOS app; may be null",
+                    "description": "Icon for the bot in SVG format for the official iOS app; may be null",
                     "is_optional": true,
                     "type": "file"
                 },
                 "ios_animated_icon": {
-                    "description": "Attachment menu icon for the bot in TGS format for the official iOS app; may be null",
+                    "description": "Icon for the bot in TGS format for the official iOS app; may be null",
+                    "is_optional": true,
+                    "type": "file"
+                },
+                "ios_side_menu_icon": {
+                    "description": "Icon for the bot in PNG format for the official iOS app side menu; may be null",
                     "is_optional": true,
                     "type": "file"
                 },
                 "android_icon": {
-                    "description": "Attachment menu icon for the bot in TGS format for the official Android app; may be null",
+                    "description": "Icon for the bot in TGS format for the official Android app; may be null",
+                    "is_optional": true,
+                    "type": "file"
+                },
+                "android_side_menu_icon": {
+                    "description": "Icon for the bot in SVG format for the official Android app side menu; may be null",
                     "is_optional": true,
                     "type": "file"
                 },
                 "macos_icon": {
-                    "description": "Attachment menu icon for the bot in TGS format for the official native macOS app; may be null",
+                    "description": "Icon for the bot in TGS format for the official native macOS app; may be null",
+                    "is_optional": true,
+                    "type": "file"
+                },
+                "macos_side_menu_icon": {
+                    "description": "Icon for the bot in PNG format for the official macOS app side menu; may be null",
                     "is_optional": true,
                     "type": "file"
                 },
@@ -13909,6 +14689,11 @@
             "args": {},
             "type": "PremiumLimitType"
         },
+        "premiumLimitTypeStorySuggestedReactionAreaCount": {
+            "description": "The maximum number of suggested reaction areas on a story",
+            "args": {},
+            "type": "PremiumLimitType"
+        },
         "premiumFeatureIncreasedLimits": {
             "description": "Increased limits",
             "args": {},
@@ -13989,8 +14774,13 @@
             "args": {},
             "type": "PremiumFeature"
         },
+        "premiumFeatureChatBoost": {
+            "description": "The ability to boost chats",
+            "args": {},
+            "type": "PremiumFeature"
+        },
         "premiumStoryFeaturePriorityOrder": {
-            "description": "User stories are displayed before stories of non-premium contacts",
+            "description": "User stories are displayed before stories of non-premium contacts and channels",
             "args": {},
             "type": "PremiumStoryFeature"
         },
@@ -14564,6 +15354,11 @@
             "args": {},
             "type": "CanSendStoryResult"
         },
+        "canSendStoryResultBoostNeeded": {
+            "description": "The channel chat must be boosted first by Telegram Premium subscribers to post more stories. Call getChatBoostStatus to get current boost status of the chat",
+            "args": {},
+            "type": "CanSendStoryResult"
+        },
         "canSendStoryResultActiveStoryLimitExceeded": {
             "description": "The limit for the number of active stories exceeded. The user can buy Telegram Premium, delete an active story, or wait for the oldest story to expire",
             "args": {},
@@ -14590,6 +15385,48 @@
                 }
             },
             "type": "CanSendStoryResult"
+        },
+        "canBoostChatResultOk": {
+            "description": "The chat can be boosted",
+            "args": {
+                "currently_boosted_chat_id": {
+                    "description": "Identifier of the currently boosted chat from which boost will be removed; 0 if none",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "CanBoostChatResult"
+        },
+        "canBoostChatResultInvalidChat": {
+            "description": "The chat can't be boosted",
+            "args": {},
+            "type": "CanBoostChatResult"
+        },
+        "canBoostChatResultAlreadyBoosted": {
+            "description": "The chat is already boosted by the user",
+            "args": {},
+            "type": "CanBoostChatResult"
+        },
+        "canBoostChatResultPremiumNeeded": {
+            "description": "The user must subscribe to Telegram Premium to be able to boost chats",
+            "args": {},
+            "type": "CanBoostChatResult"
+        },
+        "canBoostChatResultPremiumSubscriptionNeeded": {
+            "description": "The user must have Telegram Premium subscription instead of a gifted Telegram Premium",
+            "args": {},
+            "type": "CanBoostChatResult"
+        },
+        "canBoostChatResultWaitNeeded": {
+            "description": "The user must wait the specified time before the boost can be moved to another chat",
+            "args": {
+                "retry_after": {
+                    "description": "Time left before the user can boost another chat",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "CanBoostChatResult"
         },
         "canTransferOwnershipResultOk": {
             "description": "The session can be used",
@@ -15223,7 +16060,7 @@
             "description": "New message was received through a push notification",
             "args": {
                 "message_id": {
-                    "description": "The message identifier. The message will not be available in the chat history, but the ID can be used in viewMessages, or as a message to reply",
+                    "description": "The message identifier. The message will not be available in the chat history, but the identifier can be used in viewMessages, or as a message to reply",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -15515,7 +16352,7 @@
             "args": {},
             "type": "StoryPrivacySettings"
         },
-        "storyPrivacySettingsSelectedContacts": {
+        "storyPrivacySettingsSelectedUsers": {
             "description": "The story can be viewed by certain specified users",
             "args": {
                 "user_ids": {
@@ -15776,6 +16613,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_unconfirmed": {
+                    "description": "True, if the session wasn't confirmed from another session",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_accept_secret_chats": {
                     "description": "True, if incoming secret chats can be accepted by the session",
                     "is_optional": false,
@@ -15836,18 +16678,13 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "ip": {
+                "ip_address": {
                     "description": "IP address from which the session was created, in human-readable format",
                     "is_optional": false,
                     "type": "string"
                 },
-                "country": {
-                    "description": "A two-letter country code for the country from which the session was created, based on the IP address",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "region": {
-                    "description": "Region code from which the session was created, based on the IP address",
+                "location": {
+                    "description": "A human-readable description of the location from which the session was created, based on the IP address",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -15869,6 +16706,32 @@
                 }
             },
             "type": "Sessions"
+        },
+        "unconfirmedSession": {
+            "description": "Contains information about an unconfirmed session",
+            "args": {
+                "id": {
+                    "description": "Session identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "log_in_date": {
+                    "description": "Point in time (Unix timestamp) when the user has logged in",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "device_model": {
+                    "description": "Model of the device that was used for the session creation, as provided by the application",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "location": {
+                    "description": "A human-readable description of the location from which the session was created, based on the IP address",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "UnconfirmedSession"
         },
         "connectedWebsite": {
             "description": "Contains information about one website the current user is logged in with Telegram",
@@ -15908,7 +16771,7 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "ip": {
+                "ip_address": {
                     "description": "IP address from which the user was logged in, in human-readable format",
                     "is_optional": false,
                     "type": "string"
@@ -16030,7 +16893,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeAttachmentMenuBot": {
-            "description": "The link is a link to an attachment menu bot to be opened in the specified or a chosen chat. Process given target_chat to open the chat. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to attachment menu, then user needs to confirm adding the bot to attachment menu. If user confirms adding, then use toggleBotIsAddedToAttachmentMenu to add it. If the attachment menu bot can't be used in the opened chat, show an error to the user. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL",
+            "description": "The link is a link to an attachment menu bot to be opened in the specified or a chosen chat. Process given target_chat to open the chat. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to attachment menu, then show a disclaimer about Mini Apps being a third-party apps, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. If the attachment menu bot can't be used in the opened chat, show an error to the user. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL",
             "args": {
                 "target_chat": {
                     "description": "Target chat to be opened",
@@ -16133,6 +16996,17 @@
         "internalLinkTypeChangePhoneNumber": {
             "description": "The link is a link to the change phone number section of the app",
             "args": {},
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeChatBoost": {
+            "description": "The link is a link to boost a Telegram chat. Call getChatBoostLinkInfo with the given URL to process the link. If the chat is found, then call getChatBoostStatus and canBoostChat to get the current boost status and check whether the chat can be boosted. If the user wants to boost the chat and the chat can be boosted, then call boostChat",
+            "args": {
+                "url": {
+                    "description": "URL to be passed to getChatBoostLinkInfo",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
             "type": "InternalLinkType"
         },
         "internalLinkTypeChatFolderInvite": {
@@ -16325,7 +17199,7 @@
             "description": "The link is a link to a proxy. Call addProxy with the given parameters to process the link and add the proxy",
             "args": {
                 "server": {
-                    "description": "Proxy server IP address",
+                    "description": "Proxy server domain or IP address",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -16366,6 +17240,22 @@
         "internalLinkTypeSettings": {
             "description": "The link is a link to application settings",
             "args": {},
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeSideMenuBot": {
+            "description": "The link is a link to a bot, which can be installed to the side menu. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to side menu, then show a disclaimer about Mini Apps being a third-party apps, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. If the bot is added to side menu, then use getWebAppUrl with the given URL",
+            "args": {
+                "bot_username": {
+                    "description": "Username of the bot",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "url": {
+                    "description": "URL to be passed to getWebAppUrl",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
             "type": "InternalLinkType"
         },
         "internalLinkTypeStickerSet": {
@@ -16476,7 +17366,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeWebApp": {
-            "description": "The link is a link to a Web App. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web_app_short_name. Process received foundWebApp by showing a confirmation dialog if needed, then calling getWebAppLinkUrl and opening the returned URL",
+            "description": "The link is a link to a Web App. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web_app_short_name. Process received foundWebApp by showing a confirmation dialog if needed. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being a third-party apps instead of the dialog and ask the user to accept their Terms of service. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. Then, call getWebAppLinkUrl and open the returned URL as a Web App",
             "args": {
                 "bot_username": {
                     "description": "Username of the bot that owns the Web App",
@@ -16536,7 +17426,7 @@
                     "type": "message"
                 },
                 "media_timestamp": {
-                    "description": "Timestamp from which the video/audio/video note/voice note playing must start, in seconds; 0 if not specified. The media can be in the message content or in its web page preview",
+                    "description": "Timestamp from which the video/audio/video note/voice note/story playing must start, in seconds; 0 if not specified. The media can be in the message content or in its web page preview",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -16548,511 +17438,37 @@
             },
             "type": "MessageLinkInfo"
         },
-        "storyViewer": {
-            "description": "Represents a viewer of a story",
+        "chatBoostLink": {
+            "description": "Contains an HTTPS link to boost a chat",
             "args": {
-                "user_id": {
-                    "description": "User identifier of the viewer",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "view_date": {
-                    "description": "Approximate point in time (Unix timestamp) when the story was viewed",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "block_list": {
-                    "description": "Block list to which the user is added; may be null if none",
-                    "is_optional": true,
-                    "type": "BlockList"
-                },
-                "chosen_reaction_type": {
-                    "description": "Type of the reaction that was chosen by the user; may be null if none",
-                    "is_optional": true,
-                    "type": "ReactionType"
-                }
-            },
-            "type": "StoryViewer"
-        },
-        "storyViewers": {
-            "description": "Represents a list of story viewers",
-            "args": {
-                "total_count": {
-                    "description": "Approximate total number of story viewers found",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "viewers": {
-                    "description": "List of story viewers",
-                    "is_optional": false,
-                    "type": "vector<storyViewer>"
-                },
-                "next_offset": {
-                    "description": "The offset for the next request. If empty, there are no more results",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "StoryViewers"
-        },
-        "storyAreaPosition": {
-            "description": "Describes position of a clickable rectangle area on a story media",
-            "args": {
-                "x_percentage": {
-                    "description": "The abscissa of the rectangle's center, as a percentage of the media width",
-                    "is_optional": false,
-                    "type": "double"
-                },
-                "y_percentage": {
-                    "description": "The ordinate of the rectangle's center, as a percentage of the media height",
-                    "is_optional": false,
-                    "type": "double"
-                },
-                "width_percentage": {
-                    "description": "The width of the rectangle, as a percentage of the media width",
-                    "is_optional": false,
-                    "type": "double"
-                },
-                "height_percentage": {
-                    "description": "The ordinate of the rectangle's center, as a percentage of the media height",
-                    "is_optional": false,
-                    "type": "double"
-                },
-                "rotation_angle": {
-                    "description": "Clockwise rotation angle of the rectangle, in degrees; 0-360",
-                    "is_optional": false,
-                    "type": "double"
-                }
-            },
-            "type": "StoryAreaPosition"
-        },
-        "storyAreaTypeLocation": {
-            "description": "An area pointing to a location",
-            "args": {
-                "location": {
-                    "description": "The location",
-                    "is_optional": false,
-                    "type": "location"
-                }
-            },
-            "type": "StoryAreaType"
-        },
-        "storyAreaTypeVenue": {
-            "description": "An area pointing to a venue",
-            "args": {
-                "venue": {
-                    "description": "Information about the venue",
-                    "is_optional": false,
-                    "type": "venue"
-                }
-            },
-            "type": "StoryAreaType"
-        },
-        "storyArea": {
-            "description": "Describes a clickable rectangle area on a story media",
-            "args": {
-                "position": {
-                    "description": "Position of the area",
-                    "is_optional": false,
-                    "type": "storyAreaPosition"
-                },
-                "type": {
-                    "description": "Type of the area",
-                    "is_optional": false,
-                    "type": "StoryAreaType"
-                }
-            },
-            "type": "StoryArea"
-        },
-        "inputStoryAreaTypeLocation": {
-            "description": "An area pointing to a location",
-            "args": {
-                "location": {
-                    "description": "The location",
-                    "is_optional": false,
-                    "type": "location"
-                }
-            },
-            "type": "InputStoryAreaType"
-        },
-        "inputStoryAreaTypeFoundVenue": {
-            "description": "An area pointing to a venue found by the bot getOption(\"venue_search_bot_username\")",
-            "args": {
-                "query_id": {
-                    "description": "Identifier of the inline query, used to found the venue",
-                    "is_optional": false,
-                    "type": "int64"
-                },
-                "result_id": {
-                    "description": "Identifier of the inline query result",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "InputStoryAreaType"
-        },
-        "inputStoryAreaTypePreviousVenue": {
-            "description": "An area pointing to a venue already added to the story",
-            "args": {
-                "venue_provider": {
-                    "description": "Provider of the venue",
+                "link": {
+                    "description": "The link",
                     "is_optional": false,
                     "type": "string"
                 },
-                "venue_id": {
-                    "description": "Identifier of the venue in the provider database",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "InputStoryAreaType"
-        },
-        "inputStoryArea": {
-            "description": "Describes a clickable rectangle area on a story media to be added",
-            "args": {
-                "position": {
-                    "description": "Position of the area",
-                    "is_optional": false,
-                    "type": "storyAreaPosition"
-                },
-                "type": {
-                    "description": "Type of the area",
-                    "is_optional": false,
-                    "type": "InputStoryAreaType"
-                }
-            },
-            "type": "InputStoryArea"
-        },
-        "inputStoryAreas": {
-            "description": "Contains a list of story areas to be added",
-            "args": {
-                "areas": {
-                    "description": "List of input story areas",
-                    "is_optional": false,
-                    "type": "vector<inputStoryArea>"
-                }
-            },
-            "type": "InputStoryAreas"
-        },
-        "storyVideo": {
-            "description": "Describes a video file sent in a story",
-            "args": {
-                "duration": {
-                    "description": "Duration of the video, in seconds",
-                    "is_optional": false,
-                    "type": "double"
-                },
-                "width": {
-                    "description": "Video width",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "height": {
-                    "description": "Video height",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "has_stickers": {
-                    "description": "True, if stickers were added to the video. The list of corresponding sticker sets can be received using getAttachedStickerSets",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "is_animation": {
-                    "description": "True, if the video has no sound",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "minithumbnail": {
-                    "description": "Video minithumbnail; may be null",
-                    "is_optional": true,
-                    "type": "minithumbnail"
-                },
-                "thumbnail": {
-                    "description": "Video thumbnail in JPEG or MPEG4 format; may be null",
-                    "is_optional": true,
-                    "type": "thumbnail"
-                },
-                "preload_prefix_size": {
-                    "description": "Size of file prefix, which is supposed to be preloaded, in bytes",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "video": {
-                    "description": "File containing the video",
-                    "is_optional": false,
-                    "type": "file"
-                }
-            },
-            "type": "StoryVideo"
-        },
-        "storyContentPhoto": {
-            "description": "A photo story",
-            "args": {
-                "photo": {
-                    "description": "The photo",
-                    "is_optional": false,
-                    "type": "photo"
-                }
-            },
-            "type": "StoryContent"
-        },
-        "storyContentVideo": {
-            "description": "A video story",
-            "args": {
-                "video": {
-                    "description": "The video in MPEG4 format",
-                    "is_optional": false,
-                    "type": "storyVideo"
-                },
-                "alternative_video": {
-                    "description": "Alternative version of the video in MPEG4 format, encoded by x264 codec; may be null",
-                    "is_optional": true,
-                    "type": "storyVideo"
-                }
-            },
-            "type": "StoryContent"
-        },
-        "storyContentUnsupported": {
-            "description": "A story content that is not supported in the current TDLib version",
-            "args": {},
-            "type": "StoryContent"
-        },
-        "inputStoryContentPhoto": {
-            "description": "A photo story",
-            "args": {
-                "photo": {
-                    "description": "Photo to send. The photo must be at most 10 MB in size. The photo size must be 1080x1920",
-                    "is_optional": false,
-                    "type": "InputFile"
-                },
-                "added_sticker_file_ids": {
-                    "description": "File identifiers of the stickers added to the photo, if applicable",
-                    "is_optional": false,
-                    "type": "vector<int32>"
-                }
-            },
-            "type": "InputStoryContent"
-        },
-        "inputStoryContentVideo": {
-            "description": "A video story",
-            "args": {
-                "video": {
-                    "description": "Video to be sent. The video size must be 720x1280. The video must be streamable and stored in MPEG4 format, after encoding with x265 codec and key frames added each second",
-                    "is_optional": false,
-                    "type": "InputFile"
-                },
-                "added_sticker_file_ids": {
-                    "description": "File identifiers of the stickers added to the video, if applicable",
-                    "is_optional": false,
-                    "type": "vector<int32>"
-                },
-                "duration": {
-                    "description": "Precise duration of the video, in seconds; 0-60",
-                    "is_optional": false,
-                    "type": "double"
-                },
-                "is_animation": {
-                    "description": "True, if the video has no sound",
+                "is_public": {
+                    "description": "True, if the link will work for non-members of the chat",
                     "is_optional": false,
                     "type": "Bool"
                 }
             },
-            "type": "InputStoryContent"
+            "type": "ChatBoostLink"
         },
-        "storyListMain": {
-            "description": "The list of stories, shown in the main chat list and folder chat lists",
-            "args": {},
-            "type": "StoryList"
-        },
-        "storyListArchive": {
-            "description": "The list of stories, shown in the Arvhive chat list",
-            "args": {},
-            "type": "StoryList"
-        },
-        "storyInteractionInfo": {
-            "description": "Contains information about interactions with a story",
+        "chatBoostLinkInfo": {
+            "description": "Contains information about a link to boost a a chat",
             "args": {
-                "view_count": {
-                    "description": "Number of times the story was viewed",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "reaction_count": {
-                    "description": "Number of reactions added to the story",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "recent_viewer_user_ids": {
-                    "description": "Identifiers of at most 3 recent viewers of the story",
-                    "is_optional": false,
-                    "type": "vector<int53>"
-                }
-            },
-            "type": "StoryInteractionInfo"
-        },
-        "story": {
-            "description": "Represents a story",
-            "args": {
-                "id": {
-                    "description": "Unique story identifier among stories of the given sender",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "sender_chat_id": {
-                    "description": "Identifier of the chat that posted the story",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "date": {
-                    "description": "Point in time (Unix timestamp) when the story was published",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "is_being_sent": {
-                    "description": "True, if the story is being sent by the current user",
+                "is_public": {
+                    "description": "True, if the link will work for non-members of the chat",
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "is_being_edited": {
-                    "description": "True, if the story is being edited by the current user",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "is_edited": {
-                    "description": "True, if the story was edited",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "is_pinned": {
-                    "description": "True, if the story is saved in the sender's profile and will be available there after expiration",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "is_visible_only_for_self": {
-                    "description": "True, if the story is visible only for the current user",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "can_be_forwarded": {
-                    "description": "True, if the story can be forwarded as a message. Otherwise, screenshots and saving of the story content must be also forbidden",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "can_be_replied": {
-                    "description": "True, if the story can be replied in the chat with the story sender",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "can_get_viewers": {
-                    "description": "True, if users viewed the story can be received through getStoryViewers",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "has_expired_viewers": {
-                    "description": "True, if users viewed the story can't be received, because the story has expired more than getOption(\"story_viewers_expiration_delay\") seconds ago",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "interaction_info": {
-                    "description": "Information about interactions with the story; may be null if the story isn't owned or there were no interactions",
-                    "is_optional": true,
-                    "type": "storyInteractionInfo"
-                },
-                "chosen_reaction_type": {
-                    "description": "Type of the chosen reaction; may be null if none",
-                    "is_optional": true,
-                    "type": "ReactionType"
-                },
-                "privacy_settings": {
-                    "description": "Privacy rules affecting story visibility; may be approximate for non-owned stories",
-                    "is_optional": false,
-                    "type": "StoryPrivacySettings"
-                },
-                "content": {
-                    "description": "Content of the story",
-                    "is_optional": false,
-                    "type": "StoryContent"
-                },
-                "areas": {
-                    "description": "Clickable areas to be shown on the story content",
-                    "is_optional": false,
-                    "type": "vector<storyArea>"
-                },
-                "caption": {
-                    "description": "Caption of the story",
-                    "is_optional": false,
-                    "type": "formattedText"
-                }
-            },
-            "type": "Story"
-        },
-        "stories": {
-            "description": "Represents a list of stories",
-            "args": {
-                "total_count": {
-                    "description": "Approximate total number of stories found",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "stories": {
-                    "description": "The list of stories",
-                    "is_optional": false,
-                    "type": "vector<story>"
-                }
-            },
-            "type": "Stories"
-        },
-        "storyInfo": {
-            "description": "Contains basic information about a story",
-            "args": {
-                "story_id": {
-                    "description": "Unique story identifier among stories of the given sender",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "date": {
-                    "description": "Point in time (Unix timestamp) when the story was published",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "is_for_close_friends": {
-                    "description": "True, if the story is available only to close friends",
-                    "is_optional": false,
-                    "type": "Bool"
-                }
-            },
-            "type": "StoryInfo"
-        },
-        "chatActiveStories": {
-            "description": "Describes active stories posted by a chat",
-            "args": {
                 "chat_id": {
-                    "description": "Identifier of the chat that posted the stories",
+                    "description": "Identifier of the chat to which the link points; 0 if the chat isn't found",
                     "is_optional": false,
                     "type": "int53"
-                },
-                "list": {
-                    "description": "Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list",
-                    "is_optional": true,
-                    "type": "StoryList"
-                },
-                "order": {
-                    "description": "A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list. Stories must be sorted by the pair (order, story_sender_chat_id) in descending order",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "max_read_story_id": {
-                    "description": "Identifier of the last read active story",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "stories": {
-                    "description": "Basic information about the stories; use getStory to get full information about the stories. The stories are in a chronological order (i.e., in order of increasing story identifiers)",
-                    "is_optional": false,
-                    "type": "vector<storyInfo>"
                 }
             },
-            "type": "ChatActiveStories"
+            "type": "ChatBoostLinkInfo"
         },
         "blockListMain": {
             "description": "The main block list that disallows writing messages to the current user, receiving their status and photo, viewing of stories, and some other actions",
@@ -17594,6 +18010,22 @@
             "args": {},
             "type": "TopChatCategory"
         },
+        "foundPositions": {
+            "description": "Contains 0-based positions of matched objects",
+            "args": {
+                "total_count": {
+                    "description": "Total number of matched objects",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "positions": {
+                    "description": "The positions of the matched objects",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "FoundPositions"
+        },
         "tMeUrlTypeUser": {
             "description": "A URL linking to a user",
             "args": {
@@ -17855,7 +18287,7 @@
                     "type": "int32"
                 },
                 "server": {
-                    "description": "Proxy server IP address",
+                    "description": "Proxy server domain or IP address",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -18188,7 +18620,7 @@
                     "type": "statisticalValue"
                 },
                 "enabled_notifications_percentage": {
-                    "description": "A percentage of users with enabled notifications for the chat",
+                    "description": "A percentage of users with enabled notifications for the chat; 0-100",
                     "is_optional": false,
                     "type": "double"
                 },
@@ -18582,15 +19014,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "error_code": {
-                    "description": "An error code",
+                "error": {
+                    "description": "The cause of the message sending failure",
                     "is_optional": false,
-                    "type": "int32"
-                },
-                "error_message": {
-                    "description": "Error message",
-                    "is_optional": false,
-                    "type": "string"
+                    "type": "error"
                 }
             },
             "type": "Update"
@@ -19319,12 +19746,12 @@
                     "type": "int32"
                 },
                 "added_notifications": {
-                    "description": "List of added group notifications, sorted by notification ID",
+                    "description": "List of added group notifications, sorted by notification identifier",
                     "is_optional": false,
                     "type": "vector<notification>"
                 },
                 "removed_notification_ids": {
-                    "description": "Identifiers of removed group notifications, sorted by notification ID",
+                    "description": "Identifiers of removed group notifications, sorted by notification identifier",
                     "is_optional": false,
                     "type": "vector<int32>"
                 }
@@ -19840,19 +20267,14 @@
                     "type": "story"
                 },
                 "error": {
-                    "description": "The cause of the failure; may be null if unknown",
+                    "description": "The cause of the story sending failure",
+                    "is_optional": false,
+                    "type": "error"
+                },
+                "error_type": {
+                    "description": "Type of the error; may be null if unknown",
                     "is_optional": true,
                     "type": "CanSendStoryResult"
-                },
-                "error_code": {
-                    "description": "An error code",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "error_message": {
-                    "description": "Error message",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "Update"
@@ -20094,11 +20516,22 @@
             },
             "type": "Update"
         },
+        "updateUnconfirmedSession": {
+            "description": "The first unconfirmed session has changed",
+            "args": {
+                "session": {
+                    "description": "The unconfirmed session; may be null if none",
+                    "is_optional": true,
+                    "type": "unconfirmedSession"
+                }
+            },
+            "type": "Update"
+        },
         "updateAttachmentMenuBots": {
-            "description": "The list of bots added to attachment menu has changed",
+            "description": "The list of bots added to attachment or side menu has changed",
             "args": {
                 "bots": {
-                    "description": "The new list of bots added to attachment menu. The bots must not be shown on scheduled messages screen",
+                    "description": "The new list of bots. The bots must not be shown on scheduled messages screen",
                     "is_optional": false,
                     "type": "vector<attachmentMenuBot>"
                 }
@@ -21275,7 +21708,7 @@
             "type": "File"
         },
         "getRemoteFile": {
-            "description": "Returns information about a file by its remote ID; this is an offline request. Can be used to register a URL as a file for further uploading, or sending as a message. Even the request succeeds, the file can be used only if it is still accessible to the user. For example, if the file is from a message, then the message must be not deleted and accessible to the user. If the file database is disabled, then the corresponding object with the file must be preloaded by the application",
+            "description": "Returns information about a file by its remote identifier; this is an offline request. Can be used to register a URL as a file for further uploading, or sending as a message. Even the request succeeds, the file can be used only if it is still accessible to the user. For example, if the file is from a message, then the message must be not deleted and accessible to the user. If the file database is disabled, then the corresponding object with the file must be preloaded by the application",
             "args": {
                 "remote_file_id": {
                     "description": "Remote identifier of the file to get",
@@ -21388,7 +21821,7 @@
             "type": "ChatsNearby"
         },
         "getTopChats": {
-            "description": "Returns a list of frequently used chats. Supported only if the chat info database is enabled",
+            "description": "Returns a list of frequently used chats",
             "args": {
                 "category": {
                     "description": "Category of chats to be returned",
@@ -21477,7 +21910,7 @@
             "description": "Checks whether a username can be set for a chat",
             "args": {
                 "chat_id": {
-                    "description": "Chat identifier; must be identifier of a supergroup chat, or a channel chat, or a private chat with self, or zero if the chat is being created",
+                    "description": "Chat identifier; must be identifier of a supergroup chat, or a channel chat, or a private chat with self, or 0 if the chat is being created",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -21944,32 +22377,6 @@
             },
             "type": "Messages"
         },
-        "getMessagePublicForwards": {
-            "description": "Returns forwarded copies of a channel message to different public channels. For optimal performance, the number of returned messages is chosen by TDLib",
-            "args": {
-                "chat_id": {
-                    "description": "Chat identifier of the message",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "message_id": {
-                    "description": "Message identifier",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "offset": {
-                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "limit": {
-                    "description": "The maximum number of messages to be returned; must be positive and can't be greater than 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
-                    "is_optional": false,
-                    "type": "int32"
-                }
-            },
-            "type": "FoundMessages"
-        },
         "getChatSponsoredMessages": {
             "description": "Returns sponsored messages to be shown in a chat; for channel chats only",
             "args": {
@@ -22043,7 +22450,7 @@
                     "type": "int53"
                 },
                 "media_timestamp": {
-                    "description": "If not 0, timestamp from which the video/audio/video note/voice note playing must start, in seconds. The media can be in the message content or in its web page preview",
+                    "description": "If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds. The media can be in the message content or in its web page preview",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -23315,7 +23722,7 @@
             "type": "MessageSenders"
         },
         "stopPoll": {
-            "description": "Stops a poll. A poll in a message can be stopped when the message has can_be_edited flag set",
+            "description": "Stops a poll. A poll in a message can be stopped when the message has can_be_edited flag is set",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which the poll belongs",
@@ -23580,7 +23987,7 @@
             "type": "HttpUrl"
         },
         "getWebAppUrl": {
-            "description": "Returns an HTTPS URL of a Web App to open after keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button is pressed",
+            "description": "Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, an inlineQueryResultsButtonTypeWebApp button, or an internalLinkTypeSideMenuBot link",
             "args": {
                 "bot_user_id": {
                     "description": "Identifier of the target bot",
@@ -23588,7 +23995,7 @@
                     "type": "int53"
                 },
                 "url": {
-                    "description": "The URL from the keyboardButtonTypeWebApp or inlineQueryResultsButtonTypeWebApp button",
+                    "description": "The URL from a keyboardButtonTypeWebApp button, inlineQueryResultsButtonTypeWebApp button, an internalLinkTypeSideMenuBot link, or an empty when the bot is opened from the side menu",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -23627,7 +24034,7 @@
             "type": "Ok"
         },
         "openWebApp": {
-            "description": "Informs TDLib that a Web App is being opened from attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button. For each bot, a confirmation alert about data sent to the bot must be shown once",
+            "description": "Informs TDLib that a Web App is being opened from the attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button. For each bot, a confirmation alert about data sent to the bot must be shown once",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat in which the Web App is opened. The Web App can't be opened in secret chats",
@@ -23640,7 +24047,7 @@
                     "type": "int53"
                 },
                 "url": {
-                    "description": "The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, or an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise",
+                    "description": "The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -24226,7 +24633,7 @@
                     "type": "int32"
                 },
                 "for_import": {
-                    "description": "Pass true to create a supergroup for importing messages using importMessage",
+                    "description": "Pass true to create a supergroup for importing messages using importMessages",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -25268,14 +25675,30 @@
             },
             "type": "Story"
         },
-        "canSendStory": {
-            "description": "Checks whether the current user can send a story",
+        "getChatsToSendStories": {
+            "description": "Returns channel chats in which the current user has the right to post stories. The chats must be rechecked with canSendStory before actually trying to post a story there",
             "args": {},
+            "type": "Chats"
+        },
+        "canSendStory": {
+            "description": "Checks whether the current user can send a story on behalf of a chat; requires can_post_stories rights for channel chats",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
             "type": "CanSendStoryResult"
         },
         "sendStory": {
-            "description": "Sends a new story. Returns a temporary story",
+            "description": "Sends a new story to a chat; requires can_post_stories rights for channel chats. Returns a temporary story",
             "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that will post the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "content": {
                     "description": "Content of the story",
                     "is_optional": false,
@@ -25315,8 +25738,13 @@
             "type": "Story"
         },
         "editStory": {
-            "description": "Changes content and caption of a previously sent story",
+            "description": "Changes content and caption of a story. Can be called only if story.can_be_edited == true",
             "args": {
+                "story_sender_chat_id": {
+                    "description": "Identifier of the chat that posted the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "story_id": {
                     "description": "Identifier of the story to edit",
                     "is_optional": false,
@@ -25328,7 +25756,7 @@
                     "type": "InputStoryContent"
                 },
                 "areas": {
-                    "description": "New clickable rectangle areas to be shown on the story media; pass null to keep the current areas",
+                    "description": "New clickable rectangle areas to be shown on the story media; pass null to keep the current areas. Areas can't be edited if story content isn't changed",
                     "is_optional": true,
                     "type": "inputStoryAreas"
                 },
@@ -25341,8 +25769,13 @@
             "type": "Ok"
         },
         "setStoryPrivacySettings": {
-            "description": "Changes privacy settings of a previously sent story",
+            "description": "Changes privacy settings of a story. Can be called only if story.can_be_edited == true",
             "args": {
+                "story_sender_chat_id": {
+                    "description": "Identifier of the chat that posted the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "story_id": {
                     "description": "Identifier of the story",
                     "is_optional": false,
@@ -25357,8 +25790,13 @@
             "type": "Ok"
         },
         "toggleStoryIsPinned": {
-            "description": "Toggles whether a story is accessible after expiration",
+            "description": "Toggles whether a story is accessible after expiration. Can be called only if story.can_toggle_is_pinned == true",
             "args": {
+                "story_sender_chat_id": {
+                    "description": "Identifier of the chat that posted the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "story_id": {
                     "description": "Identifier of the story",
                     "is_optional": false,
@@ -25373,8 +25811,13 @@
             "type": "Ok"
         },
         "deleteStory": {
-            "description": "Deletes a previously sent story",
+            "description": "Deletes a previously sent story. Can be called only if story.can_be_deleted == true",
             "args": {
+                "story_sender_chat_id": {
+                    "description": "Identifier of the chat that posted the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "story_id": {
                     "description": "Identifier of the story to delete",
                     "is_optional": false,
@@ -25447,9 +25890,14 @@
             },
             "type": "Stories"
         },
-        "getArchivedStories": {
-            "description": "Returns the list of all stories of the current user. The stories are returned in a reverse chronological order (i.e., in order of decreasing story_id). For optimal performance, the number of returned stories is chosen by TDLib",
+        "getChatArchivedStories": {
+            "description": "Returns the list of all stories posted by the given chat; requires can_edit_stories rights for channel chats. The stories are returned in a reverse chronological order (i.e., in order of decreasing story_id). For optimal performance, the number of returned stories is chosen by TDLib",
             "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "from_story_id": {
                     "description": "Identifier of the story starting from which stories must be returned; use 0 to get results from the last story",
                     "is_optional": false,
@@ -25533,7 +25981,7 @@
             "type": "Ok"
         },
         "getStoryViewers": {
-            "description": "Returns viewers of a story. The method can be called if story.can_get_viewers == true",
+            "description": "Returns viewers of a story. The method can be called only for stories posted on behalf of the current user",
             "args": {
                 "story_id": {
                     "description": "Story identifier",
@@ -25599,8 +26047,84 @@
             "args": {},
             "type": "Ok"
         },
+        "getChatBoostStatus": {
+            "description": "Returns the current boost status for a channel chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the channel chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "ChatBoostStatus"
+        },
+        "canBoostChat": {
+            "description": "Checks whether the current user can boost a chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "CanBoostChatResult"
+        },
+        "boostChat": {
+            "description": "Boosts a chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "getChatBoostLink": {
+            "description": "Returns an HTTPS link to boost the specified channel chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "ChatBoostLink"
+        },
+        "getChatBoostLinkInfo": {
+            "description": "Returns information about a link to boost a chat. Can be called for any internal link of the type internalLinkTypeChatBoost",
+            "args": {
+                "url": {
+                    "description": "The link to boost a chat",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "ChatBoostLinkInfo"
+        },
+        "getChatBoosts": {
+            "description": "Returns list of boosts applied to a chat. The user must be an administrator in the channel chat to get the list of boosts",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of boosts to be returned; up to 100. For optimal performance, the number of returned boosts can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "FoundChatBoosts"
+        },
         "getAttachmentMenuBot": {
-            "description": "Returns information about a bot that can be added to attachment menu",
+            "description": "Returns information about a bot that can be added to attachment or side menu",
             "args": {
                 "bot_user_id": {
                     "description": "Bot's user identifier",
@@ -25611,7 +26135,7 @@
             "type": "AttachmentMenuBot"
         },
         "toggleBotIsAddedToAttachmentMenu": {
-            "description": "Adds or removes a bot to attachment menu. Bot can be added to attachment menu, only if userTypeBot.can_be_added_to_attachment_menu == true",
+            "description": "Adds or removes a bot to attachment and side menu. Bot can be added to the menu, only if userTypeBot.can_be_added_to_attachment_menu == true",
             "args": {
                 "bot_user_id": {
                     "description": "Bot's user identifier",
@@ -26703,7 +27227,7 @@
             "type": "Ok"
         },
         "inviteGroupCallParticipants": {
-            "description": "Invites users to an active group call. Sends a service message of type messageInviteToGroupCall for video chats",
+            "description": "Invites users to an active group call. Sends a service message of type messageInviteVideoChatParticipants for video chats",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -27237,6 +27761,32 @@
                 }
             },
             "type": "Stickers"
+        },
+        "getAllStickerEmojis": {
+            "description": "Returns unique emoji that correspond to stickers to be found by the getStickers(sticker_type, query, 1000000, chat_id)",
+            "args": {
+                "sticker_type": {
+                    "description": "Type of the stickers to search for",
+                    "is_optional": false,
+                    "type": "StickerType"
+                },
+                "query": {
+                    "description": "Search query",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "Chat identifier for which to find stickers",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "return_only_main_emoji": {
+                    "description": "Pass true if only main emoji for each found sticker must be included in the result",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Emojis"
         },
         "searchStickers": {
             "description": "Searches for stickers from public sticker sets that correspond to any of the given emoji",
@@ -27953,6 +28503,49 @@
             },
             "type": "Ok"
         },
+        "canBotSendMessages": {
+            "description": "Checks whether the specified bot can send messages to the user. Returns a 404 error if can't and the access can be granted by call to allowBotToSendMessages",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "allowBotToSendMessages": {
+            "description": "Allows the specified bot to send messages to the user",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "sendWebAppCustomRequest": {
+            "description": "Sends a custom request from a Web App",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "method": {
+                    "description": "The method name",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "parameters": {
+                    "description": "JSON-serialized method parameters",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "CustomRequestResult"
+        },
         "setBotName": {
             "description": "Sets the name of a bot. Can be called only if userTypeBot.can_be_edited == true",
             "args": {
@@ -28136,6 +28729,17 @@
         "terminateAllOtherSessions": {
             "description": "Terminates all other sessions of the current user",
             "args": {},
+            "type": "Ok"
+        },
+        "confirmSession": {
+            "description": "Confirms an unconfirmed session of the current user from another device",
+            "args": {
+                "session_id": {
+                    "description": "Session identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
             "type": "Ok"
         },
         "toggleSessionCanAcceptCalls": {
@@ -28511,7 +29115,7 @@
             "type": "ChatEvents"
         },
         "getPaymentForm": {
-            "description": "Returns an invoice payment form. This method must be called when the user presses inlineKeyboardButtonBuy",
+            "description": "Returns an invoice payment form. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy",
             "args": {
                 "input_invoice": {
                     "description": "The invoice",
@@ -28769,7 +29373,7 @@
             "description": "Adds or changes a custom local language pack to the current localization target",
             "args": {
                 "info": {
-                    "description": "Information about the language pack. Language pack ID must start with 'X', consist only of English letters, digits and hyphens, and must not exceed 64 characters. Can be called before authorization",
+                    "description": "Information about the language pack. Language pack identifier must start with 'X', consist only of English letters, digits and hyphens, and must not exceed 64 characters. Can be called before authorization",
                     "is_optional": false,
                     "type": "languagePackInfo"
                 },
@@ -29090,6 +29694,32 @@
                 }
             },
             "type": "MessageStatistics"
+        },
+        "getMessagePublicForwards": {
+            "description": "Returns forwarded copies of a channel message to different public channels. Can be used only if message.can_get_statistics == true. For optimal performance, the number of returned messages is chosen by TDLib",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Message identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of messages to be returned; must be positive and can't be greater than 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "FoundMessages"
         },
         "getStatisticalGraph": {
             "description": "Loads an asynchronous or a zoomed in statistical graph",
@@ -29928,6 +30558,32 @@
             },
             "type": "Ok"
         },
+        "searchStringsByPrefix": {
+            "description": "Searches specified query by word prefixes in the provided strings. Returns 0-based positions of strings that matched. Can be called synchronously",
+            "args": {
+                "strings": {
+                    "description": "The strings to search in for the query",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                },
+                "query": {
+                    "description": "Query to search for",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of objects to return",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "return_none_for_empty_query": {
+                    "description": "Pass true to receive no results for an empty query",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "FoundPositions"
+        },
         "sendCustomRequest": {
             "description": "Sends a custom request; for bots only",
             "args": {
@@ -30065,7 +30721,7 @@
             "description": "Adds a proxy server for network requests. Can be called before authorization",
             "args": {
                 "server": {
-                    "description": "Proxy server IP address",
+                    "description": "Proxy server domain or IP address",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -30096,7 +30752,7 @@
                     "type": "int32"
                 },
                 "server": {
-                    "description": "Proxy server IP address",
+                    "description": "Proxy server domain or IP address",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -30375,7 +31031,7 @@
             "description": "Sends a simple network request to the Telegram servers via proxy; for testing only. Can be called before authorization",
             "args": {
                 "server": {
-                    "description": "Proxy server IP address",
+                    "description": "Proxy server domain or IP address",
                     "is_optional": false,
                     "type": "string"
                 },
