@@ -872,7 +872,7 @@ class Client(Decorators, Methods):
         m_id = f'{update["old_message_id"]}{update["message"]["chat_id"]}'
 
         if m_id in self._results:
-            if update["error_code"] == 429:
+            if update["error"]["code"] == 429:
                 retry_after = update["message"]["sending_state"]["retry_after"]
 
                 if retry_after <= self.sleep_threshold:
@@ -890,13 +890,7 @@ class Client(Decorators, Methods):
                     ] = result
             else:
                 result: Result = self._results.pop(m_id)
-                result.set_result(
-                    {
-                        "@type": "error",
-                        "code": update["error_code"],
-                        "message": update["error_message"],
-                    }
-                )
+                result.set_result(update["error"])
 
     async def __handle_update_option(self, update):
         if update["value"]["@type"] == "optionValueBoolean":
