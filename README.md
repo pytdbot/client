@@ -42,7 +42,7 @@ client = Client(
     database_encryption_key="1234echobot$",
     token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token or phone number if you want to login as user
     files_directory="BotDB",  # Path where to store TDLib files
-    lib_path="/path/to/libtdjson.so" # Path to TDjson shared library
+    lib_path="/path/to/libtdjson.so", # Path to TDjson shared library
     td_log=LogStreamFile("tdlib.log"),  # Set TDLib log file path
     td_verbosity=2,  # TDLib verbosity level
 )
