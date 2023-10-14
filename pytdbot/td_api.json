@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.19",
-    "commit_hash": "97ec3eacf4820e05d09c9c2eade995522509cbe0",
+    "version": "1.8.20",
+    "commit_hash": "7a6d6cf492d61317a80047d1b4a35e52f9e668f0",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -75,6 +75,7 @@
         "FirebaseAuthenticationSettings": "Contains settings for Firebase Authentication in the official applications",
         "DiceStickers": "Contains animated stickers which must be used for dice animation rendering",
         "SpeechRecognitionResult": "Describes result of speech recognition in a voice note",
+        "BotWriteAccessAllowReason": "Describes a reason why a bot was allowed to write messages to the current user",
         "InputInlineQueryResult": "Represents a single result of an inline query; for bots only",
         "InlineQueryResult": "Represents a single result of an inline query",
         "InlineQueryResultsButtonType": "Represents a type of a button in results of inline query",
@@ -3726,17 +3727,6 @@
             },
             "type": "MessageForwardOrigin"
         },
-        "messageForwardOriginMessageImport": {
-            "description": "The message was imported from an exported message history",
-            "args": {
-                "sender_name": {
-                    "description": "Name of the sender",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "MessageForwardOrigin"
-        },
         "reactionTypeEmoji": {
             "description": "A reaction with an emoji",
             "args": {
@@ -3790,6 +3780,22 @@
             },
             "type": "MessageForwardInfo"
         },
+        "messageImportInfo": {
+            "description": "Contains information about a message created with importMessages",
+            "args": {
+                "sender_name": {
+                    "description": "Name of the original sender",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the message was originally sent",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageImportInfo"
+        },
         "messageReplyInfo": {
             "description": "Contains information about replies to a message",
             "args": {
@@ -3838,6 +3844,11 @@
                     "description": "True, if the reaction is chosen by the current user",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "used_sender_id": {
+                    "description": "Identifier of the message sender used by the current user to add the reaction; null if unknown or the reaction isn't chosen",
+                    "is_optional": false,
+                    "type": "MessageSender"
                 },
                 "recent_sender_ids": {
                     "description": "Identifiers of at most 3 recent message senders, added the reaction; available in private, basic group and supergroup chats",
@@ -4090,6 +4101,11 @@
                     "description": "Information about the initial message sender; may be null if none or unknown",
                     "is_optional": true,
                     "type": "messageForwardInfo"
+                },
+                "import_info": {
+                    "description": "Information about the initial message for messages created with importMessages; may be null if the message isn't imported",
+                    "is_optional": true,
+                    "type": "messageImportInfo"
                 },
                 "interaction_info": {
                     "description": "Information about interactions with the message; may be null if none",
@@ -9583,29 +9599,13 @@
             },
             "type": "MessageContent"
         },
-        "messageWebsiteConnected": {
-            "description": "The current user has connected a website by logging in using Telegram Login Widget on it",
-            "args": {
-                "domain_name": {
-                    "description": "Domain name of the connected website",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "MessageContent"
-        },
         "messageBotWriteAccessAllowed": {
             "description": "The user allowed the bot to send messages",
             "args": {
-                "web_app": {
-                    "description": "Information about the Web App, which requested the access; may be null if none or the Web App was opened from the attachment menu",
-                    "is_optional": true,
-                    "type": "webApp"
-                },
-                "by_request": {
-                    "description": "True, if user allowed the bot to send messages by an explicit call to allowBotToSendMessages",
+                "reason": {
+                    "description": "The reason why the bot was allowed to write messages",
                     "is_optional": false,
-                    "type": "Bool"
+                    "type": "BotWriteAccessAllowReason"
                 }
             },
             "type": "MessageContent"
@@ -11030,7 +11030,7 @@
                     "type": "double"
                 },
                 "height_percentage": {
-                    "description": "The ordinate of the rectangle's center, as a percentage of the media height",
+                    "description": "The height of the rectangle, as a percentage of the media height",
                     "is_optional": false,
                     "type": "double"
                 },
@@ -11540,6 +11540,11 @@
         "chatBoostStatus": {
             "description": "Describes current boost status of a chat",
             "args": {
+                "boost_url": {
+                    "description": "An HTTP URL, which can be used to boost the chat",
+                    "is_optional": false,
+                    "type": "string"
+                },
                 "is_boosted": {
                     "description": "True, if the current user has already boosted the chat",
                     "is_optional": false,
@@ -11832,7 +11837,7 @@
             "description": "The call has ended successfully",
             "args": {
                 "reason": {
-                    "description": "The reason, why the call has ended",
+                    "description": "The reason why the call has ended",
                     "is_optional": false,
                     "type": "CallDiscardReason"
                 },
@@ -12334,6 +12339,11 @@
                     "is_optional": false,
                     "type": "MessageSender"
                 },
+                "is_outgoing": {
+                    "description": "True, if the reaction was added by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "date": {
                     "description": "Point in time (Unix timestamp) when the reaction was added",
                     "is_optional": false,
@@ -12715,6 +12725,38 @@
                 }
             },
             "type": "SentWebAppMessage"
+        },
+        "botWriteAccessAllowReasonConnectedWebsite": {
+            "description": "The user connected a website by logging in using Telegram Login Widget on it",
+            "args": {
+                "domain_name": {
+                    "description": "Domain name of the connected website",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "BotWriteAccessAllowReason"
+        },
+        "botWriteAccessAllowReasonAddedToAttachmentMenu": {
+            "description": "The user added the bot to attachment or side menu using toggleBotIsAddedToAttachmentMenu",
+            "args": {},
+            "type": "BotWriteAccessAllowReason"
+        },
+        "botWriteAccessAllowReasonLaunchedWebApp": {
+            "description": "The user launched a Web App using getWebAppLinkUrl",
+            "args": {
+                "web_app": {
+                    "description": "Information about the Web App",
+                    "is_optional": false,
+                    "type": "webApp"
+                }
+            },
+            "type": "BotWriteAccessAllowReason"
+        },
+        "botWriteAccessAllowReasonAcceptedRequest": {
+            "description": "The user accepted bot's request to send messages with allowBotToSendMessages",
+            "args": {},
+            "type": "BotWriteAccessAllowReason"
         },
         "httpUrl": {
             "description": "Contains an HTTP URL",
@@ -17455,7 +17497,7 @@
             "type": "ChatBoostLink"
         },
         "chatBoostLinkInfo": {
-            "description": "Contains information about a link to boost a a chat",
+            "description": "Contains information about a link to boost a chat",
             "args": {
                 "is_public": {
                     "description": "True, if the link will work for non-members of the chat",
