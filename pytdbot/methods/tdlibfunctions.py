@@ -2502,8 +2502,8 @@ class TDLibFunctions:
             input_message_content (``InputMessageContent``):
                 The content of the message to be sent
 
-            reply_to (``MessageReplyTo``, *optional*):
-                Identifier of the replied message or story; pass null if none
+            reply_to (``InputMessageReplyTo``, *optional*):
+                Information about the message or story to be replied; pass null if none
 
             options (``messageSendOptions``, *optional*):
                 Options to be used to send the message; pass null to use default options
@@ -2533,7 +2533,6 @@ class TDLibFunctions:
         chat_id: int,
         message_thread_id: int,
         input_message_contents: list,
-        only_preview: bool,
         reply_to: dict = None,
         options: dict = None,
     ) -> Result:
@@ -2549,11 +2548,8 @@ class TDLibFunctions:
             input_message_contents (``list``):
                 Contents of messages to be sent\. At most 10 messages can be added to an album
 
-            only_preview (``bool``):
-                Pass true to get fake messages instead of actually sending them
-
-            reply_to (``MessageReplyTo``, *optional*):
-                Identifier of the replied message or story; pass null if none
+            reply_to (``InputMessageReplyTo``, *optional*):
+                Information about the message or story to be replied; pass null if none
 
             options (``messageSendOptions``, *optional*):
                 Options to be used to send the messages; pass null to use default options
@@ -2570,7 +2566,6 @@ class TDLibFunctions:
             "reply_to": reply_to,
             "options": options,
             "input_message_contents": input_message_contents,
-            "only_preview": only_preview,
         }
 
         return await self.invoke(data)
@@ -2632,8 +2627,8 @@ class TDLibFunctions:
             hide_via_bot (``bool``):
                 Pass true to hide the bot, via which the message is sent\. Can be used only for bots getOption\("animation\_search\_bot\_username"\), getOption\("photo\_search\_bot\_username"\), and getOption\("venue\_search\_bot\_username"\)
 
-            reply_to (``MessageReplyTo``, *optional*):
-                Identifier of the replied message or story; pass null if none
+            reply_to (``InputMessageReplyTo``, *optional*):
+                Information about the message or story to be replied; pass null if none
 
             options (``messageSendOptions``, *optional*):
                 Options to be used to send the message; pass null to use default options
@@ -2664,7 +2659,6 @@ class TDLibFunctions:
         message_ids: list,
         send_copy: bool,
         remove_caption: bool,
-        only_preview: bool,
         options: dict = None,
     ) -> Result:
         """Forwards previously sent messages\. Returns the forwarded messages in the same order as the message identifiers passed in message\_ids\. If a message can't be forwarded, null will be returned instead of the message
@@ -2680,16 +2674,13 @@ class TDLibFunctions:
                 Identifier of the chat from which to forward messages
 
             message_ids (``list``):
-                Identifiers of the messages to forward\. Message identifiers must be in a strictly increasing order\. At most 100 messages can be forwarded simultaneously
+                Identifiers of the messages to forward\. Message identifiers must be in a strictly increasing order\. At most 100 messages can be forwarded simultaneously\. A message can be forwarded only if message\.can\_be\_forwarded
 
             send_copy (``bool``):
                 Pass true to copy content of the messages without reference to the original sender\. Always true if the messages are forwarded to a secret chat or are local
 
             remove_caption (``bool``):
                 Pass true to remove media captions of message copies\. Ignored if send\_copy is false
-
-            only_preview (``bool``):
-                Pass true to get fake messages instead of actually forwarding them
 
             options (``messageSendOptions``, *optional*):
                 Options to be used to send the messages; pass null to use default options
@@ -2708,12 +2699,13 @@ class TDLibFunctions:
             "options": options,
             "send_copy": send_copy,
             "remove_caption": remove_caption,
-            "only_preview": only_preview,
         }
 
         return await self.invoke(data)
 
-    async def resendMessages(self, chat_id: int, message_ids: list) -> Result:
+    async def resendMessages(
+        self, chat_id: int, message_ids: list, quote: dict = None
+    ) -> Result:
         """Resends messages which failed to send\. Can be called only for messages for which messageSendingStateFailed\.can\_retry is true and after specified in messageSendingStateFailed\.retry\_after time passed\. If a message is re\-sent, the corresponding failed to send message is deleted\. Returns the sent messages in the same order as the message identifiers passed in message\_ids\. If a message can't be re\-sent, null will be returned instead of the message
 
         Args:
@@ -2722,6 +2714,9 @@ class TDLibFunctions:
 
             message_ids (``list``):
                 Identifiers of the messages to resend\. Message identifiers must be in a strictly increasing order
+
+            quote (``formattedText``, *optional*):
+                New manually chosen quote from the message to be replied; pass null if none\. Ignored if more than one message is re\-sent, or if messageSendingStateFailed\.need\_another\_reply\_quote \=\= false
 
 
         Returns:
@@ -2732,6 +2727,7 @@ class TDLibFunctions:
             "@type": "resendMessages",
             "chat_id": chat_id,
             "message_ids": message_ids,
+            "quote": quote,
         }
 
         return await self.invoke(data)
@@ -2759,8 +2755,8 @@ class TDLibFunctions:
             input_message_content (``InputMessageContent``):
                 The content of the message to be added
 
-            reply_to (``MessageReplyTo``, *optional*):
-                Identifier of the replied message or story; pass null if none
+            reply_to (``InputMessageReplyTo``, *optional*):
+                Information about the message or story to be replied; pass null if none
 
 
         Returns:
@@ -3783,6 +3779,33 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def searchQuote(self, text: dict, quote: dict, quote_position: int) -> Result:
+        """Searches for a given quote in a text\. Returns found quote start position in UTF\-16 code units\. Returns a 404 error if the quote is not found\. Can be called synchronously
+
+        Args:
+            text (``formattedText``):
+                Text in which to search for the quote
+
+            quote (``formattedText``):
+                Quote to search for
+
+            quote_position (``int``):
+                Approximate quote position in UTF\-16 code units
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundPosition``)
+        """
+
+        data = {
+            "@type": "searchQuote",
+            "text": text,
+            "quote": quote,
+            "quote_position": quote_position,
+        }
+
+        return await self.invoke(data)
+
     async def getTextEntities(self, text: str) -> Result:
         """Returns all entities \(mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses\) found in the text\. Can be called synchronously
 
@@ -3803,7 +3826,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def parseTextEntities(self, text: str, parse_mode: dict) -> Result:
-        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Code, Pre, PreCode, TextUrl and MentionName entities from a marked\-up text\. Can be called synchronously
+        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked\-up text\. Can be called synchronously
 
         Args:
             text (``str``):
@@ -4531,8 +4554,8 @@ class TDLibFunctions:
             theme (``themeParameters``, *optional*):
                 Preferred Web App theme; pass null to use the default theme
 
-            reply_to (``MessageReplyTo``, *optional*):
-                Identifier of the replied message or story for the message sent by the Web App; pass null if none
+            reply_to (``InputMessageReplyTo``, *optional*):
+                Information about the message or story to be replied in the message sent by the Web App; pass null if none
 
 
         Returns:
@@ -5922,6 +5945,35 @@ class TDLibFunctions:
             "@type": "setChatPhoto",
             "chat_id": chat_id,
             "photo": photo,
+        }
+
+        return await self.invoke(data)
+
+    async def setChatAccentColor(
+        self, chat_id: int, accent_color_id: int, background_custom_emoji_id: int
+    ) -> Result:
+        """Changes accent color and background custom emoji of a chat\. Supported only for channels with getOption\("channel\_custom\_accent\_color\_boost\_level\_min"\) boost level\. Requires can\_change\_info administrator right
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            accent_color_id (``int``):
+                Identifier of the accent color to use
+
+            background_custom_emoji_id (``int``):
+                Identifier of a custom emoji to be shown on the reply header background; 0 if none
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setChatAccentColor",
+            "chat_id": chat_id,
+            "accent_color_id": accent_color_id,
+            "background_custom_emoji_id": background_custom_emoji_id,
         }
 
         return await self.invoke(data)
@@ -7523,6 +7575,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getAvailableChatBoostSlots(self) -> Result:
+        """Returns the list of available chat boost slots for the current user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatBoostSlots``)
+        """
+
+        data = {
+            "@type": "getAvailableChatBoostSlots",
+        }
+
+        return await self.invoke(data)
+
     async def getChatBoostStatus(self, chat_id: int) -> Result:
         """Returns the current boost status for a channel chat
 
@@ -7542,40 +7608,25 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def canBoostChat(self, chat_id: int) -> Result:
-        """Checks whether the current user can boost a chat
+    async def boostChat(self, chat_id: int, slot_ids: list) -> Result:
+        """Boosts a chat and returns the list of available chat boost slots for the current user after the boost
 
         Args:
             chat_id (``int``):
                 Identifier of the chat
 
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``CanBoostChatResult``)
-        """
-
-        data = {
-            "@type": "canBoostChat",
-            "chat_id": chat_id,
-        }
-
-        return await self.invoke(data)
-
-    async def boostChat(self, chat_id: int) -> Result:
-        """Boosts a chat
-
-        Args:
-            chat_id (``int``):
-                Identifier of the chat
+            slot_ids (``list``):
+                Identifiers of boost slots of the current user from which to apply boosts to the chat
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``Ok``)
+            :class:`~pytdbot.types.Result` (``ChatBoostSlots``)
         """
 
         data = {
             "@type": "boostChat",
             "chat_id": chat_id,
+            "slot_ids": slot_ids,
         }
 
         return await self.invoke(data)
@@ -7618,12 +7669,17 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getChatBoosts(self, chat_id: int, offset: str, limit: int) -> Result:
-        """Returns list of boosts applied to a chat\. The user must be an administrator in the channel chat to get the list of boosts
+    async def getChatBoosts(
+        self, chat_id: int, only_gift_codes: bool, offset: str, limit: int
+    ) -> Result:
+        """Returns list of boosts applied to a chat; requires administrator rights in the channel chat
 
         Args:
             chat_id (``int``):
                 Identifier of the chat
+
+            only_gift_codes (``bool``):
+                Pass true to receive only boosts received from gift codes and giveaways created by the chat
 
             offset (``str``):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
@@ -7639,8 +7695,32 @@ class TDLibFunctions:
         data = {
             "@type": "getChatBoosts",
             "chat_id": chat_id,
+            "only_gift_codes": only_gift_codes,
             "offset": offset,
             "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getUserChatBoosts(self, chat_id: int, user_id: int) -> Result:
+        """Returns list of boosts applied to a chat by a given user; requires administrator rights in the channel chat; for bots only
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat
+
+            user_id (``int``):
+                Identifier of the user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundChatBoosts``)
+        """
+
+        data = {
+            "@type": "getUserChatBoosts",
+            "chat_id": chat_id,
+            "user_id": user_id,
         }
 
         return await self.invoke(data)
@@ -10712,6 +10792,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getDefaultBackgroundCustomEmojiStickers(self) -> Result:
+        """Returns default list of custom emoji stickers for reply background
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Stickers``)
+        """
+
+        data = {
+            "@type": "getDefaultBackgroundCustomEmojiStickers",
+        }
+
+        return await self.invoke(data)
+
     async def getSavedAnimations(self) -> Result:
         """Returns saved animations
 
@@ -10820,12 +10914,17 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getWebPagePreview(self, text: dict) -> Result:
-        """Returns a web page preview by the text of the message\. Do not call this function too often\. Returns a 404 error if the web page has no preview
+    async def getWebPagePreview(
+        self, text: dict, link_preview_options: dict = None
+    ) -> Result:
+        """Returns a link preview by the text of a message\. Do not call this function too often\. Returns a 404 error if the text has no link preview
 
         Args:
             text (``formattedText``):
                 Message text with formatting
+
+            link_preview_options (``linkPreviewOptions``, *optional*):
+                Options to be used for generation of the link preview; pass null to use default link preview options
 
 
         Returns:
@@ -10835,6 +10934,7 @@ class TDLibFunctions:
         data = {
             "@type": "getWebPagePreview",
             "text": text,
+            "link_preview_options": link_preview_options,
         }
 
         return await self.invoke(data)
@@ -10900,6 +11000,31 @@ class TDLibFunctions:
         data = {
             "@type": "deleteProfilePhoto",
             "profile_photo_id": profile_photo_id,
+        }
+
+        return await self.invoke(data)
+
+    async def setAccentColor(
+        self, accent_color_id: int, background_custom_emoji_id: int
+    ) -> Result:
+        """Changes accent color and background custom emoji for the current user; for Telegram Premium users only
+
+        Args:
+            accent_color_id (``int``):
+                Identifier of the accent color to use
+
+            background_custom_emoji_id (``int``):
+                Identifier of a custom emoji to be shown on the reply header background; 0 if none
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setAccentColor",
+            "accent_color_id": accent_color_id,
+            "background_custom_emoji_id": background_custom_emoji_id,
         }
 
         return await self.invoke(data)
@@ -14426,6 +14551,111 @@ class TDLibFunctions:
 
         data = {
             "@type": "getPremiumState",
+        }
+
+        return await self.invoke(data)
+
+    async def getPremiumGiftCodePaymentOptions(self, boosted_chat_id: int) -> Result:
+        """Returns available options for Telegram Premium gift code or giveaway creation
+
+        Args:
+            boosted_chat_id (``int``):
+                Identifier of the channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user; 0 if none
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``PremiumGiftCodePaymentOptions``)
+        """
+
+        data = {
+            "@type": "getPremiumGiftCodePaymentOptions",
+            "boosted_chat_id": boosted_chat_id,
+        }
+
+        return await self.invoke(data)
+
+    async def checkPremiumGiftCode(self, code: str) -> Result:
+        """Return information about a Telegram Premium gift code
+
+        Args:
+            code (``str``):
+                The code to check
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``PremiumGiftCodeInfo``)
+        """
+
+        data = {
+            "@type": "checkPremiumGiftCode",
+            "code": code,
+        }
+
+        return await self.invoke(data)
+
+    async def applyPremiumGiftCode(self, code: str) -> Result:
+        """Applies a Telegram Premium gift code
+
+        Args:
+            code (``str``):
+                The code to apply
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "applyPremiumGiftCode",
+            "code": code,
+        }
+
+        return await self.invoke(data)
+
+    async def launchPrepaidPremiumGiveaway(
+        self, giveaway_id: int, parameters: dict
+    ) -> Result:
+        """Launches a prepaid Telegram Premium giveaway for subscribers of channel chats; requires can\_post\_messages rights in the channels
+
+        Args:
+            giveaway_id (``int``):
+                Unique identifier of the prepaid giveaway
+
+            parameters (``premiumGiveawayParameters``):
+                Giveaway parameters
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "launchPrepaidPremiumGiveaway",
+            "giveaway_id": giveaway_id,
+            "parameters": parameters,
+        }
+
+        return await self.invoke(data)
+
+    async def getPremiumGiveawayInfo(self, chat_id: int, message_id: int) -> Result:
+        """Returns information about a Telegram Premium giveaway
+
+        Args:
+            chat_id (``int``):
+                Identifier of the channel chat which started the giveaway
+
+            message_id (``int``):
+                Identifier of the giveaway message in the chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``PremiumGiveawayInfo``)
+        """
+
+        data = {
+            "@type": "getPremiumGiveawayInfo",
+            "chat_id": chat_id,
+            "message_id": message_id,
         }
 
         return await self.invoke(data)
