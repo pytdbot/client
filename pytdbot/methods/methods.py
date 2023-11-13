@@ -104,7 +104,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
@@ -135,7 +135,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = reply_to
         elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             data["reply_to"] = {
-                "@type": "messageReplyToMessage",
+                "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
             }
 
@@ -257,7 +257,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
@@ -291,7 +291,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = reply_to
         elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             data["reply_to"] = {
-                "@type": "messageReplyToMessage",
+                "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
             }
 
@@ -420,7 +420,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
@@ -452,7 +452,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = reply_to
         elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             data["reply_to"] = {
-                "@type": "messageReplyToMessage",
+                "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
             }
 
@@ -574,7 +574,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
@@ -604,7 +604,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = reply_to
         elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             data["reply_to"] = {
-                "@type": "messageReplyToMessage",
+                "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
             }
 
@@ -740,7 +740,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
@@ -774,7 +774,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = reply_to
         elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             data["reply_to"] = {
-                "@type": "messageReplyToMessage",
+                "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
             }
 
@@ -918,7 +918,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
@@ -954,7 +954,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = reply_to
         elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             data["reply_to"] = {
-                "@type": "messageReplyToMessage",
+                "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
             }
 
@@ -1051,7 +1051,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
@@ -1081,7 +1081,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = reply_to
         elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             data["reply_to"] = {
-                "@type": "messageReplyToMessage",
+                "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
             }
 
@@ -1201,7 +1201,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
@@ -1231,7 +1231,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = reply_to
         elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             data["reply_to"] = {
-                "@type": "messageReplyToMessage",
+                "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
             }
 
@@ -1331,7 +1331,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
@@ -1362,7 +1362,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = reply_to
         elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             data["reply_to"] = {
-                "@type": "messageReplyToMessage",
+                "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
             }
 
@@ -1486,7 +1486,7 @@ class Methods(TDLibFunctions):
             load_replied_message
             and (
                 isinstance(reply_to, dict)
-                and reply_to.get("@type") == "messageReplyToMessage"
+                and reply_to.get("@type") == "inputMessageReplyToMessage"
             )
             or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
         ):
