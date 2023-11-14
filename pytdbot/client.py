@@ -753,7 +753,7 @@ class Client(Decorators, Methods):
             except Exception:
                 logger.exception("Got worker exception")
 
-    async def set_td_paramaters(self):
+    async def set_td_parameters(self):
         """Make a call to :meth:`~pytdbot.Client.setTdlibParameters` with the current client init parameters
 
         Raises:
@@ -831,7 +831,7 @@ class Client(Decorators, Methods):
             if self.__login:
                 if self.authorization_state == "authorizationStateWaitTdlibParameters":
                     await self._set_options()
-                    await self.set_td_paramaters()
+                    await self.set_td_parameters()
                 elif self.authorization_state == "authorizationStateWaitPhoneNumber":
                     self._print_welcome()
                     await self.__handle_authorization_state_wait_phone_number()

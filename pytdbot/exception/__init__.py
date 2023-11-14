@@ -8,6 +8,6 @@ class StopHandlers(Exception):
 
 
 class AuthorizationError(Exception):
-    """An execption for authorization errors"""
+    """An exception for authorization errors"""
 
     pass

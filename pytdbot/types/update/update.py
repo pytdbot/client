@@ -637,7 +637,7 @@ class Update:
             return await self.client.leaveChat(chat_id)
 
     def action(self, action: str, message_thread_id: int = None) -> ChatActions:
-        """Sends a chat action to a specific chat. Supporting context manager (``with`` statment)
+        """Sends a chat action to a specific chat. Supporting context manager (``with`` statement)
 
         Example:
 
