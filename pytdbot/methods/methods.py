@@ -974,7 +974,7 @@ class Methods(TDLibFunctions):
                 "width": width,
                 "height": height,
                 "caption": caption,
-                "self_destruct_time": self_destruct_time,
+                "self_destruct_type": self_destruct_type,
                 "has_spoiler": has_spoiler,
             },
         }
