@@ -29,6 +29,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -65,6 +66,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -137,6 +141,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = {
                 "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
+                "quote": quote,
             }
 
         if isinstance(reply_markup, ReplyMarkup):
@@ -165,6 +170,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -216,6 +222,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -293,6 +302,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = {
                 "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
+                "quote": quote,
             }
 
         if isinstance(reply_markup, ReplyMarkup):
@@ -333,6 +343,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -378,6 +389,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -454,6 +468,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = {
                 "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
+                "quote": quote,
             }
 
         if isinstance(reply_markup, ReplyMarkup):
@@ -494,6 +509,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -533,6 +549,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -606,6 +625,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = {
                 "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
+                "quote": quote,
             }
 
         if isinstance(reply_markup, ReplyMarkup):
@@ -648,6 +668,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -699,6 +720,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -776,6 +800,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = {
                 "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
+                "quote": quote,
             }
 
         if isinstance(reply_markup, ReplyMarkup):
@@ -820,6 +845,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -877,6 +903,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -956,6 +985,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = {
                 "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
+                "quote": quote,
             }
 
         if isinstance(reply_markup, ReplyMarkup):
@@ -992,6 +1022,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -1025,6 +1056,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -1083,6 +1117,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = {
                 "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
+                "quote": quote,
             }
 
         if isinstance(reply_markup, ReplyMarkup):
@@ -1121,6 +1156,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -1160,6 +1196,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -1233,6 +1272,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = {
                 "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
+                "quote": quote,
             }
 
         if isinstance(reply_markup, ReplyMarkup):
@@ -1270,6 +1310,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -1306,6 +1347,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -1364,6 +1408,7 @@ class Methods(TDLibFunctions):
             data["reply_to"] = {
                 "@type": "inputMessageReplyToMessage",
                 "message_id": reply_to_message_id,
+                "quote": quote,
             }
 
         if isinstance(reply_markup, ReplyMarkup):
@@ -1403,6 +1448,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
+        quote: dict = None,
         reply_to: dict = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
@@ -1442,6 +1488,9 @@ class Methods(TDLibFunctions):
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
+
+            quote (``dict``, *optional*):
+                Dict object of TDLib ``formattedText`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
