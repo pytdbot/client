@@ -58,7 +58,11 @@ SERVICE_MESSAGE_TYPES = {
     "messageUserShared",
     "messageChatShared",
     "messageChatSetBackground",
+    "messagePremiumGiftCode",
+    "messagePremiumGiveawayCreated",
+    "messagePremiumGiveaway",
 }
+
 MESSAGE_CHECK_TYPES = {
     "updateNewMessage",
     "updateMessageSendSucceeded",
