@@ -1007,7 +1007,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getRepliedMessage(self, chat_id: int, message_id: int) -> Result:
-        """Returns information about a message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground and topic messages without replied message respectively
+        """Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground and topic messages without non\-bundled replied message respectively
 
         Args:
             chat_id (``int``):
@@ -1335,6 +1335,48 @@ class TDLibFunctions:
         data = {
             "@type": "searchChatsNearby",
             "location": location,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatSimilarChats(self, chat_id: int) -> Result:
+        """Returns a list of chats similar to the given chat
+
+        Args:
+            chat_id (``int``):
+                Identifier of the target chat; must be an identifier of a channel chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Chats``)
+        """
+
+        data = {
+            "@type": "getChatSimilarChats",
+            "chat_id": chat_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatSimilarChatCount(self, chat_id: int, return_local: bool) -> Result:
+        """Returns approximate number of chats similar to the given chat
+
+        Args:
+            chat_id (``int``):
+                Identifier of the target chat; must be an identifier of a channel chat
+
+            return_local (``bool``):
+                Pass true to get the number of chats without sending network requests, or \-1 if the number of chats is unknown locally
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Count``)
+        """
+
+        data = {
+            "@type": "getChatSimilarChatCount",
+            "chat_id": chat_id,
+            "return_local": return_local,
         }
 
         return await self.invoke(data)
@@ -2386,7 +2428,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def recognizeSpeech(self, chat_id: int, message_id: int) -> Result:
-        """Recognizes speech in a video note or a voice note message\. The message must be successfully sent and must not be scheduled\. May return an error with a message "MSG\_VOICE\_TOO\_LONG" if media duration is too big to be recognized
+        """Recognizes speech in a video note or a voice note message\. The message must be successfully sent, must not be scheduled, and must be from a non\-secret chat
 
         Args:
             chat_id (``int``):
@@ -2715,7 +2757,7 @@ class TDLibFunctions:
             message_ids (``list``):
                 Identifiers of the messages to resend\. Message identifiers must be in a strictly increasing order
 
-            quote (``formattedText``, *optional*):
+            quote (``inputTextQuote``, *optional*):
                 New manually chosen quote from the message to be replied; pass null if none\. Ignored if more than one message is re\-sent, or if messageSendingStateFailed\.need\_another\_reply\_quote \=\= false
 
 
@@ -6030,10 +6072,11 @@ class TDLibFunctions:
         self,
         chat_id: int,
         dark_theme_dimming: int,
+        only_for_self: bool,
         background: dict = None,
         type: dict = None,
     ) -> Result:
-        """Changes the background in a specific chat\. Supported only in private and secret chats with non\-deleted users
+        """Sets the background in a specific chat\. Supported only in private and secret chats with non\-deleted users
 
         Args:
             chat_id (``int``):
@@ -6042,11 +6085,14 @@ class TDLibFunctions:
             dark_theme_dimming (``int``):
                 Dimming of the background in dark themes, as a percentage; 0\-100
 
+            only_for_self (``bool``):
+                Pass true to set background only for self; pass false to set background for both chat users\. Background can be set for both users only by Telegram Premium users and if set background isn't of the type inputBackgroundPrevious
+
             background (``InputBackground``, *optional*):
-                The input background to use; pass null to create a new filled background or to remove the current background
+                The input background to use; pass null to create a new filled background
 
             type (``BackgroundType``, *optional*):
-                Background type; pass null to remove the current background
+                Background type; pass null to use default background type for the chosen background
 
 
         Returns:
@@ -6059,6 +6105,32 @@ class TDLibFunctions:
             "background": background,
             "type": type,
             "dark_theme_dimming": dark_theme_dimming,
+            "only_for_self": only_for_self,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteChatBackground(
+        self, chat_id: int, restore_previous: bool
+    ) -> Result:
+        """Deletes background in a specific chat
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            restore_previous (``bool``):
+                Pass true to restore previously set background\. Can be used only in private and secret chats with non\-deleted users if userFullInfo\.set\_chat\_background \=\= true\. Supposed to be used from messageChatSetBackground messages with the currently set background that was set for both sides by the other user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteChatBackground",
+            "chat_id": chat_id,
+            "restore_previous": restore_previous,
         }
 
         return await self.invoke(data)
@@ -6165,10 +6237,35 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def toggleChatViewAsTopics(
+        self, chat_id: int, view_as_topics: bool
+    ) -> Result:
+        """Changes the view\_as\_topics setting of a forum chat
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            view_as_topics (``bool``):
+                New value of view\_as\_topics
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "toggleChatViewAsTopics",
+            "chat_id": chat_id,
+            "view_as_topics": view_as_topics,
+        }
+
+        return await self.invoke(data)
+
     async def toggleChatIsTranslatable(
         self, chat_id: int, is_translatable: bool
     ) -> Result:
-        """Changes the translatable state of a chat; for Telegram Premium users only
+        """Changes the translatable state of a chat
 
         Args:
             chat_id (``int``):
@@ -6250,7 +6347,7 @@ class TDLibFunctions:
                 Identifier of the chat
 
             available_reactions (``ChatAvailableReactions``):
-                Reactions available in the chat\. All emoji reactions must be active
+                Reactions available in the chat\. All explicitly specified emoji reactions must be active\. Up to the chat's boost level custom emoji reactions can be explicitly specified
 
 
         Returns:
@@ -7072,6 +7169,7 @@ class TDLibFunctions:
         content: dict,
         privacy_settings: dict,
         active_period: int,
+        from_story_full_id: dict,
         is_pinned: bool,
         protect_content: bool,
         areas: dict = None,
@@ -7091,6 +7189,9 @@ class TDLibFunctions:
 
             active_period (``int``):
                 Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, or 2 \* 86400 for Telegram Premium users, and 86400 otherwise
+
+            from_story_full_id (``storyFullId``):
+                Full identifier of the original story, which content was used to create the story
 
             is_pinned (``bool``):
                 Pass true to keep the story accessible after expiration
@@ -7117,6 +7218,7 @@ class TDLibFunctions:
             "caption": caption,
             "privacy_settings": privacy_settings,
             "active_period": active_period,
+            "from_story_full_id": from_story_full_id,
             "is_pinned": is_pinned,
             "protect_content": protect_content,
         }
@@ -7575,6 +7677,39 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getStoryPublicForwards(
+        self, story_sender_chat_id: int, story_id: int, offset: str, limit: int
+    ) -> Result:
+        """Returns forwards of a story as a message to public chats and reposts by public channels\. Can be used only if the story is posted on behalf of the current user or story\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
+
+        Args:
+            story_sender_chat_id (``int``):
+                The identifier of the sender of the story
+
+            story_id (``int``):
+                The identifier of the story
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of messages and stories to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StoryPublicForwards``)
+        """
+
+        data = {
+            "@type": "getStoryPublicForwards",
+            "story_sender_chat_id": story_sender_chat_id,
+            "story_id": story_id,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
     async def getAvailableChatBoostSlots(self) -> Result:
         """Returns the list of available chat boost slots for the current user
 
@@ -7938,7 +8073,7 @@ class TDLibFunctions:
     async def preliminaryUploadFile(
         self, file: dict, priority: int, file_type: dict = None
     ) -> Result:
-        """Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes\. Updates updateFile will be used to notify about upload progress and successful completion of the upload\. The file will not have a persistent remote identifier until it will be sent in a message
+        """Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes\. Updates updateFile will be used to notify about upload progress and successful completion of the upload\. The file will not have a persistent remote identifier until it is sent in a message
 
         Args:
             file (``InputFile``):
@@ -9143,7 +9278,7 @@ class TDLibFunctions:
     async def toggleGroupCallEnabledStartNotification(
         self, group_call_id: int, enabled_start_notification: bool
     ) -> Result:
-        """Toggles whether the current user will receive a notification when the group call will start; scheduled group calls only
+        """Toggles whether the current user will receive a notification when the group call starts; scheduled group calls only
 
         Args:
             group_call_id (``int``):
@@ -10412,10 +10547,13 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def searchStickerSets(self, query: str) -> Result:
-        """Searches for ordinary sticker sets by looking for specified query in their title and name\. Excludes installed sticker sets from the results
+    async def searchStickerSets(self, sticker_type: dict, query: str) -> Result:
+        """Searches for sticker sets by looking for specified query in their title and name\. Excludes installed sticker sets from the results
 
         Args:
+            sticker_type (``StickerType``):
+                Type of the sticker sets to return
+
             query (``str``):
                 Query to search for
 
@@ -10426,6 +10564,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "searchStickerSets",
+            "sticker_type": sticker_type,
             "query": query,
         }
 
@@ -11025,6 +11164,31 @@ class TDLibFunctions:
             "@type": "setAccentColor",
             "accent_color_id": accent_color_id,
             "background_custom_emoji_id": background_custom_emoji_id,
+        }
+
+        return await self.invoke(data)
+
+    async def setProfileAccentColor(
+        self, profile_accent_color_id: int, profile_background_custom_emoji_id: int
+    ) -> Result:
+        """Changes accent color and background custom emoji for profile of the current user; for Telegram Premium users only
+
+        Args:
+            profile_accent_color_id (``int``):
+                Identifier of the accent color to use for profile; pass \-1 if none
+
+            profile_background_custom_emoji_id (``int``):
+                Identifier of a custom emoji to be shown in the on the user's profile photo background; 0 if none
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setProfileAccentColor",
+            "profile_accent_color_id": profile_accent_color_id,
+            "profile_background_custom_emoji_id": profile_background_custom_emoji_id,
         }
 
         return await self.invoke(data)
@@ -13325,6 +13489,35 @@ class TDLibFunctions:
             "message_id": message_id,
             "offset": offset,
             "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getStoryStatistics(
+        self, chat_id: int, story_id: int, is_dark: bool
+    ) -> Result:
+        """Returns detailed statistics about a story\. Can be used only if story\.can\_get\_statistics \=\= true
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            story_id (``int``):
+                Story identifier
+
+            is_dark (``bool``):
+                Pass true if a dark theme is used by the application
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StoryStatistics``)
+        """
+
+        data = {
+            "@type": "getStoryStatistics",
+            "chat_id": chat_id,
+            "story_id": story_id,
+            "is_dark": is_dark,
         }
 
         return await self.invoke(data)

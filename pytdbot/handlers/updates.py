@@ -90,7 +90,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A request to send a message has reached the Telegram server\. This doesn't mean that the message will be sent successfully or even that the send message request will be processed\. This update will be sent only if the option "use\_quick\_ack" is set to true\. This update may be sent multiple times for the same message
+        """A request to send a message has reached the Telegram server\. This doesn't mean that the message will be sent successfully\. This update is sent only if the option "use\_quick\_ack" is set to true\. This update may be sent multiple times for the same message
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -688,7 +688,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Chat permissions was changed
+        """Chat permissions were changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1501,6 +1501,42 @@ class Updates:
 
         return decorator
 
+    def on_updateChatViewAsTopics(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A chat default appearance has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateChatViewAsTopics", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateChatViewAsTopics", self, position)
+            else:
+                func._handler = Handler(
+                    func, "updateChatViewAsTopics", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateChatBlockList(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -1614,7 +1650,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The number of online group members has changed\. This update with non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it will be sent just after the number of online users has changed
+        """The number of online group members has changed\. This update with non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it is sent just after the number of online users has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1798,7 +1834,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Contains active notifications that was shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
+        """Contains active notifications that were shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3306,7 +3342,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of saved notifications sounds was updated\. This update may not be sent until information about a notification sound was requested for the first time
+        """The list of saved notification sounds was updated\. This update may not be sent until information about a notification sound was requested for the first time
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3445,6 +3481,46 @@ class Updates:
                 func._handler = Handler(func, "updateAccentColors", self, position)
             else:
                 func._handler = Handler(func, "updateAccentColors", filters, position)
+            return func
+
+        return decorator
+
+    def on_updateProfileAccentColors(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The list of supported accent colors for user profiles has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateProfileAccentColors", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateProfileAccentColors", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateProfileAccentColors", filters, position
+                )
             return func
 
         return decorator
@@ -3784,6 +3860,46 @@ class Updates:
             else:
                 func._handler = Handler(
                     func, "updateDefaultReactionType", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateSpeechRecognitionTrial(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The parameters of speech recognition without Telegram Premium subscription has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateSpeechRecognitionTrial", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateSpeechRecognitionTrial", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateSpeechRecognitionTrial", filters, position
                 )
             return func
 

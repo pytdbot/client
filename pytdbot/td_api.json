@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.21",
-    "commit_hash": "3870c29b158b75ca5e48e0eebd6b5c3a7994a000",
+    "version": "1.8.22",
+    "commit_hash": "24893faf75d84b2b885f3f7aeb9d5a3c056fa7be",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -70,6 +70,8 @@
         "StoryContent": "Contains the content of a story",
         "InputStoryContent": "The content of a story to send",
         "StoryList": "Describes a list of stories",
+        "StoryOrigin": "Contains information about the origin of a story that was reposted",
+        "StoryPublicForward": "Describes a public forward or repost of a story",
         "ChatBoostSource": "Describes source of a chat boost",
         "CallDiscardReason": "Describes the reason why a call was discarded",
         "CallServerType": "Describes the type of a call server",
@@ -126,6 +128,7 @@
         "TextParseMode": "Describes the way the text needs to be parsed for text entities",
         "ProxyType": "Describes the type of a proxy server",
         "StatisticalGraph": "Describes a statistical graph",
+        "ChatStatisticsObjectType": "Describes type of an object, for which statistics are provided",
         "ChatStatistics": "Contains a detailed statistics about a chat",
         "VectorPathCommand": "Represents a vector path command",
         "BotCommandScope": "Represents the scope to which bot commands are relevant",
@@ -2380,7 +2383,7 @@
                     "type": "Bool"
                 },
                 "giveaway_message_id": {
-                    "description": "Identifier of the corresponding giveaway message; can be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the corresponding giveaway message in the creator_id chat; can be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -2528,6 +2531,48 @@
             },
             "type": "AccentColor"
         },
+        "profileAccentColors": {
+            "description": "Contains information about supported accent colors for user profile photo background in RGB format",
+            "args": {
+                "palette_colors": {
+                    "description": "The list of 1-2 colors in RGB format, describing the colors, as expected to be shown in the color palette settings",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                },
+                "background_colors": {
+                    "description": "The list of 1-2 colors in RGB format, describing the colors, as expected to be used for the profile photo background",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                },
+                "story_colors": {
+                    "description": "The list of 2 colors in RGB format, describing the colors of the gradient to be used for the unread active story indicator around profile photo",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "ProfileAccentColors"
+        },
+        "profileAccentColor": {
+            "description": "Contains information about supported accent color for user profile photo background",
+            "args": {
+                "id": {
+                    "description": "Profile accent color identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "light_theme_colors": {
+                    "description": "The list of 1-3 colors in RGB format, describing the accent color, as expected to be shown in light themes",
+                    "is_optional": false,
+                    "type": "profileAccentColors"
+                },
+                "dark_theme_colors": {
+                    "description": "The list of 1-3 colors in RGB format, describing the accent color, as expected to be shown in dark themes",
+                    "is_optional": false,
+                    "type": "profileAccentColors"
+                }
+            },
+            "type": "ProfileAccentColor"
+        },
         "emojiStatus": {
             "description": "Describes a custom emoji to be shown instead of the Telegram Premium badge",
             "args": {
@@ -2615,12 +2660,22 @@
                     "type": "profilePhoto"
                 },
                 "accent_color_id": {
-                    "description": "Identifier of the accent color for name, and backgrounds of profile photo, reply header, and link preview",
+                    "description": "Identifier of the accent color for name, and backgrounds of profile photo, reply header, and link preview. For Telegram Premium users only",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "background_custom_emoji_id": {
                     "description": "Identifier of a custom emoji to be shown on the reply header background; 0 if none. For Telegram Premium users only",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "profile_accent_color_id": {
+                    "description": "Identifier of the accent color for the user's profile; -1 if none. For Telegram Premium users only",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "profile_background_custom_emoji_id": {
+                    "description": "Identifier of a custom emoji to be shown on the background of the user's profile; 0 if none. For Telegram Premium users only",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -2828,6 +2883,11 @@
                 },
                 "need_phone_number_privacy_exception": {
                     "description": "True, if the current user needs to explicitly allow to share their phone number with the user when the method addContact is used",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "set_chat_background": {
+                    "description": "True, if the user set chat background for both chat users and it wasn't reverted yet",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3545,7 +3605,7 @@
                     "type": "ChatMemberStatus"
                 },
                 "member_count": {
-                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through searchPublicChats, searchChatsNearby, getInactiveSupergroupChats, getSuitableDiscussionChats, getGroupsInCommon, getUserPrivacySettingRules, or in chatFolderInviteLinkInfo.missing_chat_ids",
+                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo.missing_chat_ids, or for public chats in which where sent messages and posted stories from storyPublicForwards, or for public chats in which where sent messages from getMessagePublicForwards response",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -3590,7 +3650,7 @@
                     "type": "Bool"
                 },
                 "is_forum": {
-                    "description": "True, if the supergroup must be shown as a forum by default",
+                    "description": "True, if the supergroup is a forum with topics",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3851,7 +3911,7 @@
             "description": "Represents a message sender, which can be used to send messages in a chat",
             "args": {
                 "sender": {
-                    "description": "Available message senders",
+                    "description": "The message sender",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
@@ -4079,8 +4139,8 @@
                     "type": "Bool"
                 },
                 "used_sender_id": {
-                    "description": "Identifier of the message sender used by the current user to add the reaction; null if unknown or the reaction isn't chosen",
-                    "is_optional": false,
+                    "description": "Identifier of the message sender used by the current user to add the reaction; may be null if unknown or the reaction isn't chosen",
+                    "is_optional": true,
                     "type": "MessageSender"
                 },
                 "recent_sender_ids": {
@@ -4185,6 +4245,43 @@
             },
             "type": "MessageSendingState"
         },
+        "textQuote": {
+            "description": "Describes manually or automatically chosen quote from another message",
+            "args": {
+                "text": {
+                    "description": "Text of the quote. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities can be present in the text",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "position": {
+                    "description": "Approximate quote position in the original message in UTF-16 code units",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_manual": {
+                    "description": "True, if the quote was manually chosen by the message sender",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "TextQuote"
+        },
+        "inputTextQuote": {
+            "description": "Describes manually chosen quote from another message",
+            "args": {
+                "text": {
+                    "description": "Text of the quote; 0-getOption(\"message_reply_quote_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed to be kept and must be kept in the quote",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "position": {
+                    "description": "Quote position in the original message in UTF-16 code units",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "InputTextQuote"
+        },
         "messageReplyToMessage": {
             "description": "Describes a message replied by a given message",
             "args": {
@@ -4199,27 +4296,22 @@
                     "type": "int53"
                 },
                 "quote": {
-                    "description": "Manually or automatically chosen quote from the replied message; may be null if none. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities can be present in the quote",
+                    "description": "Chosen quote from the replied message; may be null if none",
                     "is_optional": true,
-                    "type": "formattedText"
-                },
-                "is_quote_manual": {
-                    "description": "True, if the quote was manually chosen by the message sender",
-                    "is_optional": false,
-                    "type": "Bool"
+                    "type": "textQuote"
                 },
                 "origin": {
-                    "description": "Information about origin of the message if the message was replied from another chat; may be null for messages from the same chat",
+                    "description": "Information about origin of the message if the message was from another chat or topic; may be null for messages from the same chat",
                     "is_optional": true,
                     "type": "MessageOrigin"
                 },
                 "origin_send_date": {
-                    "description": "Point in time (Unix timestamp) when the message was sent if the message was replied from another chat; 0 for messages from the same chat",
+                    "description": "Point in time (Unix timestamp) when the message was sent if the message was from another chat or topic; 0 for messages from the same chat",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "content": {
-                    "description": "Media content of the message if the message was replied from another chat; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageInvoice, messageLocation, messagePhoto, messagePoll, messagePremiumGiveaway, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
+                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageInvoice, messageLocation, messagePhoto, messagePoll, messagePremiumGiveaway, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
                     "is_optional": true,
                     "type": "MessageContent"
                 }
@@ -4246,7 +4338,7 @@
             "description": "Describes a message to be replied",
             "args": {
                 "chat_id": {
-                    "description": "The identifier of the chat to which the message to be replied belongs; pass 0 if the message to be replied is in the same chat. Must always be 0 for replies in secret chats. A message can be replied in another chat only if message.can_be_replied_in_another_chat",
+                    "description": "The identifier of the chat to which the message to be replied belongs; pass 0 if the message to be replied is in the same chat. Must always be 0 for replies in secret chats. A message can be replied in another chat or topic only if message.can_be_replied_in_another_chat",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -4256,9 +4348,9 @@
                     "type": "int53"
                 },
                 "quote": {
-                    "description": "Manually chosen quote from the message to be replied; pass null if none; 0-getOption(\"message_reply_quote_length_max\") characters. Must always be null for replies in secret chats. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed to be kept and must be kept in the quote",
+                    "description": "Quote from the message to be replied; pass null if none. Must always be null for replies in secret chats",
                     "is_optional": true,
-                    "type": "formattedText"
+                    "type": "inputTextQuote"
                 }
             },
             "type": "InputMessageReplyTo"
@@ -4328,7 +4420,7 @@
                     "type": "Bool"
                 },
                 "can_be_replied_in_another_chat": {
-                    "description": "True, if the message can be replied in another chat",
+                    "description": "True, if the message can be replied in another chat or topic",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4515,7 +4607,7 @@
                     "type": "vector<message>"
                 },
                 "next_offset": {
-                    "description": "The offset for the next request. If empty, there are no more results",
+                    "description": "The offset for the next request. If empty, then there are no more results",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -4678,6 +4770,22 @@
             },
             "type": "MessageSponsorType"
         },
+        "messageSponsorTypeWebApp": {
+            "description": "The sponsor is a web app",
+            "args": {
+                "web_app_title": {
+                    "description": "Web App title",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "link": {
+                    "description": "An internal link to be opened when the sponsored message is clicked",
+                    "is_optional": false,
+                    "type": "InternalLinkType"
+                }
+            },
+            "type": "MessageSponsorType"
+        },
         "messageSponsorTypePublicChannel": {
             "description": "The sponsor is a public channel chat",
             "args": {
@@ -4770,6 +4878,11 @@
                     "is_optional": false,
                     "type": "messageSponsor"
                 },
+                "button_text": {
+                    "description": "If non-empty, text for the message action button",
+                    "is_optional": true,
+                    "type": "string"
+                },
                 "additional_info": {
                     "description": "If non-empty, additional information about the sponsored message to be shown along with the message",
                     "is_optional": true,
@@ -4860,7 +4973,7 @@
                     "type": "vector<fileDownload>"
                 },
                 "next_offset": {
-                    "description": "The offset for the next request. If empty, there are no more results",
+                    "description": "The offset for the next request. If empty, then there are no more results",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -4886,7 +4999,7 @@
             "description": "Contains information about notification settings for a chat or a forum topic",
             "args": {
                 "use_default_mute_for": {
-                    "description": "If true, mute_for is ignored and the value for the relevant type of chat or the forum chat is used instead",
+                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of mute_for",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4906,7 +5019,7 @@
                     "type": "int64"
                 },
                 "use_default_show_preview": {
-                    "description": "If true, show_preview is ignored and the value for the relevant type of chat or the forum chat is used instead",
+                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of show_preview",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4916,7 +5029,7 @@
                     "type": "Bool"
                 },
                 "use_default_mute_stories": {
-                    "description": "If true, mute_stories is ignored and the value for the relevant type of chat is used instead",
+                    "description": "If true, the value for the relevant type of chat is used instead of mute_stories",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4936,7 +5049,7 @@
                     "type": "int64"
                 },
                 "use_default_show_story_sender": {
-                    "description": "If true, show_story_sender is ignored and the value for the relevant type of chat is used instead",
+                    "description": "If true, the value for the relevant type of chat is used instead of show_story_sender",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4946,7 +5059,7 @@
                     "type": "Bool"
                 },
                 "use_default_disable_pinned_message_notifications": {
-                    "description": "If true, disable_pinned_message_notifications is ignored and the value for the relevant type of chat or the forum chat is used instead",
+                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of disable_pinned_message_notifications",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4956,7 +5069,7 @@
                     "type": "Bool"
                 },
                 "use_default_disable_mention_notifications": {
-                    "description": "If true, disable_mention_notifications is ignored and the value for the relevant type of chat or the forum chat is used instead",
+                    "description": "If true, the value for the relevant type of chat or the forum chat is used instead of disable_mention_notifications",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4987,12 +5100,12 @@
                     "type": "Bool"
                 },
                 "use_default_mute_stories": {
-                    "description": "If true, mute_stories is ignored and story notifications are received only for the first 5 chats from topChatCategoryUsers",
+                    "description": "If true, story notifications are received only for the first 5 chats from topChatCategoryUsers regardless of the value of mute_stories",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "mute_stories": {
-                    "description": "True, if story notifications are disabled for the chat",
+                    "description": "True, if story notifications are disabled",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -5087,7 +5200,7 @@
                     "type": "int32"
                 },
                 "user_id": {
-                    "description": "User identifier of the secret chat peer",
+                    "description": "User identifier of the other user in the secret chat",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -5502,6 +5615,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "view_as_topics": {
+                    "description": "True, if the chat is a forum supergroup that must be shown in the \"View as topics\" mode",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "has_scheduled_messages": {
                     "description": "True, if the chat has scheduled messages",
                     "is_optional": false,
@@ -5698,7 +5816,7 @@
                     "type": "Bool"
                 },
                 "distance": {
-                    "description": "If non-negative, the current user was found by the peer through searchChatsNearby and this is the distance between the users",
+                    "description": "If non-negative, the current user was found by the other user through searchChatsNearby and this is the distance between the users",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -7362,12 +7480,12 @@
                     "type": "string"
                 },
                 "has_large_media": {
-                    "description": "True, if the preview has large media and its appearance can be changed",
+                    "description": "True, if size of media in the preview can be changed",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "show_large_media": {
-                    "description": "True, if large media preview must be shown",
+                    "description": "True, if large media preview must be shown; otherwise, the media preview must be shown small and only the first frame must be shown for videos",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -9144,7 +9262,7 @@
                     "type": "webPage"
                 },
                 "link_preview_options": {
-                    "description": "Options which was used for generation of the link preview; may be null if default options were used",
+                    "description": "Options which were used for generation of the link preview; may be null if default options were used",
                     "is_optional": true,
                     "type": "linkPreviewOptions"
                 }
@@ -9744,6 +9862,11 @@
                     "description": "The new background",
                     "is_optional": false,
                     "type": "chatBackground"
+                },
+                "only_for_self": {
+                    "description": "True, if the background was set only for self",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "MessageContent"
@@ -10077,6 +10200,27 @@
             },
             "type": "MessageContent"
         },
+        "messagePremiumGiveawayCompleted": {
+            "description": "A Telegram Premium giveaway has been completed for the chat",
+            "args": {
+                "giveaway_message_id": {
+                    "description": "Identifier of the message with the giveaway, can be an identifier of a deleted message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "winner_count": {
+                    "description": "Number of winners in the giveaway",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "unclaimed_prize_count": {
+                    "description": "Number of undistributed prizes",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messageContactRegistered": {
             "description": "A contact has registered with Telegram",
             "args": {},
@@ -10373,7 +10517,7 @@
             "type": "MessageSchedulingState"
         },
         "messageSchedulingStateSendWhenOnline": {
-            "description": "The message will be sent when the peer will be online. Applicable to private chats only and when the exact online status of the peer is known",
+            "description": "The message will be sent when the other user is online. Applicable to private chats only and when the exact online status of the other user is known",
             "args": {},
             "type": "MessageSchedulingState"
         },
@@ -10572,7 +10716,7 @@
                     "type": "inputThumbnail"
                 },
                 "disable_content_type_detection": {
-                    "description": "If true, automatic file type detection will be disabled and the document will always be sent as file. Always true for files sent to secret chats",
+                    "description": "True, if automatic file type detection is disabled and the document must be sent as a file. Always true for files sent to secret chats",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -11539,7 +11683,7 @@
                     "type": "vector<storyViewer>"
                 },
                 "next_offset": {
-                    "description": "The offset for the next request. If empty, there are no more results",
+                    "description": "The offset for the next request. If empty, then there are no more results",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -11867,6 +12011,49 @@
             "args": {},
             "type": "StoryList"
         },
+        "storyOriginPublicStory": {
+            "description": "The original story was a public story with known sender",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that posted original story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_id": {
+                    "description": "Story identifier of the original story",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StoryOrigin"
+        },
+        "storyOriginHiddenUser": {
+            "description": "The original story was sent by an unknown user",
+            "args": {
+                "sender_name": {
+                    "description": "Name of the story sender",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StoryOrigin"
+        },
+        "storyRepostInfo": {
+            "description": "Contains information about original story that was reposted",
+            "args": {
+                "origin": {
+                    "description": "Origin of the story that was reposted",
+                    "is_optional": false,
+                    "type": "StoryOrigin"
+                },
+                "is_content_modified": {
+                    "description": "True, if story content was modified during reposting; otherwise, story wasn't modified",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StoryRepostInfo"
+        },
         "storyInteractionInfo": {
             "description": "Contains information about interactions with a story",
             "args": {
@@ -11961,6 +12148,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_get_statistics": {
+                    "description": "True, if the story statistics are available through getStoryStatistics",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_get_viewers": {
                     "description": "True, if users viewed the story can be received through getStoryViewers",
                     "is_optional": false,
@@ -11970,6 +12162,11 @@
                     "description": "True, if users viewed the story can't be received, because the story has expired more than getOption(\"story_viewers_expiration_delay\") seconds ago",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "repost_info": {
+                    "description": "Information about the original story; may be null if the story wasn't reposted",
+                    "is_optional": true,
+                    "type": "storyRepostInfo"
                 },
                 "interaction_info": {
                     "description": "Information about interactions with the story; may be null if the story isn't owned or there were no interactions",
@@ -12019,6 +12216,22 @@
                 }
             },
             "type": "Stories"
+        },
+        "storyFullId": {
+            "description": "Contains identifier of a story along with identifier of its sender",
+            "args": {
+                "sender_chat_id": {
+                    "description": "Identifier of the chat that posted the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_id": {
+                    "description": "Unique story identifier among stories of the given sender",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StoryFullId"
         },
         "storyInfo": {
             "description": "Contains basic information about a story",
@@ -12071,6 +12284,49 @@
                 }
             },
             "type": "ChatActiveStories"
+        },
+        "storyPublicForwardMessage": {
+            "description": "Contains a public forward of a story as a message",
+            "args": {
+                "message": {
+                    "description": "Information about the message with the story",
+                    "is_optional": false,
+                    "type": "message"
+                }
+            },
+            "type": "StoryPublicForward"
+        },
+        "storyPublicForwardStory": {
+            "description": "Contains a public repost of a story as a story",
+            "args": {
+                "story": {
+                    "description": "Information about the reposted story",
+                    "is_optional": false,
+                    "type": "story"
+                }
+            },
+            "type": "StoryPublicForward"
+        },
+        "storyPublicForwards": {
+            "description": "Represents a list of public forwards and reposts of a story",
+            "args": {
+                "total_count": {
+                    "description": "Approximate total number of messages and stories found",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "forwards": {
+                    "description": "List of found public forwards and reposts",
+                    "is_optional": false,
+                    "type": "vector<StoryPublicForward>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StoryPublicForwards"
         },
         "chatBoostSourceGiftCode": {
             "description": "The chat created a Telegram Premium gift code for a user",
@@ -12252,7 +12508,7 @@
                     "type": "vector<chatBoost>"
                 },
                 "next_offset": {
-                    "description": "The offset for the next request. If empty, there are no more results",
+                    "description": "The offset for the next request. If empty, then there are no more results",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -12477,7 +12733,7 @@
             "description": "The call is ready to use",
             "args": {
                 "protocol": {
-                    "description": "Call protocols supported by the peer",
+                    "description": "Call protocols supported by the other call participant",
                     "is_optional": false,
                     "type": "callProtocol"
                 },
@@ -12649,7 +12905,7 @@
                     "type": "int32"
                 },
                 "enabled_start_notification": {
-                    "description": "True, if the group call is scheduled and the current user will receive a notification when the group call will start",
+                    "description": "True, if the group call is scheduled and the current user will receive a notification when the group call starts",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -12928,7 +13184,7 @@
                     "type": "int32"
                 },
                 "user_id": {
-                    "description": "Peer user identifier",
+                    "description": "User identifier of the other call participant",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -13047,7 +13303,7 @@
                     "type": "vector<addedReaction>"
                 },
                 "next_offset": {
-                    "description": "The offset for the next request. If empty, there are no more results",
+                    "description": "The offset for the next request. If empty, then there are no more results",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -13089,7 +13345,7 @@
                     "type": "vector<availableReaction>"
                 },
                 "allow_custom_emoji": {
-                    "description": "True, if custom emoji reactions could be added by Telegram Premium subscribers",
+                    "description": "True, if any custom emoji reaction can be added by Telegram Premium subscribers",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -13247,7 +13503,7 @@
             "description": "The speech recognition failed",
             "args": {
                 "error": {
-                    "description": "Recognition error",
+                    "description": "Recognition error. An error with a message \"MSG_VOICE_TOO_LONG\" is returned when media duration is too big to be recognized",
                     "is_optional": false,
                     "type": "error"
                 }
@@ -14347,7 +14603,7 @@
                     "type": "vector<InlineQueryResult>"
                 },
                 "next_offset": {
-                    "description": "The offset for the next request. If empty, there are no more results",
+                    "description": "The offset for the next request. If empty, then there are no more results",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -14702,7 +14958,7 @@
             "type": "ChatEventAction"
         },
         "chatEventPermissionsChanged": {
-            "description": "The chat permissions was changed",
+            "description": "The chat permissions were changed",
             "args": {
                 "old_permissions": {
                     "description": "Previous chat permissions",
@@ -15444,6 +15700,11 @@
             "args": {},
             "type": "PremiumLimitType"
         },
+        "premiumLimitTypeSimilarChatCount": {
+            "description": "The maximum number of received similar chats",
+            "args": {},
+            "type": "PremiumLimitType"
+        },
         "premiumFeatureIncreasedLimits": {
             "description": "Increased limits",
             "args": {},
@@ -15530,7 +15791,12 @@
             "type": "PremiumFeature"
         },
         "premiumFeatureAccentColor": {
-            "description": "The ability to choose accent color",
+            "description": "The ability to choose accent color for replies and user profile",
+            "args": {},
+            "type": "PremiumFeature"
+        },
+        "premiumFeatureBackgroundForBoth": {
+            "description": "The ability to set private chat background for both users",
             "args": {},
             "type": "PremiumFeature"
         },
@@ -16355,7 +16621,7 @@
             "type": "ResetPasswordResult"
         },
         "messageFileTypePrivate": {
-            "description": "The messages was exported from a private chat",
+            "description": "The messages were exported from a private chat",
             "args": {
                 "name": {
                     "description": "Name of the other party; may be empty if unrecognized",
@@ -16366,7 +16632,7 @@
             "type": "MessageFileType"
         },
         "messageFileTypeGroup": {
-            "description": "The messages was exported from a group chat",
+            "description": "The messages were exported from a group chat",
             "args": {
                 "title": {
                     "description": "Title of the group chat; may be empty if unrecognized",
@@ -16377,7 +16643,7 @@
             "type": "MessageFileType"
         },
         "messageFileTypeUnknown": {
-            "description": "The messages was exported from a chat of unknown type",
+            "description": "The messages were exported from a chat of unknown type",
             "args": {},
             "type": "MessageFileType"
         },
@@ -18816,22 +19082,22 @@
             "type": "AutosaveSettings"
         },
         "connectionStateWaitingForNetwork": {
-            "description": "Currently waiting for the network to become available. Use setNetworkType to change the available network type",
+            "description": "Waiting for the network to become available. Use setNetworkType to change the available network type",
             "args": {},
             "type": "ConnectionState"
         },
         "connectionStateConnectingToProxy": {
-            "description": "Currently establishing a connection with a proxy server",
+            "description": "Establishing a connection with a proxy server",
             "args": {},
             "type": "ConnectionState"
         },
         "connectionStateConnecting": {
-            "description": "Currently establishing a connection to the Telegram servers",
+            "description": "Establishing a connection to the Telegram servers",
             "args": {},
             "type": "ConnectionState"
         },
         "connectionStateUpdating": {
-            "description": "Downloading data received while the application was offline",
+            "description": "Downloading data supposed to be received while the application was offline",
             "args": {},
             "type": "ConnectionState"
         },
@@ -19302,26 +19568,53 @@
             },
             "type": "StatisticalGraph"
         },
-        "chatStatisticsMessageInteractionInfo": {
-            "description": "Contains statistics about interactions with a message",
+        "chatStatisticsObjectTypeMessage": {
+            "description": "Describes a message sent in the chat",
             "args": {
                 "message_id": {
                     "description": "Message identifier",
                     "is_optional": false,
                     "type": "int53"
-                },
-                "view_count": {
-                    "description": "Number of times the message was viewed",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "forward_count": {
-                    "description": "Number of times the message was forwarded",
+                }
+            },
+            "type": "ChatStatisticsObjectType"
+        },
+        "chatStatisticsObjectTypeStory": {
+            "description": "Describes a story sent by the chat",
+            "args": {
+                "story_id": {
+                    "description": "Story identifier",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "ChatStatisticsMessageInteractionInfo"
+            "type": "ChatStatisticsObjectType"
+        },
+        "chatStatisticsInteractionInfo": {
+            "description": "Contains statistics about interactions with a message sent in the chat or a story sent by the chat",
+            "args": {
+                "object_type": {
+                    "description": "Type of the object",
+                    "is_optional": false,
+                    "type": "ChatStatisticsObjectType"
+                },
+                "view_count": {
+                    "description": "Number of times the object was viewed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "forward_count": {
+                    "description": "Number of times the object was forwarded",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "reaction_count": {
+                    "description": "Number of times reactions were added to the object",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChatStatisticsInteractionInfo"
         },
         "chatStatisticsMessageSenderInfo": {
             "description": "Contains statistics about messages sent by a user",
@@ -19485,13 +19778,33 @@
                     "is_optional": false,
                     "type": "statisticalValue"
                 },
-                "mean_view_count": {
-                    "description": "Mean number of times the recently sent messages was viewed",
+                "mean_message_view_count": {
+                    "description": "Mean number of times the recently sent messages were viewed",
                     "is_optional": false,
                     "type": "statisticalValue"
                 },
-                "mean_share_count": {
-                    "description": "Mean number of times the recently sent messages was shared",
+                "mean_message_share_count": {
+                    "description": "Mean number of times the recently sent messages were shared",
+                    "is_optional": false,
+                    "type": "statisticalValue"
+                },
+                "mean_message_reaction_count": {
+                    "description": "Mean number of times reactions were added to the recently sent messages",
+                    "is_optional": false,
+                    "type": "statisticalValue"
+                },
+                "mean_story_view_count": {
+                    "description": "Mean number of times the recently sent stories were viewed",
+                    "is_optional": false,
+                    "type": "statisticalValue"
+                },
+                "mean_story_share_count": {
+                    "description": "Mean number of times the recently sent stories were shared",
+                    "is_optional": false,
+                    "type": "statisticalValue"
+                },
+                "mean_story_reaction_count": {
+                    "description": "Mean number of times reactions were added to the recently sent stories",
                     "is_optional": false,
                     "type": "statisticalValue"
                 },
@@ -19540,15 +19853,30 @@
                     "is_optional": false,
                     "type": "StatisticalGraph"
                 },
+                "message_reaction_graph": {
+                    "description": "A graph containing number of reactions on messages",
+                    "is_optional": false,
+                    "type": "StatisticalGraph"
+                },
+                "story_interaction_graph": {
+                    "description": "A graph containing number of story views and shares",
+                    "is_optional": false,
+                    "type": "StatisticalGraph"
+                },
+                "story_reaction_graph": {
+                    "description": "A graph containing number of reactions on stories",
+                    "is_optional": false,
+                    "type": "StatisticalGraph"
+                },
                 "instant_view_interaction_graph": {
                     "description": "A graph containing number of views of associated with the chat instant views",
                     "is_optional": false,
                     "type": "StatisticalGraph"
                 },
-                "recent_message_interactions": {
-                    "description": "Detailed statistics about number of views and shares of recently sent messages",
+                "recent_interactions": {
+                    "description": "Detailed statistics about number of views and shares of recently sent messages and stories",
                     "is_optional": false,
-                    "type": "vector<chatStatisticsMessageInteractionInfo>"
+                    "type": "vector<chatStatisticsInteractionInfo>"
                 }
             },
             "type": "ChatStatistics"
@@ -19560,9 +19888,30 @@
                     "description": "A graph containing number of message views and shares",
                     "is_optional": false,
                     "type": "StatisticalGraph"
+                },
+                "message_reaction_graph": {
+                    "description": "A graph containing number of message reactions",
+                    "is_optional": false,
+                    "type": "StatisticalGraph"
                 }
             },
             "type": "MessageStatistics"
+        },
+        "storyStatistics": {
+            "description": "A detailed statistics about a story",
+            "args": {
+                "story_interaction_graph": {
+                    "description": "A graph containing number of story views and shares",
+                    "is_optional": false,
+                    "type": "StatisticalGraph"
+                },
+                "story_reaction_graph": {
+                    "description": "A graph containing number of story reactions",
+                    "is_optional": false,
+                    "type": "StatisticalGraph"
+                }
+            },
+            "type": "StoryStatistics"
         },
         "point": {
             "description": "A point on a Cartesian plane",
@@ -19846,7 +20195,7 @@
             "type": "Update"
         },
         "updateMessageSendAcknowledged": {
-            "description": "A request to send a message has reached the Telegram server. This doesn't mean that the message will be sent successfully or even that the send message request will be processed. This update will be sent only if the option \"use_quick_ack\" is set to true. This update may be sent multiple times for the same message",
+            "description": "A request to send a message has reached the Telegram server. This doesn't mean that the message will be sent successfully. This update is sent only if the option \"use_quick_ack\" is set to true. This update may be sent multiple times for the same message",
             "args": {
                 "chat_id": {
                     "description": "The chat identifier of the sent message",
@@ -20134,7 +20483,7 @@
                     "type": "int53"
                 },
                 "background_custom_emoji_id": {
-                    "description": "The new tdentifier of a custom emoji to be shown on the reply header background",
+                    "description": "The new identifier of a custom emoji to be shown on the reply header background; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 }
@@ -20142,7 +20491,7 @@
             "type": "Update"
         },
         "updateChatPermissions": {
-            "description": "Chat permissions was changed",
+            "description": "Chat permissions were changed",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -20508,6 +20857,22 @@
             },
             "type": "Update"
         },
+        "updateChatViewAsTopics": {
+            "description": "A chat default appearance has changed",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "view_as_topics": {
+                    "description": "New value of view_as_topics",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Update"
+        },
         "updateChatBlockList": {
             "description": "A chat was blocked or unblocked",
             "args": {
@@ -20557,7 +20922,7 @@
             "type": "Update"
         },
         "updateChatOnlineMemberCount": {
-            "description": "The number of online group members has changed. This update with non-zero number of online group members is sent only for currently opened chats. There is no guarantee that it will be sent just after the number of online users has changed",
+            "description": "The number of online group members has changed. This update with non-zero number of online group members is sent only for currently opened chats. There is no guarantee that it is sent just after the number of online users has changed",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -20667,7 +21032,7 @@
             "type": "Update"
         },
         "updateActiveNotifications": {
-            "description": "Contains active notifications that was shown on previous application launches. This update is sent only if the message database is used. In that case it comes once before any updateNotification and updateNotificationGroup update",
+            "description": "Contains active notifications that were shown on previous application launches. This update is sent only if the message database is used. In that case it comes once before any updateNotification and updateNotificationGroup update",
             "args": {
                 "groups": {
                     "description": "Lists of active notification groups",
@@ -21328,7 +21693,7 @@
             "type": "Update"
         },
         "updateSavedNotificationSounds": {
-            "description": "The list of saved notifications sounds was updated. This update may not be sent until information about a notification sound was requested for the first time",
+            "description": "The list of saved notification sounds was updated. This update may not be sent until information about a notification sound was requested for the first time",
             "args": {
                 "notification_sound_ids": {
                     "description": "The new list of identifiers of saved notification sounds",
@@ -21375,6 +21740,22 @@
                 },
                 "available_accent_color_ids": {
                     "description": "The list of accent color identifiers, which can be set through setAccentColor and setChatAccentColor. The colors must be shown in the specififed order",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "Update"
+        },
+        "updateProfileAccentColors": {
+            "description": "The list of supported accent colors for user profiles has changed",
+            "args": {
+                "colors": {
+                    "description": "Information about supported colors",
+                    "is_optional": false,
+                    "type": "vector<profileAccentColor>"
+                },
+                "available_accent_color_ids": {
+                    "description": "The list of accent color identifiers, which can be set through setProfileAccentColor. The colors must be shown in the specififed order",
                     "is_optional": false,
                     "type": "vector<int32>"
                 }
@@ -21491,6 +21872,32 @@
                     "description": "The new type of the default reaction",
                     "is_optional": false,
                     "type": "ReactionType"
+                }
+            },
+            "type": "Update"
+        },
+        "updateSpeechRecognitionTrial": {
+            "description": "The parameters of speech recognition without Telegram Premium subscription has changed",
+            "args": {
+                "max_media_duration": {
+                    "description": "The maximum allowed duration of media for speech recognition without Telegram Premium subscription",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "weekly_count": {
+                    "description": "The total number of allowed speech recognitions per week; 0 if none",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "left_count": {
+                    "description": "Number of left speech recognition attempts this week",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "next_reset_date": {
+                    "description": "Point in time (Unix timestamp) when the weekly number of tries will reset; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "Update"
@@ -21870,7 +22277,7 @@
                     "type": "int53"
                 },
                 "date": {
-                    "description": "Point in time (Unix timestamp) when the user rights was changed",
+                    "description": "Point in time (Unix timestamp) when the user rights were changed",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -22541,7 +22948,7 @@
             "type": "Message"
         },
         "getRepliedMessage": {
-            "description": "Returns information about a message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground and topic messages without replied message respectively",
+            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground and topic messages without non-bundled replied message respectively",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat the message belongs to",
@@ -22759,6 +23166,33 @@
                 }
             },
             "type": "ChatsNearby"
+        },
+        "getChatSimilarChats": {
+            "description": "Returns a list of chats similar to the given chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the target chat; must be an identifier of a channel chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Chats"
+        },
+        "getChatSimilarChatCount": {
+            "description": "Returns approximate number of chats similar to the given chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the target chat; must be an identifier of a channel chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "return_local": {
+                    "description": "Pass true to get the number of chats without sending network requests, or -1 if the number of chats is unknown locally",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Count"
         },
         "getTopChats": {
             "description": "Returns a list of frequently used chats",
@@ -23477,7 +23911,7 @@
             "type": "FormattedText"
         },
         "recognizeSpeech": {
-            "description": "Recognizes speech in a video note or a voice note message. The message must be successfully sent and must not be scheduled. May return an error with a message \"MSG_VOICE_TOO_LONG\" if media duration is too big to be recognized",
+            "description": "Recognizes speech in a video note or a voice note message. The message must be successfully sent, must not be scheduled, and must be from a non-secret chat",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which the message belongs",
@@ -23726,7 +24160,7 @@
                 "quote": {
                     "description": "New manually chosen quote from the message to be replied; pass null if none. Ignored if more than one message is re-sent, or if messageSendingStateFailed.need_another_reply_quote == false",
                     "is_optional": true,
-                    "type": "formattedText"
+                    "type": "inputTextQuote"
                 }
             },
             "type": "Messages"
@@ -25994,7 +26428,7 @@
             "type": "Ok"
         },
         "setChatBackground": {
-            "description": "Changes the background in a specific chat. Supported only in private and secret chats with non-deleted users",
+            "description": "Sets the background in a specific chat. Supported only in private and secret chats with non-deleted users",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -26002,12 +26436,12 @@
                     "type": "int53"
                 },
                 "background": {
-                    "description": "The input background to use; pass null to create a new filled background or to remove the current background",
+                    "description": "The input background to use; pass null to create a new filled background",
                     "is_optional": true,
                     "type": "InputBackground"
                 },
                 "type": {
-                    "description": "Background type; pass null to remove the current background",
+                    "description": "Background type; pass null to use default background type for the chosen background",
                     "is_optional": true,
                     "type": "BackgroundType"
                 },
@@ -26015,6 +26449,27 @@
                     "description": "Dimming of the background in dark themes, as a percentage; 0-100",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "only_for_self": {
+                    "description": "Pass true to set background only for self; pass false to set background for both chat users. Background can be set for both users only by Telegram Premium users and if set background isn't of the type inputBackgroundPrevious",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteChatBackground": {
+            "description": "Deletes background in a specific chat",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "restore_previous": {
+                    "description": "Pass true to restore previously set background. Can be used only in private and secret chats with non-deleted users if userFullInfo.set_chat_background == true. Supposed to be used from messageChatSetBackground messages with the currently set background that was set for both sides by the other user",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Ok"
@@ -26088,8 +26543,24 @@
             },
             "type": "Ok"
         },
+        "toggleChatViewAsTopics": {
+            "description": "Changes the view_as_topics setting of a forum chat",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "view_as_topics": {
+                    "description": "New value of view_as_topics",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
         "toggleChatIsTranslatable": {
-            "description": "Changes the translatable state of a chat; for Telegram Premium users only",
+            "description": "Changes the translatable state of a chat",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -26145,7 +26616,7 @@
                     "type": "int53"
                 },
                 "available_reactions": {
-                    "description": "Reactions available in the chat. All emoji reactions must be active",
+                    "description": "Reactions available in the chat. All explicitly specified emoji reactions must be active. Up to the chat's boost level custom emoji reactions can be explicitly specified",
                     "is_optional": false,
                     "type": "ChatAvailableReactions"
                 }
@@ -26701,6 +27172,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "from_story_full_id": {
+                    "description": "Full identifier of the original story, which content was used to create the story",
+                    "is_optional": false,
+                    "type": "storyFullId"
+                },
                 "is_pinned": {
                     "description": "Pass true to keep the story accessible after expiration",
                     "is_optional": false,
@@ -27024,6 +27500,32 @@
             "args": {},
             "type": "Ok"
         },
+        "getStoryPublicForwards": {
+            "description": "Returns forwards of a story as a message to public chats and reposts by public channels. Can be used only if the story is posted on behalf of the current user or story.can_get_statistics == true. For optimal performance, the number of returned messages and stories is chosen by TDLib",
+            "args": {
+                "story_sender_chat_id": {
+                    "description": "The identifier of the sender of the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_id": {
+                    "description": "The identifier of the story",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of messages and stories to be returned; must be positive and can't be greater than 100. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StoryPublicForwards"
+        },
         "getAvailableChatBoostSlots": {
             "description": "Returns the list of available chat boost slots for the current user",
             "args": {},
@@ -27252,7 +27754,7 @@
             "type": "Text"
         },
         "preliminaryUploadFile": {
-            "description": "Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes. Updates updateFile will be used to notify about upload progress and successful completion of the upload. The file will not have a persistent remote identifier until it will be sent in a message",
+            "description": "Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes. Updates updateFile will be used to notify about upload progress and successful completion of the upload. The file will not have a persistent remote identifier until it is sent in a message",
             "args": {
                 "file": {
                     "description": "File to upload",
@@ -28087,7 +28589,7 @@
             "type": "Ok"
         },
         "toggleGroupCallEnabledStartNotification": {
-            "description": "Toggles whether the current user will receive a notification when the group call will start; scheduled group calls only",
+            "description": "Toggles whether the current user will receive a notification when the group call starts; scheduled group calls only",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -28925,8 +29427,13 @@
             "type": "StickerSets"
         },
         "searchStickerSets": {
-            "description": "Searches for ordinary sticker sets by looking for specified query in their title and name. Excludes installed sticker sets from the results",
+            "description": "Searches for sticker sets by looking for specified query in their title and name. Excludes installed sticker sets from the results",
             "args": {
+                "sticker_type": {
+                    "description": "Type of the sticker sets to return",
+                    "is_optional": false,
+                    "type": "StickerType"
+                },
                 "query": {
                     "description": "Query to search for",
                     "is_optional": false,
@@ -29283,6 +29790,22 @@
                 },
                 "background_custom_emoji_id": {
                     "description": "Identifier of a custom emoji to be shown on the reply header background; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Ok"
+        },
+        "setProfileAccentColor": {
+            "description": "Changes accent color and background custom emoji for profile of the current user; for Telegram Premium users only",
+            "args": {
+                "profile_accent_color_id": {
+                    "description": "Identifier of the accent color to use for profile; pass -1 if none",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "profile_background_custom_emoji_id": {
+                    "description": "Identifier of a custom emoji to be shown in the on the user's profile photo background; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 }
@@ -30743,6 +31266,27 @@
                 }
             },
             "type": "FoundMessages"
+        },
+        "getStoryStatistics": {
+            "description": "Returns detailed statistics about a story. Can be used only if story.can_get_statistics == true",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_id": {
+                    "description": "Story identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_dark": {
+                    "description": "Pass true if a dark theme is used by the application",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StoryStatistics"
         },
         "getStatisticalGraph": {
             "description": "Loads an asynchronous or a zoomed in statistical graph",
