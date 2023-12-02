@@ -779,6 +779,10 @@ class Update:
         entities: list = None,
         parse_mode: str = None,
         disable_web_page_preview: bool = False,
+        url: str = None,
+        force_small_media: bool = None,
+        force_large_media: bool = None,
+        show_above_text: bool = None,
         disable_notification: dict = False,
         protect_content: bool = False,
         message_thread_id: int = None,
@@ -821,10 +825,22 @@ class Update:
                 Mode for parsing entities. Default is ``None``
 
             disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message
+                Disables link previews for links in this message. Default is ``False``
+
+            url (``str``, *optional*):
+                URL to use for link preview. If empty, then the first URL found in the message text will be used. Default is ``None``
+
+            force_small_media (``bool``, *optional*):
+                True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``
+
+            force_large_media (``bool``, *optional*):
+                True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``
+
+            show_above_text (``bool``, *optional*):
+                True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats. Default is ``None``
 
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message
+                If True, disable notification for the message. Default is ``None``
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
@@ -865,6 +881,10 @@ class Update:
                 entities=entities,
                 parse_mode=parse_mode,
                 disable_web_page_preview=disable_web_page_preview,
+                url=url,
+                force_small_media=force_small_media,
+                force_large_media=force_large_media,
+                show_above_text=show_above_text,
                 disable_notification=disable_notification,
                 protect_content=protect_content,
                 message_thread_id=message_thread_id if reply_to_message_id > 0 else 0,
@@ -1640,6 +1660,10 @@ class Update:
         entities: list = None,
         parse_mode: str = None,
         disable_web_page_preview: bool = False,
+        url: str = None,
+        force_small_media: bool = None,
+        force_large_media: bool = None,
+        show_above_text: bool = None,
         reply_markup: Union[
             InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
         ] = None,
@@ -1675,7 +1699,19 @@ class Update:
                 Mode for parsing entities. Default is ``None``
 
             disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message
+                Disables link previews for links in this message. Default is ``False``
+
+            url (``str``, *optional*):
+                URL to use for link preview. If empty, then the first URL found in the message text will be used. Default is ``None``
+
+            force_small_media (``bool``, *optional*):
+                True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``
+
+            force_large_media (``bool``, *optional*):
+                True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``
+
+            show_above_text (``bool``, *optional*):
+                True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -1692,5 +1728,9 @@ class Update:
                 entities=entities,
                 parse_mode=parse_mode,
                 disable_web_page_preview=disable_web_page_preview,
+                url=url,
+                force_small_media=force_small_media,
+                force_large_media=force_large_media,
+                show_above_text=show_above_text,
                 reply_markup=reply_markup,
             )

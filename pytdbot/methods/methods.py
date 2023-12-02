@@ -25,6 +25,10 @@ class Methods(TDLibFunctions):
         entities: list = None,
         parse_mode: str = None,
         disable_web_page_preview: bool = False,
+        url: str = None,
+        force_small_media: bool = None,
+        force_large_media: bool = None,
+        show_above_text: bool = None,
         clear_draft: bool = False,
         disable_notification: bool = False,
         protect_content: bool = False,
@@ -55,8 +59,20 @@ class Methods(TDLibFunctions):
             disable_web_page_preview (``bool``, *optional*):
                 Disables link previews for links in this message. Default is ``False``
 
+            url (``str``, *optional*):
+                URL to use for link preview. If empty, then the first URL found in the message text will be used. Default is ``None``
+
+            force_small_media (``bool``, *optional*):
+                True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``
+
+            force_large_media (``bool``, *optional*):
+                True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``
+
+            show_above_text (``bool``, *optional*):
+                True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats. Default is ``None``
+
             disable_notification (``bool``, *optional*):
-                If True, disable notification for the message. Default is ``False``
+                If True, disable notification for the message. Default is ``None``
 
             clear_draft (``bool``, *optional*):
                 True, if a chat message draft must be deleted. Default is ``False``
@@ -130,7 +146,14 @@ class Methods(TDLibFunctions):
             "input_message_content": {
                 "@type": "inputMessageText",
                 "text": text,
-                "disable_web_page_preview": disable_web_page_preview,
+                "link_preview_options": {
+                    "@type": "linkPreviewOptions",
+                    "is_disabled": disable_web_page_preview,
+                    "url": url,
+                    "force_small_media": force_small_media,
+                    "force_large_media": force_large_media,
+                    "show_above_text": show_above_text,
+                },
                 "clear_draft": clear_draft,
             },
         }
@@ -1635,6 +1658,10 @@ class Methods(TDLibFunctions):
         parse_mode: str = None,
         entities: list = None,
         disable_web_page_preview: bool = False,
+        url: str = None,
+        force_small_media: bool = None,
+        force_large_media: bool = None,
+        show_above_text: bool = None,
         reply_markup: ReplyMarkup = None,
     ) -> Result:
         """Edit text message
@@ -1656,7 +1683,19 @@ class Methods(TDLibFunctions):
                 List of ``MessageEntity`` objects representing entities that may appear in the message text
 
             disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message
+                Disables link previews for links in this message. Default is ``False``
+
+            url (``str``, *optional*):
+                URL to use for link preview. If empty, then the first URL found in the message text will be used. Default is ``None``
+
+            force_small_media (``bool``, *optional*):
+                True, if shown media preview must be small; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``
+
+            force_large_media (``bool``, *optional*):
+                True, if shown media preview must be large; ignored in secret chats or if the URL isn't explicitly specified. Default is ``None``
+
+            show_above_text (``bool``, *optional*):
+                True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats. Default is ``None``
 
             reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
                 The message reply markup
@@ -1694,7 +1733,14 @@ class Methods(TDLibFunctions):
             "input_message_content": {
                 "@type": "inputMessageText",
                 "text": _text,
-                "disable_web_page_preview": disable_web_page_preview,
+                "link_preview_options": {
+                    "@type": "linkPreviewOptions",
+                    "is_disabled": disable_web_page_preview,
+                    "url": url,
+                    "force_small_media": force_small_media,
+                    "force_large_media": force_large_media,
+                    "show_above_text": show_above_text,
+                },
             },
         }
 
