@@ -60,6 +60,7 @@ SERVICE_MESSAGE_TYPES = {
     "messageChatSetBackground",
     "messagePremiumGiftCode",
     "messagePremiumGiveawayCreated",
+    "messagePremiumGiveawayCompleted",
     "messagePremiumGiveaway",
 }
 
