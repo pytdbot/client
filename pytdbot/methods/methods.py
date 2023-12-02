@@ -68,7 +68,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -224,7 +224,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -391,7 +391,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -551,7 +551,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -722,7 +722,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -905,7 +905,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -1058,7 +1058,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -1198,7 +1198,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -1349,7 +1349,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
@@ -1490,7 +1490,7 @@ class Methods(TDLibFunctions):
                 If not 0, a message thread identifier in which the message will be sent
 
             quote (``dict``, *optional*):
-                Dict object of TDLib ``formattedText`` for quote reply
+                Dict object of TDLib ``inputTextQuote`` for quote reply
 
             reply_to (``dict``, *optional*):
                 Dict object of TDLib ``MessageReplyTo`` for replying
