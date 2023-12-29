@@ -607,12 +607,12 @@ class Updates:
 
         return decorator
 
-    def on_updateChatAccentColor(
+    def on_updateChatAccentColors(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat accent color has changed
+        """Chat accent colors have changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -630,54 +630,14 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatAccentColor", func, filters, position)
+                    self.add_handler("updateChatAccentColors", func, filters, position)
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatAccentColor", self, position)
+                func._handler = Handler(func, "updateChatAccentColors", self, position)
             else:
                 func._handler = Handler(
-                    func, "updateChatAccentColor", filters, position
-                )
-            return func
-
-        return decorator
-
-    def on_updateChatBackgroundCustomEmoji(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-    ) -> Callable:
-        """A chat's custom emoji for reply background has changed
-
-        Args:
-            filters (:class:`pytdbot.filters.Filter`, *optional*):
-                An update filter
-
-            position (``int``, *optional*):
-                The function position in handlers list. Default is ``None`` (append)
-
-        Raises:
-            :py:class:`TypeError`
-        """
-
-        def decorator(func: Callable) -> Callable:
-            if hasattr(func, "_handler"):
-                return func
-            elif isinstance(self, pytdbot.Client):
-                if iscoroutinefunction(func):
-                    self.add_handler(
-                        "updateChatBackgroundCustomEmoji", func, filters, position
-                    )
-                else:
-                    raise TypeError("Handler must be async")
-            elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(
-                    func, "updateChatBackgroundCustomEmoji", self, position
-                )
-            else:
-                func._handler = Handler(
-                    func, "updateChatBackgroundCustomEmoji", filters, position
+                    func, "updateChatAccentColors", filters, position
                 )
             return func
 
@@ -962,6 +922,42 @@ class Updates:
             else:
                 func._handler = Handler(
                     func, "updateChatDraftMessage", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateChatEmojiStatus(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Chat emoji status has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateChatEmojiStatus", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateChatEmojiStatus", self, position)
+            else:
+                func._handler = Handler(
+                    func, "updateChatEmojiStatus", filters, position
                 )
             return func
 
@@ -3377,12 +3373,12 @@ class Updates:
 
         return decorator
 
-    def on_updateSelectedBackground(
+    def on_updateDefaultBackground(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The selected background has changed
+        """The default background has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3400,18 +3396,14 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler(
-                        "updateSelectedBackground", func, filters, position
-                    )
+                    self.add_handler("updateDefaultBackground", func, filters, position)
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(
-                    func, "updateSelectedBackground", self, position
-                )
+                func._handler = Handler(func, "updateDefaultBackground", self, position)
             else:
                 func._handler = Handler(
-                    func, "updateSelectedBackground", filters, position
+                    func, "updateDefaultBackground", filters, position
                 )
             return func
 
@@ -4597,6 +4589,78 @@ class Updates:
                 func._handler = Handler(func, "updateChatBoost", self, position)
             else:
                 func._handler = Handler(func, "updateChatBoost", filters, position)
+            return func
+
+        return decorator
+
+    def on_updateMessageReaction(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """User changed its reactions on a message with public reactions; for bots only
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateMessageReaction", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateMessageReaction", self, position)
+            else:
+                func._handler = Handler(
+                    func, "updateMessageReaction", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateMessageReactions(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Reactions added to a message with anonymous reactions have changed; for bots only
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateMessageReactions", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateMessageReactions", self, position)
+            else:
+                func._handler = Handler(
+                    func, "updateMessageReactions", filters, position
+                )
             return func
 
         return decorator

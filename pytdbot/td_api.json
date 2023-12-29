@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.22",
-    "commit_hash": "24893faf75d84b2b885f3f7aeb9d5a3c056fa7be",
+    "version": "1.8.23",
+    "commit_hash": "27c3eaeb4964bd5f18d8488e354abde1a4383e49",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -71,7 +71,8 @@
         "InputStoryContent": "The content of a story to send",
         "StoryList": "Describes a list of stories",
         "StoryOrigin": "Contains information about the origin of a story that was reposted",
-        "StoryPublicForward": "Describes a public forward or repost of a story",
+        "StoryInteractionType": "Describes type of interaction with a story",
+        "PublicForward": "Describes a public forward or repost of a story",
         "ChatBoostSource": "Describes source of a chat boost",
         "CallDiscardReason": "Describes the reason why a call was discarded",
         "CallServerType": "Describes the type of a call server",
@@ -1702,7 +1703,7 @@
                     "type": "string"
                 },
                 "document": {
-                    "description": "Document with the background; may be null. Null only for filled backgrounds",
+                    "description": "Document with the background; may be null. Null only for filled and chat theme backgrounds",
                     "is_optional": true,
                     "type": "document"
                 },
@@ -1734,7 +1735,7 @@
                     "type": "background"
                 },
                 "dark_theme_dimming": {
-                    "description": "Dimming of the background in dark themes, as a percentage; 0-100",
+                    "description": "Dimming of the background in dark themes, as a percentage; 0-100. Applied only to Wallpaper and Fill types of background",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -2102,7 +2103,7 @@
             "description": "Describes actions that a user is allowed to take in a chat",
             "args": {
                 "can_send_basic_messages": {
-                    "description": "True, if the user can send text messages, contacts, giveaways, invoices, locations, and venues",
+                    "description": "True, if the user can send text messages, contacts, giveaways, giveaway winners, invoices, locations, and venues",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -2274,7 +2275,7 @@
                     "type": "int32"
                 },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active",
+                    "description": "Number of months the Telegram Premium subscription will be active",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -2336,7 +2337,7 @@
                     "type": "int32"
                 },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active",
+                    "description": "Number of months the Telegram Premium subscription will be active",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -2368,8 +2369,8 @@
             "description": "Contains information about a Telegram Premium gift code",
             "args": {
                 "creator_id": {
-                    "description": "Identifier of a chat or a user that created the gift code",
-                    "is_optional": false,
+                    "description": "Identifier of a chat or a user that created the gift code; may be null if unknown. If null and the code is from messagePremiumGiftCode message, then creator_id from the message can be used",
+                    "is_optional": true,
                     "type": "MessageSender"
                 },
                 "creation_date": {
@@ -2388,7 +2389,7 @@
                     "type": "int53"
                 },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active after code activation",
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -2527,6 +2528,11 @@
                     "description": "The list of 1-3 colors in RGB format, describing the accent color, as expected to be shown in dark themes",
                     "is_optional": false,
                     "type": "vector<int32>"
+                },
+                "min_chat_boost_level": {
+                    "description": "The minimum chat boost level required to use the color",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "AccentColor"
@@ -2561,14 +2567,19 @@
                     "type": "int32"
                 },
                 "light_theme_colors": {
-                    "description": "The list of 1-3 colors in RGB format, describing the accent color, as expected to be shown in light themes",
+                    "description": "Accent colors expected to be used in light themes",
                     "is_optional": false,
                     "type": "profileAccentColors"
                 },
                 "dark_theme_colors": {
-                    "description": "The list of 1-3 colors in RGB format, describing the accent color, as expected to be shown in dark themes",
+                    "description": "Accent colors expected to be used in dark themes",
                     "is_optional": false,
                     "type": "profileAccentColors"
+                },
+                "min_chat_boost_level": {
+                    "description": "The minimum chat boost level required to use the color",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "ProfileAccentColor"
@@ -2590,7 +2601,7 @@
             "type": "EmojiStatus"
         },
         "emojiStatuses": {
-            "description": "Contains a list of custom emoji identifiers, which can be set as emoji statuses",
+            "description": "Contains a list of custom emoji identifiers for emoji statuses",
             "args": {
                 "custom_emoji_ids": {
                     "description": "The list of custom emoji identifiers",
@@ -2665,7 +2676,7 @@
                     "type": "int32"
                 },
                 "background_custom_emoji_id": {
-                    "description": "Identifier of a custom emoji to be shown on the reply header background; 0 if none. For Telegram Premium users only",
+                    "description": "Identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none. For Telegram Premium users only",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -3605,7 +3616,12 @@
                     "type": "ChatMemberStatus"
                 },
                 "member_count": {
-                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo.missing_chat_ids, or for public chats in which where sent messages and posted stories from storyPublicForwards, or for public chats in which where sent messages from getMessagePublicForwards response",
+                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo.missing_chat_ids, or for public chats in which where sent messages and posted stories from publicForwards, or for public chats in which where sent messages from getMessagePublicForwards response",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "boost_level": {
+                    "description": "Approximate boost level for the chat",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -4254,7 +4270,7 @@
                     "type": "formattedText"
                 },
                 "position": {
-                    "description": "Approximate quote position in the original message in UTF-16 code units",
+                    "description": "Approximate quote position in the original message in UTF-16 code units as specified by the message sender",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -4311,7 +4327,7 @@
                     "type": "int32"
                 },
                 "content": {
-                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageInvoice, messageLocation, messagePhoto, messagePoll, messagePremiumGiveaway, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
+                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageInvoice, messageLocation, messagePhoto, messagePoll, messagePremiumGiveaway, messagePremiumGiveawayWinners, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
                     "is_optional": true,
                     "type": "MessageContent"
                 }
@@ -5571,7 +5587,17 @@
                     "type": "int32"
                 },
                 "background_custom_emoji_id": {
-                    "description": "Identifier of a custom emoji to be shown on the reply header background in replies to messages sent by the chat; 0 if none",
+                    "description": "Identifier of a custom emoji to be shown on the reply header and link preview background for messages sent by the chat; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "profile_accent_color_id": {
+                    "description": "Identifier of the profile accent color for the chat's profile; -1 if none",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "profile_background_custom_emoji_id": {
+                    "description": "Identifier of a custom emoji to be shown on the background of the chat's profile; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -5684,6 +5710,11 @@
                     "description": "Current message auto-delete or self-destruct timer setting for the chat, in seconds; 0 if disabled. Self-destruct timer in secret chats starts after the message or its content is viewed. Auto-delete timer in other chats starts from the send date",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "emoji_status": {
+                    "description": "Emoji status to be shown along with chat title; may be null",
+                    "is_optional": true,
+                    "type": "emojiStatus"
                 },
                 "background": {
                     "description": "Background set for the chat; may be null if none",
@@ -5885,8 +5916,8 @@
             },
             "type": "KeyboardButtonType"
         },
-        "keyboardButtonTypeRequestUser": {
-            "description": "A button that requests a user to be shared by the current user; available only in private chats. Use the method shareUserWithBot to complete the request",
+        "keyboardButtonTypeRequestUsers": {
+            "description": "A button that requests users to be shared by the current user; available only in private chats. Use the method shareUsersWithBot to complete the request",
             "args": {
                 "id": {
                     "description": "Unique button identifier",
@@ -5894,24 +5925,29 @@
                     "type": "int32"
                 },
                 "restrict_user_is_bot": {
-                    "description": "True, if the shared user must or must not be a bot",
+                    "description": "True, if the shared users must or must not be bots",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "user_is_bot": {
-                    "description": "True, if the shared user must be a bot; otherwise, the shared user must no be a bot. Ignored if restrict_user_is_bot is false",
+                    "description": "True, if the shared users must be bots; otherwise, the shared users must not be bots. Ignored if restrict_user_is_bot is false",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "restrict_user_is_premium": {
-                    "description": "True, if the shared user must or must not be a Telegram Premium user",
+                    "description": "True, if the shared users must or must not be Telegram Premium users",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "user_is_premium": {
-                    "description": "True, if the shared user must be a Telegram Premium user; otherwise, the shared user must no be a Telegram Premium user. Ignored if restrict_user_is_premium is false",
+                    "description": "True, if the shared users must be Telegram Premium users; otherwise, the shared users must not be Telegram Premium users. Ignored if restrict_user_is_premium is false",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "max_quantity": {
+                    "description": "The maximum number of users to share",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "KeyboardButtonType"
@@ -7970,6 +8006,11 @@
                     "description": "Public payment token",
                     "is_optional": false,
                     "type": "string"
+                },
+                "tokenize_url": {
+                    "description": "URL for sending card tokenization requests",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "PaymentProvider"
@@ -8322,7 +8363,12 @@
                     "type": "int32"
                 },
                 "only_new_members": {
-                    "description": "True, if only new subscribers of the chats will be eligible for the giveaway",
+                    "description": "True, if only new members of the chats will be eligible for the giveaway",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_public_winners": {
+                    "description": "True, if the list of winners of the giveaway will be available to everyone",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -8330,6 +8376,11 @@
                     "description": "The list of two-letter ISO 3166-1 alpha-2 codes of countries, users from which will be eligible for the giveaway. If empty, then all users can participate in the giveaway. There can be up to getOption(\"giveaway_country_count_max\") chosen countries. Users with phone number that was bought on Fragment can participate in any giveaway and the country code \"FT\" must not be specified in the list",
                     "is_optional": false,
                     "type": "vector<string>"
+                },
+                "prize_description": {
+                    "description": "Additional description of the giveaway prize; 0-128 characters",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "PremiumGiveawayParameters"
@@ -10116,12 +10167,12 @@
                     "type": "string"
                 },
                 "cryptocurrency_amount": {
-                    "description": "The paid amount, in the smallest units of the cryptocurrency",
+                    "description": "The paid amount, in the smallest units of the cryptocurrency; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active",
+                    "description": "Number of months the Telegram Premium subscription will be active",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -10137,8 +10188,8 @@
             "description": "A Telegram Premium gift code was created for the user",
             "args": {
                 "creator_id": {
-                    "description": "Identifier of a chat or a user that created the gift code",
-                    "is_optional": false,
+                    "description": "Identifier of a chat or a user that created the gift code; may be null if unknown",
+                    "is_optional": true,
                     "type": "MessageSender"
                 },
                 "is_from_giveaway": {
@@ -10151,8 +10202,28 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "currency": {
+                    "description": "Currency for the paid amount; empty if unknown",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "The paid amount, in the smallest units of the currency; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "cryptocurrency": {
+                    "description": "Cryptocurrency used to pay for the gift; may be empty if none or unknown",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "cryptocurrency_amount": {
+                    "description": "The paid amount, in the smallest units of the cryptocurrency; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int64"
+                },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active after code activation",
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -10188,7 +10259,7 @@
                     "type": "int32"
                 },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active after code activation",
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -10201,10 +10272,10 @@
             "type": "MessageContent"
         },
         "messagePremiumGiveawayCompleted": {
-            "description": "A Telegram Premium giveaway has been completed for the chat",
+            "description": "A Telegram Premium giveaway without public winners has been completed for the chat",
             "args": {
                 "giveaway_message_id": {
-                    "description": "Identifier of the message with the giveaway, can be an identifier of a deleted message",
+                    "description": "Identifier of the message with the giveaway; can be 0 if the message was deleted",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -10221,18 +10292,79 @@
             },
             "type": "MessageContent"
         },
+        "messagePremiumGiveawayWinners": {
+            "description": "A Telegram Premium giveaway with public winners has been completed for the chat",
+            "args": {
+                "boosted_chat_id": {
+                    "description": "Identifier of the channel chat, which was automatically boosted by the winners of the giveaway for duration of the Premium subscription",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "giveaway_message_id": {
+                    "description": "Identifier of the message with the giveaway in the boosted chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "additional_chat_count": {
+                    "description": "Number of other chats that participated in the giveaway",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "actual_winners_selection_date": {
+                    "description": "Point in time (Unix timestamp) when the winners were selected. May be bigger than winners selection date specified in parameters of the giveaway",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "only_new_members": {
+                    "description": "True, if only new members of the chats were eligible for the giveaway",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "was_refunded": {
+                    "description": "True, if the giveaway was canceled and was fully refunded",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "month_count": {
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "prize_description": {
+                    "description": "Additional description of the giveaway prize",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "winner_count": {
+                    "description": "Total number of winners in the giveaway",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "winner_user_ids": {
+                    "description": "Up to 100 user identifiers of the winners of the giveaway",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                },
+                "unclaimed_prize_count": {
+                    "description": "Number of undistributed prizes",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messageContactRegistered": {
             "description": "A contact has registered with Telegram",
             "args": {},
             "type": "MessageContent"
         },
-        "messageUserShared": {
-            "description": "The current user shared a user, which was requested by the bot",
+        "messageUsersShared": {
+            "description": "The current user shared users, which were requested by the bot",
             "args": {
-                "user_id": {
-                    "description": "Identifier of the shared user",
+                "user_ids": {
+                    "description": "Identifier of the shared users",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "vector<int53>"
                 },
                 "button_id": {
                     "description": "Identifier of the keyboard button with the request",
@@ -10579,7 +10711,7 @@
             "type": "MessageSendOptions"
         },
         "messageCopyOptions": {
-            "description": "Options to be used when a message content is copied without reference to the original sender. Service messages, and messages with messageInvoice or messagePremiumGiveaway content can't be copied",
+            "description": "Options to be used when a message content is copied without reference to the original sender. Service messages, messages with messageInvoice, messagePremiumGiveaway, or messagePremiumGiveawayWinners content can't be copied",
             "args": {
                 "send_copy": {
                     "description": "True, if content of the message needs to be copied without reference to the original sender. Always true if the message is forwarded to a secret chat or is local",
@@ -10716,7 +10848,7 @@
                     "type": "inputThumbnail"
                 },
                 "disable_content_type_detection": {
-                    "description": "True, if automatic file type detection is disabled and the document must be sent as a file. Always true for files sent to secret chats",
+                    "description": "Pass true to disable automatic file type detection and send the document as a file. Always true for files sent to secret chats",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -11460,6 +11592,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_allowed_as_chat_emoji_status": {
+                    "description": "True, if stickers in the sticker set are custom emoji that can be used as chat emoji status; for custom emoji sticker sets only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_viewed": {
                     "description": "True for already viewed trending sticker sets",
                     "is_optional": false,
@@ -11497,7 +11634,7 @@
                     "type": "string"
                 },
                 "thumbnail": {
-                    "description": "Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null",
+                    "description": "Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null. The file can be downloaded only before the thumbnail is changed",
                     "is_optional": true,
                     "type": "thumbnail"
                 },
@@ -11533,6 +11670,11 @@
                 },
                 "needs_repainting": {
                     "description": "True, if stickers in the sticker set are custom emoji that must be repainted; for custom emoji sticker sets only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_allowed_as_chat_emoji_status": {
+                    "description": "True, if stickers in the sticker set are custom emoji that can be used as chat emoji status; for custom emoji sticker sets only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -11638,58 +11780,6 @@
             "args": {},
             "type": "EmojiCategoryType"
         },
-        "storyViewer": {
-            "description": "Represents a viewer of a story",
-            "args": {
-                "user_id": {
-                    "description": "User identifier of the viewer",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "view_date": {
-                    "description": "Approximate point in time (Unix timestamp) when the story was viewed",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "block_list": {
-                    "description": "Block list to which the user is added; may be null if none",
-                    "is_optional": true,
-                    "type": "BlockList"
-                },
-                "chosen_reaction_type": {
-                    "description": "Type of the reaction that was chosen by the user; may be null if none",
-                    "is_optional": true,
-                    "type": "ReactionType"
-                }
-            },
-            "type": "StoryViewer"
-        },
-        "storyViewers": {
-            "description": "Represents a list of story viewers",
-            "args": {
-                "total_count": {
-                    "description": "Approximate total number of story viewers found",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "total_reaction_count": {
-                    "description": "Approximate total number of reactions set by found story viewers",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "viewers": {
-                    "description": "List of story viewers",
-                    "is_optional": false,
-                    "type": "vector<storyViewer>"
-                },
-                "next_offset": {
-                    "description": "The offset for the next request. If empty, then there are no more results",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "StoryViewers"
-        },
         "storyAreaPosition": {
             "description": "Describes position of a clickable rectangle area on a story media",
             "args": {
@@ -11765,6 +11855,22 @@
                     "description": "True, if reaction corner is flipped",
                     "is_optional": false,
                     "type": "Bool"
+                }
+            },
+            "type": "StoryAreaType"
+        },
+        "storyAreaTypeMessage": {
+            "description": "An area pointing to a message",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "StoryAreaType"
@@ -11849,6 +11955,22 @@
             },
             "type": "InputStoryAreaType"
         },
+        "inputStoryAreaTypeMessage": {
+            "description": "An area pointing to a message",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message. Currently, the chat must be a supergroup or a channel chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message. Only successfully sent non-scheduled messages can be specified",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
         "inputStoryArea": {
             "description": "Describes a clickable rectangle area on a story media to be added",
             "args": {
@@ -11869,7 +11991,7 @@
             "description": "Contains a list of story areas to be added",
             "args": {
                 "areas": {
-                    "description": "List of 0-10 input story areas",
+                    "description": "List of input story areas. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption(\"story_suggested_reaction_area_count_max\") inputStoryAreaTypeSuggestedReaction areas, and up to 1 inputStoryAreaTypeMessage area",
                     "is_optional": false,
                     "type": "vector<inputStoryArea>"
                 }
@@ -12153,8 +12275,8 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "can_get_viewers": {
-                    "description": "True, if users viewed the story can be received through getStoryViewers",
+                "can_get_interactions": {
+                    "description": "True, if interactions with the story can be received through getStoryInteractions",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -12285,30 +12407,120 @@
             },
             "type": "ChatActiveStories"
         },
-        "storyPublicForwardMessage": {
-            "description": "Contains a public forward of a story as a message",
+        "storyInteractionTypeView": {
+            "description": "A view of the story",
+            "args": {
+                "chosen_reaction_type": {
+                    "description": "Type of the reaction that was chosen by the viewer; may be null if none",
+                    "is_optional": true,
+                    "type": "ReactionType"
+                }
+            },
+            "type": "StoryInteractionType"
+        },
+        "storyInteractionTypeForward": {
+            "description": "A forward of the story as a message",
             "args": {
                 "message": {
-                    "description": "Information about the message with the story",
+                    "description": "The message with story forward",
                     "is_optional": false,
                     "type": "message"
                 }
             },
-            "type": "StoryPublicForward"
+            "type": "StoryInteractionType"
         },
-        "storyPublicForwardStory": {
-            "description": "Contains a public repost of a story as a story",
+        "storyInteractionTypeRepost": {
+            "description": "A repost of the story as a story",
             "args": {
                 "story": {
-                    "description": "Information about the reposted story",
+                    "description": "The reposted story",
                     "is_optional": false,
                     "type": "story"
                 }
             },
-            "type": "StoryPublicForward"
+            "type": "StoryInteractionType"
         },
-        "storyPublicForwards": {
-            "description": "Represents a list of public forwards and reposts of a story",
+        "storyInteraction": {
+            "description": "Represents interaction with a story",
+            "args": {
+                "actor_id": {
+                    "description": "Identifier of the user or chat that made the interaction",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "interaction_date": {
+                    "description": "Approximate point in time (Unix timestamp) when the interaction happenned",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "block_list": {
+                    "description": "Block list to which the actor is added; may be null if none or for chat stories",
+                    "is_optional": true,
+                    "type": "BlockList"
+                },
+                "type": {
+                    "description": "Type of the interaction",
+                    "is_optional": false,
+                    "type": "StoryInteractionType"
+                }
+            },
+            "type": "StoryInteraction"
+        },
+        "storyInteractions": {
+            "description": "Represents a list of interactions with a story",
+            "args": {
+                "total_count": {
+                    "description": "Approximate total number of interactions found",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "total_forward_count": {
+                    "description": "Approximate total number of found forwards and reposts; always 0 for chat stories",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "total_reaction_count": {
+                    "description": "Approximate total number of found reactions; always 0 for chat stories",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "interactions": {
+                    "description": "List of story interactions",
+                    "is_optional": false,
+                    "type": "vector<storyInteraction>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StoryInteractions"
+        },
+        "publicForwardMessage": {
+            "description": "Contains a public forward as a message",
+            "args": {
+                "message": {
+                    "description": "Information about the message",
+                    "is_optional": false,
+                    "type": "message"
+                }
+            },
+            "type": "PublicForward"
+        },
+        "publicForwardStory": {
+            "description": "Contains a public repost to a story",
+            "args": {
+                "story": {
+                    "description": "Information about the story",
+                    "is_optional": false,
+                    "type": "story"
+                }
+            },
+            "type": "PublicForward"
+        },
+        "publicForwards": {
+            "description": "Represents a list of public forwards and reposts as a story of a message or a story",
             "args": {
                 "total_count": {
                     "description": "Approximate total number of messages and stories found",
@@ -12318,7 +12530,7 @@
                 "forwards": {
                     "description": "List of found public forwards and reposts",
                     "is_optional": false,
-                    "type": "vector<StoryPublicForward>"
+                    "type": "vector<PublicForward>"
                 },
                 "next_offset": {
                     "description": "The offset for the next request. If empty, then there are no more results",
@@ -12326,7 +12538,79 @@
                     "type": "string"
                 }
             },
-            "type": "StoryPublicForwards"
+            "type": "PublicForwards"
+        },
+        "chatBoostLevelFeatures": {
+            "description": "Contains a list of features available on a specific chat boost level",
+            "args": {
+                "level": {
+                    "description": "Target chat boost level",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "story_per_day_count": {
+                    "description": "Number of stories that the chat can publish daily",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "custom_emoji_reaction_count": {
+                    "description": "Number of custom emoji reactions that can be added to the list of available reactions",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "title_color_count": {
+                    "description": "Number of custom colors for chat title",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "profile_accent_color_count": {
+                    "description": "Number of custom colors for profile photo background",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "can_set_profile_background_custom_emoji": {
+                    "description": "True, if custom emoji for profile background can be set",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "accent_color_count": {
+                    "description": "Number of custom colors for background of empty chat photo, replies to messages and link previews",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "can_set_background_custom_emoji": {
+                    "description": "True, if custom emoji for reply header and link preview background can be set",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_set_emoji_status": {
+                    "description": "True, if emoji status can be set",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "chat_theme_background_count": {
+                    "description": "Number of chat theme backgrounds that can be set as chat background",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "can_set_custom_background": {
+                    "description": "True, if custom background can be set in the chat for all users",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ChatBoostLevelFeatures"
+        },
+        "chatBoostFeatures": {
+            "description": "Contains a list of features available on the first chat boost levels",
+            "args": {
+                "features": {
+                    "description": "The list of features",
+                    "is_optional": false,
+                    "type": "vector<chatBoostLevelFeatures>"
+                }
+            },
+            "type": "ChatBoostFeatures"
         },
         "chatBoostSourceGiftCode": {
             "description": "The chat created a Telegram Premium gift code for a user",
@@ -12395,7 +12679,7 @@
                     "type": "int32"
                 },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active after code activation",
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -14893,6 +15177,22 @@
             },
             "type": "ChatEventAction"
         },
+        "chatEventBackgroundChanged": {
+            "description": "The chat background was changed",
+            "args": {
+                "old_background": {
+                    "description": "Previous background; may be null if none",
+                    "is_optional": true,
+                    "type": "chatBackground"
+                },
+                "new_background": {
+                    "description": "New background; may be null if none",
+                    "is_optional": true,
+                    "type": "chatBackground"
+                }
+            },
+            "type": "ChatEventAction"
+        },
         "chatEventDescriptionChanged": {
             "description": "The chat description was changed",
             "args": {
@@ -14905,6 +15205,22 @@
                     "description": "New chat description",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "ChatEventAction"
+        },
+        "chatEventEmojiStatusChanged": {
+            "description": "The chat emoji status was changed",
+            "args": {
+                "old_emoji_status": {
+                    "description": "Previous emoji status; may be null if none",
+                    "is_optional": true,
+                    "type": "emojiStatus"
+                },
+                "new_emoji_status": {
+                    "description": "New emoji status; may be null if none",
+                    "is_optional": true,
+                    "type": "emojiStatus"
                 }
             },
             "type": "ChatEventAction"
@@ -15070,30 +15386,50 @@
             "type": "ChatEventAction"
         },
         "chatEventAccentColorChanged": {
-            "description": "The chat accent color was changed",
+            "description": "The chat accent color or background custom emoji were changed",
             "args": {
                 "old_accent_color_id": {
                     "description": "Previous identifier of chat accent color",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "new_accent_color_id": {
-                    "description": "New identifier of chat accent color",
-                    "is_optional": false,
-                    "type": "int32"
-                }
-            },
-            "type": "ChatEventAction"
-        },
-        "chatEventBackgroundCustomEmojiChanged": {
-            "description": "The chat's custom emoji for reply background was changed",
-            "args": {
                 "old_background_custom_emoji_id": {
                     "description": "Previous identifier of the custom emoji; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 },
+                "new_accent_color_id": {
+                    "description": "New identifier of chat accent color",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "new_background_custom_emoji_id": {
+                    "description": "New identifier of the custom emoji; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "ChatEventAction"
+        },
+        "chatEventProfileAccentColorChanged": {
+            "description": "The chat's profile accent color or profile background custom emoji were changed",
+            "args": {
+                "old_profile_accent_color_id": {
+                    "description": "Previous identifier of chat's profile accent color; -1 if none",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "old_profile_background_custom_emoji_id": {
+                    "description": "Previous identifier of the custom emoji; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "new_profile_accent_color_id": {
+                    "description": "New identifier of chat's profile accent color; -1 if none",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "new_profile_background_custom_emoji_id": {
                     "description": "New identifier of the custom emoji; 0 if none",
                     "is_optional": false,
                     "type": "int64"
@@ -16066,7 +16402,7 @@
                     "type": "vector<int53>"
                 },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active for the users",
+                    "description": "Number of months the Telegram Premium subscription will be active for the users",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -16097,7 +16433,7 @@
                     "type": "int32"
                 },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active for the users",
+                    "description": "Number of months the Telegram Premium subscription will be active for the users",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -16374,6 +16710,17 @@
                     "description": "The background fill",
                     "is_optional": false,
                     "type": "BackgroundFill"
+                }
+            },
+            "type": "BackgroundType"
+        },
+        "backgroundTypeChatTheme": {
+            "description": "A background from a chat theme; can be used only as a chat background in channels",
+            "args": {
+                "theme_name": {
+                    "description": "Name of the chat theme",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "BackgroundType"
@@ -16852,7 +17199,7 @@
             "description": "A message with a Telegram Premium gift code created for the user",
             "args": {
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active after code activation",
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -16868,7 +17215,7 @@
                     "type": "int32"
                 },
                 "month_count": {
-                    "description": "Number of month the Telegram Premium subscription will be active after code activation; 0 for pinned message",
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation; 0 for pinned message",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -18310,6 +18657,17 @@
             },
             "type": "InternalLinkType"
         },
+        "internalLinkTypePremiumGift": {
+            "description": "The link is a link to the screen for gifting Telegram Premium subscriptions to friends",
+            "args": {
+                "referrer": {
+                    "description": "Referrer specified in the link",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypePremiumGiftCode": {
             "description": "The link is a link with a Telegram Premium gift code. Call checkPremiumGiftCode with the given code to process the link. If the code is valid and the user wants to apply it, then call applyPremiumGiftCode",
             "args": {
@@ -19293,6 +19651,11 @@
         },
         "suggestedActionSubscribeToAnnualPremium": {
             "description": "Suggests the user to subscribe to the Premium subscription with annual payments",
+            "args": {},
+            "type": "SuggestedAction"
+        },
+        "suggestedActionGiftPremiumForChristmas": {
+            "description": "Suggests the user to gift Telegram Premium to friends for Christmas",
             "args": {},
             "type": "SuggestedAction"
         },
@@ -20458,8 +20821,8 @@
             },
             "type": "Update"
         },
-        "updateChatAccentColor": {
-            "description": "A chat accent color has changed",
+        "updateChatAccentColors": {
+            "description": "Chat accent colors have changed",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -20470,20 +20833,19 @@
                     "description": "The new chat accent color identifier",
                     "is_optional": false,
                     "type": "int32"
-                }
-            },
-            "type": "Update"
-        },
-        "updateChatBackgroundCustomEmoji": {
-            "description": "A chat's custom emoji for reply background has changed",
-            "args": {
-                "chat_id": {
-                    "description": "Chat identifier",
-                    "is_optional": false,
-                    "type": "int53"
                 },
                 "background_custom_emoji_id": {
-                    "description": "The new identifier of a custom emoji to be shown on the reply header background; 0 if none",
+                    "description": "The new identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "profile_accent_color_id": {
+                    "description": "The new chat profile accent color identifier; -1 if none",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "profile_background_custom_emoji_id": {
+                    "description": "The new identifier of a custom emoji to be shown on the profile background; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 }
@@ -20629,6 +20991,22 @@
                     "description": "The new chat positions in the chat lists",
                     "is_optional": false,
                     "type": "vector<chatPosition>"
+                }
+            },
+            "type": "Update"
+        },
+        "updateChatEmojiStatus": {
+            "description": "Chat emoji status has changed",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "emoji_status": {
+                    "description": "The new chat emoji status; may be null",
+                    "is_optional": true,
+                    "type": "emojiStatus"
                 }
             },
             "type": "Update"
@@ -21703,16 +22081,16 @@
             },
             "type": "Update"
         },
-        "updateSelectedBackground": {
-            "description": "The selected background has changed",
+        "updateDefaultBackground": {
+            "description": "The default background has changed",
             "args": {
                 "for_dark_theme": {
-                    "description": "True, if background for dark theme has changed",
+                    "description": "True, if default background for dark theme has changed",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "background": {
-                    "description": "The new selected background; may be null",
+                    "description": "The new default background; may be null",
                     "is_optional": true,
                     "type": "background"
                 }
@@ -21755,7 +22133,7 @@
                     "type": "vector<profileAccentColor>"
                 },
                 "available_accent_color_ids": {
-                    "description": "The list of accent color identifiers, which can be set through setProfileAccentColor. The colors must be shown in the specififed order",
+                    "description": "The list of accent color identifiers, which can be set through setProfileAccentColor and setChatProfileAccentColor. The colors must be shown in the specififed order",
                     "is_optional": false,
                     "type": "vector<int32>"
                 }
@@ -22342,6 +22720,68 @@
                     "description": "New information about the boost",
                     "is_optional": false,
                     "type": "chatBoost"
+                }
+            },
+            "type": "Update"
+        },
+        "updateMessageReaction": {
+            "description": "User changed its reactions on a message with public reactions; for bots only",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Message identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "actor_id": {
+                    "description": "Identifier of the user or chat that changed reactions",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the reactions were changed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "old_reaction_types": {
+                    "description": "Old list of chosen reactions",
+                    "is_optional": false,
+                    "type": "vector<ReactionType>"
+                },
+                "new_reaction_types": {
+                    "description": "New list of chosen reactions",
+                    "is_optional": false,
+                    "type": "vector<ReactionType>"
+                }
+            },
+            "type": "Update"
+        },
+        "updateMessageReactions": {
+            "description": "Reactions added to a message with anonymous reactions have changed; for bots only",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Message identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the reactions were changed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "reactions": {
+                    "description": "The list of reactions added to the message",
+                    "is_optional": false,
+                    "type": "vector<messageReaction>"
                 }
             },
             "type": "Update"
@@ -22948,7 +23388,7 @@
             "type": "Message"
         },
         "getRepliedMessage": {
-            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground and topic messages without non-bundled replied message respectively",
+            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messagePremiumGiveawayCompleted and topic messages without non-bundled replied message respectively",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat the message belongs to",
@@ -23193,6 +23633,22 @@
                 }
             },
             "type": "Count"
+        },
+        "openChatSimilarChat": {
+            "description": "Informs TDLib that a chat was opened from the list of similar chats. The method is independent from openChat and closeChat methods",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the original chat, which similar chats were requested",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "opened_chat_id": {
+                    "description": "Identifier of the opened chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
         },
         "getTopChats": {
             "description": "Returns a list of frequently used chats",
@@ -24855,6 +25311,32 @@
             },
             "type": "Ok"
         },
+        "setMessageReactions": {
+            "description": "Sets reactions on a message; for bots only",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the message belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reaction_types": {
+                    "description": "Types of the reaction to set",
+                    "is_optional": false,
+                    "type": "vector<ReactionType>"
+                },
+                "is_big": {
+                    "description": "Pass true if the reactions are added with a big animation",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
         "getMessageAddedReactions": {
             "description": "Returns reactions added for a message, along with their sender",
             "args": {
@@ -25190,8 +25672,8 @@
             },
             "type": "HttpUrl"
         },
-        "shareUserWithBot": {
-            "description": "Shares a user after pressing a keyboardButtonTypeRequestUser button with the bot",
+        "shareUsersWithBot": {
+            "description": "Shares users after pressing a keyboardButtonTypeRequestUsers button with the bot",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat with the bot",
@@ -25208,13 +25690,13 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "shared_user_id": {
-                    "description": "Identifier of the shared user",
+                "shared_user_ids": {
+                    "description": "Identifiers of the shared users",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "vector<int53>"
                 },
                 "only_check": {
-                    "description": "Pass true to check that the user can be shared by the button instead of actually sharing them",
+                    "description": "Pass true to check that the users can be shared by the button instead of actually sharing them",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -26375,7 +26857,7 @@
             "type": "Ok"
         },
         "setChatAccentColor": {
-            "description": "Changes accent color and background custom emoji of a chat. Supported only for channels with getOption(\"channel_custom_accent_color_boost_level_min\") boost level. Requires can_change_info administrator right",
+            "description": "Changes accent color and background custom emoji of a chat. Requires can_change_info administrator right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -26383,12 +26865,33 @@
                     "type": "int53"
                 },
                 "accent_color_id": {
-                    "description": "Identifier of the accent color to use",
+                    "description": "Identifier of the accent color to use. The chat must have at least accentColor.min_chat_boost_level boost level to pass the corresponding color",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "background_custom_emoji_id": {
-                    "description": "Identifier of a custom emoji to be shown on the reply header background; 0 if none",
+                    "description": "Identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none. Use chatBoostLevelFeatures.can_set_background_custom_emoji to check whether a custom emoji can be set",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Ok"
+        },
+        "setChatProfileAccentColor": {
+            "description": "Changes accent color and background custom emoji for profile of a chat. Requires can_change_info administrator right",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "profile_accent_color_id": {
+                    "description": "Identifier of the accent color to use for profile; pass -1 if none. The chat must have at least profileAccentColor.min_chat_boost_level boost level to pass the corresponding color",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "profile_background_custom_emoji_id": {
+                    "description": "Identifier of a custom emoji to be shown on the chat's profile photo background; 0 if none. Use chatBoostLevelFeatures.can_set_profile_background_custom_emoji to check whether a custom emoji can be set",
                     "is_optional": false,
                     "type": "int64"
                 }
@@ -26411,6 +26914,22 @@
             },
             "type": "Ok"
         },
+        "setChatEmojiStatus": {
+            "description": "Changes the emoji status of a chat. Use chatBoostLevelFeatures.can_set_emoji_status to check whether an emoji status can be set. Requires can_change_info administrator right",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "emoji_status": {
+                    "description": "New emoji status; pass null to remove emoji status",
+                    "is_optional": true,
+                    "type": "emojiStatus"
+                }
+            },
+            "type": "Ok"
+        },
         "setChatPermissions": {
             "description": "Changes the chat members permissions. Supported only for basic groups and supergroups. Requires can_restrict_members administrator right",
             "args": {
@@ -26428,7 +26947,7 @@
             "type": "Ok"
         },
         "setChatBackground": {
-            "description": "Sets the background in a specific chat. Supported only in private and secret chats with non-deleted users",
+            "description": "Sets the background in a specific chat. Supported only in private and secret chats with non-deleted users, and in chats with sufficient boost level and can_change_info administrator right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -26436,22 +26955,22 @@
                     "type": "int53"
                 },
                 "background": {
-                    "description": "The input background to use; pass null to create a new filled background",
+                    "description": "The input background to use; pass null to create a new filled or chat theme background",
                     "is_optional": true,
                     "type": "InputBackground"
                 },
                 "type": {
-                    "description": "Background type; pass null to use default background type for the chosen background",
+                    "description": "Background type; pass null to use default background type for the chosen background; backgroundTypeChatTheme isn't supported for private and secret chats. Use chatBoostLevelFeatures.chat_theme_background_count and chatBoostLevelFeatures.can_set_custom_background to check whether the background type can be set in the boosted chat",
                     "is_optional": true,
                     "type": "BackgroundType"
                 },
                 "dark_theme_dimming": {
-                    "description": "Dimming of the background in dark themes, as a percentage; 0-100",
+                    "description": "Dimming of the background in dark themes, as a percentage; 0-100. Applied only to Wallpaper and Fill types of background",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "only_for_self": {
-                    "description": "Pass true to set background only for self; pass false to set background for both chat users. Background can be set for both users only by Telegram Premium users and if set background isn't of the type inputBackgroundPrevious",
+                    "description": "Pass true to set background only for self; pass false to set background for all chat users. Always false for backgrounds set in boosted chats. Background can be set for both users only by Telegram Premium users and if set background isn't of the type inputBackgroundPrevious",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -27433,8 +27952,8 @@
             },
             "type": "Ok"
         },
-        "getStoryViewers": {
-            "description": "Returns viewers of a story. The method can be called only for stories posted on behalf of the current user",
+        "getStoryInteractions": {
+            "description": "Returns interactions with a story. The method can be called only for stories posted on behalf of the current user",
             "args": {
                 "story_id": {
                     "description": "Story identifier",
@@ -27442,17 +27961,22 @@
                     "type": "int32"
                 },
                 "query": {
-                    "description": "Query to search for in names and usernames of the viewers; may be empty to get all relevant viewers",
+                    "description": "Query to search for in names, usernames and titles; may be empty to get all relevant interactions",
                     "is_optional": true,
                     "type": "string"
                 },
                 "only_contacts": {
-                    "description": "Pass true to get only contacts; pass false to get all relevant viewers",
+                    "description": "Pass true to get only interactions by contacts; pass false to get all relevant interactions",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "prefer_forwards": {
+                    "description": "Pass true to get forwards and reposts first, then reactions, then other views; pass false to get interactions sorted just by interaction date",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "prefer_with_reaction": {
-                    "description": "Pass true to get viewers with reaction first; pass false to get viewers sorted just by view_date",
+                    "description": "Pass true to get interactions with reaction first; pass false to get interactions sorted just by interaction date. Ignored if prefer_forwards == true",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -27462,12 +27986,48 @@
                     "type": "string"
                 },
                 "limit": {
-                    "description": "The maximum number of story viewers to return",
+                    "description": "The maximum number of story interactions to return",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "StoryViewers"
+            "type": "StoryInteractions"
+        },
+        "getChatStoryInteractions": {
+            "description": "Returns interactions with a story posted in a chat. Can be used only if story is posted on behalf of a chat and the user is an administrator in the chat",
+            "args": {
+                "story_sender_chat_id": {
+                    "description": "The identifier of the sender of the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_id": {
+                    "description": "Story identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "reaction_type": {
+                    "description": "Pass the default heart reaction or a suggested reaction type to receive only interactions with the specified reaction type; pass null to receive all interactions",
+                    "is_optional": true,
+                    "type": "ReactionType"
+                },
+                "prefer_forwards": {
+                    "description": "Pass true to get forwards and reposts first, then reactions, then other views; pass false to get interactions sorted just by interaction date",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of story interactions to return",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StoryInteractions"
         },
         "reportStory": {
             "description": "Reports a story to the Telegram moderators",
@@ -27524,7 +28084,23 @@
                     "type": "int32"
                 }
             },
-            "type": "StoryPublicForwards"
+            "type": "PublicForwards"
+        },
+        "getChatBoostLevelFeatures": {
+            "description": "Returns list of features available on the specific chat boost level; this is an offline request",
+            "args": {
+                "level": {
+                    "description": "Chat boost level",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChatBoostLevelFeatures"
+        },
+        "getChatBoostFeatures": {
+            "description": "Returns list of features available on the first 10 chat boost levels; this is an offline request",
+            "args": {},
+            "type": "ChatBoostFeatures"
         },
         "getAvailableChatBoostSlots": {
             "description": "Returns the list of available chat boost slots for the current user",
@@ -27655,24 +28231,39 @@
             "type": "Ok"
         },
         "getThemedEmojiStatuses": {
-            "description": "Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list",
+            "description": "Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list for self status",
             "args": {},
             "type": "EmojiStatuses"
         },
         "getRecentEmojiStatuses": {
-            "description": "Returns recent emoji statuses",
+            "description": "Returns recent emoji statuses for self status",
             "args": {},
             "type": "EmojiStatuses"
         },
         "getDefaultEmojiStatuses": {
-            "description": "Returns default emoji statuses",
+            "description": "Returns default emoji statuses for self status",
             "args": {},
             "type": "EmojiStatuses"
         },
         "clearRecentEmojiStatuses": {
-            "description": "Clears the list of recently used emoji statuses",
+            "description": "Clears the list of recently used emoji statuses for self status",
             "args": {},
             "type": "Ok"
+        },
+        "getThemedChatEmojiStatuses": {
+            "description": "Returns up to 8 emoji statuses, which must be shown in the emoji status list for chats",
+            "args": {},
+            "type": "EmojiStatuses"
+        },
+        "getDefaultChatEmojiStatuses": {
+            "description": "Returns default emoji statuses for chats",
+            "args": {},
+            "type": "EmojiStatuses"
+        },
+        "getDisallowedChatEmojiStatuses": {
+            "description": "Returns the list of emoji statuses, which can't be used as chat emoji status, even they are from a sticker set with is_allowed_as_chat_emoji_status == true",
+            "args": {},
+            "type": "EmojiStatuses"
         },
         "downloadFile": {
             "description": "Downloads a file from the cloud. Download progress and completion of the download will be notified through updateFile updates",
@@ -29789,7 +30380,7 @@
                     "type": "int32"
                 },
                 "background_custom_emoji_id": {
-                    "description": "Identifier of a custom emoji to be shown on the reply header background; 0 if none",
+                    "description": "Identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 }
@@ -29805,7 +30396,7 @@
                     "type": "int32"
                 },
                 "profile_background_custom_emoji_id": {
-                    "description": "Identifier of a custom emoji to be shown in the on the user's profile photo background; 0 if none",
+                    "description": "Identifier of a custom emoji to be shown on the user's profile photo background; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 }
@@ -30780,17 +31371,6 @@
             "args": {},
             "type": "User"
         },
-        "getBackgrounds": {
-            "description": "Returns backgrounds installed by the user",
-            "args": {
-                "for_dark_theme": {
-                    "description": "Pass true to order returned backgrounds for a dark theme",
-                    "is_optional": false,
-                    "type": "Bool"
-                }
-            },
-            "type": "Backgrounds"
-        },
         "getBackgroundUrl": {
             "description": "Constructs a persistent HTTP URL for a background",
             "args": {
@@ -30800,7 +31380,7 @@
                     "type": "string"
                 },
                 "type": {
-                    "description": "Background type",
+                    "description": "Background type; backgroundTypeChatTheme isn't supported",
                     "is_optional": false,
                     "type": "BackgroundType"
                 }
@@ -30818,28 +31398,50 @@
             },
             "type": "Background"
         },
-        "setBackground": {
-            "description": "Changes the background selected by the user; adds background to the list of installed backgrounds",
+        "setDefaultBackground": {
+            "description": "Sets default background for chats; adds the background to the list of installed backgrounds",
             "args": {
                 "background": {
-                    "description": "The input background to use; pass null to create a new filled background or to remove the current background",
+                    "description": "The input background to use; pass null to create a new filled background",
                     "is_optional": true,
                     "type": "InputBackground"
                 },
                 "type": {
-                    "description": "Background type; pass null to use the default type of the remote background or to remove the current background",
+                    "description": "Background type; pass null to use the default type of the remote background; backgroundTypeChatTheme isn't supported",
                     "is_optional": true,
                     "type": "BackgroundType"
                 },
                 "for_dark_theme": {
-                    "description": "Pass true if the background is changed for a dark theme",
+                    "description": "Pass true if the background is set for a dark theme",
                     "is_optional": false,
                     "type": "Bool"
                 }
             },
             "type": "Background"
         },
-        "removeBackground": {
+        "deleteDefaultBackground": {
+            "description": "Deletes default background for chats",
+            "args": {
+                "for_dark_theme": {
+                    "description": "Pass true if the background is deleted for a dark theme",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "getInstalledBackgrounds": {
+            "description": "Returns backgrounds installed by the user",
+            "args": {
+                "for_dark_theme": {
+                    "description": "Pass true to order returned backgrounds for a dark theme",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Backgrounds"
+        },
+        "removeInstalledBackground": {
             "description": "Removes background from the list of installed backgrounds",
             "args": {
                 "background_id": {
@@ -30850,7 +31452,7 @@
             },
             "type": "Ok"
         },
-        "resetBackgrounds": {
+        "resetInstalledBackgrounds": {
             "description": "Resets list of installed backgrounds to its default value",
             "args": {},
             "type": "Ok"
@@ -31242,7 +31844,7 @@
             "type": "MessageStatistics"
         },
         "getMessagePublicForwards": {
-            "description": "Returns forwarded copies of a channel message to different public channels. Can be used only if message.can_get_statistics == true. For optimal performance, the number of returned messages is chosen by TDLib",
+            "description": "Returns forwarded copies of a channel message to different public channels and public reposts as a story. Can be used only if message.can_get_statistics == true. For optimal performance, the number of returned messages and stories is chosen by TDLib",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier of the message",
@@ -31260,12 +31862,12 @@
                     "type": "string"
                 },
                 "limit": {
-                    "description": "The maximum number of messages to be returned; must be positive and can't be greater than 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+                    "description": "The maximum number of messages and stories to be returned; must be positive and can't be greater than 100. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "FoundMessages"
+            "type": "PublicForwards"
         },
         "getStoryStatistics": {
             "description": "Returns detailed statistics about a story. Can be used only if story.can_get_statistics == true",
@@ -32119,7 +32721,7 @@
                     "type": "int53"
                 },
                 "message_id": {
-                    "description": "Identifier of the giveaway message in the chat",
+                    "description": "Identifier of the giveaway or a giveaway winners message in the chat",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -32311,17 +32913,6 @@
             "description": "Returns application config, provided by the server. Can be called before authorization",
             "args": {},
             "type": "JsonValue"
-        },
-        "addApplicationChangelog": {
-            "description": "Adds server-provided application changelog as messages to the chat 777000 (Telegram) or as a stories; for official applications only. Returns a 404 error if nothing changed",
-            "args": {
-                "previous_application_version": {
-                    "description": "The previous application version",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "Ok"
         },
         "saveApplicationLogEvent": {
             "description": "Saves application log event on the server. Can be called before authorization",

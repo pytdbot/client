@@ -1007,7 +1007,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getRepliedMessage(self, chat_id: int, message_id: int) -> Result:
-        """Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground and topic messages without non\-bundled replied message respectively
+        """Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messagePremiumGiveawayCompleted and topic messages without non\-bundled replied message respectively
 
         Args:
             chat_id (``int``):
@@ -1377,6 +1377,29 @@ class TDLibFunctions:
             "@type": "getChatSimilarChatCount",
             "chat_id": chat_id,
             "return_local": return_local,
+        }
+
+        return await self.invoke(data)
+
+    async def openChatSimilarChat(self, chat_id: int, opened_chat_id: int) -> Result:
+        """Informs TDLib that a chat was opened from the list of similar chats\. The method is independent from openChat and closeChat methods
+
+        Args:
+            chat_id (``int``):
+                Identifier of the original chat, which similar chats were requested
+
+            opened_chat_id (``int``):
+                Identifier of the opened chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "openChatSimilarChat",
+            "chat_id": chat_id,
+            "opened_chat_id": opened_chat_id,
         }
 
         return await self.invoke(data)
@@ -3760,6 +3783,39 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def setMessageReactions(
+        self, chat_id: int, message_id: int, reaction_types: list, is_big: bool
+    ) -> Result:
+        """Sets reactions on a message; for bots only
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which the message belongs
+
+            message_id (``int``):
+                Identifier of the message
+
+            reaction_types (``list``):
+                Types of the reaction to set
+
+            is_big (``bool``):
+                Pass true if the reactions are added with a big animation
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setMessageReactions",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "reaction_types": reaction_types,
+            "is_big": is_big,
+        }
+
+        return await self.invoke(data)
+
     async def getMessageAddedReactions(
         self,
         chat_id: int,
@@ -4255,15 +4311,15 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def shareUserWithBot(
+    async def shareUsersWithBot(
         self,
         chat_id: int,
         message_id: int,
         button_id: int,
-        shared_user_id: int,
+        shared_user_ids: list,
         only_check: bool,
     ) -> Result:
-        """Shares a user after pressing a keyboardButtonTypeRequestUser button with the bot
+        """Shares users after pressing a keyboardButtonTypeRequestUsers button with the bot
 
         Args:
             chat_id (``int``):
@@ -4275,11 +4331,11 @@ class TDLibFunctions:
             button_id (``int``):
                 Identifier of the button
 
-            shared_user_id (``int``):
-                Identifier of the shared user
+            shared_user_ids (``list``):
+                Identifiers of the shared users
 
             only_check (``bool``):
-                Pass true to check that the user can be shared by the button instead of actually sharing them
+                Pass true to check that the users can be shared by the button instead of actually sharing them
 
 
         Returns:
@@ -4287,11 +4343,11 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "shareUserWithBot",
+            "@type": "shareUsersWithBot",
             "chat_id": chat_id,
             "message_id": message_id,
             "button_id": button_id,
-            "shared_user_id": shared_user_id,
+            "shared_user_ids": shared_user_ids,
             "only_check": only_check,
         }
 
@@ -5994,17 +6050,17 @@ class TDLibFunctions:
     async def setChatAccentColor(
         self, chat_id: int, accent_color_id: int, background_custom_emoji_id: int
     ) -> Result:
-        """Changes accent color and background custom emoji of a chat\. Supported only for channels with getOption\("channel\_custom\_accent\_color\_boost\_level\_min"\) boost level\. Requires can\_change\_info administrator right
+        """Changes accent color and background custom emoji of a chat\. Requires can\_change\_info administrator right
 
         Args:
             chat_id (``int``):
                 Chat identifier
 
             accent_color_id (``int``):
-                Identifier of the accent color to use
+                Identifier of the accent color to use\. The chat must have at least accentColor\.min\_chat\_boost\_level boost level to pass the corresponding color
 
             background_custom_emoji_id (``int``):
-                Identifier of a custom emoji to be shown on the reply header background; 0 if none
+                Identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none\. Use chatBoostLevelFeatures\.can\_set\_background\_custom\_emoji to check whether a custom emoji can be set
 
 
         Returns:
@@ -6016,6 +6072,38 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "accent_color_id": accent_color_id,
             "background_custom_emoji_id": background_custom_emoji_id,
+        }
+
+        return await self.invoke(data)
+
+    async def setChatProfileAccentColor(
+        self,
+        chat_id: int,
+        profile_accent_color_id: int,
+        profile_background_custom_emoji_id: int,
+    ) -> Result:
+        """Changes accent color and background custom emoji for profile of a chat\. Requires can\_change\_info administrator right
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            profile_accent_color_id (``int``):
+                Identifier of the accent color to use for profile; pass \-1 if none\. The chat must have at least profileAccentColor\.min\_chat\_boost\_level boost level to pass the corresponding color
+
+            profile_background_custom_emoji_id (``int``):
+                Identifier of a custom emoji to be shown on the chat's profile photo background; 0 if none\. Use chatBoostLevelFeatures\.can\_set\_profile\_background\_custom\_emoji to check whether a custom emoji can be set
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setChatProfileAccentColor",
+            "chat_id": chat_id,
+            "profile_accent_color_id": profile_accent_color_id,
+            "profile_background_custom_emoji_id": profile_background_custom_emoji_id,
         }
 
         return await self.invoke(data)
@@ -6041,6 +6129,31 @@ class TDLibFunctions:
             "@type": "setChatMessageAutoDeleteTime",
             "chat_id": chat_id,
             "message_auto_delete_time": message_auto_delete_time,
+        }
+
+        return await self.invoke(data)
+
+    async def setChatEmojiStatus(
+        self, chat_id: int, emoji_status: dict = None
+    ) -> Result:
+        """Changes the emoji status of a chat\. Use chatBoostLevelFeatures\.can\_set\_emoji\_status to check whether an emoji status can be set\. Requires can\_change\_info administrator right
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            emoji_status (``emojiStatus``, *optional*):
+                New emoji status; pass null to remove emoji status
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setChatEmojiStatus",
+            "chat_id": chat_id,
+            "emoji_status": emoji_status,
         }
 
         return await self.invoke(data)
@@ -6076,23 +6189,23 @@ class TDLibFunctions:
         background: dict = None,
         type: dict = None,
     ) -> Result:
-        """Sets the background in a specific chat\. Supported only in private and secret chats with non\-deleted users
+        """Sets the background in a specific chat\. Supported only in private and secret chats with non\-deleted users, and in chats with sufficient boost level and can\_change\_info administrator right
 
         Args:
             chat_id (``int``):
                 Chat identifier
 
             dark_theme_dimming (``int``):
-                Dimming of the background in dark themes, as a percentage; 0\-100
+                Dimming of the background in dark themes, as a percentage; 0\-100\. Applied only to Wallpaper and Fill types of background
 
             only_for_self (``bool``):
-                Pass true to set background only for self; pass false to set background for both chat users\. Background can be set for both users only by Telegram Premium users and if set background isn't of the type inputBackgroundPrevious
+                Pass true to set background only for self; pass false to set background for all chat users\. Always false for backgrounds set in boosted chats\. Background can be set for both users only by Telegram Premium users and if set background isn't of the type inputBackgroundPrevious
 
             background (``InputBackground``, *optional*):
-                The input background to use; pass null to create a new filled background
+                The input background to use; pass null to create a new filled or chat theme background
 
             type (``BackgroundType``, *optional*):
-                Background type; pass null to use default background type for the chosen background
+                Background type; pass null to use default background type for the chosen background; backgroundTypeChatTheme isn't supported for private and secret chats\. Use chatBoostLevelFeatures\.chat\_theme\_background\_count and chatBoostLevelFeatures\.can\_set\_custom\_background to check whether the background type can be set in the boosted chat
 
 
         Returns:
@@ -7583,47 +7696,99 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getStoryViewers(
+    async def getStoryInteractions(
         self,
         story_id: int,
         only_contacts: bool,
+        prefer_forwards: bool,
         prefer_with_reaction: bool,
         offset: str,
         limit: int,
         query: str = None,
     ) -> Result:
-        """Returns viewers of a story\. The method can be called only for stories posted on behalf of the current user
+        """Returns interactions with a story\. The method can be called only for stories posted on behalf of the current user
 
         Args:
             story_id (``int``):
                 Story identifier
 
             only_contacts (``bool``):
-                Pass true to get only contacts; pass false to get all relevant viewers
+                Pass true to get only interactions by contacts; pass false to get all relevant interactions
+
+            prefer_forwards (``bool``):
+                Pass true to get forwards and reposts first, then reactions, then other views; pass false to get interactions sorted just by interaction date
 
             prefer_with_reaction (``bool``):
-                Pass true to get viewers with reaction first; pass false to get viewers sorted just by view\_date
+                Pass true to get interactions with reaction first; pass false to get interactions sorted just by interaction date\. Ignored if prefer\_forwards \=\= true
 
             offset (``str``):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
 
             limit (``int``):
-                The maximum number of story viewers to return
+                The maximum number of story interactions to return
 
             query (``str``, *optional*):
-                Query to search for in names and usernames of the viewers; may be empty to get all relevant viewers
+                Query to search for in names, usernames and titles; may be empty to get all relevant interactions
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``StoryViewers``)
+            :class:`~pytdbot.types.Result` (``StoryInteractions``)
         """
 
         data = {
-            "@type": "getStoryViewers",
+            "@type": "getStoryInteractions",
             "story_id": story_id,
             "query": query,
             "only_contacts": only_contacts,
+            "prefer_forwards": prefer_forwards,
             "prefer_with_reaction": prefer_with_reaction,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatStoryInteractions(
+        self,
+        story_sender_chat_id: int,
+        story_id: int,
+        prefer_forwards: bool,
+        offset: str,
+        limit: int,
+        reaction_type: dict = None,
+    ) -> Result:
+        """Returns interactions with a story posted in a chat\. Can be used only if story is posted on behalf of a chat and the user is an administrator in the chat
+
+        Args:
+            story_sender_chat_id (``int``):
+                The identifier of the sender of the story
+
+            story_id (``int``):
+                Story identifier
+
+            prefer_forwards (``bool``):
+                Pass true to get forwards and reposts first, then reactions, then other views; pass false to get interactions sorted just by interaction date
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of story interactions to return
+
+            reaction_type (``ReactionType``, *optional*):
+                Pass the default heart reaction or a suggested reaction type to receive only interactions with the specified reaction type; pass null to receive all interactions
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StoryInteractions``)
+        """
+
+        data = {
+            "@type": "getChatStoryInteractions",
+            "story_sender_chat_id": story_sender_chat_id,
+            "story_id": story_id,
+            "reaction_type": reaction_type,
+            "prefer_forwards": prefer_forwards,
             "offset": offset,
             "limit": limit,
         }
@@ -7697,7 +7862,7 @@ class TDLibFunctions:
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``StoryPublicForwards``)
+            :class:`~pytdbot.types.Result` (``PublicForwards``)
         """
 
         data = {
@@ -7706,6 +7871,39 @@ class TDLibFunctions:
             "story_id": story_id,
             "offset": offset,
             "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatBoostLevelFeatures(self, level: int) -> Result:
+        """Returns list of features available on the specific chat boost level; this is an offline request
+
+        Args:
+            level (``int``):
+                Chat boost level
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatBoostLevelFeatures``)
+        """
+
+        data = {
+            "@type": "getChatBoostLevelFeatures",
+            "level": level,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatBoostFeatures(self) -> Result:
+        """Returns list of features available on the first 10 chat boost levels; this is an offline request
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatBoostFeatures``)
+        """
+
+        data = {
+            "@type": "getChatBoostFeatures",
         }
 
         return await self.invoke(data)
@@ -7909,7 +8107,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getThemedEmojiStatuses(self) -> Result:
-        """Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list
+        """Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list for self status
 
 
         Returns:
@@ -7923,7 +8121,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getRecentEmojiStatuses(self) -> Result:
-        """Returns recent emoji statuses
+        """Returns recent emoji statuses for self status
 
 
         Returns:
@@ -7937,7 +8135,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getDefaultEmojiStatuses(self) -> Result:
-        """Returns default emoji statuses
+        """Returns default emoji statuses for self status
 
 
         Returns:
@@ -7951,7 +8149,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def clearRecentEmojiStatuses(self) -> Result:
-        """Clears the list of recently used emoji statuses
+        """Clears the list of recently used emoji statuses for self status
 
 
         Returns:
@@ -7960,6 +8158,48 @@ class TDLibFunctions:
 
         data = {
             "@type": "clearRecentEmojiStatuses",
+        }
+
+        return await self.invoke(data)
+
+    async def getThemedChatEmojiStatuses(self) -> Result:
+        """Returns up to 8 emoji statuses, which must be shown in the emoji status list for chats
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``EmojiStatuses``)
+        """
+
+        data = {
+            "@type": "getThemedChatEmojiStatuses",
+        }
+
+        return await self.invoke(data)
+
+    async def getDefaultChatEmojiStatuses(self) -> Result:
+        """Returns default emoji statuses for chats
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``EmojiStatuses``)
+        """
+
+        data = {
+            "@type": "getDefaultChatEmojiStatuses",
+        }
+
+        return await self.invoke(data)
+
+    async def getDisallowedChatEmojiStatuses(self) -> Result:
+        """Returns the list of emoji statuses, which can't be used as chat emoji status, even they are from a sticker set with is\_allowed\_as\_chat\_emoji\_status \=\= true
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``EmojiStatuses``)
+        """
+
+        data = {
+            "@type": "getDisallowedChatEmojiStatuses",
         }
 
         return await self.invoke(data)
@@ -11153,7 +11393,7 @@ class TDLibFunctions:
                 Identifier of the accent color to use
 
             background_custom_emoji_id (``int``):
-                Identifier of a custom emoji to be shown on the reply header background; 0 if none
+                Identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none
 
 
         Returns:
@@ -11178,7 +11418,7 @@ class TDLibFunctions:
                 Identifier of the accent color to use for profile; pass \-1 if none
 
             profile_background_custom_emoji_id (``int``):
-                Identifier of a custom emoji to be shown in the on the user's profile photo background; 0 if none
+                Identifier of a custom emoji to be shown on the user's profile photo background; 0 if none
 
 
         Returns:
@@ -12731,25 +12971,6 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getBackgrounds(self, for_dark_theme: bool) -> Result:
-        """Returns backgrounds installed by the user
-
-        Args:
-            for_dark_theme (``bool``):
-                Pass true to order returned backgrounds for a dark theme
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``Backgrounds``)
-        """
-
-        data = {
-            "@type": "getBackgrounds",
-            "for_dark_theme": for_dark_theme,
-        }
-
-        return await self.invoke(data)
-
     async def getBackgroundUrl(self, name: str, type: dict) -> Result:
         """Constructs a persistent HTTP URL for a background
 
@@ -12758,7 +12979,7 @@ class TDLibFunctions:
                 Background name
 
             type (``BackgroundType``):
-                Background type
+                Background type; backgroundTypeChatTheme isn't supported
 
 
         Returns:
@@ -12792,20 +13013,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def setBackground(
+    async def setDefaultBackground(
         self, for_dark_theme: bool, background: dict = None, type: dict = None
     ) -> Result:
-        """Changes the background selected by the user; adds background to the list of installed backgrounds
+        """Sets default background for chats; adds the background to the list of installed backgrounds
 
         Args:
             for_dark_theme (``bool``):
-                Pass true if the background is changed for a dark theme
+                Pass true if the background is set for a dark theme
 
             background (``InputBackground``, *optional*):
-                The input background to use; pass null to create a new filled background or to remove the current background
+                The input background to use; pass null to create a new filled background
 
             type (``BackgroundType``, *optional*):
-                Background type; pass null to use the default type of the remote background or to remove the current background
+                Background type; pass null to use the default type of the remote background; backgroundTypeChatTheme isn't supported
 
 
         Returns:
@@ -12813,7 +13034,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "setBackground",
+            "@type": "setDefaultBackground",
             "background": background,
             "type": type,
             "for_dark_theme": for_dark_theme,
@@ -12821,7 +13042,45 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def removeBackground(self, background_id: int) -> Result:
+    async def deleteDefaultBackground(self, for_dark_theme: bool) -> Result:
+        """Deletes default background for chats
+
+        Args:
+            for_dark_theme (``bool``):
+                Pass true if the background is deleted for a dark theme
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteDefaultBackground",
+            "for_dark_theme": for_dark_theme,
+        }
+
+        return await self.invoke(data)
+
+    async def getInstalledBackgrounds(self, for_dark_theme: bool) -> Result:
+        """Returns backgrounds installed by the user
+
+        Args:
+            for_dark_theme (``bool``):
+                Pass true to order returned backgrounds for a dark theme
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Backgrounds``)
+        """
+
+        data = {
+            "@type": "getInstalledBackgrounds",
+            "for_dark_theme": for_dark_theme,
+        }
+
+        return await self.invoke(data)
+
+    async def removeInstalledBackground(self, background_id: int) -> Result:
         """Removes background from the list of installed backgrounds
 
         Args:
@@ -12834,13 +13093,13 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "removeBackground",
+            "@type": "removeInstalledBackground",
             "background_id": background_id,
         }
 
         return await self.invoke(data)
 
-    async def resetBackgrounds(self) -> Result:
+    async def resetInstalledBackgrounds(self) -> Result:
         """Resets list of installed backgrounds to its default value
 
 
@@ -12849,7 +13108,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "resetBackgrounds",
+            "@type": "resetInstalledBackgrounds",
         }
 
         return await self.invoke(data)
@@ -13463,7 +13722,7 @@ class TDLibFunctions:
     async def getMessagePublicForwards(
         self, chat_id: int, message_id: int, offset: str, limit: int
     ) -> Result:
-        """Returns forwarded copies of a channel message to different public channels\. Can be used only if message\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages is chosen by TDLib
+        """Returns forwarded copies of a channel message to different public channels and public reposts as a story\. Can be used only if message\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
 
         Args:
             chat_id (``int``):
@@ -13476,11 +13735,11 @@ class TDLibFunctions:
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
 
             limit (``int``):
-                The maximum number of messages to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of messages and stories to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``FoundMessages``)
+            :class:`~pytdbot.types.Result` (``PublicForwards``)
         """
 
         data = {
@@ -14838,7 +15097,7 @@ class TDLibFunctions:
                 Identifier of the channel chat which started the giveaway
 
             message_id (``int``):
-                Identifier of the giveaway message in the chat
+                Identifier of the giveaway or a giveaway winners message in the chat
 
 
         Returns:
@@ -15150,27 +15409,6 @@ class TDLibFunctions:
 
         data = {
             "@type": "getApplicationConfig",
-        }
-
-        return await self.invoke(data)
-
-    async def addApplicationChangelog(
-        self, previous_application_version: str
-    ) -> Result:
-        """Adds server\-provided application changelog as messages to the chat 777000 \(Telegram\) or as a stories; for official applications only\. Returns a 404 error if nothing changed
-
-        Args:
-            previous_application_version (``str``):
-                The previous application version
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``Ok``)
-        """
-
-        data = {
-            "@type": "addApplicationChangelog",
-            "previous_application_version": previous_application_version,
         }
 
         return await self.invoke(data)
