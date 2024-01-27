@@ -34,8 +34,6 @@ class TDLibFunctions:
         device_model: str,
         system_version: str,
         application_version: str,
-        enable_storage_optimizer: bool,
-        ignore_file_names: bool,
     ) -> Result:
         """Sets the parameters for TDLib initialization\. Works only when the current authorization state is authorizationStateWaitTdlibParameters
 
@@ -82,12 +80,6 @@ class TDLibFunctions:
             application_version (``str``):
                 Application version; must be non\-empty
 
-            enable_storage_optimizer (``bool``):
-                Pass true to automatically delete old files in background
-
-            ignore_file_names (``bool``):
-                Pass true to ignore original file names for downloaded files\. Otherwise, downloaded files are saved under names as close as possible to the original name
-
 
         Returns:
             :class:`~pytdbot.types.Result` (``Ok``)
@@ -109,8 +101,6 @@ class TDLibFunctions:
             "device_model": device_model,
             "system_version": system_version,
             "application_version": application_version,
-            "enable_storage_optimizer": enable_storage_optimizer,
-            "ignore_file_names": ignore_file_names,
         }
 
         return await self.invoke(data)
@@ -667,6 +657,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def cancelRecoveryEmailAddressVerification(self) -> Result:
+        """Cancels verification of the 2\-step verification recovery email address
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``PasswordState``)
+        """
+
+        data = {
+            "@type": "cancelRecoveryEmailAddressVerification",
+        }
+
+        return await self.invoke(data)
+
     async def requestPasswordRecovery(self) -> Result:
         """Requests to send a 2\-step verification password recovery code to an email address that was previously set up
 
@@ -1117,6 +1121,29 @@ class TDLibFunctions:
 
         data = {
             "@type": "getMessageThread",
+            "chat_id": chat_id,
+            "message_id": message_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getMessageReadDate(self, chat_id: int, message_id: int) -> Result:
+        """Returns read date of a recent outgoing message in a private chat\. The method can be called if message\.can\_get\_read\_date \=\= true and the message is read
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            message_id (``int``):
+                Identifier of the message
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``MessageReadDate``)
+        """
+
+        data = {
+            "@type": "getMessageReadDate",
             "chat_id": chat_id,
             "message_id": message_id,
         }
@@ -1633,6 +1660,195 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getPinnedSavedMessagesTopics(self) -> Result:
+        """Returns list of all pinned Saved Messages topics
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundSavedMessagesTopics``)
+        """
+
+        data = {
+            "@type": "getPinnedSavedMessagesTopics",
+        }
+
+        return await self.invoke(data)
+
+    async def getSavedMessagesTopics(self, offset: str, limit: int) -> Result:
+        """Returns list of non\-pinned Saved Messages topics from the specified offset
+
+        Args:
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of Saved Messages topics to be returned; up to 100
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundSavedMessagesTopics``)
+        """
+
+        data = {
+            "@type": "getSavedMessagesTopics",
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getSavedMessagesTopicHistory(
+        self, saved_messages_topic: dict, from_message_id: int, offset: int, limit: int
+    ) -> Result:
+        """Returns messages in a Saved Messages topic\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+
+        Args:
+            saved_messages_topic (``SavedMessagesTopic``):
+                Saved Messages topic which messages will be fetched
+
+            from_message_id (``int``):
+                Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message
+
+            offset (``int``):
+                Specify 0 to get results from exactly the message from\_message\_id or a negative offset up to 99 to get additionally some newer messages
+
+            limit (``int``):
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Messages``)
+        """
+
+        data = {
+            "@type": "getSavedMessagesTopicHistory",
+            "saved_messages_topic": saved_messages_topic,
+            "from_message_id": from_message_id,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getSavedMessagesTopicMessageByDate(
+        self, saved_messages_topic: dict, date: int
+    ) -> Result:
+        """Returns the last message sent in a Saved Messages topic no later than the specified date
+
+        Args:
+            saved_messages_topic (``SavedMessagesTopic``):
+                Saved Messages topic which message will be returned
+
+            date (``int``):
+                Point in time \(Unix timestamp\) relative to which to search for messages
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Message``)
+        """
+
+        data = {
+            "@type": "getSavedMessagesTopicMessageByDate",
+            "saved_messages_topic": saved_messages_topic,
+            "date": date,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteSavedMessagesTopicHistory(
+        self, saved_messages_topic: dict
+    ) -> Result:
+        """Deletes all messages in a Saved Messages topic
+
+        Args:
+            saved_messages_topic (``SavedMessagesTopic``):
+                Saved Messages topic which messages will be deleted
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteSavedMessagesTopicHistory",
+            "saved_messages_topic": saved_messages_topic,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteSavedMessagesTopicMessagesByDate(
+        self, saved_messages_topic: dict, min_date: int, max_date: int
+    ) -> Result:
+        """Deletes all messages between the specified dates in a Saved Messages topic\. Messages sent in the last 30 seconds will not be deleted
+
+        Args:
+            saved_messages_topic (``SavedMessagesTopic``):
+                Saved Messages topic which messages will be deleted
+
+            min_date (``int``):
+                The minimum date of the messages to delete
+
+            max_date (``int``):
+                The maximum date of the messages to delete
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteSavedMessagesTopicMessagesByDate",
+            "saved_messages_topic": saved_messages_topic,
+            "min_date": min_date,
+            "max_date": max_date,
+        }
+
+        return await self.invoke(data)
+
+    async def toggleSavedMessagesTopicIsPinned(
+        self, saved_messages_topic: dict, is_pinned: bool
+    ) -> Result:
+        """Changes the pinned state of a Saved Messages topic\. There can be up to getOption\("pinned\_saved\_messages\_topic\_count\_max"\) pinned topics\. The limit can be increased with Telegram Premium
+
+        Args:
+            saved_messages_topic (``SavedMessagesTopic``):
+                Saved Messages topic to pin or unpin
+
+            is_pinned (``bool``):
+                Pass true to pin the topic; pass false to unpin it
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "toggleSavedMessagesTopicIsPinned",
+            "saved_messages_topic": saved_messages_topic,
+            "is_pinned": is_pinned,
+        }
+
+        return await self.invoke(data)
+
+    async def setPinnedSavedMessagesTopics(self, saved_messages_topics: list) -> Result:
+        """Changes the order of pinned Saved Messages topics
+
+        Args:
+            saved_messages_topics (``list``):
+                The new list of pinned Saved Messages topics
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setPinnedSavedMessagesTopics",
+            "saved_messages_topics": saved_messages_topics,
+        }
+
+        return await self.invoke(data)
+
     async def getGroupsInCommon(
         self, user_id: int, offset_chat_id: int, limit: int
     ) -> Result:
@@ -1680,7 +1896,7 @@ class TDLibFunctions:
                 Identifier of the message starting from which history must be fetched; use 0 to get results from the last message
 
             offset (``int``):
-                Specify 0 to get results from exactly the from\_message\_id or a negative offset up to 99 to get additionally some newer messages
+                Specify 0 to get results from exactly the message from\_message\_id or a negative offset up to 99 to get additionally some newer messages
 
             limit (``int``):
                 The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
@@ -1725,7 +1941,7 @@ class TDLibFunctions:
                 Identifier of the message starting from which history must be fetched; use 0 to get results from the last message
 
             offset (``int``):
-                Specify 0 to get results from exactly the from\_message\_id or a negative offset up to 99 to get additionally some newer messages
+                Specify 0 to get results from exactly the message from\_message\_id or a negative offset up to 99 to get additionally some newer messages
 
             limit (``int``):
                 The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
@@ -1804,6 +2020,7 @@ class TDLibFunctions:
         message_thread_id: int,
         sender_id: dict = None,
         filter: dict = None,
+        saved_messages_topic: dict = None,
     ) -> Result:
         """Searches for messages with given words in the chat\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. Cannot be used in secret chats with a non\-empty query \(searchSecretMessages must be used instead\), or without an enabled message database\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit\. A combination of query, sender\_id, filter and message\_thread\_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
 
@@ -1818,7 +2035,7 @@ class TDLibFunctions:
                 Identifier of the message starting from which history must be fetched; use 0 to get results from the last message
 
             offset (``int``):
-                Specify 0 to get results from exactly the from\_message\_id or a negative offset to get the specified message and some newer messages
+                Specify 0 to get results from exactly the message from\_message\_id or a negative offset to get the specified message and some newer messages
 
             limit (``int``):
                 The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
@@ -1831,6 +2048,9 @@ class TDLibFunctions:
 
             filter (``SearchMessagesFilter``, *optional*):
                 Additional filter for messages to search; pass null to search for all messages
+
+            saved_messages_topic (``SavedMessagesTopic``, *optional*):
+                If not null, only messages in the specified Saved Messages topic will be returned; pass null to return all messages, or for chats other than Saved Messages
 
 
         Returns:
@@ -1847,6 +2067,7 @@ class TDLibFunctions:
             "limit": limit,
             "filter": filter,
             "message_thread_id": message_thread_id,
+            "saved_messages_topic": saved_messages_topic,
         }
 
         return await self.invoke(data)
@@ -1936,6 +2157,48 @@ class TDLibFunctions:
             "offset": offset,
             "limit": limit,
             "filter": filter,
+        }
+
+        return await self.invoke(data)
+
+    async def searchSavedMessages(
+        self,
+        query: str,
+        from_message_id: int,
+        offset: int,
+        limit: int,
+        tag: dict = None,
+    ) -> Result:
+        """Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+        Args:
+            query (``str``):
+                Query to search for
+
+            from_message_id (``int``):
+                Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message
+
+            offset (``int``):
+                Specify 0 to get results from exactly the message from\_message\_id or a negative offset to get the specified message and some newer messages
+
+            limit (``int``):
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+            tag (``ReactionType``, *optional*):
+                Tag to search for; pass null to return all suitable messages
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundChatMessages``)
+        """
+
+        data = {
+            "@type": "searchSavedMessages",
+            "tag": tag,
+            "query": query,
+            "from_message_id": from_message_id,
+            "offset": offset,
+            "limit": limit,
         }
 
         return await self.invoke(data)
@@ -2074,7 +2337,12 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatSparseMessagePositions(
-        self, chat_id: int, filter: dict, from_message_id: int, limit: int
+        self,
+        chat_id: int,
+        filter: dict,
+        from_message_id: int,
+        limit: int,
+        saved_messages_topic: dict = None,
     ) -> Result:
         """Returns sparse positions of messages of the specified type in the chat to be used for shared media scroll implementation\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. Cannot be used in secret chats or with searchMessagesFilterFailedToSend filter without an enabled message database
 
@@ -2091,6 +2359,9 @@ class TDLibFunctions:
             limit (``int``):
                 The expected number of message positions to be returned; 50\-2000\. A smaller number of positions can be returned, if there are not enough appropriate messages
 
+            saved_messages_topic (``SavedMessagesTopic``, *optional*):
+                If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all messages, or for chats other than Saved Messages
+
 
         Returns:
             :class:`~pytdbot.types.Result` (``MessagePositions``)
@@ -2102,12 +2373,17 @@ class TDLibFunctions:
             "filter": filter,
             "from_message_id": from_message_id,
             "limit": limit,
+            "saved_messages_topic": saved_messages_topic,
         }
 
         return await self.invoke(data)
 
     async def getChatMessageCalendar(
-        self, chat_id: int, filter: dict, from_message_id: int
+        self,
+        chat_id: int,
+        filter: dict,
+        from_message_id: int,
+        saved_messages_topic: dict = None,
     ) -> Result:
         """Returns information about the next messages of the specified type in the chat split by days\. Returns the results in reverse chronological order\. Can return partial result for the last returned day\. Behavior of this method depends on the value of the option "utc\_time\_offset"
 
@@ -2121,6 +2397,9 @@ class TDLibFunctions:
             from_message_id (``int``):
                 The message identifier from which to return information about messages; use 0 to get results from the last message
 
+            saved_messages_topic (``SavedMessagesTopic``, *optional*):
+                If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all messages, or for chats other than Saved Messages
+
 
         Returns:
             :class:`~pytdbot.types.Result` (``MessageCalendar``)
@@ -2131,12 +2410,17 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "filter": filter,
             "from_message_id": from_message_id,
+            "saved_messages_topic": saved_messages_topic,
         }
 
         return await self.invoke(data)
 
     async def getChatMessageCount(
-        self, chat_id: int, filter: dict, return_local: bool
+        self,
+        chat_id: int,
+        filter: dict,
+        return_local: bool,
+        saved_messages_topic: dict = None,
     ) -> Result:
         """Returns approximate number of messages of the specified type in the chat
 
@@ -2150,6 +2434,9 @@ class TDLibFunctions:
             return_local (``bool``):
                 Pass true to get the number of messages without sending network requests, or \-1 if the number of messages is unknown locally
 
+            saved_messages_topic (``SavedMessagesTopic``, *optional*):
+                If not null, only messages in the specified Saved Messages topic will be counted; pass null to count all messages, or for chats other than Saved Messages
+
 
         Returns:
             :class:`~pytdbot.types.Result` (``Count``)
@@ -2159,13 +2446,19 @@ class TDLibFunctions:
             "@type": "getChatMessageCount",
             "chat_id": chat_id,
             "filter": filter,
+            "saved_messages_topic": saved_messages_topic,
             "return_local": return_local,
         }
 
         return await self.invoke(data)
 
     async def getChatMessagePosition(
-        self, chat_id: int, message_id: int, filter: dict, message_thread_id: int
+        self,
+        chat_id: int,
+        message_id: int,
+        filter: dict,
+        message_thread_id: int,
+        saved_messages_topic: dict = None,
     ) -> Result:
         """Returns approximate 1\-based position of a message among messages, which can be found by the specified filter in the chat\. Cannot be used in secret chats
 
@@ -2182,6 +2475,9 @@ class TDLibFunctions:
             message_thread_id (``int``):
                 If not 0, only messages in the specified thread will be considered; supergroups only
 
+            saved_messages_topic (``SavedMessagesTopic``, *optional*):
+                If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all relevant messages, or for chats other than Saved Messages
+
 
         Returns:
             :class:`~pytdbot.types.Result` (``Count``)
@@ -2193,6 +2489,7 @@ class TDLibFunctions:
             "message_id": message_id,
             "filter": filter,
             "message_thread_id": message_thread_id,
+            "saved_messages_topic": saved_messages_topic,
         }
 
         return await self.invoke(data)
@@ -3315,7 +3612,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def createForumTopic(self, chat_id: int, name: str, icon: dict) -> Result:
-        """Creates a topic in a forum supergroup chat; requires can\_manage\_topics rights in the supergroup
+        """Creates a topic in a forum supergroup chat; requires can\_manage\_topics or can\_create\_topics rights in the supergroup
 
         Args:
             chat_id (``int``):
@@ -3349,7 +3646,7 @@ class TDLibFunctions:
         edit_icon_custom_emoji: bool,
         icon_custom_emoji_id: int,
     ) -> Result:
-        """Edits title and icon of a topic in a forum supergroup chat; requires can\_manage\_topics administrator right in the supergroup unless the user is creator of the topic
+        """Edits title and icon of a topic in a forum supergroup chat; requires can\_manage\_topics right in the supergroup unless the user is creator of the topic
 
         Args:
             chat_id (``int``):
@@ -3508,7 +3805,7 @@ class TDLibFunctions:
     async def toggleForumTopicIsClosed(
         self, chat_id: int, message_thread_id: int, is_closed: bool
     ) -> Result:
-        """Toggles whether a topic is closed in a forum supergroup chat; requires can\_manage\_topics administrator right in the supergroup unless the user is creator of the topic
+        """Toggles whether a topic is closed in a forum supergroup chat; requires can\_manage\_topics right in the supergroup unless the user is creator of the topic
 
         Args:
             chat_id (``int``):
@@ -3537,7 +3834,7 @@ class TDLibFunctions:
     async def toggleGeneralForumTopicIsHidden(
         self, chat_id: int, is_hidden: bool
     ) -> Result:
-        """Toggles whether a General topic is hidden in a forum supergroup chat; requires can\_manage\_topics administrator right in the supergroup
+        """Toggles whether a General topic is hidden in a forum supergroup chat; requires can\_manage\_topics right in the supergroup
 
         Args:
             chat_id (``int``):
@@ -3562,7 +3859,7 @@ class TDLibFunctions:
     async def toggleForumTopicIsPinned(
         self, chat_id: int, message_thread_id: int, is_pinned: bool
     ) -> Result:
-        """Changes the pinned state of a forum topic; requires can\_manage\_topics administrator right in the supergroup\. There can be up to getOption\("pinned\_forum\_topic\_count\_max"\) pinned forum topics
+        """Changes the pinned state of a forum topic; requires can\_manage\_topics right in the supergroup\. There can be up to getOption\("pinned\_forum\_topic\_count\_max"\) pinned forum topics
 
         Args:
             chat_id (``int``):
@@ -3591,7 +3888,7 @@ class TDLibFunctions:
     async def setPinnedForumTopics(
         self, chat_id: int, message_thread_ids: list
     ) -> Result:
-        """Changes the order of pinned forum topics
+        """Changes the order of pinned forum topics; requires can\_manage\_topics right in the supergroup
 
         Args:
             chat_id (``int``):
@@ -3637,7 +3934,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getEmojiReaction(self, emoji: str) -> Result:
-        """Returns information about a emoji reaction\. Returns a 404 error if the reaction is not found
+        """Returns information about an emoji reaction\. Returns a 404 error if the reaction is not found
 
         Args:
             emoji (``str``):
@@ -3720,7 +4017,7 @@ class TDLibFunctions:
         is_big: bool,
         update_recent_reactions: bool,
     ) -> Result:
-        """Adds a reaction to a message\. Use getMessageAvailableReactions to receive the list of available reactions for the message
+        """Adds a reaction or a tag to a message\. Use getMessageAvailableReactions to receive the list of available reactions for the message
 
         Args:
             chat_id (``int``):
@@ -3736,7 +4033,7 @@ class TDLibFunctions:
                 Pass true if the reaction is added with a big animation
 
             update_recent_reactions (``bool``):
-                Pass true if the reaction needs to be added to recent reactions
+                Pass true if the reaction needs to be added to recent reactions; tags are never added to the list of recent reactions
 
 
         Returns:
@@ -3877,6 +4174,43 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getSavedMessagesTags(self) -> Result:
+        """Returns tags used in Saved Messages; for Telegram Premium users only
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``SavedMessagesTags``)
+        """
+
+        data = {
+            "@type": "getSavedMessagesTags",
+        }
+
+        return await self.invoke(data)
+
+    async def setSavedMessagesTagLabel(self, tag: dict, label: str) -> Result:
+        """Changes label of a Saved Messages tag; for Telegram Premium users only
+
+        Args:
+            tag (``ReactionType``):
+                The tag which label will be changed
+
+            label (``str``):
+                New label for the tag; 0\-12 characters
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setSavedMessagesTagLabel",
+            "tag": tag,
+            "label": label,
+        }
+
+        return await self.invoke(data)
+
     async def searchQuote(self, text: dict, quote: dict, quote_position: int) -> Result:
         """Searches for a given quote in a text\. Returns found quote start position in UTF\-16 code units\. Returns a 404 error if the quote is not found\. Can be called synchronously
 
@@ -3980,6 +4314,25 @@ class TDLibFunctions:
         data = {
             "@type": "getMarkdownText",
             "text": text,
+        }
+
+        return await self.invoke(data)
+
+    async def getCountryFlagEmoji(self, country_code: str) -> Result:
+        """Returns an emoji for the given country\. Returns an empty string on failure\. Can be called synchronously
+
+        Args:
+            country_code (``str``):
+                A two\-letter ISO 3166\-1 alpha\-2 country code as received from getCountries
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Text``)
+        """
+
+        data = {
+            "@type": "getCountryFlagEmoji",
+            "country_code": country_code,
         }
 
         return await self.invoke(data)
@@ -11039,16 +11392,38 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def searchEmojis(
-        self, text: str, exact_match: bool, input_language_codes: list = None
+        self, text: str, input_language_codes: list = None
     ) -> Result:
-        """Searches for emojis by keywords\. Supported only if the file database is enabled
+        """Searches for emojis by keywords\. Supported only if the file database is enabled\. Order of results is unspecified
 
         Args:
             text (``str``):
                 Text to search for
 
-            exact_match (``bool``):
-                Pass true if only emojis, which exactly match the text, needs to be returned
+            input_language_codes (``list``, *optional*):
+                List of possible IETF language tags of the user's input language; may be empty if unknown
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``EmojiKeywords``)
+        """
+
+        data = {
+            "@type": "searchEmojis",
+            "text": text,
+            "input_language_codes": input_language_codes,
+        }
+
+        return await self.invoke(data)
+
+    async def getKeywordEmojis(
+        self, text: str, input_language_codes: list = None
+    ) -> Result:
+        """Return emojis matching the keyword\. Supported only if the file database is enabled\. Order of results is unspecified
+
+        Args:
+            text (``str``):
+                Text to search for
 
             input_language_codes (``list``, *optional*):
                 List of possible IETF language tags of the user's input language; may be empty if unknown
@@ -11059,9 +11434,8 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "searchEmojis",
+            "@type": "getKeywordEmojis",
             "text": text,
-            "exact_match": exact_match,
             "input_language_codes": input_language_codes,
         }
 
@@ -13416,6 +13790,95 @@ class TDLibFunctions:
         data = {
             "@type": "getUserPrivacySettingRules",
             "setting": setting,
+        }
+
+        return await self.invoke(data)
+
+    async def setReadDatePrivacySettings(self, settings: dict) -> Result:
+        """Changes privacy settings for message read date
+
+        Args:
+            settings (``readDatePrivacySettings``):
+                New settings
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setReadDatePrivacySettings",
+            "settings": settings,
+        }
+
+        return await self.invoke(data)
+
+    async def getReadDatePrivacySettings(self) -> Result:
+        """Returns privacy settings for message read date
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ReadDatePrivacySettings``)
+        """
+
+        data = {
+            "@type": "getReadDatePrivacySettings",
+        }
+
+        return await self.invoke(data)
+
+    async def setNewChatPrivacySettings(self, settings: dict) -> Result:
+        """Changes privacy settings for new chat creation; for Telegram Premium users only
+
+        Args:
+            settings (``newChatPrivacySettings``):
+                New settings
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setNewChatPrivacySettings",
+            "settings": settings,
+        }
+
+        return await self.invoke(data)
+
+    async def getNewChatPrivacySettings(self) -> Result:
+        """Returns privacy settings for new chat creation
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``NewChatPrivacySettings``)
+        """
+
+        data = {
+            "@type": "getNewChatPrivacySettings",
+        }
+
+        return await self.invoke(data)
+
+    async def canSendMessageToUser(self, user_id: int, only_local: bool) -> Result:
+        """Check whether the current user can message another user or try to create a chat with them
+
+        Args:
+            user_id (``int``):
+                Identifier of the other user
+
+            only_local (``bool``):
+                Pass true to get only locally available information without sending network requests
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``CanSendMessageToUserResult``)
+        """
+
+        data = {
+            "@type": "canSendMessageToUser",
+            "user_id": user_id,
+            "only_local": only_local,
         }
 
         return await self.invoke(data)

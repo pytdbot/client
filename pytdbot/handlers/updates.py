@@ -1681,6 +1681,46 @@ class Updates:
 
         return decorator
 
+    def on_updatePinnedSavedMessagesTopics(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The list of pinned Saved Messages topics has changed\. The app can call getPinnedSavedMessagesTopics to get the new list
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updatePinnedSavedMessagesTopics", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updatePinnedSavedMessagesTopics", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updatePinnedSavedMessagesTopics", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateForumTopicInfo(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -3852,6 +3892,42 @@ class Updates:
             else:
                 func._handler = Handler(
                     func, "updateDefaultReactionType", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateSavedMessagesTags(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Used Saved Messages tags have changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateSavedMessagesTags", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateSavedMessagesTags", self, position)
+            else:
+                func._handler = Handler(
+                    func, "updateSavedMessagesTags", filters, position
                 )
             return func
 

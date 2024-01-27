@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.23",
-    "commit_hash": "27c3eaeb4964bd5f18d8488e354abde1a4383e49",
+    "version": "1.8.24",
+    "commit_hash": "c5c55092dd61b9eb15d6bbfd0f02c04c593450e7",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -25,6 +25,7 @@
         "InviteLinkChatType": "Describes the type of a chat to which points an invite link",
         "SecretChatState": "Describes the current secret chat state",
         "MessageSender": "Contains information about the sender of a message",
+        "MessageReadDate": "Describes read date of a recent outgoing message in a private chat",
         "MessageOrigin": "Contains information about the origin of a message",
         "ReactionType": "Describes type of message reaction",
         "MessageSendingState": "Contains information about the sending state of the message",
@@ -43,6 +44,7 @@
         "InlineKeyboardButtonType": "Describes the type of an inline keyboard button",
         "ReplyMarkup": "Contains a description of a custom keyboard and actions that can be done with it to quickly reply to bots",
         "LoginUrlInfo": "Contains information about an inline button of type inlineKeyboardButtonTypeLoginUrl",
+        "SavedMessagesTopic": "Contains information about a Saved Messages topic",
         "RichText": "Describes a text object inside an instant-view web page",
         "PageBlockHorizontalAlignment": "Describes a horizontal alignment of a table cell content",
         "PageBlockVerticalAlignment": "Describes a Vertical alignment of a table cell content",
@@ -80,6 +82,7 @@
         "GroupCallVideoQuality": "Describes the quality of a group call video",
         "CallProblem": "Describes the exact type of a problem with a call",
         "FirebaseAuthenticationSettings": "Contains settings for Firebase Authentication in the official applications",
+        "ReactionUnavailabilityReason": "Describes why the current user can't add reactions to the message, despite some other users can",
         "DiceStickers": "Contains animated stickers which must be used for dice animation rendering",
         "SpeechRecognitionResult": "Describes result of speech recognition in a voice note",
         "BotWriteAccessAllowReason": "Describes a reason why a bot was allowed to write messages to the current user",
@@ -113,6 +116,7 @@
         "StoryPrivacySettings": "Describes privacy settings of a story",
         "UserPrivacySettingRule": "Represents a single rule for managing user privacy settings",
         "UserPrivacySetting": "Describes available user privacy settings",
+        "CanSendMessageToUserResult": "Describes result of canSendMessageToUser",
         "SessionType": "Represents the type of a session",
         "ReportReason": "Describes the reason why a chat is reported",
         "TargetChat": "Describes the target chat to be opened",
@@ -2167,8 +2171,8 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "can_manage_topics": {
-                    "description": "True, if the user can manage topics",
+                "can_create_topics": {
+                    "description": "True, if the user can create topics",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -2219,7 +2223,7 @@
                     "type": "Bool"
                 },
                 "can_manage_topics": {
-                    "description": "True, if the administrator can manage topics; applicable to forum supergroups only",
+                    "description": "True, if the administrator can create, rename, close, reopen, hide, and unhide forum topics; applicable to forum supergroups only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -2747,6 +2751,11 @@
                 },
                 "has_unread_active_stories": {
                     "description": "True, if the user has unread non-expired stories available to the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "restricts_new_chats": {
+                    "description": "True, if the user may restrict new chats with non-contacts. Use canSendMessageToUser to check whether the current user can message the user or try to create a chat with them",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -3950,6 +3959,37 @@
             },
             "type": "ChatMessageSenders"
         },
+        "messageReadDateRead": {
+            "description": "Contains read date of the message",
+            "args": {
+                "read_date": {
+                    "description": "Point in time (Unix timestamp) when the message was read by the other user",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageReadDate"
+        },
+        "messageReadDateUnread": {
+            "description": "The message is unread yet",
+            "args": {},
+            "type": "MessageReadDate"
+        },
+        "messageReadDateTooOld": {
+            "description": "The message is too old to get read date",
+            "args": {},
+            "type": "MessageReadDate"
+        },
+        "messageReadDateUserPrivacyRestricted": {
+            "description": "The read date is unknown due to privacy settings of the other user",
+            "args": {},
+            "type": "MessageReadDate"
+        },
+        "messageReadDateMyPrivacyRestricted": {
+            "description": "The read date is unknown due to privacy settings of the current user, but will be known if the user subscribes to Telegram Premium",
+            "args": {},
+            "type": "MessageReadDate"
+        },
         "messageViewer": {
             "description": "Represents a viewer of a message",
             "args": {
@@ -4036,6 +4076,42 @@
             },
             "type": "MessageOrigin"
         },
+        "forwardSource": {
+            "description": "Contains information about the last message from which a new message was forwarded last time",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the message that was forwarded belonged; may be 0 if unknown",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message; may be 0 if unknown",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "sender_id": {
+                    "description": "Identifier of the sender of the message; may be null if unknown or the new message was forwarded not to Saved Messages",
+                    "is_optional": true,
+                    "type": "MessageSender"
+                },
+                "sender_name": {
+                    "description": "Name of the sender of the message if the sender is hidden by their privacy settings",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the message is sent; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_outgoing": {
+                    "description": "True, if the message that was forwarded is outgoing; always false if sender is unknown",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ForwardSource"
+        },
         "reactionTypeEmoji": {
             "description": "A reaction with an emoji",
             "args": {
@@ -4071,20 +4147,15 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "source": {
+                    "description": "For messages forwarded to the chat with the current user (Saved Messages), to the Replies bot chat, or to the channel's discussion group, information about the source message from which the message was forwarded last time; may be null for other forwards or if unknown",
+                    "is_optional": true,
+                    "type": "forwardSource"
+                },
                 "public_service_announcement_type": {
                     "description": "The type of a public service announcement for the forwarded message",
                     "is_optional": false,
                     "type": "string"
-                },
-                "from_chat_id": {
-                    "description": "For messages forwarded to the chat with the current user (Saved Messages), to the Replies bot chat, or to the channel's discussion group, the identifier of the chat from which the message was forwarded last time; 0 if unknown",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "from_message_id": {
-                    "description": "For messages forwarded to the chat with the current user (Saved Messages), to the Replies bot chat, or to the channel's discussion group, the identifier of the original message from which the new message was forwarded last time; 0 if unknown",
-                    "is_optional": false,
-                    "type": "int53"
                 }
             },
             "type": "MessageForwardInfo"
@@ -4167,6 +4238,22 @@
             },
             "type": "MessageReaction"
         },
+        "messageReactions": {
+            "description": "Contains a list of reactions added to a message",
+            "args": {
+                "reactions": {
+                    "description": "List of added reactions",
+                    "is_optional": false,
+                    "type": "vector<messageReaction>"
+                },
+                "are_tags": {
+                    "description": "True, if the reactions are tags and Telegram Premium users can filter messages by them; currently, always false",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "MessageReactions"
+        },
         "messageInteractionInfo": {
             "description": "Contains information about interactions with a message",
             "args": {
@@ -4186,9 +4273,9 @@
                     "type": "messageReplyInfo"
                 },
                 "reactions": {
-                    "description": "The list of reactions added to the message",
-                    "is_optional": false,
-                    "type": "vector<messageReaction>"
+                    "description": "The list of reactions or tags added to the message; may be null",
+                    "is_optional": true,
+                    "type": "messageReactions"
                 }
             },
             "type": "MessageInteractionInfo"
@@ -4470,6 +4557,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_get_read_date": {
+                    "description": "True, if read date of the message can be received through getMessageReadDate",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_get_viewers": {
                     "description": "True, if chat members already viewed the message can be received through getMessageViewers",
                     "is_optional": false,
@@ -4544,6 +4636,11 @@
                     "description": "If non-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "saved_messages_topic": {
+                    "description": "Information about topic of the message in the Saved Messages chat; may be null for messages not from Saved Messages",
+                    "is_optional": true,
+                    "type": "SavedMessagesTopic"
                 },
                 "self_destruct_type": {
                     "description": "The message's self-destruct type; may be null if none",
@@ -5537,6 +5634,38 @@
             },
             "type": "ChatAvailableReactions"
         },
+        "savedMessagesTag": {
+            "description": "Represents a tag used in Saved Messages",
+            "args": {
+                "tag": {
+                    "description": "The tag",
+                    "is_optional": false,
+                    "type": "ReactionType"
+                },
+                "label": {
+                    "description": "Label of the tag; 0-12 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "count": {
+                    "description": "Number of times the tag was used; may be 0 if the tag has non-empty label",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "SavedMessagesTag"
+        },
+        "savedMessagesTags": {
+            "description": "Contains a list of tags used in Saved Messages",
+            "args": {
+                "tags": {
+                    "description": "List of tags",
+                    "is_optional": false,
+                    "type": "vector<savedMessagesTag>"
+                }
+            },
+            "type": "SavedMessagesTags"
+        },
         "videoChat": {
             "description": "Describes a video chat",
             "args": {
@@ -6341,6 +6470,64 @@
                 }
             },
             "type": "MessageThreadInfo"
+        },
+        "savedMessagesTopicMyNotes": {
+            "description": "Topic containing messages sent by the current user of forwarded from an unknown chat",
+            "args": {},
+            "type": "SavedMessagesTopic"
+        },
+        "savedMessagesTopicAuthorHidden": {
+            "description": "Topic containing messages forwarded from a user with hidden privacy",
+            "args": {},
+            "type": "SavedMessagesTopic"
+        },
+        "savedMessagesTopicSavedFromChat": {
+            "description": "Topic containing messages forwarded from a specific chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "SavedMessagesTopic"
+        },
+        "foundSavedMessagesTopic": {
+            "description": "Contains information about a found Saved Messages topic",
+            "args": {
+                "topic": {
+                    "description": "The topic",
+                    "is_optional": false,
+                    "type": "SavedMessagesTopic"
+                },
+                "last_message": {
+                    "description": "Last message in the topic; may be null if none or unknown",
+                    "is_optional": true,
+                    "type": "message"
+                }
+            },
+            "type": "FoundSavedMessagesTopic"
+        },
+        "foundSavedMessagesTopics": {
+            "description": "Contains a list of Saved Messages topics",
+            "args": {
+                "total_count": {
+                    "description": "Total number of Saved Messages topics found",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "topics": {
+                    "description": "List of Saved Messages topics",
+                    "is_optional": false,
+                    "type": "vector<foundSavedMessagesTopic>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "FoundSavedMessagesTopics"
         },
         "forumTopicIcon": {
             "description": "Describes a forum topic icon",
@@ -9404,11 +9591,6 @@
             },
             "type": "MessageContent"
         },
-        "messageExpiredPhoto": {
-            "description": "A self-destructed photo message",
-            "args": {},
-            "type": "MessageContent"
-        },
         "messageSticker": {
             "description": "A sticker message",
             "args": {
@@ -9451,11 +9633,6 @@
             },
             "type": "MessageContent"
         },
-        "messageExpiredVideo": {
-            "description": "A self-destructed video message",
-            "args": {},
-            "type": "MessageContent"
-        },
         "messageVideoNote": {
             "description": "A video note message",
             "args": {
@@ -9496,6 +9673,26 @@
                     "type": "Bool"
                 }
             },
+            "type": "MessageContent"
+        },
+        "messageExpiredPhoto": {
+            "description": "A self-destructed photo message",
+            "args": {},
+            "type": "MessageContent"
+        },
+        "messageExpiredVideo": {
+            "description": "A self-destructed video message",
+            "args": {},
+            "type": "MessageContent"
+        },
+        "messageExpiredVideoNote": {
+            "description": "A self-destructed video note message",
+            "args": {},
+            "type": "MessageContent"
+        },
+        "messageExpiredVoiceNote": {
+            "description": "A self-destructed voice note message",
+            "args": {},
             "type": "MessageContent"
         },
         "messageLocation": {
@@ -11015,6 +11212,11 @@
                     "description": "Video width and height; must be positive and not greater than 640",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "self_destruct_type": {
+                    "description": "Video note self-destruct type; pass null if none; private chats only",
+                    "is_optional": true,
+                    "type": "MessageSelfDestructType"
                 }
             },
             "type": "InputMessageContent"
@@ -11041,6 +11243,11 @@
                     "description": "Voice note caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
+                },
+                "self_destruct_type": {
+                    "description": "Voice note self-destruct type; pass null if none; private chats only",
+                    "is_optional": true,
+                    "type": "MessageSelfDestructType"
                 }
             },
             "type": "InputMessageContent"
@@ -11471,7 +11678,7 @@
             "type": "ChatAction"
         },
         "userStatusEmpty": {
-            "description": "The user status was never changed",
+            "description": "The user's status has never been changed",
             "args": {},
             "type": "UserStatus"
         },
@@ -11499,18 +11706,63 @@
         },
         "userStatusRecently": {
             "description": "The user was online recently",
-            "args": {},
+            "args": {
+                "by_my_privacy_settings": {
+                    "description": "Exact user's status is hidden because the current user enabled userPrivacySettingShowStatus privacy setting for the user and has no Telegram Premium",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
             "type": "UserStatus"
         },
         "userStatusLastWeek": {
             "description": "The user is offline, but was online last week",
-            "args": {},
+            "args": {
+                "by_my_privacy_settings": {
+                    "description": "Exact user's status is hidden because the current user enabled userPrivacySettingShowStatus privacy setting for the user and has no Telegram Premium",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
             "type": "UserStatus"
         },
         "userStatusLastMonth": {
             "description": "The user is offline, but was online last month",
-            "args": {},
+            "args": {
+                "by_my_privacy_settings": {
+                    "description": "Exact user's status is hidden because the current user enabled userPrivacySettingShowStatus privacy setting for the user and has no Telegram Premium",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
             "type": "UserStatus"
+        },
+        "emojiKeyword": {
+            "description": "Represents an emoji with its keyword",
+            "args": {
+                "emoji": {
+                    "description": "The emoji",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "keyword": {
+                    "description": "The keyword",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "EmojiKeyword"
+        },
+        "emojiKeywords": {
+            "description": "Represents a list of emoji with their keywords",
+            "args": {
+                "emoji_keywords": {
+                    "description": "List of emoji with their keywords",
+                    "is_optional": false,
+                    "type": "vector<emojiKeyword>"
+                }
+            },
+            "type": "EmojiKeywords"
         },
         "stickers": {
             "description": "Represents a list of stickers",
@@ -12449,7 +12701,7 @@
                     "type": "MessageSender"
                 },
                 "interaction_date": {
-                    "description": "Approximate point in time (Unix timestamp) when the interaction happenned",
+                    "description": "Approximate point in time (Unix timestamp) when the interaction happened",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -12608,6 +12860,31 @@
                     "description": "The list of features",
                     "is_optional": false,
                     "type": "vector<chatBoostLevelFeatures>"
+                },
+                "min_profile_background_custom_emoji_boost_level": {
+                    "description": "The minimum boost level required to set custom emoji for profile background",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "min_background_custom_emoji_boost_level": {
+                    "description": "The minimum boost level required to set custom emoji for reply header and link preview background",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "min_emoji_status_boost_level": {
+                    "description": "The minimum boost level required to set emoji status",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "min_chat_theme_background_boost_level": {
+                    "description": "The minimum boost level required to set a chat theme background as chat background",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "min_custom_background_boost_level": {
+                    "description": "The minimum boost level required to set custom chat background",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "ChatBoostFeatures"
@@ -13632,12 +13909,22 @@
                     "description": "True, if any custom emoji reaction can be added by Telegram Premium subscribers",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "are_tags": {
+                    "description": "True, if the reactions will be tags and the message can be found by them; currently, always false",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "unavailability_reason": {
+                    "description": "The reason why the current user can't add reactions to the message, despite some other users can; may be null if none",
+                    "is_optional": true,
+                    "type": "ReactionUnavailabilityReason"
                 }
             },
             "type": "AvailableReactions"
         },
         "emojiReaction": {
-            "description": "Contains information about a emoji reaction",
+            "description": "Contains information about an emoji reaction",
             "args": {
                 "emoji": {
                     "description": "Text representation of the reaction",
@@ -13691,6 +13978,16 @@
                 }
             },
             "type": "EmojiReaction"
+        },
+        "reactionUnavailabilityReasonAnonymousAdministrator": {
+            "description": "The user is an anonymous administrator in the supergroup, but isn't a creator of it, so they can't vote on behalf of the supergroup",
+            "args": {},
+            "type": "ReactionUnavailabilityReason"
+        },
+        "reactionUnavailabilityReasonGuest": {
+            "description": "The user isn't a member of the supergroup and can't send messages and reactions there without joining",
+            "args": {},
+            "type": "ReactionUnavailabilityReason"
         },
         "animations": {
             "description": "Represents a list of animations",
@@ -15991,6 +16288,11 @@
             "args": {},
             "type": "PremiumLimitType"
         },
+        "premiumLimitTypePinnedSavedMessagesTopicCount": {
+            "description": "The maximum number of pinned Saved Messages topics",
+            "args": {},
+            "type": "PremiumLimitType"
+        },
         "premiumLimitTypeCaptionLength": {
             "description": "The maximum length of sent media caption",
             "args": {},
@@ -17955,6 +18257,43 @@
             "args": {},
             "type": "UserPrivacySetting"
         },
+        "readDatePrivacySettings": {
+            "description": "Contains privacy settings for message read date in private chats. Read dates are always shown to the users that can see online status of the current user regardless of this setting",
+            "args": {
+                "show_read_date": {
+                    "description": "True, if message read date is shown to other users in private chats. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date.",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ReadDatePrivacySettings"
+        },
+        "newChatPrivacySettings": {
+            "description": "Contains privacy settings for new chats with non-contacts",
+            "args": {
+                "allow_new_chats_from_unknown_users": {
+                    "description": "True, if non-contacts users are able to write first to the current user. Telegram Premium subscribers are able to write first regardless of this setting",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "NewChatPrivacySettings"
+        },
+        "canSendMessageToUserResultOk": {
+            "description": "The user can be messaged",
+            "args": {},
+            "type": "CanSendMessageToUserResult"
+        },
+        "canSendMessageToUserResultUserIsDeleted": {
+            "description": "The user can't be messaged, because they are deleted or unknown",
+            "args": {},
+            "type": "CanSendMessageToUserResult"
+        },
+        "canSendMessageToUserResultUserRestrictsNewChats": {
+            "description": "The user can't be messaged, because they restrict new chats with non-contacts",
+            "args": {},
+            "type": "CanSendMessageToUserResult"
+        },
         "accountTtl": {
             "description": "Contains information about the period of inactivity after which the current user's account will automatically be deleted",
             "args": {
@@ -18355,7 +18694,7 @@
             "type": "TargetChat"
         },
         "internalLinkTypeActiveSessions": {
-            "description": "The link is a link to the active sessions section of the application. Use getActiveSessions to handle the link",
+            "description": "The link is a link to the Devices section of the application. Use getActiveSessions to get the list of active sessions and show them to the user",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -18392,7 +18731,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeBackground": {
-            "description": "The link is a link to a background. Call searchBackground with the given background name to process the link",
+            "description": "The link is a link to a background. Call searchBackground with the given background name to process the link If background is found and the user wants to apply it, then call setDefaultBackground",
             "args": {
                 "background_name": {
                     "description": "Name of the background",
@@ -18477,7 +18816,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeChatFolderInvite": {
-            "description": "The link is an invite link to a chat folder. Call checkChatFolderInviteLink with the given invite link to process the link",
+            "description": "The link is an invite link to a chat folder. Call checkChatFolderInviteLink with the given invite link to process the link. If the link is valid and the user wants to join the chat folder, then call addChatFolderByInviteLink",
             "args": {
                 "invite_link": {
                     "description": "Internal representation of the invite link",
@@ -18493,7 +18832,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeChatInvite": {
-            "description": "The link is a chat invite link. Call checkChatInviteLink with the given invite link to process the link",
+            "description": "The link is a chat invite link. Call checkChatInviteLink with the given invite link to process the link. If the link is valid and the user wants to join the chat, then call joinChatByInviteLink",
             "args": {
                 "invite_link": {
                     "description": "Internal representation of the invite link",
@@ -18530,7 +18869,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeInstantView": {
-            "description": "The link must be opened in an Instant View. Call getWebPageInstantView with the given URL to process the link",
+            "description": "The link must be opened in an Instant View. Call getWebPageInstantView with the given URL to process the link. If Instant View is found, then show it, otherwise, open the fallback URL in an external browser",
             "args": {
                 "url": {
                     "description": "URL to be passed to getWebPageInstantView",
@@ -18557,7 +18896,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeLanguagePack": {
-            "description": "The link is a link to a language pack. Call getLanguagePackInfo with the given language pack identifier to process the link",
+            "description": "The link is a link to a language pack. Call getLanguagePackInfo with the given language pack identifier to process the link. If the language pack is found and the user wants to apply it, then call setOption for the option \"language_pack_id\"",
             "args": {
                 "language_pack_id": {
                     "description": "Language pack identifier",
@@ -18573,7 +18912,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeMessage": {
-            "description": "The link is a link to a Telegram message or a forum topic. Call getMessageLinkInfo with the given URL to process the link",
+            "description": "The link is a link to a Telegram message or a forum topic. Call getMessageLinkInfo with the given URL to process the link, and then open received forum topic or chat and show the message there",
             "args": {
                 "url": {
                     "description": "URL to be passed to getMessageLinkInfo",
@@ -18631,7 +18970,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePhoneNumberConfirmation": {
-            "description": "The link can be used to confirm ownership of a phone number to prevent account deletion. Call sendPhoneNumberConfirmationCode with the given hash and phone number to process the link",
+            "description": "The link can be used to confirm ownership of a phone number to prevent account deletion. Call sendPhoneNumberConfirmationCode with the given hash and phone number to process the link. If succeeded, call checkPhoneNumberConfirmationCode to check entered by the user code, or resendPhoneNumberConfirmationCode to resend it",
             "args": {
                 "hash": {
                     "description": "Hash value from the link",
@@ -18658,7 +18997,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePremiumGift": {
-            "description": "The link is a link to the screen for gifting Telegram Premium subscriptions to friends",
+            "description": "The link is a link to the screen for gifting Telegram Premium subscriptions to friends via inputInvoiceTelegram payments or in-store purchases",
             "args": {
                 "referrer": {
                     "description": "Referrer specified in the link",
@@ -18706,7 +19045,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePublicChat": {
-            "description": "The link is a link to a chat by its username. Call searchPublicChat with the given chat username to process the link",
+            "description": "The link is a link to a chat by its username. Call searchPublicChat with the given chat username to process the link If the chat is found, open its profile information screen or the chat itself",
             "args": {
                 "chat_username": {
                     "description": "Username of the chat",
@@ -18732,7 +19071,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeSideMenuBot": {
-            "description": "The link is a link to a bot, which can be installed to the side menu. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to side menu, then show a disclaimer about Mini Apps being a third-party apps, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. If the bot is added to side menu, then use getWebAppUrl with the given URL",
+            "description": "The link is a link to a bot, which can be installed to the side menu. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to side menu, then show a disclaimer about Mini Apps being a third-party apps, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. If the bot is added to side menu, then use getWebAppUrl with the given URL and open the returned URL as a Web App",
             "args": {
                 "bot_username": {
                     "description": "Username of the bot",
@@ -18748,7 +19087,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeStickerSet": {
-            "description": "The link is a link to a sticker set. Call searchStickerSet with the given sticker set name to process the link and show the sticker set",
+            "description": "The link is a link to a sticker set. Call searchStickerSet with the given sticker set name to process the link and show the sticker set. If the sticker set is found and the user wants to add it, then call changeStickerSet",
             "args": {
                 "sticker_set_name": {
                     "description": "Name of the sticker set",
@@ -18764,7 +19103,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeStory": {
-            "description": "The link is a link to a story. Call searchPublicChat with the given sender username, then call getStory with the received chat identifier and the given story identifier",
+            "description": "The link is a link to a story. Call searchPublicChat with the given sender username, then call getStory with the received chat identifier and the given story identifier, then show the story if received",
             "args": {
                 "story_sender_username": {
                     "description": "Username of the sender of the story",
@@ -18812,7 +19151,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeUserPhoneNumber": {
-            "description": "The link is a link to a user by its phone number. Call searchUserByPhoneNumber with the given phone number to process the link",
+            "description": "The link is a link to a user by its phone number. Call searchUserByPhoneNumber with the given phone number to process the link. If the user is found, then call createPrivateChat and open the chat",
             "args": {
                 "phone_number": {
                     "description": "Phone number of the user",
@@ -18823,7 +19162,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeUserToken": {
-            "description": "The link is a link to a user by a temporary token. Call searchUserByToken with the given token to process the link",
+            "description": "The link is a link to a user by a temporary token. Call searchUserByToken with the given token to process the link. If the user is found, then call createPrivateChat and open the chat",
             "args": {
                 "token": {
                     "description": "The token",
@@ -21315,6 +21654,11 @@
             },
             "type": "Update"
         },
+        "updatePinnedSavedMessagesTopics": {
+            "description": "The list of pinned Saved Messages topics has changed. The app can call getPinnedSavedMessagesTopics to get the new list",
+            "args": {},
+            "type": "Update"
+        },
         "updateForumTopicInfo": {
             "description": "Basic information about a topic in a forum chat was changed",
             "args": {
@@ -22254,6 +22598,17 @@
             },
             "type": "Update"
         },
+        "updateSavedMessagesTags": {
+            "description": "Used Saved Messages tags have changed",
+            "args": {
+                "tags": {
+                    "description": "The new used tags",
+                    "is_optional": false,
+                    "type": "savedMessagesTags"
+                }
+            },
+            "type": "Update"
+        },
         "updateSpeechRecognitionTrial": {
             "description": "The parameters of speech recognition without Telegram Premium subscription has changed",
             "args": {
@@ -22876,16 +23231,6 @@
                     "description": "Application version; must be non-empty",
                     "is_optional": false,
                     "type": "string"
-                },
-                "enable_storage_optimizer": {
-                    "description": "Pass true to automatically delete old files in background",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "ignore_file_names": {
-                    "description": "Pass true to ignore original file names for downloaded files. Otherwise, downloaded files are saved under names as close as possible to the original name",
-                    "is_optional": false,
-                    "type": "Bool"
                 }
             },
             "type": "Ok"
@@ -23194,6 +23539,11 @@
             "args": {},
             "type": "PasswordState"
         },
+        "cancelRecoveryEmailAddressVerification": {
+            "description": "Cancels verification of the 2-step verification recovery email address",
+            "args": {},
+            "type": "PasswordState"
+        },
         "requestPasswordRecovery": {
             "description": "Requests to send a 2-step verification password recovery code to an email address that was previously set up",
             "args": {},
@@ -23466,6 +23816,22 @@
                 }
             },
             "type": "MessageThreadInfo"
+        },
+        "getMessageReadDate": {
+            "description": "Returns read date of a recent outgoing message in a private chat. The method can be called if message.can_get_read_date == true and the message is read",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "MessageReadDate"
         },
         "getMessageViewers": {
             "description": "Returns viewers of a recent outgoing message in a basic group or a supergroup chat. For video notes and voice notes only users, opened content of the message, are returned. The method can be called if message.can_get_viewers == true",
@@ -23784,6 +24150,128 @@
             "args": {},
             "type": "Chats"
         },
+        "getPinnedSavedMessagesTopics": {
+            "description": "Returns list of all pinned Saved Messages topics",
+            "args": {},
+            "type": "FoundSavedMessagesTopics"
+        },
+        "getSavedMessagesTopics": {
+            "description": "Returns list of non-pinned Saved Messages topics from the specified offset",
+            "args": {
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of Saved Messages topics to be returned; up to 100",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "FoundSavedMessagesTopics"
+        },
+        "getSavedMessagesTopicHistory": {
+            "description": "Returns messages in a Saved Messages topic. The messages are returned in a reverse chronological order (i.e., in order of decreasing message_id)",
+            "args": {
+                "saved_messages_topic": {
+                    "description": "Saved Messages topic which messages will be fetched",
+                    "is_optional": false,
+                    "type": "SavedMessagesTopic"
+                },
+                "from_message_id": {
+                    "description": "Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset": {
+                    "description": "Specify 0 to get results from exactly the message from_message_id or a negative offset up to 99 to get additionally some newer messages",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "limit": {
+                    "description": "The maximum number of messages to be returned; must be positive and can't be greater than 100. If the offset is negative, the limit must be greater than or equal to -offset. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Messages"
+        },
+        "getSavedMessagesTopicMessageByDate": {
+            "description": "Returns the last message sent in a Saved Messages topic no later than the specified date",
+            "args": {
+                "saved_messages_topic": {
+                    "description": "Saved Messages topic which message will be returned",
+                    "is_optional": false,
+                    "type": "SavedMessagesTopic"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) relative to which to search for messages",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Message"
+        },
+        "deleteSavedMessagesTopicHistory": {
+            "description": "Deletes all messages in a Saved Messages topic",
+            "args": {
+                "saved_messages_topic": {
+                    "description": "Saved Messages topic which messages will be deleted",
+                    "is_optional": false,
+                    "type": "SavedMessagesTopic"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteSavedMessagesTopicMessagesByDate": {
+            "description": "Deletes all messages between the specified dates in a Saved Messages topic. Messages sent in the last 30 seconds will not be deleted",
+            "args": {
+                "saved_messages_topic": {
+                    "description": "Saved Messages topic which messages will be deleted",
+                    "is_optional": false,
+                    "type": "SavedMessagesTopic"
+                },
+                "min_date": {
+                    "description": "The minimum date of the messages to delete",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "max_date": {
+                    "description": "The maximum date of the messages to delete",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleSavedMessagesTopicIsPinned": {
+            "description": "Changes the pinned state of a Saved Messages topic. There can be up to getOption(\"pinned_saved_messages_topic_count_max\") pinned topics. The limit can be increased with Telegram Premium",
+            "args": {
+                "saved_messages_topic": {
+                    "description": "Saved Messages topic to pin or unpin",
+                    "is_optional": false,
+                    "type": "SavedMessagesTopic"
+                },
+                "is_pinned": {
+                    "description": "Pass true to pin the topic; pass false to unpin it",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "setPinnedSavedMessagesTopics": {
+            "description": "Changes the order of pinned Saved Messages topics",
+            "args": {
+                "saved_messages_topics": {
+                    "description": "The new list of pinned Saved Messages topics",
+                    "is_optional": false,
+                    "type": "vector<SavedMessagesTopic>"
+                }
+            },
+            "type": "Ok"
+        },
         "getGroupsInCommon": {
             "description": "Returns a list of common group chats with a given user. Chats are sorted by their type and creation date",
             "args": {
@@ -23819,7 +24307,7 @@
                     "type": "int53"
                 },
                 "offset": {
-                    "description": "Specify 0 to get results from exactly the from_message_id or a negative offset up to 99 to get additionally some newer messages",
+                    "description": "Specify 0 to get results from exactly the message from_message_id or a negative offset up to 99 to get additionally some newer messages",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -23855,7 +24343,7 @@
                     "type": "int53"
                 },
                 "offset": {
-                    "description": "Specify 0 to get results from exactly the from_message_id or a negative offset up to 99 to get additionally some newer messages",
+                    "description": "Specify 0 to get results from exactly the message from_message_id or a negative offset up to 99 to get additionally some newer messages",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -23923,7 +24411,7 @@
                     "type": "int53"
                 },
                 "offset": {
-                    "description": "Specify 0 to get results from exactly the from_message_id or a negative offset to get the specified message and some newer messages",
+                    "description": "Specify 0 to get results from exactly the message from_message_id or a negative offset to get the specified message and some newer messages",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -23941,6 +24429,11 @@
                     "description": "If not 0, only messages in the specified thread will be returned; supergroups only",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "saved_messages_topic": {
+                    "description": "If not null, only messages in the specified Saved Messages topic will be returned; pass null to return all messages, or for chats other than Saved Messages",
+                    "is_optional": true,
+                    "type": "SavedMessagesTopic"
                 }
             },
             "type": "FoundChatMessages"
@@ -24016,6 +24509,37 @@
                 }
             },
             "type": "FoundMessages"
+        },
+        "searchSavedMessages": {
+            "description": "Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only. Returns the results in reverse chronological order, i.e. in order of decreasing message_id For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+            "args": {
+                "tag": {
+                    "description": "Tag to search for; pass null to return all suitable messages",
+                    "is_optional": true,
+                    "type": "ReactionType"
+                },
+                "query": {
+                    "description": "Query to search for",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "from_message_id": {
+                    "description": "Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset": {
+                    "description": "Specify 0 to get results from exactly the message from_message_id or a negative offset to get the specified message and some newer messages",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "limit": {
+                    "description": "The maximum number of messages to be returned; must be positive and can't be greater than 100. If the offset is negative, the limit must be greater than -offset. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "FoundChatMessages"
         },
         "searchCallMessages": {
             "description": "Searches for call messages. Returns the results in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib",
@@ -24124,6 +24648,11 @@
                     "description": "The expected number of message positions to be returned; 50-2000. A smaller number of positions can be returned, if there are not enough appropriate messages",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "saved_messages_topic": {
+                    "description": "If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all messages, or for chats other than Saved Messages",
+                    "is_optional": true,
+                    "type": "SavedMessagesTopic"
                 }
             },
             "type": "MessagePositions"
@@ -24145,6 +24674,11 @@
                     "description": "The message identifier from which to return information about messages; use 0 to get results from the last message",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "saved_messages_topic": {
+                    "description": "If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all messages, or for chats other than Saved Messages",
+                    "is_optional": true,
+                    "type": "SavedMessagesTopic"
                 }
             },
             "type": "MessageCalendar"
@@ -24161,6 +24695,11 @@
                     "description": "Filter for message content; searchMessagesFilterEmpty is unsupported in this function",
                     "is_optional": false,
                     "type": "SearchMessagesFilter"
+                },
+                "saved_messages_topic": {
+                    "description": "If not null, only messages in the specified Saved Messages topic will be counted; pass null to count all messages, or for chats other than Saved Messages",
+                    "is_optional": true,
+                    "type": "SavedMessagesTopic"
                 },
                 "return_local": {
                     "description": "Pass true to get the number of messages without sending network requests, or -1 if the number of messages is unknown locally",
@@ -24192,6 +24731,11 @@
                     "description": "If not 0, only messages in the specified thread will be considered; supergroups only",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "saved_messages_topic": {
+                    "description": "If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all relevant messages, or for chats other than Saved Messages",
+                    "is_optional": true,
+                    "type": "SavedMessagesTopic"
                 }
             },
             "type": "Count"
@@ -24987,7 +25531,7 @@
             "type": "Stickers"
         },
         "createForumTopic": {
-            "description": "Creates a topic in a forum supergroup chat; requires can_manage_topics rights in the supergroup",
+            "description": "Creates a topic in a forum supergroup chat; requires can_manage_topics or can_create_topics rights in the supergroup",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -25008,7 +25552,7 @@
             "type": "ForumTopicInfo"
         },
         "editForumTopic": {
-            "description": "Edits title and icon of a topic in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup unless the user is creator of the topic",
+            "description": "Edits title and icon of a topic in a forum supergroup chat; requires can_manage_topics right in the supergroup unless the user is creator of the topic",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -25128,7 +25672,7 @@
             "type": "Ok"
         },
         "toggleForumTopicIsClosed": {
-            "description": "Toggles whether a topic is closed in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup unless the user is creator of the topic",
+            "description": "Toggles whether a topic is closed in a forum supergroup chat; requires can_manage_topics right in the supergroup unless the user is creator of the topic",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -25149,7 +25693,7 @@
             "type": "Ok"
         },
         "toggleGeneralForumTopicIsHidden": {
-            "description": "Toggles whether a General topic is hidden in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup",
+            "description": "Toggles whether a General topic is hidden in a forum supergroup chat; requires can_manage_topics right in the supergroup",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -25165,7 +25709,7 @@
             "type": "Ok"
         },
         "toggleForumTopicIsPinned": {
-            "description": "Changes the pinned state of a forum topic; requires can_manage_topics administrator right in the supergroup. There can be up to getOption(\"pinned_forum_topic_count_max\") pinned forum topics",
+            "description": "Changes the pinned state of a forum topic; requires can_manage_topics right in the supergroup. There can be up to getOption(\"pinned_forum_topic_count_max\") pinned forum topics",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -25186,7 +25730,7 @@
             "type": "Ok"
         },
         "setPinnedForumTopics": {
-            "description": "Changes the order of pinned forum topics",
+            "description": "Changes the order of pinned forum topics; requires can_manage_topics right in the supergroup",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -25218,7 +25762,7 @@
             "type": "Ok"
         },
         "getEmojiReaction": {
-            "description": "Returns information about a emoji reaction. Returns a 404 error if the reaction is not found",
+            "description": "Returns information about an emoji reaction. Returns a 404 error if the reaction is not found",
             "args": {
                 "emoji": {
                     "description": "Text representation of the reaction",
@@ -25260,7 +25804,7 @@
             "type": "Ok"
         },
         "addMessageReaction": {
-            "description": "Adds a reaction to a message. Use getMessageAvailableReactions to receive the list of available reactions for the message",
+            "description": "Adds a reaction or a tag to a message. Use getMessageAvailableReactions to receive the list of available reactions for the message",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which the message belongs",
@@ -25283,7 +25827,7 @@
                     "type": "Bool"
                 },
                 "update_recent_reactions": {
-                    "description": "Pass true if the reaction needs to be added to recent reactions",
+                    "description": "Pass true if the reaction needs to be added to recent reactions; tags are never added to the list of recent reactions",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -25379,6 +25923,27 @@
             },
             "type": "Ok"
         },
+        "getSavedMessagesTags": {
+            "description": "Returns tags used in Saved Messages; for Telegram Premium users only",
+            "args": {},
+            "type": "SavedMessagesTags"
+        },
+        "setSavedMessagesTagLabel": {
+            "description": "Changes label of a Saved Messages tag; for Telegram Premium users only",
+            "args": {
+                "tag": {
+                    "description": "The tag which label will be changed",
+                    "is_optional": false,
+                    "type": "ReactionType"
+                },
+                "label": {
+                    "description": "New label for the tag; 0-12 characters",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
         "searchQuote": {
             "description": "Searches for a given quote in a text. Returns found quote start position in UTF-16 code units. Returns a 404 error if the quote is not found. Can be called synchronously",
             "args": {
@@ -25448,6 +26013,17 @@
                 }
             },
             "type": "FormattedText"
+        },
+        "getCountryFlagEmoji": {
+            "description": "Returns an emoji for the given country. Returns an empty string on failure. Can be called synchronously",
+            "args": {
+                "country_code": {
+                    "description": "A two-letter ISO 3166-1 alpha-2 country code as received from getCountries",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Text"
         },
         "getFileMimeType": {
             "description": "Returns the MIME type of a file, guessed by its extension. Returns an empty string on failure. Can be called synchronously",
@@ -30174,17 +30750,28 @@
             "type": "Emojis"
         },
         "searchEmojis": {
-            "description": "Searches for emojis by keywords. Supported only if the file database is enabled",
+            "description": "Searches for emojis by keywords. Supported only if the file database is enabled. Order of results is unspecified",
             "args": {
                 "text": {
                     "description": "Text to search for",
                     "is_optional": false,
                     "type": "string"
                 },
-                "exact_match": {
-                    "description": "Pass true if only emojis, which exactly match the text, needs to be returned",
+                "input_language_codes": {
+                    "description": "List of possible IETF language tags of the user's input language; may be empty if unknown",
+                    "is_optional": true,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "EmojiKeywords"
+        },
+        "getKeywordEmojis": {
+            "description": "Return emojis matching the keyword. Supported only if the file database is enabled. Order of results is unspecified",
+            "args": {
+                "text": {
+                    "description": "Text to search for",
                     "is_optional": false,
-                    "type": "Bool"
+                    "type": "string"
                 },
                 "input_language_codes": {
                     "description": "List of possible IETF language tags of the user's input language; may be empty if unknown",
@@ -31646,6 +32233,54 @@
                 }
             },
             "type": "UserPrivacySettingRules"
+        },
+        "setReadDatePrivacySettings": {
+            "description": "Changes privacy settings for message read date",
+            "args": {
+                "settings": {
+                    "description": "New settings",
+                    "is_optional": false,
+                    "type": "readDatePrivacySettings"
+                }
+            },
+            "type": "Ok"
+        },
+        "getReadDatePrivacySettings": {
+            "description": "Returns privacy settings for message read date",
+            "args": {},
+            "type": "ReadDatePrivacySettings"
+        },
+        "setNewChatPrivacySettings": {
+            "description": "Changes privacy settings for new chat creation; for Telegram Premium users only",
+            "args": {
+                "settings": {
+                    "description": "New settings",
+                    "is_optional": false,
+                    "type": "newChatPrivacySettings"
+                }
+            },
+            "type": "Ok"
+        },
+        "getNewChatPrivacySettings": {
+            "description": "Returns privacy settings for new chat creation",
+            "args": {},
+            "type": "NewChatPrivacySettings"
+        },
+        "canSendMessageToUser": {
+            "description": "Check whether the current user can message another user or try to create a chat with them",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the other user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "only_local": {
+                    "description": "Pass true to get only locally available information without sending network requests",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "CanSendMessageToUserResult"
         },
         "getOption": {
             "description": "Returns the value of an option by its name. (Check the list of available options on https://core.telegram.org/tdlib/options.) Can be called before authorization. Can be called synchronously for options \"version\" and \"commit_hash\"",
