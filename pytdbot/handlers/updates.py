@@ -1681,12 +1681,12 @@ class Updates:
 
         return decorator
 
-    def on_updatePinnedSavedMessagesTopics(
+    def on_updateSavedMessagesTopic(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of pinned Saved Messages topics has changed\. The app can call getPinnedSavedMessagesTopics to get the new list
+        """Basic information about a Saved Messages topic has changed\. This update is guaranteed to come before the topic identifier is returned to the application
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1705,17 +1705,57 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updatePinnedSavedMessagesTopics", func, filters, position
+                        "updateSavedMessagesTopic", func, filters, position
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updatePinnedSavedMessagesTopics", self, position
+                    func, "updateSavedMessagesTopic", self, position
                 )
             else:
                 func._handler = Handler(
-                    func, "updatePinnedSavedMessagesTopics", filters, position
+                    func, "updateSavedMessagesTopic", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateSavedMessagesTopicCount(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Number of Saved Messages topics has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateSavedMessagesTopicCount", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateSavedMessagesTopicCount", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateSavedMessagesTopicCount", filters, position
                 )
             return func
 
@@ -3902,7 +3942,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Used Saved Messages tags have changed
+        """Tags used in Saved Messages or a Saved Messages topic have changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):

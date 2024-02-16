@@ -220,7 +220,9 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def registerUser(self, first_name: str, last_name: str) -> Result:
+    async def registerUser(
+        self, first_name: str, last_name: str, disable_notification: bool
+    ) -> Result:
         """Finishes user registration\. Works only when the current authorization state is authorizationStateWaitRegistration
 
         Args:
@@ -229,6 +231,9 @@ class TDLibFunctions:
 
             last_name (``str``):
                 The last name of the user; 0\-64 characters
+
+            disable_notification (``bool``):
+                Pass true to disable notification about the current user joining Telegram for other users that added them to contact list
 
 
         Returns:
@@ -239,6 +244,7 @@ class TDLibFunctions:
             "@type": "registerUser",
             "first_name": first_name,
             "last_name": last_name,
+            "disable_notification": disable_notification,
         }
 
         return await self.invoke(data)
@@ -1660,51 +1666,37 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getPinnedSavedMessagesTopics(self) -> Result:
-        """Returns list of all pinned Saved Messages topics
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``FoundSavedMessagesTopics``)
-        """
-
-        data = {
-            "@type": "getPinnedSavedMessagesTopics",
-        }
-
-        return await self.invoke(data)
-
-    async def getSavedMessagesTopics(self, offset: str, limit: int) -> Result:
-        """Returns list of non\-pinned Saved Messages topics from the specified offset
+    async def loadSavedMessagesTopics(self, limit: int) -> Result:
+        """Loads more Saved Messages topics\. The loaded topics will be sent through updateSavedMessagesTopic\. Topics are sorted by their topic\.order in descending order\. Returns a 404 error if all topics have been loaded
 
         Args:
-            offset (``str``):
-                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
-
             limit (``int``):
-                The maximum number of Saved Messages topics to be returned; up to 100
+                The maximum number of topics to be loaded\. For optimal performance, the number of loaded topics is chosen by TDLib and can be smaller than the specified limit, even if the end of the list is not reached
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``FoundSavedMessagesTopics``)
+            :class:`~pytdbot.types.Result` (``Ok``)
         """
 
         data = {
-            "@type": "getSavedMessagesTopics",
-            "offset": offset,
+            "@type": "loadSavedMessagesTopics",
             "limit": limit,
         }
 
         return await self.invoke(data)
 
     async def getSavedMessagesTopicHistory(
-        self, saved_messages_topic: dict, from_message_id: int, offset: int, limit: int
+        self,
+        saved_messages_topic_id: int,
+        from_message_id: int,
+        offset: int,
+        limit: int,
     ) -> Result:
         """Returns messages in a Saved Messages topic\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)
 
         Args:
-            saved_messages_topic (``SavedMessagesTopic``):
-                Saved Messages topic which messages will be fetched
+            saved_messages_topic_id (``int``):
+                Identifier of Saved Messages topic which messages will be fetched
 
             from_message_id (``int``):
                 Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message
@@ -1722,7 +1714,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "getSavedMessagesTopicHistory",
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
             "from_message_id": from_message_id,
             "offset": offset,
             "limit": limit,
@@ -1731,13 +1723,13 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getSavedMessagesTopicMessageByDate(
-        self, saved_messages_topic: dict, date: int
+        self, saved_messages_topic_id: int, date: int
     ) -> Result:
         """Returns the last message sent in a Saved Messages topic no later than the specified date
 
         Args:
-            saved_messages_topic (``SavedMessagesTopic``):
-                Saved Messages topic which message will be returned
+            saved_messages_topic_id (``int``):
+                Identifier of Saved Messages topic which message will be returned
 
             date (``int``):
                 Point in time \(Unix timestamp\) relative to which to search for messages
@@ -1749,20 +1741,20 @@ class TDLibFunctions:
 
         data = {
             "@type": "getSavedMessagesTopicMessageByDate",
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
             "date": date,
         }
 
         return await self.invoke(data)
 
     async def deleteSavedMessagesTopicHistory(
-        self, saved_messages_topic: dict
+        self, saved_messages_topic_id: int
     ) -> Result:
         """Deletes all messages in a Saved Messages topic
 
         Args:
-            saved_messages_topic (``SavedMessagesTopic``):
-                Saved Messages topic which messages will be deleted
+            saved_messages_topic_id (``int``):
+                Identifier of Saved Messages topic which messages will be deleted
 
 
         Returns:
@@ -1771,19 +1763,19 @@ class TDLibFunctions:
 
         data = {
             "@type": "deleteSavedMessagesTopicHistory",
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
         }
 
         return await self.invoke(data)
 
     async def deleteSavedMessagesTopicMessagesByDate(
-        self, saved_messages_topic: dict, min_date: int, max_date: int
+        self, saved_messages_topic_id: int, min_date: int, max_date: int
     ) -> Result:
         """Deletes all messages between the specified dates in a Saved Messages topic\. Messages sent in the last 30 seconds will not be deleted
 
         Args:
-            saved_messages_topic (``SavedMessagesTopic``):
-                Saved Messages topic which messages will be deleted
+            saved_messages_topic_id (``int``):
+                Identifier of Saved Messages topic which messages will be deleted
 
             min_date (``int``):
                 The minimum date of the messages to delete
@@ -1798,7 +1790,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "deleteSavedMessagesTopicMessagesByDate",
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
             "min_date": min_date,
             "max_date": max_date,
         }
@@ -1806,13 +1798,13 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def toggleSavedMessagesTopicIsPinned(
-        self, saved_messages_topic: dict, is_pinned: bool
+        self, saved_messages_topic_id: int, is_pinned: bool
     ) -> Result:
         """Changes the pinned state of a Saved Messages topic\. There can be up to getOption\("pinned\_saved\_messages\_topic\_count\_max"\) pinned topics\. The limit can be increased with Telegram Premium
 
         Args:
-            saved_messages_topic (``SavedMessagesTopic``):
-                Saved Messages topic to pin or unpin
+            saved_messages_topic_id (``int``):
+                Identifier of Saved Messages topic to pin or unpin
 
             is_pinned (``bool``):
                 Pass true to pin the topic; pass false to unpin it
@@ -1824,18 +1816,20 @@ class TDLibFunctions:
 
         data = {
             "@type": "toggleSavedMessagesTopicIsPinned",
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
             "is_pinned": is_pinned,
         }
 
         return await self.invoke(data)
 
-    async def setPinnedSavedMessagesTopics(self, saved_messages_topics: list) -> Result:
+    async def setPinnedSavedMessagesTopics(
+        self, saved_messages_topic_ids: list
+    ) -> Result:
         """Changes the order of pinned Saved Messages topics
 
         Args:
-            saved_messages_topics (``list``):
-                The new list of pinned Saved Messages topics
+            saved_messages_topic_ids (``list``):
+                Identifiers of the new pinned Saved Messages topics
 
 
         Returns:
@@ -1844,7 +1838,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "setPinnedSavedMessagesTopics",
-            "saved_messages_topics": saved_messages_topics,
+            "saved_messages_topic_ids": saved_messages_topic_ids,
         }
 
         return await self.invoke(data)
@@ -2018,9 +2012,9 @@ class TDLibFunctions:
         offset: int,
         limit: int,
         message_thread_id: int,
+        saved_messages_topic_id: int,
         sender_id: dict = None,
         filter: dict = None,
-        saved_messages_topic: dict = None,
     ) -> Result:
         """Searches for messages with given words in the chat\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. Cannot be used in secret chats with a non\-empty query \(searchSecretMessages must be used instead\), or without an enabled message database\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit\. A combination of query, sender\_id, filter and message\_thread\_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
 
@@ -2043,14 +2037,14 @@ class TDLibFunctions:
             message_thread_id (``int``):
                 If not 0, only messages in the specified thread will be returned; supergroups only
 
+            saved_messages_topic_id (``int``):
+                If not 0, only messages in the specified Saved Messages topic will be returned; pass 0 to return all messages, or for chats other than Saved Messages
+
             sender_id (``MessageSender``, *optional*):
                 Identifier of the sender of messages to search for; pass null to search for messages from any sender\. Not supported in secret chats
 
             filter (``SearchMessagesFilter``, *optional*):
                 Additional filter for messages to search; pass null to search for all messages
-
-            saved_messages_topic (``SavedMessagesTopic``, *optional*):
-                If not null, only messages in the specified Saved Messages topic will be returned; pass null to return all messages, or for chats other than Saved Messages
 
 
         Returns:
@@ -2067,7 +2061,7 @@ class TDLibFunctions:
             "limit": limit,
             "filter": filter,
             "message_thread_id": message_thread_id,
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
         }
 
         return await self.invoke(data)
@@ -2163,6 +2157,7 @@ class TDLibFunctions:
 
     async def searchSavedMessages(
         self,
+        saved_messages_topic_id: int,
         query: str,
         from_message_id: int,
         offset: int,
@@ -2172,6 +2167,9 @@ class TDLibFunctions:
         """Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Args:
+            saved_messages_topic_id (``int``):
+                If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages
+
             query (``str``):
                 Query to search for
 
@@ -2194,6 +2192,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "searchSavedMessages",
+            "saved_messages_topic_id": saved_messages_topic_id,
             "tag": tag,
             "query": query,
             "from_message_id": from_message_id,
@@ -2342,7 +2341,7 @@ class TDLibFunctions:
         filter: dict,
         from_message_id: int,
         limit: int,
-        saved_messages_topic: dict = None,
+        saved_messages_topic_id: int,
     ) -> Result:
         """Returns sparse positions of messages of the specified type in the chat to be used for shared media scroll implementation\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. Cannot be used in secret chats or with searchMessagesFilterFailedToSend filter without an enabled message database
 
@@ -2359,8 +2358,8 @@ class TDLibFunctions:
             limit (``int``):
                 The expected number of message positions to be returned; 50\-2000\. A smaller number of positions can be returned, if there are not enough appropriate messages
 
-            saved_messages_topic (``SavedMessagesTopic``, *optional*):
-                If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all messages, or for chats other than Saved Messages
+            saved_messages_topic_id (``int``):
+                If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages, or for chats other than Saved Messages
 
 
         Returns:
@@ -2373,7 +2372,7 @@ class TDLibFunctions:
             "filter": filter,
             "from_message_id": from_message_id,
             "limit": limit,
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
         }
 
         return await self.invoke(data)
@@ -2383,7 +2382,7 @@ class TDLibFunctions:
         chat_id: int,
         filter: dict,
         from_message_id: int,
-        saved_messages_topic: dict = None,
+        saved_messages_topic_id: int,
     ) -> Result:
         """Returns information about the next messages of the specified type in the chat split by days\. Returns the results in reverse chronological order\. Can return partial result for the last returned day\. Behavior of this method depends on the value of the option "utc\_time\_offset"
 
@@ -2397,8 +2396,8 @@ class TDLibFunctions:
             from_message_id (``int``):
                 The message identifier from which to return information about messages; use 0 to get results from the last message
 
-            saved_messages_topic (``SavedMessagesTopic``, *optional*):
-                If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all messages, or for chats other than Saved Messages
+            saved_messages_topic_id (``int``):
+                If not0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages, or for chats other than Saved Messages
 
 
         Returns:
@@ -2410,7 +2409,7 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "filter": filter,
             "from_message_id": from_message_id,
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
         }
 
         return await self.invoke(data)
@@ -2419,8 +2418,8 @@ class TDLibFunctions:
         self,
         chat_id: int,
         filter: dict,
+        saved_messages_topic_id: int,
         return_local: bool,
-        saved_messages_topic: dict = None,
     ) -> Result:
         """Returns approximate number of messages of the specified type in the chat
 
@@ -2431,11 +2430,11 @@ class TDLibFunctions:
             filter (``SearchMessagesFilter``):
                 Filter for message content; searchMessagesFilterEmpty is unsupported in this function
 
+            saved_messages_topic_id (``int``):
+                If not 0, only messages in the specified Saved Messages topic will be counted; pass 0 to count all messages, or for chats other than Saved Messages
+
             return_local (``bool``):
                 Pass true to get the number of messages without sending network requests, or \-1 if the number of messages is unknown locally
-
-            saved_messages_topic (``SavedMessagesTopic``, *optional*):
-                If not null, only messages in the specified Saved Messages topic will be counted; pass null to count all messages, or for chats other than Saved Messages
 
 
         Returns:
@@ -2446,7 +2445,7 @@ class TDLibFunctions:
             "@type": "getChatMessageCount",
             "chat_id": chat_id,
             "filter": filter,
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
             "return_local": return_local,
         }
 
@@ -2458,7 +2457,7 @@ class TDLibFunctions:
         message_id: int,
         filter: dict,
         message_thread_id: int,
-        saved_messages_topic: dict = None,
+        saved_messages_topic_id: int,
     ) -> Result:
         """Returns approximate 1\-based position of a message among messages, which can be found by the specified filter in the chat\. Cannot be used in secret chats
 
@@ -2475,8 +2474,8 @@ class TDLibFunctions:
             message_thread_id (``int``):
                 If not 0, only messages in the specified thread will be considered; supergroups only
 
-            saved_messages_topic (``SavedMessagesTopic``, *optional*):
-                If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all relevant messages, or for chats other than Saved Messages
+            saved_messages_topic_id (``int``):
+                If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all relevant messages, or for chats other than Saved Messages
 
 
         Returns:
@@ -2489,7 +2488,7 @@ class TDLibFunctions:
             "message_id": message_id,
             "filter": filter,
             "message_thread_id": message_thread_id,
-            "saved_messages_topic": saved_messages_topic,
+            "saved_messages_topic_id": saved_messages_topic_id,
         }
 
         return await self.invoke(data)
@@ -2859,7 +2858,7 @@ class TDLibFunctions:
                 Target chat
 
             message_thread_id (``int``):
-                If not 0, a message thread identifier in which the message will be sent
+                If not 0, the message thread identifier in which the message will be sent
 
             input_message_content (``InputMessageContent``):
                 The content of the message to be sent
@@ -2905,7 +2904,7 @@ class TDLibFunctions:
                 Target chat
 
             message_thread_id (``int``):
-                If not 0, a message thread identifier in which the messages will be sent
+                If not 0, the message thread identifier in which the messages will be sent
 
             input_message_contents (``list``):
                 Contents of messages to be sent\. At most 10 messages can be added to an album
@@ -2935,7 +2934,7 @@ class TDLibFunctions:
     async def sendBotStartMessage(
         self, bot_user_id: int, chat_id: int, parameter: str
     ) -> Result:
-        """Invites a bot to a chat \(if it is not yet a member\) and sends it the /start command\. Bots can't be invited to a private chat other than the chat with the bot\. Bots can't be invited to channels \(although they can be added as admins\) and secret chats\. Returns the sent message
+        """Invites a bot to a chat \(if it is not yet a member\) and sends it the /start command; requires can\_invite\_users member right\. Bots can't be invited to a private chat other than the chat with the bot\. Bots can't be invited to channels \(although they can be added as admins\) and secret chats\. Returns the sent message
 
         Args:
             bot_user_id (``int``):
@@ -2978,7 +2977,7 @@ class TDLibFunctions:
                 Target chat
 
             message_thread_id (``int``):
-                If not 0, a message thread identifier in which the message will be sent
+                If not 0, the message thread identifier in which the message will be sent
 
             query_id (``int``):
                 Identifier of the inline query
@@ -3030,7 +3029,7 @@ class TDLibFunctions:
                 Identifier of the chat to which to forward messages
 
             message_thread_id (``int``):
-                If not 0, a message thread identifier in which the message will be sent; for forum threads only
+                If not 0, the message thread identifier in which the message will be sent; for forum threads only
 
             from_chat_id (``int``):
                 Identifier of the chat from which to forward messages
@@ -3612,7 +3611,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def createForumTopic(self, chat_id: int, name: str, icon: dict) -> Result:
-        """Creates a topic in a forum supergroup chat; requires can\_manage\_topics or can\_create\_topics rights in the supergroup
+        """Creates a topic in a forum supergroup chat; requires can\_manage\_topics administrator or can\_create\_topics member right in the supergroup
 
         Args:
             chat_id (``int``):
@@ -4174,8 +4173,12 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getSavedMessagesTags(self) -> Result:
-        """Returns tags used in Saved Messages; for Telegram Premium users only
+    async def getSavedMessagesTags(self, saved_messages_topic_id: int) -> Result:
+        """Returns tags used in Saved Messages or a Saved Messages topic
+
+        Args:
+            saved_messages_topic_id (``int``):
+                Identifier of Saved Messages topic which tags will be returned; pass 0 to get all Saved Messages tags
 
 
         Returns:
@@ -4184,6 +4187,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "getSavedMessagesTags",
+            "saved_messages_topic_id": saved_messages_topic_id,
         }
 
         return await self.invoke(data)
@@ -5000,7 +5004,7 @@ class TDLibFunctions:
                 Short name of the application; 0\-64 English letters, digits, and underscores
 
             message_thread_id (``int``):
-                If not 0, a message thread identifier in which the message will be sent
+                If not 0, the message thread identifier in which the message will be sent
 
             theme (``themeParameters``, *optional*):
                 Preferred Web App theme; pass null to use the default theme
@@ -5369,7 +5373,7 @@ class TDLibFunctions:
                 Chat identifier
 
             message_thread_id (``int``):
-                If not 0, a message thread identifier in which the action was performed
+                If not 0, the message thread identifier in which the action was performed
 
             action (``ChatAction``, *optional*):
                 The action description; pass null to cancel the currently active action
@@ -5866,7 +5870,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def upgradeBasicGroupChatToSupergroupChat(self, chat_id: int) -> Result:
-        """Creates a new supergroup from an existing basic group and sends a corresponding messageChatUpgradeTo and messageChatUpgradeFrom; requires creator privileges\. Deactivates the original basic group
+        """Creates a new supergroup from an existing basic group and sends a corresponding messageChatUpgradeTo and messageChatUpgradeFrom; requires owner privileges\. Deactivates the original basic group
 
         Args:
             chat_id (``int``):
@@ -6355,7 +6359,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setChatTitle(self, chat_id: int, title: str) -> Result:
-        """Changes the chat title\. Supported only for basic groups, supergroups and channels\. Requires can\_change\_info administrator right
+        """Changes the chat title\. Supported only for basic groups, supergroups and channels\. Requires can\_change\_info member right
 
         Args:
             chat_id (``int``):
@@ -6378,7 +6382,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setChatPhoto(self, chat_id: int, photo: dict = None) -> Result:
-        """Changes the photo of a chat\. Supported only for basic groups, supergroups and channels\. Requires can\_change\_info administrator right
+        """Changes the photo of a chat\. Supported only for basic groups, supergroups and channels\. Requires can\_change\_info member right
 
         Args:
             chat_id (``int``):
@@ -6403,14 +6407,14 @@ class TDLibFunctions:
     async def setChatAccentColor(
         self, chat_id: int, accent_color_id: int, background_custom_emoji_id: int
     ) -> Result:
-        """Changes accent color and background custom emoji of a chat\. Requires can\_change\_info administrator right
+        """Changes accent color and background custom emoji of a channel chat\. Requires can\_change\_info administrator right
 
         Args:
             chat_id (``int``):
                 Chat identifier
 
             accent_color_id (``int``):
-                Identifier of the accent color to use\. The chat must have at least accentColor\.min\_chat\_boost\_level boost level to pass the corresponding color
+                Identifier of the accent color to use\. The chat must have at least accentColor\.min\_channel\_chat\_boost\_level boost level to pass the corresponding color
 
             background_custom_emoji_id (``int``):
                 Identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none\. Use chatBoostLevelFeatures\.can\_set\_background\_custom\_emoji to check whether a custom emoji can be set
@@ -6435,14 +6439,14 @@ class TDLibFunctions:
         profile_accent_color_id: int,
         profile_background_custom_emoji_id: int,
     ) -> Result:
-        """Changes accent color and background custom emoji for profile of a chat\. Requires can\_change\_info administrator right
+        """Changes accent color and background custom emoji for profile of a supergroup or channel chat\. Requires can\_change\_info administrator right
 
         Args:
             chat_id (``int``):
                 Chat identifier
 
             profile_accent_color_id (``int``):
-                Identifier of the accent color to use for profile; pass \-1 if none\. The chat must have at least profileAccentColor\.min\_chat\_boost\_level boost level to pass the corresponding color
+                Identifier of the accent color to use for profile; pass \-1 if none\. The chat must have at least profileAccentColor\.min\_supergroup\_chat\_boost\_level for supergroups or profileAccentColor\.min\_channel\_chat\_boost\_level for channels boost level to pass the corresponding color
 
             profile_background_custom_emoji_id (``int``):
                 Identifier of a custom emoji to be shown on the chat's profile photo background; 0 if none\. Use chatBoostLevelFeatures\.can\_set\_profile\_background\_custom\_emoji to check whether a custom emoji can be set
@@ -6634,10 +6638,10 @@ class TDLibFunctions:
                 Chat identifier
 
             message_thread_id (``int``):
-                If not 0, a message thread identifier in which the draft was changed
+                If not 0, the message thread identifier in which the draft was changed
 
             draft_message (``draftMessage``, *optional*):
-                New draft message; pass null to remove the draft
+                New draft message; pass null to remove the draft\. All files in draft message content must be of the type inputFileLocal\. Media thumbnails and captions are ignored
 
 
         Returns:
@@ -6706,7 +6710,7 @@ class TDLibFunctions:
     async def toggleChatViewAsTopics(
         self, chat_id: int, view_as_topics: bool
     ) -> Result:
-        """Changes the view\_as\_topics setting of a forum chat
+        """Changes the view\_as\_topics setting of a forum chat or Saved Messages
 
         Args:
             chat_id (``int``):
@@ -6806,14 +6810,14 @@ class TDLibFunctions:
     async def setChatAvailableReactions(
         self, chat_id: int, available_reactions: dict
     ) -> Result:
-        """Changes reactions, available in a chat\. Available for basic groups, supergroups, and channels\. Requires can\_change\_info administrator right
+        """Changes reactions, available in a chat\. Available for basic groups, supergroups, and channels\. Requires can\_change\_info member right
 
         Args:
             chat_id (``int``):
                 Identifier of the chat
 
             available_reactions (``ChatAvailableReactions``):
-                Reactions available in the chat\. All explicitly specified emoji reactions must be active\. Up to the chat's boost level custom emoji reactions can be explicitly specified
+                Reactions available in the chat\. All explicitly specified emoji reactions must be active\. In channel chats up to the chat's boost level custom emoji reactions can be explicitly specified
 
 
         Returns:
@@ -6852,7 +6856,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setChatDescription(self, chat_id: int, description: str) -> Result:
-        """Changes information about a chat\. Available for basic groups, supergroups, and channels\. Requires can\_change\_info administrator right
+        """Changes information about a chat\. Available for basic groups, supergroups, and channels\. Requires can\_change\_info member right
 
         Args:
             chat_id (``int``):
@@ -6881,7 +6885,7 @@ class TDLibFunctions:
 
         Args:
             chat_id (``int``):
-                Identifier of the channel chat\. Pass 0 to remove a link from the supergroup passed in the second argument to a linked channel chat \(requires can\_pin\_messages rights in the supergroup\)
+                Identifier of the channel chat\. Pass 0 to remove a link from the supergroup passed in the second argument to a linked channel chat \(requires can\_pin\_messages member right in the supergroup\)
 
             discussion_chat_id (``int``):
                 Identifier of a new channel's discussion group\. Use 0 to remove the discussion group\. Use the method getSuitableDiscussionChats to find all suitable groups\. Basic group chats must be first upgraded to supergroup chats\. If new chat members don't have access to old messages in the supergroup, then toggleSupergroupIsAllHistoryAvailable must be used first to change that
@@ -6923,7 +6927,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setChatSlowModeDelay(self, chat_id: int, slow_mode_delay: int) -> Result:
-        """Changes the slow mode delay of a chat\. Available only for supergroups; requires can\_restrict\_members rights
+        """Changes the slow mode delay of a chat\. Available only for supergroups; requires can\_restrict\_members right
 
         Args:
             chat_id (``int``):
@@ -6952,7 +6956,7 @@ class TDLibFunctions:
         disable_notification: bool,
         only_for_self: bool,
     ) -> Result:
-        """Pins a message in a chat; requires can\_pin\_messages rights or can\_edit\_messages rights in the channel
+        """Pins a message in a chat; requires can\_pin\_messages member right if the chat is a basic group or supergroup, or can\_edit\_messages administrator right if the chat is a channel
 
         Args:
             chat_id (``int``):
@@ -6983,7 +6987,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def unpinChatMessage(self, chat_id: int, message_id: int) -> Result:
-        """Removes a pinned message from a chat; requires can\_pin\_messages rights in the group or can\_edit\_messages rights in the channel
+        """Removes a pinned message from a chat; requires can\_pin\_messages member right if the chat is a basic group or supergroup, or can\_edit\_messages administrator right if the chat is a channel
 
         Args:
             chat_id (``int``):
@@ -7006,7 +7010,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def unpinAllChatMessages(self, chat_id: int) -> Result:
-        """Removes all pinned messages from a chat; requires can\_pin\_messages rights in the group or can\_edit\_messages rights in the channel
+        """Removes all pinned messages from a chat; requires can\_pin\_messages member right if the chat is a basic group or supergroup, or can\_edit\_messages administrator right if the chat is a channel
 
         Args:
             chat_id (``int``):
@@ -7027,7 +7031,7 @@ class TDLibFunctions:
     async def unpinAllMessageThreadMessages(
         self, chat_id: int, message_thread_id: int
     ) -> Result:
-        """Removes all pinned messages from a forum topic; requires can\_pin\_messages rights in the supergroup
+        """Removes all pinned messages from a forum topic; requires can\_pin\_messages member right in the supergroup
 
         Args:
             chat_id (``int``):
@@ -7090,7 +7094,7 @@ class TDLibFunctions:
     async def addChatMember(
         self, chat_id: int, user_id: int, forward_limit: int
     ) -> Result:
-        """Adds a new member to a chat\. Members can't be added to private or secret chats
+        """Adds a new member to a chat; requires can\_invite\_users member right\. Members can't be added to private or secret chats
 
         Args:
             chat_id (``int``):
@@ -7117,7 +7121,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def addChatMembers(self, chat_id: int, user_ids: list) -> Result:
-        """Adds multiple new members to a chat\. Currently, this method is only available for supergroups and channels\. This method can't be used to join a chat\. Members can't be added to a channel if it has more than 200 members
+        """Adds multiple new members to a chat; requires can\_invite\_users member right\. Currently, this method is only available for supergroups and channels\. This method can't be used to join a chat\. Members can't be added to a channel if it has more than 200 members
 
         Args:
             chat_id (``int``):
@@ -7142,7 +7146,7 @@ class TDLibFunctions:
     async def setChatMemberStatus(
         self, chat_id: int, member_id: dict, status: dict
     ) -> Result:
-        """Changes the status of a chat member, needs appropriate privileges\. This function is currently not suitable for transferring chat ownership; use transferChatOwnership instead\. Use addChatMember or banChatMember if some additional parameters needs to be passed
+        """Changes the status of a chat member; requires can\_invite\_users member right to add a chat member, can\_promote\_members administrator right to change administrator rights of the member, and can\_restrict\_members administrator right to change restrictions of a user\. This function is currently not suitable for transferring chat ownership; use transferChatOwnership instead\. Use addChatMember or banChatMember if some additional parameters needs to be passed
 
         Args:
             chat_id (``int``):
@@ -7175,7 +7179,7 @@ class TDLibFunctions:
         banned_until_date: int,
         revoke_messages: bool,
     ) -> Result:
-        """Bans a member in a chat\. Members can't be banned in private or secret chats\. In supergroups and channels, the user will not be able to return to the group on their own using invite links, etc\., unless unbanned first
+        """Bans a member in a chat; requires can\_restrict\_members administrator right\. Members can't be banned in private or secret chats\. In supergroups and channels, the user will not be able to return to the group on their own using invite links, etc\., unless unbanned first
 
         Args:
             chat_id (``int``):
@@ -7222,7 +7226,7 @@ class TDLibFunctions:
     async def transferChatOwnership(
         self, chat_id: int, user_id: int, password: str
     ) -> Result:
-        """Changes the owner of a chat\. The current user must be a current owner of the chat\. Use the method canTransferOwnership to check whether the ownership can be transferred from the current session\. Available only for supergroups and channel chats
+        """Changes the owner of a chat; requires owner privileges in the chat\. Use the method canTransferOwnership to check whether the ownership can be transferred from the current session\. Available only for supergroups and channel chats
 
         Args:
             chat_id (``int``):
@@ -7274,7 +7278,7 @@ class TDLibFunctions:
     async def searchChatMembers(
         self, chat_id: int, query: str, limit: int, filter: dict = None
     ) -> Result:
-        """Searches for a specified query in the first name, last name and usernames of the members of a specified chat\. Requires administrator rights in channels
+        """Searches for a specified query in the first name, last name and usernames of the members of a specified chat\. Requires administrator rights if the chat is a channel
 
         Args:
             chat_id (``int``):
@@ -7597,7 +7601,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatsToSendStories(self) -> Result:
-        """Returns channel chats in which the current user has the right to post stories\. The chats must be rechecked with canSendStory before actually trying to post a story there
+        """Returns supergroup and channel chats in which the current user has the right to post stories\. The chats must be rechecked with canSendStory before actually trying to post a story there
 
 
         Returns:
@@ -7611,7 +7615,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def canSendStory(self, chat_id: int) -> Result:
-        """Checks whether the current user can send a story on behalf of a chat; requires can\_post\_stories rights for channel chats
+        """Checks whether the current user can send a story on behalf of a chat; requires can\_post\_stories right for supergroup and channel chats
 
         Args:
             chat_id (``int``):
@@ -7641,7 +7645,7 @@ class TDLibFunctions:
         areas: dict = None,
         caption: dict = None,
     ) -> Result:
-        """Sends a new story to a chat; requires can\_post\_stories rights for channel chats\. Returns a temporary story
+        """Sends a new story to a chat; requires can\_post\_stories right for supergroup and channel chats\. Returns a temporary story
 
         Args:
             chat_id (``int``):
@@ -7651,7 +7655,7 @@ class TDLibFunctions:
                 Content of the story
 
             privacy_settings (``StoryPrivacySettings``):
-                The privacy settings for the story
+                The privacy settings for the story; ignored for stories sent to supergroup and channel chats
 
             active_period (``int``):
                 Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, or 2 \* 86400 for Telegram Premium users, and 86400 otherwise
@@ -7734,14 +7738,11 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setStoryPrivacySettings(
-        self, story_sender_chat_id: int, story_id: int, privacy_settings: dict
+        self, story_id: int, privacy_settings: dict
     ) -> Result:
-        """Changes privacy settings of a story\. Can be called only if story\.can\_be\_edited \=\= true
+        """Changes privacy settings of a story\. The method can be called only for stories posted on behalf of the current user and if story\.can\_be\_edited \=\= true
 
         Args:
-            story_sender_chat_id (``int``):
-                Identifier of the chat that posted the story
-
             story_id (``int``):
                 Identifier of the story
 
@@ -7755,7 +7756,6 @@ class TDLibFunctions:
 
         data = {
             "@type": "setStoryPrivacySettings",
-            "story_sender_chat_id": story_sender_chat_id,
             "story_id": story_id,
             "privacy_settings": privacy_settings,
         }
@@ -7921,7 +7921,7 @@ class TDLibFunctions:
     async def getChatArchivedStories(
         self, chat_id: int, from_story_id: int, limit: int
     ) -> Result:
-        """Returns the list of all stories posted by the given chat; requires can\_edit\_stories rights for channel chats\. The stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        """Returns the list of all stories posted by the given chat; requires can\_edit\_stories right in the chat\. The stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Args:
             chat_id (``int``):
@@ -8019,7 +8019,7 @@ class TDLibFunctions:
         update_recent_reactions: bool,
         reaction_type: dict = None,
     ) -> Result:
-        """Changes chosen reaction on a story
+        """Changes chosen reaction on a story that has already been sent
 
         Args:
             story_sender_chat_id (``int``):
@@ -8228,10 +8228,13 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getChatBoostLevelFeatures(self, level: int) -> Result:
+    async def getChatBoostLevelFeatures(self, is_channel: bool, level: int) -> Result:
         """Returns list of features available on the specific chat boost level; this is an offline request
 
         Args:
+            is_channel (``bool``):
+                Pass true to get the list of features for channels; pass false to get the list of features for supergroups
+
             level (``int``):
                 Chat boost level
 
@@ -8242,13 +8245,18 @@ class TDLibFunctions:
 
         data = {
             "@type": "getChatBoostLevelFeatures",
+            "is_channel": is_channel,
             "level": level,
         }
 
         return await self.invoke(data)
 
-    async def getChatBoostFeatures(self) -> Result:
+    async def getChatBoostFeatures(self, is_channel: bool) -> Result:
         """Returns list of features available on the first 10 chat boost levels; this is an offline request
+
+        Args:
+            is_channel (``bool``):
+                Pass true to get the list of features for channels; pass false to get the list of features for supergroups
 
 
         Returns:
@@ -8257,6 +8265,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "getChatBoostFeatures",
+            "is_channel": is_channel,
         }
 
         return await self.invoke(data)
@@ -8276,11 +8285,11 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatBoostStatus(self, chat_id: int) -> Result:
-        """Returns the current boost status for a channel chat
+        """Returns the current boost status for a supergroup or a channel chat
 
         Args:
             chat_id (``int``):
-                Identifier of the channel chat
+                Identifier of the chat
 
 
         Returns:
@@ -8318,7 +8327,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatBoostLink(self, chat_id: int) -> Result:
-        """Returns an HTTPS link to boost the specified channel chat
+        """Returns an HTTPS link to boost the specified supergroup or channel chat
 
         Args:
             chat_id (``int``):
@@ -8358,7 +8367,7 @@ class TDLibFunctions:
     async def getChatBoosts(
         self, chat_id: int, only_gift_codes: bool, offset: str, limit: int
     ) -> Result:
-        """Returns list of boosts applied to a chat; requires administrator rights in the channel chat
+        """Returns list of boosts applied to a chat; requires administrator rights in the chat
 
         Args:
             chat_id (``int``):
@@ -8389,7 +8398,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getUserChatBoosts(self, chat_id: int, user_id: int) -> Result:
-        """Returns list of boosts applied to a chat by a given user; requires administrator rights in the channel chat; for bots only
+        """Returns list of boosts applied to a chat by a given user; requires administrator rights in the chat; for bots only
 
         Args:
             chat_id (``int``):
@@ -9035,7 +9044,7 @@ class TDLibFunctions:
 
         Args:
             chat_id (``int``):
-                Identifier of a chat to which the messages will be imported\. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can\_change\_info administrator right
+                Identifier of a chat to which the messages will be imported\. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can\_change\_info member right
 
 
         Returns:
@@ -9056,7 +9065,7 @@ class TDLibFunctions:
 
         Args:
             chat_id (``int``):
-                Identifier of a chat to which the messages will be imported\. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can\_change\_info administrator right
+                Identifier of a chat to which the messages will be imported\. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can\_change\_info member right
 
             message_file (``InputFile``):
                 File with messages to import\. Only inputFileLocal and inputFileGenerated are supported\. The file must not be previously uploaded
@@ -9762,7 +9771,7 @@ class TDLibFunctions:
     async def createVideoChat(
         self, chat_id: int, title: str, start_date: int, is_rtmp_stream: bool
     ) -> Result:
-        """Creates a video chat \(a group call bound to a chat\)\. Available only for basic groups, supergroups and channels; requires can\_manage\_video\_chats rights
+        """Creates a video chat \(a group call bound to a chat\)\. Available only for basic groups, supergroups and channels; requires can\_manage\_video\_chats administrator right
 
         Args:
             chat_id (``int``):
@@ -9775,7 +9784,7 @@ class TDLibFunctions:
                 Point in time \(Unix timestamp\) when the group call is supposed to be started by an administrator; 0 to start the video chat immediately\. The date must be at least 10 seconds and at most 8 days in the future
 
             is_rtmp_stream (``bool``):
-                Pass true to create an RTMP stream instead of an ordinary video chat; requires creator privileges
+                Pass true to create an RTMP stream instead of an ordinary video chat; requires owner privileges
 
 
         Returns:
@@ -9793,7 +9802,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getVideoChatRtmpUrl(self, chat_id: int) -> Result:
-        """Returns RTMP URL for streaming to the chat; requires creator privileges
+        """Returns RTMP URL for streaming to the chat; requires owner privileges
 
         Args:
             chat_id (``int``):
@@ -9812,7 +9821,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def replaceVideoChatRtmpUrl(self, chat_id: int) -> Result:
-        """Replaces the current RTMP URL for streaming to the chat; requires creator privileges
+        """Replaces the current RTMP URL for streaming to the chat; requires owner privileges
 
         Args:
             chat_id (``int``):
@@ -12805,10 +12814,60 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def setSupergroupCustomEmojiStickerSet(
+        self, supergroup_id: int, custom_emoji_sticker_set_id: int
+    ) -> Result:
+        """Changes the custom emoji sticker set of a supergroup; requires can\_change\_info administrator right\. The chat must have at least chatBoostFeatures\.min\_custom\_emoji\_sticker\_set\_boost\_level boost level to pass the corresponding color
+
+        Args:
+            supergroup_id (``int``):
+                Identifier of the supergroup
+
+            custom_emoji_sticker_set_id (``int``):
+                New value of the custom emoji sticker set identifier for the supergroup\. Use 0 to remove the custom emoji sticker set in the supergroup
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setSupergroupCustomEmojiStickerSet",
+            "supergroup_id": supergroup_id,
+            "custom_emoji_sticker_set_id": custom_emoji_sticker_set_id,
+        }
+
+        return await self.invoke(data)
+
+    async def setSupergroupUnrestrictBoostCount(
+        self, supergroup_id: int, unrestrict_boost_count: int
+    ) -> Result:
+        """Changes the number of times the supergroup must be boosted by a user to ignore slow mode and chat permission restrictions; requires can\_restrict\_members administrator right
+
+        Args:
+            supergroup_id (``int``):
+                Identifier of the supergroup
+
+            unrestrict_boost_count (``int``):
+                New value of the unrestrict\_boost\_count supergroup setting; 0\-8\. Use 0 to remove the setting
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setSupergroupUnrestrictBoostCount",
+            "supergroup_id": supergroup_id,
+            "unrestrict_boost_count": unrestrict_boost_count,
+        }
+
+        return await self.invoke(data)
+
     async def toggleSupergroupSignMessages(
         self, supergroup_id: int, sign_messages: bool
     ) -> Result:
-        """Toggles whether sender signature is added to sent messages in a channel; requires can\_change\_info administrator right
+        """Toggles whether sender signature is added to sent messages in a channel; requires can\_change\_info member right
 
         Args:
             supergroup_id (``int``):
@@ -12883,7 +12942,7 @@ class TDLibFunctions:
     async def toggleSupergroupIsAllHistoryAvailable(
         self, supergroup_id: int, is_all_history_available: bool
     ) -> Result:
-        """Toggles whether the message history of a supergroup is available to new members; requires can\_change\_info administrator right
+        """Toggles whether the message history of a supergroup is available to new members; requires can\_change\_info member right
 
         Args:
             supergroup_id (``int``):
@@ -15475,7 +15534,7 @@ class TDLibFunctions:
 
         Args:
             boosted_chat_id (``int``):
-                Identifier of the channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user; 0 if none
+                Identifier of the supergroup or channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user; 0 if none
 
 
         Returns:
@@ -15530,7 +15589,7 @@ class TDLibFunctions:
     async def launchPrepaidPremiumGiveaway(
         self, giveaway_id: int, parameters: dict
     ) -> Result:
-        """Launches a prepaid Telegram Premium giveaway for subscribers of channel chats; requires can\_post\_messages rights in the channels
+        """Launches a prepaid Telegram Premium giveaway
 
         Args:
             giveaway_id (``int``):

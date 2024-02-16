@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.24",
-    "commit_hash": "c5c55092dd61b9eb15d6bbfd0f02c04c593450e7",
+    "version": "1.8.25",
+    "commit_hash": "d93a99e3351db82573d765ce4f5e84714c277518",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -44,7 +44,7 @@
         "InlineKeyboardButtonType": "Describes the type of an inline keyboard button",
         "ReplyMarkup": "Contains a description of a custom keyboard and actions that can be done with it to quickly reply to bots",
         "LoginUrlInfo": "Contains information about an inline button of type inlineKeyboardButtonTypeLoginUrl",
-        "SavedMessagesTopic": "Contains information about a Saved Messages topic",
+        "SavedMessagesTopicType": "Describes type of a Saved Messages topic",
         "RichText": "Describes a text object inside an instant-view web page",
         "PageBlockHorizontalAlignment": "Describes a horizontal alignment of a table cell content",
         "PageBlockVerticalAlignment": "Describes a Vertical alignment of a table cell content",
@@ -2183,7 +2183,7 @@
             "description": "Describes rights of the administrator",
             "args": {
                 "can_manage_chat": {
-                    "description": "True, if the administrator can get chat event log, get chat boosts in channels, get channel members, report supergroup spam messages, see anonymous administrators in supergroups and ignore slow mode. Implied by any other privilege; applicable to supergroups and channels only",
+                    "description": "True, if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report supergroup spam messages and ignore slow mode. Implied by any other privilege; applicable to supergroups and channels only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -2238,17 +2238,17 @@
                     "type": "Bool"
                 },
                 "can_post_stories": {
-                    "description": "True, if the administrator can create new channel stories, or edit and delete posted stories; applicable to channels only",
+                    "description": "True, if the administrator can create new chat stories, or edit and delete posted stories; applicable to supergroups and channels only",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "can_edit_stories": {
-                    "description": "True, if the administrator can edit stories posted by other users, pin stories and access story archive; applicable to channels only",
+                    "description": "True, if the administrator can edit stories posted by other users, pin stories and access story archive; applicable to supergroups and channels only",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "can_delete_stories": {
-                    "description": "True, if the administrator can delete stories posted by other users; applicable to channels only",
+                    "description": "True, if the administrator can delete stories posted by other users; applicable to supergroups and channels only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -2533,8 +2533,8 @@
                     "is_optional": false,
                     "type": "vector<int32>"
                 },
-                "min_chat_boost_level": {
-                    "description": "The minimum chat boost level required to use the color",
+                "min_channel_chat_boost_level": {
+                    "description": "The minimum chat boost level required to use the color in a channel chat",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -2580,8 +2580,13 @@
                     "is_optional": false,
                     "type": "profileAccentColors"
                 },
-                "min_chat_boost_level": {
-                    "description": "The minimum chat boost level required to use the color",
+                "min_supergroup_chat_boost_level": {
+                    "description": "The minimum chat boost level required to use the color in a supergroup chat",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "min_channel_chat_boost_level": {
+                    "description": "The minimum chat boost level required to use the color in a channel chat",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -3700,12 +3705,12 @@
                     "type": "Bool"
                 },
                 "has_active_stories": {
-                    "description": "True, if the channel has non-expired stories available to the current user",
+                    "description": "True, if the supergroup or channel has non-expired stories available to the current user",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "has_unread_active_stories": {
-                    "description": "True, if the channel has unread non-expired stories available to the current user",
+                    "description": "True, if the supergroup or channel has unread non-expired stories available to the current user",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -3806,12 +3811,27 @@
                     "type": "Bool"
                 },
                 "has_pinned_stories": {
-                    "description": "True, if the channel has pinned stories",
+                    "description": "True, if the supergroup or channel has pinned stories",
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "my_boost_count": {
+                    "description": "Number of times the current user boosted the supergroup or channel",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "unrestrict_boost_count": {
+                    "description": "Number of times the supergroup must be boosted by a user to ignore slow mode and chat permission restrictions; 0 if unspecified",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "sticker_set_id": {
-                    "description": "Identifier of the supergroup sticker set; 0 if none",
+                    "description": "Identifier of the supergroup sticker set that must be shown before user sticker sets; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "custom_emoji_sticker_set_id": {
+                    "description": "Identifier of the custom emoji sticker set that can be used in the supergroup without Telegram Premium subscription; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -4247,7 +4267,7 @@
                     "type": "vector<messageReaction>"
                 },
                 "are_tags": {
-                    "description": "True, if the reactions are tags and Telegram Premium users can filter messages by them; currently, always false",
+                    "description": "True, if the reactions are tags and Telegram Premium users can filter messages by them",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -4462,7 +4482,7 @@
             "description": "Describes a story to be replied",
             "args": {
                 "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the story. Currently, stories can be replied only in the sender's chat",
+                    "description": "The identifier of the sender of the story. Currently, stories can be replied only in the sender's chat and channel stories can't be replied",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -4637,10 +4657,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "saved_messages_topic": {
-                    "description": "Information about topic of the message in the Saved Messages chat; may be null for messages not from Saved Messages",
-                    "is_optional": true,
-                    "type": "SavedMessagesTopic"
+                "saved_messages_topic_id": {
+                    "description": "Identifier of the Saved Messages topic for the message; 0 for messages not from Saved Messages",
+                    "is_optional": false,
+                    "type": "int53"
                 },
                 "self_destruct_type": {
                     "description": "The message's self-destruct type; may be null if none",
@@ -4661,6 +4681,11 @@
                     "description": "If non-zero, the user identifier of the bot through which this message was sent",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "sender_boost_count": {
+                    "description": "Number of times the sender of the message boosted the supergroup at the time the message was sent; 0 if none or unknown. For messages sent by the current user, supergroupFullInfo.my_boost_count must be used instead",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "author_signature": {
                     "description": "For channel posts and anonymous group messages, optional author signature",
@@ -5259,7 +5284,7 @@
                     "type": "int32"
                 },
                 "input_message_text": {
-                    "description": "Content of the message draft; must be of the type inputMessageText",
+                    "description": "Content of the message draft; must be of the type inputMessageText, inputMessageVideoNote, or inputMessageVoiceNote",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -5635,7 +5660,7 @@
             "type": "ChatAvailableReactions"
         },
         "savedMessagesTag": {
-            "description": "Represents a tag used in Saved Messages",
+            "description": "Represents a tag used in Saved Messages or a Saved Messages topic",
             "args": {
                 "tag": {
                     "description": "The tag",
@@ -5643,7 +5668,7 @@
                     "type": "ReactionType"
                 },
                 "label": {
-                    "description": "Label of the tag; 0-12 characters",
+                    "description": "Label of the tag; 0-12 characters. Always empty if the tag is returned for a Saved Messages topic",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -5771,7 +5796,7 @@
                     "type": "Bool"
                 },
                 "view_as_topics": {
-                    "description": "True, if the chat is a forum supergroup that must be shown in the \"View as topics\" mode",
+                    "description": "True, if the chat is a forum supergroup that must be shown in the \"View as topics\" mode, or Saved Messages chat that must be shown in the \"View as chats\"",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -6471,17 +6496,17 @@
             },
             "type": "MessageThreadInfo"
         },
-        "savedMessagesTopicMyNotes": {
+        "savedMessagesTopicTypeMyNotes": {
             "description": "Topic containing messages sent by the current user of forwarded from an unknown chat",
             "args": {},
-            "type": "SavedMessagesTopic"
+            "type": "SavedMessagesTopicType"
         },
-        "savedMessagesTopicAuthorHidden": {
+        "savedMessagesTopicTypeAuthorHidden": {
             "description": "Topic containing messages forwarded from a user with hidden privacy",
             "args": {},
-            "type": "SavedMessagesTopic"
+            "type": "SavedMessagesTopicType"
         },
-        "savedMessagesTopicSavedFromChat": {
+        "savedMessagesTopicTypeSavedFromChat": {
             "description": "Topic containing messages forwarded from a specific chat",
             "args": {
                 "chat_id": {
@@ -6490,44 +6515,43 @@
                     "type": "int53"
                 }
             },
-            "type": "SavedMessagesTopic"
+            "type": "SavedMessagesTopicType"
         },
-        "foundSavedMessagesTopic": {
-            "description": "Contains information about a found Saved Messages topic",
+        "savedMessagesTopic": {
+            "description": "Contains information about a Saved Messages topic",
             "args": {
-                "topic": {
-                    "description": "The topic",
+                "id": {
+                    "description": "Unique topic identifier",
                     "is_optional": false,
-                    "type": "SavedMessagesTopic"
+                    "type": "int53"
+                },
+                "type": {
+                    "description": "Type of the topic",
+                    "is_optional": false,
+                    "type": "SavedMessagesTopicType"
+                },
+                "is_pinned": {
+                    "description": "True, if the topic is pinned",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "order": {
+                    "description": "A parameter used to determine order of the topic in the topic list. Topics must be sorted by the order in descending order",
+                    "is_optional": false,
+                    "type": "int64"
                 },
                 "last_message": {
                     "description": "Last message in the topic; may be null if none or unknown",
                     "is_optional": true,
                     "type": "message"
+                },
+                "draft_message": {
+                    "description": "A draft of a message in the topic; may be null if none",
+                    "is_optional": true,
+                    "type": "draftMessage"
                 }
             },
-            "type": "FoundSavedMessagesTopic"
-        },
-        "foundSavedMessagesTopics": {
-            "description": "Contains a list of Saved Messages topics",
-            "args": {
-                "total_count": {
-                    "description": "Total number of Saved Messages topics found",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "topics": {
-                    "description": "List of Saved Messages topics",
-                    "is_optional": false,
-                    "type": "vector<foundSavedMessagesTopic>"
-                },
-                "next_offset": {
-                    "description": "The offset for the next request. If empty, then there are no more results",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "FoundSavedMessagesTopics"
+            "type": "SavedMessagesTopic"
         },
         "forumTopicIcon": {
             "description": "Describes a forum topic icon",
@@ -8535,12 +8559,12 @@
             "description": "Describes parameters of a Telegram Premium giveaway",
             "args": {
                 "boosted_chat_id": {
-                    "description": "Identifier of the channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Premium subscription",
+                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Premium subscription. If the chat is a channel, then can_post_messages right is required in the channel, otherwise, the user must be an administrator in the supergroup",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "additional_chat_ids": {
-                    "description": "Identifiers of other channel chats that must be subscribed by the users to be eligible for the giveaway. There can be up to getOption(\"giveaway_additional_chat_count_max\") additional chats",
+                    "description": "Identifiers of other supergroup or channel chats that must be subscribed by the users to be eligible for the giveaway. There can be up to getOption(\"giveaway_additional_chat_count_max\") additional chats",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
@@ -10146,6 +10170,17 @@
             },
             "type": "MessageContent"
         },
+        "messageChatBoost": {
+            "description": "The chat was boosted by the sender of the message",
+            "args": {
+                "boost_count": {
+                    "description": "Number of times the chat was boosted",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messageForumTopicCreated": {
             "description": "A forum topic has been created",
             "args": {
@@ -10937,7 +10972,7 @@
                     "type": "formattedText"
                 },
                 "link_preview_options": {
-                    "description": "Options to be used for generation of a link preview; pass null to use default link preview options",
+                    "description": "Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options",
                     "is_optional": true,
                     "type": "linkPreviewOptions"
                 },
@@ -11199,7 +11234,7 @@
                     "type": "InputFile"
                 },
                 "thumbnail": {
-                    "description": "Video thumbnail; pass null to skip thumbnail uploading",
+                    "description": "Video thumbnail; may be null if empty; pass null to skip thumbnail uploading",
                     "is_optional": true,
                     "type": "inputThumbnail"
                 },
@@ -11214,7 +11249,7 @@
                     "type": "int32"
                 },
                 "self_destruct_type": {
-                    "description": "Video note self-destruct type; pass null if none; private chats only",
+                    "description": "Video note self-destruct type; may be null if none; pass null if none; private chats only",
                     "is_optional": true,
                     "type": "MessageSelfDestructType"
                 }
@@ -11240,12 +11275,12 @@
                     "type": "bytes"
                 },
                 "caption": {
-                    "description": "Voice note caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
+                    "description": "Voice note caption; may be null if empty; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
                 },
                 "self_destruct_type": {
-                    "description": "Voice note self-destruct type; pass null if none; private chats only",
+                    "description": "Voice note self-destruct type; may be null if none; pass null if none; private chats only",
                     "is_optional": true,
                     "type": "MessageSelfDestructType"
                 }
@@ -12467,6 +12502,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "sender_id": {
+                    "description": "Identifier of the sender of the story; may be null if the story is posted on behalf of the sender_chat_id",
+                    "is_optional": true,
+                    "type": "MessageSender"
+                },
                 "date": {
                     "description": "Point in time (Unix timestamp) when the story was published",
                     "is_optional": false,
@@ -12849,6 +12889,16 @@
                     "description": "True, if custom background can be set in the chat for all users",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "can_set_custom_emoji_sticker_set": {
+                    "description": "True, if custom emoji sticker set can be set for the chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_recognize_speech": {
+                    "description": "True, if speech recognition can be used for video note and voice note messages by all users",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "ChatBoostLevelFeatures"
@@ -12867,7 +12917,7 @@
                     "type": "int32"
                 },
                 "min_background_custom_emoji_boost_level": {
-                    "description": "The minimum boost level required to set custom emoji for reply header and link preview background",
+                    "description": "The minimum boost level required to set custom emoji for reply header and link preview background; for channel chats only",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -12883,6 +12933,16 @@
                 },
                 "min_custom_background_boost_level": {
                     "description": "The minimum boost level required to set custom chat background",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "min_custom_emoji_sticker_set_boost_level": {
+                    "description": "The minimum boost level required to set custom emoji sticker set for the chat; for supergroup chats only",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "min_speech_recognition_boost_level": {
+                    "description": "The minimum boost level allowing to recognize speech in video note and voice note messages for non-Premium users; for supergroup chats only",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -13911,7 +13971,7 @@
                     "type": "Bool"
                 },
                 "are_tags": {
-                    "description": "True, if the reactions will be tags and the message can be found by them; currently, always false",
+                    "description": "True, if the reactions will be tags and the message can be found by them",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -15634,6 +15694,22 @@
             },
             "type": "ChatEventAction"
         },
+        "chatEventCustomEmojiStickerSetChanged": {
+            "description": "The supergroup sticker set with allowed custom emoji was changed",
+            "args": {
+                "old_sticker_set_id": {
+                    "description": "Previous identifier of the chat sticker set; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "new_sticker_set_id": {
+                    "description": "New identifier of the chat sticker set; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "ChatEventAction"
+        },
         "chatEventTitleChanged": {
             "description": "The chat title was changed",
             "args": {
@@ -16438,8 +16514,23 @@
             "args": {},
             "type": "PremiumFeature"
         },
+        "premiumFeatureSavedMessagesTags": {
+            "description": "The ability to use tags in Saved Messages",
+            "args": {},
+            "type": "PremiumFeature"
+        },
+        "premiumFeatureMessagePrivacy": {
+            "description": "The ability to disallow incoming voice and video note messages in private chats using setUserPrivacySettingRules with userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages and to restrict incoming messages from non-contacts using setNewChatPrivacySettings",
+            "args": {},
+            "type": "PremiumFeature"
+        },
+        "premiumFeatureLastSeenTimes": {
+            "description": "The ability to view last seen and read times of other users even they can't view last seen or read time for the current user",
+            "args": {},
+            "type": "PremiumFeature"
+        },
         "premiumStoryFeaturePriorityOrder": {
-            "description": "User stories are displayed before stories of non-premium contacts and channels",
+            "description": "Stories of the current user are displayed before stories of non-Premium contacts, supergroups, and channels",
             "args": {},
             "type": "PremiumStoryFeature"
         },
@@ -16465,6 +16556,11 @@
         },
         "premiumStoryFeatureLinksAndFormatting": {
             "description": "The ability to use links and formatting in story caption",
+            "args": {},
+            "type": "PremiumStoryFeature"
+        },
+        "premiumStoryFeatureVideoQuality": {
+            "description": "The ability to choose better quality for viewed stories",
             "args": {},
             "type": "PremiumStoryFeature"
         },
@@ -16637,7 +16733,7 @@
             "description": "The user creating Telegram Premium gift codes for other users",
             "args": {
                 "boosted_chat_id": {
-                    "description": "Identifier of the channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user; 0 if none",
+                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user; 0 if none",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -16660,7 +16756,7 @@
             "type": "StorePaymentPurpose"
         },
         "storePaymentPurposePremiumGiveaway": {
-            "description": "The user creating a Telegram Premium giveaway for subscribers of channel chats; requires can_post_messages rights in the channels",
+            "description": "The user creating a Telegram Premium giveaway",
             "args": {
                 "parameters": {
                     "description": "Giveaway parameters",
@@ -16684,7 +16780,7 @@
             "description": "The user creating Telegram Premium gift codes for other users",
             "args": {
                 "boosted_chat_id": {
-                    "description": "Identifier of the channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user; 0 if none",
+                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user; 0 if none",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -16712,7 +16808,7 @@
             "type": "TelegramPaymentPurpose"
         },
         "telegramPaymentPurposePremiumGiveaway": {
-            "description": "The user creating a Telegram Premium giveaway for subscribers of channel chats; requires can_post_messages rights in the channels",
+            "description": "The user creating a Telegram Premium giveaway",
             "args": {
                 "parameters": {
                     "description": "Giveaway parameters",
@@ -17134,7 +17230,7 @@
             "type": "CanSendStoryResult"
         },
         "canSendStoryResultBoostNeeded": {
-            "description": "The channel chat must be boosted first by Telegram Premium subscribers to post more stories. Call getChatBoostStatus to get current boost status of the chat",
+            "description": "The chat must be boosted first by Telegram Premium subscribers to post more stories. Call getChatBoostStatus to get current boost status of the chat",
             "args": {},
             "type": "CanSendStoryResult"
         },
@@ -18253,7 +18349,7 @@
             "type": "UserPrivacySetting"
         },
         "userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages": {
-            "description": "A privacy setting for managing whether the user can receive voice and video messages in private chats",
+            "description": "A privacy setting for managing whether the user can receive voice and video messages in private chats; for Telegram Premium users only",
             "args": {},
             "type": "UserPrivacySetting"
         },
@@ -21322,7 +21418,7 @@
                     "type": "int53"
                 },
                 "draft_message": {
-                    "description": "The new draft message; may be null",
+                    "description": "The new draft message; may be null if none",
                     "is_optional": true,
                     "type": "draftMessage"
                 },
@@ -21654,9 +21750,26 @@
             },
             "type": "Update"
         },
-        "updatePinnedSavedMessagesTopics": {
-            "description": "The list of pinned Saved Messages topics has changed. The app can call getPinnedSavedMessagesTopics to get the new list",
-            "args": {},
+        "updateSavedMessagesTopic": {
+            "description": "Basic information about a Saved Messages topic has changed. This update is guaranteed to come before the topic identifier is returned to the application",
+            "args": {
+                "topic": {
+                    "description": "New data about the topic",
+                    "is_optional": false,
+                    "type": "savedMessagesTopic"
+                }
+            },
+            "type": "Update"
+        },
+        "updateSavedMessagesTopicCount": {
+            "description": "Number of Saved Messages topics has changed",
+            "args": {
+                "topic_count": {
+                    "description": "Approximate total number of Saved Messages topics",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
             "type": "Update"
         },
         "updateForumTopicInfo": {
@@ -21815,7 +21928,7 @@
                     "type": "int53"
                 },
                 "message_thread_id": {
-                    "description": "If not 0, a message thread identifier in which the action was performed",
+                    "description": "If not 0, the message thread identifier in which the action was performed",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -22599,10 +22712,15 @@
             "type": "Update"
         },
         "updateSavedMessagesTags": {
-            "description": "Used Saved Messages tags have changed",
+            "description": "Tags used in Saved Messages or a Saved Messages topic have changed",
             "args": {
+                "saved_messages_topic_id": {
+                    "description": "Identifier of Saved Messages topic which tags were changed; 0 if tags for the whole chat has changed",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "tags": {
-                    "description": "The new used tags",
+                    "description": "The new tags",
                     "is_optional": false,
                     "type": "savedMessagesTags"
                 }
@@ -23312,6 +23430,11 @@
                     "description": "The last name of the user; 0-64 characters",
                     "is_optional": false,
                     "type": "string"
+                },
+                "disable_notification": {
+                    "description": "Pass true to disable notification about the current user joining Telegram for other users that added them to contact list",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Ok"
@@ -24150,34 +24273,24 @@
             "args": {},
             "type": "Chats"
         },
-        "getPinnedSavedMessagesTopics": {
-            "description": "Returns list of all pinned Saved Messages topics",
-            "args": {},
-            "type": "FoundSavedMessagesTopics"
-        },
-        "getSavedMessagesTopics": {
-            "description": "Returns list of non-pinned Saved Messages topics from the specified offset",
+        "loadSavedMessagesTopics": {
+            "description": "Loads more Saved Messages topics. The loaded topics will be sent through updateSavedMessagesTopic. Topics are sorted by their topic.order in descending order. Returns a 404 error if all topics have been loaded",
             "args": {
-                "offset": {
-                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
-                    "is_optional": false,
-                    "type": "string"
-                },
                 "limit": {
-                    "description": "The maximum number of Saved Messages topics to be returned; up to 100",
+                    "description": "The maximum number of topics to be loaded. For optimal performance, the number of loaded topics is chosen by TDLib and can be smaller than the specified limit, even if the end of the list is not reached",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "FoundSavedMessagesTopics"
+            "type": "Ok"
         },
         "getSavedMessagesTopicHistory": {
             "description": "Returns messages in a Saved Messages topic. The messages are returned in a reverse chronological order (i.e., in order of decreasing message_id)",
             "args": {
-                "saved_messages_topic": {
-                    "description": "Saved Messages topic which messages will be fetched",
+                "saved_messages_topic_id": {
+                    "description": "Identifier of Saved Messages topic which messages will be fetched",
                     "is_optional": false,
-                    "type": "SavedMessagesTopic"
+                    "type": "int53"
                 },
                 "from_message_id": {
                     "description": "Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message",
@@ -24200,10 +24313,10 @@
         "getSavedMessagesTopicMessageByDate": {
             "description": "Returns the last message sent in a Saved Messages topic no later than the specified date",
             "args": {
-                "saved_messages_topic": {
-                    "description": "Saved Messages topic which message will be returned",
+                "saved_messages_topic_id": {
+                    "description": "Identifier of Saved Messages topic which message will be returned",
                     "is_optional": false,
-                    "type": "SavedMessagesTopic"
+                    "type": "int53"
                 },
                 "date": {
                     "description": "Point in time (Unix timestamp) relative to which to search for messages",
@@ -24216,10 +24329,10 @@
         "deleteSavedMessagesTopicHistory": {
             "description": "Deletes all messages in a Saved Messages topic",
             "args": {
-                "saved_messages_topic": {
-                    "description": "Saved Messages topic which messages will be deleted",
+                "saved_messages_topic_id": {
+                    "description": "Identifier of Saved Messages topic which messages will be deleted",
                     "is_optional": false,
-                    "type": "SavedMessagesTopic"
+                    "type": "int53"
                 }
             },
             "type": "Ok"
@@ -24227,10 +24340,10 @@
         "deleteSavedMessagesTopicMessagesByDate": {
             "description": "Deletes all messages between the specified dates in a Saved Messages topic. Messages sent in the last 30 seconds will not be deleted",
             "args": {
-                "saved_messages_topic": {
-                    "description": "Saved Messages topic which messages will be deleted",
+                "saved_messages_topic_id": {
+                    "description": "Identifier of Saved Messages topic which messages will be deleted",
                     "is_optional": false,
-                    "type": "SavedMessagesTopic"
+                    "type": "int53"
                 },
                 "min_date": {
                     "description": "The minimum date of the messages to delete",
@@ -24248,10 +24361,10 @@
         "toggleSavedMessagesTopicIsPinned": {
             "description": "Changes the pinned state of a Saved Messages topic. There can be up to getOption(\"pinned_saved_messages_topic_count_max\") pinned topics. The limit can be increased with Telegram Premium",
             "args": {
-                "saved_messages_topic": {
-                    "description": "Saved Messages topic to pin or unpin",
+                "saved_messages_topic_id": {
+                    "description": "Identifier of Saved Messages topic to pin or unpin",
                     "is_optional": false,
-                    "type": "SavedMessagesTopic"
+                    "type": "int53"
                 },
                 "is_pinned": {
                     "description": "Pass true to pin the topic; pass false to unpin it",
@@ -24264,10 +24377,10 @@
         "setPinnedSavedMessagesTopics": {
             "description": "Changes the order of pinned Saved Messages topics",
             "args": {
-                "saved_messages_topics": {
-                    "description": "The new list of pinned Saved Messages topics",
+                "saved_messages_topic_ids": {
+                    "description": "Identifiers of the new pinned Saved Messages topics",
                     "is_optional": false,
-                    "type": "vector<SavedMessagesTopic>"
+                    "type": "vector<int53>"
                 }
             },
             "type": "Ok"
@@ -24430,10 +24543,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "saved_messages_topic": {
-                    "description": "If not null, only messages in the specified Saved Messages topic will be returned; pass null to return all messages, or for chats other than Saved Messages",
-                    "is_optional": true,
-                    "type": "SavedMessagesTopic"
+                "saved_messages_topic_id": {
+                    "description": "If not 0, only messages in the specified Saved Messages topic will be returned; pass 0 to return all messages, or for chats other than Saved Messages",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "FoundChatMessages"
@@ -24513,6 +24626,11 @@
         "searchSavedMessages": {
             "description": "Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only. Returns the results in reverse chronological order, i.e. in order of decreasing message_id For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
             "args": {
+                "saved_messages_topic_id": {
+                    "description": "If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "tag": {
                     "description": "Tag to search for; pass null to return all suitable messages",
                     "is_optional": true,
@@ -24649,10 +24767,10 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "saved_messages_topic": {
-                    "description": "If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all messages, or for chats other than Saved Messages",
-                    "is_optional": true,
-                    "type": "SavedMessagesTopic"
+                "saved_messages_topic_id": {
+                    "description": "If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages, or for chats other than Saved Messages",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "MessagePositions"
@@ -24675,10 +24793,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "saved_messages_topic": {
-                    "description": "If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all messages, or for chats other than Saved Messages",
-                    "is_optional": true,
-                    "type": "SavedMessagesTopic"
+                "saved_messages_topic_id": {
+                    "description": "If not0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages, or for chats other than Saved Messages",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "MessageCalendar"
@@ -24696,10 +24814,10 @@
                     "is_optional": false,
                     "type": "SearchMessagesFilter"
                 },
-                "saved_messages_topic": {
-                    "description": "If not null, only messages in the specified Saved Messages topic will be counted; pass null to count all messages, or for chats other than Saved Messages",
-                    "is_optional": true,
-                    "type": "SavedMessagesTopic"
+                "saved_messages_topic_id": {
+                    "description": "If not 0, only messages in the specified Saved Messages topic will be counted; pass 0 to count all messages, or for chats other than Saved Messages",
+                    "is_optional": false,
+                    "type": "int53"
                 },
                 "return_local": {
                     "description": "Pass true to get the number of messages without sending network requests, or -1 if the number of messages is unknown locally",
@@ -24732,10 +24850,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "saved_messages_topic": {
-                    "description": "If not null, only messages in the specified Saved Messages topic will be considered; pass null to consider all relevant messages, or for chats other than Saved Messages",
-                    "is_optional": true,
-                    "type": "SavedMessagesTopic"
+                "saved_messages_topic_id": {
+                    "description": "If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all relevant messages, or for chats other than Saved Messages",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "Count"
@@ -24983,7 +25101,7 @@
                     "type": "int53"
                 },
                 "message_thread_id": {
-                    "description": "If not 0, a message thread identifier in which the message will be sent",
+                    "description": "If not 0, the message thread identifier in which the message will be sent",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -25019,7 +25137,7 @@
                     "type": "int53"
                 },
                 "message_thread_id": {
-                    "description": "If not 0, a message thread identifier in which the messages will be sent",
+                    "description": "If not 0, the message thread identifier in which the messages will be sent",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -25042,7 +25160,7 @@
             "type": "Messages"
         },
         "sendBotStartMessage": {
-            "description": "Invites a bot to a chat (if it is not yet a member) and sends it the /start command. Bots can't be invited to a private chat other than the chat with the bot. Bots can't be invited to channels (although they can be added as admins) and secret chats. Returns the sent message",
+            "description": "Invites a bot to a chat (if it is not yet a member) and sends it the /start command; requires can_invite_users member right. Bots can't be invited to a private chat other than the chat with the bot. Bots can't be invited to channels (although they can be added as admins) and secret chats. Returns the sent message",
             "args": {
                 "bot_user_id": {
                     "description": "Identifier of the bot",
@@ -25071,7 +25189,7 @@
                     "type": "int53"
                 },
                 "message_thread_id": {
-                    "description": "If not 0, a message thread identifier in which the message will be sent",
+                    "description": "If not 0, the message thread identifier in which the message will be sent",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -25112,7 +25230,7 @@
                     "type": "int53"
                 },
                 "message_thread_id": {
-                    "description": "If not 0, a message thread identifier in which the message will be sent; for forum threads only",
+                    "description": "If not 0, the message thread identifier in which the message will be sent; for forum threads only",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -25531,7 +25649,7 @@
             "type": "Stickers"
         },
         "createForumTopic": {
-            "description": "Creates a topic in a forum supergroup chat; requires can_manage_topics or can_create_topics rights in the supergroup",
+            "description": "Creates a topic in a forum supergroup chat; requires can_manage_topics administrator or can_create_topics member right in the supergroup",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -25924,8 +26042,14 @@
             "type": "Ok"
         },
         "getSavedMessagesTags": {
-            "description": "Returns tags used in Saved Messages; for Telegram Premium users only",
-            "args": {},
+            "description": "Returns tags used in Saved Messages or a Saved Messages topic",
+            "args": {
+                "saved_messages_topic_id": {
+                    "description": "Identifier of Saved Messages topic which tags will be returned; pass 0 to get all Saved Messages tags",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
             "type": "SavedMessagesTags"
         },
         "setSavedMessagesTagLabel": {
@@ -26510,7 +26634,7 @@
                     "type": "string"
                 },
                 "message_thread_id": {
-                    "description": "If not 0, a message thread identifier in which the message will be sent",
+                    "description": "If not 0, the message thread identifier in which the message will be sent",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -26767,7 +26891,7 @@
                     "type": "int53"
                 },
                 "message_thread_id": {
-                    "description": "If not 0, a message thread identifier in which the action was performed",
+                    "description": "If not 0, the message thread identifier in which the action was performed",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -27100,7 +27224,7 @@
             "type": "Chat"
         },
         "upgradeBasicGroupChatToSupergroupChat": {
-            "description": "Creates a new supergroup from an existing basic group and sends a corresponding messageChatUpgradeTo and messageChatUpgradeFrom; requires creator privileges. Deactivates the original basic group",
+            "description": "Creates a new supergroup from an existing basic group and sends a corresponding messageChatUpgradeTo and messageChatUpgradeFrom; requires owner privileges. Deactivates the original basic group",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to upgrade",
@@ -27401,7 +27525,7 @@
             "type": "Ok"
         },
         "setChatTitle": {
-            "description": "Changes the chat title. Supported only for basic groups, supergroups and channels. Requires can_change_info administrator right",
+            "description": "Changes the chat title. Supported only for basic groups, supergroups and channels. Requires can_change_info member right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27417,7 +27541,7 @@
             "type": "Ok"
         },
         "setChatPhoto": {
-            "description": "Changes the photo of a chat. Supported only for basic groups, supergroups and channels. Requires can_change_info administrator right",
+            "description": "Changes the photo of a chat. Supported only for basic groups, supergroups and channels. Requires can_change_info member right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27433,7 +27557,7 @@
             "type": "Ok"
         },
         "setChatAccentColor": {
-            "description": "Changes accent color and background custom emoji of a chat. Requires can_change_info administrator right",
+            "description": "Changes accent color and background custom emoji of a channel chat. Requires can_change_info administrator right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27441,7 +27565,7 @@
                     "type": "int53"
                 },
                 "accent_color_id": {
-                    "description": "Identifier of the accent color to use. The chat must have at least accentColor.min_chat_boost_level boost level to pass the corresponding color",
+                    "description": "Identifier of the accent color to use. The chat must have at least accentColor.min_channel_chat_boost_level boost level to pass the corresponding color",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -27454,7 +27578,7 @@
             "type": "Ok"
         },
         "setChatProfileAccentColor": {
-            "description": "Changes accent color and background custom emoji for profile of a chat. Requires can_change_info administrator right",
+            "description": "Changes accent color and background custom emoji for profile of a supergroup or channel chat. Requires can_change_info administrator right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27462,7 +27586,7 @@
                     "type": "int53"
                 },
                 "profile_accent_color_id": {
-                    "description": "Identifier of the accent color to use for profile; pass -1 if none. The chat must have at least profileAccentColor.min_chat_boost_level boost level to pass the corresponding color",
+                    "description": "Identifier of the accent color to use for profile; pass -1 if none. The chat must have at least profileAccentColor.min_supergroup_chat_boost_level for supergroups or profileAccentColor.min_channel_chat_boost_level for channels boost level to pass the corresponding color",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -27594,12 +27718,12 @@
                     "type": "int53"
                 },
                 "message_thread_id": {
-                    "description": "If not 0, a message thread identifier in which the draft was changed",
+                    "description": "If not 0, the message thread identifier in which the draft was changed",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "draft_message": {
-                    "description": "New draft message; pass null to remove the draft",
+                    "description": "New draft message; pass null to remove the draft. All files in draft message content must be of the type inputFileLocal. Media thumbnails and captions are ignored",
                     "is_optional": true,
                     "type": "draftMessage"
                 }
@@ -27639,7 +27763,7 @@
             "type": "Ok"
         },
         "toggleChatViewAsTopics": {
-            "description": "Changes the view_as_topics setting of a forum chat",
+            "description": "Changes the view_as_topics setting of a forum chat or Saved Messages",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27703,7 +27827,7 @@
             "type": "Ok"
         },
         "setChatAvailableReactions": {
-            "description": "Changes reactions, available in a chat. Available for basic groups, supergroups, and channels. Requires can_change_info administrator right",
+            "description": "Changes reactions, available in a chat. Available for basic groups, supergroups, and channels. Requires can_change_info member right",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -27711,7 +27835,7 @@
                     "type": "int53"
                 },
                 "available_reactions": {
-                    "description": "Reactions available in the chat. All explicitly specified emoji reactions must be active. Up to the chat's boost level custom emoji reactions can be explicitly specified",
+                    "description": "Reactions available in the chat. All explicitly specified emoji reactions must be active. In channel chats up to the chat's boost level custom emoji reactions can be explicitly specified",
                     "is_optional": false,
                     "type": "ChatAvailableReactions"
                 }
@@ -27735,7 +27859,7 @@
             "type": "Ok"
         },
         "setChatDescription": {
-            "description": "Changes information about a chat. Available for basic groups, supergroups, and channels. Requires can_change_info administrator right",
+            "description": "Changes information about a chat. Available for basic groups, supergroups, and channels. Requires can_change_info member right",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -27754,7 +27878,7 @@
             "description": "Changes the discussion group of a channel chat; requires can_change_info administrator right in the channel if it is specified",
             "args": {
                 "chat_id": {
-                    "description": "Identifier of the channel chat. Pass 0 to remove a link from the supergroup passed in the second argument to a linked channel chat (requires can_pin_messages rights in the supergroup)",
+                    "description": "Identifier of the channel chat. Pass 0 to remove a link from the supergroup passed in the second argument to a linked channel chat (requires can_pin_messages member right in the supergroup)",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -27783,7 +27907,7 @@
             "type": "Ok"
         },
         "setChatSlowModeDelay": {
-            "description": "Changes the slow mode delay of a chat. Available only for supergroups; requires can_restrict_members rights",
+            "description": "Changes the slow mode delay of a chat. Available only for supergroups; requires can_restrict_members right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27799,7 +27923,7 @@
             "type": "Ok"
         },
         "pinChatMessage": {
-            "description": "Pins a message in a chat; requires can_pin_messages rights or can_edit_messages rights in the channel",
+            "description": "Pins a message in a chat; requires can_pin_messages member right if the chat is a basic group or supergroup, or can_edit_messages administrator right if the chat is a channel",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -27825,7 +27949,7 @@
             "type": "Ok"
         },
         "unpinChatMessage": {
-            "description": "Removes a pinned message from a chat; requires can_pin_messages rights in the group or can_edit_messages rights in the channel",
+            "description": "Removes a pinned message from a chat; requires can_pin_messages member right if the chat is a basic group or supergroup, or can_edit_messages administrator right if the chat is a channel",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -27841,7 +27965,7 @@
             "type": "Ok"
         },
         "unpinAllChatMessages": {
-            "description": "Removes all pinned messages from a chat; requires can_pin_messages rights in the group or can_edit_messages rights in the channel",
+            "description": "Removes all pinned messages from a chat; requires can_pin_messages member right if the chat is a basic group or supergroup, or can_edit_messages administrator right if the chat is a channel",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -27852,7 +27976,7 @@
             "type": "Ok"
         },
         "unpinAllMessageThreadMessages": {
-            "description": "Removes all pinned messages from a forum topic; requires can_pin_messages rights in the supergroup",
+            "description": "Removes all pinned messages from a forum topic; requires can_pin_messages member right in the supergroup",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -27890,7 +28014,7 @@
             "type": "Ok"
         },
         "addChatMember": {
-            "description": "Adds a new member to a chat. Members can't be added to private or secret chats",
+            "description": "Adds a new member to a chat; requires can_invite_users member right. Members can't be added to private or secret chats",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27911,7 +28035,7 @@
             "type": "Ok"
         },
         "addChatMembers": {
-            "description": "Adds multiple new members to a chat. Currently, this method is only available for supergroups and channels. This method can't be used to join a chat. Members can't be added to a channel if it has more than 200 members",
+            "description": "Adds multiple new members to a chat; requires can_invite_users member right. Currently, this method is only available for supergroups and channels. This method can't be used to join a chat. Members can't be added to a channel if it has more than 200 members",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27927,7 +28051,7 @@
             "type": "Ok"
         },
         "setChatMemberStatus": {
-            "description": "Changes the status of a chat member, needs appropriate privileges. This function is currently not suitable for transferring chat ownership; use transferChatOwnership instead. Use addChatMember or banChatMember if some additional parameters needs to be passed",
+            "description": "Changes the status of a chat member; requires can_invite_users member right to add a chat member, can_promote_members administrator right to change administrator rights of the member, and can_restrict_members administrator right to change restrictions of a user. This function is currently not suitable for transferring chat ownership; use transferChatOwnership instead. Use addChatMember or banChatMember if some additional parameters needs to be passed",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27948,7 +28072,7 @@
             "type": "Ok"
         },
         "banChatMember": {
-            "description": "Bans a member in a chat. Members can't be banned in private or secret chats. In supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first",
+            "description": "Bans a member in a chat; requires can_restrict_members administrator right. Members can't be banned in private or secret chats. In supergroups and channels, the user will not be able to return to the group on their own using invite links, etc., unless unbanned first",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -27979,7 +28103,7 @@
             "type": "CanTransferOwnershipResult"
         },
         "transferChatOwnership": {
-            "description": "Changes the owner of a chat. The current user must be a current owner of the chat. Use the method canTransferOwnership to check whether the ownership can be transferred from the current session. Available only for supergroups and channel chats",
+            "description": "Changes the owner of a chat; requires owner privileges in the chat. Use the method canTransferOwnership to check whether the ownership can be transferred from the current session. Available only for supergroups and channel chats",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -28016,7 +28140,7 @@
             "type": "ChatMember"
         },
         "searchChatMembers": {
-            "description": "Searches for a specified query in the first name, last name and usernames of the members of a specified chat. Requires administrator rights in channels",
+            "description": "Searches for a specified query in the first name, last name and usernames of the members of a specified chat. Requires administrator rights if the chat is a channel",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -28219,12 +28343,12 @@
             "type": "Story"
         },
         "getChatsToSendStories": {
-            "description": "Returns channel chats in which the current user has the right to post stories. The chats must be rechecked with canSendStory before actually trying to post a story there",
+            "description": "Returns supergroup and channel chats in which the current user has the right to post stories. The chats must be rechecked with canSendStory before actually trying to post a story there",
             "args": {},
             "type": "Chats"
         },
         "canSendStory": {
-            "description": "Checks whether the current user can send a story on behalf of a chat; requires can_post_stories rights for channel chats",
+            "description": "Checks whether the current user can send a story on behalf of a chat; requires can_post_stories right for supergroup and channel chats",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -28235,7 +28359,7 @@
             "type": "CanSendStoryResult"
         },
         "sendStory": {
-            "description": "Sends a new story to a chat; requires can_post_stories rights for channel chats. Returns a temporary story",
+            "description": "Sends a new story to a chat; requires can_post_stories right for supergroup and channel chats. Returns a temporary story",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat that will post the story",
@@ -28258,7 +28382,7 @@
                     "type": "formattedText"
                 },
                 "privacy_settings": {
-                    "description": "The privacy settings for the story",
+                    "description": "The privacy settings for the story; ignored for stories sent to supergroup and channel chats",
                     "is_optional": false,
                     "type": "StoryPrivacySettings"
                 },
@@ -28317,13 +28441,8 @@
             "type": "Ok"
         },
         "setStoryPrivacySettings": {
-            "description": "Changes privacy settings of a story. Can be called only if story.can_be_edited == true",
+            "description": "Changes privacy settings of a story. The method can be called only for stories posted on behalf of the current user and if story.can_be_edited == true",
             "args": {
-                "story_sender_chat_id": {
-                    "description": "Identifier of the chat that posted the story",
-                    "is_optional": false,
-                    "type": "int53"
-                },
                 "story_id": {
                     "description": "Identifier of the story",
                     "is_optional": false,
@@ -28439,7 +28558,7 @@
             "type": "Stories"
         },
         "getChatArchivedStories": {
-            "description": "Returns the list of all stories posted by the given chat; requires can_edit_stories rights for channel chats. The stories are returned in a reverse chronological order (i.e., in order of decreasing story_id). For optimal performance, the number of returned stories is chosen by TDLib",
+            "description": "Returns the list of all stories posted by the given chat; requires can_edit_stories right in the chat. The stories are returned in a reverse chronological order (i.e., in order of decreasing story_id). For optimal performance, the number of returned stories is chosen by TDLib",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -28503,7 +28622,7 @@
             "type": "AvailableReactions"
         },
         "setStoryReaction": {
-            "description": "Changes chosen reaction on a story",
+            "description": "Changes chosen reaction on a story that has already been sent",
             "args": {
                 "story_sender_chat_id": {
                     "description": "The identifier of the sender of the story",
@@ -28665,6 +28784,11 @@
         "getChatBoostLevelFeatures": {
             "description": "Returns list of features available on the specific chat boost level; this is an offline request",
             "args": {
+                "is_channel": {
+                    "description": "Pass true to get the list of features for channels; pass false to get the list of features for supergroups",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "level": {
                     "description": "Chat boost level",
                     "is_optional": false,
@@ -28675,7 +28799,13 @@
         },
         "getChatBoostFeatures": {
             "description": "Returns list of features available on the first 10 chat boost levels; this is an offline request",
-            "args": {},
+            "args": {
+                "is_channel": {
+                    "description": "Pass true to get the list of features for channels; pass false to get the list of features for supergroups",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
             "type": "ChatBoostFeatures"
         },
         "getAvailableChatBoostSlots": {
@@ -28684,10 +28814,10 @@
             "type": "ChatBoostSlots"
         },
         "getChatBoostStatus": {
-            "description": "Returns the current boost status for a channel chat",
+            "description": "Returns the current boost status for a supergroup or a channel chat",
             "args": {
                 "chat_id": {
-                    "description": "Identifier of the channel chat",
+                    "description": "Identifier of the chat",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -28711,7 +28841,7 @@
             "type": "ChatBoostSlots"
         },
         "getChatBoostLink": {
-            "description": "Returns an HTTPS link to boost the specified channel chat",
+            "description": "Returns an HTTPS link to boost the specified supergroup or channel chat",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -28733,7 +28863,7 @@
             "type": "ChatBoostLinkInfo"
         },
         "getChatBoosts": {
-            "description": "Returns list of boosts applied to a chat; requires administrator rights in the channel chat",
+            "description": "Returns list of boosts applied to a chat; requires administrator rights in the chat",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -28759,7 +28889,7 @@
             "type": "FoundChatBoosts"
         },
         "getUserChatBoosts": {
-            "description": "Returns list of boosts applied to a chat by a given user; requires administrator rights in the channel chat; for bots only",
+            "description": "Returns list of boosts applied to a chat by a given user; requires administrator rights in the chat; for bots only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -29178,7 +29308,7 @@
             "description": "Returns a confirmation text to be shown to the user before starting message import",
             "args": {
                 "chat_id": {
-                    "description": "Identifier of a chat to which the messages will be imported. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can_change_info administrator right",
+                    "description": "Identifier of a chat to which the messages will be imported. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can_change_info member right",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -29189,7 +29319,7 @@
             "description": "Imports messages exported from another app",
             "args": {
                 "chat_id": {
-                    "description": "Identifier of a chat to which the messages will be imported. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can_change_info administrator right",
+                    "description": "Identifier of a chat to which the messages will be imported. It must be an identifier of a private chat with a mutual contact or an identifier of a supergroup chat with can_change_info member right",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -29686,7 +29816,7 @@
             "type": "Ok"
         },
         "createVideoChat": {
-            "description": "Creates a video chat (a group call bound to a chat). Available only for basic groups, supergroups and channels; requires can_manage_video_chats rights",
+            "description": "Creates a video chat (a group call bound to a chat). Available only for basic groups, supergroups and channels; requires can_manage_video_chats administrator right",
             "args": {
                 "chat_id": {
                     "description": "Identifier of a chat in which the video chat will be created",
@@ -29704,7 +29834,7 @@
                     "type": "int32"
                 },
                 "is_rtmp_stream": {
-                    "description": "Pass true to create an RTMP stream instead of an ordinary video chat; requires creator privileges",
+                    "description": "Pass true to create an RTMP stream instead of an ordinary video chat; requires owner privileges",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -29712,7 +29842,7 @@
             "type": "GroupCallId"
         },
         "getVideoChatRtmpUrl": {
-            "description": "Returns RTMP URL for streaming to the chat; requires creator privileges",
+            "description": "Returns RTMP URL for streaming to the chat; requires owner privileges",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -29723,7 +29853,7 @@
             "type": "RtmpUrl"
         },
         "replaceVideoChatRtmpUrl": {
-            "description": "Replaces the current RTMP URL for streaming to the chat; requires creator privileges",
+            "description": "Replaces the current RTMP URL for streaming to the chat; requires owner privileges",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -31610,8 +31740,40 @@
             },
             "type": "Ok"
         },
+        "setSupergroupCustomEmojiStickerSet": {
+            "description": "Changes the custom emoji sticker set of a supergroup; requires can_change_info administrator right. The chat must have at least chatBoostFeatures.min_custom_emoji_sticker_set_boost_level boost level to pass the corresponding color",
+            "args": {
+                "supergroup_id": {
+                    "description": "Identifier of the supergroup",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "custom_emoji_sticker_set_id": {
+                    "description": "New value of the custom emoji sticker set identifier for the supergroup. Use 0 to remove the custom emoji sticker set in the supergroup",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Ok"
+        },
+        "setSupergroupUnrestrictBoostCount": {
+            "description": "Changes the number of times the supergroup must be boosted by a user to ignore slow mode and chat permission restrictions; requires can_restrict_members administrator right",
+            "args": {
+                "supergroup_id": {
+                    "description": "Identifier of the supergroup",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "unrestrict_boost_count": {
+                    "description": "New value of the unrestrict_boost_count supergroup setting; 0-8. Use 0 to remove the setting",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
         "toggleSupergroupSignMessages": {
-            "description": "Toggles whether sender signature is added to sent messages in a channel; requires can_change_info administrator right",
+            "description": "Toggles whether sender signature is added to sent messages in a channel; requires can_change_info member right",
             "args": {
                 "supergroup_id": {
                     "description": "Identifier of the channel",
@@ -31659,7 +31821,7 @@
             "type": "Ok"
         },
         "toggleSupergroupIsAllHistoryAvailable": {
-            "description": "Toggles whether the message history of a supergroup is available to new members; requires can_change_info administrator right",
+            "description": "Toggles whether the message history of a supergroup is available to new members; requires can_change_info member right",
             "args": {
                 "supergroup_id": {
                     "description": "The identifier of the supergroup",
@@ -33302,7 +33464,7 @@
             "description": "Returns available options for Telegram Premium gift code or giveaway creation",
             "args": {
                 "boosted_chat_id": {
-                    "description": "Identifier of the channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user; 0 if none",
+                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user; 0 if none",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -33332,7 +33494,7 @@
             "type": "Ok"
         },
         "launchPrepaidPremiumGiveaway": {
-            "description": "Launches a prepaid Telegram Premium giveaway for subscribers of channel chats; requires can_post_messages rights in the channels",
+            "description": "Launches a prepaid Telegram Premium giveaway",
             "args": {
                 "giveaway_id": {
                     "description": "Unique identifier of the prepaid giveaway",
