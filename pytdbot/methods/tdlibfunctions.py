@@ -3064,6 +3064,35 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def sendQuickReplyShortcutMessages(
+        self, chat_id: int, shortcut_id: int, sending_id: int
+    ) -> Result:
+        """Sends messages from a quick reply shortcut\. Requires Telegram Business subscription
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which to send messages\. The chat must be a private chat with a regular user
+
+            shortcut_id (``int``):
+                Unique identifier of the quick reply shortcut
+
+            sending_id (``int``):
+                Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Messages``)
+        """
+
+        data = {
+            "@type": "sendQuickReplyShortcutMessages",
+            "chat_id": chat_id,
+            "shortcut_id": shortcut_id,
+            "sending_id": sending_id,
+        }
+
+        return await self.invoke(data)
+
     async def resendMessages(
         self, chat_id: int, message_ids: list, quote: dict = None
     ) -> Result:
@@ -3592,6 +3621,144 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "message_id": message_id,
             "scheduling_state": scheduling_state,
+        }
+
+        return await self.invoke(data)
+
+    async def checkQuickReplyShortcutName(self, name: str) -> Result:
+        """Checks validness of a name for a quick reply shortcut\. Can be called synchronously
+
+        Args:
+            name (``str``):
+                The name of the shortcut; 1\-32 characters
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "checkQuickReplyShortcutName",
+            "name": name,
+        }
+
+        return await self.invoke(data)
+
+    async def loadQuickReplyShortcuts(self) -> Result:
+        """Loads quick reply shortcuts created by the current user\. The loaded topics will be sent through updateQuickReplyShortcuts
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "loadQuickReplyShortcuts",
+        }
+
+        return await self.invoke(data)
+
+    async def setQuickReplyShortcutName(self, shortcut_id: int, name: str) -> Result:
+        """Changes name of a quick reply shortcut
+
+        Args:
+            shortcut_id (``int``):
+                Unique identifier of the quick reply shortcut
+
+            name (``str``):
+                New name for the shortcut\. Use checkQuickReplyShortcutName to check its validness
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setQuickReplyShortcutName",
+            "shortcut_id": shortcut_id,
+            "name": name,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteQuickReplyShortcut(self, shortcut_id: int) -> Result:
+        """Deletes a quick reply shortcut
+
+        Args:
+            shortcut_id (``int``):
+                Unique identifier of the quick reply shortcut
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteQuickReplyShortcut",
+            "shortcut_id": shortcut_id,
+        }
+
+        return await self.invoke(data)
+
+    async def reorderQuickReplyShortcuts(self, shortcut_ids: list) -> Result:
+        """Changes the order of quick reply shortcuts
+
+        Args:
+            shortcut_ids (``list``):
+                The new order of quick reply shortcuts
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "reorderQuickReplyShortcuts",
+            "shortcut_ids": shortcut_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def loadQuickReplyShortcutMessages(self, shortcut_id: int) -> Result:
+        """Loads quick reply messages that can be sent by a given quick reply shortcut\. The loaded messages will be sent through updateQuickReplyShortcutMessages
+
+        Args:
+            shortcut_id (``int``):
+                Unique identifier of the quick reply shortcut
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "loadQuickReplyShortcutMessages",
+            "shortcut_id": shortcut_id,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteQuickReplyShortcutMessages(
+        self, shortcut_id: int, message_ids: list
+    ) -> Result:
+        """Deletes specified quick reply messages
+
+        Args:
+            shortcut_id (``int``):
+                Unique identifier of the quick reply shortcut to which the messages belong
+
+            message_ids (``list``):
+                Unique identifiers of the messages
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteQuickReplyShortcutMessages",
+            "shortcut_id": shortcut_id,
+            "message_ids": message_ids,
         }
 
         return await self.invoke(data)
@@ -6075,6 +6242,25 @@ class TDLibFunctions:
             "@type": "reorderChatFolders",
             "chat_folder_ids": chat_folder_ids,
             "main_chat_list_position": main_chat_list_position,
+        }
+
+        return await self.invoke(data)
+
+    async def toggleChatFolderTags(self, are_tags_enabled: bool) -> Result:
+        """Toggles whether chat folder tags are enabled
+
+        Args:
+            are_tags_enabled (``bool``):
+                Pass true to enable folder tags; pass false to disable them
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "toggleChatFolderTags",
+            "are_tags_enabled": are_tags_enabled,
         }
 
         return await self.invoke(data)
@@ -11265,7 +11451,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def addRecentSticker(self, is_attached: bool, sticker: dict) -> Result:
-        """Manually adds a new sticker to the list of recently used stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set can be added to this list\. Emoji stickers can't be added to recent stickers
+        """Manually adds a new sticker to the list of recently used stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP format can be added to this list\. Emoji stickers can't be added to recent stickers
 
         Args:
             is_attached (``bool``):
@@ -11344,7 +11530,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def addFavoriteSticker(self, sticker: dict) -> Result:
-        """Adds a new sticker to the list of favorite stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set can be added to this list\. Emoji stickers can't be added to favorite stickers
+        """Adds a new sticker to the list of favorite stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP format can be added to this list\. Emoji stickers can't be added to favorite stickers
 
         Args:
             sticker (``InputFile``):
@@ -11939,7 +12125,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setLocation(self, location: dict) -> Result:
-        """Changes the location of the current user\. Needs to be called if getOption\("is\_location\_visible"\) is true and location changes for more than 1 kilometer
+        """Changes the location of the current user\. Needs to be called if getOption\("is\_location\_visible"\) is true and location changes for more than 1 kilometer\. Must not be called if the user has a business location
 
         Args:
             location (``location``):
@@ -11953,6 +12139,86 @@ class TDLibFunctions:
         data = {
             "@type": "setLocation",
             "location": location,
+        }
+
+        return await self.invoke(data)
+
+    async def setBusinessLocation(self, location: dict = None) -> Result:
+        """Changes the business location of the current user\. Requires Telegram Business subscription
+
+        Args:
+            location (``businessLocation``, *optional*):
+                The new location of the business; pass null to remove the location
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBusinessLocation",
+            "location": location,
+        }
+
+        return await self.invoke(data)
+
+    async def setBusinessOpeningHours(self, opening_hours: dict = None) -> Result:
+        """Changes the business opening hours of the current user\. Requires Telegram Business subscription
+
+        Args:
+            opening_hours (``businessOpeningHours``, *optional*):
+                The new opening hours of the business; pass null to remove the opening hours
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBusinessOpeningHours",
+            "opening_hours": opening_hours,
+        }
+
+        return await self.invoke(data)
+
+    async def setBusinessGreetingMessageSettings(
+        self, greeting_message_settings: dict = None
+    ) -> Result:
+        """Changes the business greeting message settings of the current user\. Requires Telegram Business subscription
+
+        Args:
+            greeting_message_settings (``businessGreetingMessageSettings``, *optional*):
+                The new settings for the greeting message of the business; pass null to disable the greeting message
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBusinessGreetingMessageSettings",
+            "greeting_message_settings": greeting_message_settings,
+        }
+
+        return await self.invoke(data)
+
+    async def setBusinessAwayMessageSettings(
+        self, away_message_settings: dict = None
+    ) -> Result:
+        """Changes the business away message settings of the current user\. Requires Telegram Business subscription
+
+        Args:
+            away_message_settings (``businessAwayMessageSettings``, *optional*):
+                The new settings for the away message of the business; pass null to disable the away message
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBusinessAwayMessageSettings",
+            "away_message_settings": away_message_settings,
         }
 
         return await self.invoke(data)
@@ -12011,6 +12277,58 @@ class TDLibFunctions:
         data = {
             "@type": "checkChangePhoneNumberCode",
             "code": code,
+        }
+
+        return await self.invoke(data)
+
+    async def getBusinessConnectedBot(self) -> Result:
+        """Returns the business bot that is connected to the current user account\. Returns a 404 error if there is no connected bot
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessConnectedBot``)
+        """
+
+        data = {
+            "@type": "getBusinessConnectedBot",
+        }
+
+        return await self.invoke(data)
+
+    async def setBusinessConnectedBot(self, bot: dict) -> Result:
+        """Adds or changes business bot that is connected to the current user account
+
+        Args:
+            bot (``businessConnectedBot``):
+                Connection settings for the bot
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBusinessConnectedBot",
+            "bot": bot,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteBusinessConnectedBot(self, bot_user_id: int) -> Result:
+        """Deletes the business bot that is connected to the current user account
+
+        Args:
+            bot_user_id (``int``):
+                Unique user identifier for the bot
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteBusinessConnectedBot",
+            "bot_user_id": bot_user_id,
         }
 
         return await self.invoke(data)
@@ -13203,6 +13521,20 @@ class TDLibFunctions:
             "limit": limit,
             "filters": filters,
             "user_ids": user_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def getTimeZones(self) -> Result:
+        """Returns the list of supported time zones
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``TimeZones``)
+        """
+
+        data = {
+            "@type": "getTimeZones",
         }
 
         return await self.invoke(data)

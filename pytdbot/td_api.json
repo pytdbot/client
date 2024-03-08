@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.25",
-    "commit_hash": "d93a99e3351db82573d765ce4f5e84714c277518",
+    "version": "1.8.26",
+    "commit_hash": "b3b63bbdc14dc377d2de6b78e5844fec1564f95d",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -15,6 +15,7 @@
         "StickerFullType": "Contains full information about sticker type",
         "PollType": "Describes the type of a poll",
         "UserType": "Represents the type of a user. The following types are possible: regular users, deleted users and bots",
+        "BusinessAwayMessageSchedule": "Describes conditions for sending of away messages by a Telegram Business account",
         "ChatPhotoStickerType": "Describes type of a sticker, which was used to create a chat photo",
         "InputChatPhoto": "Describes a photo to be set as a user profile or chat photo",
         "PremiumGiveawayParticipantStatus": "Contains information about status of a user in a Telegram Premium giveaway",
@@ -1933,6 +1934,210 @@
             },
             "type": "ChatLocation"
         },
+        "businessAwayMessageScheduleAlways": {
+            "description": "Send away messages always",
+            "args": {},
+            "type": "BusinessAwayMessageSchedule"
+        },
+        "businessAwayMessageScheduleOutsideOfOpeningHours": {
+            "description": "Send away messages outside of the business opening hours",
+            "args": {},
+            "type": "BusinessAwayMessageSchedule"
+        },
+        "businessAwayMessageScheduleCustom": {
+            "description": "Send away messages only in the specified time span",
+            "args": {
+                "start_date": {
+                    "description": "Point in time (Unix timestamp) when the away messages will start to be sent",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "end_date": {
+                    "description": "Point in time (Unix timestamp) when the away messages will stop to be sent",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "BusinessAwayMessageSchedule"
+        },
+        "businessLocation": {
+            "description": "Represents a location of a business",
+            "args": {
+                "location": {
+                    "description": "The location; may be null if not specified",
+                    "is_optional": true,
+                    "type": "location"
+                },
+                "address": {
+                    "description": "Location address; 1-96 characters",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "BusinessLocation"
+        },
+        "businessRecipients": {
+            "description": "Describes private chats chosen for automatic interaction with a business",
+            "args": {
+                "chat_ids": {
+                    "description": "Identifiers of selected private chats",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                },
+                "select_existing_chats": {
+                    "description": "True, if all existing private chats are selected",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "select_new_chats": {
+                    "description": "True, if all new private chats are selected",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "select_contacts": {
+                    "description": "True, if all private chats with contacts are selected",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "select_non_contacts": {
+                    "description": "True, if all private chats with non-contacts are selected",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "exclude_selected": {
+                    "description": "If true, then all private chats except the selected are chosen. Otherwise, only the selected chats are chosen",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "BusinessRecipients"
+        },
+        "businessAwayMessageSettings": {
+            "description": "Describes settings for messages that are automatically sent by a Telegram Business account when it is away",
+            "args": {
+                "shortcut_id": {
+                    "description": "Unique quick reply shortcut identifier for the away messages",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "recipients": {
+                    "description": "Chosen recipients of the away messages",
+                    "is_optional": false,
+                    "type": "businessRecipients"
+                },
+                "schedule": {
+                    "description": "Settings used to check whether the current user is away",
+                    "is_optional": false,
+                    "type": "BusinessAwayMessageSchedule"
+                },
+                "offline_only": {
+                    "description": "True, if the messages must not be sent if the account was online in the last 10 minutes",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "BusinessAwayMessageSettings"
+        },
+        "businessGreetingMessageSettings": {
+            "description": "Describes settings for greeting messages that are automatically sent by a Telegram Business account as response to incoming messages in an inactive private chat",
+            "args": {
+                "shortcut_id": {
+                    "description": "Unique quick reply shortcut identifier for the greeting messages",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "recipients": {
+                    "description": "Chosen recipients of the greeting messages",
+                    "is_optional": false,
+                    "type": "businessRecipients"
+                },
+                "inactivity_days": {
+                    "description": "The number of days after which a chat will be considered as inactive; currently, must be on of 7, 14, 21, or 28",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "BusinessGreetingMessageSettings"
+        },
+        "businessConnectedBot": {
+            "description": "Describes a bot connected to a business account",
+            "args": {
+                "bot_user_id": {
+                    "description": "User identifier of the bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "recipients": {
+                    "description": "Private chats that will be accessible to the bot",
+                    "is_optional": false,
+                    "type": "businessRecipients"
+                },
+                "can_reply": {
+                    "description": "True, if the bot can send messages to the private chats; false otherwise",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "BusinessConnectedBot"
+        },
+        "businessOpeningHoursInterval": {
+            "description": "Describes an interval of time when the business is open",
+            "args": {
+                "start_minute": {
+                    "description": "The first minute of the interval since start of the week; 0-7*24*60",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "end_minute": {
+                    "description": "The first minute after the end of the interval since start of the week; 1-8*24*60",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "BusinessOpeningHoursInterval"
+        },
+        "businessOpeningHours": {
+            "description": "Describes opening hours of a business",
+            "args": {
+                "time_zone_id": {
+                    "description": "Unique time zone identifier",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "opening_hours": {
+                    "description": "Intervals of the time when the business is open",
+                    "is_optional": false,
+                    "type": "vector<businessOpeningHoursInterval>"
+                }
+            },
+            "type": "BusinessOpeningHours"
+        },
+        "businessInfo": {
+            "description": "Contains information about a Telegram Business account",
+            "args": {
+                "location": {
+                    "description": "Location of the business; may be null if none",
+                    "is_optional": true,
+                    "type": "businessLocation"
+                },
+                "opening_hours": {
+                    "description": "Opening hours of the business; may be null if none. The hours are guaranteed to be valid and has already been split by week days",
+                    "is_optional": true,
+                    "type": "businessOpeningHours"
+                },
+                "greeting_message_settings": {
+                    "description": "The greeting message; may be null if none or the Business account is not of the current user",
+                    "is_optional": true,
+                    "type": "businessGreetingMessageSettings"
+                },
+                "away_message_settings": {
+                    "description": "The away message; may be null if none or the Business account is not of the current user",
+                    "is_optional": true,
+                    "type": "businessAwayMessageSettings"
+                }
+            },
+            "type": "BusinessInfo"
+        },
         "chatPhotoStickerTypeRegularOrMask": {
             "description": "Information about the sticker, which was used to create the chat photo",
             "args": {
@@ -2930,6 +3135,11 @@
                     "description": "Number of group chats where both the other user and the current user are a member; 0 for the current user",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "business_info": {
+                    "description": "Information about business settings for Telegram Business accounts; may be null if none",
+                    "is_optional": true,
+                    "type": "businessInfo"
                 },
                 "bot_info": {
                     "description": "For bots, information about the bot; may be null if the user isn't a bot",
@@ -5369,6 +5579,11 @@
                     "is_optional": true,
                     "type": "chatFolderIcon"
                 },
+                "color_id": {
+                    "description": "The identifier of the chosen color for the chat folder icon; from -1 to 6. If -1, then color is didabled",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "is_shareable": {
                     "description": "True, if at least one link has been created for the folder",
                     "is_optional": false,
@@ -5449,6 +5664,11 @@
                     "description": "The chosen or default icon for the chat folder",
                     "is_optional": false,
                     "type": "chatFolderIcon"
+                },
+                "color_id": {
+                    "description": "The identifier of the chosen color for the chat folder icon; from -1 to 6. If -1, then color is didabled",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "is_shareable": {
                     "description": "True, if at least one link has been created for the folder",
@@ -5769,6 +5989,11 @@
                     "description": "Positions of the chat in chat lists",
                     "is_optional": false,
                     "type": "vector<chatPosition>"
+                },
+                "chat_lists": {
+                    "description": "Chat lists to which the chat belongs. A chat can have a non-zero position in a chat list even it doesn't belong to the chat list and have no position in a chat list even it belongs to the chat list",
+                    "is_optional": false,
+                    "type": "vector<ChatList>"
                 },
                 "message_sender_id": {
                     "description": "Identifier of a user or chat that is selected to send messages in the chat; may be null if the user can't change message sender",
@@ -12789,6 +13014,78 @@
             },
             "type": "StoryInteractions"
         },
+        "quickReplyMessage": {
+            "description": "Describes a message that can be used for quick reply",
+            "args": {
+                "id": {
+                    "description": "Unique message identifier among all quick replies",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "sending_state": {
+                    "description": "The sending state of the message; may be null if the message isn't being sent and didn't fail to be sent",
+                    "is_optional": true,
+                    "type": "MessageSendingState"
+                },
+                "can_be_edited": {
+                    "description": "True, if the message can be edited",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "reply_to_message_id": {
+                    "description": "Information about the identifier of the quick reply message to which the message replies",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "via_bot_user_id": {
+                    "description": "If non-zero, the user identifier of the bot through which this message was sent",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "media_album_id": {
+                    "description": "Unique identifier of an album this message belongs to. Only audios, documents, photos and videos can be grouped together in albums",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "content": {
+                    "description": "Content of the message",
+                    "is_optional": false,
+                    "type": "MessageContent"
+                },
+                "reply_markup": {
+                    "description": "Inline keyboard reply markup for the message; may be null if none",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                }
+            },
+            "type": "QuickReplyMessage"
+        },
+        "quickReplyShortcut": {
+            "description": "Describes a shortcut that can be used for a quick reply",
+            "args": {
+                "id": {
+                    "description": "Unique shortcut identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "name": {
+                    "description": "The name of the shortcut that can be used to use the shortcut",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "first_message": {
+                    "description": "The first shortcut message",
+                    "is_optional": false,
+                    "type": "quickReplyMessage"
+                },
+                "message_count": {
+                    "description": "The total number of messages in the shortcut",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "QuickReplyShortcut"
+        },
         "publicForwardMessage": {
             "description": "Contains a public forward as a message",
             "args": {
@@ -17208,6 +17505,38 @@
             },
             "type": "ChatTheme"
         },
+        "timeZone": {
+            "description": "Describes a time zone",
+            "args": {
+                "id": {
+                    "description": "Unique time zone identifier",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Time zone name",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "utc_time_offset": {
+                    "description": "Current UTC time offset for the time zone",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "TimeZone"
+        },
+        "timeZones": {
+            "description": "Contains a list of time zones",
+            "args": {
+                "time_zones": {
+                    "description": "A list of time zones",
+                    "is_optional": false,
+                    "type": "vector<timeZone>"
+                }
+            },
+            "type": "TimeZones"
+        },
         "hashtags": {
             "description": "Contains a list of hashtags",
             "args": {
@@ -21340,6 +21669,38 @@
             },
             "type": "Update"
         },
+        "updateChatAddedToList": {
+            "description": "A chat was added to a chat list",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "chat_list": {
+                    "description": "The chat list to which the chat was added",
+                    "is_optional": false,
+                    "type": "ChatList"
+                }
+            },
+            "type": "Update"
+        },
+        "updateChatRemovedFromList": {
+            "description": "A chat was removed from a chat list",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "chat_list": {
+                    "description": "The chat list from which the chat was removed",
+                    "is_optional": false,
+                    "type": "ChatList"
+                }
+            },
+            "type": "Update"
+        },
         "updateChatReadInbox": {
             "description": "Incoming messages were read or the number of unread messages has been changed",
             "args": {
@@ -21730,6 +22091,11 @@
                     "description": "Position of the main chat list among chat folders, 0-based",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "are_tags_enabled": {
+                    "description": "True, if folder tags are enabled",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Update"
@@ -21768,6 +22134,55 @@
                     "description": "Approximate total number of Saved Messages topics",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "Update"
+        },
+        "updateQuickReplyShortcut": {
+            "description": "Basic information about a quick reply shortcut has changed. This update is guaranteed to come before the quick shortcut name is returned to the application",
+            "args": {
+                "shortcut": {
+                    "description": "New data about the shortcut",
+                    "is_optional": false,
+                    "type": "quickReplyShortcut"
+                }
+            },
+            "type": "Update"
+        },
+        "updateQuickReplyShortcutDeleted": {
+            "description": "A quick reply shortcut and all its messages were deleted",
+            "args": {
+                "shortcut_id": {
+                    "description": "The identifier of the deleted shortcut",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Update"
+        },
+        "updateQuickReplyShortcuts": {
+            "description": "The list of quick reply shortcuts has changed",
+            "args": {
+                "shortcut_ids": {
+                    "description": "The new list of identifiers of quick reply shortcuts",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "Update"
+        },
+        "updateQuickReplyShortcutMessages": {
+            "description": "The list of quick reply shortcut messages has changed",
+            "args": {
+                "shortcut_id": {
+                    "description": "The identifier of the shortcut",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "messages": {
+                    "description": "The new list of quick reply messages for the shortcut in order from the first to the last sent",
+                    "is_optional": false,
+                    "type": "vector<quickReplyMessage>"
                 }
             },
             "type": "Update"
@@ -25262,6 +25677,27 @@
             },
             "type": "Messages"
         },
+        "sendQuickReplyShortcutMessages": {
+            "description": "Sends messages from a quick reply shortcut. Requires Telegram Business subscription",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which to send messages. The chat must be a private chat with a regular user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "shortcut_id": {
+                    "description": "Unique identifier of the quick reply shortcut",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "sending_id": {
+                    "description": "Non-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Messages"
+        },
         "resendMessages": {
             "description": "Resends messages which failed to send. Can be called only for messages for which messageSendingStateFailed.can_retry is true and after specified in messageSendingStateFailed.retry_after time passed. If a message is re-sent, the corresponding failed to send message is deleted. Returns the sent messages in the same order as the message identifiers passed in message_ids. If a message can't be re-sent, null will be returned instead of the message",
             "args": {
@@ -25639,6 +26075,87 @@
                     "description": "The new message scheduling state; pass null to send the message immediately",
                     "is_optional": true,
                     "type": "MessageSchedulingState"
+                }
+            },
+            "type": "Ok"
+        },
+        "checkQuickReplyShortcutName": {
+            "description": "Checks validness of a name for a quick reply shortcut. Can be called synchronously",
+            "args": {
+                "name": {
+                    "description": "The name of the shortcut; 1-32 characters",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "loadQuickReplyShortcuts": {
+            "description": "Loads quick reply shortcuts created by the current user. The loaded topics will be sent through updateQuickReplyShortcuts",
+            "args": {},
+            "type": "Ok"
+        },
+        "setQuickReplyShortcutName": {
+            "description": "Changes name of a quick reply shortcut",
+            "args": {
+                "shortcut_id": {
+                    "description": "Unique identifier of the quick reply shortcut",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "name": {
+                    "description": "New name for the shortcut. Use checkQuickReplyShortcutName to check its validness",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteQuickReplyShortcut": {
+            "description": "Deletes a quick reply shortcut",
+            "args": {
+                "shortcut_id": {
+                    "description": "Unique identifier of the quick reply shortcut",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "reorderQuickReplyShortcuts": {
+            "description": "Changes the order of quick reply shortcuts",
+            "args": {
+                "shortcut_ids": {
+                    "description": "The new order of quick reply shortcuts",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "Ok"
+        },
+        "loadQuickReplyShortcutMessages": {
+            "description": "Loads quick reply messages that can be sent by a given quick reply shortcut. The loaded messages will be sent through updateQuickReplyShortcutMessages",
+            "args": {
+                "shortcut_id": {
+                    "description": "Unique identifier of the quick reply shortcut",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteQuickReplyShortcutMessages": {
+            "description": "Deletes specified quick reply messages",
+            "args": {
+                "shortcut_id": {
+                    "description": "Unique identifier of the quick reply shortcut to which the messages belong",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "message_ids": {
+                    "description": "Unique identifiers of the messages",
+                    "is_optional": false,
+                    "type": "vector<int53>"
                 }
             },
             "type": "Ok"
@@ -27349,6 +27866,17 @@
                     "description": "Position of the main chat list among chat folders, 0-based. Can be non-zero only for Premium users",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleChatFolderTags": {
+            "description": "Toggles whether chat folder tags are enabled",
+            "args": {
+                "are_tags_enabled": {
+                    "description": "Pass true to enable folder tags; pass false to disable them",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Ok"
@@ -30799,7 +31327,7 @@
             "type": "Stickers"
         },
         "addRecentSticker": {
-            "description": "Manually adds a new sticker to the list of recently used stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set can be added to this list. Emoji stickers can't be added to recent stickers",
+            "description": "Manually adds a new sticker to the list of recently used stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set or in WEBP format can be added to this list. Emoji stickers can't be added to recent stickers",
             "args": {
                 "is_attached": {
                     "description": "Pass true to add the sticker to the list of stickers recently attached to photo or video files; pass false to add the sticker to the list of recently sent stickers",
@@ -30847,7 +31375,7 @@
             "type": "Stickers"
         },
         "addFavoriteSticker": {
-            "description": "Adds a new sticker to the list of favorite stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set can be added to this list. Emoji stickers can't be added to favorite stickers",
+            "description": "Adds a new sticker to the list of favorite stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set or in WEBP format can be added to this list. Emoji stickers can't be added to favorite stickers",
             "args": {
                 "sticker": {
                     "description": "Sticker file to add",
@@ -31197,12 +31725,56 @@
             "type": "Ok"
         },
         "setLocation": {
-            "description": "Changes the location of the current user. Needs to be called if getOption(\"is_location_visible\") is true and location changes for more than 1 kilometer",
+            "description": "Changes the location of the current user. Needs to be called if getOption(\"is_location_visible\") is true and location changes for more than 1 kilometer. Must not be called if the user has a business location",
             "args": {
                 "location": {
                     "description": "The new location of the user",
                     "is_optional": false,
                     "type": "location"
+                }
+            },
+            "type": "Ok"
+        },
+        "setBusinessLocation": {
+            "description": "Changes the business location of the current user. Requires Telegram Business subscription",
+            "args": {
+                "location": {
+                    "description": "The new location of the business; pass null to remove the location",
+                    "is_optional": true,
+                    "type": "businessLocation"
+                }
+            },
+            "type": "Ok"
+        },
+        "setBusinessOpeningHours": {
+            "description": "Changes the business opening hours of the current user. Requires Telegram Business subscription",
+            "args": {
+                "opening_hours": {
+                    "description": "The new opening hours of the business; pass null to remove the opening hours",
+                    "is_optional": true,
+                    "type": "businessOpeningHours"
+                }
+            },
+            "type": "Ok"
+        },
+        "setBusinessGreetingMessageSettings": {
+            "description": "Changes the business greeting message settings of the current user. Requires Telegram Business subscription",
+            "args": {
+                "greeting_message_settings": {
+                    "description": "The new settings for the greeting message of the business; pass null to disable the greeting message",
+                    "is_optional": true,
+                    "type": "businessGreetingMessageSettings"
+                }
+            },
+            "type": "Ok"
+        },
+        "setBusinessAwayMessageSettings": {
+            "description": "Changes the business away message settings of the current user. Requires Telegram Business subscription",
+            "args": {
+                "away_message_settings": {
+                    "description": "The new settings for the away message of the business; pass null to disable the away message",
+                    "is_optional": true,
+                    "type": "businessAwayMessageSettings"
                 }
             },
             "type": "Ok"
@@ -31235,6 +31807,33 @@
                     "description": "Authentication code to check",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "getBusinessConnectedBot": {
+            "description": "Returns the business bot that is connected to the current user account. Returns a 404 error if there is no connected bot",
+            "args": {},
+            "type": "BusinessConnectedBot"
+        },
+        "setBusinessConnectedBot": {
+            "description": "Adds or changes business bot that is connected to the current user account",
+            "args": {
+                "bot": {
+                    "description": "Connection settings for the bot",
+                    "is_optional": false,
+                    "type": "businessConnectedBot"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteBusinessConnectedBot": {
+            "description": "Deletes the business bot that is connected to the current user account",
+            "args": {
+                "bot_user_id": {
+                    "description": "Unique user identifier for the bot",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "Ok"
@@ -31999,6 +32598,11 @@
                 }
             },
             "type": "ChatEvents"
+        },
+        "getTimeZones": {
+            "description": "Returns the list of supported time zones",
+            "args": {},
+            "type": "TimeZones"
         },
         "getPaymentForm": {
             "description": "Returns an invoice payment form. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy",
