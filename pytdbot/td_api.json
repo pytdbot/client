@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.26",
-    "commit_hash": "b3b63bbdc14dc377d2de6b78e5844fec1564f95d",
+    "version": "1.8.27",
+    "commit_hash": "efc6bd553b61dea0ae8c0436695e8d2539bf03f9",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -34,6 +34,7 @@
         "InputMessageReplyTo": "Contains information about the message or the story to be replied",
         "MessageSource": "Describes source of a message",
         "MessageSponsorType": "Describes type of a message sponsor",
+        "ReportChatSponsoredMessageResult": "Describes result of sponsored message report",
         "NotificationSettingsScope": "Describes the types of chats to which notification settings are relevant",
         "ChatType": "Describes the type of a chat",
         "ChatList": "Describes a list of chats",
@@ -50,6 +51,7 @@
         "PageBlockHorizontalAlignment": "Describes a horizontal alignment of a table cell content",
         "PageBlockVerticalAlignment": "Describes a Vertical alignment of a table cell content",
         "PageBlock": "Describes a block of an instant view web page",
+        "CollectibleItemType": "Describes a collectible item that can be purchased at https://fragment.com",
         "InputCredentials": "Contains information about the payment method chosen by the user",
         "PaymentProvider": "Contains information about a payment provider",
         "InputInvoice": "Describes an invoice to process",
@@ -95,6 +97,7 @@
         "LanguagePackStringValue": "Represents the value of a string in a language pack",
         "PremiumLimitType": "Describes type of a limit, increased for Premium users",
         "PremiumFeature": "Describes a feature available to Premium users",
+        "BusinessFeature": "Describes a feature available to Business user accounts",
         "PremiumStoryFeature": "Describes a story feature available to Premium users",
         "PremiumSource": "Describes a source from which the Premium features screen is opened",
         "StorePaymentPurpose": "Describes a purpose of an in-store payment",
@@ -876,17 +879,17 @@
             "type": "ThumbnailFormat"
         },
         "thumbnailFormatTgs": {
-            "description": "The thumbnail is in TGS format. It will be used only for TGS sticker sets",
+            "description": "The thumbnail is in TGS format. It will be used only for sticker sets",
             "args": {},
             "type": "ThumbnailFormat"
         },
         "thumbnailFormatWebm": {
-            "description": "The thumbnail is in WEBM format. It will be used only for WEBM sticker sets",
+            "description": "The thumbnail is in WEBM format. It will be used only for sticker sets",
             "args": {},
             "type": "ThumbnailFormat"
         },
         "thumbnailFormatWebp": {
-            "description": "The thumbnail is in WEBP format. It will be used only for some stickers",
+            "description": "The thumbnail is in WEBP format. It will be used only for some stickers and sticker sets",
             "args": {},
             "type": "ThumbnailFormat"
         },
@@ -1441,7 +1444,7 @@
             "description": "Describes an animated or custom representation of an emoji",
             "args": {
                 "sticker": {
-                    "description": "Sticker for the emoji; may be null if yet unknown for a custom emoji. If the sticker is a custom emoji, it can have arbitrary format different from stickerFormatTgs",
+                    "description": "Sticker for the emoji; may be null if yet unknown for a custom emoji. If the sticker is a custom emoji, then it can have arbitrary format",
                     "is_optional": true,
                     "type": "sticker"
                 },
@@ -1857,6 +1860,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_connect_to_business": {
+                    "description": "True, if the bot supports connection to Telegram Business accounts",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_be_added_to_attachment_menu": {
                     "description": "True, if the bot can be added to attachment or side menu",
                     "is_optional": false,
@@ -1934,6 +1942,43 @@
             },
             "type": "ChatLocation"
         },
+        "birthdate": {
+            "description": "Represents a birthdate of a user",
+            "args": {
+                "day": {
+                    "description": "Day of the month; 1-31",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "month": {
+                    "description": "Month of the year; 1-12",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "year": {
+                    "description": "Birth year; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Birthdate"
+        },
+        "closeBirthdayUser": {
+            "description": "Describes a user that had or will have a birthday soon",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "birthdate": {
+                    "description": "Birthdate of the user",
+                    "is_optional": false,
+                    "type": "birthdate"
+                }
+            },
+            "type": "CloseBirthdayUser"
+        },
         "businessAwayMessageScheduleAlways": {
             "description": "Send away messages always",
             "args": {},
@@ -1981,6 +2026,11 @@
             "args": {
                 "chat_ids": {
                     "description": "Identifiers of selected private chats",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                },
+                "excluded_chat_ids": {
+                    "description": "Identifiers of private chats that are always excluded; for businessConnectedBot only",
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
@@ -2080,6 +2130,48 @@
             },
             "type": "BusinessConnectedBot"
         },
+        "businessIntro": {
+            "description": "Describes settings for a business account intro",
+            "args": {
+                "title": {
+                    "description": "Title text of the intro",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "message": {
+                    "description": "Message text of the intro",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "sticker": {
+                    "description": "Greeting sticker of the intro; may be null if none",
+                    "is_optional": true,
+                    "type": "sticker"
+                }
+            },
+            "type": "BusinessIntro"
+        },
+        "inputBusinessIntro": {
+            "description": "Describes settings for a business account intro to set",
+            "args": {
+                "title": {
+                    "description": "Title text of the intro; 0-getOption(\"business_intro_title_length_max\") characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "message": {
+                    "description": "Message text of the intro; 0-getOption(\"business_intro_message_length_max\") characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "sticker": {
+                    "description": "Greeting sticker of the intro; pass null if none. The sticker must belong to a sticker set and must not be a custom emoji",
+                    "is_optional": true,
+                    "type": "InputFile"
+                }
+            },
+            "type": "InputBusinessIntro"
+        },
         "businessOpeningHoursInterval": {
             "description": "Describes an interval of time when the business is open",
             "args": {
@@ -2134,6 +2226,11 @@
                     "description": "The away message; may be null if none or the Business account is not of the current user",
                     "is_optional": true,
                     "type": "businessAwayMessageSettings"
+                },
+                "intro": {
+                    "description": "Information about intro of the business; may be null if none",
+                    "is_optional": true,
+                    "type": "businessIntro"
                 }
             },
             "type": "BusinessInfo"
@@ -2839,7 +2936,7 @@
                     "type": "vector<string>"
                 },
                 "editable_username": {
-                    "description": "The active username, which can be changed with setUsername or setSupergroupUsername",
+                    "description": "The active username, which can be changed with setUsername or setSupergroupUsername. Information about other active usernames can be received using getCollectibleItemInfo",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -3125,6 +3222,16 @@
                     "description": "A short user bio; may be null for bots",
                     "is_optional": true,
                     "type": "formattedText"
+                },
+                "birthdate": {
+                    "description": "Birthdate of the user; may be null if unknown",
+                    "is_optional": true,
+                    "type": "birthdate"
+                },
+                "personal_chat_id": {
+                    "description": "Identifier of the personal chat of the user; 0 if none",
+                    "is_optional": false,
+                    "type": "int53"
                 },
                 "premium_gift_options": {
                     "description": "The list of available options for gifting Telegram Premium to the user",
@@ -4742,6 +4849,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_from_offline": {
+                    "description": "True, if the message was sent because of a scheduled action by the message sender, for example, as away, or greeting service message",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_be_edited": {
                     "description": "True, if the message can be edited. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message by the application",
                     "is_optional": false,
@@ -4888,7 +5000,12 @@
                     "type": "double"
                 },
                 "via_bot_user_id": {
-                    "description": "If non-zero, the user identifier of the bot through which this message was sent",
+                    "description": "If non-zero, the user identifier of the inline bot through which this message was sent",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "sender_business_bot_user_id": {
+                    "description": "If non-zero, the user identifier of the business bot that sent this message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -5051,6 +5168,33 @@
                 }
             },
             "type": "MessageCalendar"
+        },
+        "businessMessage": {
+            "description": "Describes a message from a business account as received by a bot",
+            "args": {
+                "message": {
+                    "description": "The message",
+                    "is_optional": false,
+                    "type": "message"
+                },
+                "reply_to_message": {
+                    "description": "Message that is replied by the message in the same chat; may be null if none",
+                    "is_optional": true,
+                    "type": "message"
+                }
+            },
+            "type": "BusinessMessage"
+        },
+        "businessMessages": {
+            "description": "Contains a list of messages from a business account as received by a bot",
+            "args": {
+                "messages": {
+                    "description": "List of business messages",
+                    "is_optional": false,
+                    "type": "vector<businessMessage>"
+                }
+            },
+            "type": "BusinessMessages"
         },
         "messageSourceChatHistory": {
             "description": "The message is from a chat history",
@@ -5216,6 +5360,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_be_reported": {
+                    "description": "True, if the message can be reported to Telegram moderators through reportChatSponsoredMessage",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "content": {
                     "description": "Content of the message. Currently, can be only of the type messageText",
                     "is_optional": false,
@@ -5254,6 +5403,58 @@
                 }
             },
             "type": "SponsoredMessages"
+        },
+        "reportChatSponsoredMessageOption": {
+            "description": "Describes an option to report a sponsored message",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the option",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "text": {
+                    "description": "Text of the option",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "ReportChatSponsoredMessageOption"
+        },
+        "reportChatSponsoredMessageResultOk": {
+            "description": "The message was reported successfully",
+            "args": {},
+            "type": "ReportChatSponsoredMessageResult"
+        },
+        "reportChatSponsoredMessageResultFailed": {
+            "description": "The sponsored message is too old or not found",
+            "args": {},
+            "type": "ReportChatSponsoredMessageResult"
+        },
+        "reportChatSponsoredMessageResultOptionRequired": {
+            "description": "The user must choose an option to report the message and repeat request with the chosen option",
+            "args": {
+                "title": {
+                    "description": "Title for the option choice",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "options": {
+                    "description": "List of available options",
+                    "is_optional": false,
+                    "type": "vector<reportChatSponsoredMessageOption>"
+                }
+            },
+            "type": "ReportChatSponsoredMessageResult"
+        },
+        "reportChatSponsoredMessageResultAdsHidden": {
+            "description": "Sponsored messages were hidden for the user in all chats",
+            "args": {},
+            "type": "ReportChatSponsoredMessageResult"
+        },
+        "reportChatSponsoredMessageResultPremiumRequired": {
+            "description": "The user asked to hide sponsored messages, but Telegram Premium is required for this",
+            "args": {},
+            "type": "ReportChatSponsoredMessageResult"
         },
         "fileDownload": {
             "description": "Describes a file added to file download list",
@@ -5580,7 +5781,7 @@
                     "type": "chatFolderIcon"
                 },
                 "color_id": {
-                    "description": "The identifier of the chosen color for the chat folder icon; from -1 to 6. If -1, then color is didabled",
+                    "description": "The identifier of the chosen color for the chat folder icon; from -1 to 6. If -1, then color is didabled. Can't be changed if folder tags are disabled or the current user doesn't have Telegram Premium subscription",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -6327,6 +6528,21 @@
                     "description": "The maximum number of users to share",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "request_name": {
+                    "description": "Pass true to request name of the users; bots only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "request_username": {
+                    "description": "Pass true to request username of the users; bots only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "request_photo": {
+                    "description": "Pass true to request photo of the users; bots only",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "KeyboardButtonType"
@@ -6381,6 +6597,21 @@
                 },
                 "bot_is_member": {
                     "description": "True, if the bot must be a member of the chat; for basic group and supergroup chats only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "request_title": {
+                    "description": "Pass true to request title of the chat; bots only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "request_username": {
+                    "description": "Pass true to request username of the chat; bots only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "request_photo": {
+                    "description": "Pass true to request photo of the chat; bots only",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -6962,6 +7193,63 @@
                 }
             },
             "type": "LinkPreviewOptions"
+        },
+        "sharedUser": {
+            "description": "Contains information about a user shared with a bot",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "first_name": {
+                    "description": "First name of the user; for bots only",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "last_name": {
+                    "description": "Last name of the user; for bots only",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "username": {
+                    "description": "Username of the user; for bots only",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "photo": {
+                    "description": "Profile photo of the user; for bots only; may be null",
+                    "is_optional": true,
+                    "type": "photo"
+                }
+            },
+            "type": "SharedUser"
+        },
+        "sharedChat": {
+            "description": "Contains information about a chat shared with a bot",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "title": {
+                    "description": "Title of the chat; for bots only",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "username": {
+                    "description": "Username of the chat; for bots only",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "photo": {
+                    "description": "Photo of the chat; for bots only; may be null",
+                    "is_optional": true,
+                    "type": "photo"
+                }
+            },
+            "type": "SharedChat"
         },
         "richTextPlain": {
             "description": "A plain text",
@@ -8085,12 +8373,70 @@
                     "type": "string"
                 },
                 "is_anonymous": {
-                    "description": "True, if the phone number was bought on Fragment and isn't tied to a SIM card",
+                    "description": "True, if the phone number was bought at https://fragment.com and isn't tied to a SIM card. Information about the phone number can be received using getCollectibleItemInfo",
                     "is_optional": false,
                     "type": "Bool"
                 }
             },
             "type": "PhoneNumberInfo"
+        },
+        "collectibleItemTypeUsername": {
+            "description": "A username",
+            "args": {
+                "username": {
+                    "description": "The username",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "CollectibleItemType"
+        },
+        "collectibleItemTypePhoneNumber": {
+            "description": "A phone number",
+            "args": {
+                "phone_number": {
+                    "description": "The phone number",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "CollectibleItemType"
+        },
+        "collectibleItemInfo": {
+            "description": "Contains information about a collectible item and its last purchase",
+            "args": {
+                "purchase_date": {
+                    "description": "Point in time (Unix timestamp) when the item was purchased",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "currency": {
+                    "description": "Currency for the paid amount",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "The paid amount, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "cryptocurrency": {
+                    "description": "Cryptocurrency used to pay for the item",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "cryptocurrency_amount": {
+                    "description": "The paid amount, in the smallest units of the cryptocurrency",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "url": {
+                    "description": "Individual URL for the item on https://fragment.com",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "CollectibleItemInfo"
         },
         "bankCardActionOpenUrl": {
             "description": "Describes an action associated with a bank card number",
@@ -8720,7 +9066,7 @@
                     "type": "int32"
                 },
                 "duration": {
-                    "description": "Media duration; 0 if unknown",
+                    "description": "Media duration, in seconds; 0 if unknown",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -8809,7 +9155,7 @@
                     "type": "Bool"
                 },
                 "country_codes": {
-                    "description": "The list of two-letter ISO 3166-1 alpha-2 codes of countries, users from which will be eligible for the giveaway. If empty, then all users can participate in the giveaway. There can be up to getOption(\"giveaway_country_count_max\") chosen countries. Users with phone number that was bought on Fragment can participate in any giveaway and the country code \"FT\" must not be specified in the list",
+                    "description": "The list of two-letter ISO 3166-1 alpha-2 codes of countries, users from which will be eligible for the giveaway. If empty, then all users can participate in the giveaway. There can be up to getOption(\"giveaway_country_count_max\") chosen countries. Users with phone number that was bought at https://fragment.com can participate in any giveaway and the country code \"FT\" must not be specified in the list",
                     "is_optional": false,
                     "type": "vector<string>"
                 },
@@ -10818,10 +11164,10 @@
         "messageUsersShared": {
             "description": "The current user shared users, which were requested by the bot",
             "args": {
-                "user_ids": {
-                    "description": "Identifier of the shared users",
+                "users": {
+                    "description": "The shared users",
                     "is_optional": false,
-                    "type": "vector<int53>"
+                    "type": "vector<sharedUser>"
                 },
                 "button_id": {
                     "description": "Identifier of the keyboard button with the request",
@@ -10834,10 +11180,10 @@
         "messageChatShared": {
             "description": "The current user shared a chat, which was requested by the bot",
             "args": {
-                "chat_id": {
-                    "description": "Identifier of the shared chat",
+                "chat": {
+                    "description": "The shared chat",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "sharedChat"
                 },
                 "button_id": {
                     "description": "Identifier of the keyboard button with the request",
@@ -11464,7 +11810,7 @@
                     "type": "inputThumbnail"
                 },
                 "duration": {
-                    "description": "Duration of the video, in seconds",
+                    "description": "Duration of the video, in seconds; 0-60",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -12074,6 +12420,11 @@
                     "is_optional": true,
                     "type": "vector<closedVectorPath>"
                 },
+                "is_owned": {
+                    "description": "True, if the sticker set is owned by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_installed": {
                     "description": "True, if the sticker set has been installed by the current user",
                     "is_optional": false,
@@ -12088,11 +12439,6 @@
                     "description": "True, if the sticker set is official",
                     "is_optional": false,
                     "type": "Bool"
-                },
-                "sticker_format": {
-                    "description": "Format of the stickers in the set",
-                    "is_optional": false,
-                    "type": "StickerFormat"
                 },
                 "sticker_type": {
                     "description": "Type of the stickers in the set",
@@ -12155,6 +12501,11 @@
                     "is_optional": true,
                     "type": "vector<closedVectorPath>"
                 },
+                "is_owned": {
+                    "description": "True, if the sticker set is owned by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_installed": {
                     "description": "True, if the sticker set has been installed by the current user",
                     "is_optional": false,
@@ -12169,11 +12520,6 @@
                     "description": "True, if the sticker set is official",
                     "is_optional": false,
                     "type": "Bool"
-                },
-                "sticker_format": {
-                    "description": "Format of the stickers in the set",
-                    "is_optional": false,
-                    "type": "StickerFormat"
                 },
                 "sticker_type": {
                     "description": "Type of the stickers in the set",
@@ -14447,6 +14793,42 @@
                 }
             },
             "type": "SpeechRecognitionResult"
+        },
+        "businessConnection": {
+            "description": "Describes a connection of the bot with a business account",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the connection",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "Identifier of the business user that created the connection",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "user_chat_id": {
+                    "description": "Chat identifier of the private chat with the user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the connection was established",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "can_reply": {
+                    "description": "True, if the bot can send messages to the connected user; false otherwise",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_enabled": {
+                    "description": "True, if the connection is enabled; false otherwise",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "BusinessConnection"
         },
         "attachmentMenuBotColor": {
             "description": "Describes a color to highlight a bot added to attachment menu",
@@ -16767,7 +17149,7 @@
             "type": "PremiumFeature"
         },
         "premiumFeatureEmojiStatus": {
-            "description": "An emoji status shown along with the user's name",
+            "description": "The ability to show an emoji status along with the user's name",
             "args": {},
             "type": "PremiumFeature"
         },
@@ -16825,6 +17207,66 @@
             "description": "The ability to view last seen and read times of other users even they can't view last seen or read time for the current user",
             "args": {},
             "type": "PremiumFeature"
+        },
+        "premiumFeatureBusiness": {
+            "description": "The ability to use Business features",
+            "args": {},
+            "type": "PremiumFeature"
+        },
+        "businessFeatureLocation": {
+            "description": "The ability to set location",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureOpeningHours": {
+            "description": "The ability to set opening hours",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureQuickReplies": {
+            "description": "The ability to use quick replies",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureGreetingMessage": {
+            "description": "The ability to set up a greeting message",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureAwayMessage": {
+            "description": "The ability to set up an away message",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureAccountLinks": {
+            "description": "The ability to create links to the business account with predefined message text",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureIntro": {
+            "description": "The ability to customize intro",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureBots": {
+            "description": "The ability to connect a bot to the account",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureEmojiStatus": {
+            "description": "The ability to show an emoji status along with the business name",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureChatFolderTags": {
+            "description": "The ability to display folder names for each chat in the chat list",
+            "args": {},
+            "type": "BusinessFeature"
+        },
+        "businessFeatureUpgradedStories": {
+            "description": "Allowed to use many additional features for stories",
+            "args": {},
+            "type": "BusinessFeature"
         },
         "premiumStoryFeaturePriorityOrder": {
             "description": "Stories of the current user are displayed before stories of non-Premium contacts, supergroups, and channels",
@@ -16903,6 +17345,17 @@
             },
             "type": "PremiumFeatures"
         },
+        "businessFeatures": {
+            "description": "Contains information about features, available to Business user accounts",
+            "args": {
+                "features": {
+                    "description": "The list of available business features",
+                    "is_optional": false,
+                    "type": "vector<BusinessFeature>"
+                }
+            },
+            "type": "BusinessFeatures"
+        },
         "premiumSourceLimitExceeded": {
             "description": "A limit was exceeded",
             "args": {
@@ -16921,6 +17374,17 @@
                     "description": "The used feature",
                     "is_optional": false,
                     "type": "PremiumFeature"
+                }
+            },
+            "type": "PremiumSource"
+        },
+        "premiumSourceBusinessFeature": {
+            "description": "A user tried to use a Business feature",
+            "args": {
+                "feature": {
+                    "description": "The used feature; pass null if none specific feature was used",
+                    "is_optional": true,
+                    "type": "BusinessFeature"
                 }
             },
             "type": "PremiumSource"
@@ -16968,6 +17432,22 @@
             },
             "type": "PremiumFeaturePromotionAnimation"
         },
+        "businessFeaturePromotionAnimation": {
+            "description": "Describes a promotion animation for a Business feature",
+            "args": {
+                "feature": {
+                    "description": "Business feature",
+                    "is_optional": false,
+                    "type": "BusinessFeature"
+                },
+                "animation": {
+                    "description": "Promotion animation for the feature",
+                    "is_optional": false,
+                    "type": "animation"
+                }
+            },
+            "type": "BusinessFeaturePromotionAnimation"
+        },
         "premiumState": {
             "description": "Contains state of Telegram Premium subscription and promotion videos for Premium features",
             "args": {
@@ -16985,6 +17465,11 @@
                     "description": "The list of available promotion animations for Premium features",
                     "is_optional": false,
                     "type": "vector<premiumFeaturePromotionAnimation>"
+                },
+                "business_animations": {
+                    "description": "The list of available promotion animations for Business features",
+                    "is_optional": false,
+                    "type": "vector<businessFeaturePromotionAnimation>"
                 }
             },
             "type": "PremiumState"
@@ -17638,7 +18123,7 @@
             "type": "CheckChatUsernameResult"
         },
         "checkChatUsernameResultUsernamePurchasable": {
-            "description": "The username can be purchased at fragment.com",
+            "description": "The username can be purchased at https://fragment.com. Information about the username can be received using getCollectibleItemInfo",
             "args": {},
             "type": "CheckChatUsernameResult"
         },
@@ -18567,6 +19052,11 @@
             "args": {},
             "type": "UserPrivacySettingRule"
         },
+        "userPrivacySettingRuleAllowPremiumUsers": {
+            "description": "A rule to allow all Premium Users to do something; currently, allowed only for userPrivacySettingAllowChatInvites",
+            "args": {},
+            "type": "UserPrivacySettingRule"
+        },
         "userPrivacySettingRuleAllowUsers": {
             "description": "A rule to allow certain specified users to do something",
             "args": {
@@ -18654,6 +19144,11 @@
         },
         "userPrivacySettingShowBio": {
             "description": "A privacy setting for managing whether the user's bio is visible",
+            "args": {},
+            "type": "UserPrivacySetting"
+        },
+        "userPrivacySettingShowBirthdate": {
+            "description": "A privacy setting for managing whether the user's birthdate is visible",
             "args": {},
             "type": "UserPrivacySetting"
         },
@@ -19367,7 +19862,7 @@
             "description": "The link contains a request of Telegram passport data. Call getPassportAuthorizationForm with the given parameters to process the link if the link was received from outside of the application; otherwise, ignore it",
             "args": {
                 "bot_user_id": {
-                    "description": "User identifier of the service's bot",
+                    "description": "User identifier of the service's bot; the corresponding user may be unknown yet",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -20423,6 +20918,11 @@
             "args": {},
             "type": "SuggestedAction"
         },
+        "suggestedActionSetBirthdate": {
+            "description": "Suggests the user to set birthdate",
+            "args": {},
+            "type": "SuggestedAction"
+        },
         "count": {
             "description": "Contains a counter",
             "args": {
@@ -20601,6 +21101,11 @@
                     "description": "File with the sticker; must fit in a 512x512 square. For WEBP stickers the file must be in WEBP or PNG format, which will be converted to WEBP server-side. See https://core.telegram.org/animated_stickers#technical-requirements for technical requirements",
                     "is_optional": false,
                     "type": "InputFile"
+                },
+                "format": {
+                    "description": "Format of the sticker",
+                    "is_optional": false,
+                    "type": "StickerFormat"
                 },
                 "emojis": {
                     "description": "String with 1-20 emoji corresponding to the sticker",
@@ -23146,7 +23651,7 @@
             "description": "The parameters of speech recognition without Telegram Premium subscription has changed",
             "args": {
                 "max_media_duration": {
-                    "description": "The maximum allowed duration of media for speech recognition without Telegram Premium subscription",
+                    "description": "The maximum allowed duration of media for speech recognition without Telegram Premium subscription, in seconds",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -23232,6 +23737,17 @@
             },
             "type": "Update"
         },
+        "updateContactCloseBirthdays": {
+            "description": "The list of contacts that had birthdays recently or will have birthday soon has changed",
+            "args": {
+                "close_birthday_users": {
+                    "description": "List of contact users with close birthday",
+                    "is_optional": false,
+                    "type": "vector<closeBirthdayUser>"
+                }
+            },
+            "type": "Update"
+        },
         "updateAddChatMembersPrivacyForbidden": {
             "description": "Adding users to a chat has failed because of their privacy settings. An invite link can be shared with the users if appropriate",
             "args": {
@@ -23260,6 +23776,70 @@
                     "description": "The new autosave settings; may be null if the settings are reset to default",
                     "is_optional": true,
                     "type": "scopeAutosaveSettings"
+                }
+            },
+            "type": "Update"
+        },
+        "updateBusinessConnection": {
+            "description": "A business connection has changed; for bots only",
+            "args": {
+                "connection": {
+                    "description": "New data about the connection",
+                    "is_optional": false,
+                    "type": "businessConnection"
+                }
+            },
+            "type": "Update"
+        },
+        "updateNewBusinessMessage": {
+            "description": "A new message was added to a business account; for bots only",
+            "args": {
+                "connection_id": {
+                    "description": "Unique identifier of the business connection",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "message": {
+                    "description": "The new message",
+                    "is_optional": false,
+                    "type": "businessMessage"
+                }
+            },
+            "type": "Update"
+        },
+        "updateBusinessMessageEdited": {
+            "description": "A message in a business account was edited; for bots only",
+            "args": {
+                "connection_id": {
+                    "description": "Unique identifier of the business connection",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "message": {
+                    "description": "The edited message",
+                    "is_optional": false,
+                    "type": "businessMessage"
+                }
+            },
+            "type": "Update"
+        },
+        "updateBusinessMessagesDeleted": {
+            "description": "Messages in a business account were deleted; for bots only",
+            "args": {
+                "connection_id": {
+                    "description": "Unique identifier of the business connection",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "Identifier of a chat in the business account in which messages were deleted",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_ids": {
+                    "description": "Unique message identifiers of the deleted messages",
+                    "is_optional": false,
+                    "type": "vector<int53>"
                 }
             },
             "type": "Update"
@@ -24688,6 +25268,11 @@
             "args": {},
             "type": "Chats"
         },
+        "getSuitablePersonalChats": {
+            "description": "Returns a list of channel chats, which can be used as a personal chat",
+            "args": {},
+            "type": "Chats"
+        },
         "loadSavedMessagesTopics": {
             "description": "Loads more Saved Messages topics. The loaded topics will be sent through updateSavedMessagesTopic. Topics are sorted by their topic.order in descending order. Returns a 404 error if all topics have been loaded",
             "args": {
@@ -25310,6 +25895,27 @@
                 }
             },
             "type": "Ok"
+        },
+        "reportChatSponsoredMessage": {
+            "description": "Reports a sponsored message to Telegram moderators",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the sponsored message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the sponsored message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "option_id": {
+                    "description": "Option identifier chosen by the user; leave empty for the initial request",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "ReportChatSponsoredMessageResult"
         },
         "removeNotification": {
             "description": "Removes an active notification from notification list. Needs to be called only if the notification is removed by the current user",
@@ -26079,6 +26685,83 @@
             },
             "type": "Ok"
         },
+        "sendBusinessMessage": {
+            "description": "Sends a message on behalf of a business account; for bots only. Returns the message after it was sent",
+            "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which to send the request",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "Target chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_to": {
+                    "description": "Information about the message to be replied; pass null if none",
+                    "is_optional": true,
+                    "type": "InputMessageReplyTo"
+                },
+                "disable_notification": {
+                    "description": "Pass true to disable notification for the message",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "protect_content": {
+                    "description": "Pass true if the content of the message must be protected from forwarding and saving",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "reply_markup": {
+                    "description": "Markup for replying to the message; pass null if none",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                },
+                "input_message_content": {
+                    "description": "The content of the message to be sent",
+                    "is_optional": false,
+                    "type": "InputMessageContent"
+                }
+            },
+            "type": "BusinessMessage"
+        },
+        "sendBusinessMessageAlbum": {
+            "description": "Sends 2-10 messages grouped together into an album on behalf of a business account; for bots only. Currently, only audio, document, photo and video messages can be grouped into an album. Documents and audio files can be only grouped in an album with messages of the same type. Returns sent messages",
+            "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which to send the request",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "Target chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_to": {
+                    "description": "Information about the message to be replied; pass null if none",
+                    "is_optional": true,
+                    "type": "InputMessageReplyTo"
+                },
+                "disable_notification": {
+                    "description": "Pass true to disable notification for the message",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "protect_content": {
+                    "description": "Pass true if the content of the message must be protected from forwarding and saving",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "input_message_contents": {
+                    "description": "Contents of messages to be sent. At most 10 messages can be added to an album",
+                    "is_optional": false,
+                    "type": "vector<InputMessageContent>"
+                }
+            },
+            "type": "BusinessMessages"
+        },
         "checkQuickReplyShortcutName": {
             "description": "Checks validness of a name for a quick reply shortcut. Can be called synchronously",
             "args": {
@@ -26842,6 +27525,17 @@
             },
             "type": "Ok"
         },
+        "getBusinessConnection": {
+            "description": "Returns information about a business connection by its identifier; for bots only",
+            "args": {
+                "connection_id": {
+                    "description": "Identifier of the business connection to return",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "BusinessConnection"
+        },
         "getLoginUrlInfo": {
             "description": "Returns information about a button of type inlineKeyboardButtonTypeLoginUrl. The method needs to be called when the user presses the button",
             "args": {
@@ -27411,6 +28105,11 @@
                     "description": "If not 0, the message thread identifier in which the action was performed",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which to send the request; for bots only",
+                    "is_optional": false,
+                    "type": "string"
                 },
                 "action": {
                     "description": "The action description; pass null to cancel the currently active action",
@@ -28905,7 +29604,7 @@
                     "type": "inputStoryAreas"
                 },
                 "caption": {
-                    "description": "Story caption; pass null to use an empty caption; 0-getOption(\"story_caption_length_max\") characters",
+                    "description": "Story caption; pass null to use an empty caption; 0-getOption(\"story_caption_length_max\") characters; can have entities only if getOption(\"can_use_text_entities_in_story_caption\")",
                     "is_optional": true,
                     "type": "formattedText"
                 },
@@ -31164,7 +31863,7 @@
                     "type": "StickerType"
                 },
                 "offset_sticker_set_id": {
-                    "description": "Identifier of the sticker set from which to return the result",
+                    "description": "Identifier of the sticker set from which to return the result; use 0 to get results from the beginning",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -31327,7 +32026,7 @@
             "type": "Stickers"
         },
         "addRecentSticker": {
-            "description": "Manually adds a new sticker to the list of recently used stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set or in WEBP format can be added to this list. Emoji stickers can't be added to recent stickers",
+            "description": "Manually adds a new sticker to the list of recently used stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set or in WEBP or WEBM format can be added to this list. Emoji stickers can't be added to recent stickers",
             "args": {
                 "is_attached": {
                     "description": "Pass true to add the sticker to the list of stickers recently attached to photo or video files; pass false to add the sticker to the list of recently sent stickers",
@@ -31375,7 +32074,7 @@
             "type": "Stickers"
         },
         "addFavoriteSticker": {
-            "description": "Adds a new sticker to the list of favorite stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set or in WEBP format can be added to this list. Emoji stickers can't be added to favorite stickers",
+            "description": "Adds a new sticker to the list of favorite stickers. The new sticker is added to the top of the list. If the sticker was already in the list, it is removed from the list first. Only stickers belonging to a sticker set or in WEBP or WEBM format can be added to this list. Emoji stickers can't be added to favorite stickers",
             "args": {
                 "sticker": {
                     "description": "Sticker file to add",
@@ -31713,6 +32412,28 @@
             },
             "type": "Ok"
         },
+        "setBirthdate": {
+            "description": "Changes the birthdate of the current user",
+            "args": {
+                "birthdate": {
+                    "description": "The new value of the current user's birthdate; pass null to remove the birthdate",
+                    "is_optional": true,
+                    "type": "birthdate"
+                }
+            },
+            "type": "Ok"
+        },
+        "setPersonalChat": {
+            "description": "Changes the personal chat of the current user",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the new personal chat; pass 0 to remove the chat. Use getSuitablePersonalChats to get suitable chats",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
         "setEmojiStatus": {
             "description": "Changes the emoji status of the current user; for Telegram Premium users only",
             "args": {
@@ -31750,7 +32471,7 @@
             "description": "Changes the business opening hours of the current user. Requires Telegram Business subscription",
             "args": {
                 "opening_hours": {
-                    "description": "The new opening hours of the business; pass null to remove the opening hours",
+                    "description": "The new opening hours of the business; pass null to remove the opening hours; up to 28 time intervals can be specified",
                     "is_optional": true,
                     "type": "businessOpeningHours"
                 }
@@ -31775,6 +32496,17 @@
                     "description": "The new settings for the away message of the business; pass null to disable the away message",
                     "is_optional": true,
                     "type": "businessAwayMessageSettings"
+                }
+            },
+            "type": "Ok"
+        },
+        "setBusinessIntro": {
+            "description": "Changes the business intro of the current user. Requires Telegram Business subscription",
+            "args": {
+                "intro": {
+                    "description": "The new intro of the business; pass null to remove the intro",
+                    "is_optional": true,
+                    "type": "inputBusinessIntro"
                 }
             },
             "type": "Ok"
@@ -33017,7 +33749,7 @@
             "type": "ReadDatePrivacySettings"
         },
         "setNewChatPrivacySettings": {
-            "description": "Changes privacy settings for new chat creation; for Telegram Premium users only",
+            "description": "Changes privacy settings for new chat creation; can be used only if getOption(\"can_set_new_chat_privacy_settings\")",
             "args": {
                 "settings": {
                     "description": "New settings",
@@ -33788,14 +34520,9 @@
                     "type": "string"
                 },
                 "name": {
-                    "description": "Sticker set name. Can contain only English letters, digits and underscores. Must end with *\"_by_<bot username>\"* (*<bot_username>* is case insensitive) for bots; 1-64 characters",
+                    "description": "Sticker set name. Can contain only English letters, digits and underscores. Must end with *\"_by_<bot username>\"* (*<bot_username>* is case insensitive) for bots; 0-64 characters. If empty, then the name returned by getSuggestedStickerSetName will be used automatically",
                     "is_optional": false,
                     "type": "string"
-                },
-                "sticker_format": {
-                    "description": "Format of the stickers in the set",
-                    "is_optional": false,
-                    "type": "StickerFormat"
                 },
                 "sticker_type": {
                     "description": "Type of the stickers in the set",
@@ -33808,7 +34535,7 @@
                     "type": "Bool"
                 },
                 "stickers": {
-                    "description": "List of stickers to be added to the set; must be non-empty. All stickers must have the same format. For TGS stickers, uploadStickerFile must be used before the sticker is shown",
+                    "description": "List of stickers to be added to the set; 1-200 stickers for custom emoji sticker sets, and 1-120 stickers otherwise. For TGS stickers, uploadStickerFile must be used before the sticker is shown",
                     "is_optional": false,
                     "type": "vector<inputSticker>"
                 },
@@ -33821,15 +34548,15 @@
             "type": "StickerSet"
         },
         "addStickerToSet": {
-            "description": "Adds a new sticker to a set; for bots only",
+            "description": "Adds a new sticker to a set",
             "args": {
                 "user_id": {
-                    "description": "Sticker set owner",
+                    "description": "Sticker set owner; ignored for regular users",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "name": {
-                    "description": "Sticker set name",
+                    "description": "Sticker set name. The sticker set must be owned by the current user, and contain less than 200 stickers for custom emoji sticker sets and less than 120 otherwise",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -33841,32 +34568,63 @@
             },
             "type": "Ok"
         },
-        "setStickerSetThumbnail": {
-            "description": "Sets a sticker set thumbnail; for bots only",
+        "replaceStickerInSet": {
+            "description": "Replaces existing sticker in a set. The function is equivalent to removeStickerFromSet, then addStickerToSet, then setStickerPositionInSet",
             "args": {
                 "user_id": {
-                    "description": "Sticker set owner",
+                    "description": "Sticker set owner; ignored for regular users",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "name": {
-                    "description": "Sticker set name",
+                    "description": "Sticker set name. The sticker set must be owned by the current user",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "old_sticker": {
+                    "description": "Sticker to remove from the set",
+                    "is_optional": false,
+                    "type": "InputFile"
+                },
+                "new_sticker": {
+                    "description": "Sticker to add to the set",
+                    "is_optional": false,
+                    "type": "inputSticker"
+                }
+            },
+            "type": "Ok"
+        },
+        "setStickerSetThumbnail": {
+            "description": "Sets a sticker set thumbnail",
+            "args": {
+                "user_id": {
+                    "description": "Sticker set owner; ignored for regular users",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "name": {
+                    "description": "Sticker set name. The sticker set must be owned by the current user",
                     "is_optional": false,
                     "type": "string"
                 },
                 "thumbnail": {
-                    "description": "Thumbnail to set in PNG, TGS, or WEBM format; pass null to remove the sticker set thumbnail. Thumbnail format must match the format of stickers in the set",
+                    "description": "Thumbnail to set; pass null to remove the sticker set thumbnail",
                     "is_optional": true,
                     "type": "InputFile"
+                },
+                "format": {
+                    "description": "Format of the thumbnail; pass null if thumbnail is removed",
+                    "is_optional": true,
+                    "type": "StickerFormat"
                 }
             },
             "type": "Ok"
         },
         "setCustomEmojiStickerSetThumbnail": {
-            "description": "Sets a custom emoji sticker set thumbnail; for bots only",
+            "description": "Sets a custom emoji sticker set thumbnail",
             "args": {
                 "name": {
-                    "description": "Sticker set name",
+                    "description": "Sticker set name. The sticker set must be owned by the current user",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -33879,10 +34637,10 @@
             "type": "Ok"
         },
         "setStickerSetTitle": {
-            "description": "Sets a sticker set title; for bots only",
+            "description": "Sets a sticker set title",
             "args": {
                 "name": {
-                    "description": "Sticker set name",
+                    "description": "Sticker set name. The sticker set must be owned by the current user",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -33895,10 +34653,10 @@
             "type": "Ok"
         },
         "deleteStickerSet": {
-            "description": "Deleted a sticker set; for bots only",
+            "description": "Completely deletes a sticker set",
             "args": {
                 "name": {
-                    "description": "Sticker set name",
+                    "description": "Sticker set name. The sticker set must be owned by the current user",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -33906,7 +34664,7 @@
             "type": "Ok"
         },
         "setStickerPositionInSet": {
-            "description": "Changes the position of a sticker in the set to which it belongs; for bots only. The sticker set must have been created by the bot",
+            "description": "Changes the position of a sticker in the set to which it belongs. The sticker set must be owned by the current user",
             "args": {
                 "sticker": {
                     "description": "Sticker",
@@ -33922,10 +34680,10 @@
             "type": "Ok"
         },
         "removeStickerFromSet": {
-            "description": "Removes a sticker from the set to which it belongs; for bots only. The sticker set must have been created by the bot",
+            "description": "Removes a sticker from the set to which it belongs. The sticker set must be owned by the current user",
             "args": {
                 "sticker": {
-                    "description": "Sticker",
+                    "description": "Sticker to remove from the set",
                     "is_optional": false,
                     "type": "InputFile"
                 }
@@ -33933,7 +34691,7 @@
             "type": "Ok"
         },
         "setStickerEmojis": {
-            "description": "Changes the list of emoji corresponding to a sticker; for bots only. The sticker must belong to a regular or custom emoji sticker set created by the bot",
+            "description": "Changes the list of emoji corresponding to a sticker. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user",
             "args": {
                 "sticker": {
                     "description": "Sticker",
@@ -33949,7 +34707,7 @@
             "type": "Ok"
         },
         "setStickerKeywords": {
-            "description": "Changes the list of keywords of a sticker; for bots only. The sticker must belong to a regular or custom emoji sticker set created by the bot",
+            "description": "Changes the list of keywords of a sticker. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user",
             "args": {
                 "sticker": {
                     "description": "Sticker",
@@ -33965,7 +34723,7 @@
             "type": "Ok"
         },
         "setStickerMaskPosition": {
-            "description": "Changes the mask position of a mask sticker; for bots only. The sticker must belong to a mask sticker set created by the bot",
+            "description": "Changes the mask position of a mask sticker. The sticker must belong to a mask sticker set that is owned by the current user",
             "args": {
                 "sticker": {
                     "description": "Sticker",
@@ -33979,6 +34737,22 @@
                 }
             },
             "type": "Ok"
+        },
+        "getOwnedStickerSets": {
+            "description": "Returns sticker sets owned by the current user",
+            "args": {
+                "offset_sticker_set_id": {
+                    "description": "Identifier of the sticker set from which to return owned sticker sets; use 0 to get results from the beginning",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "limit": {
+                    "description": "The maximum number of sticker sets to be returned; must be positive and can't be greater than 100. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StickerSets"
         },
         "getMapThumbnailFile": {
             "description": "Returns information about a file with a map thumbnail in PNG format. Only map thumbnail files with size less than 1MB can be downloaded",
@@ -34182,6 +34956,17 @@
             },
             "type": "Ok"
         },
+        "getBusinessFeatures": {
+            "description": "Returns information about features, available to Business users",
+            "args": {
+                "source": {
+                    "description": "Source of the request; pass null if the method is called from settings or some non-standard source",
+                    "is_optional": true,
+                    "type": "BusinessFeature"
+                }
+            },
+            "type": "BusinessFeatures"
+        },
         "acceptTermsOfService": {
             "description": "Accepts Telegram terms of services",
             "args": {
@@ -34298,6 +35083,17 @@
                 }
             },
             "type": "PhoneNumberInfo"
+        },
+        "getCollectibleItemInfo": {
+            "description": "Returns information about a given collectible item that was purchased at https://fragment.com",
+            "args": {
+                "type": {
+                    "description": "Type of the collectible item. The item must be used by a user and must be visible to the current user",
+                    "is_optional": false,
+                    "type": "CollectibleItemType"
+                }
+            },
+            "type": "CollectibleItemInfo"
         },
         "getDeepLinkInfo": {
             "description": "Returns information about a tg:// deep link. Use \"tg://need_update_for_some_feature\" or \"tg:some_unsupported_feature\" for testing. Returns a 404 error for unknown links. Can be called before authorization",

@@ -1666,6 +1666,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getSuitablePersonalChats(self) -> Result:
+        """Returns a list of channel chats, which can be used as a personal chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Chats``)
+        """
+
+        data = {
+            "@type": "getSuitablePersonalChats",
+        }
+
+        return await self.invoke(data)
+
     async def loadSavedMessagesTopics(self, limit: int) -> Result:
         """Loads more Saved Messages topics\. The loaded topics will be sent through updateSavedMessagesTopic\. Topics are sorted by their topic\.order in descending order\. Returns a 404 error if all topics have been loaded
 
@@ -2550,6 +2564,35 @@ class TDLibFunctions:
             "@type": "clickChatSponsoredMessage",
             "chat_id": chat_id,
             "message_id": message_id,
+        }
+
+        return await self.invoke(data)
+
+    async def reportChatSponsoredMessage(
+        self, chat_id: int, message_id: int, option_id: bytes
+    ) -> Result:
+        """Reports a sponsored message to Telegram moderators
+
+        Args:
+            chat_id (``int``):
+                Chat identifier of the sponsored message
+
+            message_id (``int``):
+                Identifier of the sponsored message
+
+            option_id (``bytes``):
+                Option identifier chosen by the user; leave empty for the initial request
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ReportChatSponsoredMessageResult``)
+        """
+
+        data = {
+            "@type": "reportChatSponsoredMessage",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "option_id": option_id,
         }
 
         return await self.invoke(data)
@@ -3621,6 +3664,105 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "message_id": message_id,
             "scheduling_state": scheduling_state,
+        }
+
+        return await self.invoke(data)
+
+    async def sendBusinessMessage(
+        self,
+        business_connection_id: str,
+        chat_id: int,
+        disable_notification: bool,
+        protect_content: bool,
+        input_message_content: dict,
+        reply_to: dict = None,
+        reply_markup: dict = None,
+    ) -> Result:
+        """Sends a message on behalf of a business account; for bots only\. Returns the message after it was sent
+
+        Args:
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which to send the request
+
+            chat_id (``int``):
+                Target chat
+
+            disable_notification (``bool``):
+                Pass true to disable notification for the message
+
+            protect_content (``bool``):
+                Pass true if the content of the message must be protected from forwarding and saving
+
+            input_message_content (``InputMessageContent``):
+                The content of the message to be sent
+
+            reply_to (``InputMessageReplyTo``, *optional*):
+                Information about the message to be replied; pass null if none
+
+            reply_markup (``ReplyMarkup``, *optional*):
+                Markup for replying to the message; pass null if none
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessMessage``)
+        """
+
+        data = {
+            "@type": "sendBusinessMessage",
+            "business_connection_id": business_connection_id,
+            "chat_id": chat_id,
+            "reply_to": reply_to,
+            "disable_notification": disable_notification,
+            "protect_content": protect_content,
+            "reply_markup": reply_markup,
+            "input_message_content": input_message_content,
+        }
+
+        return await self.invoke(data)
+
+    async def sendBusinessMessageAlbum(
+        self,
+        business_connection_id: str,
+        chat_id: int,
+        disable_notification: bool,
+        protect_content: bool,
+        input_message_contents: list,
+        reply_to: dict = None,
+    ) -> Result:
+        """Sends 2\-10 messages grouped together into an album on behalf of a business account; for bots only\. Currently, only audio, document, photo and video messages can be grouped into an album\. Documents and audio files can be only grouped in an album with messages of the same type\. Returns sent messages
+
+        Args:
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which to send the request
+
+            chat_id (``int``):
+                Target chat
+
+            disable_notification (``bool``):
+                Pass true to disable notification for the message
+
+            protect_content (``bool``):
+                Pass true if the content of the message must be protected from forwarding and saving
+
+            input_message_contents (``list``):
+                Contents of messages to be sent\. At most 10 messages can be added to an album
+
+            reply_to (``InputMessageReplyTo``, *optional*):
+                Information about the message to be replied; pass null if none
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessMessages``)
+        """
+
+        data = {
+            "@type": "sendBusinessMessageAlbum",
+            "business_connection_id": business_connection_id,
+            "chat_id": chat_id,
+            "reply_to": reply_to,
+            "disable_notification": disable_notification,
+            "protect_content": protect_content,
+            "input_message_contents": input_message_contents,
         }
 
         return await self.invoke(data)
@@ -4773,6 +4915,25 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getBusinessConnection(self, connection_id: str) -> Result:
+        """Returns information about a business connection by its identifier; for bots only
+
+        Args:
+            connection_id (``str``):
+                Identifier of the business connection to return
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessConnection``)
+        """
+
+        data = {
+            "@type": "getBusinessConnection",
+            "connection_id": connection_id,
+        }
+
+        return await self.invoke(data)
+
     async def getLoginUrlInfo(
         self, chat_id: int, message_id: int, button_id: int
     ) -> Result:
@@ -5531,7 +5692,11 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def sendChatAction(
-        self, chat_id: int, message_thread_id: int, action: dict = None
+        self,
+        chat_id: int,
+        message_thread_id: int,
+        business_connection_id: str,
+        action: dict = None,
     ) -> Result:
         """Sends a notification about user activity in a chat
 
@@ -5541,6 +5706,9 @@ class TDLibFunctions:
 
             message_thread_id (``int``):
                 If not 0, the message thread identifier in which the action was performed
+
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which to send the request; for bots only
 
             action (``ChatAction``, *optional*):
                 The action description; pass null to cancel the currently active action
@@ -5554,6 +5722,7 @@ class TDLibFunctions:
             "@type": "sendChatAction",
             "chat_id": chat_id,
             "message_thread_id": message_thread_id,
+            "business_connection_id": business_connection_id,
             "action": action,
         }
 
@@ -7859,7 +8028,7 @@ class TDLibFunctions:
                 Clickable rectangle areas to be shown on the story media; pass null if none
 
             caption (``formattedText``, *optional*):
-                Story caption; pass null to use an empty caption; 0\-getOption\("story\_caption\_length\_max"\) characters
+                Story caption; pass null to use an empty caption; 0\-getOption\("story\_caption\_length\_max"\) characters; can have entities only if getOption\("can\_use\_text\_entities\_in\_story\_caption"\)
 
 
         Returns:
@@ -11201,7 +11370,7 @@ class TDLibFunctions:
                 Type of the sticker sets to return
 
             offset_sticker_set_id (``int``):
-                Identifier of the sticker set from which to return the result
+                Identifier of the sticker set from which to return the result; use 0 to get results from the beginning
 
             limit (``int``):
                 The maximum number of sticker sets to return; up to 100
@@ -11451,7 +11620,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def addRecentSticker(self, is_attached: bool, sticker: dict) -> Result:
-        """Manually adds a new sticker to the list of recently used stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP format can be added to this list\. Emoji stickers can't be added to recent stickers
+        """Manually adds a new sticker to the list of recently used stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP or WEBM format can be added to this list\. Emoji stickers can't be added to recent stickers
 
         Args:
             is_attached (``bool``):
@@ -11530,7 +11699,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def addFavoriteSticker(self, sticker: dict) -> Result:
-        """Adds a new sticker to the list of favorite stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP format can be added to this list\. Emoji stickers can't be added to favorite stickers
+        """Adds a new sticker to the list of favorite stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP or WEBM format can be added to this list\. Emoji stickers can't be added to favorite stickers
 
         Args:
             sticker (``InputFile``):
@@ -12105,6 +12274,44 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def setBirthdate(self, birthdate: dict = None) -> Result:
+        """Changes the birthdate of the current user
+
+        Args:
+            birthdate (``birthdate``, *optional*):
+                The new value of the current user's birthdate; pass null to remove the birthdate
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBirthdate",
+            "birthdate": birthdate,
+        }
+
+        return await self.invoke(data)
+
+    async def setPersonalChat(self, chat_id: int) -> Result:
+        """Changes the personal chat of the current user
+
+        Args:
+            chat_id (``int``):
+                Identifier of the new personal chat; pass 0 to remove the chat\. Use getSuitablePersonalChats to get suitable chats
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setPersonalChat",
+            "chat_id": chat_id,
+        }
+
+        return await self.invoke(data)
+
     async def setEmojiStatus(self, emoji_status: dict = None) -> Result:
         """Changes the emoji status of the current user; for Telegram Premium users only
 
@@ -12167,7 +12374,7 @@ class TDLibFunctions:
 
         Args:
             opening_hours (``businessOpeningHours``, *optional*):
-                The new opening hours of the business; pass null to remove the opening hours
+                The new opening hours of the business; pass null to remove the opening hours; up to 28 time intervals can be specified
 
 
         Returns:
@@ -12219,6 +12426,25 @@ class TDLibFunctions:
         data = {
             "@type": "setBusinessAwayMessageSettings",
             "away_message_settings": away_message_settings,
+        }
+
+        return await self.invoke(data)
+
+    async def setBusinessIntro(self, intro: dict = None) -> Result:
+        """Changes the business intro of the current user\. Requires Telegram Business subscription
+
+        Args:
+            intro (``inputBusinessIntro``, *optional*):
+                The new intro of the business; pass null to remove the intro
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBusinessIntro",
+            "intro": intro,
         }
 
         return await self.invoke(data)
@@ -14219,7 +14445,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setNewChatPrivacySettings(self, settings: dict) -> Result:
-        """Changes privacy settings for new chat creation; for Telegram Premium users only
+        """Changes privacy settings for new chat creation; can be used only if getOption\("can\_set\_new\_chat\_privacy\_settings"\)
 
         Args:
             settings (``newChatPrivacySettings``):
@@ -15427,7 +15653,6 @@ class TDLibFunctions:
         user_id: int,
         title: str,
         name: str,
-        sticker_format: dict,
         sticker_type: dict,
         needs_repainting: bool,
         stickers: list,
@@ -15443,10 +15668,7 @@ class TDLibFunctions:
                 Sticker set title; 1\-64 characters
 
             name (``str``):
-                Sticker set name\. Can contain only English letters, digits and underscores\. Must end with \*"\_by\_<bot username\>"\* \(\*<bot\_username\>\* is case insensitive\) for bots; 1\-64 characters
-
-            sticker_format (``StickerFormat``):
-                Format of the stickers in the set
+                Sticker set name\. Can contain only English letters, digits and underscores\. Must end with \*"\_by\_<bot username\>"\* \(\*<bot\_username\>\* is case insensitive\) for bots; 0\-64 characters\. If empty, then the name returned by getSuggestedStickerSetName will be used automatically
 
             sticker_type (``StickerType``):
                 Type of the stickers in the set
@@ -15455,7 +15677,7 @@ class TDLibFunctions:
                 Pass true if stickers in the sticker set must be repainted; for custom emoji sticker sets only
 
             stickers (``list``):
-                List of stickers to be added to the set; must be non\-empty\. All stickers must have the same format\. For TGS stickers, uploadStickerFile must be used before the sticker is shown
+                List of stickers to be added to the set; 1\-200 stickers for custom emoji sticker sets, and 1\-120 stickers otherwise\. For TGS stickers, uploadStickerFile must be used before the sticker is shown
 
             source (``str``, *optional*):
                 Source of the sticker set; may be empty if unknown
@@ -15470,7 +15692,6 @@ class TDLibFunctions:
             "user_id": user_id,
             "title": title,
             "name": name,
-            "sticker_format": sticker_format,
             "sticker_type": sticker_type,
             "needs_repainting": needs_repainting,
             "stickers": stickers,
@@ -15480,14 +15701,14 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def addStickerToSet(self, user_id: int, name: str, sticker: dict) -> Result:
-        """Adds a new sticker to a set; for bots only
+        """Adds a new sticker to a set
 
         Args:
             user_id (``int``):
-                Sticker set owner
+                Sticker set owner; ignored for regular users
 
             name (``str``):
-                Sticker set name
+                Sticker set name\. The sticker set must be owned by the current user, and contain less than 200 stickers for custom emoji sticker sets and less than 120 otherwise
 
             sticker (``inputSticker``):
                 Sticker to add to the set
@@ -15506,20 +15727,56 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def setStickerSetThumbnail(
-        self, user_id: int, name: str, thumbnail: dict = None
+    async def replaceStickerInSet(
+        self, user_id: int, name: str, old_sticker: dict, new_sticker: dict
     ) -> Result:
-        """Sets a sticker set thumbnail; for bots only
+        """Replaces existing sticker in a set\. The function is equivalent to removeStickerFromSet, then addStickerToSet, then setStickerPositionInSet
 
         Args:
             user_id (``int``):
-                Sticker set owner
+                Sticker set owner; ignored for regular users
 
             name (``str``):
-                Sticker set name
+                Sticker set name\. The sticker set must be owned by the current user
+
+            old_sticker (``InputFile``):
+                Sticker to remove from the set
+
+            new_sticker (``inputSticker``):
+                Sticker to add to the set
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "replaceStickerInSet",
+            "user_id": user_id,
+            "name": name,
+            "old_sticker": old_sticker,
+            "new_sticker": new_sticker,
+        }
+
+        return await self.invoke(data)
+
+    async def setStickerSetThumbnail(
+        self, user_id: int, name: str, thumbnail: dict = None, format: dict = None
+    ) -> Result:
+        """Sets a sticker set thumbnail
+
+        Args:
+            user_id (``int``):
+                Sticker set owner; ignored for regular users
+
+            name (``str``):
+                Sticker set name\. The sticker set must be owned by the current user
 
             thumbnail (``InputFile``, *optional*):
-                Thumbnail to set in PNG, TGS, or WEBM format; pass null to remove the sticker set thumbnail\. Thumbnail format must match the format of stickers in the set
+                Thumbnail to set; pass null to remove the sticker set thumbnail
+
+            format (``StickerFormat``, *optional*):
+                Format of the thumbnail; pass null if thumbnail is removed
 
 
         Returns:
@@ -15531,6 +15788,7 @@ class TDLibFunctions:
             "user_id": user_id,
             "name": name,
             "thumbnail": thumbnail,
+            "format": format,
         }
 
         return await self.invoke(data)
@@ -15538,11 +15796,11 @@ class TDLibFunctions:
     async def setCustomEmojiStickerSetThumbnail(
         self, name: str, custom_emoji_id: int
     ) -> Result:
-        """Sets a custom emoji sticker set thumbnail; for bots only
+        """Sets a custom emoji sticker set thumbnail
 
         Args:
             name (``str``):
-                Sticker set name
+                Sticker set name\. The sticker set must be owned by the current user
 
             custom_emoji_id (``int``):
                 Identifier of the custom emoji from the sticker set, which will be set as sticker set thumbnail; pass 0 to remove the sticker set thumbnail
@@ -15561,11 +15819,11 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setStickerSetTitle(self, name: str, title: str) -> Result:
-        """Sets a sticker set title; for bots only
+        """Sets a sticker set title
 
         Args:
             name (``str``):
-                Sticker set name
+                Sticker set name\. The sticker set must be owned by the current user
 
             title (``str``):
                 New sticker set title
@@ -15584,11 +15842,11 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def deleteStickerSet(self, name: str) -> Result:
-        """Deleted a sticker set; for bots only
+        """Completely deletes a sticker set
 
         Args:
             name (``str``):
-                Sticker set name
+                Sticker set name\. The sticker set must be owned by the current user
 
 
         Returns:
@@ -15603,7 +15861,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setStickerPositionInSet(self, sticker: dict, position: int) -> Result:
-        """Changes the position of a sticker in the set to which it belongs; for bots only\. The sticker set must have been created by the bot
+        """Changes the position of a sticker in the set to which it belongs\. The sticker set must be owned by the current user
 
         Args:
             sticker (``InputFile``):
@@ -15626,11 +15884,11 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def removeStickerFromSet(self, sticker: dict) -> Result:
-        """Removes a sticker from the set to which it belongs; for bots only\. The sticker set must have been created by the bot
+        """Removes a sticker from the set to which it belongs\. The sticker set must be owned by the current user
 
         Args:
             sticker (``InputFile``):
-                Sticker
+                Sticker to remove from the set
 
 
         Returns:
@@ -15645,7 +15903,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setStickerEmojis(self, sticker: dict, emojis: str) -> Result:
-        """Changes the list of emoji corresponding to a sticker; for bots only\. The sticker must belong to a regular or custom emoji sticker set created by the bot
+        """Changes the list of emoji corresponding to a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
 
         Args:
             sticker (``InputFile``):
@@ -15668,7 +15926,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setStickerKeywords(self, sticker: dict, keywords: list) -> Result:
-        """Changes the list of keywords of a sticker; for bots only\. The sticker must belong to a regular or custom emoji sticker set created by the bot
+        """Changes the list of keywords of a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
 
         Args:
             sticker (``InputFile``):
@@ -15693,7 +15951,7 @@ class TDLibFunctions:
     async def setStickerMaskPosition(
         self, sticker: dict, mask_position: dict = None
     ) -> Result:
-        """Changes the mask position of a mask sticker; for bots only\. The sticker must belong to a mask sticker set created by the bot
+        """Changes the mask position of a mask sticker\. The sticker must belong to a mask sticker set that is owned by the current user
 
         Args:
             sticker (``InputFile``):
@@ -15711,6 +15969,31 @@ class TDLibFunctions:
             "@type": "setStickerMaskPosition",
             "sticker": sticker,
             "mask_position": mask_position,
+        }
+
+        return await self.invoke(data)
+
+    async def getOwnedStickerSets(
+        self, offset_sticker_set_id: int, limit: int
+    ) -> Result:
+        """Returns sticker sets owned by the current user
+
+        Args:
+            offset_sticker_set_id (``int``):
+                Identifier of the sticker set from which to return owned sticker sets; use 0 to get results from the beginning
+
+            limit (``int``):
+                The maximum number of sticker sets to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StickerSets``)
+        """
+
+        data = {
+            "@type": "getOwnedStickerSets",
+            "offset_sticker_set_id": offset_sticker_set_id,
+            "limit": limit,
         }
 
         return await self.invoke(data)
@@ -16045,6 +16328,25 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getBusinessFeatures(self, source: dict = None) -> Result:
+        """Returns information about features, available to Business users
+
+        Args:
+            source (``BusinessFeature``, *optional*):
+                Source of the request; pass null if the method is called from settings or some non\-standard source
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessFeatures``)
+        """
+
+        data = {
+            "@type": "getBusinessFeatures",
+            "source": source,
+        }
+
+        return await self.invoke(data)
+
     async def acceptTermsOfService(self, terms_of_service_id: str) -> Result:
         """Accepts Telegram terms of services
 
@@ -16230,6 +16532,25 @@ class TDLibFunctions:
             "@type": "getPhoneNumberInfoSync",
             "language_code": language_code,
             "phone_number_prefix": phone_number_prefix,
+        }
+
+        return await self.invoke(data)
+
+    async def getCollectibleItemInfo(self, type: dict) -> Result:
+        """Returns information about a given collectible item that was purchased at https://fragment\.com
+
+        Args:
+            type (``CollectibleItemType``):
+                Type of the collectible item\. The item must be used by a user and must be visible to the current user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``CollectibleItemInfo``)
+        """
+
+        data = {
+            "@type": "getCollectibleItemInfo",
+            "type": type,
         }
 
         return await self.invoke(data)

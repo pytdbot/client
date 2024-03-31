@@ -4399,6 +4399,46 @@ class Updates:
 
         return decorator
 
+    def on_updateContactCloseBirthdays(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The list of contacts that had birthdays recently or will have birthday soon has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateContactCloseBirthdays", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateContactCloseBirthdays", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateContactCloseBirthdays", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateAddChatMembersPrivacyForbidden(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -4470,6 +4510,166 @@ class Updates:
             else:
                 func._handler = Handler(
                     func, "updateAutosaveSettings", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateBusinessConnection(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A business connection has changed; for bots only
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateBusinessConnection", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateBusinessConnection", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateBusinessConnection", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateNewBusinessMessage(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A new message was added to a business account; for bots only
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateNewBusinessMessage", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateNewBusinessMessage", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateNewBusinessMessage", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateBusinessMessageEdited(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A message in a business account was edited; for bots only
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateBusinessMessageEdited", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateBusinessMessageEdited", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateBusinessMessageEdited", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateBusinessMessagesDeleted(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Messages in a business account were deleted; for bots only
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateBusinessMessagesDeleted", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateBusinessMessagesDeleted", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateBusinessMessagesDeleted", filters, position
                 )
             return func
 
