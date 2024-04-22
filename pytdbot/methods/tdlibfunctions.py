@@ -1415,7 +1415,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def openChatSimilarChat(self, chat_id: int, opened_chat_id: int) -> Result:
-        """Informs TDLib that a chat was opened from the list of similar chats\. The method is independent from openChat and closeChat methods
+        """Informs TDLib that a chat was opened from the list of similar chats\. The method is independent of openChat and closeChat methods
 
         Args:
             chat_id (``int``):
@@ -3905,6 +3905,131 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def addQuickReplyShortcutMessage(
+        self, shortcut_name: str, reply_to_message_id: int, input_message_content: dict
+    ) -> Result:
+        """Adds a message to a quick reply shortcut\. If shortcut doesn't exist and there are less than getOption\("quick\_reply\_shortcut\_count\_max"\) shortcuts, then a new shortcut is created\. The shortcut must not contain more than getOption\("quick\_reply\_shortcut\_message\_count\_max"\) messages after adding the new message\. Returns the added message
+
+        Args:
+            shortcut_name (``str``):
+                Name of the target shortcut
+
+            reply_to_message_id (``int``):
+                Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none
+
+            input_message_content (``InputMessageContent``):
+                The content of the message to be added; inputMessagePoll, inputMessageForwarded and inputMessageLocation with live\_period aren't supported
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``QuickReplyMessage``)
+        """
+
+        data = {
+            "@type": "addQuickReplyShortcutMessage",
+            "shortcut_name": shortcut_name,
+            "reply_to_message_id": reply_to_message_id,
+            "input_message_content": input_message_content,
+        }
+
+        return await self.invoke(data)
+
+    async def addQuickReplyShortcutInlineQueryResultMessage(
+        self,
+        shortcut_name: str,
+        reply_to_message_id: int,
+        query_id: int,
+        result_id: str,
+        hide_via_bot: bool,
+    ) -> Result:
+        """Adds a message to a quick reply shortcut via inline bot\. If shortcut doesn't exist and there are less than getOption\("quick\_reply\_shortcut\_count\_max"\) shortcuts, then a new shortcut is created\. The shortcut must not contain more than getOption\("quick\_reply\_shortcut\_message\_count\_max"\) messages after adding the new message\. Returns the added message
+
+        Args:
+            shortcut_name (``str``):
+                Name of the target shortcut
+
+            reply_to_message_id (``int``):
+                Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none
+
+            query_id (``int``):
+                Identifier of the inline query
+
+            result_id (``str``):
+                Identifier of the inline query result
+
+            hide_via_bot (``bool``):
+                Pass true to hide the bot, via which the message is sent\. Can be used only for bots getOption\("animation\_search\_bot\_username"\), getOption\("photo\_search\_bot\_username"\), and getOption\("venue\_search\_bot\_username"\)
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``QuickReplyMessage``)
+        """
+
+        data = {
+            "@type": "addQuickReplyShortcutInlineQueryResultMessage",
+            "shortcut_name": shortcut_name,
+            "reply_to_message_id": reply_to_message_id,
+            "query_id": query_id,
+            "result_id": result_id,
+            "hide_via_bot": hide_via_bot,
+        }
+
+        return await self.invoke(data)
+
+    async def readdQuickReplyShortcutMessages(
+        self, shortcut_name: str, message_ids: list
+    ) -> Result:
+        """Readds quick reply messages which failed to add\. Can be called only for messages for which messageSendingStateFailed\.can\_retry is true and after specified in messageSendingStateFailed\.retry\_after time passed\. If a message is readded, the corresponding failed to send message is deleted\. Returns the sent messages in the same order as the message identifiers passed in message\_ids\. If a message can't be readded, null will be returned instead of the message
+
+        Args:
+            shortcut_name (``str``):
+                Name of the target shortcut
+
+            message_ids (``list``):
+                Identifiers of the quick reply messages to readd\. Message identifiers must be in a strictly increasing order
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``QuickReplyMessages``)
+        """
+
+        data = {
+            "@type": "readdQuickReplyShortcutMessages",
+            "shortcut_name": shortcut_name,
+            "message_ids": message_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def editQuickReplyMessage(
+        self, shortcut_id: int, message_id: int, input_message_content: dict
+    ) -> Result:
+        """Asynchronously edits the text, media or caption of a quick reply message\. Use quickReplyMessage\.can\_be\_edited to check whether a message can be edited\. Text message can be edited only to a text message\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa
+
+        Args:
+            shortcut_id (``int``):
+                Unique identifier of the quick reply shortcut with the message
+
+            message_id (``int``):
+                Identifier of the message
+
+            input_message_content (``InputMessageContent``):
+                New content of the message\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "editQuickReplyMessage",
+            "shortcut_id": shortcut_id,
+            "message_id": message_id,
+            "input_message_content": input_message_content,
+        }
+
+        return await self.invoke(data)
+
     async def getForumTopicDefaultIcons(self) -> Result:
         """Returns list of custom emojis, which can be used as forum topic icon by all users
 
@@ -5869,7 +5994,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getInternalLinkType(self, link: str) -> Result:
-        """Returns information about the type of an internal link\. Returns a 404 error if the link is not internal\. Can be called before authorization
+        """Returns information about the type of internal link\. Returns a 404 error if the link is not internal\. Can be called before authorization
 
         Args:
             link (``str``):
@@ -6108,7 +6233,7 @@ class TDLibFunctions:
     async def createNewBasicGroupChat(
         self, title: str, message_auto_delete_time: int, user_ids: list = None
     ) -> Result:
-        """Creates a new basic group and sends a corresponding messageBasicGroupChatCreate\. Returns the newly created chat
+        """Creates a new basic group and sends a corresponding messageBasicGroupChatCreate\. Returns information about the newly created chat
 
         Args:
             title (``str``):
@@ -6122,7 +6247,7 @@ class TDLibFunctions:
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``Chat``)
+            :class:`~pytdbot.types.Result` (``CreatedBasicGroupChat``)
         """
 
         data = {
@@ -7449,7 +7574,7 @@ class TDLibFunctions:
     async def addChatMember(
         self, chat_id: int, user_id: int, forward_limit: int
     ) -> Result:
-        """Adds a new member to a chat; requires can\_invite\_users member right\. Members can't be added to private or secret chats
+        """Adds a new member to a chat; requires can\_invite\_users member right\. Members can't be added to private or secret chats\. Returns information about members that weren't added
 
         Args:
             chat_id (``int``):
@@ -7463,7 +7588,7 @@ class TDLibFunctions:
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``Ok``)
+            :class:`~pytdbot.types.Result` (``FailedToAddMembers``)
         """
 
         data = {
@@ -7476,7 +7601,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def addChatMembers(self, chat_id: int, user_ids: list) -> Result:
-        """Adds multiple new members to a chat; requires can\_invite\_users member right\. Currently, this method is only available for supergroups and channels\. This method can't be used to join a chat\. Members can't be added to a channel if it has more than 200 members
+        """Adds multiple new members to a chat; requires can\_invite\_users member right\. Currently, this method is only available for supergroups and channels\. This method can't be used to join a chat\. Members can't be added to a channel if it has more than 200 members\. Returns information about members that weren't added
 
         Args:
             chat_id (``int``):
@@ -7487,7 +7612,7 @@ class TDLibFunctions:
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``Ok``)
+            :class:`~pytdbot.types.Result` (``FailedToAddMembers``)
         """
 
         data = {
@@ -8607,7 +8732,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatBoostFeatures(self, is_channel: bool) -> Result:
-        """Returns list of features available on the first 10 chat boost levels; this is an offline request
+        """Returns list of features available for different chat boost levels; this is an offline request
 
         Args:
             is_channel (``bool``):
@@ -9207,7 +9332,7 @@ class TDLibFunctions:
     async def addFileToDownloads(
         self, file_id: int, chat_id: int, message_id: int, priority: int
     ) -> Result:
-        """Adds a file from a message to the list of file downloads\. Download progress and completion of the download will be notified through updateFile updates\. If message database is used, the list of file downloads is persistent across application restarts\. The downloading is independent from download using downloadFile, i\.e\. it continues if downloadFile is canceled or is used to download a part of the file
+        """Adds a file from a message to the list of file downloads\. Download progress and completion of the download will be notified through updateFile updates\. If message database is used, the list of file downloads is persistent across application restarts\. The downloading is independent of download using downloadFile, i\.e\. it continues if downloadFile is canceled or is used to download a part of the file
 
         Args:
             file_id (``int``):
@@ -11322,6 +11447,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getGreetingStickers(self) -> Result:
+        """Returns greeting stickers from regular sticker sets that can be used for the start page of other users
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Stickers``)
+        """
+
+        data = {
+            "@type": "getGreetingStickers",
+        }
+
+        return await self.invoke(data)
+
     async def getPremiumStickers(self, limit: int) -> Result:
         """Returns premium stickers from regular sticker sets
 
@@ -12430,12 +12569,12 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def setBusinessIntro(self, intro: dict = None) -> Result:
-        """Changes the business intro of the current user\. Requires Telegram Business subscription
+    async def setBusinessStartPage(self, start_page: dict = None) -> Result:
+        """Changes the business start page of the current user\. Requires Telegram Business subscription
 
         Args:
-            intro (``inputBusinessIntro``, *optional*):
-                The new intro of the business; pass null to remove the intro
+            start_page (``inputBusinessStartPage``, *optional*):
+                The new start page of the business; pass null to remove custom start page
 
 
         Returns:
@@ -12443,20 +12582,23 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "setBusinessIntro",
-            "intro": intro,
+            "@type": "setBusinessStartPage",
+            "start_page": start_page,
         }
 
         return await self.invoke(data)
 
-    async def changePhoneNumber(
-        self, phone_number: str, settings: dict = None
+    async def sendPhoneNumberCode(
+        self, phone_number: str, type: dict, settings: dict = None
     ) -> Result:
-        """Changes the phone number of the user and sends an authentication code to the user's new phone number; for official Android and iOS applications only\. On success, returns information about the sent code
+        """Sends a code to the specified phone number\. Aborts previous phone number verification if there was one\. On success, returns information about the sent code
 
         Args:
             phone_number (``str``):
-                The new phone number of the user in international format
+                The phone number, in international format
+
+            type (``PhoneNumberCodeType``):
+                Type of the request for which the code is sent
 
             settings (``phoneNumberAuthenticationSettings``, *optional*):
                 Settings for the authentication of the user's phone number; pass null to use default settings
@@ -12467,15 +12609,35 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "changePhoneNumber",
+            "@type": "sendPhoneNumberCode",
             "phone_number": phone_number,
             "settings": settings,
+            "type": type,
         }
 
         return await self.invoke(data)
 
-    async def resendChangePhoneNumberCode(self) -> Result:
-        """Resends the authentication code sent to confirm a new phone number for the current user\. Works only if the previously received authenticationCodeInfo next\_code\_type was not null and the server\-specified timeout has passed
+    async def sendPhoneNumberFirebaseSms(self, token: str) -> Result:
+        """Sends Firebase Authentication SMS to the specified phone number\. Works only when received a code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos
+
+        Args:
+            token (``str``):
+                SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "sendPhoneNumberFirebaseSms",
+            "token": token,
+        }
+
+        return await self.invoke(data)
+
+    async def resendPhoneNumberCode(self) -> Result:
+        """Resends the authentication code sent to a phone number\. Works only if the previously received authenticationCodeInfo next\_code\_type was not null and the server\-specified timeout has passed
 
 
         Returns:
@@ -12483,13 +12645,13 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "resendChangePhoneNumberCode",
+            "@type": "resendPhoneNumberCode",
         }
 
         return await self.invoke(data)
 
-    async def checkChangePhoneNumberCode(self, code: str) -> Result:
-        """Checks the authentication code sent to confirm a new phone number of the user
+    async def checkPhoneNumberCode(self, code: str) -> Result:
+        """Check the authentication code and completes the request for which the code was sent if appropriate
 
         Args:
             code (``str``):
@@ -12501,7 +12663,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "checkChangePhoneNumberCode",
+            "@type": "checkPhoneNumberCode",
             "code": code,
         }
 
@@ -12555,6 +12717,144 @@ class TDLibFunctions:
         data = {
             "@type": "deleteBusinessConnectedBot",
             "bot_user_id": bot_user_id,
+        }
+
+        return await self.invoke(data)
+
+    async def toggleBusinessConnectedBotChatIsPaused(
+        self, chat_id: int, is_paused: bool
+    ) -> Result:
+        """Pauses or resumes the connected business bot in a specific chat
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            is_paused (``bool``):
+                Pass true to pause the connected bot in the chat; pass false to resume the bot
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "toggleBusinessConnectedBotChatIsPaused",
+            "chat_id": chat_id,
+            "is_paused": is_paused,
+        }
+
+        return await self.invoke(data)
+
+    async def removeBusinessConnectedBotFromChat(self, chat_id: int) -> Result:
+        """Removes the connected business bot from a specific chat by adding the chat to businessRecipients\.excluded\_chat\_ids
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "removeBusinessConnectedBotFromChat",
+            "chat_id": chat_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getBusinessChatLinks(self) -> Result:
+        """Returns business chat links created for the current account
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessChatLinks``)
+        """
+
+        data = {
+            "@type": "getBusinessChatLinks",
+        }
+
+        return await self.invoke(data)
+
+    async def createBusinessChatLink(self, link_info: dict) -> Result:
+        """Creates a business chat link for the current account\. Requires Telegram Business subscription\. There can be up to getOption\("business\_chat\_link\_count\_max"\) links created\. Returns the created link
+
+        Args:
+            link_info (``inputBusinessChatLink``):
+                Information about the link to create
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessChatLink``)
+        """
+
+        data = {
+            "@type": "createBusinessChatLink",
+            "link_info": link_info,
+        }
+
+        return await self.invoke(data)
+
+    async def editBusinessChatLink(self, link: str, link_info: dict) -> Result:
+        """Edits a business chat link of the current account\. Requires Telegram Business subscription\. Returns the edited link
+
+        Args:
+            link (``str``):
+                The link to edit
+
+            link_info (``inputBusinessChatLink``):
+                New description of the link
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessChatLink``)
+        """
+
+        data = {
+            "@type": "editBusinessChatLink",
+            "link": link,
+            "link_info": link_info,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteBusinessChatLink(self, link: str) -> Result:
+        """Deletes a business chat link of the current account
+
+        Args:
+            link (``str``):
+                The link to delete
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteBusinessChatLink",
+            "link": link,
+        }
+
+        return await self.invoke(data)
+
+    async def getBusinessChatLinkInfo(self, link_name: str) -> Result:
+        """Returns information about a business chat link
+
+        Args:
+            link_name (``str``):
+                Name of the link
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessChatLinkInfo``)
+        """
+
+        data = {
+            "@type": "getBusinessChatLinkInfo",
+            "link_name": link_name,
         }
 
         return await self.invoke(data)
@@ -13508,6 +13808,31 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def toggleSupergroupCanHaveSponsoredMessages(
+        self, supergroup_id: int, can_have_sponsored_messages: bool
+    ) -> Result:
+        """Toggles whether sponsored messages are shown in the channel chat; requires owner privileges in the channel\. The chat must have at least chatBoostFeatures\.min\_sponsored\_message\_disable\_boost\_level boost level to disable sponsored messages
+
+        Args:
+            supergroup_id (``int``):
+                The identifier of the channel
+
+            can_have_sponsored_messages (``bool``):
+                The new value of can\_have\_sponsored\_messages
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "toggleSupergroupCanHaveSponsoredMessages",
+            "supergroup_id": supergroup_id,
+            "can_have_sponsored_messages": can_have_sponsored_messages,
+        }
+
+        return await self.invoke(data)
+
     async def toggleSupergroupHasHiddenMembers(
         self, supergroup_id: int, has_hidden_members: bool
     ) -> Result:
@@ -13665,7 +13990,7 @@ class TDLibFunctions:
                 Number of users to skip
 
             limit (``int``):
-                The maximum number of users be returned; up to 200
+                The maximum number of users to be returned; up to 200
 
             filter (``SupergroupMembersFilter``, *optional*):
                 The type of users to return; pass null to use supergroupMembersFilterRecent
@@ -14747,6 +15072,81 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getChatRevenueStatistics(self, chat_id: int, is_dark: bool) -> Result:
+        """Returns detailed revenue statistics about a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            is_dark (``bool``):
+                Pass true if a dark theme is used by the application
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatRevenueStatistics``)
+        """
+
+        data = {
+            "@type": "getChatRevenueStatistics",
+            "chat_id": chat_id,
+            "is_dark": is_dark,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatRevenueWithdrawalUrl(self, chat_id: int, password: str) -> Result:
+        """Returns URL for chat revenue withdrawal; requires owner privileges in the chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true and getOption\("can\_withdraw\_chat\_revenue"\)
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            password (``str``):
+                The 2\-step verification password of the current user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``HttpUrl``)
+        """
+
+        data = {
+            "@type": "getChatRevenueWithdrawalUrl",
+            "chat_id": chat_id,
+            "password": password,
+        }
+
+        return await self.invoke(data)
+
+    async def getChatRevenueTransactions(
+        self, chat_id: int, offset: int, limit: int
+    ) -> Result:
+        """Returns list of revenue transactions for a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            offset (``int``):
+                Number of transactions to skip
+
+            limit (``int``):
+                The maximum number of transactions to be returned; up to 200
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatRevenueTransactions``)
+        """
+
+        data = {
+            "@type": "getChatRevenueTransactions",
+            "chat_id": chat_id,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
     async def getChatStatistics(self, chat_id: int, is_dark: bool) -> Result:
         """Returns detailed statistics about a chat\. Currently, this method can be used only for supergroups and channels\. Can be used only if supergroupFullInfo\.can\_get\_statistics \=\= true
 
@@ -15301,64 +15701,6 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def sendPhoneNumberVerificationCode(
-        self, phone_number: str, settings: dict = None
-    ) -> Result:
-        """Sends a code to verify a phone number to be added to a user's Telegram Passport
-
-        Args:
-            phone_number (``str``):
-                The phone number of the user, in international format
-
-            settings (``phoneNumberAuthenticationSettings``, *optional*):
-                Settings for the authentication of the user's phone number; pass null to use default settings
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``AuthenticationCodeInfo``)
-        """
-
-        data = {
-            "@type": "sendPhoneNumberVerificationCode",
-            "phone_number": phone_number,
-            "settings": settings,
-        }
-
-        return await self.invoke(data)
-
-    async def resendPhoneNumberVerificationCode(self) -> Result:
-        """Resends the code to verify a phone number to be added to a user's Telegram Passport
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``AuthenticationCodeInfo``)
-        """
-
-        data = {
-            "@type": "resendPhoneNumberVerificationCode",
-        }
-
-        return await self.invoke(data)
-
-    async def checkPhoneNumberVerificationCode(self, code: str) -> Result:
-        """Checks the phone number verification code for Telegram Passport
-
-        Args:
-            code (``str``):
-                Verification code to check
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``Ok``)
-        """
-
-        data = {
-            "@type": "checkPhoneNumberVerificationCode",
-            "code": code,
-        }
-
-        return await self.invoke(data)
-
     async def sendEmailAddressVerificationCode(self, email_address: str) -> Result:
         """Sends a code to verify an email address to be added to a user's Telegram Passport
 
@@ -15490,68 +15832,6 @@ class TDLibFunctions:
             "@type": "sendPassportAuthorizationForm",
             "authorization_form_id": authorization_form_id,
             "types": types,
-        }
-
-        return await self.invoke(data)
-
-    async def sendPhoneNumberConfirmationCode(
-        self, hash: str, phone_number: str, settings: dict = None
-    ) -> Result:
-        """Sends phone number confirmation code to handle links of the type internalLinkTypePhoneNumberConfirmation
-
-        Args:
-            hash (``str``):
-                Hash value from the link
-
-            phone_number (``str``):
-                Phone number value from the link
-
-            settings (``phoneNumberAuthenticationSettings``, *optional*):
-                Settings for the authentication of the user's phone number; pass null to use default settings
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``AuthenticationCodeInfo``)
-        """
-
-        data = {
-            "@type": "sendPhoneNumberConfirmationCode",
-            "hash": hash,
-            "phone_number": phone_number,
-            "settings": settings,
-        }
-
-        return await self.invoke(data)
-
-    async def resendPhoneNumberConfirmationCode(self) -> Result:
-        """Resends phone number confirmation code
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``AuthenticationCodeInfo``)
-        """
-
-        data = {
-            "@type": "resendPhoneNumberConfirmationCode",
-        }
-
-        return await self.invoke(data)
-
-    async def checkPhoneNumberConfirmationCode(self, code: str) -> Result:
-        """Checks phone number confirmation code
-
-        Args:
-            code (``str``):
-                Confirmation code to check
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``Ok``)
-        """
-
-        data = {
-            "@type": "checkPhoneNumberConfirmationCode",
-            "code": code,
         }
 
         return await self.invoke(data)

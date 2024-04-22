@@ -927,6 +927,46 @@ class Updates:
 
         return decorator
 
+    def on_updateChatBusinessBotManageBar(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The bar for managing business bot was changed in a chat
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateChatBusinessBotManageBar", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateChatBusinessBotManageBar", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateChatBusinessBotManageBar", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateChatAvailableReactions(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -4399,6 +4439,46 @@ class Updates:
 
         return decorator
 
+    def on_updateSpeedLimitNotification(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user Use getOption\("premium\_download\_speedup"\) or getOption\("premium\_upload\_speedup"\) to get expected speedup after subscription to Telegram Premium
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateSpeedLimitNotification", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateSpeedLimitNotification", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateSpeedLimitNotification", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateContactCloseBirthdays(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -4434,46 +4514,6 @@ class Updates:
             else:
                 func._handler = Handler(
                     func, "updateContactCloseBirthdays", filters, position
-                )
-            return func
-
-        return decorator
-
-    def on_updateAddChatMembersPrivacyForbidden(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-    ) -> Callable:
-        """Adding users to a chat has failed because of their privacy settings\. An invite link can be shared with the users if appropriate
-
-        Args:
-            filters (:class:`pytdbot.filters.Filter`, *optional*):
-                An update filter
-
-            position (``int``, *optional*):
-                The function position in handlers list. Default is ``None`` (append)
-
-        Raises:
-            :py:class:`TypeError`
-        """
-
-        def decorator(func: Callable) -> Callable:
-            if hasattr(func, "_handler"):
-                return func
-            elif isinstance(self, pytdbot.Client):
-                if iscoroutinefunction(func):
-                    self.add_handler(
-                        "updateAddChatMembersPrivacyForbidden", func, filters, position
-                    )
-                else:
-                    raise TypeError("Handler must be async")
-            elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(
-                    func, "updateAddChatMembersPrivacyForbidden", self, position
-                )
-            else:
-                func._handler = Handler(
-                    func, "updateAddChatMembersPrivacyForbidden", filters, position
                 )
             return func
 

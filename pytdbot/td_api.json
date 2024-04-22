@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.27",
-    "commit_hash": "efc6bd553b61dea0ae8c0436695e8d2539bf03f9",
+    "version": "1.8.28",
+    "commit_hash": "2424d681c9c5ce0d6d5d88f71bb8767def85c85b",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for a email address",
@@ -11,19 +11,19 @@
         "ThumbnailFormat": "Describes format of a thumbnail",
         "MaskPoint": "Part of the face, relative to which a mask is placed",
         "StickerFormat": "Describes format of a sticker",
-        "StickerType": "Describes type of a sticker",
+        "StickerType": "Describes type of sticker",
         "StickerFullType": "Contains full information about sticker type",
-        "PollType": "Describes the type of a poll",
-        "UserType": "Represents the type of a user. The following types are possible: regular users, deleted users and bots",
+        "PollType": "Describes the type of poll",
+        "UserType": "Represents the type of user. The following types are possible: regular users, deleted users and bots",
         "BusinessAwayMessageSchedule": "Describes conditions for sending of away messages by a Telegram Business account",
-        "ChatPhotoStickerType": "Describes type of a sticker, which was used to create a chat photo",
+        "ChatPhotoStickerType": "Describes type of sticker, which was used to create a chat photo",
         "InputChatPhoto": "Describes a photo to be set as a user profile or chat photo",
         "PremiumGiveawayParticipantStatus": "Contains information about status of a user in a Telegram Premium giveaway",
         "PremiumGiveawayInfo": "Contains information about Telegram Premium giveaway",
         "ChatMemberStatus": "Provides information about the status of a member in a chat",
         "ChatMembersFilter": "Specifies the kind of chat members to return in searchChatMembers",
         "SupergroupMembersFilter": "Specifies the kind of chat members to return in getSupergroupMembers",
-        "InviteLinkChatType": "Describes the type of a chat to which points an invite link",
+        "InviteLinkChatType": "Describes the type of chat to which points an invite link",
         "SecretChatState": "Describes the current secret chat state",
         "MessageSender": "Contains information about the sender of a message",
         "MessageReadDate": "Describes read date of a recent outgoing message in a private chat",
@@ -33,20 +33,20 @@
         "MessageReplyTo": "Contains information about the message or the story a message is replying to",
         "InputMessageReplyTo": "Contains information about the message or the story to be replied",
         "MessageSource": "Describes source of a message",
-        "MessageSponsorType": "Describes type of a message sponsor",
+        "MessageSponsorType": "Describes type of message sponsor",
         "ReportChatSponsoredMessageResult": "Describes result of sponsored message report",
         "NotificationSettingsScope": "Describes the types of chats to which notification settings are relevant",
-        "ChatType": "Describes the type of a chat",
+        "ChatType": "Describes the type of chat",
         "ChatList": "Describes a list of chats",
         "ChatSource": "Describes a reason why an external chat is shown in a chat list",
         "ChatAvailableReactions": "Describes reactions available in the chat",
         "PublicChatType": "Describes a type of public chats",
         "ChatActionBar": "Describes actions which must be possible to do through a chat action bar",
         "KeyboardButtonType": "Describes a keyboard button type",
-        "InlineKeyboardButtonType": "Describes the type of an inline keyboard button",
+        "InlineKeyboardButtonType": "Describes the type of inline keyboard button",
         "ReplyMarkup": "Contains a description of a custom keyboard and actions that can be done with it to quickly reply to bots",
         "LoginUrlInfo": "Contains information about an inline button of type inlineKeyboardButtonTypeLoginUrl",
-        "SavedMessagesTopicType": "Describes type of a Saved Messages topic",
+        "SavedMessagesTopicType": "Describes type of Saved Messages topic",
         "RichText": "Describes a text object inside an instant-view web page",
         "PageBlockHorizontalAlignment": "Describes a horizontal alignment of a table cell content",
         "PageBlockVerticalAlignment": "Describes a Vertical alignment of a table cell content",
@@ -56,7 +56,7 @@
         "PaymentProvider": "Contains information about a payment provider",
         "InputInvoice": "Describes an invoice to process",
         "MessageExtendedMedia": "Describes a media, which is attached to an invoice",
-        "PassportElementType": "Contains the type of a Telegram Passport element",
+        "PassportElementType": "Contains the type of Telegram Passport element",
         "PassportElement": "Contains information about a Telegram Passport element",
         "InputPassportElement": "Contains information about a Telegram Passport element to be saved",
         "PassportElementErrorSource": "Contains the description of an error in a Telegram Passport element",
@@ -69,9 +69,9 @@
         "SearchMessagesFilter": "Represents a filter for message search results",
         "ChatAction": "Describes the different types of activity in a chat",
         "UserStatus": "Describes the last time the user was online",
-        "EmojiCategoryType": "Describes type of an emoji category",
-        "StoryAreaType": "Describes type of a clickable rectangle area on a story media",
-        "InputStoryAreaType": "Describes type of a clickable rectangle area on a story media to be added",
+        "EmojiCategoryType": "Describes type of emoji category",
+        "StoryAreaType": "Describes type of clickable rectangle area on a story media",
+        "InputStoryAreaType": "Describes type of clickable rectangle area on a story media to be added",
         "StoryContent": "Contains the content of a story",
         "InputStoryContent": "The content of a story to send",
         "StoryList": "Describes a list of stories",
@@ -80,10 +80,10 @@
         "PublicForward": "Describes a public forward or repost of a story",
         "ChatBoostSource": "Describes source of a chat boost",
         "CallDiscardReason": "Describes the reason why a call was discarded",
-        "CallServerType": "Describes the type of a call server",
+        "CallServerType": "Describes the type of call server",
         "CallState": "Describes the current call state",
         "GroupCallVideoQuality": "Describes the quality of a group call video",
-        "CallProblem": "Describes the exact type of a problem with a call",
+        "CallProblem": "Describes the exact type of problem with a call",
         "FirebaseAuthenticationSettings": "Contains settings for Firebase Authentication in the official applications",
         "ReactionUnavailabilityReason": "Describes why the current user can't add reactions to the message, despite some other users can",
         "DiceStickers": "Contains animated stickers which must be used for dice animation rendering",
@@ -91,11 +91,11 @@
         "BotWriteAccessAllowReason": "Describes a reason why a bot was allowed to write messages to the current user",
         "InputInlineQueryResult": "Represents a single result of an inline query; for bots only",
         "InlineQueryResult": "Represents a single result of an inline query",
-        "InlineQueryResultsButtonType": "Represents a type of a button in results of inline query",
+        "InlineQueryResultsButtonType": "Represents a type of button in results of inline query",
         "CallbackQueryPayload": "Represents a payload of a callback query",
         "ChatEventAction": "Represents a chat event",
         "LanguagePackStringValue": "Represents the value of a string in a language pack",
-        "PremiumLimitType": "Describes type of a limit, increased for Premium users",
+        "PremiumLimitType": "Describes type of limit, increased for Premium users",
         "PremiumFeature": "Describes a feature available to Premium users",
         "BusinessFeature": "Describes a feature available to Business user accounts",
         "PremiumStoryFeature": "Describes a story feature available to Premium users",
@@ -104,7 +104,7 @@
         "TelegramPaymentPurpose": "Describes a purpose of a payment toward Telegram",
         "DeviceToken": "Represents a data needed to subscribe for push notifications through registerDevice method. To use specific push notification service, the correct application platform must be specified and a valid server authentication data must be uploaded at https://my.telegram.org",
         "BackgroundFill": "Describes a fill of a background",
-        "BackgroundType": "Describes the type of a background",
+        "BackgroundType": "Describes the type of background",
         "InputBackground": "Contains information about background to set",
         "CanSendStoryResult": "Represents result of checking whether the current user can send a story in the specific chat",
         "CanTransferOwnershipResult": "Represents result of checking whether the current session can be used to transfer a chat ownership to another user",
@@ -121,26 +121,29 @@
         "UserPrivacySettingRule": "Represents a single rule for managing user privacy settings",
         "UserPrivacySetting": "Describes available user privacy settings",
         "CanSendMessageToUserResult": "Describes result of canSendMessageToUser",
-        "SessionType": "Represents the type of a session",
+        "SessionType": "Represents the type of session",
         "ReportReason": "Describes the reason why a chat is reported",
         "TargetChat": "Describes the target chat to be opened",
         "InternalLinkType": "Describes an internal https://t.me or tg: link, which must be processed by the application in a special way",
-        "BlockList": "Describes a type of a block list",
-        "FileType": "Represents the type of a file",
-        "NetworkType": "Represents the type of a network",
+        "BlockList": "Describes a type of block list",
+        "FileType": "Represents the type of file",
+        "NetworkType": "Represents the type of network",
         "NetworkStatisticsEntry": "Contains statistics about network usage",
         "AutosaveSettingsScope": "Describes scope of autosave settings",
         "ConnectionState": "Describes the current state of the connection to Telegram servers",
         "TopChatCategory": "Represents the categories of chats for which a list of frequently used chats can be retrieved",
-        "TMeUrlType": "Describes the type of a URL linking to an internal Telegram entity",
+        "TMeUrlType": "Describes the type of URL linking to an internal Telegram entity",
         "SuggestedAction": "Describes an action suggested to the current user",
         "TextParseMode": "Describes the way the text needs to be parsed for text entities",
-        "ProxyType": "Describes the type of a proxy server",
+        "ProxyType": "Describes the type of proxy server",
         "StatisticalGraph": "Describes a statistical graph",
-        "ChatStatisticsObjectType": "Describes type of an object, for which statistics are provided",
+        "ChatStatisticsObjectType": "Describes type of object, for which statistics are provided",
         "ChatStatistics": "Contains a detailed statistics about a chat",
+        "ChatRevenueWithdrawalState": "Describes state of a chat revenue withdrawal",
+        "ChatRevenueTransactionType": "Describes type of transaction for revenue earned from sponsored messages in a chat",
         "VectorPathCommand": "Represents a vector path command",
         "BotCommandScope": "Represents the scope to which bot commands are relevant",
+        "PhoneNumberCodeType": "Describes type of the request for which a code is sent to a phone number",
         "Update": "Contains notifications about data changes",
         "LogStream": "Describes a stream to which TDLib internal log is written"
     },
@@ -2130,47 +2133,47 @@
             },
             "type": "BusinessConnectedBot"
         },
-        "businessIntro": {
-            "description": "Describes settings for a business account intro",
+        "businessStartPage": {
+            "description": "Describes settings for a business account start page",
             "args": {
                 "title": {
-                    "description": "Title text of the intro",
+                    "description": "Title text of the start page",
                     "is_optional": false,
                     "type": "string"
                 },
                 "message": {
-                    "description": "Message text of the intro",
+                    "description": "Message text of the start page",
                     "is_optional": false,
                     "type": "string"
                 },
                 "sticker": {
-                    "description": "Greeting sticker of the intro; may be null if none",
+                    "description": "Greeting sticker of the start page; may be null if none",
                     "is_optional": true,
                     "type": "sticker"
                 }
             },
-            "type": "BusinessIntro"
+            "type": "BusinessStartPage"
         },
-        "inputBusinessIntro": {
-            "description": "Describes settings for a business account intro to set",
+        "inputBusinessStartPage": {
+            "description": "Describes settings for a business account start page to set",
             "args": {
                 "title": {
-                    "description": "Title text of the intro; 0-getOption(\"business_intro_title_length_max\") characters",
+                    "description": "Title text of the start page; 0-getOption(\"business_start_page_title_length_max\") characters",
                     "is_optional": false,
                     "type": "string"
                 },
                 "message": {
-                    "description": "Message text of the intro; 0-getOption(\"business_intro_message_length_max\") characters",
+                    "description": "Message text of the start page; 0-getOption(\"business_start_page_message_length_max\") characters",
                     "is_optional": false,
                     "type": "string"
                 },
                 "sticker": {
-                    "description": "Greeting sticker of the intro; pass null if none. The sticker must belong to a sticker set and must not be a custom emoji",
+                    "description": "Greeting sticker of the start page; pass null if none. The sticker must belong to a sticker set and must not be a custom emoji",
                     "is_optional": true,
                     "type": "InputFile"
                 }
             },
-            "type": "InputBusinessIntro"
+            "type": "InputBusinessStartPage"
         },
         "businessOpeningHoursInterval": {
             "description": "Describes an interval of time when the business is open",
@@ -2227,13 +2230,82 @@
                     "is_optional": true,
                     "type": "businessAwayMessageSettings"
                 },
-                "intro": {
-                    "description": "Information about intro of the business; may be null if none",
+                "start_page": {
+                    "description": "Information about start page of the account; may be null if none",
                     "is_optional": true,
-                    "type": "businessIntro"
+                    "type": "businessStartPage"
                 }
             },
             "type": "BusinessInfo"
+        },
+        "businessChatLink": {
+            "description": "Contains information about a business chat link",
+            "args": {
+                "link": {
+                    "description": "The HTTPS link",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "text": {
+                    "description": "Message draft text that will be added to the input field",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "title": {
+                    "description": "Link title",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "view_count": {
+                    "description": "Number of times the link was used",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "BusinessChatLink"
+        },
+        "businessChatLinks": {
+            "description": "Contains a list of business chat links created by the user",
+            "args": {
+                "links": {
+                    "description": "List of links",
+                    "is_optional": false,
+                    "type": "vector<businessChatLink>"
+                }
+            },
+            "type": "BusinessChatLinks"
+        },
+        "inputBusinessChatLink": {
+            "description": "Describes a business chat link to create or edit",
+            "args": {
+                "text": {
+                    "description": "Message draft text that will be added to the input field",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "title": {
+                    "description": "Link title",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InputBusinessChatLink"
+        },
+        "businessChatLinkInfo": {
+            "description": "Contains information about a business chat link",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the private chat that created the link",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "text": {
+                    "description": "Message draft text that must be added to the input field",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "BusinessChatLinkInfo"
         },
         "chatPhotoStickerTypeRegularOrMask": {
             "description": "Information about the sticker, which was used to create the chat photo",
@@ -4112,6 +4184,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_get_revenue_statistics": {
+                    "description": "True, if the supergroup or channel revenue statistics are available",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_toggle_aggressive_anti_spam": {
                     "description": "True, if aggressive anti-spam checks can be enabled or disabled in the supergroup",
                     "is_optional": false,
@@ -4119,6 +4196,11 @@
                 },
                 "is_all_history_available": {
                     "description": "True, if new chat members will have access to old messages. In public, discussion, of forum groups and all channels, old messages are always available, so this option affects only private non-forum supergroups without a linked chat. The value of this field is only available to chat administrators",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_have_sponsored_messages": {
+                    "description": "True, if the chat can have sponsored messages. The value of this field is only available to the owner of the chat",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4490,7 +4572,7 @@
                     "type": "forwardSource"
                 },
                 "public_service_announcement_type": {
-                    "description": "The type of a public service announcement for the forwarded message",
+                    "description": "The type of public service announcement for the forwarded message",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -5020,7 +5102,7 @@
                     "type": "string"
                 },
                 "media_album_id": {
-                    "description": "Unique identifier of an album this message belongs to. Only audios, documents, photos and videos can be grouped together in albums",
+                    "description": "Unique identifier of an album this message belongs to; 0 if none. Only audios, documents, photos and videos can be grouped together in albums",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -5781,7 +5863,7 @@
                     "type": "chatFolderIcon"
                 },
                 "color_id": {
-                    "description": "The identifier of the chosen color for the chat folder icon; from -1 to 6. If -1, then color is didabled. Can't be changed if folder tags are disabled or the current user doesn't have Telegram Premium subscription",
+                    "description": "The identifier of the chosen color for the chat folder icon; from -1 to 6. If -1, then color is disabled. Can't be changed if folder tags are disabled or the current user doesn't have Telegram Premium subscription",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -5867,7 +5949,7 @@
                     "type": "chatFolderIcon"
                 },
                 "color_id": {
-                    "description": "The identifier of the chosen color for the chat folder icon; from -1 to 6. If -1, then color is didabled",
+                    "description": "The identifier of the chosen color for the chat folder icon; from -1 to 6. If -1, then color is disabled",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -6112,6 +6194,32 @@
             },
             "type": "SavedMessagesTags"
         },
+        "businessBotManageBar": {
+            "description": "Contains information about a business bot that manages the chat",
+            "args": {
+                "bot_user_id": {
+                    "description": "User identifier of the bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "manage_url": {
+                    "description": "URL to be opened to manage the bot",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_bot_paused": {
+                    "description": "True, if the bot is paused. Use toggleBusinessConnectedBotChatIsPaused to change the value of the field",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_bot_reply": {
+                    "description": "True, if the bot can reply",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "BusinessBotManageBar"
+        },
         "videoChat": {
             "description": "Describes a video chat",
             "args": {
@@ -6311,6 +6419,11 @@
                     "is_optional": true,
                     "type": "ChatActionBar"
                 },
+                "business_bot_manage_bar": {
+                    "description": "Information about bar for managing a business bot in the chat; may be null if none",
+                    "is_optional": true,
+                    "type": "businessBotManageBar"
+                },
                 "video_chat": {
                     "description": "Information about video chat of the chat",
                     "is_optional": false,
@@ -6354,6 +6467,54 @@
                 }
             },
             "type": "Chats"
+        },
+        "failedToAddMember": {
+            "description": "Contains information about a user that has failed to be added to a chat",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "premium_would_allow_invite": {
+                    "description": "True, if subscription to Telegram Premium would have allowed to add the user to the chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "premium_required_to_send_messages": {
+                    "description": "True, if subscription to Telegram Premium is required to send the user chat invite link",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "FailedToAddMember"
+        },
+        "failedToAddMembers": {
+            "description": "Represents a list of users that has failed to be added to a chat",
+            "args": {
+                "failed_to_add_members": {
+                    "description": "Information about users that weren't added to the chat",
+                    "is_optional": false,
+                    "type": "vector<failedToAddMember>"
+                }
+            },
+            "type": "FailedToAddMembers"
+        },
+        "createdBasicGroupChat": {
+            "description": "Contains information about a newly created basic group chat",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "failed_to_add_members": {
+                    "description": "Information about failed to add members",
+                    "is_optional": false,
+                    "type": "failedToAddMembers"
+                }
+            },
+            "type": "CreatedBasicGroupChat"
         },
         "chatNearby": {
             "description": "Describes a chat located nearby",
@@ -10549,7 +10710,7 @@
             "type": "MessageContent"
         },
         "messageInviteVideoChatParticipants": {
-            "description": "A message with information about an invite to a video chat",
+            "description": "A message with information about an invitation to a video chat",
             "args": {
                 "group_call_id": {
                     "description": "Identifier of the video chat. The video chat can be received through the method getGroupCall",
@@ -13379,7 +13540,7 @@
                     "type": "Bool"
                 },
                 "reply_to_message_id": {
-                    "description": "Information about the identifier of the quick reply message to which the message replies",
+                    "description": "The identifier of the quick reply message to which the message replies; 0 if none",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -13389,7 +13550,7 @@
                     "type": "int53"
                 },
                 "media_album_id": {
-                    "description": "Unique identifier of an album this message belongs to. Only audios, documents, photos and videos can be grouped together in albums",
+                    "description": "Unique identifier of an album this message belongs to; 0 if none. Only audios, documents, photos and videos can be grouped together in albums",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -13405,6 +13566,17 @@
                 }
             },
             "type": "QuickReplyMessage"
+        },
+        "quickReplyMessages": {
+            "description": "Contains a list of quick reply messages",
+            "args": {
+                "messages": {
+                    "description": "List of quick reply messages; messages may be null",
+                    "is_optional": false,
+                    "type": "vector<quickReplyMessage>"
+                }
+            },
+            "type": "QuickReplyMessages"
         },
         "quickReplyShortcut": {
             "description": "Describes a shortcut that can be used for a quick reply",
@@ -13542,6 +13714,11 @@
                     "description": "True, if speech recognition can be used for video note and voice note messages by all users",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "can_disable_sponsored_messages": {
+                    "description": "True, if sponsored messages can be disabled in the chat",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "ChatBoostLevelFeatures"
@@ -13586,6 +13763,11 @@
                 },
                 "min_speech_recognition_boost_level": {
                     "description": "The minimum boost level allowing to recognize speech in video note and voice note messages for non-Premium users; for supergroup chats only",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "min_sponsored_message_disable_boost_level": {
+                    "description": "The minimum boost level allowing to disable sponsored messages in the chat; for channel chats only",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -14025,6 +14207,11 @@
                     "description": "True, if peer-to-peer connection is allowed by users privacy settings",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "custom_parameters": {
+                    "description": "Custom JSON-encoded call parameters to be passed to tgcalls",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "CallState"
@@ -17243,8 +17430,8 @@
             "args": {},
             "type": "BusinessFeature"
         },
-        "businessFeatureIntro": {
-            "description": "The ability to customize intro",
+        "businessFeatureStartPage": {
+            "description": "The ability to customize start page",
             "args": {},
             "type": "BusinessFeature"
         },
@@ -19719,6 +19906,17 @@
             },
             "type": "InternalLinkType"
         },
+        "internalLinkTypeBusinessChat": {
+            "description": "The link is a link to a business chat. Use getBusinessChatLinkInfo with the provided link name to get information about the link, then open received private chat and replace chat draft with the provided text",
+            "args": {
+                "link_name": {
+                    "description": "Name of the link",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeChangePhoneNumber": {
             "description": "The link is a link to the change phone number section of the app",
             "args": {},
@@ -19890,7 +20088,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePhoneNumberConfirmation": {
-            "description": "The link can be used to confirm ownership of a phone number to prevent account deletion. Call sendPhoneNumberConfirmationCode with the given hash and phone number to process the link. If succeeded, call checkPhoneNumberConfirmationCode to check entered by the user code, or resendPhoneNumberConfirmationCode to resend it",
+            "description": "The link can be used to confirm ownership of a phone number to prevent account deletion. Call sendPhoneNumberCode with the given phone number and with phoneNumberCodeTypeConfirmOwnership with the given hash to process the link. If succeeded, call checkPhoneNumberCode to check entered by the user code, or resendPhoneNumberCode to resend it",
             "args": {
                 "hash": {
                     "description": "Hash value from the link",
@@ -19965,10 +20163,15 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePublicChat": {
-            "description": "The link is a link to a chat by its username. Call searchPublicChat with the given chat username to process the link If the chat is found, open its profile information screen or the chat itself",
+            "description": "The link is a link to a chat by its username. Call searchPublicChat with the given chat username to process the link If the chat is found, open its profile information screen or the chat itself. If draft text isn't empty and the chat is a private chat, then put the draft text in the input field",
             "args": {
                 "chat_username": {
                     "description": "Username of the chat",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "draft_text": {
+                    "description": "Draft text for message to send in the chat",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -20071,10 +20274,15 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeUserPhoneNumber": {
-            "description": "The link is a link to a user by its phone number. Call searchUserByPhoneNumber with the given phone number to process the link. If the user is found, then call createPrivateChat and open the chat",
+            "description": "The link is a link to a user by its phone number. Call searchUserByPhoneNumber with the given phone number to process the link. If the user is found, then call createPrivateChat and open the chat. If draft text isn't empty, then put the draft text in the input field",
             "args": {
                 "phone_number": {
                     "description": "Phone number of the user",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "draft_text": {
+                    "description": "Draft text for message to send in the chat",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -21513,6 +21721,47 @@
             },
             "type": "ChatStatistics"
         },
+        "chatRevenueStatistics": {
+            "description": "A detailed statistics about revenue earned from sponsored messages in a chat",
+            "args": {
+                "revenue_by_hour_graph": {
+                    "description": "A graph containing amount of revenue in a given hour",
+                    "is_optional": false,
+                    "type": "StatisticalGraph"
+                },
+                "revenue_graph": {
+                    "description": "A graph containing amount of revenue",
+                    "is_optional": false,
+                    "type": "StatisticalGraph"
+                },
+                "cryptocurrency": {
+                    "description": "Cryptocurrency in which revenue is calculated",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "cryptocurrency_total_amount": {
+                    "description": "Total amount of the cryptocurrency earned, in the smallest units of the cryptocurrency",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "cryptocurrency_balance_amount": {
+                    "description": "Amount of the cryptocurrency that isn't withdrawn yet, in the smallest units of the cryptocurrency",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "cryptocurrency_available_amount": {
+                    "description": "Amount of the cryptocurrency available for withdrawal, in the smallest units of the cryptocurrency",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "usd_rate": {
+                    "description": "Current conversion rate of the cryptocurrency to USD",
+                    "is_optional": false,
+                    "type": "double"
+                }
+            },
+            "type": "ChatRevenueStatistics"
+        },
         "messageStatistics": {
             "description": "A detailed statistics about a message",
             "args": {
@@ -21544,6 +21793,122 @@
                 }
             },
             "type": "StoryStatistics"
+        },
+        "chatRevenueWithdrawalStatePending": {
+            "description": "Withdrawal is pending",
+            "args": {},
+            "type": "ChatRevenueWithdrawalState"
+        },
+        "chatRevenueWithdrawalStateCompleted": {
+            "description": "Withdrawal was completed",
+            "args": {
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the withdrawal was completed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "url": {
+                    "description": "The URL where the withdrawal transaction can be viewed",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "ChatRevenueWithdrawalState"
+        },
+        "chatRevenueWithdrawalStateFailed": {
+            "description": "Withdrawal has_failed",
+            "args": {},
+            "type": "ChatRevenueWithdrawalState"
+        },
+        "chatRevenueTransactionTypeEarnings": {
+            "description": "Describes earnings from sponsored messages in a chat in some time frame",
+            "args": {
+                "start_date": {
+                    "description": "Point in time (Unix timestamp) when the earnings started",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "end_date": {
+                    "description": "Point in time (Unix timestamp) when the earnings ended",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChatRevenueTransactionType"
+        },
+        "chatRevenueTransactionTypeWithdrawal": {
+            "description": "Describes a withdrawal of earnings",
+            "args": {
+                "withdrawal_date": {
+                    "description": "Point in time (Unix timestamp) when the earnings withdrawal started",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "provider": {
+                    "description": "Name of the payment provider",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "state": {
+                    "description": "State of the withdrawal",
+                    "is_optional": false,
+                    "type": "ChatRevenueWithdrawalState"
+                }
+            },
+            "type": "ChatRevenueTransactionType"
+        },
+        "chatRevenueTransactionTypeRefund": {
+            "description": "Describes a refund for failed withdrawal of earnings",
+            "args": {
+                "refund_date": {
+                    "description": "Point in time (Unix timestamp) when the transaction was refunded",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "provider": {
+                    "description": "Name of the payment provider",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "ChatRevenueTransactionType"
+        },
+        "chatRevenueTransaction": {
+            "description": "Contains a chat revenue transactions",
+            "args": {
+                "cryptocurrency": {
+                    "description": "Cryptocurrency in which revenue is calculated",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "cryptocurrency_amount": {
+                    "description": "The withdrawn amount, in the smallest units of the cryptocurrency",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "type": {
+                    "description": "Type of the transaction",
+                    "is_optional": false,
+                    "type": "ChatRevenueTransactionType"
+                }
+            },
+            "type": "ChatRevenueTransaction"
+        },
+        "chatRevenueTransactions": {
+            "description": "Contains a list of chat revenue transactions",
+            "args": {
+                "total_count": {
+                    "description": "Total number of transactions",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "transactions": {
+                    "description": "List of transactions",
+                    "is_optional": false,
+                    "type": "vector<chatRevenueTransaction>"
+                }
+            },
+            "type": "ChatRevenueTransactions"
         },
         "point": {
             "description": "A point on a Cartesian plane",
@@ -21650,6 +22015,27 @@
                 }
             },
             "type": "BotCommandScope"
+        },
+        "phoneNumberCodeTypeChange": {
+            "description": "Checks ownership of a new phone number to change the user's authentication phone number; for official Android and iOS applications only.",
+            "args": {},
+            "type": "PhoneNumberCodeType"
+        },
+        "phoneNumberCodeTypeVerify": {
+            "description": "Verifies ownership of a phone number to be added to the user's Telegram Passport",
+            "args": {},
+            "type": "PhoneNumberCodeType"
+        },
+        "phoneNumberCodeTypeConfirmOwnership": {
+            "description": "Confirms ownership of a phone number to prevent account deletion while handling links of the type internalLinkTypePhoneNumberConfirmation",
+            "args": {
+                "hash": {
+                    "description": "Hash value from the link",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "PhoneNumberCodeType"
         },
         "logStreamDefault": {
             "description": "The log is written to stderr or an OS specific log",
@@ -22255,6 +22641,22 @@
                     "description": "The new value of the action bar; may be null",
                     "is_optional": true,
                     "type": "ChatActionBar"
+                }
+            },
+            "type": "Update"
+        },
+        "updateChatBusinessBotManageBar": {
+            "description": "The bar for managing business bot was changed in a chat",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "business_bot_manage_bar": {
+                    "description": "The new value of the business bot manage bar; may be null",
+                    "is_optional": true,
+                    "type": "businessBotManageBar"
                 }
             },
             "type": "Update"
@@ -23737,6 +24139,17 @@
             },
             "type": "Update"
         },
+        "updateSpeedLimitNotification": {
+            "description": "Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium. The notification can be postponed until a being downloaded or uploaded file is visible to the user Use getOption(\"premium_download_speedup\") or getOption(\"premium_upload_speedup\") to get expected speedup after subscription to Telegram Premium",
+            "args": {
+                "is_upload": {
+                    "description": "True, if upload speed was limited; false, if download speed was limited",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Update"
+        },
         "updateContactCloseBirthdays": {
             "description": "The list of contacts that had birthdays recently or will have birthday soon has changed",
             "args": {
@@ -23744,22 +24157,6 @@
                     "description": "List of contact users with close birthday",
                     "is_optional": false,
                     "type": "vector<closeBirthdayUser>"
-                }
-            },
-            "type": "Update"
-        },
-        "updateAddChatMembersPrivacyForbidden": {
-            "description": "Adding users to a chat has failed because of their privacy settings. An invite link can be shared with the users if appropriate",
-            "args": {
-                "chat_id": {
-                    "description": "Chat identifier",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "user_ids": {
-                    "description": "Identifiers of users, which weren't added because of their privacy settings",
-                    "is_optional": false,
-                    "type": "vector<int53>"
                 }
             },
             "type": "Update"
@@ -25119,7 +25516,7 @@
             "type": "Count"
         },
         "openChatSimilarChat": {
-            "description": "Informs TDLib that a chat was opened from the list of similar chats. The method is independent from openChat and closeChat methods",
+            "description": "Informs TDLib that a chat was opened from the list of similar chats. The method is independent of openChat and closeChat methods",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the original chat, which similar chats were requested",
@@ -26843,6 +27240,95 @@
             },
             "type": "Ok"
         },
+        "addQuickReplyShortcutMessage": {
+            "description": "Adds a message to a quick reply shortcut. If shortcut doesn't exist and there are less than getOption(\"quick_reply_shortcut_count_max\") shortcuts, then a new shortcut is created. The shortcut must not contain more than getOption(\"quick_reply_shortcut_message_count_max\") messages after adding the new message. Returns the added message",
+            "args": {
+                "shortcut_name": {
+                    "description": "Name of the target shortcut",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "reply_to_message_id": {
+                    "description": "Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "input_message_content": {
+                    "description": "The content of the message to be added; inputMessagePoll, inputMessageForwarded and inputMessageLocation with live_period aren't supported",
+                    "is_optional": false,
+                    "type": "InputMessageContent"
+                }
+            },
+            "type": "QuickReplyMessage"
+        },
+        "addQuickReplyShortcutInlineQueryResultMessage": {
+            "description": "Adds a message to a quick reply shortcut via inline bot. If shortcut doesn't exist and there are less than getOption(\"quick_reply_shortcut_count_max\") shortcuts, then a new shortcut is created. The shortcut must not contain more than getOption(\"quick_reply_shortcut_message_count_max\") messages after adding the new message. Returns the added message",
+            "args": {
+                "shortcut_name": {
+                    "description": "Name of the target shortcut",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "reply_to_message_id": {
+                    "description": "Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "query_id": {
+                    "description": "Identifier of the inline query",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "result_id": {
+                    "description": "Identifier of the inline query result",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "hide_via_bot": {
+                    "description": "Pass true to hide the bot, via which the message is sent. Can be used only for bots getOption(\"animation_search_bot_username\"), getOption(\"photo_search_bot_username\"), and getOption(\"venue_search_bot_username\")",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "QuickReplyMessage"
+        },
+        "readdQuickReplyShortcutMessages": {
+            "description": "Readds quick reply messages which failed to add. Can be called only for messages for which messageSendingStateFailed.can_retry is true and after specified in messageSendingStateFailed.retry_after time passed. If a message is readded, the corresponding failed to send message is deleted. Returns the sent messages in the same order as the message identifiers passed in message_ids. If a message can't be readded, null will be returned instead of the message",
+            "args": {
+                "shortcut_name": {
+                    "description": "Name of the target shortcut",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "message_ids": {
+                    "description": "Identifiers of the quick reply messages to readd. Message identifiers must be in a strictly increasing order",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                }
+            },
+            "type": "QuickReplyMessages"
+        },
+        "editQuickReplyMessage": {
+            "description": "Asynchronously edits the text, media or caption of a quick reply message. Use quickReplyMessage.can_be_edited to check whether a message can be edited. Text message can be edited only to a text message. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa",
+            "args": {
+                "shortcut_id": {
+                    "description": "Unique identifier of the quick reply shortcut with the message",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "input_message_content": {
+                    "description": "New content of the message. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo",
+                    "is_optional": false,
+                    "type": "InputMessageContent"
+                }
+            },
+            "type": "Ok"
+        },
         "getForumTopicDefaultIcons": {
             "description": "Returns list of custom emojis, which can be used as forum topic icon by all users",
             "args": {},
@@ -28216,7 +28702,7 @@
             "type": "HttpUrl"
         },
         "getInternalLinkType": {
-            "description": "Returns information about the type of an internal link. Returns a 404 error if the link is not internal. Can be called before authorization",
+            "description": "Returns information about the type of internal link. Returns a 404 error if the link is not internal. Can be called before authorization",
             "args": {
                 "link": {
                     "description": "The link",
@@ -28367,7 +28853,7 @@
             "type": "Chat"
         },
         "createNewBasicGroupChat": {
-            "description": "Creates a new basic group and sends a corresponding messageBasicGroupChatCreate. Returns the newly created chat",
+            "description": "Creates a new basic group and sends a corresponding messageBasicGroupChatCreate. Returns information about the newly created chat",
             "args": {
                 "user_ids": {
                     "description": "Identifiers of users to be added to the basic group; may be empty to create a basic group without other members",
@@ -28385,7 +28871,7 @@
                     "type": "int32"
                 }
             },
-            "type": "Chat"
+            "type": "CreatedBasicGroupChat"
         },
         "createNewSupergroupChat": {
             "description": "Creates a new supergroup or channel and sends a corresponding messageSupergroupChatCreate. Returns the newly created chat",
@@ -29241,7 +29727,7 @@
             "type": "Ok"
         },
         "addChatMember": {
-            "description": "Adds a new member to a chat; requires can_invite_users member right. Members can't be added to private or secret chats",
+            "description": "Adds a new member to a chat; requires can_invite_users member right. Members can't be added to private or secret chats. Returns information about members that weren't added",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -29259,10 +29745,10 @@
                     "type": "int32"
                 }
             },
-            "type": "Ok"
+            "type": "FailedToAddMembers"
         },
         "addChatMembers": {
-            "description": "Adds multiple new members to a chat; requires can_invite_users member right. Currently, this method is only available for supergroups and channels. This method can't be used to join a chat. Members can't be added to a channel if it has more than 200 members",
+            "description": "Adds multiple new members to a chat; requires can_invite_users member right. Currently, this method is only available for supergroups and channels. This method can't be used to join a chat. Members can't be added to a channel if it has more than 200 members. Returns information about members that weren't added",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -29275,7 +29761,7 @@
                     "type": "vector<int53>"
                 }
             },
-            "type": "Ok"
+            "type": "FailedToAddMembers"
         },
         "setChatMemberStatus": {
             "description": "Changes the status of a chat member; requires can_invite_users member right to add a chat member, can_promote_members administrator right to change administrator rights of the member, and can_restrict_members administrator right to change restrictions of a user. This function is currently not suitable for transferring chat ownership; use transferChatOwnership instead. Use addChatMember or banChatMember if some additional parameters needs to be passed",
@@ -30025,7 +30511,7 @@
             "type": "ChatBoostLevelFeatures"
         },
         "getChatBoostFeatures": {
-            "description": "Returns list of features available on the first 10 chat boost levels; this is an offline request",
+            "description": "Returns list of features available for different chat boost levels; this is an offline request",
             "args": {
                 "is_channel": {
                     "description": "Pass true to get the list of features for channels; pass false to get the list of features for supergroups",
@@ -30400,7 +30886,7 @@
             "type": "Ok"
         },
         "addFileToDownloads": {
-            "description": "Adds a file from a message to the list of file downloads. Download progress and completion of the download will be notified through updateFile updates. If message database is used, the list of file downloads is persistent across application restarts. The downloading is independent from download using downloadFile, i.e. it continues if downloadFile is canceled or is used to download a part of the file",
+            "description": "Adds a file from a message to the list of file downloads. Download progress and completion of the download will be notified through updateFile updates. If message database is used, the list of file downloads is persistent across application restarts. The downloading is independent of download using downloadFile, i.e. it continues if downloadFile is canceled or is used to download a part of the file",
             "args": {
                 "file_id": {
                     "description": "Identifier of the file to download",
@@ -31832,6 +32318,11 @@
             },
             "type": "Stickers"
         },
+        "getGreetingStickers": {
+            "description": "Returns greeting stickers from regular sticker sets that can be used for the start page of other users",
+            "args": {},
+            "type": "Stickers"
+        },
         "getPremiumStickers": {
             "description": "Returns premium stickers from regular sticker sets",
             "args": {
@@ -32500,22 +32991,22 @@
             },
             "type": "Ok"
         },
-        "setBusinessIntro": {
-            "description": "Changes the business intro of the current user. Requires Telegram Business subscription",
+        "setBusinessStartPage": {
+            "description": "Changes the business start page of the current user. Requires Telegram Business subscription",
             "args": {
-                "intro": {
-                    "description": "The new intro of the business; pass null to remove the intro",
+                "start_page": {
+                    "description": "The new start page of the business; pass null to remove custom start page",
                     "is_optional": true,
-                    "type": "inputBusinessIntro"
+                    "type": "inputBusinessStartPage"
                 }
             },
             "type": "Ok"
         },
-        "changePhoneNumber": {
-            "description": "Changes the phone number of the user and sends an authentication code to the user's new phone number; for official Android and iOS applications only. On success, returns information about the sent code",
+        "sendPhoneNumberCode": {
+            "description": "Sends a code to the specified phone number. Aborts previous phone number verification if there was one. On success, returns information about the sent code",
             "args": {
                 "phone_number": {
-                    "description": "The new phone number of the user in international format",
+                    "description": "The phone number, in international format",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -32523,17 +33014,33 @@
                     "description": "Settings for the authentication of the user's phone number; pass null to use default settings",
                     "is_optional": true,
                     "type": "phoneNumberAuthenticationSettings"
+                },
+                "type": {
+                    "description": "Type of the request for which the code is sent",
+                    "is_optional": false,
+                    "type": "PhoneNumberCodeType"
                 }
             },
             "type": "AuthenticationCodeInfo"
         },
-        "resendChangePhoneNumberCode": {
-            "description": "Resends the authentication code sent to confirm a new phone number for the current user. Works only if the previously received authenticationCodeInfo next_code_type was not null and the server-specified timeout has passed",
+        "sendPhoneNumberFirebaseSms": {
+            "description": "Sends Firebase Authentication SMS to the specified phone number. Works only when received a code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos",
+            "args": {
+                "token": {
+                    "description": "SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "resendPhoneNumberCode": {
+            "description": "Resends the authentication code sent to a phone number. Works only if the previously received authenticationCodeInfo next_code_type was not null and the server-specified timeout has passed",
             "args": {},
             "type": "AuthenticationCodeInfo"
         },
-        "checkChangePhoneNumberCode": {
-            "description": "Checks the authentication code sent to confirm a new phone number of the user",
+        "checkPhoneNumberCode": {
+            "description": "Check the authentication code and completes the request for which the code was sent if appropriate",
             "args": {
                 "code": {
                     "description": "Authentication code to check",
@@ -32569,6 +33076,87 @@
                 }
             },
             "type": "Ok"
+        },
+        "toggleBusinessConnectedBotChatIsPaused": {
+            "description": "Pauses or resumes the connected business bot in a specific chat",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_paused": {
+                    "description": "Pass true to pause the connected bot in the chat; pass false to resume the bot",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "removeBusinessConnectedBotFromChat": {
+            "description": "Removes the connected business bot from a specific chat by adding the chat to businessRecipients.excluded_chat_ids",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "getBusinessChatLinks": {
+            "description": "Returns business chat links created for the current account",
+            "args": {},
+            "type": "BusinessChatLinks"
+        },
+        "createBusinessChatLink": {
+            "description": "Creates a business chat link for the current account. Requires Telegram Business subscription. There can be up to getOption(\"business_chat_link_count_max\") links created. Returns the created link",
+            "args": {
+                "link_info": {
+                    "description": "Information about the link to create",
+                    "is_optional": false,
+                    "type": "inputBusinessChatLink"
+                }
+            },
+            "type": "BusinessChatLink"
+        },
+        "editBusinessChatLink": {
+            "description": "Edits a business chat link of the current account. Requires Telegram Business subscription. Returns the edited link",
+            "args": {
+                "link": {
+                    "description": "The link to edit",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "link_info": {
+                    "description": "New description of the link",
+                    "is_optional": false,
+                    "type": "inputBusinessChatLink"
+                }
+            },
+            "type": "BusinessChatLink"
+        },
+        "deleteBusinessChatLink": {
+            "description": "Deletes a business chat link of the current account",
+            "args": {
+                "link": {
+                    "description": "The link to delete",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "getBusinessChatLinkInfo": {
+            "description": "Returns information about a business chat link",
+            "args": {
+                "link_name": {
+                    "description": "Name of the link",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "BusinessChatLinkInfo"
         },
         "getUserLink": {
             "description": "Returns an HTTPS link, which can be used to get information about the current user",
@@ -33167,6 +33755,22 @@
             },
             "type": "Ok"
         },
+        "toggleSupergroupCanHaveSponsoredMessages": {
+            "description": "Toggles whether sponsored messages are shown in the channel chat; requires owner privileges in the channel. The chat must have at least chatBoostFeatures.min_sponsored_message_disable_boost_level boost level to disable sponsored messages",
+            "args": {
+                "supergroup_id": {
+                    "description": "The identifier of the channel",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "can_have_sponsored_messages": {
+                    "description": "The new value of can_have_sponsored_messages",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
         "toggleSupergroupHasHiddenMembers": {
             "description": "Toggles whether non-administrators can receive only administrators and bots using getSupergroupMembers or searchChatMembers. Can be called only if supergroupFullInfo.can_hide_members == true",
             "args": {
@@ -33277,7 +33881,7 @@
                     "type": "int32"
                 },
                 "limit": {
-                    "description": "The maximum number of users be returned; up to 200",
+                    "description": "The maximum number of users to be returned; up to 200",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -33939,6 +34543,59 @@
             },
             "type": "Ok"
         },
+        "getChatRevenueStatistics": {
+            "description": "Returns detailed revenue statistics about a chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_dark": {
+                    "description": "Pass true if a dark theme is used by the application",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ChatRevenueStatistics"
+        },
+        "getChatRevenueWithdrawalUrl": {
+            "description": "Returns URL for chat revenue withdrawal; requires owner privileges in the chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true and getOption(\"can_withdraw_chat_revenue\")",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "password": {
+                    "description": "The 2-step verification password of the current user",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "HttpUrl"
+        },
+        "getChatRevenueTransactions": {
+            "description": "Returns list of revenue transactions for a chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset": {
+                    "description": "Number of transactions to skip",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "limit": {
+                    "description": "The maximum number of transactions to be returned; up to 200",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChatRevenueTransactions"
+        },
         "getChatStatistics": {
             "description": "Returns detailed statistics about a chat. Currently, this method can be used only for supergroups and channels. Can be used only if supergroupFullInfo.can_get_statistics == true",
             "args": {
@@ -34293,38 +34950,6 @@
             },
             "type": "Text"
         },
-        "sendPhoneNumberVerificationCode": {
-            "description": "Sends a code to verify a phone number to be added to a user's Telegram Passport",
-            "args": {
-                "phone_number": {
-                    "description": "The phone number of the user, in international format",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "settings": {
-                    "description": "Settings for the authentication of the user's phone number; pass null to use default settings",
-                    "is_optional": true,
-                    "type": "phoneNumberAuthenticationSettings"
-                }
-            },
-            "type": "AuthenticationCodeInfo"
-        },
-        "resendPhoneNumberVerificationCode": {
-            "description": "Resends the code to verify a phone number to be added to a user's Telegram Passport",
-            "args": {},
-            "type": "AuthenticationCodeInfo"
-        },
-        "checkPhoneNumberVerificationCode": {
-            "description": "Checks the phone number verification code for Telegram Passport",
-            "args": {
-                "code": {
-                    "description": "Verification code to check",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "Ok"
-        },
         "sendEmailAddressVerificationCode": {
             "description": "Sends a code to verify an email address to be added to a user's Telegram Passport",
             "args": {
@@ -34406,43 +35031,6 @@
                     "description": "Types of Telegram Passport elements chosen by user to complete the authorization form",
                     "is_optional": false,
                     "type": "vector<PassportElementType>"
-                }
-            },
-            "type": "Ok"
-        },
-        "sendPhoneNumberConfirmationCode": {
-            "description": "Sends phone number confirmation code to handle links of the type internalLinkTypePhoneNumberConfirmation",
-            "args": {
-                "hash": {
-                    "description": "Hash value from the link",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "phone_number": {
-                    "description": "Phone number value from the link",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "settings": {
-                    "description": "Settings for the authentication of the user's phone number; pass null to use default settings",
-                    "is_optional": true,
-                    "type": "phoneNumberAuthenticationSettings"
-                }
-            },
-            "type": "AuthenticationCodeInfo"
-        },
-        "resendPhoneNumberConfirmationCode": {
-            "description": "Resends phone number confirmation code",
-            "args": {},
-            "type": "AuthenticationCodeInfo"
-        },
-        "checkPhoneNumberConfirmationCode": {
-            "description": "Checks phone number confirmation code",
-            "args": {
-                "code": {
-                    "description": "Confirmation code to check",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "Ok"
