@@ -164,7 +164,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def checkAuthenticationEmailCode(self, code: dict) -> Result:
-        """Checks the authentication of a email address\. Works only when the current authorization state is authorizationStateWaitEmailCode
+        """Checks the authentication of an email address\. Works only when the current authorization state is authorizationStateWaitEmailCode
 
         Args:
             code (``EmailAddressAuthentication``):
@@ -365,6 +365,25 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def reportAuthenticationCodeMissing(self, mobile_network_code: str) -> Result:
+        """Reports that authentication code wasn't delivered via SMS; for official mobile apps only\. Works only when the current authorization state is authorizationStateWaitCode
+
+        Args:
+            mobile_network_code (``str``):
+                Current mobile network code
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "reportAuthenticationCodeMissing",
+            "mobile_network_code": mobile_network_code,
+        }
+
+        return await self.invoke(data)
+
     async def checkAuthenticationBotToken(self, token: str) -> Result:
         """Checks the authentication token of a bot; to log in as a bot\. Works only when the current authorization state is authorizationStateWaitPhoneNumber\. Can be used instead of setAuthenticationPhoneNumber and checkAuthenticationCode to log in
 
@@ -535,7 +554,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setLoginEmailAddress(self, new_login_email_address: str) -> Result:
-        """Changes the login email address of the user\. The email address can be changed only if the current user already has login email and passwordState\.login\_email\_address\_pattern is non\-empty\. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode\. To use Apple ID/Google ID instead of a email address, call checkLoginEmailAddressCode directly
+        """Changes the login email address of the user\. The email address can be changed only if the current user already has login email and passwordState\.login\_email\_address\_pattern is non\-empty\. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode\. To use Apple ID/Google ID instead of an email address, call checkLoginEmailAddressCode directly
 
         Args:
             new_login_email_address (``str``):
@@ -1372,6 +1391,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getRecommendedChats(self) -> Result:
+        """Returns a list of channel chats recommended to the current user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Chats``)
+        """
+
+        data = {
+            "@type": "getRecommendedChats",
+        }
+
+        return await self.invoke(data)
+
     async def getChatSimilarChats(self, chat_id: int) -> Result:
         """Returns a list of chats similar to the given chat
 
@@ -2082,6 +2115,7 @@ class TDLibFunctions:
 
     async def searchMessages(
         self,
+        only_in_channels: bool,
         query: str,
         offset: str,
         limit: int,
@@ -2093,6 +2127,9 @@ class TDLibFunctions:
         """Searches for messages in all chats except secret chats\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing \(date, chat\_id, message\_id\)\)\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Args:
+            only_in_channels (``bool``):
+                Pass true to search only for messages in channels
+
             query (``str``):
                 Query to search for
 
@@ -2122,6 +2159,7 @@ class TDLibFunctions:
         data = {
             "@type": "searchMessages",
             "chat_list": chat_list,
+            "only_in_channels": only_in_channels,
             "query": query,
             "offset": offset,
             "limit": limit,
@@ -2842,7 +2880,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatAvailableMessageSenders(self, chat_id: int) -> Result:
-        """Returns list of message sender identifiers, which can be used to send messages in a chat
+        """Returns the list of message sender identifiers, which can be used to send messages in a chat
 
         Args:
             chat_id (``int``):
@@ -3333,6 +3371,7 @@ class TDLibFunctions:
         self,
         chat_id: int,
         message_id: int,
+        live_period: int,
         heading: int,
         proximity_alert_radius: int,
         reply_markup: dict = None,
@@ -3346,6 +3385,9 @@ class TDLibFunctions:
 
             message_id (``int``):
                 Identifier of the message
+
+            live_period (``int``):
+                New time relative to the message send date, for which the location can be updated, in seconds\. If 0x7FFFFFFF specified, then the location can be updated forever\. Otherwise, must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days\. Pass 0 to keep the current live\_period
 
             heading (``int``):
                 The new direction in which the location moves, in degrees; 1\-360\. Pass 0 if unknown
@@ -3370,6 +3412,7 @@ class TDLibFunctions:
             "message_id": message_id,
             "reply_markup": reply_markup,
             "location": location,
+            "live_period": live_period,
             "heading": heading,
             "proximity_alert_radius": proximity_alert_radius,
         }
@@ -3514,6 +3557,7 @@ class TDLibFunctions:
     async def editInlineMessageLiveLocation(
         self,
         inline_message_id: str,
+        live_period: int,
         heading: int,
         proximity_alert_radius: int,
         reply_markup: dict = None,
@@ -3524,6 +3568,9 @@ class TDLibFunctions:
         Args:
             inline_message_id (``str``):
                 Inline message identifier
+
+            live_period (``int``):
+                New time relative to the message send date, for which the location can be updated, in seconds\. If 0x7FFFFFFF specified, then the location can be updated forever\. Otherwise, must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days\. Pass 0 to keep the current live\_period
 
             heading (``int``):
                 The new direction in which the location moves, in degrees; 1\-360\. Pass 0 if unknown
@@ -3547,6 +3594,7 @@ class TDLibFunctions:
             "inline_message_id": inline_message_id,
             "reply_markup": reply_markup,
             "location": location,
+            "live_period": live_period,
             "heading": heading,
             "proximity_alert_radius": proximity_alert_radius,
         }
@@ -3976,6 +4024,35 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def addQuickReplyShortcutMessageAlbum(
+        self, shortcut_name: str, reply_to_message_id: int, input_message_contents: list
+    ) -> Result:
+        """Adds 2\-10 messages grouped together into an album to a quick reply shortcut\. Currently, only audio, document, photo and video messages can be grouped into an album\. Documents and audio files can be only grouped in an album with messages of the same type\. Returns sent messages
+
+        Args:
+            shortcut_name (``str``):
+                Name of the target shortcut
+
+            reply_to_message_id (``int``):
+                Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none
+
+            input_message_contents (``list``):
+                Contents of messages to be sent\. At most 10 messages can be added to an album
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``QuickReplyMessages``)
+        """
+
+        data = {
+            "@type": "addQuickReplyShortcutMessageAlbum",
+            "shortcut_name": shortcut_name,
+            "reply_to_message_id": reply_to_message_id,
+            "input_message_contents": input_message_contents,
+        }
+
+        return await self.invoke(data)
+
     async def readdQuickReplyShortcutMessages(
         self, shortcut_name: str, message_ids: list
     ) -> Result:
@@ -4031,7 +4108,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getForumTopicDefaultIcons(self) -> Result:
-        """Returns list of custom emojis, which can be used as forum topic icon by all users
+        """Returns the list of custom emojis, which can be used as forum topic icon by all users
 
 
         Returns:
@@ -5036,6 +5113,20 @@ class TDLibFunctions:
         data = {
             "@type": "hideSuggestedAction",
             "action": action,
+        }
+
+        return await self.invoke(data)
+
+    async def hideContactCloseBirthdays(self) -> Result:
+        """Hides the list of contacts that have close birthdays for 24 hours
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "hideContactCloseBirthdays",
         }
 
         return await self.invoke(data)
@@ -7846,7 +7937,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getSavedNotificationSounds(self) -> Result:
-        """Returns list of saved notification sounds\. If a sound isn't in the list, then default sound needs to be used
+        """Returns the list of saved notification sounds\. If a sound isn't in the list, then default sound needs to be used
 
 
         Returns:
@@ -7900,7 +7991,7 @@ class TDLibFunctions:
     async def getChatNotificationSettingsExceptions(
         self, compare_sound: bool, scope: dict = None
     ) -> Result:
-        """Returns list of chats with non\-default notification settings for new messages
+        """Returns the list of chats with non\-default notification settings for new messages
 
         Args:
             compare_sound (``bool``):
@@ -7966,8 +8057,29 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def setReactionNotificationSettings(
+        self, notification_settings: dict
+    ) -> Result:
+        """Changes notification settings for reactions
+
+        Args:
+            notification_settings (``reactionNotificationSettings``):
+                The new notification settings for reactions
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setReactionNotificationSettings",
+            "notification_settings": notification_settings,
+        }
+
+        return await self.invoke(data)
+
     async def resetAllNotificationSettings(self) -> Result:
-        """Resets all notification settings to their default values\. By default, all chats are unmuted and message previews are shown
+        """Resets all chat and scope notification settings to their default values\. By default, all chats are unmuted and message previews are shown
 
 
         Returns:
@@ -8120,7 +8232,7 @@ class TDLibFunctions:
         privacy_settings: dict,
         active_period: int,
         from_story_full_id: dict,
-        is_pinned: bool,
+        is_posted_to_chat_page: bool,
         protect_content: bool,
         areas: dict = None,
         caption: dict = None,
@@ -8143,7 +8255,7 @@ class TDLibFunctions:
             from_story_full_id (``storyFullId``):
                 Full identifier of the original story, which content was used to create the story
 
-            is_pinned (``bool``):
+            is_posted_to_chat_page (``bool``):
                 Pass true to keep the story accessible after expiration
 
             protect_content (``bool``):
@@ -8169,7 +8281,7 @@ class TDLibFunctions:
             "privacy_settings": privacy_settings,
             "active_period": active_period,
             "from_story_full_id": from_story_full_id,
-            "is_pinned": is_pinned,
+            "is_posted_to_chat_page": is_posted_to_chat_page,
             "protect_content": protect_content,
         }
 
@@ -8242,10 +8354,10 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def toggleStoryIsPinned(
-        self, story_sender_chat_id: int, story_id: int, is_pinned: bool
+    async def toggleStoryIsPostedToChatPage(
+        self, story_sender_chat_id: int, story_id: int, is_posted_to_chat_page: bool
     ) -> Result:
-        """Toggles whether a story is accessible after expiration\. Can be called only if story\.can\_toggle\_is\_pinned \=\= true
+        """Toggles whether a story is accessible after expiration\. Can be called only if story\.can\_toggle\_is\_posted\_to\_chat\_page \=\= true
 
         Args:
             story_sender_chat_id (``int``):
@@ -8254,7 +8366,7 @@ class TDLibFunctions:
             story_id (``int``):
                 Identifier of the story
 
-            is_pinned (``bool``):
+            is_posted_to_chat_page (``bool``):
                 Pass true to make the story accessible after expiration; pass false to make it private
 
 
@@ -8263,10 +8375,10 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "toggleStoryIsPinned",
+            "@type": "toggleStoryIsPostedToChatPage",
             "story_sender_chat_id": story_sender_chat_id,
             "story_id": story_id,
-            "is_pinned": is_pinned,
+            "is_posted_to_chat_page": is_posted_to_chat_page,
         }
 
         return await self.invoke(data)
@@ -8295,7 +8407,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getStoryNotificationSettingsExceptions(self) -> Result:
-        """Returns list of chats with non\-default notification settings for stories
+        """Returns the list of chats with non\-default notification settings for stories
 
 
         Returns:
@@ -8369,17 +8481,17 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getChatPinnedStories(
+    async def getChatPostedToChatPageStories(
         self, chat_id: int, from_story_id: int, limit: int
     ) -> Result:
-        """Returns the list of pinned stories posted by the given chat\. The stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        """Returns the list of stories that posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Args:
             chat_id (``int``):
                 Chat identifier
 
             from_story_id (``int``):
-                Identifier of the story starting from which stories must be returned; use 0 to get results from the last story
+                Identifier of the story starting from which stories must be returned; use 0 to get results from pinned and the newest story
 
             limit (``int``):
                 The maximum number of stories to be returned For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
@@ -8390,7 +8502,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "getChatPinnedStories",
+            "@type": "getChatPostedToChatPageStories",
             "chat_id": chat_id,
             "from_story_id": from_story_id,
             "limit": limit,
@@ -8423,6 +8535,29 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "from_story_id": from_story_id,
             "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def setChatPinnedStories(self, chat_id: int, story_ids: list) -> Result:
+        """Changes the list of pinned stories on a chat page; requires can\_edit\_stories right in the chat
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat that posted the stories
+
+            story_ids (``list``):
+                New list of pinned stories\. All stories must be posted to the chat page first\. There can be up to getOption\("pinned\_story\_count\_max"\) pinned stories on a chat page
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setChatPinnedStories",
+            "chat_id": chat_id,
+            "story_ids": story_ids,
         }
 
         return await self.invoke(data)
@@ -8709,7 +8844,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatBoostLevelFeatures(self, is_channel: bool, level: int) -> Result:
-        """Returns list of features available on the specific chat boost level; this is an offline request
+        """Returns the list of features available on the specific chat boost level; this is an offline request
 
         Args:
             is_channel (``bool``):
@@ -8732,7 +8867,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatBoostFeatures(self, is_channel: bool) -> Result:
-        """Returns list of features available for different chat boost levels; this is an offline request
+        """Returns the list of features available for different chat boost levels; this is an offline request
 
         Args:
             is_channel (``bool``):
@@ -8847,7 +8982,7 @@ class TDLibFunctions:
     async def getChatBoosts(
         self, chat_id: int, only_gift_codes: bool, offset: str, limit: int
     ) -> Result:
-        """Returns list of boosts applied to a chat; requires administrator rights in the chat
+        """Returns the list of boosts applied to a chat; requires administrator rights in the chat
 
         Args:
             chat_id (``int``):
@@ -8878,7 +9013,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getUserChatBoosts(self, chat_id: int, user_id: int) -> Result:
-        """Returns list of boosts applied to a chat by a given user; requires administrator rights in the chat; for bots only
+        """Returns the list of boosts applied to a chat by a given user; requires administrator rights in the chat; for bots only
 
         Args:
             chat_id (``int``):
@@ -9155,7 +9290,7 @@ class TDLibFunctions:
     async def preliminaryUploadFile(
         self, file: dict, priority: int, file_type: dict = None
     ) -> Result:
-        """Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes\. Updates updateFile will be used to notify about upload progress and successful completion of the upload\. The file will not have a persistent remote identifier until it is sent in a message
+        """Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes\. In all other cases there is no need to preliminary upload a file\. Updates updateFile will be used to notify about upload progress\. The upload will not be completed until the file is sent in a message
 
         Args:
             file (``InputFile``):
@@ -9699,7 +9834,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatInviteLinkCounts(self, chat_id: int) -> Result:
-        """Returns list of chat administrators with number of their invite links\. Requires owner privileges in the chat
+        """Returns the list of chat administrators with number of their invite links\. Requires owner privileges in the chat
 
         Args:
             chat_id (``int``):
@@ -10205,7 +10340,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getVideoChatAvailableParticipants(self, chat_id: int) -> Result:
-        """Returns list of participant identifiers, on whose behalf a video chat in the chat can be joined
+        """Returns the list of participant identifiers, on whose behalf a video chat in the chat can be joined
 
         Args:
             chat_id (``int``):
@@ -12002,7 +12137,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getCustomEmojiStickers(self, custom_emoji_ids: list) -> Result:
-        """Returns list of custom emoji stickers by their identifiers\. Stickers are returned in arbitrary order\. Only found stickers are returned
+        """Returns the list of custom emoji stickers by their identifiers\. Stickers are returned in arbitrary order\. Only found stickers are returned
 
         Args:
             custom_emoji_ids (``list``):
@@ -12489,6 +12624,27 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def toggleHasSponsoredMessagesEnabled(
+        self, has_sponsored_messages_enabled: bool
+    ) -> Result:
+        """Toggles whether the current user has sponsored messages enabled\. The setting has no effect for users without Telegram Premium for which sponsored messages are always enabled
+
+        Args:
+            has_sponsored_messages_enabled (``bool``):
+                Pass true to enable sponsored messages for the current user; false to disable them
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "toggleHasSponsoredMessagesEnabled",
+            "has_sponsored_messages_enabled": has_sponsored_messages_enabled,
+        }
+
+        return await self.invoke(data)
+
     async def setBusinessLocation(self, location: dict = None) -> Result:
         """Changes the business location of the current user\. Requires Telegram Business subscription
 
@@ -12632,6 +12788,25 @@ class TDLibFunctions:
         data = {
             "@type": "sendPhoneNumberFirebaseSms",
             "token": token,
+        }
+
+        return await self.invoke(data)
+
+    async def reportPhoneNumberCodeMissing(self, mobile_network_code: str) -> Result:
+        """Reports that authentication code wasn't delivered via SMS to the specified phone number; for official mobile apps only
+
+        Args:
+            mobile_network_code (``str``):
+                Current mobile network code
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "reportPhoneNumberCodeMissing",
+            "mobile_network_code": mobile_network_code,
         }
 
         return await self.invoke(data)
@@ -12945,7 +13120,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getCommands(self, language_code: str, scope: dict = None) -> Result:
-        """Returns list of commands supported by the bot for the given user scope and language; for bots only
+        """Returns the list of commands supported by the bot for the given user scope and language; for bots only
 
         Args:
             language_code (``str``):
@@ -14908,7 +15083,7 @@ class TDLibFunctions:
                 The reason why the account was deleted; optional
 
             password (``str``):
-                The 2\-step verification password of the current user\. If not specified, account deletion can be canceled within one week
+                The 2\-step verification password of the current user\. If the current user isn't authorized, then an empty string can be passed and account deletion can be canceled within one week
 
 
         Returns:
@@ -15121,7 +15296,7 @@ class TDLibFunctions:
     async def getChatRevenueTransactions(
         self, chat_id: int, offset: int, limit: int
     ) -> Result:
-        """Returns list of revenue transactions for a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+        """Returns the list of revenue transactions for a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
 
         Args:
             chat_id (``int``):
@@ -17034,7 +17209,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getProxies(self) -> Result:
-        """Returns list of proxies that are currently set up\. Can be called before authorization
+        """Returns the list of proxies that are currently set up\. Can be called before authorization
 
 
         Returns:
@@ -17152,7 +17327,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getLogTags(self) -> Result:
-        """Returns list of available TDLib internal log tags, for example, \["actor", "binlog", "connections", "notifications", "proxy"\]\. Can be called synchronously
+        """Returns the list of available TDLib internal log tags, for example, \["actor", "binlog", "connections", "notifications", "proxy"\]\. Can be called synchronously
 
 
         Returns:
