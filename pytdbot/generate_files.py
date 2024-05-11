@@ -1,62 +1,314 @@
-if __name__ == "__main__":
-    from json import loads
-    import utils
+import json
+import keyword
 
-    with open("td_api.json") as f:
-        data = loads(f.read())
+indent = "    "
 
-    def getP(params: dict):
-        nullable = []
-        non = []
-        for k, v in params.items():
-            name, _type = k, v["type"]
-            param = ""
 
-            if _type == "Bool":
-                param = f"{name}: bool"
-            elif _type.startswith("int"):
-                param = f"{name}: int"
-            elif _type == "bytes":
-                param = f"{name}: bytes"
-            elif _type.startswith("vector"):
-                param = f"{name}: list"
-            elif _type == "string":
-                param = f"{name}: str"
-            elif _type == "double":
-                param = f"{name}: float"
-            else:
-                param = f"{name}: dict"
+def escape_quotes(text: str):
+    return "".join(
+        "\\" + c if c in r"\_*[]()~`>#+-=|{}.!" else c for c in text
+    ).replace('"', '\\"')
 
-            if v["is_optional"]:
-                param += " = None"
-                nullable.append(param)
-            else:
-                non.append(param)
-        if non or nullable:
-            return ", ".join(non + nullable)
 
-    def getType(_type):
-        if _type == "Bool":
-            return "bool"
-        elif _type.startswith("int"):
-            return "int"
-        elif _type == "bytes":
-            return "bytes"
-        elif _type.startswith("vector"):
-            return "list"
-        elif _type == "string":
-            return "str"
-        elif _type == "double":
-            return "float"
+def to_camel_case(input_str: str, delimiter: str = ".", is_class: bool = True) -> str:
+    if not input_str:
+        return ""
+
+    parts = input_str.split(delimiter)
+    camel_case_str = ""
+
+    for i, part in enumerate(parts):
+        if i > 0:
+            camel_case_str += part[0].upper() + part[1:]
         else:
-            return _type
+            camel_case_str += part
 
-    updates_dec = """    def on_{update_name}(
+    if camel_case_str:
+        camel_case_str = (
+            camel_case_str[0].upper() if is_class else camel_case_str[0].lower()
+        ) + camel_case_str[1:]
+
+    return camel_case_str
+
+
+def getArgTypePython(type_name: str, is_function: bool = False):
+    if type_name == "double":
+        return "float"
+    elif type_name in {"string", "secureString"}:
+        return "str"
+    elif type_name in {"int32", "int53", "int64", "int256"}:
+        return "int"
+    elif type_name in {"bytes", "secureBytes"}:
+        return "bytes"
+    elif type_name == "Bool":
+        return "bool"
+    elif type_name in {"Object", "Function"}:
+        return "dict"
+    elif type_name == "#":
+        return "int"
+    elif "?" in type_name:
+        return getArgTypePython(type_name.split("?")[-1], is_function)
+    elif type_name.startswith("("):
+        type_name = type_name.removeprefix("(").removesuffix(")")
+        a, b = type_name.split(" ")
+        if a == "vector":
+            return f"List[{getArgTypePython(b, is_function)}]"
+        else:
+            raise Exception(f"Unknown data type {a}/{b}")
+    elif type_name.startswith("vector<"):
+        inner_type_start = type_name.find("<") + 1
+        inner_type_end = type_name.rfind(">")
+        inner_type = type_name[inner_type_start:inner_type_end]
+        return f"List[{getArgTypePython(inner_type, is_function)}]"
+    else:
+        return (
+            to_camel_case(type_name, is_class=True)
+            if not is_function
+            else '"types.' + to_camel_case(type_name, is_class=True) + '"'
+        )
+
+
+def generate_arg_value(arg_type, arg_name):
+    if arg_type == "int":
+        arg_value = f"int({arg_name})"
+    elif arg_type == "float":
+        arg_value = f"float({arg_name})"
+    elif arg_type == "bytes":
+        arg_value = f"b64decode({arg_name})"
+    elif arg_type == "bool":
+        arg_value = f"bool({arg_name})"
+    elif arg_type.startswith("List[") or arg_type == "list":
+        arg_value = f"{arg_name} or []"
+    else:
+        arg_value = arg_name
+
+    return arg_value
+
+
+def generate_arg_default(arg_type):
+    if arg_type == "int":
+        arg_value = "0"
+    elif arg_type == "str":
+        arg_value = '""'
+    elif arg_type == "float":
+        arg_value = "0.0"
+    elif arg_type == "bytes":
+        arg_value = 'b""'
+    elif arg_type == "bool":
+        arg_value = "False"
+    else:
+        arg_value = "None"
+
+    return arg_value
+
+
+def generate_args_def(args, is_function: bool = False):
+    args_list = ["self"]
+    for arg_name, arg_data in args.items():
+        if arg_name in keyword.kwlist:
+            arg_name += "_"
+
+        arg_type = getArgTypePython(arg_data["type"], is_function)
+
+        args_list.append(f"{arg_name}: {arg_type} = {generate_arg_default(arg_type)}")
+
+    return ", ".join(args_list)
+
+
+def generate_union_types(arg_type, arg_type_name, classes, noneable=True):
+    unions = [arg_type]
+
+    if (
+        arg_type_name in classes
+    ):  # The arg type is a class which has subclasses and we need to include them
+        unions.pop(0)
+
+        for type_name in classes[arg_type_name]["types"]:
+            unions.append(to_camel_case(type_name, is_class=True))
+
+    if noneable:
+        unions.append("None")
+
+    return f"Union[{', '.join(unions)}]"
+
+
+def generate_self_args(args, classes):
+    args_list = []
+    for arg_name, arg_data in args.items():
+        if arg_name in keyword.kwlist:
+            arg_name += "_"
+
+        arg_type = getArgTypePython(arg_data["type"])
+        arg_value = generate_arg_value(arg_type, arg_name)
+        if arg_value == arg_name:  # a.k.a field can be None
+            arg_type = generate_union_types(arg_type, arg_data["type"], classes)
+
+        args_list.append(
+            f"self.{arg_name}: {arg_type} = {arg_value}\n{indent * 2}\"\"\"{escape_quotes(arg_data['description'])}\"\"\""
+        )
+    return f"\n{indent * 2}".join(args_list)
+
+
+def generate_to_dict_return(args):
+    args_list = ['"@type": self.getType()']
+    for arg_name, _ in args.items():
+        if arg_name in keyword.kwlist:
+            arg_name += "_"
+        args_list.append(f'"{arg_name}": self.{arg_name}')
+
+    args_list.append('"@extra": self.extra_id')
+    return ", ".join(args_list)
+
+
+def generate_from_dict_kwargs(args):
+    args_list = []
+    for arg_name, arg_data in args.items():
+        if arg_name in keyword.kwlist:
+            arg_name += "_"
+
+        args_list.append(
+            f'{arg_name}=data.get("{arg_name}", {generate_arg_default(getArgTypePython(arg_data["type"]))})'
+        )
+    args_list.append('extra_id=data.get("@extra")')
+
+    return ", ".join(args_list)
+
+
+def generate_function_invoke_args(args):
+    args_list = []
+    for arg_name, _ in args.items():
+        if arg_name in keyword.kwlist:
+            arg_name += "_"
+        args_list.append(f'"{arg_name}": {arg_name}')
+
+    return ", ".join(args_list)
+
+
+def generate_function_docstring_args(function_data):
+    if not function_data["args"]:
+        return ""
+    args_list = []
+    for arg_name, arg_data in function_data["args"].items():
+        args_list.append(
+            f"{indent * 3}{arg_name} (:class:`{getArgTypePython(arg_data['type'], True)}`):\n{indent * 4 + escape_quotes(arg_data['description'])}"
+        )
+    return f"\n{indent * 2}Args:\n" + "\n\n".join(args_list) + "\n"
+
+
+class_template = """class {class_name}:
+    r\"\"\"{docstring}\"\"\"
+
+    pass"""
+
+
+def generate_classes(f, classes):
+    for class_name in classes.keys():
+        f.write(
+            class_template.format(
+                class_name=to_camel_case(class_name, is_class=True),
+                docstring=escape_quotes(classes[class_name]["description"]),
+            )
+            + "\n\n"
+        )
+
+
+types_template = """class {class_name}(TlObject{inherited_class}):
+    r\"\"\"{docstring}\"\"\"
+
+    def __init__({init_args}, extra_id: str = None) -> None:
+        {self_args}
+        self.extra_id: str = extra_id
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["{type_name}"]:
+        return "{type_name}"
+
+    def getClass(self) -> Literal["{class_type_name}"]:
+        return "{class_type_name}"
+
+    def to_dict(self) -> dict:
+        data = {{{to_dict_return}}}
+
+        if not self.extra_id:
+            del data['@extra']
+
+        return data
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["{class_name}", None]:
+        return cls({from_dict_kwargs}) if data else None"""
+
+
+def generate_types(f, types, updates, classes):
+    def gen(t):
+        for type_name, type_data in t.items():
+            args_def = generate_args_def(type_data["args"])
+            self_args = generate_self_args(type_data["args"], classes)
+            to_return_dict = generate_to_dict_return(type_data["args"])
+            from_dict_kwargs = generate_from_dict_kwargs(type_data["args"])
+
+            f.write(
+                types_template.format(
+                    class_name=to_camel_case(type_name, is_class=True),
+                    inherited_class=(
+                        ""
+                        if type_data["type"] not in classes
+                        else f", {to_camel_case(type_data['type'], is_class=True)}"
+                    ),
+                    class_type_name=type_data["type"],
+                    docstring=escape_quotes(type_data["description"]),
+                    init_args=args_def,
+                    self_args=self_args,
+                    type_name=type_name,
+                    to_dict_return=to_return_dict,
+                    from_dict_kwargs=from_dict_kwargs,
+                )
+                + "\n\n"
+            )
+
+    gen(types)
+    gen(updates)
+
+
+functions_template = """async def {function_name}({function_args}) -> Union["types.Error", "types.{return_type}"]:
+        r\"\"\"
+        {docstring}
+{docstring_args}
+        Returns:
+            :class:`~pytdbot.types.{return_type}`
+        \"\"\"
+
+        return await self.invoke({{'@type': '{method_name}', {function_invoke_args}}})"""
+
+
+def generate_functions(f, types):
+    for function_name, function_data in types.items():
+        args_def = generate_args_def(function_data["args"], True)
+        invoke_args = generate_function_invoke_args(function_data["args"])
+
+        f.write(
+            indent
+            + functions_template.format(
+                function_name=to_camel_case(function_name, is_class=False),
+                function_args=args_def,
+                return_type=to_camel_case(function_data["type"], is_class=True),
+                docstring=escape_quotes(function_data["description"]),
+                docstring_args=generate_function_docstring_args(function_data),
+                method_name=function_name,
+                function_invoke_args=invoke_args,
+            )
+            + "\n\n"
+        )
+
+
+updates_template = """    def on_{update_name}(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        \"\"\"{description}
+        r\"\"\"{description}
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -87,59 +339,79 @@ if __name__ == "__main__":
 
 """
 
-    def updates():
-        with open("handlers/updates.py", "w") as f:
-            f.write(
-                'import pytdbot\n\nfrom .handler import Handler\nfrom typing import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated TDLib updates"""\n\n'
+
+def generate_updates(f, updates):
+    for k, v in updates.items():
+        f.write(
+            updates_template.format(
+                update_name=k,
+                description=escape_quotes(v["description"]),
             )
-            for k, v in data["updates"].items():
-                f.write(
-                    updates_dec.format(
-                        update_name=k,
-                        description=utils.escape_markdown(v["description"]),
-                    )
-                )
+        )
 
-    def functions():
-        with open("methods/tdlibfunctions.py", "w") as f:
-            f.write(
-                'from ..types import Result\n\nclass TDLibFunctions:\n    """Auto generated TDLib functions"""\n\n'
-            )
-            for k, v in data["functions"].items():
-                # if k.startswith("test"):
-                #     continue
-                f.write(f"    async def {k}(self")
-                if p := getP(v["args"]):
-                    f.write(f",{p}" + ") -> Result:\n")
-                else:
-                    f.write(") -> Result:\n")
 
-                f.write(f'        """{utils.escape_markdown(v["description"])}\n\n')
+if __name__ == "__main__":
+    with open("td_api.json", "r") as f:
+        tl_json = json.loads(f.read())
 
-                if v["args"]:
-                    f.write(f"        Args:\n")
-                    params = dict(
-                        sorted(v["args"].items(), key=lambda x: x[1]["is_optional"])
-                    )
+    with open("types/td_types/types.py", "w") as types_file:
+        types_file.write("from typing import Union, Literal, List\n")
+        types_file.write("from base64 import b64decode\n")
+        types_file.write("import pytdbot\n\n")
+        types_file.write(
+            """class TlObject:
+    \"\"\"Base class for TL Objects\"\"\"
 
-                    for _k, _v in params.items():
-                        if not _v["is_optional"]:
-                            f.write(
-                                f"            {_k} (``{getType(_v['type'])}``):\n                {utils.escape_markdown(_v['description'])}\n\n"
-                            )
-                        else:
-                            f.write(
-                                f"            {_k} (``{getType(_v['type'])}``, *optional*):\n                {utils.escape_markdown(_v['description'])}\n\n"
-                            )
-                f.write(
-                    '\n        Returns:\n            :class:`~pytdbot.types.Result` (``{}``)\n        """\n\n'.format(
-                        v["type"]
-                    )
-                )
-                f.write(f"        data = {{'@type': '{k}',")
-                for k in v["args"]:
-                    f.write(f" '{k}': {k},")
-                f.write("}\n\n        return await self.invoke(data)\n\n")
+    def getType(self):
+        raise NotImplementedError
 
-    updates()
-    functions()
+    def getClass(self):
+        raise NotImplementedError
+
+    def to_dict(self) -> dict:
+        raise NotImplementedError
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        raise NotImplementedError\n\n"""
+        )
+
+        generate_classes(types_file, tl_json["classes"])
+        generate_types(
+            types_file, tl_json["types"], tl_json["updates"], tl_json["classes"]
+        )
+
+    with open("types/__init__.py", "w") as types_init_file:
+        types_names = [
+            to_camel_case(name, is_class=True)
+            for section in ("classes", "types", "updates")
+            for name in tl_json[section].keys()
+        ]
+
+        all_classes = (
+            '__all__ = ["TlObject", "Plugins", "Result", '
+            + ", ".join(f'"{name}"' for name in types_names)
+            + "]\n\n"
+        )
+        types_init_file.write(all_classes)
+
+        classes_import = f"from .td_types import TlObject, {', '.join(types_names)}\nfrom .plugins import Plugins\nfrom .result import Result"
+        types_init_file.write(classes_import)
+        types_init_file.write(f'\n\nTDLIB_VERSION = "{tl_json['version']}"')
+
+    with open("methods/td_functions.py", "w") as functions_file:
+        functions_file.write("from typing import Union, List\nfrom .. import types\n\n")
+
+        functions_file.write("class TDLibFunctions:\n")
+        functions_file.write(
+            f'{indent}"""A class that include all TDLib functions"""\n\n'
+        )
+
+        generate_functions(functions_file, tl_json["functions"])
+
+    with open("handlers/td_updates.py", "w") as updates_file:
+        updates_file.write(
+            'import pytdbot\n\nfrom .handler import Handler\nfrom typing import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated TDLib updates"""\n\n'
+        )
+
+        generate_updates(updates_file, tl_json["updates"])
