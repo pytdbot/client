@@ -96,9 +96,7 @@ jobs:
           python -m ruff format "methods/td_functions.py" "handlers/td_updates.py"
 
           CURRENT_VERSION=${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }}
-          sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g" ../README.md
-
-          mv _types_/ types/
+          sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g" README.md
 
       - name: Commit TDLib files
         uses: EndBug/add-and-commit@v9
