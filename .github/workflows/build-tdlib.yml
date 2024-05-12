@@ -56,14 +56,11 @@ jobs:
       - name: Setup variables
         id: vars
         run: |
-          cd $GITHUB_WORKSPACE/pytdbot
-          mv types/ _types_/
           echo "CURRENT_TDLIB_COMMIT_HASH=$(python -c "import json; print(json.loads(open('td_api.json').read())['commit_hash'])")" >> $GITHUB_OUTPUT
           echo "CURRENT_TDLIB_VERSION=$(python -c "import json; print(json.loads(open('td_api.json').read())['version'])")" >> $GITHUB_OUTPUT
 
-          mv _types_/ types/
-
           cd $GITHUB_WORKSPACE/td
+
           echo "LATEST_TDLIB_COMMIT_HASH=$(git log -1 --pretty=%H)" >> $GITHUB_OUTPUT
           echo "LATEST_TDLIB_VERSION=$(
             cat CMakeLists.txt |
@@ -84,7 +81,7 @@ jobs:
 
       - name: Copy TDLib TL
         run: |
-          cp td/td/generate/scheme/td_api.tl pytdbot/td_api.tl
+          cp td/td/generate/scheme/td_api.tl td_api.tl
 
       # - name: Move libtdjson.so
       #   run: |
@@ -93,12 +90,10 @@ jobs:
 
       - name: Generate Pytdbot files
         run: |
-          cd $GITHUB_WORKSPACE/pytdbot
-          mv types/ _types_/
           python generate_json.py "${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}" "${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }}"
           python generate_files.py
           python -m pip install black
-          python -m black "methods/tdlibfunctions.py" "handlers/updates.py"
+          python -m black "methods/td_functions.py" "handlers/td_updates.py"
 
           CURRENT_VERSION=${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }}
           sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g" ../README.md
@@ -109,7 +104,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: "Update TDLib to ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (tdlib/td@${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }})"
-          add: '["pytdbot/td_api.tl"]'
+          add: '["td_api.tl"]'
           committer_name: GitHub Actions
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
 
@@ -117,6 +112,6 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: "Generate Pytdbot files"
-          add: '["README.md", "pytdbot/methods/tdlibfunctions.py","pytdbot/handlers/updates.py", "pytdbot/td_api.json",]'
+          add: '["README.md", "pytdbot/methods/td_functions.py","pytdbot/handlers/td_updates.py", "pytdbot/td_api.json",]'
           committer_name: GitHub Actions
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
