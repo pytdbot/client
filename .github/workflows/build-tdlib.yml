@@ -92,8 +92,8 @@ jobs:
         run: |
           python generate_json.py "${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}" "${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }}"
           python generate_files.py
-          python -m pip install black
-          python -m black "methods/td_functions.py" "handlers/td_updates.py"
+          python -m pip install ruff
+          python -m ruff format "methods/td_functions.py" "handlers/td_updates.py"
 
           CURRENT_VERSION=${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }}
           sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g" ../README.md
