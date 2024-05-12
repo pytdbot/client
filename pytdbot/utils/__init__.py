@@ -1,6 +1,9 @@
 __all__ = [
     "escape_markdown",
     "escape_html",
+    "obj_to_json",
+    "obj_to_dict",
+    "dict_to_obj",
     "to_camel_case",
     "create_extra_id",
     "bold",
@@ -16,6 +19,7 @@ __all__ = [
 ]
 
 from .escape import escape_markdown, escape_html
+from .obj_encoder import obj_to_json, obj_to_dict, dict_to_obj
 from .strings import to_camel_case, create_extra_id
 from .text_format import (
     bold,
