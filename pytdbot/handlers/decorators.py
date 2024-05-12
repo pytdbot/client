@@ -4,7 +4,7 @@ import pytdbot
 from typing import Callable
 from asyncio import iscoroutinefunction
 from .handler import Handler
-from .updates import Updates
+from .td_updates import Updates
 
 logger = logging.getLogger(__name__)
 
