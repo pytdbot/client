@@ -34,6 +34,8 @@ class TDLibFunctions:
         device_model: str,
         system_version: str,
         application_version: str,
+        enable_storage_optimizer: bool,
+        ignore_file_names: bool
     ) -> Result:
         """Sets the parameters for TDLib initialization\. Works only when the current authorization state is authorizationStateWaitTdlibParameters
 
@@ -101,6 +103,8 @@ class TDLibFunctions:
             "device_model": device_model,
             "system_version": system_version,
             "application_version": application_version,
+            "enable_storage_optimizer": enable_storage_optimizer,
+            "ignore_file_names": ignore_file_names,
         }
 
         return await self.invoke(data)
