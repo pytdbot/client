@@ -34,6 +34,7 @@ class TDLibFunctions:
         device_model: str,
         system_version: str,
         application_version: str,
+        
     ) -> Result:
         """Sets the parameters for TDLib initialization\. Works only when the current authorization state is authorizationStateWaitTdlibParameters
 
