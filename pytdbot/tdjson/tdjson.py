@@ -83,9 +83,10 @@ class TdJson:
 
         self.client_id = self._td_create_client_id()
 
-        td_version, td_commit_hash = self.execute(
-            {"@type": "getOption", "name": "version"}
-        ), self.execute({"@type": "getOption", "name": "commit_hash"})
+        td_version, td_commit_hash = (
+            self.execute({"@type": "getOption", "name": "version"}),
+            self.execute({"@type": "getOption", "name": "commit_hash"}),
+        )
 
         logger.info(
             f"Using TDLib {td_version['value']} ({td_commit_hash['value'][:9]}) with {json.__name__} encoder"
