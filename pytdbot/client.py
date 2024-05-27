@@ -8,9 +8,9 @@ from pathlib import Path
 from getpass import getpass
 from importlib import import_module
 
-from typing import Callable, Union
+from typing import Callable, Union, Dict
 from logging import getLogger, DEBUG
-from base64 import b64encode
+
 from deepdiff import DeepDiff
 from concurrent.futures import ThreadPoolExecutor
 from threading import current_thread, main_thread
@@ -20,8 +20,10 @@ from .tdjson import TdJson
 from .handlers import Decorators, Handler
 from .methods import Methods
 from .types import Plugins, Result, LogStream, Update
+from . import types
 from .filters import Filter
 from .exception import StopHandlers, AuthorizationError
+from .utils import create_extra_id, obj_to_dict, dict_to_obj
 
 
 logger = getLogger(__name__)
@@ -160,14 +162,14 @@ class Client(Decorators, Methods):
         self.td_verbosity = td_verbosity
         self.connection_state: str = None
         self.is_running = None
-        self.me = None
+        self.me: types.User = None
         self.is_authenticated = False
         self.options = {}
 
         self._check_init_args()
 
         self._handlers = {"initializer": [], "finalizer": []}
-        self._results = {}
+        self._results: Dict[str, asyncio.Future] = {}
         self._tdjson = TdJson(lib_path, td_verbosity)
         self._retry_after_prefex = "Too Many Requests: retry after "
         self._workers_tasks = None
@@ -196,7 +198,7 @@ class Client(Decorators, Methods):
 
         if isinstance(td_log, LogStream):
             self._tdjson.execute(
-                {"@type": "setLogStream", "log_stream": td_log.to_dict()}
+                {"@type": "setLogStream", "log_stream": obj_to_dict(td_log)}
             )
 
     async def __aenter__(self):
@@ -261,17 +263,17 @@ class Client(Decorators, Methods):
             return
 
         self.me = await self.getMe()
-        if self.me.is_error:
-            logger.error(f"Get me error: {self.me['message']}")
+        if isinstance(self.me, types.Error):
+            logger.error(f"Get me error: {self.me.message}")
 
-        self.me = self.me.result
         self.is_authenticated = True
+
         logger.info(
             "Logged in as {} {}".format(
-                self.me["first_name"],
-                str(self.me["id"])
-                if "usernames" not in self.me
-                else "@" + self.me["usernames"]["editable_username"],
+                self.me.first_name,
+                str(self.me.id)
+                if not self.me.usernames
+                else "@" + self.me.usernames.editable_username,
             )
         )
 
@@ -354,7 +356,7 @@ class Client(Decorators, Methods):
 
                 async with Client(...) as client:
                     res = await client.invoke({"@type": "getOption", "name": "version"})
-                    if not res.is_error:
+                    if not isinstance(res, types.Error):
                         print(res)
 
         Args:
@@ -365,48 +367,51 @@ class Client(Decorators, Methods):
             :class:`~pytdbot.types.Result`
         """
 
-        result = Result(request)
-        self._results[result.id] = result
+        request = obj_to_dict(request)
+
+        request["@extra"] = {"id": create_extra_id()}
+
+        result = self._create_request_future(request)
 
         if (
             logger.root.level >= DEBUG
         ):  # dumping all requests may create performance issues
-            logger.debug(f"Sending: {dumps(result.request, indent=4)}")
+            logger.debug(f"Sending: {dumps(request, indent=4)}")
 
-        self.__send(result.request)
+        self.__send(request)
         await result
 
-        if result.is_error:
-            if result["code"] == 429:
-                retry_after = self.get_retry_after_time(result["message"])
+        if isinstance(result, types.Error):
+            if result.code == 429:
+                retry_after = self.get_retry_after_time(result.message)
 
                 if retry_after <= self.sleep_threshold:
-                    result.reset()
-
                     logger.error(
-                        f"Sleeping for {retry_after}s (Caused by {result.request['@type']})"
+                        f"Sleeping for {retry_after}s (Caused by {request['@type']})"
                     )
 
                     await asyncio.sleep(retry_after)
-                    self._results[result.id] = result
-                    self.__send(result.request)
+
+                    result = self._create_request_future(request)
+
+                    self.__send(request)
                     await result
             elif not self.use_message_database and (
-                result["code"] == 400
-                and result["message"] == "Chat not found"
-                and "chat_id" in result.request
+                result.code == 400
+                and result.message == "Chat not found"
+                and "chat_id" in request
             ):
-                chat_id = result.request["chat_id"]
+                chat_id = request["chat_id"]
 
                 logger.debug(f"Attempt to load chat {chat_id}")
 
                 load_chat = await self.getChat(chat_id)
 
-                if not load_chat.is_error:
+                if not isinstance(load_chat, types.Error):
                     logger.debug(f"Chat {chat_id} is loaded")
 
-                    message_id = result.request.get("reply_to", {}).get(
-                        "message_id", result.request.get("message_id", 0)
+                    message_id = request.get("reply_to", {}).get(
+                        "message_id", request.get("message_id", 0)
                     )
 
                     # If there is a message_id then
@@ -415,14 +420,14 @@ class Client(Decorators, Methods):
                         await self.getMessage(chat_id, message_id)
 
                     # repeat the first request
-                    result.reset()
-                    self._results[result.id] = result
-                    self.__send(result.request)
+                    result = self._create_request_future(request)
+
+                    self.__send(request)
                     await result
                 else:
                     logger.error(f"Couldn't load chat {chat_id}")
 
-        return result
+        return await result
 
     async def call_method(self, method: str, **kwargs) -> Result:
         """Call a method. with keyword arguments (``kwargs``) support
@@ -434,7 +439,7 @@ class Client(Decorators, Methods):
 
                 async with Client(...) as client:
                     res = await client.call_method("getOption", name="version"})
-                    if not res.is_error:
+                    if not isinstance(res, types.Error):
                         print(res)
 
         Args:
@@ -512,6 +517,19 @@ class Client(Decorators, Methods):
 
             return True
 
+    def _create_request_future(
+        self, request: dict, result_id: str = None, handle_result: bool = True
+    ) -> asyncio.Future:
+        result = asyncio.Future()
+
+        result.request = request
+
+        if handle_result:
+            self._results[
+                result_id if result_id is not None else request["@extra"]["id"]
+            ] = result
+        return result
+
     def __send(self, request: dict) -> None:
         return self._tdjson.send(
             request
@@ -530,7 +548,9 @@ class Client(Decorators, Methods):
             raise TypeError("files_directory must be str")
         elif not isinstance(self.td_verbosity, int):
             raise TypeError("td_verbosity must be int")
-        elif type(Update) is not type(self.update_class):
+        elif self.update_class is not None and type(Update) is not type(
+            self.update_class
+        ):
             raise TypeError(
                 "update_class must be instance of class pytdbot.types.Update"
             )
@@ -632,7 +652,9 @@ class Client(Decorators, Methods):
 
                 while self.is_running:
                     update = await self.loop.run_in_executor(
-                        thread, self._tdjson.receive, 100000.0  # Seconds
+                        thread,
+                        self._tdjson.receive,
+                        100000.0,  # Seconds
                     )
                     if update is None:
                         continue
@@ -651,11 +673,11 @@ class Client(Decorators, Methods):
                 logger.root.level >= DEBUG
             ):  # dumping all results may create performance issues
                 logger.debug(f"Received: {dumps(update, indent=4)}")
-            if update["@extra"]["id"] in self._results:
-                result: Result = self._results.pop(update["@extra"]["id"])
-                result.set_result(update)
+            if result := self._results.pop(update["@extra"]["id"], None):
+                result.set_result(dict_to_obj(update))
             elif update["@type"] == "error" and "option" in update["@extra"]:
                 logger.error(f"{update['@extra']['option']}: {update['message']}")
+
         else:
             update_handler = self.__local_handlers.get(update["@type"])
             if update_handler:
@@ -685,8 +707,7 @@ class Client(Decorators, Methods):
                 logger.exception(f"Initializer {initializer} failed")
 
     async def __run_handlers(self, update):
-        update_type = update["@type"]
-        for handler in self._handlers[update_type]:
+        for handler in self._handlers[update.getType()]:
             try:
                 if handler.filter is not None:
                     filter_function = handler.filter.func
@@ -729,7 +750,7 @@ class Client(Decorators, Methods):
             )
 
         if update["@type"] in self._handlers:
-            update = self.update_class(self, update)
+            # update = self.update_class(self, update)
             if (
                 update["@type"] == "updateNewMessage"
                 and update["message"]["is_outgoing"]
@@ -737,6 +758,7 @@ class Client(Decorators, Methods):
             ):
                 return
 
+            update = dict_to_obj(update)
             try:
                 await self.__run_initializers(update)
                 await self.__run_handlers(update)
@@ -775,22 +797,18 @@ class Client(Decorators, Methods):
             use_message_database=self.use_message_database,
             use_secret_chats=False,
             system_version=None,
-            enable_storage_optimizer=self.enable_storage_optimizer,
-            ignore_file_names=self.ignore_file_names,
             files_directory=self.files_directory,
-            database_encryption_key=b64encode(self.__database_encryption_key).decode(
-                "utf-8"
-            ),
+            database_encryption_key=self.__database_encryption_key,
             database_directory=join_path(self.files_directory, "database"),
             application_version=f"Pytdbot {pytdbot.__version__}",
         )
-        if res.is_error:
-            raise AuthorizationError(res.result["message"])
+        if isinstance(res, types.Error):
+            raise AuthorizationError(res.message)
 
     async def _set_bot_token(self):
         res = await self.checkAuthenticationBotToken(self.__token)
-        if res.is_error:
-            raise AuthorizationError(res.result["message"])
+        if isinstance(res, types.Error):
+            raise AuthorizationError(res.message)
 
     async def _set_options(self):
         if not isinstance(self.td_options, dict):
@@ -864,20 +882,17 @@ class Client(Decorators, Methods):
     async def __handle_update_message_succeeded(self, update):
         m_id = f'{update["old_message_id"]}{update["message"]["chat_id"]}'
 
-        if m_id in self._results:
-            result: Result = self._results.pop(m_id)
-            result.set_result(update["message"])
+        if result := self._results.pop(m_id, None):
+            result.set_result(dict_to_obj(update["message"]))
 
     async def __handle_update_message_failed(self, update):
         m_id = f'{update["old_message_id"]}{update["message"]["chat_id"]}'
 
-        if m_id in self._results:
+        if result := self._results.pop(m_id, None):
             if update["error"]["code"] == 429:
                 retry_after = update["message"]["sending_state"]["retry_after"]
 
                 if retry_after <= self.sleep_threshold:
-                    result: Result = self._results.pop(m_id)
-
                     logger.error(
                         f"Sleeping for {retry_after}s (Caused by {result.request['@type']})"
                     )
@@ -885,11 +900,8 @@ class Client(Decorators, Methods):
                     await asyncio.sleep(retry_after)
                     res = await self.invoke(result.request)
 
-                    self._results[
-                        f'{res.result["id"]}{update["message"]["chat_id"]}'
-                    ] = result
+                    self._results[f'{res.id}{update["message"]["chat_id"]}'] = result
             else:
-                result: Result = self._results.pop(m_id)
                 result.set_result(update["error"])
 
     async def __handle_update_option(self, update):
@@ -908,13 +920,13 @@ class Client(Decorators, Methods):
             )
 
     async def __handle_update_user(self, update):
-        if self.is_authenticated and update["user"]["id"] == self.me["id"]:
+        if self.is_authenticated and update["user"]["id"] == self.me.id:
             logger.info(
                 "Updating {} ({}) info".format(
-                    self.me["first_name"],
-                    str(self.me["id"])
-                    if "usernames" not in self.me
-                    else "@" + self.me["usernames"]["editable_username"],
+                    self.me.first_name,
+                    str(self.me.id)
+                    if not self.me.usernames
+                    else "@" + self.me.usernames.editable_username,
                 )
             )
             try:
@@ -940,8 +952,8 @@ class Client(Decorators, Methods):
                         else:
                             res = await self.setAuthenticationPhoneNumber(user_input)
 
-                        if res.is_error:
-                            print(res["message"])
+                        if isinstance(res, types.Error):
+                            print(res.message)
                         else:
                             break
         else:
@@ -950,8 +962,8 @@ class Client(Decorators, Methods):
             else:
                 res = await self.setAuthenticationPhoneNumber(self.__token)
 
-            if res.is_error:
-                raise AuthorizationError(res["message"])
+            if isinstance(res, types.Error):
+                raise AuthorizationError(res.message)
 
     async def __handle_authorization_state_wait_email_address(self):
         if self.authorization_state == "authorizationStateWaitEmailAddress":
@@ -961,8 +973,8 @@ class Client(Decorators, Methods):
             email_address = await self.__ainput("Enter your email address: ")
 
             res = await self.setAuthenticationEmailAddress(email_address)
-            if res.is_error:
-                print(res["message"])
+            if isinstance(res, types.Error):
+                print(res.message)
             else:
                 break
 
@@ -978,8 +990,8 @@ class Client(Decorators, Methods):
             res = await self.checkAuthenticationEmailCode(
                 code={"@type": "emailAddressAuthenticationCode", "code": code}
             )
-            if res.is_error:
-                print(res["message"])
+            if isinstance(res, types.Error):
+                print(res.message)
             else:
                 break
 
@@ -1008,8 +1020,8 @@ class Client(Decorators, Methods):
             )
 
             res = await self.checkAuthenticationCode(code=code)
-            if res.is_error:
-                print(res["message"])
+            if isinstance(res, types.Error):
+                print(res.message)
             else:
                 break
 
@@ -1022,8 +1034,8 @@ class Client(Decorators, Methods):
             last_name = await self.__ainput("Enter your last name: ")
 
             res = await self.registerUser(first_name=first_name, last_name=last_name)
-            if res.is_error:
-                print(res["message"])
+            if isinstance(res, types.Error):
+                print(res.message)
             else:
                 break
 
@@ -1053,8 +1065,8 @@ class Client(Decorators, Methods):
                     if y_n.lower() in {"y", "yes"}:
                         res = await self.requestAuthenticationPasswordRecovery()
 
-                        if res.is_error:
-                            raise AuthorizationError(res["message"])
+                        if isinstance(res, types.Error):
+                            raise AuthorizationError(res.message)
                         else:
                             while True:
                                 recovery_code = await self.__ainput(
@@ -1067,16 +1079,16 @@ class Client(Decorators, Methods):
                                     )
                                 )
 
-                                if res.is_error:
-                                    print(res["message"])
+                                if isinstance(res, types.Error):
+                                    print(res.message)
                                 else:
                                     recover_res = (
                                         await self.recoverAuthenticationPassword(
                                             recovery_code
                                         )
                                     )
-                                    if recover_res.is_error:
-                                        raise AuthorizationError(recover_res["message"])
+                                    if isinstance(recover_res, types.Error):
+                                        raise AuthorizationError(recover_res.message)
 
                                     return
                 else:
@@ -1085,8 +1097,8 @@ class Client(Decorators, Methods):
                     )
             else:
                 res = await self.checkAuthenticationPassword(password)
-                if res.is_error:
-                    print(res["message"])
+                if isinstance(res, types.Error):
+                    print(res.message)
                 else:
                     break
 
@@ -1132,6 +1144,7 @@ class Client(Decorators, Methods):
 
 
 def deepdiff(d1, d2):
+    d1 = obj_to_dict(d1)
     if not isinstance(d1, dict) or not isinstance(d2, dict):
         return d1 == d2
 
