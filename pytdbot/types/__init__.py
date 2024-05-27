@@ -1,7 +1,6 @@
 __all__ = [
     "TlObject",
     "Plugins",
-    "Result",
     "AuthenticationCodeType",
     "EmailAddressAuthentication",
     "EmailAddressResetState",
@@ -3274,6 +3273,5 @@ from .td_types import (
     Updates,
 )
 from .plugins import Plugins
-from .result import Result
 
 TDLIB_VERSION = "1.8.29"

@@ -19,7 +19,7 @@ from json import dumps
 from .tdjson import TdJson
 from .handlers import Decorators, Handler
 from .methods import Methods
-from .types import Plugins, Result, LogStream, Update
+from .types import Plugins, LogStream, Update
 from . import types
 from .filters import Filter
 from .exception import StopHandlers, AuthorizationError
@@ -346,7 +346,7 @@ class Client(Decorators, Methods):
     async def invoke(
         self,
         request: dict,
-    ) -> Result:
+    ) -> types.TlObject:
         """Invoke a new TDLib request
 
         Example:
@@ -429,7 +429,7 @@ class Client(Decorators, Methods):
 
         return await result
 
-    async def call_method(self, method: str, **kwargs) -> Result:
+    async def call_method(self, method: str, **kwargs) -> types.TlObject:
         """Call a method. with keyword arguments (``kwargs``) support
 
         Example:
@@ -447,7 +447,7 @@ class Client(Decorators, Methods):
                 TDLib method name
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            Any :class:`~pytdbot.types.TlObject`
         """
 
         kwargs["@type"] = method
