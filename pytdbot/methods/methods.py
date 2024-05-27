@@ -1,28 +1,108 @@
 import pytdbot
 
-from typing import Union
-from base64 import b64encode
-from .tdlibfunctions import TDLibFunctions
+from typing import List, Union
+
 from ..types import (
-    Result,
-    ReplyMarkup,
-    InlineKeyboardMarkup,
-    ShowKeyboardMarkup,
-    ForceReply,
-    RemoveKeyboard,
+    Error,
+    FormattedText,
     InputFile,
+    InputFileRemote,
+    InputMessageAnimation,
+    InputMessageAudio,
+    InputMessageContent,
+    InputMessageDocument,
+    InputMessageForwarded,
+    InputMessagePhoto,
+    InputMessageReplyTo,
+    InputMessageReplyToMessage,
+    InputMessageSticker,
+    InputMessageText,
+    InputMessageVideo,
+    InputMessageVideoNote,
+    InputMessageVoiceNote,
+    InputTextQuote,
     InputThumbnail,
+    LinkPreviewOptions,
+    Message,
+    MessageCopyOptions,
+    MessageSelfDestructType,
+    MessageSendOptions,
+    ReplyMarkup,
+    ReplyMarkupForceReply,
+    ReplyMarkupInlineKeyboard,
+    ReplyMarkupRemoveKeyboard,
+    ReplyMarkupShowKeyboard,
+    TextEntity,
+    TextParseModeHTML,
+    TextParseModeMarkdown,
 )
+
+from .td_functions import TDLibFunctions
 
 
 class Methods(TDLibFunctions):
     """TDLib API functions class"""
 
+    async def __sendMessage(
+        self,
+        chat_id: int,
+        content: InputMessageContent,
+        disable_notification: bool = False,
+        protect_content: bool = False,
+        message_thread_id: int = 0,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
+        reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
+        reply_markup: Union[
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
+        ] = None,
+    ):
+        if not load_replied_message and not self.use_message_database:
+            load_replied_message = True
+
+        if (
+            load_replied_message
+            and (isinstance(reply_to, InputMessageReplyToMessage))
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+        ):
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to.message_id if reply_to else reply_to_message_id
+            )
+
+        if isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
+            reply_to = InputMessageReplyToMessage(
+                message_id=reply_to_message_id, quote=quote
+            )
+
+        res = await self.sendMessage(
+            chat_id=chat_id,
+            message_thread_id=message_thread_id,
+            reply_to=reply_to,
+            options=MessageSendOptions(
+                disable_notification=disable_notification,
+                protect_content=protect_content,
+            ),
+            reply_markup=reply_markup
+            if isinstance(reply_markup, ReplyMarkup)
+            else None,
+            input_message_content=content,
+        )
+        if isinstance(res, Error):
+            return res
+
+        return await self._create_request_future(None, f"{res.id}{res.chat_id}")
+
     async def sendTextMessage(
         self,
         chat_id: int,
         text: str,
-        entities: list = None,
+        entities: List[TextEntity] = None,
         parse_mode: str = None,
         disable_web_page_preview: bool = False,
         url: str = None,
@@ -33,14 +113,17 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
-            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
         ] = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Send text message to chat
 
         Args:
@@ -83,11 +166,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -95,87 +178,46 @@ class Methods(TDLibFunctions):
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
         """
 
         parse_mode = parse_mode or self.default_parse_mode
         if isinstance(entities, list):
-            text = {
-                "@type": "formattedText",
-                "text": text,
-                "entities": entities,
-            }
+            text = FormattedText(text=text, entities=entities)
         elif isinstance(parse_mode, str):
             parse = await self.parseText(text, parse_mode=parse_mode)
-            if parse.is_error:
+            if isinstance(parse, Error):
                 return parse
-            text = parse.result
+            text = parse
         else:
-            text = {"@type": "formattedText", "text": text, "entities": []}
+            text = FormattedText(text)
 
-        if not load_replied_message and not self.use_message_database:
-            load_replied_message = True
-
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "input_message_content": {
-                "@type": "inputMessageText",
-                "text": text,
-                "link_preview_options": {
-                    "@type": "linkPreviewOptions",
-                    "is_disabled": disable_web_page_preview,
-                    "url": url,
-                    "force_small_media": force_small_media,
-                    "force_large_media": force_large_media,
-                    "show_above_text": show_above_text,
-                },
-                "clear_draft": clear_draft,
-            },
-        }
-
-        if reply_to is not None:
-            data["reply_to"] = reply_to
-        elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            data["reply_to"] = {
-                "@type": "inputMessageReplyToMessage",
-                "message_id": reply_to_message_id,
-                "quote": quote,
-            }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageText(
+                text,
+                link_preview_options=LinkPreviewOptions(
+                    is_disabled=disable_web_page_preview,
+                    url=url,
+                    force_small_media=force_small_media,
+                    force_large_media=force_large_media,
+                    show_above_text=show_above_text,
+                ),
+                clear_draft=clear_draft,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+            reply_markup=reply_markup,
+        )
 
     async def sendAnimation(
         self,
@@ -193,14 +235,17 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
-            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
         ] = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Send animation to chat
 
         Args:
@@ -246,11 +291,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -258,99 +303,49 @@ class Methods(TDLibFunctions):
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
 
         """
 
         parse_mode = parse_mode or self.default_parse_mode
-        if isinstance(caption, str):
-            if isinstance(caption_entities, list):
-                caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": caption_entities,
-                }
-            elif isinstance(parse_mode, str):
-                parse = await self.parseText(caption, parse_mode=parse_mode)
-                if parse.is_error:
-                    return parse
-                caption = parse.result
-            else:
-                caption = {"@type": "formattedText", "text": caption, "entities": []}
-
-        if load_replied_message == None and not self.use_message_database:
-            load_replied_message = True
-
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "input_message_content": {
-                "@type": "inputMessageAnimation",
-                "added_sticker_file_ids": added_sticker_file_ids,
-                "duration": duration,
-                "width": width,
-                "height": height,
-                "caption": caption,
-                "has_spoiler": has_spoiler,
-            },
-        }
-
-        if reply_to is not None:
-            data["reply_to"] = reply_to
-        elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            data["reply_to"] = {
-                "@type": "inputMessageReplyToMessage",
-                "message_id": reply_to_message_id,
-                "quote": quote,
-            }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-
-        if isinstance(animation, InputFile):
-            data["input_message_content"]["animation"] = animation.to_dict()
-        elif isinstance(animation, str):
-            data["input_message_content"]["animation"] = {
-                "@type": "inputFileRemote",
-                "id": animation,
-            }
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
         else:
-            raise ValueError("animation must be InputFile or str")
+            caption = FormattedText(caption)
 
-        if isinstance(thumbnail, InputThumbnail):
-            data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
+        if isinstance(animation, str):
+            animation = InputFileRemote(animation)
 
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageAnimation(
+                animation=animation,
+                thumbnail=thumbnail,
+                added_sticker_file_ids=added_sticker_file_ids,
+                duration=duration,
+                width=width,
+                height=height,
+                caption=caption,
+                has_spoiler=has_spoiler,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+            reply_markup=reply_markup,
+        )
 
     async def sendAudio(
         self,
@@ -366,14 +361,17 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
-            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
         ] = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Send audio to chat
 
         Args:
@@ -413,11 +411,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -425,100 +423,48 @@ class Methods(TDLibFunctions):
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
 
         """
 
         parse_mode = parse_mode or self.default_parse_mode
-        if isinstance(caption, str):
-            if isinstance(caption_entities, list):
-                caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": caption_entities,
-                }
-            elif isinstance(parse_mode, str):
-                parse = await self.parseText(caption, parse_mode=parse_mode)
-                if parse.is_error:
-                    return parse
-                caption = parse.result
-            else:
-                caption = {"@type": "formattedText", "text": caption, "entities": []}
-
-        if load_replied_message == None and not self.use_message_database:
-            load_replied_message = True
-
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "input_message_content": {
-                "@type": "inputMessageAudio",
-                "title": title,
-                "performer": performer,
-                "duration": duration,
-                "caption": caption,
-            },
-        }
-
-        if reply_to is not None:
-            data["reply_to"] = reply_to
-        elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            data["reply_to"] = {
-                "@type": "inputMessageReplyToMessage",
-                "message_id": reply_to_message_id,
-                "quote": quote,
-            }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-
-        if isinstance(audio, InputFile):
-            data["input_message_content"]["audio"] = audio.to_dict()
-        elif isinstance(audio, str):
-            data["input_message_content"]["audio"] = {
-                "@type": "inputFileRemote",
-                "id": audio,
-            }
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
         else:
-            raise ValueError("audio must be InputFile or str")
+            caption = FormattedText(caption)
 
-        if isinstance(album_cover_thumbnail, InputThumbnail):
-            data["input_message_content"][
-                "album_cover_thumbnail"
-            ] = album_cover_thumbnail.to_dict()
+        if isinstance(audio, str):
+            audio = InputFileRemote(audio)
 
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageAudio(
+                audio=audio,
+                album_cover_thumbnail=album_cover_thumbnail,
+                title=title,
+                performer=performer,
+                duration=duration,
+                caption=caption,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+            reply_markup=reply_markup,
+        )
 
     async def sendDocument(
         self,
@@ -532,14 +478,17 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
-            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
         ] = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Send document to chat
 
         Args:
@@ -573,11 +522,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -585,95 +534,45 @@ class Methods(TDLibFunctions):
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
         """
 
         parse_mode = parse_mode or self.default_parse_mode
-        if isinstance(caption, str):
-            if isinstance(caption_entities, list):
-                caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": caption_entities,
-                }
-            elif isinstance(parse_mode, str):
-                parse = await self.parseText(caption, parse_mode=parse_mode)
-                if parse.is_error:
-                    return parse
-                caption = parse.result
-            else:
-                caption = {"@type": "formattedText", "text": caption, "entities": []}
-
-        if load_replied_message == None and not self.use_message_database:
-            load_replied_message = True
-
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "input_message_content": {
-                "@type": "inputMessageDocument",
-                "disable_content_type_detection": disable_content_type_detection,
-                "caption": caption,
-            },
-        }
-
-        if reply_to is not None:
-            data["reply_to"] = reply_to
-        elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            data["reply_to"] = {
-                "@type": "inputMessageReplyToMessage",
-                "message_id": reply_to_message_id,
-                "quote": quote,
-            }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-
-        if isinstance(document, InputFile):
-            data["input_message_content"]["document"] = document.to_dict()
-        elif isinstance(document, str):
-            data["input_message_content"]["document"] = {
-                "@type": "inputFileRemote",
-                "id": document,
-            }
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
         else:
-            raise ValueError("document must be InputFile or str")
+            caption = FormattedText(caption)
 
-        if isinstance(thumbnail, InputThumbnail):
-            data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
+        if isinstance(document, str):
+            document = InputFileRemote(document)
 
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageDocument(
+                document=document,
+                thumbnail=thumbnail,
+                disable_content_type_detection=disable_content_type_detection,
+                caption=caption,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+            reply_markup=reply_markup,
+        )
 
     async def sendPhoto(
         self,
@@ -686,19 +585,22 @@ class Methods(TDLibFunctions):
         added_sticker_file_ids: list = None,
         width: int = None,
         height: int = None,
-        self_destruct_type: dict = None,
+        self_destruct_type: MessageSelfDestructType = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
-            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
         ] = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Send photo to chat
 
         Args:
@@ -729,7 +631,7 @@ class Methods(TDLibFunctions):
             height (``int``, *optional*):
                 Photo height
 
-            self_destruct_type (``dict``, *optional*):
+            self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`, *optional*):
                 Photo self-destruct type; pass null if none; private chats only
 
             disable_notification (``bool``, *optional*):
@@ -744,11 +646,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -756,99 +658,49 @@ class Methods(TDLibFunctions):
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
         """
 
         parse_mode = parse_mode or self.default_parse_mode
-        if isinstance(caption, str):
-            if isinstance(caption_entities, list):
-                caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": caption_entities,
-                }
-            elif isinstance(parse_mode, str):
-                parse = await self.parseText(caption, parse_mode=parse_mode)
-                if parse.is_error:
-                    return parse
-                caption = parse.result
-            else:
-                caption = {"@type": "formattedText", "text": caption, "entities": []}
-
-        if load_replied_message == None and not self.use_message_database:
-            load_replied_message = True
-
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "input_message_content": {
-                "@type": "inputMessagePhoto",
-                "added_sticker_file_ids": added_sticker_file_ids,
-                "width": width,
-                "height": height,
-                "caption": caption,
-                "self_destruct_type": self_destruct_type,
-                "has_spoiler": has_spoiler,
-            },
-        }
-
-        if reply_to is not None:
-            data["reply_to"] = reply_to
-        elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            data["reply_to"] = {
-                "@type": "inputMessageReplyToMessage",
-                "message_id": reply_to_message_id,
-                "quote": quote,
-            }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-
-        if isinstance(photo, InputFile):
-            data["input_message_content"]["photo"] = photo.to_dict()
-        elif isinstance(photo, str):
-            data["input_message_content"]["photo"] = {
-                "@type": "inputFileRemote",
-                "id": photo,
-            }
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
         else:
-            raise ValueError("photo must be InputFile or str")
+            caption = FormattedText(caption)
 
-        if isinstance(thumbnail, InputThumbnail):
-            data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
+        if isinstance(photo, str):
+            photo = InputFileRemote(photo)
 
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessagePhoto(
+                photo=photo,
+                thumbnail=thumbnail,
+                added_sticker_file_ids=added_sticker_file_ids,
+                self_destruct_type=self_destruct_type,
+                width=width,
+                height=height,
+                caption=caption,
+                has_spoiler=has_spoiler,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+            reply_markup=reply_markup,
+        )
 
     async def sendVideo(
         self,
@@ -863,19 +715,22 @@ class Methods(TDLibFunctions):
         duration: int = None,
         width: int = None,
         height: int = None,
-        self_destruct_type: dict = None,
+        self_destruct_type: MessageSelfDestructType = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
-            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
         ] = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Send video to chat
 
         Args:
@@ -912,7 +767,7 @@ class Methods(TDLibFunctions):
             height (``int``, *optional*):
                 Video height
 
-            self_destruct_type (``dict``, *optional*):
+            self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`, *optional*):
                 Video self-destruct type; pass null if none; private chats only
 
             disable_notification (``bool``, *optional*):
@@ -927,11 +782,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -939,101 +794,51 @@ class Methods(TDLibFunctions):
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
         """
 
         parse_mode = parse_mode or self.default_parse_mode
-        if isinstance(caption, str):
-            if isinstance(caption_entities, list):
-                caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": caption_entities,
-                }
-            elif isinstance(parse_mode, str):
-                parse = await self.parseText(caption, parse_mode=parse_mode)
-                if parse.is_error:
-                    return parse
-                caption = parse.result
-            else:
-                caption = {"@type": "formattedText", "text": caption, "entities": []}
-
-        if load_replied_message == None and not self.use_message_database:
-            load_replied_message = True
-
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "input_message_content": {
-                "@type": "inputMessageVideo",
-                "added_sticker_file_ids": added_sticker_file_ids,
-                "supports_streaming": supports_streaming,
-                "duration": duration,
-                "width": width,
-                "height": height,
-                "caption": caption,
-                "self_destruct_type": self_destruct_type,
-                "has_spoiler": has_spoiler,
-            },
-        }
-
-        if reply_to is not None:
-            data["reply_to"] = reply_to
-        elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            data["reply_to"] = {
-                "@type": "inputMessageReplyToMessage",
-                "message_id": reply_to_message_id,
-                "quote": quote,
-            }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-
-        if isinstance(video, InputFile):
-            data["input_message_content"]["video"] = video.to_dict()
-        elif isinstance(video, str):
-            data["input_message_content"]["video"] = {
-                "@type": "inputFileRemote",
-                "id": video,
-            }
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
         else:
-            raise ValueError("video must be InputFile or str")
+            caption = FormattedText(caption)
 
-        if isinstance(thumbnail, InputThumbnail):
-            data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
+        if isinstance(video, str):
+            video = InputFileRemote(video)
 
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageVideo(
+                video=video,
+                thumbnail=thumbnail,
+                added_sticker_file_ids=added_sticker_file_ids,
+                duration=duration,
+                width=width,
+                height=height,
+                supports_streaming=supports_streaming,
+                caption=caption,
+                self_destruct_type=self_destruct_type,
+                has_spoiler=has_spoiler,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+            reply_markup=reply_markup,
+        )
 
     async def sendVideoNote(
         self,
@@ -1045,14 +850,17 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
-            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
         ] = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Send video note to chat
 
         Args:
@@ -1080,11 +888,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -1092,80 +900,35 @@ class Methods(TDLibFunctions):
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
 
         """
 
-        if load_replied_message == None and not self.use_message_database:
-            load_replied_message = True
+        if isinstance(video_note, str):
+            video_note = InputFileRemote(video_note)
 
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "input_message_content": {
-                "@type": "inputMessageVideoNote",
-                "duration": duration,
-                "length": length,
-            },
-        }
-
-        if reply_to is not None:
-            data["reply_to"] = reply_to
-        elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            data["reply_to"] = {
-                "@type": "inputMessageReplyToMessage",
-                "message_id": reply_to_message_id,
-                "quote": quote,
-            }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-
-        if isinstance(video_note, InputFile):
-            data["input_message_content"]["video_note"] = video_note.to_dict()
-        elif isinstance(video_note, str):
-            data["input_message_content"]["video_note"] = {
-                "@type": "inputFileRemote",
-                "id": video_note,
-            }
-        else:
-            raise ValueError("video_note must be InputFile or str")
-
-        if isinstance(thumbnail, InputThumbnail):
-            data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
-
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageVideoNote(
+                video_note=video_note,
+                thumbnail=thumbnail,
+                duration=duration,
+                length=length,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+            reply_markup=reply_markup,
+        )
 
     async def sendVoice(
         self,
@@ -1179,14 +942,17 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
-            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
         ] = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Send voice to chat
 
         Args:
@@ -1220,11 +986,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -1232,95 +998,45 @@ class Methods(TDLibFunctions):
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
         """
 
         parse_mode = parse_mode or self.default_parse_mode
-        if isinstance(caption, str):
-            if isinstance(caption_entities, list):
-                caption = {
-                    "@type": "formattedText",
-                    "text": caption,
-                    "entities": caption_entities,
-                }
-            elif isinstance(parse_mode, str):
-                parse = await self.parseText(caption, parse_mode=parse_mode)
-                if parse.is_error:
-                    return parse
-                caption = parse.result
-            else:
-                caption = {"@type": "formattedText", "text": caption, "entities": []}
-
-        if load_replied_message == None and not self.use_message_database:
-            load_replied_message = True
-
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "input_message_content": {
-                "@type": "inputMessageVoiceNote",
-                "duration": duration,
-                "caption": caption,
-            },
-        }
-
-        if reply_to is not None:
-            data["reply_to"] = reply_to
-        elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            data["reply_to"] = {
-                "@type": "inputMessageReplyToMessage",
-                "message_id": reply_to_message_id,
-                "quote": quote,
-            }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-
-        if isinstance(waveform, bytes):
-            data["input_message_content"]["waveform"] = str(b64encode(waveform))
-
-        if isinstance(voice, InputFile):
-            data["input_message_content"]["voice_note"] = voice.to_dict()
-        elif isinstance(voice, str):
-            data["input_message_content"]["voice_note"] = {
-                "@type": "inputFileRemote",
-                "id": voice,
-            }
+        if isinstance(caption_entities, list):
+            caption = FormattedText(text=caption, entities=caption_entities)
+        elif isinstance(parse_mode, str):
+            parse = await self.parseText(caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
         else:
-            raise ValueError("voice must be InputFile or str")
+            caption = FormattedText(caption)
 
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        if isinstance(voice, str):
+            voice = InputFileRemote(voice)
+
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageVoiceNote(
+                voice=voice,
+                waveform=waveform,
+                duration=duration,
+                caption=caption,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+            reply_markup=reply_markup,
+        )
 
     async def sendSticker(
         self,
@@ -1333,14 +1049,17 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
         reply_markup: Union[
-            InlineKeyboardMarkup, ShowKeyboardMarkup, ForceReply, RemoveKeyboard
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
         ] = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Send sticker to chat
 
         Args:
@@ -1371,11 +1090,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -1383,80 +1102,35 @@ class Methods(TDLibFunctions):
             load_replied_message (``bool``, *optional*):
                 If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
         """
 
-        if load_replied_message == None and not self.use_message_database:
-            load_replied_message = True
+        if isinstance(sticker, str):
+            sticker = InputFileRemote(sticker)
 
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "message_thread_id": message_thread_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "input_message_content": {
-                "@type": "inputMessageSticker",
-                "emoji": emoji,
-                "width": width,
-                "height": height,
-            },
-        }
-
-        if reply_to is not None:
-            data["reply_to"] = reply_to
-        elif isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            data["reply_to"] = {
-                "@type": "inputMessageReplyToMessage",
-                "message_id": reply_to_message_id,
-                "quote": quote,
-            }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-
-        if isinstance(sticker, InputFile):
-            data["input_message_content"]["sticker"] = sticker.to_dict()
-        elif isinstance(sticker, str):
-            data["input_message_content"]["sticker"] = {
-                "@type": "inputFileRemote",
-                "id": sticker,
-            }
-        else:
-            raise ValueError("document must be InputFile or str")
-
-        if isinstance(thumbnail, InputThumbnail):
-            data["input_message_content"]["thumbnail"] = thumbnail.to_dict()
-
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageSticker(
+                sticker=sticker,
+                thumbnail=thumbnail,
+                width=width,
+                height=height,
+                emoji=emoji,
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+            reply_markup=reply_markup,
+        )
 
     async def sendCopy(
         self,
@@ -1471,11 +1145,11 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
-        quote: dict = None,
-        reply_to: dict = None,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Copy message to chat
 
         Args:
@@ -1512,11 +1186,11 @@ class Methods(TDLibFunctions):
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
-            quote (``dict``, *optional*):
-                Dict object of TDLib ``inputTextQuote`` for quote reply
+            quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
+                Chosen quote from the replied message; may be null if none
 
-            reply_to (``dict``, *optional*):
-                Dict object of TDLib ``MessageReplyTo`` for replying
+            reply_to (:class:`~pytdbot.types.InputMessageReplyTo`, *optional*):
+                Information about the message or the story this message is replying to; may be null if none
 
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
@@ -1526,78 +1200,38 @@ class Methods(TDLibFunctions):
 
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
         """
 
-        parse_mode = parse_mode if parse_mode is not None else self.default_parse_mode
-        _caption = None
-        if isinstance(new_caption, str):
-            if isinstance(new_caption_entities, list):
-                _caption = {
-                    "@type": "formattedText",
-                    "text": new_caption,
-                    "entities": new_caption_entities,
-                }
-            elif isinstance(parse_mode, str):
-                parse = await self.parseText(new_caption, parse_mode=parse_mode)
-                if parse.is_error:
-                    return parse
-                else:
-                    _caption = parse.result
-            else:
-                _caption = {
-                    "@type": "formattedText",
-                    "text": new_caption,
-                    "entities": [],
-                }
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(new_caption_entities, list):
+            caption = FormattedText(text=new_caption, entities=new_caption_entities)
+        elif isinstance(parse_mode, str):
+            parse = await self.parseText(new_caption, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            caption = parse
+        else:
+            caption = FormattedText(new_caption)
 
-        if load_replied_message == None and not self.use_message_database:
-            load_replied_message = True
-
-        if (
-            load_replied_message
-            and (
-                isinstance(reply_to, dict)
-                and reply_to.get("@type") == "inputMessageReplyToMessage"
-            )
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to["message_id"] if reply_to else reply_to_message_id
-            )
-
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-                "protect_content": protect_content,
-            },
-            "message_thread_id": message_thread_id,
-            "input_message_content": {
-                "@type": "inputMessageForwarded",
-                "from_chat_id": from_chat_id,
-                "message_id": message_id,
-                "in_game_share": in_game_share,
-                "copy_options": {
-                    "@type": "messageCopyOptions",
-                    "send_copy": True,
-                    "replace_caption": replace_caption,
-                    "new_caption": _caption,
-                },
-            },
-        }
-
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageForwarded(
+                from_chat_id=from_chat_id,
+                message_id=message_id,
+                in_game_share=in_game_share,
+                copy_options=MessageCopyOptions(
+                    send_copy=True, replace_caption=replace_caption, new_caption=caption
+                ),
+            ),
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            quote=quote,
+            reply_to=reply_to,
+            reply_to_message_id=reply_to_message_id,
+            load_replied_message=load_replied_message,
+        )
 
     async def forwardMessage(
         self,
@@ -1626,29 +1260,18 @@ class Methods(TDLibFunctions):
                 If True, disable notification for the message. Default is ``False``
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
         """
-        data = {
-            "@type": "sendMessage",
-            "chat_id": chat_id,
-            "options": {
-                "@type": "messageSendOptions",
-                "disable_notification": disable_notification,
-            },
-            "input_message_content": {
-                "@type": "inputMessageForwarded",
-                "from_chat_id": from_chat_id,
-                "message_id": message_id,
-                "in_game_share": in_game_share,
-            },
-        }
-        res = await self.invoke(data)
-        if res.is_error:
-            return res
-        new_result = Result(data)
-        self._results[f"{res.result['id']}{res.result['chat_id']}"] = new_result
-        await new_result
-        return new_result
+
+        return await self.__sendMessage(
+            chat_id=chat_id,
+            content=InputMessageForwarded(
+                from_chat_id=from_chat_id,
+                message_id=message_id,
+                in_game_share=in_game_share,
+            ),
+            disable_notification=disable_notification,
+        )
 
     async def editTextMessage(
         self,
@@ -1663,7 +1286,7 @@ class Methods(TDLibFunctions):
         force_large_media: bool = None,
         show_above_text: bool = None,
         reply_markup: ReplyMarkup = None,
-    ) -> Result:
+    ) -> Union[Error, Message]:
         """Edit text message
 
         Args:
@@ -1697,63 +1320,53 @@ class Methods(TDLibFunctions):
             show_above_text (``bool``, *optional*):
                 True, if link preview must be shown above message text; otherwise, the link preview will be shown below the message text; ignored in secret chats. Default is ``None``
 
-            reply_markup (:class:`~pytdbot.types.InlineKeyboardMarkup` | :class:`~pytdbot.types.ShowKeyboardMarkup` | :class:`~pytdbot.types.ForceReply` | :class:`~pytdbot.types.RemoveKeyboard`, *optional*):
+            reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.Message`
         """
 
         if not self.use_message_database:
             load_message = await self.getMessage(chat_id, message_id)
-            if load_message.is_error:
+            if isinstance(load_message, Error):
                 return load_message
 
-        if entities is None:
-            parse_mode = (
-                parse_mode if parse_mode is not None else self.default_parse_mode
-            )
-
-            if parse_mode is not None:
-                parse = await self.parseText(text, parse_mode=parse_mode)
-                if parse.is_error:
-                    return parse
-                else:
-                    _text = parse.result
-            else:
-                _text = {"@type": "formattedText", "text": text, "entities": []}
+        parse_mode = parse_mode or self.default_parse_mode
+        if isinstance(entities, list):
+            text = FormattedText(text=text, entities=entities)
+        elif isinstance(parse_mode, str):
+            parse = await self.parseText(text, parse_mode=parse_mode)
+            if isinstance(parse, Error):
+                return parse
+            text = parse
         else:
-            _text = {"@type": "formattedText", "text": text, "entities": entities}
+            text = FormattedText(text)
 
-        data = {
-            "@type": "editMessageText",
-            "chat_id": chat_id,
-            "message_id": message_id,
-            "input_message_content": {
-                "@type": "inputMessageText",
-                "text": _text,
-                "link_preview_options": {
-                    "@type": "linkPreviewOptions",
-                    "is_disabled": disable_web_page_preview,
-                    "url": url,
-                    "force_small_media": force_small_media,
-                    "force_large_media": force_large_media,
-                    "show_above_text": show_above_text,
-                },
-            },
-        }
-
-        if isinstance(reply_markup, ReplyMarkup):
-            data["reply_markup"] = reply_markup.to_dict()
-
-        return await self.invoke(data)
+        return await self.editMessageText(
+            chat_id=chat_id,
+            message_id=message_id,
+            reply_markup=reply_markup
+            if isinstance(reply_markup, ReplyMarkup)
+            else None,
+            input_message_content=InputMessageText(
+                text=text,
+                link_preview_options=LinkPreviewOptions(
+                    is_disabled=disable_web_page_preview,
+                    url=url,
+                    force_small_media=force_small_media,
+                    force_large_media=force_large_media,
+                    show_above_text=show_above_text,
+                ),
+            ),
+        )
 
     async def parseText(
         self,
         text: str,
         parse_mode: str = "markdownv2",
-    ) -> Result:
+    ) -> Union[Error, FormattedText]:
         """Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text
 
         Args:
@@ -1764,26 +1377,20 @@ class Methods(TDLibFunctions):
                 Text parse mode. Currently supported: markdown, markdownv2 and html. Default is "markdownv2"
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            :class:`~pytdbot.types.FormattedText`
         """
         if not text or not parse_mode:
             return
 
         if parse_mode.lower() == "markdown":
-            _data = {"@type": "textParseModeMarkdown", "version": 1}
+            parse_mode_ = TextParseModeMarkdown(1)
         elif parse_mode.lower() == "markdownv2":
-            _data = {"@type": "textParseModeMarkdown", "version": 2}
+            parse_mode_ = TextParseModeMarkdown(2)
         elif parse_mode.lower() == "html":
-            _data = {"@type": "textParseModeHTML"}
+            parse_mode_ = TextParseModeHTML()
         else:
             raise ValueError(
                 "Invalid parse_mode. Currently supported: markdown, markdownv2, html"
             )
 
-        data = {
-            "@type": "parseTextEntities",
-            "text": text,
-            "parse_mode": _data,
-        }
-
-        return await self.invoke(data)
+        return await self.parseTextEntities(text, parse_mode_)
