@@ -74,7 +74,9 @@ def generate_arg_value(arg_type, arg_name):
     elif arg_type == "float":
         arg_value = f"float({arg_name})"
     elif arg_type == "bytes":
-        arg_value = f"b64decode({arg_name})"
+        arg_value = (
+            f"b64encode({arg_name}) if isinstance({arg_name}, bytes) else {arg_name}"
+        )
     elif arg_type == "bool":
         arg_value = f"bool({arg_name})"
     elif arg_type.startswith("List[") or arg_type == "list":
@@ -144,8 +146,10 @@ def generate_self_args(args, classes):
             arg_type = generate_union_types(arg_type, arg_data["type"], classes)
 
         args_list.append(
-            f"self.{arg_name}: {arg_type} = {arg_value}\n{indent * 2}\"\"\"{escape_quotes(arg_data['description'])}\"\"\""
+            f"self.{arg_name}: {arg_type} = {arg_value}\n{indent * 2}r\"\"\"{escape_quotes(arg_data['description'])}\"\"\""
         )
+    if not args_list:
+        return "pass"
     return f"\n{indent * 2}".join(args_list)
 
 
@@ -156,7 +160,6 @@ def generate_to_dict_return(args):
             arg_name += "_"
         args_list.append(f'"{arg_name}": self.{arg_name}')
 
-    args_list.append('"@extra": self.extra_id')
     return ", ".join(args_list)
 
 
@@ -167,11 +170,10 @@ def generate_from_dict_kwargs(args):
             arg_name += "_"
 
         args_list.append(
-            f'{arg_name}=data.get("{arg_name}", {generate_arg_default(getArgTypePython(arg_data["type"]))})'
+            f'data_class.{arg_name} = data.get("{arg_name}", {generate_arg_default(getArgTypePython(arg_data["type"]))})'
         )
-    args_list.append('extra_id=data.get("@extra")')
 
-    return ", ".join(args_list)
+    return "; ".join(args_list)
 
 
 def generate_function_invoke_args(args):
@@ -192,7 +194,7 @@ def generate_function_docstring_args(function_data):
         args_list.append(
             f"{indent * 3}{arg_name} (:class:`{getArgTypePython(arg_data['type'], True)}`):\n{indent * 4 + escape_quotes(arg_data['description'])}"
         )
-    return f"\n{indent * 2}Args:\n" + "\n\n".join(args_list) + "\n"
+    return f"\n{indent * 2}Parameters:\n" + "\n\n".join(args_list) + "\n"
 
 
 class_template = """class {class_name}:
@@ -213,11 +215,12 @@ def generate_classes(f, classes):
 
 
 types_template = """class {class_name}(TlObject{inherited_class}):
-    r\"\"\"{docstring}\"\"\"
+    r\"\"\"{docstring}
+{docstring_args}
+    \"\"\"
 
-    def __init__({init_args}, extra_id: str = None) -> None:
+    def __init__({init_args}) -> None:
         {self_args}
-        self.extra_id: str = extra_id
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -229,16 +232,15 @@ types_template = """class {class_name}(TlObject{inherited_class}):
         return "{class_type_name}"
 
     def to_dict(self) -> dict:
-        data = {{{to_dict_return}}}
-
-        if not self.extra_id:
-            del data['@extra']
-
-        return data
+        return {{{to_dict_return}}}
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["{class_name}", None]:
-        return cls({from_dict_kwargs}) if data else None"""
+        if data:
+            data_class = cls()
+            {from_dict_kwargs}
+
+        return data_class"""
 
 
 def generate_types(f, types, updates, classes):
@@ -259,6 +261,7 @@ def generate_types(f, types, updates, classes):
                     ),
                     class_type_name=type_data["type"],
                     docstring=escape_quotes(type_data["description"]),
+                    docstring_args=generate_function_docstring_args(type_data),
                     init_args=args_def,
                     self_args=self_args,
                     type_name=type_name,
@@ -356,7 +359,7 @@ if __name__ == "__main__":
 
     with open("pytdbot/types/td_types/types.py", "w") as types_file:
         types_file.write("from typing import Union, Literal, List\n")
-        types_file.write("from base64 import b64decode\n")
+        types_file.write("from base64 import b64encode\n")
         types_file.write("import pytdbot\n\n")
         types_file.write(
             """class TlObject:
