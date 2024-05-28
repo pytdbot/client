@@ -149,8 +149,12 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def resendAuthenticationCode(self) -> Result:
+    async def resendAuthenticationCode(self, reason: dict = None) -> Result:
         """Resends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitCode, the next\_code\_type of the result is not null and the server\-specified timeout has passed, or when the current authorization state is authorizationStateWaitEmailCode
+
+        Args:
+            reason (``ResendCodeReason``, *optional*):
+                Reason of code resending; pass null if unknown
 
 
         Returns:
@@ -159,6 +163,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "resendAuthenticationCode",
+            "reason": reason,
         }
 
         return await self.invoke(data)
@@ -351,7 +356,7 @@ class TDLibFunctions:
 
         Args:
             token (``str``):
-                SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
+                Play Integrity API or SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
 
 
         Returns:
@@ -366,7 +371,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def reportAuthenticationCodeMissing(self, mobile_network_code: str) -> Result:
-        """Reports that authentication code wasn't delivered via SMS; for official mobile apps only\. Works only when the current authorization state is authorizationStateWaitCode
+        """Reports that authentication code wasn't delivered via SMS; for official mobile applications only\. Works only when the current authorization state is authorizationStateWaitCode
 
         Args:
             mobile_network_code (``str``):
@@ -2306,6 +2311,91 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def searchPublicHashtagMessages(
+        self, hashtag: str, offset: str, limit: int
+    ) -> Result:
+        """Searches for public channel posts with the given hashtag\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+        Args:
+            hashtag (``str``):
+                Hashtag to search for
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of messages to be returned; up to 100\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundMessages``)
+        """
+
+        data = {
+            "@type": "searchPublicHashtagMessages",
+            "hashtag": hashtag,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getSearchedForHashtags(self, prefix: str, limit: int) -> Result:
+        """Returns recently searched for hashtags by their prefix
+
+        Args:
+            prefix (``str``):
+                Prefix of hashtags to return
+
+            limit (``int``):
+                The maximum number of hashtags to be returned
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Hashtags``)
+        """
+
+        data = {
+            "@type": "getSearchedForHashtags",
+            "prefix": prefix,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def removeSearchedForHashtag(self, hashtag: str) -> Result:
+        """Removes a hashtag from the list of recently searched for hashtags
+
+        Args:
+            hashtag (``str``):
+                Hashtag to delete
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "removeSearchedForHashtag",
+            "hashtag": hashtag,
+        }
+
+        return await self.invoke(data)
+
+    async def clearSearchedForHashtags(self) -> Result:
+        """Clears the list of recently searched for hashtags
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "clearSearchedForHashtags",
+        }
+
+        return await self.invoke(data)
+
     async def deleteAllCallMessages(self, revoke: bool) -> Result:
         """Deletes all call messages
 
@@ -2988,7 +3078,7 @@ class TDLibFunctions:
                 If not 0, the message thread identifier in which the messages will be sent
 
             input_message_contents (``list``):
-                Contents of messages to be sent\. At most 10 messages can be added to an album
+                Contents of messages to be sent\. At most 10 messages can be added to an album\. All messages must have the same value of show\_caption\_above\_media
 
             reply_to (``InputMessageReplyTo``, *optional*):
                 Information about the message or story to be replied; pass null if none
@@ -3337,7 +3427,7 @@ class TDLibFunctions:
         input_message_content: dict,
         reply_markup: dict = None,
     ) -> Result:
-        """Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side
+        """Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Args:
             chat_id (``int``):
@@ -3377,7 +3467,7 @@ class TDLibFunctions:
         reply_markup: dict = None,
         location: dict = None,
     ) -> Result:
-        """Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side
+        """Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Args:
             chat_id (``int``):
@@ -3426,7 +3516,7 @@ class TDLibFunctions:
         input_message_content: dict,
         reply_markup: dict = None,
     ) -> Result:
-        """Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side
+        """Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Args:
             chat_id (``int``):
@@ -3460,10 +3550,11 @@ class TDLibFunctions:
         self,
         chat_id: int,
         message_id: int,
+        show_caption_above_media: bool,
         reply_markup: dict = None,
         caption: dict = None,
     ) -> Result:
-        """Edits the message content caption\. Returns the edited message after the edit is completed on the server side
+        """Edits the message content caption\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Args:
             chat_id (``int``):
@@ -3471,6 +3562,9 @@ class TDLibFunctions:
 
             message_id (``int``):
                 Identifier of the message
+
+            show_caption_above_media (``bool``):
+                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none; for bots only
@@ -3489,6 +3583,7 @@ class TDLibFunctions:
             "message_id": message_id,
             "reply_markup": reply_markup,
             "caption": caption,
+            "show_caption_above_media": show_caption_above_media,
         }
 
         return await self.invoke(data)
@@ -3496,7 +3591,7 @@ class TDLibFunctions:
     async def editMessageReplyMarkup(
         self, chat_id: int, message_id: int, reply_markup: dict = None
     ) -> Result:
-        """Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side
+        """Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Args:
             chat_id (``int``):
@@ -3634,13 +3729,20 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def editInlineMessageCaption(
-        self, inline_message_id: str, reply_markup: dict = None, caption: dict = None
+        self,
+        inline_message_id: str,
+        show_caption_above_media: bool,
+        reply_markup: dict = None,
+        caption: dict = None,
     ) -> Result:
         """Edits the caption of an inline message sent via a bot; for bots only
 
         Args:
             inline_message_id (``str``):
                 Inline message identifier
+
+            show_caption_above_media (``bool``):
+                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none
@@ -3658,6 +3760,7 @@ class TDLibFunctions:
             "inline_message_id": inline_message_id,
             "reply_markup": reply_markup,
             "caption": caption,
+            "show_caption_above_media": show_caption_above_media,
         }
 
         return await self.invoke(data)
@@ -3716,12 +3819,42 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def setMessageFactCheck(
+        self, chat_id: int, message_id: int, text: dict = None
+    ) -> Result:
+        """Changes the fact\-check of a message\. Can be only used if getOption\("can\_edit\_fact\_check"\) \=\= true
+
+        Args:
+            chat_id (``int``):
+                The channel chat the message belongs to
+
+            message_id (``int``):
+                Identifier of the message
+
+            text (``formattedText``, *optional*):
+                New text of the fact\-check; 0\-getOption\("fact\_check\_length\_max"\) characters; pass null to remove it\. Only Bold, Italic, and TextUrl entities with https://t\.me/ links are supported
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setMessageFactCheck",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "text": text,
+        }
+
+        return await self.invoke(data)
+
     async def sendBusinessMessage(
         self,
         business_connection_id: str,
         chat_id: int,
         disable_notification: bool,
         protect_content: bool,
+        effect_id: int,
         input_message_content: dict,
         reply_to: dict = None,
         reply_markup: dict = None,
@@ -3740,6 +3873,9 @@ class TDLibFunctions:
 
             protect_content (``bool``):
                 Pass true if the content of the message must be protected from forwarding and saving
+
+            effect_id (``int``):
+                Identifier of the effect to apply to the message
 
             input_message_content (``InputMessageContent``):
                 The content of the message to be sent
@@ -3762,6 +3898,7 @@ class TDLibFunctions:
             "reply_to": reply_to,
             "disable_notification": disable_notification,
             "protect_content": protect_content,
+            "effect_id": effect_id,
             "reply_markup": reply_markup,
             "input_message_content": input_message_content,
         }
@@ -3774,6 +3911,7 @@ class TDLibFunctions:
         chat_id: int,
         disable_notification: bool,
         protect_content: bool,
+        effect_id: int,
         input_message_contents: list,
         reply_to: dict = None,
     ) -> Result:
@@ -3792,8 +3930,11 @@ class TDLibFunctions:
             protect_content (``bool``):
                 Pass true if the content of the message must be protected from forwarding and saving
 
+            effect_id (``int``):
+                Identifier of the effect to apply to the message
+
             input_message_contents (``list``):
-                Contents of messages to be sent\. At most 10 messages can be added to an album
+                Contents of messages to be sent\. At most 10 messages can be added to an album\. All messages must have the same value of show\_caption\_above\_media
 
             reply_to (``InputMessageReplyTo``, *optional*):
                 Information about the message to be replied; pass null if none
@@ -3810,6 +3951,7 @@ class TDLibFunctions:
             "reply_to": reply_to,
             "disable_notification": disable_notification,
             "protect_content": protect_content,
+            "effect_id": effect_id,
             "input_message_contents": input_message_contents,
         }
 
@@ -4037,7 +4179,7 @@ class TDLibFunctions:
                 Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none
 
             input_message_contents (``list``):
-                Contents of messages to be sent\. At most 10 messages can be added to an album
+                Contents of messages to be sent\. At most 10 messages can be added to an album\. All messages must have the same value of show\_caption\_above\_media
 
 
         Returns:
@@ -4726,6 +4868,25 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getMessageEffect(self, effect_id: int) -> Result:
+        """Returns information about a message effect\. Returns a 404 error if the effect is not found
+
+        Args:
+            effect_id (``int``):
+                Unique identifier of the effect
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``MessageEffect``)
+        """
+
+        data = {
+            "@type": "getMessageEffect",
+            "effect_id": effect_id,
+        }
+
+        return await self.invoke(data)
+
     async def searchQuote(self, text: dict, quote: dict, quote_position: int) -> Result:
         """Searches for a given quote in a text\. Returns found quote start position in UTF\-16 code units\. Returns a 404 error if the quote is not found\. Can be called synchronously
 
@@ -4773,7 +4934,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def parseTextEntities(self, text: str, parse_mode: dict) -> Result:
-        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked\-up text\. Can be called synchronously
+        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked\-up text\. Can be called synchronously
 
         Args:
             text (``str``):
@@ -9635,6 +9796,31 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def setApplicationVerificationToken(
+        self, verification_id: int, token: str
+    ) -> Result:
+        """Application verification has been completed\. Can be called before authorization
+
+        Args:
+            verification_id (``int``):
+                Unique identifier for the verification process as received from updateApplicationVerificationRequired
+
+            token (``str``):
+                Play Integrity API token for the Android application, or secret from push notification for the iOS application; pass an empty string to abort verification and receive error VERIFICATION\_FAILED for the request
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setApplicationVerificationToken",
+            "verification_id": verification_id,
+            "token": token,
+        }
+
+        return await self.invoke(data)
+
     async def getMessageFileType(self, message_file_head: str) -> Result:
         """Returns information about a file with messages exported from another application
 
@@ -11420,12 +11606,17 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def searchUserByPhoneNumber(self, phone_number: str) -> Result:
+    async def searchUserByPhoneNumber(
+        self, phone_number: str, only_local: bool
+    ) -> Result:
         """Searches a user by their phone number\. Returns a 404 error if the user can't be found
 
         Args:
             phone_number (``str``):
                 Phone number to search for
+
+            only_local (``bool``):
+                Pass true to get only locally available information without sending network requests
 
 
         Returns:
@@ -11435,6 +11626,7 @@ class TDLibFunctions:
         data = {
             "@type": "searchUserByPhoneNumber",
             "phone_number": phone_number,
+            "only_local": only_local,
         }
 
         return await self.invoke(data)
@@ -12778,7 +12970,7 @@ class TDLibFunctions:
 
         Args:
             token (``str``):
-                SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
+                Play Integrity API or SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
 
 
         Returns:
@@ -12793,7 +12985,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def reportPhoneNumberCodeMissing(self, mobile_network_code: str) -> Result:
-        """Reports that authentication code wasn't delivered via SMS to the specified phone number; for official mobile apps only
+        """Reports that authentication code wasn't delivered via SMS to the specified phone number; for official mobile applications only
 
         Args:
             mobile_network_code (``str``):
@@ -12811,8 +13003,12 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def resendPhoneNumberCode(self) -> Result:
+    async def resendPhoneNumberCode(self, reason: dict = None) -> Result:
         """Resends the authentication code sent to a phone number\. Works only if the previously received authenticationCodeInfo next\_code\_type was not null and the server\-specified timeout has passed
+
+        Args:
+            reason (``ResendCodeReason``, *optional*):
+                Reason of code resending; pass null if unknown
 
 
         Returns:
@@ -12821,6 +13017,7 @@ class TDLibFunctions:
 
         data = {
             "@type": "resendPhoneNumberCode",
+            "reason": reason,
         }
 
         return await self.invoke(data)
@@ -13915,7 +14112,7 @@ class TDLibFunctions:
 
         Args:
             supergroup_id (``int``):
-                Identifier of the supergroup
+                Identifier of the supergroup that isn't a broadcast group
 
             join_to_send_messages (``bool``):
                 New value of join\_to\_send\_messages
@@ -13940,7 +14137,7 @@ class TDLibFunctions:
 
         Args:
             supergroup_id (``int``):
-                Identifier of the channel
+                Identifier of the supergroup that isn't a broadcast group
 
             join_by_request (``bool``):
                 New value of join\_by\_request
@@ -14323,8 +14520,8 @@ class TDLibFunctions:
         payment_form_id: int,
         order_info_id: str,
         shipping_option_id: str,
-        credentials: dict,
         tip_amount: int,
+        credentials: dict = None,
     ) -> Result:
         """Sends a filled\-out payment form to the bot for final verification
 
@@ -14341,11 +14538,11 @@ class TDLibFunctions:
             shipping_option_id (``str``):
                 Identifier of a chosen shipping option, if applicable
 
-            credentials (``InputCredentials``):
-                The credentials chosen by user for payment
-
             tip_amount (``int``):
                 Chosen by the user amount of tip in the smallest units of the currency
+
+            credentials (``InputCredentials``, *optional*):
+                The credentials chosen by user for payment; pass null for a payment in Telegram stars
 
 
         Returns:
@@ -14444,6 +14641,31 @@ class TDLibFunctions:
         data = {
             "@type": "createInvoiceLink",
             "invoice": invoice,
+        }
+
+        return await self.invoke(data)
+
+    async def refundStarPayment(
+        self, user_id: int, telegram_payment_charge_id: str
+    ) -> Result:
+        """Refunds a previously done payment in Telegram Stars
+
+        Args:
+            user_id (``int``):
+                Identifier of the user that did the payment
+
+            telegram_payment_charge_id (``str``):
+                Telegram payment identifier
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "refundStarPayment",
+            "user_id": user_id,
+            "telegram_payment_charge_id": telegram_payment_charge_id,
         }
 
         return await self.invoke(data)
@@ -16704,8 +16926,45 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def canPurchasePremium(self, purpose: dict) -> Result:
-        """Checks whether Telegram Premium purchase is possible\. Must be called before in\-store Premium purchase
+    async def getStarPaymentOptions(self) -> Result:
+        """Returns available options for Telegram stars purchase
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StarPaymentOptions``)
+        """
+
+        data = {
+            "@type": "getStarPaymentOptions",
+        }
+
+        return await self.invoke(data)
+
+    async def getStarTransactions(self, offset: str, direction: dict = None) -> Result:
+        """Returns the list of Telegram star transactions for the current user
+
+        Args:
+            offset (``str``):
+                Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results
+
+            direction (``StarTransactionDirection``, *optional*):
+                Direction of the transactions to receive; pass null to get all transactions
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StarTransactions``)
+        """
+
+        data = {
+            "@type": "getStarTransactions",
+            "offset": offset,
+            "direction": direction,
+        }
+
+        return await self.invoke(data)
+
+    async def canPurchaseFromStore(self, purpose: dict) -> Result:
+        """Checks whether an in\-store purchase is possible\. Must be called before any in\-store purchase
 
         Args:
             purpose (``StorePaymentPurpose``):
@@ -16717,7 +16976,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "canPurchasePremium",
+            "@type": "canPurchaseFromStore",
             "purpose": purpose,
         }
 

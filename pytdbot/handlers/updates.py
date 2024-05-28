@@ -465,6 +465,42 @@ class Updates:
 
         return decorator
 
+    def on_updateMessageFactCheck(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A fact\-check added to a message was changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateMessageFactCheck", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateMessageFactCheck", self, position)
+            else:
+                func._handler = Handler(
+                    func, "updateMessageFactCheck", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateMessageLiveLocationViewed(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -2955,6 +2991,46 @@ class Updates:
 
         return decorator
 
+    def on_updateApplicationVerificationRequired(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A request can't be completed unless application verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateApplicationVerificationRequired", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateApplicationVerificationRequired", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateApplicationVerificationRequired", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateCall(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -4213,6 +4289,46 @@ class Updates:
 
         return decorator
 
+    def on_updateAvailableMessageEffects(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The list of available message effects has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateAvailableMessageEffects", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateAvailableMessageEffects", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateAvailableMessageEffects", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateDefaultReactionType(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -4285,6 +4401,40 @@ class Updates:
                 func._handler = Handler(
                     func, "updateSavedMessagesTags", filters, position
                 )
+            return func
+
+        return decorator
+
+    def on_updateOwnedStarCount(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The number of Telegram stars owned by the current user has changed
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateOwnedStarCount", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateOwnedStarCount", self, position)
+            else:
+                func._handler = Handler(func, "updateOwnedStarCount", filters, position)
             return func
 
         return decorator
