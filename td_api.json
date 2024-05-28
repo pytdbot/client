@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.29",
-    "commit_hash": "44b548c3075818af24409f561bd0390a84d3a727",
+    "version": "1.8.30",
+    "commit_hash": "fab354add5a257a8121a4a7f1ff6b1b9fa9a9073",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -161,6 +161,26 @@
             ],
             "functions": []
         },
+        "StarTransactionDirection": {
+            "description": "Describes direction of a transaction with Telegram stars",
+            "types": [
+                "starTransactionDirectionIncoming",
+                "starTransactionDirectionOutgoing"
+            ],
+            "functions": []
+        },
+        "StarTransactionSource": {
+            "description": "Describes source or recipient of a transaction with Telegram stars",
+            "types": [
+                "starTransactionSourceTelegram",
+                "starTransactionSourceAppStore",
+                "starTransactionSourceGooglePlay",
+                "starTransactionSourceFragment",
+                "starTransactionSourceUser",
+                "starTransactionSourceUnsupported"
+            ],
+            "functions": []
+        },
         "PremiumGiveawayParticipantStatus": {
             "description": "Contains information about status of a user in a Telegram Premium giveaway",
             "types": [
@@ -278,6 +298,14 @@
             ],
             "functions": []
         },
+        "MessageEffectType": {
+            "description": "Describes type of emoji effect",
+            "types": [
+                "messageEffectTypeEmojiReaction",
+                "messageEffectTypePremiumSticker"
+            ],
+            "functions": []
+        },
         "MessageSendingState": {
             "description": "Contains information about the sending state of the message",
             "types": [
@@ -385,7 +413,7 @@
             "functions": []
         },
         "PublicChatType": {
-            "description": "Describes a type of public chats",
+            "description": "Describes type of public chat",
             "types": [
                 "publicChatTypeHasUsername",
                 "publicChatTypeIsLocationBased"
@@ -563,6 +591,22 @@
                 "paymentProviderSmartGlocal",
                 "paymentProviderStripe",
                 "paymentProviderOther"
+            ],
+            "functions": []
+        },
+        "PaymentFormType": {
+            "description": "Describes type of payment form",
+            "types": [
+                "paymentFormTypeRegular",
+                "paymentFormTypeStars"
+            ],
+            "functions": []
+        },
+        "PaymentReceiptType": {
+            "description": "Describes type of successful payment",
+            "types": [
+                "paymentReceiptTypeRegular",
+                "paymentReceiptTypeStars"
             ],
             "functions": []
         },
@@ -770,6 +814,7 @@
                 "textEntityTypePre",
                 "textEntityTypePreCode",
                 "textEntityTypeBlockQuote",
+                "textEntityTypeExpandableBlockQuote",
                 "textEntityTypeTextUrl",
                 "textEntityTypeMentionName",
                 "textEntityTypeCustomEmoji",
@@ -971,6 +1016,14 @@
             ],
             "functions": []
         },
+        "ResendCodeReason": {
+            "description": "Describes the reason why a code needs to be re-sent",
+            "types": [
+                "resendCodeReasonUserRequest",
+                "resendCodeReasonVerificationFailed"
+            ],
+            "functions": []
+        },
         "CallDiscardReason": {
             "description": "Describes the reason why a call was discarded",
             "types": [
@@ -1106,7 +1159,7 @@
             "functions": []
         },
         "InlineQueryResultsButtonType": {
-            "description": "Represents a type of button in results of inline query",
+            "description": "Represents type of button in results of inline query",
             "types": [
                 "inlineQueryResultsButtonTypeStartBot",
                 "inlineQueryResultsButtonTypeWebApp"
@@ -1290,7 +1343,8 @@
                 "storePaymentPurposePremiumSubscription",
                 "storePaymentPurposeGiftedPremium",
                 "storePaymentPurposePremiumGiftCodes",
-                "storePaymentPurposePremiumGiveaway"
+                "storePaymentPurposePremiumGiveaway",
+                "storePaymentPurposeStars"
             ],
             "functions": []
         },
@@ -1298,7 +1352,8 @@
             "description": "Describes a purpose of a payment toward Telegram",
             "types": [
                 "telegramPaymentPurposePremiumGiftCodes",
-                "telegramPaymentPurposePremiumGiveaway"
+                "telegramPaymentPurposePremiumGiveaway",
+                "telegramPaymentPurposeStars"
             ],
             "functions": []
         },
@@ -1662,7 +1717,7 @@
             ]
         },
         "BlockList": {
-            "description": "Describes a type of block list",
+            "description": "Describes type of block list",
             "types": [
                 "blockListMain",
                 "blockListStories"
@@ -2011,8 +2066,13 @@
         "authenticationCodeTypeFirebaseAndroid": {
             "description": "A digit-only authentication code is delivered via Firebase Authentication to the official Android application",
             "args": {
+                "use_play_integrity": {
+                    "description": "True, if Play Integrity API must be used for device verification. Otherwise, SafetyNet Attestation API must be used",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "nonce": {
-                    "description": "Nonce to pass to the SafetyNet Attestation API",
+                    "description": "Nonce to pass to the Play Integrity API or the SafetyNet Attestation API",
                     "is_optional": false,
                     "type": "bytes"
                 },
@@ -4412,6 +4472,27 @@
             },
             "type": "ChatAdministratorRights"
         },
+        "productInfo": {
+            "description": "Contains information about a product that can be paid with invoice",
+            "args": {
+                "title": {
+                    "description": "Product title",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "description": {
+                    "description": "Product description",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "photo": {
+                    "description": "Product photo; may be null",
+                    "is_optional": true,
+                    "type": "photo"
+                }
+            },
+            "type": "ProductInfo"
+        },
         "premiumPaymentOption": {
             "description": "Describes an option for buying Telegram Premium to a user",
             "args": {
@@ -4561,6 +4642,151 @@
                 }
             },
             "type": "PremiumGiftCodeInfo"
+        },
+        "starPaymentOption": {
+            "description": "Describes an option for buying Telegram stars",
+            "args": {
+                "currency": {
+                    "description": "ISO 4217 currency code for the payment",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "The amount to pay, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "star_count": {
+                    "description": "Number of stars that will be purchased",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "store_product_id": {
+                    "description": "Identifier of the store product associated with the option; may be empty if none",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "is_additional": {
+                    "description": "True, if the option must be shown only in the full list of payment options",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StarPaymentOption"
+        },
+        "starPaymentOptions": {
+            "description": "Contains a list of options for buying Telegram stars",
+            "args": {
+                "options": {
+                    "description": "The list of options",
+                    "is_optional": false,
+                    "type": "vector<starPaymentOption>"
+                }
+            },
+            "type": "StarPaymentOptions"
+        },
+        "starTransactionDirectionIncoming": {
+            "description": "The transaction is incoming and increases the number of owned Telegram stars",
+            "args": {},
+            "type": "StarTransactionDirection"
+        },
+        "starTransactionDirectionOutgoing": {
+            "description": "The transaction is outgoing and decreases the number of owned Telegram stars",
+            "args": {},
+            "type": "StarTransactionDirection"
+        },
+        "starTransactionSourceTelegram": {
+            "description": "The transaction is a transaction with Telegram through a bot",
+            "args": {},
+            "type": "StarTransactionSource"
+        },
+        "starTransactionSourceAppStore": {
+            "description": "The transaction is a transaction with App Store",
+            "args": {},
+            "type": "StarTransactionSource"
+        },
+        "starTransactionSourceGooglePlay": {
+            "description": "The transaction is a transaction with Google Play",
+            "args": {},
+            "type": "StarTransactionSource"
+        },
+        "starTransactionSourceFragment": {
+            "description": "The transaction is a transaction with Fragment",
+            "args": {},
+            "type": "StarTransactionSource"
+        },
+        "starTransactionSourceUser": {
+            "description": "The transaction is a transaction with another user",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "product_info": {
+                    "description": "Information about the bought product; may be null if none",
+                    "is_optional": true,
+                    "type": "productInfo"
+                }
+            },
+            "type": "StarTransactionSource"
+        },
+        "starTransactionSourceUnsupported": {
+            "description": "The transaction is a transaction with unknown source",
+            "args": {},
+            "type": "StarTransactionSource"
+        },
+        "starTransaction": {
+            "description": "Represents a transaction changing the amount of owned Telegram stars",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the transaction",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "star_count": {
+                    "description": "The amount of added owned Telegram stars; negative for outgoing transactions",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_refund": {
+                    "description": "True, if the transaction is a refund of a previous transaction",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the transaction was completed",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "source": {
+                    "description": "Source of the transaction, or its recipient for outgoing transactions",
+                    "is_optional": false,
+                    "type": "StarTransactionSource"
+                }
+            },
+            "type": "StarTransaction"
+        },
+        "starTransactions": {
+            "description": "Represents a list of Telegram star transactions",
+            "args": {
+                "star_count": {
+                    "description": "The amount of owned Telegram stars",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "transactions": {
+                    "description": "List of transactions with Telegram stars",
+                    "is_optional": false,
+                    "type": "vector<starTransaction>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StarTransactions"
         },
         "premiumGiveawayParticipantStatusEligible": {
             "description": "The user is eligible for the giveaway",
@@ -5802,7 +6028,7 @@
                     "type": "ChatMemberStatus"
                 },
                 "member_count": {
-                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo.missing_chat_ids, or for public chats in which where sent messages and posted stories from publicForwards, or for public chats in which where sent messages from getMessagePublicForwards response",
+                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo.missing_chat_ids, or in userFullInfo.personal_chat_id, or for chats with messages or stories from publicForwards",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -6503,6 +6729,64 @@
             },
             "type": "UnreadReaction"
         },
+        "messageEffectTypeEmojiReaction": {
+            "description": "An effect from an emoji reaction",
+            "args": {
+                "select_animation": {
+                    "description": "Select animation for the effect in TGS format",
+                    "is_optional": false,
+                    "type": "sticker"
+                },
+                "effect_animation": {
+                    "description": "Effect animation for the effect in TGS format",
+                    "is_optional": false,
+                    "type": "sticker"
+                }
+            },
+            "type": "MessageEffectType"
+        },
+        "messageEffectTypePremiumSticker": {
+            "description": "An effect from a premium sticker",
+            "args": {
+                "sticker": {
+                    "description": "The premium sticker. The effect can be found at sticker.full_type.premium_animation",
+                    "is_optional": false,
+                    "type": "sticker"
+                }
+            },
+            "type": "MessageEffectType"
+        },
+        "messageEffect": {
+            "description": "Contains information about an effect added to a message",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the effect",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "static_icon": {
+                    "description": "Static icon for the effect in WEBP format; may be null if none",
+                    "is_optional": true,
+                    "type": "sticker"
+                },
+                "emoji": {
+                    "description": "Emoji corresponding to the effect that can be used if static icon isn't available",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_premium": {
+                    "description": "True, if Telegram Premium subscription is required to use the effect",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "type": {
+                    "description": "Type of the effect",
+                    "is_optional": false,
+                    "type": "MessageEffectType"
+                }
+            },
+            "type": "MessageEffect"
+        },
         "messageSendingStatePending": {
             "description": "The message is being sent now, but has not yet been delivered to the server",
             "args": {
@@ -6676,6 +6960,22 @@
             },
             "type": "InputMessageReplyTo"
         },
+        "factCheck": {
+            "description": "Describes a fact-check added to the message by an independent checker",
+            "args": {
+                "text": {
+                    "description": "Text of the fact-check",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "country_code": {
+                    "description": "A two-letter ISO 3166-1 alpha-2 country code of the country for which the fact-check is shown",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "FactCheck"
+        },
         "message": {
             "description": "Describes a message",
             "args": {
@@ -6834,6 +7134,11 @@
                     "is_optional": false,
                     "type": "vector<unreadReaction>"
                 },
+                "fact_check": {
+                    "description": "Information about fact-check added to the message; may be null if none",
+                    "is_optional": true,
+                    "type": "factCheck"
+                },
                 "reply_to": {
                     "description": "Information about the message or the story this message is replying to; may be null if none",
                     "is_optional": true,
@@ -6886,6 +7191,11 @@
                 },
                 "media_album_id": {
                     "description": "Unique identifier of an album this message belongs to; 0 if none. Only audios, documents, photos and videos can be grouped together in albums",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "effect_id": {
+                    "description": "Unique identifier of the effect added to the message; 0 if none",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -10786,23 +11096,13 @@
             },
             "type": "PaymentOption"
         },
-        "paymentForm": {
-            "description": "Contains information about an invoice payment form",
+        "paymentFormTypeRegular": {
+            "description": "The payment form is for a regular payment",
             "args": {
-                "id": {
-                    "description": "The payment form identifier",
-                    "is_optional": false,
-                    "type": "int64"
-                },
                 "invoice": {
                     "description": "Full information about the invoice",
                     "is_optional": false,
                     "type": "invoice"
-                },
-                "seller_bot_user_id": {
-                    "description": "User identifier of the seller bot",
-                    "is_optional": false,
-                    "type": "int53"
                 },
                 "payment_provider_user_id": {
                     "description": "User identifier of the payment provider bot",
@@ -10838,21 +11138,43 @@
                     "description": "True, if the user will be able to save credentials, if sets up a 2-step verification password",
                     "is_optional": false,
                     "type": "Bool"
-                },
-                "product_title": {
-                    "description": "Product title",
+                }
+            },
+            "type": "PaymentFormType"
+        },
+        "paymentFormTypeStars": {
+            "description": "The payment form is for a payment in Telegram stars",
+            "args": {
+                "star_count": {
+                    "description": "Number of stars that will be paid",
                     "is_optional": false,
-                    "type": "string"
-                },
-                "product_description": {
-                    "description": "Product description",
+                    "type": "int53"
+                }
+            },
+            "type": "PaymentFormType"
+        },
+        "paymentForm": {
+            "description": "Contains information about an invoice payment form",
+            "args": {
+                "id": {
+                    "description": "The payment form identifier",
                     "is_optional": false,
-                    "type": "formattedText"
+                    "type": "int64"
                 },
-                "product_photo": {
-                    "description": "Product photo; may be null",
-                    "is_optional": true,
-                    "type": "photo"
+                "type": {
+                    "description": "Type of the payment form",
+                    "is_optional": false,
+                    "type": "PaymentFormType"
+                },
+                "seller_bot_user_id": {
+                    "description": "User identifier of the seller bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "product_info": {
+                    "description": "Information about the product",
+                    "is_optional": false,
+                    "type": "productInfo"
                 }
             },
             "type": "PaymentForm"
@@ -10889,34 +11211,9 @@
             },
             "type": "PaymentResult"
         },
-        "paymentReceipt": {
-            "description": "Contains information about a successful payment",
+        "paymentReceiptTypeRegular": {
+            "description": "The payment was done using a third-party payment provider",
             "args": {
-                "title": {
-                    "description": "Product title",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "description": {
-                    "description": "Product description",
-                    "is_optional": false,
-                    "type": "formattedText"
-                },
-                "photo": {
-                    "description": "Product photo; may be null",
-                    "is_optional": true,
-                    "type": "photo"
-                },
-                "date": {
-                    "description": "Point in time (Unix timestamp) when the payment was made",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "seller_bot_user_id": {
-                    "description": "User identifier of the seller bot",
-                    "is_optional": false,
-                    "type": "int53"
-                },
                 "payment_provider_user_id": {
                     "description": "User identifier of the payment provider bot",
                     "is_optional": false,
@@ -10946,6 +11243,48 @@
                     "description": "The amount of tip chosen by the buyer in the smallest units of the currency",
                     "is_optional": false,
                     "type": "int53"
+                }
+            },
+            "type": "PaymentReceiptType"
+        },
+        "paymentReceiptTypeStars": {
+            "description": "The payment was done using Telegram stars",
+            "args": {
+                "star_count": {
+                    "description": "Number of stars that were paid",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "transaction_id": {
+                    "description": "Unique identifier of the transaction that can be used to dispute it",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "PaymentReceiptType"
+        },
+        "paymentReceipt": {
+            "description": "Contains information about a successful payment",
+            "args": {
+                "product_info": {
+                    "description": "Information about the product",
+                    "is_optional": false,
+                    "type": "productInfo"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the payment was made",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "seller_bot_user_id": {
+                    "description": "User identifier of the seller bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "type": {
+                    "description": "Type of the payment receipt",
+                    "is_optional": false,
+                    "type": "PaymentReceiptType"
                 }
             },
             "type": "PaymentReceipt"
@@ -12051,6 +12390,11 @@
                     "is_optional": false,
                     "type": "formattedText"
                 },
+                "show_caption_above_media": {
+                    "description": "True, if caption must be shown above the animation; otherwise, caption must be shown below the animation",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "has_spoiler": {
                     "description": "True, if the animation preview must be covered by a spoiler animation",
                     "is_optional": false,
@@ -12109,6 +12453,11 @@
                     "is_optional": false,
                     "type": "formattedText"
                 },
+                "show_caption_above_media": {
+                    "description": "True, if caption must be shown above the photo; otherwise, caption must be shown below the photo",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "has_spoiler": {
                     "description": "True, if the photo preview must be covered by a spoiler animation",
                     "is_optional": false,
@@ -12150,6 +12499,11 @@
                     "description": "Video caption",
                     "is_optional": false,
                     "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "True, if caption must be shown above the video; otherwise, caption must be shown below the video",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "has_spoiler": {
                     "description": "True, if the video preview must be covered by a spoiler animation",
@@ -12372,20 +12726,10 @@
         "messageInvoice": {
             "description": "A message with an invoice from a bot. Use getInternalLink with internalLinkTypeBotStart to share the invoice",
             "args": {
-                "title": {
-                    "description": "Product title",
+                "product_info": {
+                    "description": "Information about the product",
                     "is_optional": false,
-                    "type": "string"
-                },
-                "description": {
-                    "description": "Product description",
-                    "is_optional": false,
-                    "type": "formattedText"
-                },
-                "photo": {
-                    "description": "Product photo; may be null",
-                    "is_optional": true,
-                    "type": "photo"
+                    "type": "productInfo"
                 },
                 "currency": {
                     "description": "Currency for the product price",
@@ -13307,7 +13651,12 @@
             "type": "TextEntityType"
         },
         "textEntityTypeBlockQuote": {
-            "description": "Text that must be formatted as if inside a blockquote HTML tag",
+            "description": "Text that must be formatted as if inside a blockquote HTML tag; not supported in secret chats",
+            "args": {},
+            "type": "TextEntityType"
+        },
+        "textEntityTypeExpandableBlockQuote": {
+            "description": "Text that must be formatted as if inside a blockquote HTML tag and collapsed by default to 3 lines with the ability to show full text; not supported in secret chats",
             "args": {},
             "type": "TextEntityType"
         },
@@ -13436,6 +13785,11 @@
                     "is_optional": true,
                     "type": "MessageSchedulingState"
                 },
+                "effect_id": {
+                    "description": "Identifier of the effect to apply to the message; applicable only to sendMessage and sendMessageAlbum in private chats",
+                    "is_optional": false,
+                    "type": "int64"
+                },
                 "sending_id": {
                     "description": "Non-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates",
                     "is_optional": false,
@@ -13466,6 +13820,11 @@
                     "description": "New message caption; pass null to copy message without caption. Ignored if replace_caption is false",
                     "is_optional": true,
                     "type": "formattedText"
+                },
+                "new_show_caption_above_media": {
+                    "description": "True, if new caption must be shown above the animation; otherwise, new caption must be shown below the animation; not supported in secret chats. Ignored if replace_caption is false",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "MessageCopyOptions"
@@ -13474,7 +13833,7 @@
             "description": "A text message",
             "args": {
                 "text": {
-                    "description": "Formatted text to be sent; 0-getOption(\"message_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually",
+                    "description": "Formatted text to be sent; 0-getOption(\"message_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually",
                     "is_optional": false,
                     "type": "formattedText"
                 },
@@ -13528,6 +13887,11 @@
                     "description": "Animation caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "True, if caption must be shown above the animation; otherwise, caption must be shown below the animation; not supported in secret chats",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "has_spoiler": {
                     "description": "True, if the animation preview must be covered by a spoiler animation; not supported in secret chats",
@@ -13632,6 +13996,11 @@
                     "is_optional": true,
                     "type": "formattedText"
                 },
+                "show_caption_above_media": {
+                    "description": "True, if caption must be shown above the photo; otherwise, caption must be shown below the photo; not supported in secret chats",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "self_destruct_type": {
                     "description": "Photo self-destruct type; pass null if none; private chats only",
                     "is_optional": true,
@@ -13718,6 +14087,11 @@
                     "description": "Video caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "True, if caption must be shown above the video; otherwise, caption must be shown below the video; not supported in secret chats",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "self_destruct_type": {
                     "description": "Video self-destruct type; pass null if none; private chats only",
@@ -13918,8 +14292,8 @@
                     "type": "bytes"
                 },
                 "provider_token": {
-                    "description": "Payment provider token",
-                    "is_optional": false,
+                    "description": "Payment provider token; may be empty for payments in Telegram Stars",
+                    "is_optional": true,
                     "type": "string"
                 },
                 "provider_data": {
@@ -14539,7 +14913,7 @@
             "type": "EmojiCategorySource"
         },
         "emojiCategorySourcePremium": {
-            "description": "The category contains Premium stickers that must be found by getPremiumStickers",
+            "description": "The category contains premium stickers that must be found by getPremiumStickers",
             "args": {},
             "type": "EmojiCategorySource"
         },
@@ -14586,7 +14960,7 @@
             "type": "EmojiCategoryType"
         },
         "emojiCategoryTypeRegularStickers": {
-            "description": "The category must be used by default for regular sticker selection. It may contain greeting emoji category and Premium stickers",
+            "description": "The category must be used by default for regular sticker selection. It may contain greeting emoji category and premium stickers",
             "args": {},
             "type": "EmojiCategoryType"
         },
@@ -15808,6 +16182,22 @@
                 }
             },
             "type": "ChatBoostSlots"
+        },
+        "resendCodeReasonUserRequest": {
+            "description": "The user requested to resend the code",
+            "args": {},
+            "type": "ResendCodeReason"
+        },
+        "resendCodeReasonVerificationFailed": {
+            "description": "The code is re-sent, because device verification has failed",
+            "args": {
+                "error_message": {
+                    "description": "Cause of the verification failure, for example, PLAY_SERVICES_NOT_AVAILABLE, APNS_RECEIVE_TIMEOUT, APNS_INIT_FAILED, etc.",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "ResendCodeReason"
         },
         "callDiscardReasonEmpty": {
             "description": "The call wasn't discarded, or the reason is unknown",
@@ -19556,6 +19946,27 @@
             },
             "type": "StorePaymentPurpose"
         },
+        "storePaymentPurposeStars": {
+            "description": "The user buying Telegram stars",
+            "args": {
+                "currency": {
+                    "description": "ISO 4217 currency code of the payment currency",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "Paid amount, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "star_count": {
+                    "description": "Number of bought stars",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StorePaymentPurpose"
+        },
         "telegramPaymentPurposePremiumGiftCodes": {
             "description": "The user creating Telegram Premium gift codes for other users",
             "args": {
@@ -19614,6 +20025,27 @@
                     "description": "Number of months the Telegram Premium subscription will be active for the users",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "TelegramPaymentPurpose"
+        },
+        "telegramPaymentPurposeStars": {
+            "description": "The user buying Telegram stars",
+            "args": {
+                "currency": {
+                    "description": "ISO 4217 currency code of the payment currency",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "Paid amount, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "star_count": {
+                    "description": "Number of bought stars",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "TelegramPaymentPurpose"
@@ -21974,7 +22406,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePublicChat": {
-            "description": "The link is a link to a chat by its username. Call searchPublicChat with the given chat username to process the link If the chat is found, open its profile information screen or the chat itself. If draft text isn't empty and the chat is a private chat, then put the draft text in the input field",
+            "description": "The link is a link to a chat by its username. Call searchPublicChat with the given chat username to process the link If the chat is found, open its profile information screen or the chat itself. If draft text isn't empty and the chat is a private chat with a regular user, then put the draft text in the input field",
             "args": {
                 "chat_username": {
                     "description": "Username of the chat",
@@ -23850,7 +24282,7 @@
             "type": "BotCommandScope"
         },
         "phoneNumberCodeTypeChange": {
-            "description": "Checks ownership of a new phone number to change the user's authentication phone number; for official Android and iOS applications only.",
+            "description": "Checks ownership of a new phone number to change the user's authentication phone number; for official Android and iOS applications only",
             "args": {},
             "type": "PhoneNumberCodeType"
         },
@@ -24246,6 +24678,27 @@
                     "description": "The new number of messages with unread reactions left in the chat",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "Update"
+        },
+        "updateMessageFactCheck": {
+            "description": "A fact-check added to a message was changed",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Message identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "fact_check": {
+                    "description": "The new fact-check",
+                    "is_optional": false,
+                    "type": "factCheck"
                 }
             },
             "type": "Update"
@@ -25362,6 +25815,22 @@
             },
             "type": "Update"
         },
+        "updateApplicationVerificationRequired": {
+            "description": "A request can't be completed unless application verification is performed; for official mobile applications only. The method setApplicationVerificationToken must be called once the verification is completed or failed",
+            "args": {
+                "verification_id": {
+                    "description": "Unique identifier for the verification process",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "nonce": {
+                    "description": "Unique nonce for the classic Play Integrity verification (https://developer.android.com/google/play/integrity/classic) for Android, or a unique string to compare with verify_nonce field from a push notification for iOS",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Update"
+        },
         "updateCall": {
             "description": "New call was created or information about a call was updated",
             "args": {
@@ -25866,6 +26335,22 @@
             },
             "type": "Update"
         },
+        "updateAvailableMessageEffects": {
+            "description": "The list of available message effects has changed",
+            "args": {
+                "reaction_effect_ids": {
+                    "description": "The new list of available message effects from emoji reactions",
+                    "is_optional": false,
+                    "type": "vector<int64>"
+                },
+                "sticker_effect_ids": {
+                    "description": "The new list of available message effects from Premium stickers",
+                    "is_optional": false,
+                    "type": "vector<int64>"
+                }
+            },
+            "type": "Update"
+        },
         "updateDefaultReactionType": {
             "description": "The type of default reaction has changed",
             "args": {
@@ -25893,9 +26378,31 @@
             },
             "type": "Update"
         },
+        "updateOwnedStarCount": {
+            "description": "The number of Telegram stars owned by the current user has changed",
+            "args": {
+                "star_count": {
+                    "description": "The new number of Telegram stars owned",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Update"
+        },
         "updateChatRevenueAmount": {
             "description": "The revenue earned from sponsored messages in a chat has changed. If chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions",
-            "args": {},
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "revenue_amount": {
+                    "description": "New amount of earned revenue",
+                    "is_optional": false,
+                    "type": "chatRevenueAmount"
+                }
+            },
             "type": "Update"
         },
         "updateSpeechRecognitionTrial": {
@@ -26628,7 +27135,13 @@
         },
         "resendAuthenticationCode": {
             "description": "Resends an authentication code to the user. Works only when the current authorization state is authorizationStateWaitCode, the next_code_type of the result is not null and the server-specified timeout has passed, or when the current authorization state is authorizationStateWaitEmailCode",
-            "args": {},
+            "args": {
+                "reason": {
+                    "description": "Reason of code resending; pass null if unknown",
+                    "is_optional": true,
+                    "type": "ResendCodeReason"
+                }
+            },
             "type": "Ok"
         },
         "checkAuthenticationEmailCode": {
@@ -26742,7 +27255,7 @@
             "description": "Sends Firebase Authentication SMS to the phone number of the user. Works only when the current authorization state is authorizationStateWaitCode and the server returned code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos",
             "args": {
                 "token": {
-                    "description": "SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application",
+                    "description": "Play Integrity API or SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -26750,7 +27263,7 @@
             "type": "Ok"
         },
         "reportAuthenticationCodeMissing": {
-            "description": "Reports that authentication code wasn't delivered via SMS; for official mobile apps only. Works only when the current authorization state is authorizationStateWaitCode",
+            "description": "Reports that authentication code wasn't delivered via SMS; for official mobile applications only. Works only when the current authorization state is authorizationStateWaitCode",
             "args": {
                 "mobile_network_code": {
                     "description": "Current mobile network code",
@@ -27968,6 +28481,59 @@
             },
             "type": "FoundMessages"
         },
+        "searchPublicHashtagMessages": {
+            "description": "Searches for public channel posts with the given hashtag. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+            "args": {
+                "hashtag": {
+                    "description": "Hashtag to search for",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "FoundMessages"
+        },
+        "getSearchedForHashtags": {
+            "description": "Returns recently searched for hashtags by their prefix",
+            "args": {
+                "prefix": {
+                    "description": "Prefix of hashtags to return",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of hashtags to be returned",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Hashtags"
+        },
+        "removeSearchedForHashtag": {
+            "description": "Removes a hashtag from the list of recently searched for hashtags",
+            "args": {
+                "hashtag": {
+                    "description": "Hashtag to delete",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
+        "clearSearchedForHashtags": {
+            "description": "Clears the list of recently searched for hashtags",
+            "args": {},
+            "type": "Ok"
+        },
         "deleteAllCallMessages": {
             "description": "Deletes all call messages",
             "args": {
@@ -28445,7 +29011,7 @@
                     "type": "messageSendOptions"
                 },
                 "input_message_contents": {
-                    "description": "Contents of messages to be sent. At most 10 messages can be added to an album",
+                    "description": "Contents of messages to be sent. At most 10 messages can be added to an album. All messages must have the same value of show_caption_above_media",
                     "is_optional": false,
                     "type": "vector<InputMessageContent>"
                 }
@@ -28692,7 +29258,7 @@
             "type": "Ok"
         },
         "editMessageText": {
-            "description": "Edits the text of a message (or a text of a game message). Returns the edited message after the edit is completed on the server side",
+            "description": "Edits the text of a message (or a text of a game message). Returns the edited message after the edit is completed on the server side. Can be used only if message.can_be_edited == true",
             "args": {
                 "chat_id": {
                     "description": "The chat the message belongs to",
@@ -28718,7 +29284,7 @@
             "type": "Message"
         },
         "editMessageLiveLocation": {
-            "description": "Edits the message content of a live location. Messages can be edited for a limited period of time specified in the live location. Returns the edited message after the edit is completed on the server side",
+            "description": "Edits the message content of a live location. Messages can be edited for a limited period of time specified in the live location. Returns the edited message after the edit is completed on the server side. Can be used only if message.can_be_edited == true",
             "args": {
                 "chat_id": {
                     "description": "The chat the message belongs to",
@@ -28759,7 +29325,7 @@
             "type": "Message"
         },
         "editMessageMedia": {
-            "description": "Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption. If only the caption needs to be edited, use editMessageCaption instead. The media can't be edited if the message was set to self-destruct or to a self-destructing media. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa. Returns the edited message after the edit is completed on the server side",
+            "description": "Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption. If only the caption needs to be edited, use editMessageCaption instead. The media can't be edited if the message was set to self-destruct or to a self-destructing media. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa. Returns the edited message after the edit is completed on the server side. Can be used only if message.can_be_edited == true",
             "args": {
                 "chat_id": {
                     "description": "The chat the message belongs to",
@@ -28785,7 +29351,7 @@
             "type": "Message"
         },
         "editMessageCaption": {
-            "description": "Edits the message content caption. Returns the edited message after the edit is completed on the server side",
+            "description": "Edits the message content caption. Returns the edited message after the edit is completed on the server side. Can be used only if message.can_be_edited == true",
             "args": {
                 "chat_id": {
                     "description": "The chat the message belongs to",
@@ -28806,12 +29372,17 @@
                     "description": "New message content caption; 0-getOption(\"message_caption_length_max\") characters; pass null to remove caption",
                     "is_optional": true,
                     "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "Pass true to show the caption above the media; otherwise, caption will be shown below the media. Can be true only for animation, photo, and video messages",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Message"
         },
         "editMessageReplyMarkup": {
-            "description": "Edits the message reply markup; for bots only. Returns the edited message after the edit is completed on the server side",
+            "description": "Edits the message reply markup; for bots only. Returns the edited message after the edit is completed on the server side. Can be used only if message.can_be_edited == true",
             "args": {
                 "chat_id": {
                     "description": "The chat the message belongs to",
@@ -28926,6 +29497,11 @@
                     "description": "New message content caption; pass null to remove caption; 0-getOption(\"message_caption_length_max\") characters",
                     "is_optional": true,
                     "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "Pass true to show the caption above the media; otherwise, caption will be shown below the media. Can be true only for animation, photo, and video messages",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Ok"
@@ -28967,6 +29543,27 @@
             },
             "type": "Ok"
         },
+        "setMessageFactCheck": {
+            "description": "Changes the fact-check of a message. Can be only used if getOption(\"can_edit_fact_check\") == true",
+            "args": {
+                "chat_id": {
+                    "description": "The channel chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "text": {
+                    "description": "New text of the fact-check; 0-getOption(\"fact_check_length_max\") characters; pass null to remove it. Only Bold, Italic, and TextUrl entities with https://t.me/ links are supported",
+                    "is_optional": true,
+                    "type": "formattedText"
+                }
+            },
+            "type": "Ok"
+        },
         "sendBusinessMessage": {
             "description": "Sends a message on behalf of a business account; for bots only. Returns the message after it was sent",
             "args": {
@@ -28994,6 +29591,11 @@
                     "description": "Pass true if the content of the message must be protected from forwarding and saving",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "effect_id": {
+                    "description": "Identifier of the effect to apply to the message",
+                    "is_optional": false,
+                    "type": "int64"
                 },
                 "reply_markup": {
                     "description": "Markup for replying to the message; pass null if none",
@@ -29036,8 +29638,13 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "effect_id": {
+                    "description": "Identifier of the effect to apply to the message",
+                    "is_optional": false,
+                    "type": "int64"
+                },
                 "input_message_contents": {
-                    "description": "Contents of messages to be sent. At most 10 messages can be added to an album",
+                    "description": "Contents of messages to be sent. At most 10 messages can be added to an album. All messages must have the same value of show_caption_above_media",
                     "is_optional": false,
                     "type": "vector<InputMessageContent>"
                 }
@@ -29191,7 +29798,7 @@
                     "type": "int53"
                 },
                 "input_message_contents": {
-                    "description": "Contents of messages to be sent. At most 10 messages can be added to an album",
+                    "description": "Contents of messages to be sent. At most 10 messages can be added to an album. All messages must have the same value of show_caption_above_media",
                     "is_optional": false,
                     "type": "vector<InputMessageContent>"
                 }
@@ -29660,6 +30267,17 @@
             },
             "type": "Ok"
         },
+        "getMessageEffect": {
+            "description": "Returns information about a message effect. Returns a 404 error if the effect is not found",
+            "args": {
+                "effect_id": {
+                    "description": "Unique identifier of the effect",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "MessageEffect"
+        },
         "searchQuote": {
             "description": "Searches for a given quote in a text. Returns found quote start position in UTF-16 code units. Returns a 404 error if the quote is not found. Can be called synchronously",
             "args": {
@@ -29693,7 +30311,7 @@
             "type": "TextEntities"
         },
         "parseTextEntities": {
-            "description": "Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked-up text. Can be called synchronously",
+            "description": "Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked-up text. Can be called synchronously",
             "args": {
                 "text": {
                     "description": "The text to parse",
@@ -32944,6 +33562,22 @@
             },
             "type": "FoundFileDownloads"
         },
+        "setApplicationVerificationToken": {
+            "description": "Application verification has been completed. Can be called before authorization",
+            "args": {
+                "verification_id": {
+                    "description": "Unique identifier for the verification process as received from updateApplicationVerificationRequired",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "token": {
+                    "description": "Play Integrity API token for the Android application, or secret from push notification for the iOS application; pass an empty string to abort verification and receive error VERIFICATION_FAILED for the request",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
+        },
         "getMessageFileType": {
             "description": "Returns information about a file with messages exported from another application",
             "args": {
@@ -34147,6 +34781,11 @@
                     "description": "Phone number to search for",
                     "is_optional": false,
                     "type": "string"
+                },
+                "only_local": {
+                    "description": "Pass true to get only locally available information without sending network requests",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "User"
@@ -34976,7 +35615,7 @@
             "description": "Sends Firebase Authentication SMS to the specified phone number. Works only when received a code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos",
             "args": {
                 "token": {
-                    "description": "SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application",
+                    "description": "Play Integrity API or SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -34984,7 +35623,7 @@
             "type": "Ok"
         },
         "reportPhoneNumberCodeMissing": {
-            "description": "Reports that authentication code wasn't delivered via SMS to the specified phone number; for official mobile apps only",
+            "description": "Reports that authentication code wasn't delivered via SMS to the specified phone number; for official mobile applications only",
             "args": {
                 "mobile_network_code": {
                     "description": "Current mobile network code",
@@ -34996,7 +35635,13 @@
         },
         "resendPhoneNumberCode": {
             "description": "Resends the authentication code sent to a phone number. Works only if the previously received authenticationCodeInfo next_code_type was not null and the server-specified timeout has passed",
-            "args": {},
+            "args": {
+                "reason": {
+                    "description": "Reason of code resending; pass null if unknown",
+                    "is_optional": true,
+                    "type": "ResendCodeReason"
+                }
+            },
             "type": "AuthenticationCodeInfo"
         },
         "checkPhoneNumberCode": {
@@ -35671,7 +36316,7 @@
             "description": "Toggles whether joining is mandatory to send messages to a discussion supergroup; requires can_restrict_members administrator right",
             "args": {
                 "supergroup_id": {
-                    "description": "Identifier of the supergroup",
+                    "description": "Identifier of the supergroup that isn't a broadcast group",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -35687,7 +36332,7 @@
             "description": "Toggles whether all users directly joining the supergroup need to be approved by supergroup administrators; requires can_restrict_members administrator right",
             "args": {
                 "supergroup_id": {
-                    "description": "Identifier of the channel",
+                    "description": "Identifier of the supergroup that isn't a broadcast group",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -35961,8 +36606,8 @@
                     "type": "string"
                 },
                 "credentials": {
-                    "description": "The credentials chosen by user for payment",
-                    "is_optional": false,
+                    "description": "The credentials chosen by user for payment; pass null for a payment in Telegram stars",
+                    "is_optional": true,
                     "type": "InputCredentials"
                 },
                 "tip_amount": {
@@ -36014,6 +36659,22 @@
                 }
             },
             "type": "HttpUrl"
+        },
+        "refundStarPayment": {
+            "description": "Refunds a previously done payment in Telegram Stars",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user that did the payment",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "telegram_payment_charge_id": {
+                    "description": "Telegram payment identifier",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
         },
         "getSupportUser": {
             "description": "Returns a user that can be contacted to get support",
@@ -37451,8 +38112,29 @@
             },
             "type": "PremiumGiveawayInfo"
         },
-        "canPurchasePremium": {
-            "description": "Checks whether Telegram Premium purchase is possible. Must be called before in-store Premium purchase",
+        "getStarPaymentOptions": {
+            "description": "Returns available options for Telegram stars purchase",
+            "args": {},
+            "type": "StarPaymentOptions"
+        },
+        "getStarTransactions": {
+            "description": "Returns the list of Telegram star transactions for the current user",
+            "args": {
+                "offset": {
+                    "description": "Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "direction": {
+                    "description": "Direction of the transactions to receive; pass null to get all transactions",
+                    "is_optional": true,
+                    "type": "StarTransactionDirection"
+                }
+            },
+            "type": "StarTransactions"
+        },
+        "canPurchaseFromStore": {
+            "description": "Checks whether an in-store purchase is possible. Must be called before any in-store purchase",
             "args": {
                 "purpose": {
                     "description": "Transaction purpose",
