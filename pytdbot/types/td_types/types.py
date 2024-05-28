@@ -1,5 +1,5 @@
 from typing import Union, Literal, List
-from base64 import b64encode
+from base64 import b64decode
 import pytdbot
 
 
@@ -954,7 +954,7 @@ class Error(TlObject):
     def from_dict(cls, data: dict) -> Union["Error", None]:
         if data:
             data_class = cls()
-            data_class.code = data.get("code", 0)
+            data_class.code = int(data.get("code", 0))
             data_class.message = data.get("message", "")
 
         return data_class
@@ -1017,7 +1017,7 @@ class AuthenticationCodeTypeTelegramMessage(TlObject, AuthenticationCodeType):
     ) -> Union["AuthenticationCodeTypeTelegramMessage", None]:
         if data:
             data_class = cls()
-            data_class.length = data.get("length", 0)
+            data_class.length = int(data.get("length", 0))
 
         return data_class
 
@@ -1051,7 +1051,7 @@ class AuthenticationCodeTypeSms(TlObject, AuthenticationCodeType):
     def from_dict(cls, data: dict) -> Union["AuthenticationCodeTypeSms", None]:
         if data:
             data_class = cls()
-            data_class.length = data.get("length", 0)
+            data_class.length = int(data.get("length", 0))
 
         return data_class
 
@@ -1153,7 +1153,7 @@ class AuthenticationCodeTypeCall(TlObject, AuthenticationCodeType):
     def from_dict(cls, data: dict) -> Union["AuthenticationCodeTypeCall", None]:
         if data:
             data_class = cls()
-            data_class.length = data.get("length", 0)
+            data_class.length = int(data.get("length", 0))
 
         return data_class
 
@@ -1231,7 +1231,7 @@ class AuthenticationCodeTypeMissedCall(TlObject, AuthenticationCodeType):
         if data:
             data_class = cls()
             data_class.phone_number_prefix = data.get("phone_number_prefix", "")
-            data_class.length = data.get("length", 0)
+            data_class.length = int(data.get("length", 0))
 
         return data_class
 
@@ -1271,7 +1271,7 @@ class AuthenticationCodeTypeFragment(TlObject, AuthenticationCodeType):
         if data:
             data_class = cls()
             data_class.url = data.get("url", "")
-            data_class.length = data.get("length", 0)
+            data_class.length = int(data.get("length", 0))
 
         return data_class
 
@@ -1296,7 +1296,7 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
     ) -> None:
         self.use_play_integrity: bool = bool(use_play_integrity)
         r"""True, if Play Integrity API must be used for device verification\. Otherwise, SafetyNet Attestation API must be used"""
-        self.nonce: bytes = b64encode(nonce) if isinstance(nonce, bytes) else nonce
+        self.nonce: Union[bytes, None] = nonce
         r"""Nonce to pass to the Play Integrity API or the SafetyNet Attestation API"""
         self.length: int = int(length)
         r"""Length of the code"""
@@ -1325,8 +1325,8 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
         if data:
             data_class = cls()
             data_class.use_play_integrity = data.get("use_play_integrity", False)
-            data_class.nonce = data.get("nonce", b"")
-            data_class.length = data.get("length", 0)
+            data_class.nonce = b64decode(data.get("nonce", b""))
+            data_class.length = int(data.get("length", 0))
 
         return data_class
 
@@ -1378,8 +1378,8 @@ class AuthenticationCodeTypeFirebaseIos(TlObject, AuthenticationCodeType):
         if data:
             data_class = cls()
             data_class.receipt = data.get("receipt", "")
-            data_class.push_timeout = data.get("push_timeout", 0)
-            data_class.length = data.get("length", 0)
+            data_class.push_timeout = int(data.get("push_timeout", 0))
+            data_class.length = int(data.get("length", 0))
 
         return data_class
 
@@ -1467,7 +1467,7 @@ class AuthenticationCodeInfo(TlObject):
             data_class.phone_number = data.get("phone_number", "")
             data_class.type = data.get("type", None)
             data_class.next_type = data.get("next_type", None)
-            data_class.timeout = data.get("timeout", 0)
+            data_class.timeout = int(data.get("timeout", 0))
 
         return data_class
 
@@ -1511,7 +1511,7 @@ class EmailAddressAuthenticationCodeInfo(TlObject):
         if data:
             data_class = cls()
             data_class.email_address_pattern = data.get("email_address_pattern", "")
-            data_class.length = data.get("length", 0)
+            data_class.length = int(data.get("length", 0))
 
         return data_class
 
@@ -1647,7 +1647,7 @@ class EmailAddressResetStateAvailable(TlObject, EmailAddressResetState):
     def from_dict(cls, data: dict) -> Union["EmailAddressResetStateAvailable", None]:
         if data:
             data_class = cls()
-            data_class.wait_period = data.get("wait_period", 0)
+            data_class.wait_period = int(data.get("wait_period", 0))
 
         return data_class
 
@@ -1681,7 +1681,7 @@ class EmailAddressResetStatePending(TlObject, EmailAddressResetState):
     def from_dict(cls, data: dict) -> Union["EmailAddressResetStatePending", None]:
         if data:
             data_class = cls()
-            data_class.reset_in = data.get("reset_in", 0)
+            data_class.reset_in = int(data.get("reset_in", 0))
 
         return data_class
 
@@ -1756,8 +1756,8 @@ class TextEntity(TlObject):
     def from_dict(cls, data: dict) -> Union["TextEntity", None]:
         if data:
             data_class = cls()
-            data_class.offset = data.get("offset", 0)
-            data_class.length = data.get("length", 0)
+            data_class.offset = int(data.get("offset", 0))
+            data_class.length = int(data.get("length", 0))
             data_class.type = data.get("type", None)
 
         return data_class
@@ -1887,7 +1887,7 @@ class TermsOfService(TlObject):
         if data:
             data_class = cls()
             data_class.text = data.get("text", None)
-            data_class.min_user_age = data.get("min_user_age", 0)
+            data_class.min_user_age = int(data.get("min_user_age", 0))
             data_class.show_popup = data.get("show_popup", False)
 
         return data_class
@@ -2430,7 +2430,7 @@ class PasswordState(TlObject):
             data_class.login_email_address_pattern = data.get(
                 "login_email_address_pattern", ""
             )
-            data_class.pending_reset_date = data.get("pending_reset_date", 0)
+            data_class.pending_reset_date = int(data.get("pending_reset_date", 0))
 
         return data_class
 
@@ -2511,7 +2511,7 @@ class TemporaryPasswordState(TlObject):
         if data:
             data_class = cls()
             data_class.has_password = data.get("has_password", False)
-            data_class.valid_for = data.get("valid_for", 0)
+            data_class.valid_for = int(data.get("valid_for", 0))
 
         return data_class
 
@@ -2607,9 +2607,11 @@ class LocalFile(TlObject):
             data_class.is_downloading_completed = data.get(
                 "is_downloading_completed", False
             )
-            data_class.download_offset = data.get("download_offset", 0)
-            data_class.downloaded_prefix_size = data.get("downloaded_prefix_size", 0)
-            data_class.downloaded_size = data.get("downloaded_size", 0)
+            data_class.download_offset = int(data.get("download_offset", 0))
+            data_class.downloaded_prefix_size = int(
+                data.get("downloaded_prefix_size", 0)
+            )
+            data_class.downloaded_size = int(data.get("downloaded_size", 0))
 
         return data_class
 
@@ -2683,7 +2685,7 @@ class RemoteFile(TlObject):
             data_class.is_uploading_completed = data.get(
                 "is_uploading_completed", False
             )
-            data_class.uploaded_size = data.get("uploaded_size", 0)
+            data_class.uploaded_size = int(data.get("uploaded_size", 0))
 
         return data_class
 
@@ -2751,9 +2753,9 @@ class File(TlObject):
     def from_dict(cls, data: dict) -> Union["File", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.size = data.get("size", 0)
-            data_class.expected_size = data.get("expected_size", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.size = int(data.get("size", 0))
+            data_class.expected_size = int(data.get("expected_size", 0))
             data_class.local = data.get("local", None)
             data_class.remote = data.get("remote", None)
 
@@ -2789,7 +2791,7 @@ class InputFileId(TlObject, InputFile):
     def from_dict(cls, data: dict) -> Union["InputFileId", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
 
         return data_class
 
@@ -2910,7 +2912,7 @@ class InputFileGenerated(TlObject, InputFile):
             data_class = cls()
             data_class.original_path = data.get("original_path", "")
             data_class.conversion = data.get("conversion", "")
-            data_class.expected_size = data.get("expected_size", 0)
+            data_class.expected_size = int(data.get("expected_size", 0))
 
         return data_class
 
@@ -2980,8 +2982,8 @@ class PhotoSize(TlObject):
             data_class = cls()
             data_class.type = data.get("type", "")
             data_class.photo = data.get("photo", None)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.progressive_sizes = data.get("progressive_sizes", None)
 
         return data_class
@@ -3007,7 +3009,7 @@ class Minithumbnail(TlObject):
         r"""Thumbnail width, usually doesn't exceed 40"""
         self.height: int = int(height)
         r"""Thumbnail height, usually doesn't exceed 40"""
-        self.data: bytes = b64encode(data) if isinstance(data, bytes) else data
+        self.data: Union[bytes, None] = data
         r"""The thumbnail in JPEG format"""
 
     def __str__(self):
@@ -3031,9 +3033,9 @@ class Minithumbnail(TlObject):
     def from_dict(cls, data: dict) -> Union["Minithumbnail", None]:
         if data:
             data_class = cls()
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
-            data_class.data = data.get("data", b"")
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+            data_class.data = b64decode(data.get("data", b""))
 
         return data_class
 
@@ -3286,8 +3288,8 @@ class Thumbnail(TlObject):
         if data:
             data_class = cls()
             data_class.format = data.get("format", None)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.file = data.get("file", None)
 
         return data_class
@@ -3727,7 +3729,7 @@ class StickerFullTypeCustomEmoji(TlObject, StickerFullType):
     def from_dict(cls, data: dict) -> Union["StickerFullTypeCustomEmoji", None]:
         if data:
             data_class = cls()
-            data_class.custom_emoji_id = data.get("custom_emoji_id", 0)
+            data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
             data_class.needs_repainting = data.get("needs_repainting", False)
 
         return data_class
@@ -3831,8 +3833,8 @@ class PollOption(TlObject):
         if data:
             data_class = cls()
             data_class.text = data.get("text", None)
-            data_class.voter_count = data.get("voter_count", 0)
-            data_class.vote_percentage = data.get("vote_percentage", 0)
+            data_class.voter_count = int(data.get("voter_count", 0))
+            data_class.vote_percentage = int(data.get("vote_percentage", 0))
             data_class.is_chosen = data.get("is_chosen", False)
             data_class.is_being_chosen = data.get("is_being_chosen", False)
 
@@ -3918,7 +3920,7 @@ class PollTypeQuiz(TlObject, PollType):
     def from_dict(cls, data: dict) -> Union["PollTypeQuiz", None]:
         if data:
             data_class = cls()
-            data_class.correct_option_id = data.get("correct_option_id", 0)
+            data_class.correct_option_id = int(data.get("correct_option_id", 0))
             data_class.explanation = data.get("explanation", None)
 
         return data_class
@@ -4015,9 +4017,9 @@ class Animation(TlObject):
     def from_dict(cls, data: dict) -> Union["Animation", None]:
         if data:
             data_class = cls()
-            data_class.duration = data.get("duration", 0)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.file_name = data.get("file_name", "")
             data_class.mime_type = data.get("mime_type", "")
             data_class.has_stickers = data.get("has_stickers", False)
@@ -4121,7 +4123,7 @@ class Audio(TlObject):
     def from_dict(cls, data: dict) -> Union["Audio", None]:
         if data:
             data_class = cls()
-            data_class.duration = data.get("duration", 0)
+            data_class.duration = int(data.get("duration", 0))
             data_class.title = data.get("title", "")
             data_class.performer = data.get("performer", "")
             data_class.file_name = data.get("file_name", "")
@@ -4369,10 +4371,10 @@ class Sticker(TlObject):
     def from_dict(cls, data: dict) -> Union["Sticker", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.set_id = data.get("set_id", 0)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.set_id = int(data.get("set_id", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.emoji = data.get("emoji", "")
             data_class.format = data.get("format", None)
             data_class.full_type = data.get("full_type", None)
@@ -4481,9 +4483,9 @@ class Video(TlObject):
     def from_dict(cls, data: dict) -> Union["Video", None]:
         if data:
             data_class = cls()
-            data_class.duration = data.get("duration", 0)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.file_name = data.get("file_name", "")
             data_class.mime_type = data.get("mime_type", "")
             data_class.has_stickers = data.get("has_stickers", False)
@@ -4534,9 +4536,7 @@ class VideoNote(TlObject):
     ) -> None:
         self.duration: int = int(duration)
         r"""Duration of the video, in seconds; as defined by the sender"""
-        self.waveform: bytes = (
-            b64encode(waveform) if isinstance(waveform, bytes) else waveform
-        )
+        self.waveform: Union[bytes, None] = waveform
         r"""A waveform representation of the video note's audio in 5\-bit format; may be empty if unknown"""
         self.length: int = int(length)
         r"""Video width and height; as defined by the sender"""
@@ -4579,9 +4579,9 @@ class VideoNote(TlObject):
     def from_dict(cls, data: dict) -> Union["VideoNote", None]:
         if data:
             data_class = cls()
-            data_class.duration = data.get("duration", 0)
-            data_class.waveform = data.get("waveform", b"")
-            data_class.length = data.get("length", 0)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.waveform = b64decode(data.get("waveform", b""))
+            data_class.length = int(data.get("length", 0))
             data_class.minithumbnail = data.get("minithumbnail", None)
             data_class.thumbnail = data.get("thumbnail", None)
             data_class.speech_recognition_result = data.get(
@@ -4623,9 +4623,7 @@ class VoiceNote(TlObject):
     ) -> None:
         self.duration: int = int(duration)
         r"""Duration of the voice note, in seconds; as defined by the sender"""
-        self.waveform: bytes = (
-            b64encode(waveform) if isinstance(waveform, bytes) else waveform
-        )
+        self.waveform: Union[bytes, None] = waveform
         r"""A waveform representation of the voice note in 5\-bit format"""
         self.mime_type: Union[str, None] = mime_type
         r"""MIME type of the file; as defined by the sender\. Usually, one of \"audio/ogg\" for Opus in an OGG container, \"audio/mpeg\" for an MP3 audio, or \"audio/mp4\" for an M4A audio"""
@@ -4662,8 +4660,8 @@ class VoiceNote(TlObject):
     def from_dict(cls, data: dict) -> Union["VoiceNote", None]:
         if data:
             data_class = cls()
-            data_class.duration = data.get("duration", 0)
-            data_class.waveform = data.get("waveform", b"")
+            data_class.duration = int(data.get("duration", 0))
+            data_class.waveform = b64decode(data.get("waveform", b""))
             data_class.mime_type = data.get("mime_type", "")
             data_class.speech_recognition_result = data.get(
                 "speech_recognition_result", None
@@ -4737,9 +4735,9 @@ class AnimatedEmoji(TlObject):
         if data:
             data_class = cls()
             data_class.sticker = data.get("sticker", None)
-            data_class.sticker_width = data.get("sticker_width", 0)
-            data_class.sticker_height = data.get("sticker_height", 0)
-            data_class.fitzpatrick_type = data.get("fitzpatrick_type", 0)
+            data_class.sticker_width = int(data.get("sticker_width", 0))
+            data_class.sticker_height = int(data.get("sticker_height", 0))
+            data_class.fitzpatrick_type = int(data.get("fitzpatrick_type", 0))
             data_class.sound = data.get("sound", None)
 
         return data_class
@@ -4812,7 +4810,7 @@ class Contact(TlObject):
             data_class.first_name = data.get("first_name", "")
             data_class.last_name = data.get("last_name", "")
             data_class.vcard = data.get("vcard", "")
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -5030,7 +5028,7 @@ class Game(TlObject):
     def from_dict(cls, data: dict) -> Union["Game", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.short_name = data.get("short_name", "")
             data_class.title = data.get("title", "")
             data_class.text = data.get("text", None)
@@ -5211,15 +5209,15 @@ class Poll(TlObject):
     def from_dict(cls, data: dict) -> Union["Poll", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.question = data.get("question", None)
             data_class.options = data.get("options", None)
-            data_class.total_voter_count = data.get("total_voter_count", 0)
+            data_class.total_voter_count = int(data.get("total_voter_count", 0))
             data_class.recent_voter_ids = data.get("recent_voter_ids", None)
             data_class.is_anonymous = data.get("is_anonymous", False)
             data_class.type = data.get("type", None)
-            data_class.open_period = data.get("open_period", 0)
-            data_class.close_date = data.get("close_date", 0)
+            data_class.open_period = int(data.get("open_period", 0))
+            data_class.close_date = int(data.get("close_date", 0))
             data_class.is_closed = data.get("is_closed", False)
 
         return data_class
@@ -5301,7 +5299,7 @@ class Background(TlObject):
     def from_dict(cls, data: dict) -> Union["Background", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.is_default = data.get("is_default", False)
             data_class.is_dark = data.get("is_dark", False)
             data_class.name = data.get("name", "")
@@ -5386,7 +5384,7 @@ class ChatBackground(TlObject):
         if data:
             data_class = cls()
             data_class.background = data.get("background", None)
-            data_class.dark_theme_dimming = data.get("dark_theme_dimming", 0)
+            data_class.dark_theme_dimming = int(data.get("dark_theme_dimming", 0))
 
         return data_class
 
@@ -5461,7 +5459,7 @@ class ProfilePhoto(TlObject):
     def from_dict(cls, data: dict) -> Union["ProfilePhoto", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.small = data.get("small", None)
             data_class.big = data.get("big", None)
             data_class.minithumbnail = data.get("minithumbnail", None)
@@ -5809,7 +5807,7 @@ class BotCommands(TlObject):
     def from_dict(cls, data: dict) -> Union["BotCommands", None]:
         if data:
             data_class = cls()
-            data_class.bot_user_id = data.get("bot_user_id", 0)
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
             data_class.commands = data.get("commands", None)
 
         return data_class
@@ -5943,9 +5941,9 @@ class Birthdate(TlObject):
     def from_dict(cls, data: dict) -> Union["Birthdate", None]:
         if data:
             data_class = cls()
-            data_class.day = data.get("day", 0)
-            data_class.month = data.get("month", 0)
-            data_class.year = data.get("year", 0)
+            data_class.day = int(data.get("day", 0))
+            data_class.month = int(data.get("month", 0))
+            data_class.year = int(data.get("year", 0))
 
         return data_class
 
@@ -5988,7 +5986,7 @@ class CloseBirthdayUser(TlObject):
     def from_dict(cls, data: dict) -> Union["CloseBirthdayUser", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.birthdate = data.get("birthdate", None)
 
         return data_class
@@ -6088,8 +6086,8 @@ class BusinessAwayMessageScheduleCustom(TlObject, BusinessAwayMessageSchedule):
     def from_dict(cls, data: dict) -> Union["BusinessAwayMessageScheduleCustom", None]:
         if data:
             data_class = cls()
-            data_class.start_date = data.get("start_date", 0)
-            data_class.end_date = data.get("end_date", 0)
+            data_class.start_date = int(data.get("start_date", 0))
+            data_class.end_date = int(data.get("end_date", 0))
 
         return data_class
 
@@ -6287,7 +6285,7 @@ class BusinessAwayMessageSettings(TlObject):
     def from_dict(cls, data: dict) -> Union["BusinessAwayMessageSettings", None]:
         if data:
             data_class = cls()
-            data_class.shortcut_id = data.get("shortcut_id", 0)
+            data_class.shortcut_id = int(data.get("shortcut_id", 0))
             data_class.recipients = data.get("recipients", None)
             data_class.schedule = data.get("schedule", None)
             data_class.offline_only = data.get("offline_only", False)
@@ -6344,9 +6342,9 @@ class BusinessGreetingMessageSettings(TlObject):
     def from_dict(cls, data: dict) -> Union["BusinessGreetingMessageSettings", None]:
         if data:
             data_class = cls()
-            data_class.shortcut_id = data.get("shortcut_id", 0)
+            data_class.shortcut_id = int(data.get("shortcut_id", 0))
             data_class.recipients = data.get("recipients", None)
-            data_class.inactivity_days = data.get("inactivity_days", 0)
+            data_class.inactivity_days = int(data.get("inactivity_days", 0))
 
         return data_class
 
@@ -6400,7 +6398,7 @@ class BusinessConnectedBot(TlObject):
     def from_dict(cls, data: dict) -> Union["BusinessConnectedBot", None]:
         if data:
             data_class = cls()
-            data_class.bot_user_id = data.get("bot_user_id", 0)
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
             data_class.recipients = data.get("recipients", None)
             data_class.can_reply = data.get("can_reply", False)
 
@@ -6553,8 +6551,8 @@ class BusinessOpeningHoursInterval(TlObject):
     def from_dict(cls, data: dict) -> Union["BusinessOpeningHoursInterval", None]:
         if data:
             data_class = cls()
-            data_class.start_minute = data.get("start_minute", 0)
-            data_class.end_minute = data.get("end_minute", 0)
+            data_class.start_minute = int(data.get("start_minute", 0))
+            data_class.end_minute = int(data.get("end_minute", 0))
 
         return data_class
 
@@ -6700,8 +6698,8 @@ class BusinessInfo(TlObject):
             data_class.location = data.get("location", None)
             data_class.opening_hours = data.get("opening_hours", None)
             data_class.local_opening_hours = data.get("local_opening_hours", None)
-            data_class.next_open_in = data.get("next_open_in", 0)
-            data_class.next_close_in = data.get("next_close_in", 0)
+            data_class.next_open_in = int(data.get("next_open_in", 0))
+            data_class.next_close_in = int(data.get("next_close_in", 0))
             data_class.greeting_message_settings = data.get(
                 "greeting_message_settings", None
             )
@@ -6770,7 +6768,7 @@ class BusinessChatLink(TlObject):
             data_class.link = data.get("link", "")
             data_class.text = data.get("text", None)
             data_class.title = data.get("title", "")
-            data_class.view_count = data.get("view_count", 0)
+            data_class.view_count = int(data.get("view_count", 0))
 
         return data_class
 
@@ -6883,7 +6881,7 @@ class BusinessChatLinkInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["BusinessChatLinkInfo", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.text = data.get("text", None)
 
         return data_class
@@ -6927,8 +6925,8 @@ class ChatPhotoStickerTypeRegularOrMask(TlObject, ChatPhotoStickerType):
     def from_dict(cls, data: dict) -> Union["ChatPhotoStickerTypeRegularOrMask", None]:
         if data:
             data_class = cls()
-            data_class.sticker_set_id = data.get("sticker_set_id", 0)
-            data_class.sticker_id = data.get("sticker_id", 0)
+            data_class.sticker_set_id = int(data.get("sticker_set_id", 0))
+            data_class.sticker_id = int(data.get("sticker_id", 0))
 
         return data_class
 
@@ -6962,7 +6960,7 @@ class ChatPhotoStickerTypeCustomEmoji(TlObject, ChatPhotoStickerType):
     def from_dict(cls, data: dict) -> Union["ChatPhotoStickerTypeCustomEmoji", None]:
         if data:
             data_class = cls()
-            data_class.custom_emoji_id = data.get("custom_emoji_id", 0)
+            data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
 
         return data_class
 
@@ -7066,7 +7064,7 @@ class AnimatedChatPhoto(TlObject):
     def from_dict(cls, data: dict) -> Union["AnimatedChatPhoto", None]:
         if data:
             data_class = cls()
-            data_class.length = data.get("length", 0)
+            data_class.length = int(data.get("length", 0))
             data_class.file = data.get("file", None)
             data_class.main_frame_timestamp = data.get("main_frame_timestamp", 0.0)
 
@@ -7150,8 +7148,8 @@ class ChatPhoto(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatPhoto", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.added_date = data.get("added_date", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.added_date = int(data.get("added_date", 0))
             data_class.minithumbnail = data.get("minithumbnail", None)
             data_class.sizes = data.get("sizes", None)
             data_class.animation = data.get("animation", None)
@@ -7199,7 +7197,7 @@ class ChatPhotos(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatPhotos", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.photos = data.get("photos", None)
 
         return data_class
@@ -7234,7 +7232,7 @@ class InputChatPhotoPrevious(TlObject, InputChatPhoto):
     def from_dict(cls, data: dict) -> Union["InputChatPhotoPrevious", None]:
         if data:
             data_class = cls()
-            data_class.chat_photo_id = data.get("chat_photo_id", 0)
+            data_class.chat_photo_id = int(data.get("chat_photo_id", 0))
 
         return data_class
 
@@ -7831,9 +7829,9 @@ class PremiumPaymentOption(TlObject):
         if data:
             data_class = cls()
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
-            data_class.discount_percentage = data.get("discount_percentage", 0)
-            data_class.month_count = data.get("month_count", 0)
+            data_class.amount = int(data.get("amount", 0))
+            data_class.discount_percentage = int(data.get("discount_percentage", 0))
+            data_class.month_count = int(data.get("month_count", 0))
             data_class.store_product_id = data.get("store_product_id", "")
             data_class.payment_link = data.get("payment_link", None)
 
@@ -7975,11 +7973,13 @@ class PremiumGiftCodePaymentOption(TlObject):
         if data:
             data_class = cls()
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
-            data_class.user_count = data.get("user_count", 0)
-            data_class.month_count = data.get("month_count", 0)
+            data_class.amount = int(data.get("amount", 0))
+            data_class.user_count = int(data.get("user_count", 0))
+            data_class.month_count = int(data.get("month_count", 0))
             data_class.store_product_id = data.get("store_product_id", "")
-            data_class.store_product_quantity = data.get("store_product_quantity", 0)
+            data_class.store_product_quantity = int(
+                data.get("store_product_quantity", 0)
+            )
 
         return data_class
 
@@ -8096,12 +8096,12 @@ class PremiumGiftCodeInfo(TlObject):
         if data:
             data_class = cls()
             data_class.creator_id = data.get("creator_id", None)
-            data_class.creation_date = data.get("creation_date", 0)
+            data_class.creation_date = int(data.get("creation_date", 0))
             data_class.is_from_giveaway = data.get("is_from_giveaway", False)
-            data_class.giveaway_message_id = data.get("giveaway_message_id", 0)
-            data_class.month_count = data.get("month_count", 0)
-            data_class.user_id = data.get("user_id", 0)
-            data_class.use_date = data.get("use_date", 0)
+            data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
+            data_class.month_count = int(data.get("month_count", 0))
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.use_date = int(data.get("use_date", 0))
 
         return data_class
 
@@ -8170,8 +8170,8 @@ class StarPaymentOption(TlObject):
         if data:
             data_class = cls()
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
-            data_class.star_count = data.get("star_count", 0)
+            data_class.amount = int(data.get("amount", 0))
+            data_class.star_count = int(data.get("star_count", 0))
             data_class.store_product_id = data.get("store_product_id", "")
             data_class.is_additional = data.get("is_additional", False)
 
@@ -8406,7 +8406,7 @@ class StarTransactionSourceUser(TlObject, StarTransactionSource):
     def from_dict(cls, data: dict) -> Union["StarTransactionSourceUser", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.product_info = data.get("product_info", None)
 
         return data_class
@@ -8510,9 +8510,9 @@ class StarTransaction(TlObject):
         if data:
             data_class = cls()
             data_class.id = data.get("id", "")
-            data_class.star_count = data.get("star_count", 0)
+            data_class.star_count = int(data.get("star_count", 0))
             data_class.is_refund = data.get("is_refund", False)
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
             data_class.source = data.get("source", None)
 
         return data_class
@@ -8567,7 +8567,7 @@ class StarTransactions(TlObject):
     def from_dict(cls, data: dict) -> Union["StarTransactions", None]:
         if data:
             data_class = cls()
-            data_class.star_count = data.get("star_count", 0)
+            data_class.star_count = int(data.get("star_count", 0))
             data_class.transactions = data.get("transactions", None)
             data_class.next_offset = data.get("next_offset", "")
 
@@ -8667,7 +8667,7 @@ class PremiumGiveawayParticipantStatusAlreadyWasMember(
     ) -> Union["PremiumGiveawayParticipantStatusAlreadyWasMember", None]:
         if data:
             data_class = cls()
-            data_class.joined_chat_date = data.get("joined_chat_date", 0)
+            data_class.joined_chat_date = int(data.get("joined_chat_date", 0))
 
         return data_class
 
@@ -8705,7 +8705,7 @@ class PremiumGiveawayParticipantStatusAdministrator(
     ) -> Union["PremiumGiveawayParticipantStatusAdministrator", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -8804,7 +8804,7 @@ class PremiumGiveawayInfoOngoing(TlObject, PremiumGiveawayInfo):
     def from_dict(cls, data: dict) -> Union["PremiumGiveawayInfoOngoing", None]:
         if data:
             data_class = cls()
-            data_class.creation_date = data.get("creation_date", 0)
+            data_class.creation_date = int(data.get("creation_date", 0))
             data_class.status = data.get("status", None)
             data_class.is_ended = data.get("is_ended", False)
 
@@ -8881,13 +8881,13 @@ class PremiumGiveawayInfoCompleted(TlObject, PremiumGiveawayInfo):
     def from_dict(cls, data: dict) -> Union["PremiumGiveawayInfoCompleted", None]:
         if data:
             data_class = cls()
-            data_class.creation_date = data.get("creation_date", 0)
-            data_class.actual_winners_selection_date = data.get(
-                "actual_winners_selection_date", 0
+            data_class.creation_date = int(data.get("creation_date", 0))
+            data_class.actual_winners_selection_date = int(
+                data.get("actual_winners_selection_date", 0)
             )
             data_class.was_refunded = data.get("was_refunded", False)
-            data_class.winner_count = data.get("winner_count", 0)
-            data_class.activation_count = data.get("activation_count", 0)
+            data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.activation_count = int(data.get("activation_count", 0))
             data_class.gift_code = data.get("gift_code", "")
 
         return data_class
@@ -8956,14 +8956,14 @@ class AccentColor(TlObject):
     def from_dict(cls, data: dict) -> Union["AccentColor", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.built_in_accent_color_id = data.get(
-                "built_in_accent_color_id", 0
+            data_class.id = int(data.get("id", 0))
+            data_class.built_in_accent_color_id = int(
+                data.get("built_in_accent_color_id", 0)
             )
             data_class.light_theme_colors = data.get("light_theme_colors", None)
             data_class.dark_theme_colors = data.get("dark_theme_colors", None)
-            data_class.min_channel_chat_boost_level = data.get(
-                "min_channel_chat_boost_level", 0
+            data_class.min_channel_chat_boost_level = int(
+                data.get("min_channel_chat_boost_level", 0)
             )
 
         return data_class
@@ -9088,14 +9088,14 @@ class ProfileAccentColor(TlObject):
     def from_dict(cls, data: dict) -> Union["ProfileAccentColor", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.light_theme_colors = data.get("light_theme_colors", None)
             data_class.dark_theme_colors = data.get("dark_theme_colors", None)
-            data_class.min_supergroup_chat_boost_level = data.get(
-                "min_supergroup_chat_boost_level", 0
+            data_class.min_supergroup_chat_boost_level = int(
+                data.get("min_supergroup_chat_boost_level", 0)
             )
-            data_class.min_channel_chat_boost_level = data.get(
-                "min_channel_chat_boost_level", 0
+            data_class.min_channel_chat_boost_level = int(
+                data.get("min_channel_chat_boost_level", 0)
             )
 
         return data_class
@@ -9139,8 +9139,8 @@ class EmojiStatus(TlObject):
     def from_dict(cls, data: dict) -> Union["EmojiStatus", None]:
         if data:
             data_class = cls()
-            data_class.custom_emoji_id = data.get("custom_emoji_id", 0)
-            data_class.expiration_date = data.get("expiration_date", 0)
+            data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
+            data_class.expiration_date = int(data.get("expiration_date", 0))
 
         return data_class
 
@@ -9471,20 +9471,22 @@ class User(TlObject):
     def from_dict(cls, data: dict) -> Union["User", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.first_name = data.get("first_name", "")
             data_class.last_name = data.get("last_name", "")
             data_class.usernames = data.get("usernames", None)
             data_class.phone_number = data.get("phone_number", "")
             data_class.status = data.get("status", None)
             data_class.profile_photo = data.get("profile_photo", None)
-            data_class.accent_color_id = data.get("accent_color_id", 0)
-            data_class.background_custom_emoji_id = data.get(
-                "background_custom_emoji_id", 0
+            data_class.accent_color_id = int(data.get("accent_color_id", 0))
+            data_class.background_custom_emoji_id = int(
+                data.get("background_custom_emoji_id", 0)
             )
-            data_class.profile_accent_color_id = data.get("profile_accent_color_id", 0)
-            data_class.profile_background_custom_emoji_id = data.get(
-                "profile_background_custom_emoji_id", 0
+            data_class.profile_accent_color_id = int(
+                data.get("profile_accent_color_id", 0)
+            )
+            data_class.profile_background_custom_emoji_id = int(
+                data.get("profile_background_custom_emoji_id", 0)
             )
             data_class.emoji_status = data.get("emoji_status", None)
             data_class.is_contact = data.get("is_contact", False)
@@ -10030,9 +10032,9 @@ class UserFullInfo(TlObject):
             data_class.set_chat_background = data.get("set_chat_background", False)
             data_class.bio = data.get("bio", None)
             data_class.birthdate = data.get("birthdate", None)
-            data_class.personal_chat_id = data.get("personal_chat_id", 0)
+            data_class.personal_chat_id = int(data.get("personal_chat_id", 0))
             data_class.premium_gift_options = data.get("premium_gift_options", None)
-            data_class.group_in_common_count = data.get("group_in_common_count", 0)
+            data_class.group_in_common_count = int(data.get("group_in_common_count", 0))
             data_class.business_info = data.get("business_info", None)
             data_class.bot_info = data.get("bot_info", None)
 
@@ -10077,7 +10079,7 @@ class Users(TlObject):
     def from_dict(cls, data: dict) -> Union["Users", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.user_ids = data.get("user_ids", None)
 
         return data_class
@@ -10129,7 +10131,7 @@ class ChatAdministrator(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatAdministrator", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.custom_title = data.get("custom_title", "")
             data_class.is_owner = data.get("is_owner", False)
 
@@ -10358,7 +10360,7 @@ class ChatMemberStatusRestricted(TlObject, ChatMemberStatus):
         if data:
             data_class = cls()
             data_class.is_member = data.get("is_member", False)
-            data_class.restricted_until_date = data.get("restricted_until_date", 0)
+            data_class.restricted_until_date = int(data.get("restricted_until_date", 0))
             data_class.permissions = data.get("permissions", None)
 
         return data_class
@@ -10419,7 +10421,7 @@ class ChatMemberStatusBanned(TlObject, ChatMemberStatus):
     def from_dict(cls, data: dict) -> Union["ChatMemberStatusBanned", None]:
         if data:
             data_class = cls()
-            data_class.banned_until_date = data.get("banned_until_date", 0)
+            data_class.banned_until_date = int(data.get("banned_until_date", 0))
 
         return data_class
 
@@ -10489,8 +10491,8 @@ class ChatMember(TlObject):
         if data:
             data_class = cls()
             data_class.member_id = data.get("member_id", None)
-            data_class.inviter_user_id = data.get("inviter_user_id", 0)
-            data_class.joined_chat_date = data.get("joined_chat_date", 0)
+            data_class.inviter_user_id = int(data.get("inviter_user_id", 0))
+            data_class.joined_chat_date = int(data.get("joined_chat_date", 0))
             data_class.status = data.get("status", None)
 
         return data_class
@@ -10534,7 +10536,7 @@ class ChatMembers(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatMembers", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.members = data.get("members", None)
 
         return data_class
@@ -10647,7 +10649,7 @@ class ChatMembersFilterMention(TlObject, ChatMembersFilter):
     def from_dict(cls, data: dict) -> Union["ChatMembersFilterMention", None]:
         if data:
             data_class = cls()
-            data_class.message_thread_id = data.get("message_thread_id", 0)
+            data_class.message_thread_id = int(data.get("message_thread_id", 0))
 
         return data_class
 
@@ -10959,7 +10961,7 @@ class SupergroupMembersFilterMention(TlObject, SupergroupMembersFilter):
         if data:
             data_class = cls()
             data_class.query = data.get("query", "")
-            data_class.message_thread_id = data.get("message_thread_id", 0)
+            data_class.message_thread_id = int(data.get("message_thread_id", 0))
 
         return data_class
 
@@ -11104,14 +11106,14 @@ class ChatInviteLink(TlObject):
             data_class = cls()
             data_class.invite_link = data.get("invite_link", "")
             data_class.name = data.get("name", "")
-            data_class.creator_user_id = data.get("creator_user_id", 0)
-            data_class.date = data.get("date", 0)
-            data_class.edit_date = data.get("edit_date", 0)
-            data_class.expiration_date = data.get("expiration_date", 0)
-            data_class.member_limit = data.get("member_limit", 0)
-            data_class.member_count = data.get("member_count", 0)
-            data_class.pending_join_request_count = data.get(
-                "pending_join_request_count", 0
+            data_class.creator_user_id = int(data.get("creator_user_id", 0))
+            data_class.date = int(data.get("date", 0))
+            data_class.edit_date = int(data.get("edit_date", 0))
+            data_class.expiration_date = int(data.get("expiration_date", 0))
+            data_class.member_limit = int(data.get("member_limit", 0))
+            data_class.member_count = int(data.get("member_count", 0))
+            data_class.pending_join_request_count = int(
+                data.get("pending_join_request_count", 0)
             )
             data_class.creates_join_request = data.get("creates_join_request", False)
             data_class.is_primary = data.get("is_primary", False)
@@ -11160,7 +11162,7 @@ class ChatInviteLinks(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatInviteLinks", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.invite_links = data.get("invite_links", None)
 
         return data_class
@@ -11215,10 +11217,10 @@ class ChatInviteLinkCount(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatInviteLinkCount", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
-            data_class.invite_link_count = data.get("invite_link_count", 0)
-            data_class.revoked_invite_link_count = data.get(
-                "revoked_invite_link_count", 0
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.invite_link_count = int(data.get("invite_link_count", 0))
+            data_class.revoked_invite_link_count = int(
+                data.get("revoked_invite_link_count", 0)
             )
 
         return data_class
@@ -11314,12 +11316,12 @@ class ChatInviteLinkMember(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatInviteLinkMember", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
-            data_class.joined_chat_date = data.get("joined_chat_date", 0)
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.joined_chat_date = int(data.get("joined_chat_date", 0))
             data_class.via_chat_folder_invite_link = data.get(
                 "via_chat_folder_invite_link", False
             )
-            data_class.approver_user_id = data.get("approver_user_id", 0)
+            data_class.approver_user_id = int(data.get("approver_user_id", 0))
 
         return data_class
 
@@ -11364,7 +11366,7 @@ class ChatInviteLinkMembers(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatInviteLinkMembers", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.members = data.get("members", None)
 
         return data_class
@@ -11579,14 +11581,14 @@ class ChatInviteLinkInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatInviteLinkInfo", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.accessible_for = data.get("accessible_for", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.accessible_for = int(data.get("accessible_for", 0))
             data_class.type = data.get("type", None)
             data_class.title = data.get("title", "")
             data_class.photo = data.get("photo", None)
-            data_class.accent_color_id = data.get("accent_color_id", 0)
+            data_class.accent_color_id = int(data.get("accent_color_id", 0))
             data_class.description = data.get("description", "")
-            data_class.member_count = data.get("member_count", 0)
+            data_class.member_count = int(data.get("member_count", 0))
             data_class.member_user_ids = data.get("member_user_ids", None)
             data_class.creates_join_request = data.get("creates_join_request", False)
             data_class.is_public = data.get("is_public", False)
@@ -11641,8 +11643,8 @@ class ChatJoinRequest(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatJoinRequest", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
-            data_class.date = data.get("date", 0)
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.date = int(data.get("date", 0))
             data_class.bio = data.get("bio", "")
 
         return data_class
@@ -11688,7 +11690,7 @@ class ChatJoinRequests(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatJoinRequests", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.requests = data.get("requests", None)
 
         return data_class
@@ -11732,7 +11734,7 @@ class ChatJoinRequestsInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatJoinRequestsInfo", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.user_ids = data.get("user_ids", None)
 
         return data_class
@@ -11809,12 +11811,12 @@ class BasicGroup(TlObject):
     def from_dict(cls, data: dict) -> Union["BasicGroup", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.member_count = data.get("member_count", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.member_count = int(data.get("member_count", 0))
             data_class.status = data.get("status", None)
             data_class.is_active = data.get("is_active", False)
-            data_class.upgraded_to_supergroup_id = data.get(
-                "upgraded_to_supergroup_id", 0
+            data_class.upgraded_to_supergroup_id = int(
+                data.get("upgraded_to_supergroup_id", 0)
             )
 
         return data_class
@@ -11908,7 +11910,7 @@ class BasicGroupFullInfo(TlObject):
             data_class = cls()
             data_class.photo = data.get("photo", None)
             data_class.description = data.get("description", "")
-            data_class.creator_user_id = data.get("creator_user_id", 0)
+            data_class.creator_user_id = int(data.get("creator_user_id", 0))
             data_class.members = data.get("members", None)
             data_class.can_hide_members = data.get("can_hide_members", False)
             data_class.can_toggle_aggressive_anti_spam = data.get(
@@ -12103,12 +12105,12 @@ class Supergroup(TlObject):
     def from_dict(cls, data: dict) -> Union["Supergroup", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.usernames = data.get("usernames", None)
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
             data_class.status = data.get("status", None)
-            data_class.member_count = data.get("member_count", 0)
-            data_class.boost_level = data.get("boost_level", 0)
+            data_class.member_count = int(data.get("member_count", 0))
+            data_class.boost_level = int(data.get("boost_level", 0))
             data_class.has_linked_chat = data.get("has_linked_chat", False)
             data_class.has_location = data.get("has_location", False)
             data_class.sign_messages = data.get("sign_messages", False)
@@ -12374,12 +12376,12 @@ class SupergroupFullInfo(TlObject):
             data_class = cls()
             data_class.photo = data.get("photo", None)
             data_class.description = data.get("description", "")
-            data_class.member_count = data.get("member_count", 0)
-            data_class.administrator_count = data.get("administrator_count", 0)
-            data_class.restricted_count = data.get("restricted_count", 0)
-            data_class.banned_count = data.get("banned_count", 0)
-            data_class.linked_chat_id = data.get("linked_chat_id", 0)
-            data_class.slow_mode_delay = data.get("slow_mode_delay", 0)
+            data_class.member_count = int(data.get("member_count", 0))
+            data_class.administrator_count = int(data.get("administrator_count", 0))
+            data_class.restricted_count = int(data.get("restricted_count", 0))
+            data_class.banned_count = int(data.get("banned_count", 0))
+            data_class.linked_chat_id = int(data.get("linked_chat_id", 0))
+            data_class.slow_mode_delay = int(data.get("slow_mode_delay", 0))
             data_class.slow_mode_delay_expires_in = data.get(
                 "slow_mode_delay_expires_in", 0.0
             )
@@ -12405,20 +12407,22 @@ class SupergroupFullInfo(TlObject):
                 "has_aggressive_anti_spam_enabled", False
             )
             data_class.has_pinned_stories = data.get("has_pinned_stories", False)
-            data_class.my_boost_count = data.get("my_boost_count", 0)
-            data_class.unrestrict_boost_count = data.get("unrestrict_boost_count", 0)
-            data_class.sticker_set_id = data.get("sticker_set_id", 0)
-            data_class.custom_emoji_sticker_set_id = data.get(
-                "custom_emoji_sticker_set_id", 0
+            data_class.my_boost_count = int(data.get("my_boost_count", 0))
+            data_class.unrestrict_boost_count = int(
+                data.get("unrestrict_boost_count", 0)
+            )
+            data_class.sticker_set_id = int(data.get("sticker_set_id", 0))
+            data_class.custom_emoji_sticker_set_id = int(
+                data.get("custom_emoji_sticker_set_id", 0)
             )
             data_class.location = data.get("location", None)
             data_class.invite_link = data.get("invite_link", None)
             data_class.bot_commands = data.get("bot_commands", None)
-            data_class.upgraded_from_basic_group_id = data.get(
-                "upgraded_from_basic_group_id", 0
+            data_class.upgraded_from_basic_group_id = int(
+                data.get("upgraded_from_basic_group_id", 0)
             )
-            data_class.upgraded_from_max_message_id = data.get(
-                "upgraded_from_max_message_id", 0
+            data_class.upgraded_from_max_message_id = int(
+                data.get("upgraded_from_max_message_id", 0)
             )
 
         return data_class
@@ -12545,9 +12549,7 @@ class SecretChat(TlObject):
         r"""State of the secret chat"""
         self.is_outbound: bool = bool(is_outbound)
         r"""True, if the chat was created by the current user; false otherwise"""
-        self.key_hash: bytes = (
-            b64encode(key_hash) if isinstance(key_hash, bytes) else key_hash
-        )
+        self.key_hash: Union[bytes, None] = key_hash
         r"""Hash of the currently used key for comparison with the hash of the chat partner's key\. This is a string of 36 little\-endian bytes, which must be split into groups of 2 bits, each denoting a pixel of one of 4 colors FFFFFF, D5E6F3, 2D5775, and 2F99C9\. The pixels must be used to make a 12x12 square image filled from left to right, top to bottom\. Alternatively, the first 32 bytes of the hash can be converted to the hexadecimal format and printed as 32 2\-digit hex numbers"""
         self.layer: int = int(layer)
         r"""Secret chat layer; determines features supported by the chat partner's application\. Nested text entities and underline and strikethrough entities are supported if the layer \>\= 101, files bigger than 2000MB are supported if the layer \>\= 143, spoiler and custom emoji text entities are supported if the layer \>\= 144"""
@@ -12576,12 +12578,12 @@ class SecretChat(TlObject):
     def from_dict(cls, data: dict) -> Union["SecretChat", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.user_id = data.get("user_id", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.state = data.get("state", None)
             data_class.is_outbound = data.get("is_outbound", False)
-            data_class.key_hash = data.get("key_hash", b"")
-            data_class.layer = data.get("layer", 0)
+            data_class.key_hash = b64decode(data.get("key_hash", b""))
+            data_class.layer = int(data.get("layer", 0))
 
         return data_class
 
@@ -12615,7 +12617,7 @@ class MessageSenderUser(TlObject, MessageSender):
     def from_dict(cls, data: dict) -> Union["MessageSenderUser", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -12649,7 +12651,7 @@ class MessageSenderChat(TlObject, MessageSender):
     def from_dict(cls, data: dict) -> Union["MessageSenderChat", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -12694,7 +12696,7 @@ class MessageSenders(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageSenders", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.senders = data.get("senders", None)
 
         return data_class
@@ -12809,7 +12811,7 @@ class MessageReadDateRead(TlObject, MessageReadDate):
     def from_dict(cls, data: dict) -> Union["MessageReadDateRead", None]:
         if data:
             data_class = cls()
-            data_class.read_date = data.get("read_date", 0)
+            data_class.read_date = int(data.get("read_date", 0))
 
         return data_class
 
@@ -12958,8 +12960,8 @@ class MessageViewer(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageViewer", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
-            data_class.view_date = data.get("view_date", 0)
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.view_date = int(data.get("view_date", 0))
 
         return data_class
 
@@ -13027,7 +13029,7 @@ class MessageOriginUser(TlObject, MessageOrigin):
     def from_dict(cls, data: dict) -> Union["MessageOriginUser", None]:
         if data:
             data_class = cls()
-            data_class.sender_user_id = data.get("sender_user_id", 0)
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
 
         return data_class
 
@@ -13104,7 +13106,7 @@ class MessageOriginChat(TlObject, MessageOrigin):
     def from_dict(cls, data: dict) -> Union["MessageOriginChat", None]:
         if data:
             data_class = cls()
-            data_class.sender_chat_id = data.get("sender_chat_id", 0)
+            data_class.sender_chat_id = int(data.get("sender_chat_id", 0))
             data_class.author_signature = data.get("author_signature", "")
 
         return data_class
@@ -13156,8 +13158,8 @@ class MessageOriginChannel(TlObject, MessageOrigin):
     def from_dict(cls, data: dict) -> Union["MessageOriginChannel", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.author_signature = data.get("author_signature", "")
 
         return data_class
@@ -13233,11 +13235,11 @@ class ForwardSource(TlObject):
     def from_dict(cls, data: dict) -> Union["ForwardSource", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.sender_id = data.get("sender_id", None)
             data_class.sender_name = data.get("sender_name", "")
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
             data_class.is_outgoing = data.get("is_outgoing", False)
 
         return data_class
@@ -13306,7 +13308,7 @@ class ReactionTypeCustomEmoji(TlObject, ReactionType):
     def from_dict(cls, data: dict) -> Union["ReactionTypeCustomEmoji", None]:
         if data:
             data_class = cls()
-            data_class.custom_emoji_id = data.get("custom_emoji_id", 0)
+            data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
 
         return data_class
 
@@ -13376,7 +13378,7 @@ class MessageForwardInfo(TlObject):
         if data:
             data_class = cls()
             data_class.origin = data.get("origin", None)
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
             data_class.source = data.get("source", None)
             data_class.public_service_announcement_type = data.get(
                 "public_service_announcement_type", ""
@@ -13424,7 +13426,7 @@ class MessageImportInfo(TlObject):
         if data:
             data_class = cls()
             data_class.sender_name = data.get("sender_name", "")
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
 
         return data_class
 
@@ -13492,15 +13494,15 @@ class MessageReplyInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageReplyInfo", None]:
         if data:
             data_class = cls()
-            data_class.reply_count = data.get("reply_count", 0)
+            data_class.reply_count = int(data.get("reply_count", 0))
             data_class.recent_replier_ids = data.get("recent_replier_ids", None)
-            data_class.last_read_inbox_message_id = data.get(
-                "last_read_inbox_message_id", 0
+            data_class.last_read_inbox_message_id = int(
+                data.get("last_read_inbox_message_id", 0)
             )
-            data_class.last_read_outbox_message_id = data.get(
-                "last_read_outbox_message_id", 0
+            data_class.last_read_outbox_message_id = int(
+                data.get("last_read_outbox_message_id", 0)
             )
-            data_class.last_message_id = data.get("last_message_id", 0)
+            data_class.last_message_id = int(data.get("last_message_id", 0))
 
         return data_class
 
@@ -13571,7 +13573,7 @@ class MessageReaction(TlObject):
         if data:
             data_class = cls()
             data_class.type = data.get("type", None)
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.is_chosen = data.get("is_chosen", False)
             data_class.used_sender_id = data.get("used_sender_id", None)
             data_class.recent_sender_ids = data.get("recent_sender_ids", None)
@@ -13681,8 +13683,8 @@ class MessageInteractionInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageInteractionInfo", None]:
         if data:
             data_class = cls()
-            data_class.view_count = data.get("view_count", 0)
-            data_class.forward_count = data.get("forward_count", 0)
+            data_class.view_count = int(data.get("view_count", 0))
+            data_class.forward_count = int(data.get("forward_count", 0))
             data_class.reply_info = data.get("reply_info", None)
             data_class.reactions = data.get("reactions", None)
 
@@ -13890,7 +13892,7 @@ class MessageEffect(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageEffect", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.static_icon = data.get("static_icon", None)
             data_class.emoji = data.get("emoji", "")
             data_class.is_premium = data.get("is_premium", False)
@@ -13928,7 +13930,7 @@ class MessageSendingStatePending(TlObject, MessageSendingState):
     def from_dict(cls, data: dict) -> Union["MessageSendingStatePending", None]:
         if data:
             data_class = cls()
-            data_class.sending_id = data.get("sending_id", 0)
+            data_class.sending_id = int(data.get("sending_id", 0))
 
         return data_class
 
@@ -14062,7 +14064,7 @@ class TextQuote(TlObject):
         if data:
             data_class = cls()
             data_class.text = data.get("text", None)
-            data_class.position = data.get("position", 0)
+            data_class.position = int(data.get("position", 0))
             data_class.is_manual = data.get("is_manual", False)
 
         return data_class
@@ -14103,7 +14105,7 @@ class InputTextQuote(TlObject):
         if data:
             data_class = cls()
             data_class.text = data.get("text", None)
-            data_class.position = data.get("position", 0)
+            data_class.position = int(data.get("position", 0))
 
         return data_class
 
@@ -14255,11 +14257,11 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
     def from_dict(cls, data: dict) -> Union["MessageReplyToMessage", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.quote = data.get("quote", None)
             data_class.origin = data.get("origin", None)
-            data_class.origin_send_date = data.get("origin_send_date", 0)
+            data_class.origin_send_date = int(data.get("origin_send_date", 0))
             data_class.content = data.get("content", None)
 
         return data_class
@@ -14303,8 +14305,8 @@ class MessageReplyToStory(TlObject, MessageReplyTo):
     def from_dict(cls, data: dict) -> Union["MessageReplyToStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = data.get("story_sender_chat_id", 0)
-            data_class.story_id = data.get("story_id", 0)
+            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
 
@@ -14355,8 +14357,8 @@ class InputMessageReplyToMessage(TlObject, InputMessageReplyTo):
     def from_dict(cls, data: dict) -> Union["InputMessageReplyToMessage", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.quote = data.get("quote", None)
 
         return data_class
@@ -14400,8 +14402,8 @@ class InputMessageReplyToStory(TlObject, InputMessageReplyTo):
     def from_dict(cls, data: dict) -> Union["InputMessageReplyToStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = data.get("story_sender_chat_id", 0)
-            data_class.story_id = data.get("story_id", 0)
+            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
 
@@ -14892,9 +14894,9 @@ class Message(TlObject):
     def from_dict(cls, data: dict) -> Union["Message", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.sender_id = data.get("sender_id", None)
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.sending_state = data.get("sending_state", None)
             data_class.scheduling_state = data.get("scheduling_state", None)
             data_class.is_outgoing = data.get("is_outgoing", False)
@@ -14931,27 +14933,29 @@ class Message(TlObject):
             data_class.contains_unread_mention = data.get(
                 "contains_unread_mention", False
             )
-            data_class.date = data.get("date", 0)
-            data_class.edit_date = data.get("edit_date", 0)
+            data_class.date = int(data.get("date", 0))
+            data_class.edit_date = int(data.get("edit_date", 0))
             data_class.forward_info = data.get("forward_info", None)
             data_class.import_info = data.get("import_info", None)
             data_class.interaction_info = data.get("interaction_info", None)
             data_class.unread_reactions = data.get("unread_reactions", None)
             data_class.fact_check = data.get("fact_check", None)
             data_class.reply_to = data.get("reply_to", None)
-            data_class.message_thread_id = data.get("message_thread_id", 0)
-            data_class.saved_messages_topic_id = data.get("saved_messages_topic_id", 0)
+            data_class.message_thread_id = int(data.get("message_thread_id", 0))
+            data_class.saved_messages_topic_id = int(
+                data.get("saved_messages_topic_id", 0)
+            )
             data_class.self_destruct_type = data.get("self_destruct_type", None)
             data_class.self_destruct_in = data.get("self_destruct_in", 0.0)
             data_class.auto_delete_in = data.get("auto_delete_in", 0.0)
-            data_class.via_bot_user_id = data.get("via_bot_user_id", 0)
-            data_class.sender_business_bot_user_id = data.get(
-                "sender_business_bot_user_id", 0
+            data_class.via_bot_user_id = int(data.get("via_bot_user_id", 0))
+            data_class.sender_business_bot_user_id = int(
+                data.get("sender_business_bot_user_id", 0)
             )
-            data_class.sender_boost_count = data.get("sender_boost_count", 0)
+            data_class.sender_boost_count = int(data.get("sender_boost_count", 0))
             data_class.author_signature = data.get("author_signature", "")
-            data_class.media_album_id = data.get("media_album_id", 0)
-            data_class.effect_id = data.get("effect_id", 0)
+            data_class.media_album_id = int(data.get("media_album_id", 0))
+            data_class.effect_id = int(data.get("effect_id", 0))
             data_class.restriction_reason = data.get("restriction_reason", "")
             data_class.content = data.get("content", None)
             data_class.reply_markup = data.get("reply_markup", None)
@@ -14997,7 +15001,7 @@ class Messages(TlObject):
     def from_dict(cls, data: dict) -> Union["Messages", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.messages = data.get("messages", None)
 
         return data_class
@@ -15052,7 +15056,7 @@ class FoundMessages(TlObject):
     def from_dict(cls, data: dict) -> Union["FoundMessages", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.messages = data.get("messages", None)
             data_class.next_offset = data.get("next_offset", "")
 
@@ -15108,9 +15112,9 @@ class FoundChatMessages(TlObject):
     def from_dict(cls, data: dict) -> Union["FoundChatMessages", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.messages = data.get("messages", None)
-            data_class.next_from_message_id = data.get("next_from_message_id", 0)
+            data_class.next_from_message_id = int(data.get("next_from_message_id", 0))
 
         return data_class
 
@@ -15159,9 +15163,9 @@ class MessagePosition(TlObject):
     def from_dict(cls, data: dict) -> Union["MessagePosition", None]:
         if data:
             data_class = cls()
-            data_class.position = data.get("position", 0)
-            data_class.message_id = data.get("message_id", 0)
-            data_class.date = data.get("date", 0)
+            data_class.position = int(data.get("position", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.date = int(data.get("date", 0))
 
         return data_class
 
@@ -15206,7 +15210,7 @@ class MessagePositions(TlObject):
     def from_dict(cls, data: dict) -> Union["MessagePositions", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.positions = data.get("positions", None)
 
         return data_class
@@ -15250,7 +15254,7 @@ class MessageCalendarDay(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageCalendarDay", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.message = data.get("message", None)
 
         return data_class
@@ -15296,7 +15300,7 @@ class MessageCalendar(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageCalendar", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.days = data.get("days", None)
 
         return data_class
@@ -15862,16 +15866,16 @@ class SponsoredMessage(TlObject):
     def from_dict(cls, data: dict) -> Union["SponsoredMessage", None]:
         if data:
             data_class = cls()
-            data_class.message_id = data.get("message_id", 0)
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.is_recommended = data.get("is_recommended", False)
             data_class.can_be_reported = data.get("can_be_reported", False)
             data_class.content = data.get("content", None)
             data_class.sponsor = data.get("sponsor", None)
             data_class.title = data.get("title", "")
             data_class.button_text = data.get("button_text", "")
-            data_class.accent_color_id = data.get("accent_color_id", 0)
-            data_class.background_custom_emoji_id = data.get(
-                "background_custom_emoji_id", 0
+            data_class.accent_color_id = int(data.get("accent_color_id", 0))
+            data_class.background_custom_emoji_id = int(
+                data.get("background_custom_emoji_id", 0)
             )
             data_class.additional_info = data.get("additional_info", "")
 
@@ -15919,7 +15923,7 @@ class SponsoredMessages(TlObject):
         if data:
             data_class = cls()
             data_class.messages = data.get("messages", None)
-            data_class.messages_between = data.get("messages_between", 0)
+            data_class.messages_between = int(data.get("messages_between", 0))
 
         return data_class
 
@@ -15937,7 +15941,7 @@ class ReportChatSponsoredMessageOption(TlObject):
     """
 
     def __init__(self, id: bytes = b"", text: str = "") -> None:
-        self.id: bytes = b64encode(id) if isinstance(id, bytes) else id
+        self.id: Union[bytes, None] = id
         r"""Unique identifier of the option"""
         self.text: Union[str, None] = text
         r"""Text of the option"""
@@ -15958,7 +15962,7 @@ class ReportChatSponsoredMessageOption(TlObject):
     def from_dict(cls, data: dict) -> Union["ReportChatSponsoredMessageOption", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", b"")
+            data_class.id = b64decode(data.get("id", b""))
             data_class.text = data.get("text", "")
 
         return data_class
@@ -16189,10 +16193,10 @@ class FileDownload(TlObject):
     def from_dict(cls, data: dict) -> Union["FileDownload", None]:
         if data:
             data_class = cls()
-            data_class.file_id = data.get("file_id", 0)
+            data_class.file_id = int(data.get("file_id", 0))
             data_class.message = data.get("message", None)
-            data_class.add_date = data.get("add_date", 0)
-            data_class.complete_date = data.get("complete_date", 0)
+            data_class.add_date = int(data.get("add_date", 0))
+            data_class.complete_date = int(data.get("complete_date", 0))
             data_class.is_paused = data.get("is_paused", False)
 
         return data_class
@@ -16244,9 +16248,9 @@ class DownloadedFileCounts(TlObject):
     def from_dict(cls, data: dict) -> Union["DownloadedFileCounts", None]:
         if data:
             data_class = cls()
-            data_class.active_count = data.get("active_count", 0)
-            data_class.paused_count = data.get("paused_count", 0)
-            data_class.completed_count = data.get("completed_count", 0)
+            data_class.active_count = int(data.get("active_count", 0))
+            data_class.paused_count = int(data.get("paused_count", 0))
+            data_class.completed_count = int(data.get("completed_count", 0))
 
         return data_class
 
@@ -16538,9 +16542,9 @@ class ChatNotificationSettings(TlObject):
         if data:
             data_class = cls()
             data_class.use_default_mute_for = data.get("use_default_mute_for", False)
-            data_class.mute_for = data.get("mute_for", 0)
+            data_class.mute_for = int(data.get("mute_for", 0))
             data_class.use_default_sound = data.get("use_default_sound", False)
-            data_class.sound_id = data.get("sound_id", 0)
+            data_class.sound_id = int(data.get("sound_id", 0))
             data_class.use_default_show_preview = data.get(
                 "use_default_show_preview", False
             )
@@ -16552,7 +16556,7 @@ class ChatNotificationSettings(TlObject):
             data_class.use_default_story_sound = data.get(
                 "use_default_story_sound", False
             )
-            data_class.story_sound_id = data.get("story_sound_id", 0)
+            data_class.story_sound_id = int(data.get("story_sound_id", 0))
             data_class.use_default_show_story_sender = data.get(
                 "use_default_show_story_sender", False
             )
@@ -16666,14 +16670,14 @@ class ScopeNotificationSettings(TlObject):
     def from_dict(cls, data: dict) -> Union["ScopeNotificationSettings", None]:
         if data:
             data_class = cls()
-            data_class.mute_for = data.get("mute_for", 0)
-            data_class.sound_id = data.get("sound_id", 0)
+            data_class.mute_for = int(data.get("mute_for", 0))
+            data_class.sound_id = int(data.get("sound_id", 0))
             data_class.show_preview = data.get("show_preview", False)
             data_class.use_default_mute_stories = data.get(
                 "use_default_mute_stories", False
             )
             data_class.mute_stories = data.get("mute_stories", False)
-            data_class.story_sound_id = data.get("story_sound_id", 0)
+            data_class.story_sound_id = int(data.get("story_sound_id", 0))
             data_class.show_story_sender = data.get("show_story_sender", False)
             data_class.disable_pinned_message_notifications = data.get(
                 "disable_pinned_message_notifications", False
@@ -16833,7 +16837,7 @@ class ReactionNotificationSettings(TlObject):
                 "message_reaction_source", None
             )
             data_class.story_reaction_source = data.get("story_reaction_source", None)
-            data_class.sound_id = data.get("sound_id", 0)
+            data_class.sound_id = int(data.get("sound_id", 0))
             data_class.show_preview = data.get("show_preview", False)
 
         return data_class
@@ -16911,7 +16915,7 @@ class DraftMessage(TlObject):
         if data:
             data_class = cls()
             data_class.reply_to = data.get("reply_to", None)
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
             data_class.input_message_text = data.get("input_message_text", None)
 
         return data_class
@@ -16946,7 +16950,7 @@ class ChatTypePrivate(TlObject, ChatType):
     def from_dict(cls, data: dict) -> Union["ChatTypePrivate", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -16980,7 +16984,7 @@ class ChatTypeBasicGroup(TlObject, ChatType):
     def from_dict(cls, data: dict) -> Union["ChatTypeBasicGroup", None]:
         if data:
             data_class = cls()
-            data_class.basic_group_id = data.get("basic_group_id", 0)
+            data_class.basic_group_id = int(data.get("basic_group_id", 0))
 
         return data_class
 
@@ -17023,7 +17027,7 @@ class ChatTypeSupergroup(TlObject, ChatType):
     def from_dict(cls, data: dict) -> Union["ChatTypeSupergroup", None]:
         if data:
             data_class = cls()
-            data_class.supergroup_id = data.get("supergroup_id", 0)
+            data_class.supergroup_id = int(data.get("supergroup_id", 0))
             data_class.is_channel = data.get("is_channel", False)
 
         return data_class
@@ -17067,8 +17071,8 @@ class ChatTypeSecret(TlObject, ChatType):
     def from_dict(cls, data: dict) -> Union["ChatTypeSecret", None]:
         if data:
             data_class = cls()
-            data_class.secret_chat_id = data.get("secret_chat_id", 0)
-            data_class.user_id = data.get("user_id", 0)
+            data_class.secret_chat_id = int(data.get("secret_chat_id", 0))
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -17242,7 +17246,7 @@ class ChatFolder(TlObject):
             data_class = cls()
             data_class.title = data.get("title", "")
             data_class.icon = data.get("icon", None)
-            data_class.color_id = data.get("color_id", 0)
+            data_class.color_id = int(data.get("color_id", 0))
             data_class.is_shareable = data.get("is_shareable", False)
             data_class.pinned_chat_ids = data.get("pinned_chat_ids", None)
             data_class.included_chat_ids = data.get("included_chat_ids", None)
@@ -17329,10 +17333,10 @@ class ChatFolderInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatFolderInfo", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.title = data.get("title", "")
             data_class.icon = data.get("icon", None)
-            data_class.color_id = data.get("color_id", 0)
+            data_class.color_id = int(data.get("color_id", 0))
             data_class.is_shareable = data.get("is_shareable", False)
             data_class.has_my_invite_links = data.get("has_my_invite_links", False)
 
@@ -17707,7 +17711,7 @@ class ChatListFolder(TlObject, ChatList):
     def from_dict(cls, data: dict) -> Union["ChatListFolder", None]:
         if data:
             data_class = cls()
-            data_class.chat_folder_id = data.get("chat_folder_id", 0)
+            data_class.chat_folder_id = int(data.get("chat_folder_id", 0))
 
         return data_class
 
@@ -17873,7 +17877,7 @@ class ChatPosition(TlObject):
         if data:
             data_class = cls()
             data_class.list = data.get("list", None)
-            data_class.order = data.get("order", 0)
+            data_class.order = int(data.get("order", 0))
             data_class.is_pinned = data.get("is_pinned", False)
             data_class.source = data.get("source", None)
 
@@ -17909,7 +17913,7 @@ class ChatAvailableReactionsAll(TlObject, ChatAvailableReactions):
     def from_dict(cls, data: dict) -> Union["ChatAvailableReactionsAll", None]:
         if data:
             data_class = cls()
-            data_class.max_reaction_count = data.get("max_reaction_count", 0)
+            data_class.max_reaction_count = int(data.get("max_reaction_count", 0))
 
         return data_class
 
@@ -17955,7 +17959,7 @@ class ChatAvailableReactionsSome(TlObject, ChatAvailableReactions):
         if data:
             data_class = cls()
             data_class.reactions = data.get("reactions", None)
-            data_class.max_reaction_count = data.get("max_reaction_count", 0)
+            data_class.max_reaction_count = int(data.get("max_reaction_count", 0))
 
         return data_class
 
@@ -18008,7 +18012,7 @@ class SavedMessagesTag(TlObject):
             data_class = cls()
             data_class.tag = data.get("tag", None)
             data_class.label = data.get("label", "")
-            data_class.count = data.get("count", 0)
+            data_class.count = int(data.get("count", 0))
 
         return data_class
 
@@ -18103,7 +18107,7 @@ class BusinessBotManageBar(TlObject):
     def from_dict(cls, data: dict) -> Union["BusinessBotManageBar", None]:
         if data:
             data_class = cls()
-            data_class.bot_user_id = data.get("bot_user_id", 0)
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
             data_class.manage_url = data.get("manage_url", "")
             data_class.is_bot_paused = data.get("is_bot_paused", False)
             data_class.can_bot_reply = data.get("can_bot_reply", False)
@@ -18162,7 +18166,7 @@ class VideoChat(TlObject):
     def from_dict(cls, data: dict) -> Union["VideoChat", None]:
         if data:
             data_class = cls()
-            data_class.group_call_id = data.get("group_call_id", 0)
+            data_class.group_call_id = int(data.get("group_call_id", 0))
             data_class.has_participants = data.get("has_participants", False)
             data_class.default_participant_id = data.get("default_participant_id", None)
 
@@ -18511,17 +18515,19 @@ class Chat(TlObject):
     def from_dict(cls, data: dict) -> Union["Chat", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.type = data.get("type", None)
             data_class.title = data.get("title", "")
             data_class.photo = data.get("photo", None)
-            data_class.accent_color_id = data.get("accent_color_id", 0)
-            data_class.background_custom_emoji_id = data.get(
-                "background_custom_emoji_id", 0
+            data_class.accent_color_id = int(data.get("accent_color_id", 0))
+            data_class.background_custom_emoji_id = int(
+                data.get("background_custom_emoji_id", 0)
             )
-            data_class.profile_accent_color_id = data.get("profile_accent_color_id", 0)
-            data_class.profile_background_custom_emoji_id = data.get(
-                "profile_background_custom_emoji_id", 0
+            data_class.profile_accent_color_id = int(
+                data.get("profile_accent_color_id", 0)
+            )
+            data_class.profile_background_custom_emoji_id = int(
+                data.get("profile_background_custom_emoji_id", 0)
             )
             data_class.permissions = data.get("permissions", None)
             data_class.last_message = data.get("last_message", None)
@@ -18546,19 +18552,19 @@ class Chat(TlObject):
             data_class.default_disable_notification = data.get(
                 "default_disable_notification", False
             )
-            data_class.unread_count = data.get("unread_count", 0)
-            data_class.last_read_inbox_message_id = data.get(
-                "last_read_inbox_message_id", 0
+            data_class.unread_count = int(data.get("unread_count", 0))
+            data_class.last_read_inbox_message_id = int(
+                data.get("last_read_inbox_message_id", 0)
             )
-            data_class.last_read_outbox_message_id = data.get(
-                "last_read_outbox_message_id", 0
+            data_class.last_read_outbox_message_id = int(
+                data.get("last_read_outbox_message_id", 0)
             )
-            data_class.unread_mention_count = data.get("unread_mention_count", 0)
-            data_class.unread_reaction_count = data.get("unread_reaction_count", 0)
+            data_class.unread_mention_count = int(data.get("unread_mention_count", 0))
+            data_class.unread_reaction_count = int(data.get("unread_reaction_count", 0))
             data_class.notification_settings = data.get("notification_settings", None)
             data_class.available_reactions = data.get("available_reactions", None)
-            data_class.message_auto_delete_time = data.get(
-                "message_auto_delete_time", 0
+            data_class.message_auto_delete_time = int(
+                data.get("message_auto_delete_time", 0)
             )
             data_class.emoji_status = data.get("emoji_status", None)
             data_class.background = data.get("background", None)
@@ -18569,7 +18575,9 @@ class Chat(TlObject):
             )
             data_class.video_chat = data.get("video_chat", None)
             data_class.pending_join_requests = data.get("pending_join_requests", None)
-            data_class.reply_markup_message_id = data.get("reply_markup_message_id", 0)
+            data_class.reply_markup_message_id = int(
+                data.get("reply_markup_message_id", 0)
+            )
             data_class.draft_message = data.get("draft_message", None)
             data_class.client_data = data.get("client_data", "")
 
@@ -18614,7 +18622,7 @@ class Chats(TlObject):
     def from_dict(cls, data: dict) -> Union["Chats", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.chat_ids = data.get("chat_ids", None)
 
         return data_class
@@ -18671,7 +18679,7 @@ class FailedToAddMember(TlObject):
     def from_dict(cls, data: dict) -> Union["FailedToAddMember", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.premium_would_allow_invite = data.get(
                 "premium_would_allow_invite", False
             )
@@ -18763,7 +18771,7 @@ class CreatedBasicGroupChat(TlObject):
     def from_dict(cls, data: dict) -> Union["CreatedBasicGroupChat", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.failed_to_add_members = data.get("failed_to_add_members", None)
 
         return data_class
@@ -18807,8 +18815,8 @@ class ChatNearby(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatNearby", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.distance = data.get("distance", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.distance = int(data.get("distance", 0))
 
         return data_class
 
@@ -19040,7 +19048,7 @@ class ChatActionBarReportAddBlock(TlObject, ChatActionBar):
         if data:
             data_class = cls()
             data_class.can_unarchive = data.get("can_unarchive", False)
-            data_class.distance = data.get("distance", 0)
+            data_class.distance = int(data.get("distance", 0))
 
         return data_class
 
@@ -19145,7 +19153,7 @@ class ChatActionBarJoinRequest(TlObject, ChatActionBar):
             data_class = cls()
             data_class.title = data.get("title", "")
             data_class.is_channel = data.get("is_channel", False)
-            data_class.request_date = data.get("request_date", 0)
+            data_class.request_date = int(data.get("request_date", 0))
 
         return data_class
 
@@ -19365,14 +19373,14 @@ class KeyboardButtonTypeRequestUsers(TlObject, KeyboardButtonType):
     def from_dict(cls, data: dict) -> Union["KeyboardButtonTypeRequestUsers", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.restrict_user_is_bot = data.get("restrict_user_is_bot", False)
             data_class.user_is_bot = data.get("user_is_bot", False)
             data_class.restrict_user_is_premium = data.get(
                 "restrict_user_is_premium", False
             )
             data_class.user_is_premium = data.get("user_is_premium", False)
-            data_class.max_quantity = data.get("max_quantity", 0)
+            data_class.max_quantity = int(data.get("max_quantity", 0))
             data_class.request_name = data.get("request_name", False)
             data_class.request_username = data.get("request_username", False)
             data_class.request_photo = data.get("request_photo", False)
@@ -19503,7 +19511,7 @@ class KeyboardButtonTypeRequestChat(TlObject, KeyboardButtonType):
     def from_dict(cls, data: dict) -> Union["KeyboardButtonTypeRequestChat", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.chat_is_channel = data.get("chat_is_channel", False)
             data_class.restrict_chat_is_forum = data.get(
                 "restrict_chat_is_forum", False
@@ -19690,7 +19698,7 @@ class InlineKeyboardButtonTypeLoginUrl(TlObject, InlineKeyboardButtonType):
         if data:
             data_class = cls()
             data_class.url = data.get("url", "")
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.forward_text = data.get("forward_text", "")
 
         return data_class
@@ -19740,7 +19748,7 @@ class InlineKeyboardButtonTypeCallback(TlObject, InlineKeyboardButtonType):
     """
 
     def __init__(self, data: bytes = b"") -> None:
-        self.data: bytes = b64encode(data) if isinstance(data, bytes) else data
+        self.data: Union[bytes, None] = data
         r"""Data to be sent to the bot via a callback query"""
 
     def __str__(self):
@@ -19759,7 +19767,7 @@ class InlineKeyboardButtonTypeCallback(TlObject, InlineKeyboardButtonType):
     def from_dict(cls, data: dict) -> Union["InlineKeyboardButtonTypeCallback", None]:
         if data:
             data_class = cls()
-            data_class.data = data.get("data", b"")
+            data_class.data = b64decode(data.get("data", b""))
 
         return data_class
 
@@ -19774,7 +19782,7 @@ class InlineKeyboardButtonTypeCallbackWithPassword(TlObject, InlineKeyboardButto
     """
 
     def __init__(self, data: bytes = b"") -> None:
-        self.data: bytes = b64encode(data) if isinstance(data, bytes) else data
+        self.data: Union[bytes, None] = data
         r"""Data to be sent to the bot via a callback query"""
 
     def __str__(self):
@@ -19795,7 +19803,7 @@ class InlineKeyboardButtonTypeCallbackWithPassword(TlObject, InlineKeyboardButto
     ) -> Union["InlineKeyboardButtonTypeCallbackWithPassword", None]:
         if data:
             data_class = cls()
-            data_class.data = data.get("data", b"")
+            data_class.data = b64decode(data.get("data", b""))
 
         return data_class
 
@@ -19931,7 +19939,7 @@ class InlineKeyboardButtonTypeUser(TlObject, InlineKeyboardButtonType):
     def from_dict(cls, data: dict) -> Union["InlineKeyboardButtonTypeUser", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -20283,7 +20291,7 @@ class LoginUrlInfoRequestConfirmation(TlObject, LoginUrlInfo):
             data_class = cls()
             data_class.url = data.get("url", "")
             data_class.domain = data.get("domain", "")
-            data_class.bot_user_id = data.get("bot_user_id", 0)
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
             data_class.request_write_access = data.get("request_write_access", False)
 
         return data_class
@@ -20379,7 +20387,7 @@ class WebAppInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["WebAppInfo", None]:
         if data:
             data_class = cls()
-            data_class.launch_id = data.get("launch_id", 0)
+            data_class.launch_id = int(data.get("launch_id", 0))
             data_class.url = data.get("url", "")
 
         return data_class
@@ -20455,10 +20463,10 @@ class MessageThreadInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageThreadInfo", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_thread_id = data.get("message_thread_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_thread_id = int(data.get("message_thread_id", 0))
             data_class.reply_info = data.get("reply_info", None)
-            data_class.unread_message_count = data.get("unread_message_count", 0)
+            data_class.unread_message_count = int(data.get("unread_message_count", 0))
             data_class.messages = data.get("messages", None)
             data_class.draft_message = data.get("draft_message", None)
 
@@ -20548,7 +20556,7 @@ class SavedMessagesTopicTypeSavedFromChat(TlObject, SavedMessagesTopicType):
     ) -> Union["SavedMessagesTopicTypeSavedFromChat", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -20628,10 +20636,10 @@ class SavedMessagesTopic(TlObject):
     def from_dict(cls, data: dict) -> Union["SavedMessagesTopic", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.type = data.get("type", None)
             data_class.is_pinned = data.get("is_pinned", False)
-            data_class.order = data.get("order", 0)
+            data_class.order = int(data.get("order", 0))
             data_class.last_message = data.get("last_message", None)
             data_class.draft_message = data.get("draft_message", None)
 
@@ -20676,8 +20684,8 @@ class ForumTopicIcon(TlObject):
     def from_dict(cls, data: dict) -> Union["ForumTopicIcon", None]:
         if data:
             data_class = cls()
-            data_class.color = data.get("color", 0)
-            data_class.custom_emoji_id = data.get("custom_emoji_id", 0)
+            data_class.color = int(data.get("color", 0))
+            data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
 
         return data_class
 
@@ -20773,10 +20781,10 @@ class ForumTopicInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["ForumTopicInfo", None]:
         if data:
             data_class = cls()
-            data_class.message_thread_id = data.get("message_thread_id", 0)
+            data_class.message_thread_id = int(data.get("message_thread_id", 0))
             data_class.name = data.get("name", "")
             data_class.icon = data.get("icon", None)
-            data_class.creation_date = data.get("creation_date", 0)
+            data_class.creation_date = int(data.get("creation_date", 0))
             data_class.creator_id = data.get("creator_id", None)
             data_class.is_general = data.get("is_general", False)
             data_class.is_outgoing = data.get("is_outgoing", False)
@@ -20889,15 +20897,15 @@ class ForumTopic(TlObject):
             data_class.info = data.get("info", None)
             data_class.last_message = data.get("last_message", None)
             data_class.is_pinned = data.get("is_pinned", False)
-            data_class.unread_count = data.get("unread_count", 0)
-            data_class.last_read_inbox_message_id = data.get(
-                "last_read_inbox_message_id", 0
+            data_class.unread_count = int(data.get("unread_count", 0))
+            data_class.last_read_inbox_message_id = int(
+                data.get("last_read_inbox_message_id", 0)
             )
-            data_class.last_read_outbox_message_id = data.get(
-                "last_read_outbox_message_id", 0
+            data_class.last_read_outbox_message_id = int(
+                data.get("last_read_outbox_message_id", 0)
             )
-            data_class.unread_mention_count = data.get("unread_mention_count", 0)
-            data_class.unread_reaction_count = data.get("unread_reaction_count", 0)
+            data_class.unread_mention_count = int(data.get("unread_mention_count", 0))
+            data_class.unread_reaction_count = int(data.get("unread_reaction_count", 0))
             data_class.notification_settings = data.get("notification_settings", None)
             data_class.draft_message = data.get("draft_message", None)
 
@@ -20967,12 +20975,14 @@ class ForumTopics(TlObject):
     def from_dict(cls, data: dict) -> Union["ForumTopics", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.topics = data.get("topics", None)
-            data_class.next_offset_date = data.get("next_offset_date", 0)
-            data_class.next_offset_message_id = data.get("next_offset_message_id", 0)
-            data_class.next_offset_message_thread_id = data.get(
-                "next_offset_message_thread_id", 0
+            data_class.next_offset_date = int(data.get("next_offset_date", 0))
+            data_class.next_offset_message_id = int(
+                data.get("next_offset_message_id", 0)
+            )
+            data_class.next_offset_message_thread_id = int(
+                data.get("next_offset_message_thread_id", 0)
             )
 
         return data_class
@@ -21113,7 +21123,7 @@ class SharedUser(TlObject):
     def from_dict(cls, data: dict) -> Union["SharedUser", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.first_name = data.get("first_name", "")
             data_class.last_name = data.get("last_name", "")
             data_class.username = data.get("username", "")
@@ -21174,7 +21184,7 @@ class SharedChat(TlObject):
     def from_dict(cls, data: dict) -> Union["SharedChat", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.title = data.get("title", "")
             data_class.username = data.get("username", "")
             data_class.photo = data.get("photo", None)
@@ -21885,8 +21895,8 @@ class RichTextIcon(TlObject, RichText):
         if data:
             data_class = cls()
             data_class.document = data.get("document", None)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
 
         return data_class
 
@@ -22482,8 +22492,8 @@ class PageBlockTableCell(TlObject):
             data_class = cls()
             data_class.text = data.get("text", None)
             data_class.is_header = data.get("is_header", False)
-            data_class.colspan = data.get("colspan", 0)
-            data_class.rowspan = data.get("rowspan", 0)
+            data_class.colspan = int(data.get("colspan", 0))
+            data_class.rowspan = int(data.get("rowspan", 0))
             data_class.align = data.get("align", None)
             data_class.valign = data.get("valign", None)
 
@@ -22565,7 +22575,7 @@ class PageBlockRelatedArticle(TlObject):
             data_class.description = data.get("description", "")
             data_class.photo = data.get("photo", None)
             data_class.author = data.get("author", "")
-            data_class.publish_date = data.get("publish_date", 0)
+            data_class.publish_date = int(data.get("publish_date", 0))
 
         return data_class
 
@@ -22734,7 +22744,7 @@ class PageBlockAuthorDate(TlObject, PageBlock):
         if data:
             data_class = cls()
             data_class.author = data.get("author", None)
-            data_class.publish_date = data.get("publish_date", 0)
+            data_class.publish_date = int(data.get("publish_date", 0))
 
         return data_class
 
@@ -23724,8 +23734,8 @@ class PageBlockEmbedded(TlObject, PageBlock):
             data_class.url = data.get("url", "")
             data_class.html = data.get("html", "")
             data_class.poster_photo = data.get("poster_photo", None)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.caption = data.get("caption", None)
             data_class.is_full_width = data.get("is_full_width", False)
             data_class.allow_scrolling = data.get("allow_scrolling", False)
@@ -23806,7 +23816,7 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
             data_class.url = data.get("url", "")
             data_class.author = data.get("author", "")
             data_class.author_photo = data.get("author_photo", None)
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
             data_class.page_blocks = data.get("page_blocks", None)
             data_class.caption = data.get("caption", None)
 
@@ -23963,7 +23973,7 @@ class PageBlockChatLink(TlObject, PageBlock):
             data_class = cls()
             data_class.title = data.get("title", "")
             data_class.photo = data.get("photo", None)
-            data_class.accent_color_id = data.get("accent_color_id", 0)
+            data_class.accent_color_id = int(data.get("accent_color_id", 0))
             data_class.username = data.get("username", "")
 
         return data_class
@@ -24256,9 +24266,9 @@ class PageBlockMap(TlObject, PageBlock):
         if data:
             data_class = cls()
             data_class.location = data.get("location", None)
-            data_class.zoom = data.get("zoom", 0)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.zoom = int(data.get("zoom", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.caption = data.get("caption", None)
 
         return data_class
@@ -24381,8 +24391,8 @@ class WebPageInstantView(TlObject):
         if data:
             data_class = cls()
             data_class.page_blocks = data.get("page_blocks", None)
-            data_class.view_count = data.get("view_count", 0)
-            data_class.version = data.get("version", 0)
+            data_class.view_count = int(data.get("view_count", 0))
+            data_class.version = int(data.get("version", 0))
             data_class.is_rtl = data.get("is_rtl", False)
             data_class.is_full = data.get("is_full", False)
             data_class.feedback_link = data.get("feedback_link", None)
@@ -24623,9 +24633,9 @@ class WebPage(TlObject):
             data_class.photo = data.get("photo", None)
             data_class.embed_url = data.get("embed_url", "")
             data_class.embed_type = data.get("embed_type", "")
-            data_class.embed_width = data.get("embed_width", 0)
-            data_class.embed_height = data.get("embed_height", 0)
-            data_class.duration = data.get("duration", 0)
+            data_class.embed_width = int(data.get("embed_width", 0))
+            data_class.embed_height = int(data.get("embed_height", 0))
+            data_class.duration = int(data.get("duration", 0))
             data_class.author = data.get("author", "")
             data_class.has_large_media = data.get("has_large_media", False)
             data_class.show_large_media = data.get("show_large_media", False)
@@ -24638,10 +24648,10 @@ class WebPage(TlObject):
             data_class.video = data.get("video", None)
             data_class.video_note = data.get("video_note", None)
             data_class.voice_note = data.get("voice_note", None)
-            data_class.story_sender_chat_id = data.get("story_sender_chat_id", 0)
-            data_class.story_id = data.get("story_id", 0)
+            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_id = int(data.get("story_id", 0))
             data_class.stickers = data.get("stickers", None)
-            data_class.instant_view_version = data.get("instant_view_version", 0)
+            data_class.instant_view_version = int(data.get("instant_view_version", 0))
 
         return data_class
 
@@ -24954,11 +24964,11 @@ class CollectibleItemInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["CollectibleItemInfo", None]:
         if data:
             data_class = cls()
-            data_class.purchase_date = data.get("purchase_date", 0)
+            data_class.purchase_date = int(data.get("purchase_date", 0))
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
+            data_class.amount = int(data.get("amount", 0))
             data_class.cryptocurrency = data.get("cryptocurrency", "")
-            data_class.cryptocurrency_amount = data.get("cryptocurrency_amount", 0)
+            data_class.cryptocurrency_amount = int(data.get("cryptocurrency_amount", 0))
             data_class.url = data.get("url", "")
 
         return data_class
@@ -25245,25 +25255,29 @@ class ThemeParameters(TlObject):
     def from_dict(cls, data: dict) -> Union["ThemeParameters", None]:
         if data:
             data_class = cls()
-            data_class.background_color = data.get("background_color", 0)
-            data_class.secondary_background_color = data.get(
-                "secondary_background_color", 0
+            data_class.background_color = int(data.get("background_color", 0))
+            data_class.secondary_background_color = int(
+                data.get("secondary_background_color", 0)
             )
-            data_class.header_background_color = data.get("header_background_color", 0)
-            data_class.section_background_color = data.get(
-                "section_background_color", 0
+            data_class.header_background_color = int(
+                data.get("header_background_color", 0)
             )
-            data_class.text_color = data.get("text_color", 0)
-            data_class.accent_text_color = data.get("accent_text_color", 0)
-            data_class.section_header_text_color = data.get(
-                "section_header_text_color", 0
+            data_class.section_background_color = int(
+                data.get("section_background_color", 0)
             )
-            data_class.subtitle_text_color = data.get("subtitle_text_color", 0)
-            data_class.destructive_text_color = data.get("destructive_text_color", 0)
-            data_class.hint_color = data.get("hint_color", 0)
-            data_class.link_color = data.get("link_color", 0)
-            data_class.button_color = data.get("button_color", 0)
-            data_class.button_text_color = data.get("button_text_color", 0)
+            data_class.text_color = int(data.get("text_color", 0))
+            data_class.accent_text_color = int(data.get("accent_text_color", 0))
+            data_class.section_header_text_color = int(
+                data.get("section_header_text_color", 0)
+            )
+            data_class.subtitle_text_color = int(data.get("subtitle_text_color", 0))
+            data_class.destructive_text_color = int(
+                data.get("destructive_text_color", 0)
+            )
+            data_class.hint_color = int(data.get("hint_color", 0))
+            data_class.link_color = int(data.get("link_color", 0))
+            data_class.button_color = int(data.get("button_color", 0))
+            data_class.button_text_color = int(data.get("button_text_color", 0))
 
         return data_class
 
@@ -25303,7 +25317,7 @@ class LabeledPricePart(TlObject):
         if data:
             data_class = cls()
             data_class.label = data.get("label", "")
-            data_class.amount = data.get("amount", 0)
+            data_class.amount = int(data.get("amount", 0))
 
         return data_class
 
@@ -25438,7 +25452,7 @@ class Invoice(TlObject):
             data_class = cls()
             data_class.currency = data.get("currency", "")
             data_class.price_parts = data.get("price_parts", None)
-            data_class.max_tip_amount = data.get("max_tip_amount", 0)
+            data_class.max_tip_amount = int(data.get("max_tip_amount", 0))
             data_class.suggested_tip_amounts = data.get("suggested_tip_amounts", None)
             data_class.recurring_payment_terms_of_service_url = data.get(
                 "recurring_payment_terms_of_service_url", ""
@@ -26040,8 +26054,8 @@ class PaymentFormTypeRegular(TlObject, PaymentFormType):
         if data:
             data_class = cls()
             data_class.invoice = data.get("invoice", None)
-            data_class.payment_provider_user_id = data.get(
-                "payment_provider_user_id", 0
+            data_class.payment_provider_user_id = int(
+                data.get("payment_provider_user_id", 0)
             )
             data_class.payment_provider = data.get("payment_provider", None)
             data_class.additional_payment_options = data.get(
@@ -26084,7 +26098,7 @@ class PaymentFormTypeStars(TlObject, PaymentFormType):
     def from_dict(cls, data: dict) -> Union["PaymentFormTypeStars", None]:
         if data:
             data_class = cls()
-            data_class.star_count = data.get("star_count", 0)
+            data_class.star_count = int(data.get("star_count", 0))
 
         return data_class
 
@@ -26145,9 +26159,9 @@ class PaymentForm(TlObject):
     def from_dict(cls, data: dict) -> Union["PaymentForm", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.type = data.get("type", None)
-            data_class.seller_bot_user_id = data.get("seller_bot_user_id", 0)
+            data_class.seller_bot_user_id = int(data.get("seller_bot_user_id", 0))
             data_class.product_info = data.get("product_info", None)
 
         return data_class
@@ -26313,14 +26327,14 @@ class PaymentReceiptTypeRegular(TlObject, PaymentReceiptType):
     def from_dict(cls, data: dict) -> Union["PaymentReceiptTypeRegular", None]:
         if data:
             data_class = cls()
-            data_class.payment_provider_user_id = data.get(
-                "payment_provider_user_id", 0
+            data_class.payment_provider_user_id = int(
+                data.get("payment_provider_user_id", 0)
             )
             data_class.invoice = data.get("invoice", None)
             data_class.order_info = data.get("order_info", None)
             data_class.shipping_option = data.get("shipping_option", None)
             data_class.credentials_title = data.get("credentials_title", "")
-            data_class.tip_amount = data.get("tip_amount", 0)
+            data_class.tip_amount = int(data.get("tip_amount", 0))
 
         return data_class
 
@@ -26363,7 +26377,7 @@ class PaymentReceiptTypeStars(TlObject, PaymentReceiptType):
     def from_dict(cls, data: dict) -> Union["PaymentReceiptTypeStars", None]:
         if data:
             data_class = cls()
-            data_class.star_count = data.get("star_count", 0)
+            data_class.star_count = int(data.get("star_count", 0))
             data_class.transaction_id = data.get("transaction_id", "")
 
         return data_class
@@ -26428,8 +26442,8 @@ class PaymentReceipt(TlObject):
         if data:
             data_class = cls()
             data_class.product_info = data.get("product_info", None)
-            data_class.date = data.get("date", 0)
-            data_class.seller_bot_user_id = data.get("seller_bot_user_id", 0)
+            data_class.date = int(data.get("date", 0))
+            data_class.seller_bot_user_id = int(data.get("seller_bot_user_id", 0))
             data_class.type = data.get("type", None)
 
         return data_class
@@ -26473,8 +26487,8 @@ class InputInvoiceMessage(TlObject, InputInvoice):
     def from_dict(cls, data: dict) -> Union["InputInvoiceMessage", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
 
         return data_class
 
@@ -26615,9 +26629,9 @@ class MessageExtendedMediaPreview(TlObject, MessageExtendedMedia):
     def from_dict(cls, data: dict) -> Union["MessageExtendedMediaPreview", None]:
         if data:
             data_class = cls()
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
-            data_class.duration = data.get("duration", 0)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+            data_class.duration = int(data.get("duration", 0))
             data_class.minithumbnail = data.get("minithumbnail", None)
             data_class.caption = data.get("caption", None)
 
@@ -26815,9 +26829,11 @@ class PremiumGiveawayParameters(TlObject):
     def from_dict(cls, data: dict) -> Union["PremiumGiveawayParameters", None]:
         if data:
             data_class = cls()
-            data_class.boosted_chat_id = data.get("boosted_chat_id", 0)
+            data_class.boosted_chat_id = int(data.get("boosted_chat_id", 0))
             data_class.additional_chat_ids = data.get("additional_chat_ids", None)
-            data_class.winners_selection_date = data.get("winners_selection_date", 0)
+            data_class.winners_selection_date = int(
+                data.get("winners_selection_date", 0)
+            )
             data_class.only_new_members = data.get("only_new_members", False)
             data_class.has_public_winners = data.get("has_public_winners", False)
             data_class.country_codes = data.get("country_codes", None)
@@ -26861,7 +26877,7 @@ class DatedFile(TlObject):
         if data:
             data_class = cls()
             data_class.file = data.get("file", None)
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
 
         return data_class
 
@@ -27254,9 +27270,9 @@ class Date(TlObject):
     def from_dict(cls, data: dict) -> Union["Date", None]:
         if data:
             data_class = cls()
-            data_class.day = data.get("day", 0)
-            data_class.month = data.get("month", 0)
-            data_class.year = data.get("year", 0)
+            data_class.day = int(data.get("day", 0))
+            data_class.month = int(data.get("month", 0))
+            data_class.year = int(data.get("year", 0))
 
         return data_class
 
@@ -28760,7 +28776,7 @@ class PassportElementErrorSourceTranslationFile(TlObject, PassportElementErrorSo
     ) -> Union["PassportElementErrorSourceTranslationFile", None]:
         if data:
             data_class = cls()
-            data_class.file_index = data.get("file_index", 0)
+            data_class.file_index = int(data.get("file_index", 0))
 
         return data_class
 
@@ -28822,7 +28838,7 @@ class PassportElementErrorSourceFile(TlObject, PassportElementErrorSource):
     def from_dict(cls, data: dict) -> Union["PassportElementErrorSourceFile", None]:
         if data:
             data_class = cls()
-            data_class.file_index = data.get("file_index", 0)
+            data_class.file_index = int(data.get("file_index", 0))
 
         return data_class
 
@@ -29101,7 +29117,7 @@ class PassportAuthorizationForm(TlObject):
     def from_dict(cls, data: dict) -> Union["PassportAuthorizationForm", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.required_elements = data.get("required_elements", None)
             data_class.privacy_policy_url = data.get("privacy_policy_url", "")
 
@@ -29174,11 +29190,11 @@ class EncryptedCredentials(TlObject):
     def __init__(
         self, data: bytes = b"", hash: bytes = b"", secret: bytes = b""
     ) -> None:
-        self.data: bytes = b64encode(data) if isinstance(data, bytes) else data
+        self.data: Union[bytes, None] = data
         r"""The encrypted credentials"""
-        self.hash: bytes = b64encode(hash) if isinstance(hash, bytes) else hash
+        self.hash: Union[bytes, None] = hash
         r"""The decrypted data hash"""
-        self.secret: bytes = b64encode(secret) if isinstance(secret, bytes) else secret
+        self.secret: Union[bytes, None] = secret
         r"""Secret for data decryption, encrypted with the service's public key"""
 
     def __str__(self):
@@ -29202,9 +29218,9 @@ class EncryptedCredentials(TlObject):
     def from_dict(cls, data: dict) -> Union["EncryptedCredentials", None]:
         if data:
             data_class = cls()
-            data_class.data = data.get("data", b"")
-            data_class.hash = data.get("hash", b"")
-            data_class.secret = data.get("secret", b"")
+            data_class.data = b64decode(data.get("data", b""))
+            data_class.hash = b64decode(data.get("hash", b""))
+            data_class.secret = b64decode(data.get("secret", b""))
 
         return data_class
 
@@ -29271,7 +29287,7 @@ class EncryptedPassportElement(TlObject):
             None,
         ] = type
         r"""Type of Telegram Passport element"""
-        self.data: bytes = b64encode(data) if isinstance(data, bytes) else data
+        self.data: Union[bytes, None] = data
         r"""Encrypted JSON\-encoded data about the user"""
         self.front_side: Union[DatedFile, None] = front_side
         r"""The front side of an identity document"""
@@ -29316,7 +29332,7 @@ class EncryptedPassportElement(TlObject):
         if data:
             data_class = cls()
             data_class.type = data.get("type", None)
-            data_class.data = data.get("data", b"")
+            data_class.data = b64decode(data.get("data", b""))
             data_class.front_side = data.get("front_side", None)
             data_class.reverse_side = data.get("reverse_side", None)
             data_class.selfie = data.get("selfie", None)
@@ -29340,9 +29356,7 @@ class InputPassportElementErrorSourceUnspecified(
     """
 
     def __init__(self, element_hash: bytes = b"") -> None:
-        self.element_hash: bytes = (
-            b64encode(element_hash) if isinstance(element_hash, bytes) else element_hash
-        )
+        self.element_hash: Union[bytes, None] = element_hash
         r"""Current hash of the entire element"""
 
     def __str__(self):
@@ -29363,7 +29377,7 @@ class InputPassportElementErrorSourceUnspecified(
     ) -> Union["InputPassportElementErrorSourceUnspecified", None]:
         if data:
             data_class = cls()
-            data_class.element_hash = data.get("element_hash", b"")
+            data_class.element_hash = b64decode(data.get("element_hash", b""))
 
         return data_class
 
@@ -29385,9 +29399,7 @@ class InputPassportElementErrorSourceDataField(
     def __init__(self, field_name: str = "", data_hash: bytes = b"") -> None:
         self.field_name: Union[str, None] = field_name
         r"""Field name"""
-        self.data_hash: bytes = (
-            b64encode(data_hash) if isinstance(data_hash, bytes) else data_hash
-        )
+        self.data_hash: Union[bytes, None] = data_hash
         r"""Current data hash"""
 
     def __str__(self):
@@ -29413,7 +29425,7 @@ class InputPassportElementErrorSourceDataField(
         if data:
             data_class = cls()
             data_class.field_name = data.get("field_name", "")
-            data_class.data_hash = data.get("data_hash", b"")
+            data_class.data_hash = b64decode(data.get("data_hash", b""))
 
         return data_class
 
@@ -29430,9 +29442,7 @@ class InputPassportElementErrorSourceFrontSide(
     """
 
     def __init__(self, file_hash: bytes = b"") -> None:
-        self.file_hash: bytes = (
-            b64encode(file_hash) if isinstance(file_hash, bytes) else file_hash
-        )
+        self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file containing the front side"""
 
     def __str__(self):
@@ -29453,7 +29463,7 @@ class InputPassportElementErrorSourceFrontSide(
     ) -> Union["InputPassportElementErrorSourceFrontSide", None]:
         if data:
             data_class = cls()
-            data_class.file_hash = data.get("file_hash", b"")
+            data_class.file_hash = b64decode(data.get("file_hash", b""))
 
         return data_class
 
@@ -29470,9 +29480,7 @@ class InputPassportElementErrorSourceReverseSide(
     """
 
     def __init__(self, file_hash: bytes = b"") -> None:
-        self.file_hash: bytes = (
-            b64encode(file_hash) if isinstance(file_hash, bytes) else file_hash
-        )
+        self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file containing the reverse side"""
 
     def __str__(self):
@@ -29493,7 +29501,7 @@ class InputPassportElementErrorSourceReverseSide(
     ) -> Union["InputPassportElementErrorSourceReverseSide", None]:
         if data:
             data_class = cls()
-            data_class.file_hash = data.get("file_hash", b"")
+            data_class.file_hash = b64decode(data.get("file_hash", b""))
 
         return data_class
 
@@ -29508,9 +29516,7 @@ class InputPassportElementErrorSourceSelfie(TlObject, InputPassportElementErrorS
     """
 
     def __init__(self, file_hash: bytes = b"") -> None:
-        self.file_hash: bytes = (
-            b64encode(file_hash) if isinstance(file_hash, bytes) else file_hash
-        )
+        self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file containing the selfie"""
 
     def __str__(self):
@@ -29531,7 +29537,7 @@ class InputPassportElementErrorSourceSelfie(TlObject, InputPassportElementErrorS
     ) -> Union["InputPassportElementErrorSourceSelfie", None]:
         if data:
             data_class = cls()
-            data_class.file_hash = data.get("file_hash", b"")
+            data_class.file_hash = b64decode(data.get("file_hash", b""))
 
         return data_class
 
@@ -29548,9 +29554,7 @@ class InputPassportElementErrorSourceTranslationFile(
     """
 
     def __init__(self, file_hash: bytes = b"") -> None:
-        self.file_hash: bytes = (
-            b64encode(file_hash) if isinstance(file_hash, bytes) else file_hash
-        )
+        self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file containing the translation"""
 
     def __str__(self):
@@ -29571,7 +29575,7 @@ class InputPassportElementErrorSourceTranslationFile(
     ) -> Union["InputPassportElementErrorSourceTranslationFile", None]:
         if data:
             data_class = cls()
-            data_class.file_hash = data.get("file_hash", b"")
+            data_class.file_hash = b64decode(data.get("file_hash", b""))
 
         return data_class
 
@@ -29624,9 +29628,7 @@ class InputPassportElementErrorSourceFile(TlObject, InputPassportElementErrorSou
     """
 
     def __init__(self, file_hash: bytes = b"") -> None:
-        self.file_hash: bytes = (
-            b64encode(file_hash) if isinstance(file_hash, bytes) else file_hash
-        )
+        self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file which has the error"""
 
     def __str__(self):
@@ -29647,7 +29649,7 @@ class InputPassportElementErrorSourceFile(TlObject, InputPassportElementErrorSou
     ) -> Union["InputPassportElementErrorSourceFile", None]:
         if data:
             data_class = cls()
-            data_class.file_hash = data.get("file_hash", b"")
+            data_class.file_hash = b64decode(data.get("file_hash", b""))
 
         return data_class
 
@@ -30460,10 +30462,12 @@ class MessageLocation(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.location = data.get("location", None)
-            data_class.live_period = data.get("live_period", 0)
-            data_class.expires_in = data.get("expires_in", 0)
-            data_class.heading = data.get("heading", 0)
-            data_class.proximity_alert_radius = data.get("proximity_alert_radius", 0)
+            data_class.live_period = int(data.get("live_period", 0))
+            data_class.expires_in = int(data.get("expires_in", 0))
+            data_class.heading = int(data.get("heading", 0))
+            data_class.proximity_alert_radius = int(
+                data.get("proximity_alert_radius", 0)
+            )
 
         return data_class
 
@@ -30650,9 +30654,9 @@ class MessageDice(TlObject, MessageContent):
             data_class.initial_state = data.get("initial_state", None)
             data_class.final_state = data.get("final_state", None)
             data_class.emoji = data.get("emoji", "")
-            data_class.value = data.get("value", 0)
-            data_class.success_animation_frame_number = data.get(
-                "success_animation_frame_number", 0
+            data_class.value = int(data.get("value", 0))
+            data_class.success_animation_frame_number = int(
+                data.get("success_animation_frame_number", 0)
             )
 
         return data_class
@@ -30775,8 +30779,8 @@ class MessageStory(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = data.get("story_sender_chat_id", 0)
-            data_class.story_id = data.get("story_id", 0)
+            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_id = int(data.get("story_id", 0))
             data_class.via_mention = data.get("via_mention", False)
 
         return data_class
@@ -30874,11 +30878,11 @@ class MessageInvoice(TlObject, MessageContent):
             data_class = cls()
             data_class.product_info = data.get("product_info", None)
             data_class.currency = data.get("currency", "")
-            data_class.total_amount = data.get("total_amount", 0)
+            data_class.total_amount = int(data.get("total_amount", 0))
             data_class.start_parameter = data.get("start_parameter", "")
             data_class.is_test = data.get("is_test", False)
             data_class.need_shipping_address = data.get("need_shipping_address", False)
-            data_class.receipt_message_id = data.get("receipt_message_id", 0)
+            data_class.receipt_message_id = int(data.get("receipt_message_id", 0))
             data_class.extended_media = data.get("extended_media", None)
 
         return data_class
@@ -30942,7 +30946,7 @@ class MessageCall(TlObject, MessageContent):
             data_class = cls()
             data_class.is_video = data.get("is_video", False)
             data_class.discard_reason = data.get("discard_reason", None)
-            data_class.duration = data.get("duration", 0)
+            data_class.duration = int(data.get("duration", 0))
 
         return data_class
 
@@ -30985,8 +30989,8 @@ class MessageVideoChatScheduled(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageVideoChatScheduled", None]:
         if data:
             data_class = cls()
-            data_class.group_call_id = data.get("group_call_id", 0)
-            data_class.start_date = data.get("start_date", 0)
+            data_class.group_call_id = int(data.get("group_call_id", 0))
+            data_class.start_date = int(data.get("start_date", 0))
 
         return data_class
 
@@ -31020,7 +31024,7 @@ class MessageVideoChatStarted(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageVideoChatStarted", None]:
         if data:
             data_class = cls()
-            data_class.group_call_id = data.get("group_call_id", 0)
+            data_class.group_call_id = int(data.get("group_call_id", 0))
 
         return data_class
 
@@ -31054,7 +31058,7 @@ class MessageVideoChatEnded(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageVideoChatEnded", None]:
         if data:
             data_class = cls()
-            data_class.duration = data.get("duration", 0)
+            data_class.duration = int(data.get("duration", 0))
 
         return data_class
 
@@ -31097,7 +31101,7 @@ class MessageInviteVideoChatParticipants(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageInviteVideoChatParticipants", None]:
         if data:
             data_class = cls()
-            data_class.group_call_id = data.get("group_call_id", 0)
+            data_class.group_call_id = int(data.get("group_call_id", 0))
             data_class.user_ids = data.get("user_ids", None)
 
         return data_class
@@ -31390,7 +31394,7 @@ class MessageChatDeleteMember(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageChatDeleteMember", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -31424,7 +31428,7 @@ class MessageChatUpgradeTo(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageChatUpgradeTo", None]:
         if data:
             data_class = cls()
-            data_class.supergroup_id = data.get("supergroup_id", 0)
+            data_class.supergroup_id = int(data.get("supergroup_id", 0))
 
         return data_class
 
@@ -31468,7 +31472,7 @@ class MessageChatUpgradeFrom(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.title = data.get("title", "")
-            data_class.basic_group_id = data.get("basic_group_id", 0)
+            data_class.basic_group_id = int(data.get("basic_group_id", 0))
 
         return data_class
 
@@ -31502,7 +31506,7 @@ class MessagePinMessage(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessagePinMessage", None]:
         if data:
             data_class = cls()
-            data_class.message_id = data.get("message_id", 0)
+            data_class.message_id = int(data.get("message_id", 0))
 
         return data_class
 
@@ -31582,8 +31586,8 @@ class MessageChatSetBackground(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageChatSetBackground", None]:
         if data:
             data_class = cls()
-            data_class.old_background_message_id = data.get(
-                "old_background_message_id", 0
+            data_class.old_background_message_id = int(
+                data.get("old_background_message_id", 0)
             )
             data_class.background = data.get("background", None)
             data_class.only_for_self = data.get("only_for_self", False)
@@ -31667,10 +31671,10 @@ class MessageChatSetMessageAutoDeleteTime(TlObject, MessageContent):
     ) -> Union["MessageChatSetMessageAutoDeleteTime", None]:
         if data:
             data_class = cls()
-            data_class.message_auto_delete_time = data.get(
-                "message_auto_delete_time", 0
+            data_class.message_auto_delete_time = int(
+                data.get("message_auto_delete_time", 0)
             )
-            data_class.from_user_id = data.get("from_user_id", 0)
+            data_class.from_user_id = int(data.get("from_user_id", 0))
 
         return data_class
 
@@ -31704,7 +31708,7 @@ class MessageChatBoost(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageChatBoost", None]:
         if data:
             data_class = cls()
-            data_class.boost_count = data.get("boost_count", 0)
+            data_class.boost_count = int(data.get("boost_count", 0))
 
         return data_class
 
@@ -31802,7 +31806,7 @@ class MessageForumTopicEdited(TlObject, MessageContent):
             data_class.edit_icon_custom_emoji_id = data.get(
                 "edit_icon_custom_emoji_id", False
             )
-            data_class.icon_custom_emoji_id = data.get("icon_custom_emoji_id", 0)
+            data_class.icon_custom_emoji_id = int(data.get("icon_custom_emoji_id", 0))
 
         return data_class
 
@@ -31989,9 +31993,9 @@ class MessageGameScore(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageGameScore", None]:
         if data:
             data_class = cls()
-            data_class.game_message_id = data.get("game_message_id", 0)
-            data_class.game_id = data.get("game_id", 0)
-            data_class.score = data.get("score", 0)
+            data_class.game_message_id = int(data.get("game_message_id", 0))
+            data_class.game_id = int(data.get("game_id", 0))
+            data_class.score = int(data.get("score", 0))
 
         return data_class
 
@@ -32073,10 +32077,10 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessagePaymentSuccessful", None]:
         if data:
             data_class = cls()
-            data_class.invoice_chat_id = data.get("invoice_chat_id", 0)
-            data_class.invoice_message_id = data.get("invoice_message_id", 0)
+            data_class.invoice_chat_id = int(data.get("invoice_chat_id", 0))
+            data_class.invoice_message_id = int(data.get("invoice_message_id", 0))
             data_class.currency = data.get("currency", "")
-            data_class.total_amount = data.get("total_amount", 0)
+            data_class.total_amount = int(data.get("total_amount", 0))
             data_class.is_recurring = data.get("is_recurring", False)
             data_class.is_first_recurring = data.get("is_first_recurring", False)
             data_class.invoice_name = data.get("invoice_name", "")
@@ -32137,11 +32141,7 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
         r"""True, if this is a recurring payment"""
         self.is_first_recurring: bool = bool(is_first_recurring)
         r"""True, if this is the first recurring payment"""
-        self.invoice_payload: bytes = (
-            b64encode(invoice_payload)
-            if isinstance(invoice_payload, bytes)
-            else invoice_payload
-        )
+        self.invoice_payload: Union[bytes, None] = invoice_payload
         r"""Invoice payload"""
         self.shipping_option_id: Union[str, None] = shipping_option_id
         r"""Identifier of the shipping option chosen by the user; may be empty if not applicable"""
@@ -32180,10 +32180,10 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.currency = data.get("currency", "")
-            data_class.total_amount = data.get("total_amount", 0)
+            data_class.total_amount = int(data.get("total_amount", 0))
             data_class.is_recurring = data.get("is_recurring", False)
             data_class.is_first_recurring = data.get("is_first_recurring", False)
-            data_class.invoice_payload = data.get("invoice_payload", b"")
+            data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
             data_class.shipping_option_id = data.get("shipping_option_id", "")
             data_class.order_info = data.get("order_info", None)
             data_class.telegram_payment_charge_id = data.get(
@@ -32273,12 +32273,12 @@ class MessageGiftedPremium(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageGiftedPremium", None]:
         if data:
             data_class = cls()
-            data_class.gifter_user_id = data.get("gifter_user_id", 0)
+            data_class.gifter_user_id = int(data.get("gifter_user_id", 0))
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
+            data_class.amount = int(data.get("amount", 0))
             data_class.cryptocurrency = data.get("cryptocurrency", "")
-            data_class.cryptocurrency_amount = data.get("cryptocurrency_amount", 0)
-            data_class.month_count = data.get("month_count", 0)
+            data_class.cryptocurrency_amount = int(data.get("cryptocurrency_amount", 0))
+            data_class.month_count = int(data.get("month_count", 0))
             data_class.sticker = data.get("sticker", None)
 
         return data_class
@@ -32386,10 +32386,10 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
             data_class.is_from_giveaway = data.get("is_from_giveaway", False)
             data_class.is_unclaimed = data.get("is_unclaimed", False)
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
+            data_class.amount = int(data.get("amount", 0))
             data_class.cryptocurrency = data.get("cryptocurrency", "")
-            data_class.cryptocurrency_amount = data.get("cryptocurrency_amount", 0)
-            data_class.month_count = data.get("month_count", 0)
+            data_class.cryptocurrency_amount = int(data.get("cryptocurrency_amount", 0))
+            data_class.month_count = int(data.get("month_count", 0))
             data_class.sticker = data.get("sticker", None)
             data_class.code = data.get("code", "")
 
@@ -32479,8 +32479,8 @@ class MessagePremiumGiveaway(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.parameters = data.get("parameters", None)
-            data_class.winner_count = data.get("winner_count", 0)
-            data_class.month_count = data.get("month_count", 0)
+            data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.month_count = int(data.get("month_count", 0))
             data_class.sticker = data.get("sticker", None)
 
         return data_class
@@ -32535,9 +32535,9 @@ class MessagePremiumGiveawayCompleted(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessagePremiumGiveawayCompleted", None]:
         if data:
             data_class = cls()
-            data_class.giveaway_message_id = data.get("giveaway_message_id", 0)
-            data_class.winner_count = data.get("winner_count", 0)
-            data_class.unclaimed_prize_count = data.get("unclaimed_prize_count", 0)
+            data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
+            data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.unclaimed_prize_count = int(data.get("unclaimed_prize_count", 0))
 
         return data_class
 
@@ -32647,19 +32647,19 @@ class MessagePremiumGiveawayWinners(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessagePremiumGiveawayWinners", None]:
         if data:
             data_class = cls()
-            data_class.boosted_chat_id = data.get("boosted_chat_id", 0)
-            data_class.giveaway_message_id = data.get("giveaway_message_id", 0)
-            data_class.additional_chat_count = data.get("additional_chat_count", 0)
-            data_class.actual_winners_selection_date = data.get(
-                "actual_winners_selection_date", 0
+            data_class.boosted_chat_id = int(data.get("boosted_chat_id", 0))
+            data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
+            data_class.additional_chat_count = int(data.get("additional_chat_count", 0))
+            data_class.actual_winners_selection_date = int(
+                data.get("actual_winners_selection_date", 0)
             )
             data_class.only_new_members = data.get("only_new_members", False)
             data_class.was_refunded = data.get("was_refunded", False)
-            data_class.month_count = data.get("month_count", 0)
+            data_class.month_count = int(data.get("month_count", 0))
             data_class.prize_description = data.get("prize_description", "")
-            data_class.winner_count = data.get("winner_count", 0)
+            data_class.winner_count = int(data.get("winner_count", 0))
             data_class.winner_user_ids = data.get("winner_user_ids", None)
-            data_class.unclaimed_prize_count = data.get("unclaimed_prize_count", 0)
+            data_class.unclaimed_prize_count = int(data.get("unclaimed_prize_count", 0))
 
         return data_class
 
@@ -32729,7 +32729,7 @@ class MessageUsersShared(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.users = data.get("users", None)
-            data_class.button_id = data.get("button_id", 0)
+            data_class.button_id = int(data.get("button_id", 0))
 
         return data_class
 
@@ -32769,7 +32769,7 @@ class MessageChatShared(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.chat = data.get("chat", None)
-            data_class.button_id = data.get("button_id", 0)
+            data_class.button_id = int(data.get("button_id", 0))
 
         return data_class
 
@@ -33027,7 +33027,7 @@ class MessageProximityAlertTriggered(TlObject, MessageContent):
             data_class = cls()
             data_class.traveler_id = data.get("traveler_id", None)
             data_class.watcher_id = data.get("watcher_id", None)
-            data_class.distance = data.get("distance", 0)
+            data_class.distance = int(data.get("distance", 0))
 
         return data_class
 
@@ -33597,7 +33597,7 @@ class TextEntityTypeMentionName(TlObject, TextEntityType):
     def from_dict(cls, data: dict) -> Union["TextEntityTypeMentionName", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -33631,7 +33631,7 @@ class TextEntityTypeCustomEmoji(TlObject, TextEntityType):
     def from_dict(cls, data: dict) -> Union["TextEntityTypeCustomEmoji", None]:
         if data:
             data_class = cls()
-            data_class.custom_emoji_id = data.get("custom_emoji_id", 0)
+            data_class.custom_emoji_id = int(data.get("custom_emoji_id", 0))
 
         return data_class
 
@@ -33665,7 +33665,7 @@ class TextEntityTypeMediaTimestamp(TlObject, TextEntityType):
     def from_dict(cls, data: dict) -> Union["TextEntityTypeMediaTimestamp", None]:
         if data:
             data_class = cls()
-            data_class.media_timestamp = data.get("media_timestamp", 0)
+            data_class.media_timestamp = int(data.get("media_timestamp", 0))
 
         return data_class
 
@@ -33719,8 +33719,8 @@ class InputThumbnail(TlObject):
         if data:
             data_class = cls()
             data_class.thumbnail = data.get("thumbnail", None)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
 
         return data_class
 
@@ -33754,7 +33754,7 @@ class MessageSchedulingStateSendAtDate(TlObject, MessageSchedulingState):
     def from_dict(cls, data: dict) -> Union["MessageSchedulingStateSendAtDate", None]:
         if data:
             data_class = cls()
-            data_class.send_date = data.get("send_date", 0)
+            data_class.send_date = int(data.get("send_date", 0))
 
         return data_class
 
@@ -33816,7 +33816,7 @@ class MessageSelfDestructTypeTimer(TlObject, MessageSelfDestructType):
     def from_dict(cls, data: dict) -> Union["MessageSelfDestructTypeTimer", None]:
         if data:
             data_class = cls()
-            data_class.self_destruct_time = data.get("self_destruct_time", 0)
+            data_class.self_destruct_time = int(data.get("self_destruct_time", 0))
 
         return data_class
 
@@ -33942,8 +33942,8 @@ class MessageSendOptions(TlObject):
                 "update_order_of_installed_sticker_sets", False
             )
             data_class.scheduling_state = data.get("scheduling_state", None)
-            data_class.effect_id = data.get("effect_id", 0)
-            data_class.sending_id = data.get("sending_id", 0)
+            data_class.effect_id = int(data.get("effect_id", 0))
+            data_class.sending_id = int(data.get("sending_id", 0))
             data_class.only_preview = data.get("only_preview", False)
 
         return data_class
@@ -34169,9 +34169,9 @@ class InputMessageAnimation(TlObject, InputMessageContent):
             data_class.animation = data.get("animation", None)
             data_class.thumbnail = data.get("thumbnail", None)
             data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
-            data_class.duration = data.get("duration", 0)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.caption = data.get("caption", None)
             data_class.show_caption_above_media = data.get(
                 "show_caption_above_media", False
@@ -34255,7 +34255,7 @@ class InputMessageAudio(TlObject, InputMessageContent):
             data_class = cls()
             data_class.audio = data.get("audio", None)
             data_class.album_cover_thumbnail = data.get("album_cover_thumbnail", None)
-            data_class.duration = data.get("duration", 0)
+            data_class.duration = int(data.get("duration", 0))
             data_class.title = data.get("title", "")
             data_class.performer = data.get("performer", "")
             data_class.caption = data.get("caption", None)
@@ -34429,8 +34429,8 @@ class InputMessagePhoto(TlObject, InputMessageContent):
             data_class.photo = data.get("photo", None)
             data_class.thumbnail = data.get("thumbnail", None)
             data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.caption = data.get("caption", None)
             data_class.show_caption_above_media = data.get(
                 "show_caption_above_media", False
@@ -34508,8 +34508,8 @@ class InputMessageSticker(TlObject, InputMessageContent):
             data_class = cls()
             data_class.sticker = data.get("sticker", None)
             data_class.thumbnail = data.get("thumbnail", None)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.emoji = data.get("emoji", "")
 
         return data_class
@@ -34627,9 +34627,9 @@ class InputMessageVideo(TlObject, InputMessageContent):
             data_class.video = data.get("video", None)
             data_class.thumbnail = data.get("thumbnail", None)
             data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
-            data_class.duration = data.get("duration", 0)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.supports_streaming = data.get("supports_streaming", False)
             data_class.caption = data.get("caption", None)
             data_class.show_caption_above_media = data.get(
@@ -34710,8 +34710,8 @@ class InputMessageVideoNote(TlObject, InputMessageContent):
             data_class = cls()
             data_class.video_note = data.get("video_note", None)
             data_class.thumbnail = data.get("thumbnail", None)
-            data_class.duration = data.get("duration", 0)
-            data_class.length = data.get("length", 0)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.length = int(data.get("length", 0))
             data_class.self_destruct_type = data.get("self_destruct_type", None)
 
         return data_class
@@ -34752,9 +34752,7 @@ class InputMessageVoiceNote(TlObject, InputMessageContent):
         r"""Voice note to be sent\. The voice note must be encoded with the Opus codec and stored inside an OGG container with a single audio channel, or be in MP3 or M4A format as regular audio"""
         self.duration: int = int(duration)
         r"""Duration of the voice note, in seconds"""
-        self.waveform: bytes = (
-            b64encode(waveform) if isinstance(waveform, bytes) else waveform
-        )
+        self.waveform: Union[bytes, None] = waveform
         r"""Waveform representation of the voice note in 5\-bit format"""
         self.caption: Union[FormattedText, None] = caption
         r"""Voice note caption; may be null if empty; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
@@ -34787,8 +34785,8 @@ class InputMessageVoiceNote(TlObject, InputMessageContent):
         if data:
             data_class = cls()
             data_class.voice_note = data.get("voice_note", None)
-            data_class.duration = data.get("duration", 0)
-            data_class.waveform = data.get("waveform", b"")
+            data_class.duration = int(data.get("duration", 0))
+            data_class.waveform = b64decode(data.get("waveform", b""))
             data_class.caption = data.get("caption", None)
             data_class.self_destruct_type = data.get("self_destruct_type", None)
 
@@ -34852,9 +34850,11 @@ class InputMessageLocation(TlObject, InputMessageContent):
         if data:
             data_class = cls()
             data_class.location = data.get("location", None)
-            data_class.live_period = data.get("live_period", 0)
-            data_class.heading = data.get("heading", 0)
-            data_class.proximity_alert_radius = data.get("proximity_alert_radius", 0)
+            data_class.live_period = int(data.get("live_period", 0))
+            data_class.heading = int(data.get("heading", 0))
+            data_class.proximity_alert_radius = int(
+                data.get("proximity_alert_radius", 0)
+            )
 
         return data_class
 
@@ -35009,7 +35009,7 @@ class InputMessageGame(TlObject, InputMessageContent):
     def from_dict(cls, data: dict) -> Union["InputMessageGame", None]:
         if data:
             data_class = cls()
-            data_class.bot_user_id = data.get("bot_user_id", 0)
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
             data_class.game_short_name = data.get("game_short_name", "")
 
         return data_class
@@ -35086,9 +35086,7 @@ class InputMessageInvoice(TlObject, InputMessageContent):
         r"""Product photo width"""
         self.photo_height: int = int(photo_height)
         r"""Product photo height"""
-        self.payload: bytes = (
-            b64encode(payload) if isinstance(payload, bytes) else payload
-        )
+        self.payload: Union[bytes, None] = payload
         r"""The invoice payload"""
         self.provider_token: Union[str, None] = provider_token
         r"""Payment provider token; may be empty for payments in Telegram Stars"""
@@ -35153,10 +35151,10 @@ class InputMessageInvoice(TlObject, InputMessageContent):
             data_class.title = data.get("title", "")
             data_class.description = data.get("description", "")
             data_class.photo_url = data.get("photo_url", "")
-            data_class.photo_size = data.get("photo_size", 0)
-            data_class.photo_width = data.get("photo_width", 0)
-            data_class.photo_height = data.get("photo_height", 0)
-            data_class.payload = data.get("payload", b"")
+            data_class.photo_size = int(data.get("photo_size", 0))
+            data_class.photo_width = int(data.get("photo_width", 0))
+            data_class.photo_height = int(data.get("photo_height", 0))
+            data_class.payload = b64decode(data.get("payload", b""))
             data_class.provider_token = data.get("provider_token", "")
             data_class.provider_data = data.get("provider_data", "")
             data_class.start_parameter = data.get("start_parameter", "")
@@ -35246,8 +35244,8 @@ class InputMessagePoll(TlObject, InputMessageContent):
             data_class.options = data.get("options", None)
             data_class.is_anonymous = data.get("is_anonymous", False)
             data_class.type = data.get("type", None)
-            data_class.open_period = data.get("open_period", 0)
-            data_class.close_date = data.get("close_date", 0)
+            data_class.open_period = int(data.get("open_period", 0))
+            data_class.close_date = int(data.get("close_date", 0))
             data_class.is_closed = data.get("is_closed", False)
 
         return data_class
@@ -35291,8 +35289,8 @@ class InputMessageStory(TlObject, InputMessageContent):
     def from_dict(cls, data: dict) -> Union["InputMessageStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = data.get("story_sender_chat_id", 0)
-            data_class.story_id = data.get("story_id", 0)
+            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
 
@@ -35353,8 +35351,8 @@ class InputMessageForwarded(TlObject, InputMessageContent):
     def from_dict(cls, data: dict) -> Union["InputMessageForwarded", None]:
         if data:
             data_class = cls()
-            data_class.from_chat_id = data.get("from_chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.from_chat_id = int(data.get("from_chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.in_game_share = data.get("in_game_share", False)
             data_class.copy_options = data.get("copy_options", None)
 
@@ -35886,7 +35884,7 @@ class ChatActionUploadingVideo(TlObject, ChatAction):
     def from_dict(cls, data: dict) -> Union["ChatActionUploadingVideo", None]:
         if data:
             data_class = cls()
-            data_class.progress = data.get("progress", 0)
+            data_class.progress = int(data.get("progress", 0))
 
         return data_class
 
@@ -35946,7 +35944,7 @@ class ChatActionUploadingVoiceNote(TlObject, ChatAction):
     def from_dict(cls, data: dict) -> Union["ChatActionUploadingVoiceNote", None]:
         if data:
             data_class = cls()
-            data_class.progress = data.get("progress", 0)
+            data_class.progress = int(data.get("progress", 0))
 
         return data_class
 
@@ -35980,7 +35978,7 @@ class ChatActionUploadingPhoto(TlObject, ChatAction):
     def from_dict(cls, data: dict) -> Union["ChatActionUploadingPhoto", None]:
         if data:
             data_class = cls()
-            data_class.progress = data.get("progress", 0)
+            data_class.progress = int(data.get("progress", 0))
 
         return data_class
 
@@ -36014,7 +36012,7 @@ class ChatActionUploadingDocument(TlObject, ChatAction):
     def from_dict(cls, data: dict) -> Union["ChatActionUploadingDocument", None]:
         if data:
             data_class = cls()
-            data_class.progress = data.get("progress", 0)
+            data_class.progress = int(data.get("progress", 0))
 
         return data_class
 
@@ -36178,7 +36176,7 @@ class ChatActionUploadingVideoNote(TlObject, ChatAction):
     def from_dict(cls, data: dict) -> Union["ChatActionUploadingVideoNote", None]:
         if data:
             data_class = cls()
-            data_class.progress = data.get("progress", 0)
+            data_class.progress = int(data.get("progress", 0))
 
         return data_class
 
@@ -36298,7 +36296,7 @@ class UserStatusOnline(TlObject, UserStatus):
     def from_dict(cls, data: dict) -> Union["UserStatusOnline", None]:
         if data:
             data_class = cls()
-            data_class.expires = data.get("expires", 0)
+            data_class.expires = int(data.get("expires", 0))
 
         return data_class
 
@@ -36332,7 +36330,7 @@ class UserStatusOffline(TlObject, UserStatus):
     def from_dict(cls, data: dict) -> Union["UserStatusOffline", None]:
         if data:
             data_class = cls()
-            data_class.was_online = data.get("was_online", 0)
+            data_class.was_online = int(data.get("was_online", 0))
 
         return data_class
 
@@ -36733,7 +36731,7 @@ class StickerSet(TlObject):
     def from_dict(cls, data: dict) -> Union["StickerSet", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.title = data.get("title", "")
             data_class.name = data.get("name", "")
             data_class.thumbnail = data.get("thumbnail", None)
@@ -36891,7 +36889,7 @@ class StickerSetInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["StickerSetInfo", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.title = data.get("title", "")
             data_class.name = data.get("name", "")
             data_class.thumbnail = data.get("thumbnail", None)
@@ -36906,7 +36904,7 @@ class StickerSetInfo(TlObject):
                 "is_allowed_as_chat_emoji_status", False
             )
             data_class.is_viewed = data.get("is_viewed", False)
-            data_class.size = data.get("size", 0)
+            data_class.size = int(data.get("size", 0))
             data_class.covers = data.get("covers", None)
 
         return data_class
@@ -36950,7 +36948,7 @@ class StickerSets(TlObject):
     def from_dict(cls, data: dict) -> Union["StickerSets", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.sets = data.get("sets", None)
 
         return data_class
@@ -37005,7 +37003,7 @@ class TrendingStickerSets(TlObject):
     def from_dict(cls, data: dict) -> Union["TrendingStickerSets", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.sets = data.get("sets", None)
             data_class.is_premium = data.get("is_premium", False)
 
@@ -37475,7 +37473,7 @@ class StoryAreaTypeSuggestedReaction(TlObject, StoryAreaType):
         if data:
             data_class = cls()
             data_class.reaction_type = data.get("reaction_type", None)
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.is_dark = data.get("is_dark", False)
             data_class.is_flipped = data.get("is_flipped", False)
 
@@ -37520,8 +37518,8 @@ class StoryAreaTypeMessage(TlObject, StoryAreaType):
     def from_dict(cls, data: dict) -> Union["StoryAreaTypeMessage", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
 
         return data_class
 
@@ -37646,7 +37644,7 @@ class InputStoryAreaTypeFoundVenue(TlObject, InputStoryAreaType):
     def from_dict(cls, data: dict) -> Union["InputStoryAreaTypeFoundVenue", None]:
         if data:
             data_class = cls()
-            data_class.query_id = data.get("query_id", 0)
+            data_class.query_id = int(data.get("query_id", 0))
             data_class.result_id = data.get("result_id", "")
 
         return data_class
@@ -37794,8 +37792,8 @@ class InputStoryAreaTypeMessage(TlObject, InputStoryAreaType):
     def from_dict(cls, data: dict) -> Union["InputStoryAreaTypeMessage", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
 
         return data_class
 
@@ -37975,13 +37973,13 @@ class StoryVideo(TlObject):
         if data:
             data_class = cls()
             data_class.duration = data.get("duration", 0.0)
-            data_class.width = data.get("width", 0)
-            data_class.height = data.get("height", 0)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
             data_class.has_stickers = data.get("has_stickers", False)
             data_class.is_animation = data.get("is_animation", False)
             data_class.minithumbnail = data.get("minithumbnail", None)
             data_class.thumbnail = data.get("thumbnail", None)
-            data_class.preload_prefix_size = data.get("preload_prefix_size", 0)
+            data_class.preload_prefix_size = int(data.get("preload_prefix_size", 0))
             data_class.video = data.get("video", None)
 
         return data_class
@@ -38297,8 +38295,8 @@ class StoryOriginPublicStory(TlObject, StoryOrigin):
     def from_dict(cls, data: dict) -> Union["StoryOriginPublicStory", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.story_id = data.get("story_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
 
@@ -38439,9 +38437,9 @@ class StoryInteractionInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["StoryInteractionInfo", None]:
         if data:
             data_class = cls()
-            data_class.view_count = data.get("view_count", 0)
-            data_class.forward_count = data.get("forward_count", 0)
-            data_class.reaction_count = data.get("reaction_count", 0)
+            data_class.view_count = int(data.get("view_count", 0))
+            data_class.forward_count = int(data.get("forward_count", 0))
+            data_class.reaction_count = int(data.get("reaction_count", 0))
             data_class.recent_viewer_user_ids = data.get("recent_viewer_user_ids", None)
 
         return data_class
@@ -38655,10 +38653,10 @@ class Story(TlObject):
     def from_dict(cls, data: dict) -> Union["Story", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.sender_chat_id = data.get("sender_chat_id", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_chat_id = int(data.get("sender_chat_id", 0))
             data_class.sender_id = data.get("sender_id", None)
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
             data_class.is_being_sent = data.get("is_being_sent", False)
             data_class.is_being_edited = data.get("is_being_edited", False)
             data_class.is_edited = data.get("is_edited", False)
@@ -38738,7 +38736,7 @@ class Stories(TlObject):
     def from_dict(cls, data: dict) -> Union["Stories", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.stories = data.get("stories", None)
             data_class.pinned_story_ids = data.get("pinned_story_ids", None)
 
@@ -38783,8 +38781,8 @@ class StoryFullId(TlObject):
     def from_dict(cls, data: dict) -> Union["StoryFullId", None]:
         if data:
             data_class = cls()
-            data_class.sender_chat_id = data.get("sender_chat_id", 0)
-            data_class.story_id = data.get("story_id", 0)
+            data_class.sender_chat_id = int(data.get("sender_chat_id", 0))
+            data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
 
@@ -38835,8 +38833,8 @@ class StoryInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["StoryInfo", None]:
         if data:
             data_class = cls()
-            data_class.story_id = data.get("story_id", 0)
-            data_class.date = data.get("date", 0)
+            data_class.story_id = int(data.get("story_id", 0))
+            data_class.date = int(data.get("date", 0))
             data_class.is_for_close_friends = data.get("is_for_close_friends", False)
 
         return data_class
@@ -38905,10 +38903,10 @@ class ChatActiveStories(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatActiveStories", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.list = data.get("list", None)
-            data_class.order = data.get("order", 0)
-            data_class.max_read_story_id = data.get("max_read_story_id", 0)
+            data_class.order = int(data.get("order", 0))
+            data_class.max_read_story_id = int(data.get("max_read_story_id", 0))
             data_class.stories = data.get("stories", None)
 
         return data_class
@@ -39083,7 +39081,7 @@ class StoryInteraction(TlObject):
         if data:
             data_class = cls()
             data_class.actor_id = data.get("actor_id", None)
-            data_class.interaction_date = data.get("interaction_date", 0)
+            data_class.interaction_date = int(data.get("interaction_date", 0))
             data_class.block_list = data.get("block_list", None)
             data_class.type = data.get("type", None)
 
@@ -39153,9 +39151,9 @@ class StoryInteractions(TlObject):
     def from_dict(cls, data: dict) -> Union["StoryInteractions", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
-            data_class.total_forward_count = data.get("total_forward_count", 0)
-            data_class.total_reaction_count = data.get("total_reaction_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.total_forward_count = int(data.get("total_forward_count", 0))
+            data_class.total_reaction_count = int(data.get("total_reaction_count", 0))
             data_class.interactions = data.get("interactions", None)
             data_class.next_offset = data.get("next_offset", "")
 
@@ -39325,12 +39323,12 @@ class QuickReplyMessage(TlObject):
     def from_dict(cls, data: dict) -> Union["QuickReplyMessage", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.sending_state = data.get("sending_state", None)
             data_class.can_be_edited = data.get("can_be_edited", False)
-            data_class.reply_to_message_id = data.get("reply_to_message_id", 0)
-            data_class.via_bot_user_id = data.get("via_bot_user_id", 0)
-            data_class.media_album_id = data.get("media_album_id", 0)
+            data_class.reply_to_message_id = int(data.get("reply_to_message_id", 0))
+            data_class.via_bot_user_id = int(data.get("via_bot_user_id", 0))
+            data_class.media_album_id = int(data.get("media_album_id", 0))
             data_class.content = data.get("content", None)
             data_class.reply_markup = data.get("reply_markup", None)
 
@@ -39427,10 +39425,10 @@ class QuickReplyShortcut(TlObject):
     def from_dict(cls, data: dict) -> Union["QuickReplyShortcut", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.name = data.get("name", "")
             data_class.first_message = data.get("first_message", None)
-            data_class.message_count = data.get("message_count", 0)
+            data_class.message_count = int(data.get("message_count", 0))
 
         return data_class
 
@@ -39552,7 +39550,7 @@ class PublicForwards(TlObject):
     def from_dict(cls, data: dict) -> Union["PublicForwards", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.forwards = data.get("forwards", None)
             data_class.next_offset = data.get("next_offset", "")
 
@@ -39691,25 +39689,25 @@ class ChatBoostLevelFeatures(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatBoostLevelFeatures", None]:
         if data:
             data_class = cls()
-            data_class.level = data.get("level", 0)
-            data_class.story_per_day_count = data.get("story_per_day_count", 0)
-            data_class.custom_emoji_reaction_count = data.get(
-                "custom_emoji_reaction_count", 0
+            data_class.level = int(data.get("level", 0))
+            data_class.story_per_day_count = int(data.get("story_per_day_count", 0))
+            data_class.custom_emoji_reaction_count = int(
+                data.get("custom_emoji_reaction_count", 0)
             )
-            data_class.title_color_count = data.get("title_color_count", 0)
-            data_class.profile_accent_color_count = data.get(
-                "profile_accent_color_count", 0
+            data_class.title_color_count = int(data.get("title_color_count", 0))
+            data_class.profile_accent_color_count = int(
+                data.get("profile_accent_color_count", 0)
             )
             data_class.can_set_profile_background_custom_emoji = data.get(
                 "can_set_profile_background_custom_emoji", False
             )
-            data_class.accent_color_count = data.get("accent_color_count", 0)
+            data_class.accent_color_count = int(data.get("accent_color_count", 0))
             data_class.can_set_background_custom_emoji = data.get(
                 "can_set_background_custom_emoji", False
             )
             data_class.can_set_emoji_status = data.get("can_set_emoji_status", False)
-            data_class.chat_theme_background_count = data.get(
-                "chat_theme_background_count", 0
+            data_class.chat_theme_background_count = int(
+                data.get("chat_theme_background_count", 0)
             )
             data_class.can_set_custom_background = data.get(
                 "can_set_custom_background", False
@@ -39831,29 +39829,29 @@ class ChatBoostFeatures(TlObject):
         if data:
             data_class = cls()
             data_class.features = data.get("features", None)
-            data_class.min_profile_background_custom_emoji_boost_level = data.get(
-                "min_profile_background_custom_emoji_boost_level", 0
+            data_class.min_profile_background_custom_emoji_boost_level = int(
+                data.get("min_profile_background_custom_emoji_boost_level", 0)
             )
-            data_class.min_background_custom_emoji_boost_level = data.get(
-                "min_background_custom_emoji_boost_level", 0
+            data_class.min_background_custom_emoji_boost_level = int(
+                data.get("min_background_custom_emoji_boost_level", 0)
             )
-            data_class.min_emoji_status_boost_level = data.get(
-                "min_emoji_status_boost_level", 0
+            data_class.min_emoji_status_boost_level = int(
+                data.get("min_emoji_status_boost_level", 0)
             )
-            data_class.min_chat_theme_background_boost_level = data.get(
-                "min_chat_theme_background_boost_level", 0
+            data_class.min_chat_theme_background_boost_level = int(
+                data.get("min_chat_theme_background_boost_level", 0)
             )
-            data_class.min_custom_background_boost_level = data.get(
-                "min_custom_background_boost_level", 0
+            data_class.min_custom_background_boost_level = int(
+                data.get("min_custom_background_boost_level", 0)
             )
-            data_class.min_custom_emoji_sticker_set_boost_level = data.get(
-                "min_custom_emoji_sticker_set_boost_level", 0
+            data_class.min_custom_emoji_sticker_set_boost_level = int(
+                data.get("min_custom_emoji_sticker_set_boost_level", 0)
             )
-            data_class.min_speech_recognition_boost_level = data.get(
-                "min_speech_recognition_boost_level", 0
+            data_class.min_speech_recognition_boost_level = int(
+                data.get("min_speech_recognition_boost_level", 0)
             )
-            data_class.min_sponsored_message_disable_boost_level = data.get(
-                "min_sponsored_message_disable_boost_level", 0
+            data_class.min_sponsored_message_disable_boost_level = int(
+                data.get("min_sponsored_message_disable_boost_level", 0)
             )
 
         return data_class
@@ -39897,7 +39895,7 @@ class ChatBoostSourceGiftCode(TlObject, ChatBoostSource):
     def from_dict(cls, data: dict) -> Union["ChatBoostSourceGiftCode", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.gift_code = data.get("gift_code", "")
 
         return data_class
@@ -39959,9 +39957,9 @@ class ChatBoostSourceGiveaway(TlObject, ChatBoostSource):
     def from_dict(cls, data: dict) -> Union["ChatBoostSourceGiveaway", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.gift_code = data.get("gift_code", "")
-            data_class.giveaway_message_id = data.get("giveaway_message_id", 0)
+            data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
             data_class.is_unclaimed = data.get("is_unclaimed", False)
 
         return data_class
@@ -39996,7 +39994,7 @@ class ChatBoostSourcePremium(TlObject, ChatBoostSource):
     def from_dict(cls, data: dict) -> Union["ChatBoostSourcePremium", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -40057,10 +40055,10 @@ class PrepaidPremiumGiveaway(TlObject):
     def from_dict(cls, data: dict) -> Union["PrepaidPremiumGiveaway", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.winner_count = data.get("winner_count", 0)
-            data_class.month_count = data.get("month_count", 0)
-            data_class.payment_date = data.get("payment_date", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.month_count = int(data.get("month_count", 0))
+            data_class.payment_date = int(data.get("payment_date", 0))
 
         return data_class
 
@@ -40165,14 +40163,16 @@ class ChatBoostStatus(TlObject):
             data_class = cls()
             data_class.boost_url = data.get("boost_url", "")
             data_class.applied_slot_ids = data.get("applied_slot_ids", None)
-            data_class.level = data.get("level", 0)
-            data_class.gift_code_boost_count = data.get("gift_code_boost_count", 0)
-            data_class.boost_count = data.get("boost_count", 0)
-            data_class.current_level_boost_count = data.get(
-                "current_level_boost_count", 0
+            data_class.level = int(data.get("level", 0))
+            data_class.gift_code_boost_count = int(data.get("gift_code_boost_count", 0))
+            data_class.boost_count = int(data.get("boost_count", 0))
+            data_class.current_level_boost_count = int(
+                data.get("current_level_boost_count", 0)
             )
-            data_class.next_level_boost_count = data.get("next_level_boost_count", 0)
-            data_class.premium_member_count = data.get("premium_member_count", 0)
+            data_class.next_level_boost_count = int(
+                data.get("next_level_boost_count", 0)
+            )
+            data_class.premium_member_count = int(data.get("premium_member_count", 0))
             data_class.premium_member_percentage = data.get(
                 "premium_member_percentage", 0.0
             )
@@ -40250,10 +40250,10 @@ class ChatBoost(TlObject):
         if data:
             data_class = cls()
             data_class.id = data.get("id", "")
-            data_class.count = data.get("count", 0)
+            data_class.count = int(data.get("count", 0))
             data_class.source = data.get("source", None)
-            data_class.start_date = data.get("start_date", 0)
-            data_class.expiration_date = data.get("expiration_date", 0)
+            data_class.start_date = int(data.get("start_date", 0))
+            data_class.expiration_date = int(data.get("expiration_date", 0))
 
         return data_class
 
@@ -40307,7 +40307,7 @@ class FoundChatBoosts(TlObject):
     def from_dict(cls, data: dict) -> Union["FoundChatBoosts", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.boosts = data.get("boosts", None)
             data_class.next_offset = data.get("next_offset", "")
 
@@ -40377,13 +40377,13 @@ class ChatBoostSlot(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatBoostSlot", None]:
         if data:
             data_class = cls()
-            data_class.slot_id = data.get("slot_id", 0)
-            data_class.currently_boosted_chat_id = data.get(
-                "currently_boosted_chat_id", 0
+            data_class.slot_id = int(data.get("slot_id", 0))
+            data_class.currently_boosted_chat_id = int(
+                data.get("currently_boosted_chat_id", 0)
             )
-            data_class.start_date = data.get("start_date", 0)
-            data_class.expiration_date = data.get("expiration_date", 0)
-            data_class.cooldown_until_date = data.get("cooldown_until_date", 0)
+            data_class.start_date = int(data.get("start_date", 0))
+            data_class.expiration_date = int(data.get("expiration_date", 0))
+            data_class.cooldown_until_date = int(data.get("cooldown_until_date", 0))
 
         return data_class
 
@@ -40677,8 +40677,8 @@ class CallProtocol(TlObject):
             data_class = cls()
             data_class.udp_p2p = data.get("udp_p2p", False)
             data_class.udp_reflector = data.get("udp_reflector", False)
-            data_class.min_layer = data.get("min_layer", 0)
-            data_class.max_layer = data.get("max_layer", 0)
+            data_class.min_layer = int(data.get("min_layer", 0))
+            data_class.max_layer = int(data.get("max_layer", 0))
             data_class.library_versions = data.get("library_versions", None)
 
         return data_class
@@ -40697,9 +40697,7 @@ class CallServerTypeTelegramReflector(TlObject, CallServerType):
     """
 
     def __init__(self, peer_tag: bytes = b"", is_tcp: bool = False) -> None:
-        self.peer_tag: bytes = (
-            b64encode(peer_tag) if isinstance(peer_tag, bytes) else peer_tag
-        )
+        self.peer_tag: Union[bytes, None] = peer_tag
         r"""A peer tag to be used with the reflector"""
         self.is_tcp: bool = bool(is_tcp)
         r"""True, if the server uses TCP instead of UDP"""
@@ -40724,7 +40722,7 @@ class CallServerTypeTelegramReflector(TlObject, CallServerType):
     def from_dict(cls, data: dict) -> Union["CallServerTypeTelegramReflector", None]:
         if data:
             data_class = cls()
-            data_class.peer_tag = data.get("peer_tag", b"")
+            data_class.peer_tag = b64decode(data.get("peer_tag", b""))
             data_class.is_tcp = data.get("is_tcp", False)
 
         return data_class
@@ -40859,10 +40857,10 @@ class CallServer(TlObject):
     def from_dict(cls, data: dict) -> Union["CallServer", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.ip_address = data.get("ip_address", "")
             data_class.ipv6_address = data.get("ipv6_address", "")
-            data_class.port = data.get("port", 0)
+            data_class.port = int(data.get("port", 0))
             data_class.type = data.get("type", None)
 
         return data_class
@@ -40897,7 +40895,7 @@ class CallId(TlObject):
     def from_dict(cls, data: dict) -> Union["CallId", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
 
         return data_class
 
@@ -40931,7 +40929,7 @@ class GroupCallId(TlObject):
     def from_dict(cls, data: dict) -> Union["GroupCallId", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
 
         return data_class
 
@@ -41049,11 +41047,7 @@ class CallStateReady(TlObject, CallState):
         r"""List of available call servers"""
         self.config: Union[str, None] = config
         r"""A JSON\-encoded call config"""
-        self.encryption_key: bytes = (
-            b64encode(encryption_key)
-            if isinstance(encryption_key, bytes)
-            else encryption_key
-        )
+        self.encryption_key: Union[bytes, None] = encryption_key
         r"""Call encryption key"""
         self.emojis: List[str] = emojis or []
         r"""Encryption key emojis fingerprint"""
@@ -41090,7 +41084,7 @@ class CallStateReady(TlObject, CallState):
             data_class.protocol = data.get("protocol", None)
             data_class.servers = data.get("servers", None)
             data_class.config = data.get("config", "")
-            data_class.encryption_key = data.get("encryption_key", b"")
+            data_class.encryption_key = b64decode(data.get("encryption_key", b""))
             data_class.emojis = data.get("emojis", None)
             data_class.allow_p2p = data.get("allow_p2p", False)
             data_class.custom_parameters = data.get("custom_parameters", "")
@@ -41355,9 +41349,9 @@ class GroupCallStream(TlObject):
     def from_dict(cls, data: dict) -> Union["GroupCallStream", None]:
         if data:
             data_class = cls()
-            data_class.channel_id = data.get("channel_id", 0)
-            data_class.scale = data.get("scale", 0)
-            data_class.time_offset = data.get("time_offset", 0)
+            data_class.channel_id = int(data.get("channel_id", 0))
+            data_class.scale = int(data.get("scale", 0))
+            data_class.time_offset = int(data.get("time_offset", 0))
 
         return data_class
 
@@ -41661,9 +41655,9 @@ class GroupCall(TlObject):
     def from_dict(cls, data: dict) -> Union["GroupCall", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.title = data.get("title", "")
-            data_class.scheduled_start_date = data.get("scheduled_start_date", 0)
+            data_class.scheduled_start_date = int(data.get("scheduled_start_date", 0))
             data_class.enabled_start_notification = data.get(
                 "enabled_start_notification", False
             )
@@ -41672,7 +41666,7 @@ class GroupCall(TlObject):
             data_class.is_joined = data.get("is_joined", False)
             data_class.need_rejoin = data.get("need_rejoin", False)
             data_class.can_be_managed = data.get("can_be_managed", False)
-            data_class.participant_count = data.get("participant_count", 0)
+            data_class.participant_count = int(data.get("participant_count", 0))
             data_class.has_hidden_listeners = data.get("has_hidden_listeners", False)
             data_class.loaded_all_participants = data.get(
                 "loaded_all_participants", False
@@ -41685,9 +41679,9 @@ class GroupCall(TlObject):
             data_class.can_toggle_mute_new_participants = data.get(
                 "can_toggle_mute_new_participants", False
             )
-            data_class.record_duration = data.get("record_duration", 0)
+            data_class.record_duration = int(data.get("record_duration", 0))
             data_class.is_video_recorded = data.get("is_video_recorded", False)
-            data_class.duration = data.get("duration", 0)
+            data_class.duration = int(data.get("duration", 0))
 
         return data_class
 
@@ -41953,9 +41947,9 @@ class GroupCallParticipant(TlObject):
         if data:
             data_class = cls()
             data_class.participant_id = data.get("participant_id", None)
-            data_class.audio_source_id = data.get("audio_source_id", 0)
-            data_class.screen_sharing_audio_source_id = data.get(
-                "screen_sharing_audio_source_id", 0
+            data_class.audio_source_id = int(data.get("audio_source_id", 0))
+            data_class.screen_sharing_audio_source_id = int(
+                data.get("screen_sharing_audio_source_id", 0)
             )
             data_class.video_info = data.get("video_info", None)
             data_class.screen_sharing_video_info = data.get(
@@ -41984,7 +41978,7 @@ class GroupCallParticipant(TlObject):
                 "is_muted_for_current_user", False
             )
             data_class.can_unmute_self = data.get("can_unmute_self", False)
-            data_class.volume_level = data.get("volume_level", 0)
+            data_class.volume_level = int(data.get("volume_level", 0))
             data_class.order = data.get("order", "")
 
         return data_class
@@ -42295,8 +42289,8 @@ class Call(TlObject):
     def from_dict(cls, data: dict) -> Union["Call", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.user_id = data.get("user_id", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.is_outgoing = data.get("is_outgoing", False)
             data_class.is_video = data.get("is_video", False)
             data_class.state = data.get("state", None)
@@ -42535,7 +42529,7 @@ class AddedReaction(TlObject):
             data_class.type = data.get("type", None)
             data_class.sender_id = data.get("sender_id", None)
             data_class.is_outgoing = data.get("is_outgoing", False)
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
 
         return data_class
 
@@ -42589,7 +42583,7 @@ class AddedReactions(TlObject):
     def from_dict(cls, data: dict) -> Union["AddedReactions", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.reactions = data.get("reactions", None)
             data_class.next_offset = data.get("next_offset", "")
 
@@ -43251,9 +43245,9 @@ class BusinessConnection(TlObject):
         if data:
             data_class = cls()
             data_class.id = data.get("id", "")
-            data_class.user_id = data.get("user_id", 0)
-            data_class.user_chat_id = data.get("user_chat_id", 0)
-            data_class.date = data.get("date", 0)
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.user_chat_id = int(data.get("user_chat_id", 0))
+            data_class.date = int(data.get("date", 0))
             data_class.can_reply = data.get("can_reply", False)
             data_class.is_enabled = data.get("is_enabled", False)
 
@@ -43298,8 +43292,8 @@ class AttachmentMenuBotColor(TlObject):
     def from_dict(cls, data: dict) -> Union["AttachmentMenuBotColor", None]:
         if data:
             data_class = cls()
-            data_class.light_color = data.get("light_color", 0)
-            data_class.dark_color = data.get("dark_color", 0)
+            data_class.light_color = int(data.get("light_color", 0))
+            data_class.dark_color = int(data.get("dark_color", 0))
 
         return data_class
 
@@ -43493,7 +43487,7 @@ class AttachmentMenuBot(TlObject):
     def from_dict(cls, data: dict) -> Union["AttachmentMenuBot", None]:
         if data:
             data_class = cls()
-            data_class.bot_user_id = data.get("bot_user_id", 0)
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
             data_class.supports_self_chat = data.get("supports_self_chat", False)
             data_class.supports_user_chats = data.get("supports_user_chats", False)
             data_class.supports_bot_chats = data.get("supports_bot_chats", False)
@@ -43759,7 +43753,7 @@ class UserLink(TlObject):
         if data:
             data_class = cls()
             data_class.url = data.get("url", "")
-            data_class.expires_in = data.get("expires_in", 0)
+            data_class.expires_in = int(data.get("expires_in", 0))
 
         return data_class
 
@@ -43901,9 +43895,9 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
             data_class.thumbnail_mime_type = data.get("thumbnail_mime_type", "")
             data_class.video_url = data.get("video_url", "")
             data_class.video_mime_type = data.get("video_mime_type", "")
-            data_class.video_duration = data.get("video_duration", 0)
-            data_class.video_width = data.get("video_width", 0)
-            data_class.video_height = data.get("video_height", 0)
+            data_class.video_duration = int(data.get("video_duration", 0))
+            data_class.video_width = int(data.get("video_width", 0))
+            data_class.video_height = int(data.get("video_height", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -44040,8 +44034,8 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
             data_class.title = data.get("title", "")
             data_class.description = data.get("description", "")
             data_class.thumbnail_url = data.get("thumbnail_url", "")
-            data_class.thumbnail_width = data.get("thumbnail_width", 0)
-            data_class.thumbnail_height = data.get("thumbnail_height", 0)
+            data_class.thumbnail_width = int(data.get("thumbnail_width", 0))
+            data_class.thumbnail_height = int(data.get("thumbnail_height", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -44155,7 +44149,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
             data_class.title = data.get("title", "")
             data_class.performer = data.get("performer", "")
             data_class.audio_url = data.get("audio_url", "")
-            data_class.audio_duration = data.get("audio_duration", 0)
+            data_class.audio_duration = int(data.get("audio_duration", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -44268,8 +44262,8 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
             data_class.id = data.get("id", "")
             data_class.contact = data.get("contact", None)
             data_class.thumbnail_url = data.get("thumbnail_url", "")
-            data_class.thumbnail_width = data.get("thumbnail_width", 0)
-            data_class.thumbnail_height = data.get("thumbnail_height", 0)
+            data_class.thumbnail_width = int(data.get("thumbnail_width", 0))
+            data_class.thumbnail_height = int(data.get("thumbnail_height", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -44406,8 +44400,8 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
             data_class.document_url = data.get("document_url", "")
             data_class.mime_type = data.get("mime_type", "")
             data_class.thumbnail_url = data.get("thumbnail_url", "")
-            data_class.thumbnail_width = data.get("thumbnail_width", 0)
-            data_class.thumbnail_height = data.get("thumbnail_height", 0)
+            data_class.thumbnail_width = int(data.get("thumbnail_width", 0))
+            data_class.thumbnail_height = int(data.get("thumbnail_height", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -44592,11 +44586,11 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
             data_class = cls()
             data_class.id = data.get("id", "")
             data_class.location = data.get("location", None)
-            data_class.live_period = data.get("live_period", 0)
+            data_class.live_period = int(data.get("live_period", 0))
             data_class.title = data.get("title", "")
             data_class.thumbnail_url = data.get("thumbnail_url", "")
-            data_class.thumbnail_width = data.get("thumbnail_width", 0)
-            data_class.thumbnail_height = data.get("thumbnail_height", 0)
+            data_class.thumbnail_width = int(data.get("thumbnail_width", 0))
+            data_class.thumbnail_height = int(data.get("thumbnail_height", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -44725,8 +44719,8 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
             data_class.description = data.get("description", "")
             data_class.thumbnail_url = data.get("thumbnail_url", "")
             data_class.photo_url = data.get("photo_url", "")
-            data_class.photo_width = data.get("photo_width", 0)
-            data_class.photo_height = data.get("photo_height", 0)
+            data_class.photo_width = int(data.get("photo_width", 0))
+            data_class.photo_height = int(data.get("photo_height", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -44839,8 +44833,8 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
             data_class.id = data.get("id", "")
             data_class.thumbnail_url = data.get("thumbnail_url", "")
             data_class.sticker_url = data.get("sticker_url", "")
-            data_class.sticker_width = data.get("sticker_width", 0)
-            data_class.sticker_height = data.get("sticker_height", 0)
+            data_class.sticker_width = int(data.get("sticker_width", 0))
+            data_class.sticker_height = int(data.get("sticker_height", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -44953,8 +44947,8 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
             data_class.id = data.get("id", "")
             data_class.venue = data.get("venue", None)
             data_class.thumbnail_url = data.get("thumbnail_url", "")
-            data_class.thumbnail_width = data.get("thumbnail_width", 0)
-            data_class.thumbnail_height = data.get("thumbnail_height", 0)
+            data_class.thumbnail_width = int(data.get("thumbnail_width", 0))
+            data_class.thumbnail_height = int(data.get("thumbnail_height", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -45098,9 +45092,9 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
             data_class.thumbnail_url = data.get("thumbnail_url", "")
             data_class.video_url = data.get("video_url", "")
             data_class.mime_type = data.get("mime_type", "")
-            data_class.video_width = data.get("video_width", 0)
-            data_class.video_height = data.get("video_height", 0)
-            data_class.video_duration = data.get("video_duration", 0)
+            data_class.video_width = int(data.get("video_width", 0))
+            data_class.video_height = int(data.get("video_height", 0))
+            data_class.video_duration = int(data.get("video_duration", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -45206,7 +45200,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
             data_class.id = data.get("id", "")
             data_class.title = data.get("title", "")
             data_class.voice_note_url = data.get("voice_note_url", "")
-            data_class.voice_note_duration = data.get("voice_note_duration", 0)
+            data_class.voice_note_duration = int(data.get("voice_note_duration", 0))
             data_class.reply_markup = data.get("reply_markup", None)
             data_class.input_message_content = data.get("input_message_content", None)
 
@@ -46045,7 +46039,7 @@ class InlineQueryResults(TlObject):
     def from_dict(cls, data: dict) -> Union["InlineQueryResults", None]:
         if data:
             data_class = cls()
-            data_class.inline_query_id = data.get("inline_query_id", 0)
+            data_class.inline_query_id = int(data.get("inline_query_id", 0))
             data_class.button = data.get("button", None)
             data_class.results = data.get("results", None)
             data_class.next_offset = data.get("next_offset", "")
@@ -46063,7 +46057,7 @@ class CallbackQueryPayloadData(TlObject, CallbackQueryPayload):
     """
 
     def __init__(self, data: bytes = b"") -> None:
-        self.data: bytes = b64encode(data) if isinstance(data, bytes) else data
+        self.data: Union[bytes, None] = data
         r"""Data that was attached to the callback button"""
 
     def __str__(self):
@@ -46082,7 +46076,7 @@ class CallbackQueryPayloadData(TlObject, CallbackQueryPayload):
     def from_dict(cls, data: dict) -> Union["CallbackQueryPayloadData", None]:
         if data:
             data_class = cls()
-            data_class.data = data.get("data", b"")
+            data_class.data = b64decode(data.get("data", b""))
 
         return data_class
 
@@ -46102,7 +46096,7 @@ class CallbackQueryPayloadDataWithPassword(TlObject, CallbackQueryPayload):
     def __init__(self, password: str = "", data: bytes = b"") -> None:
         self.password: Union[str, None] = password
         r"""The 2\-step verification password for the current user"""
-        self.data: bytes = b64encode(data) if isinstance(data, bytes) else data
+        self.data: Union[bytes, None] = data
         r"""Data that was attached to the callback button"""
 
     def __str__(self):
@@ -46124,7 +46118,7 @@ class CallbackQueryPayloadDataWithPassword(TlObject, CallbackQueryPayload):
         if data:
             data_class = cls()
             data_class.password = data.get("password", "")
-            data_class.data = data.get("data", b"")
+            data_class.data = b64decode(data.get("data", b""))
 
         return data_class
 
@@ -46292,9 +46286,9 @@ class GameHighScore(TlObject):
     def from_dict(cls, data: dict) -> Union["GameHighScore", None]:
         if data:
             data_class = cls()
-            data_class.position = data.get("position", 0)
-            data_class.user_id = data.get("user_id", 0)
-            data_class.score = data.get("score", 0)
+            data_class.position = int(data.get("position", 0))
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.score = int(data.get("score", 0))
 
         return data_class
 
@@ -46647,7 +46641,7 @@ class ChatEventMemberJoinedByRequest(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventMemberJoinedByRequest", None]:
         if data:
             data_class = cls()
-            data_class.approver_user_id = data.get("approver_user_id", 0)
+            data_class.approver_user_id = int(data.get("approver_user_id", 0))
             data_class.invite_link = data.get("invite_link", None)
 
         return data_class
@@ -46695,7 +46689,7 @@ class ChatEventMemberInvited(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventMemberInvited", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.status = data.get("status", None)
 
         return data_class
@@ -46792,7 +46786,7 @@ class ChatEventMemberPromoted(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventMemberPromoted", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.old_status = data.get("old_status", None)
             data_class.new_status = data.get("new_status", None)
 
@@ -47105,8 +47099,8 @@ class ChatEventLinkedChatChanged(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventLinkedChatChanged", None]:
         if data:
             data_class = cls()
-            data_class.old_linked_chat_id = data.get("old_linked_chat_id", 0)
-            data_class.new_linked_chat_id = data.get("new_linked_chat_id", 0)
+            data_class.old_linked_chat_id = int(data.get("old_linked_chat_id", 0))
+            data_class.new_linked_chat_id = int(data.get("new_linked_chat_id", 0))
 
         return data_class
 
@@ -47201,11 +47195,11 @@ class ChatEventMessageAutoDeleteTimeChanged(TlObject, ChatEventAction):
     ) -> Union["ChatEventMessageAutoDeleteTimeChanged", None]:
         if data:
             data_class = cls()
-            data_class.old_message_auto_delete_time = data.get(
-                "old_message_auto_delete_time", 0
+            data_class.old_message_auto_delete_time = int(
+                data.get("old_message_auto_delete_time", 0)
             )
-            data_class.new_message_auto_delete_time = data.get(
-                "new_message_auto_delete_time", 0
+            data_class.new_message_auto_delete_time = int(
+                data.get("new_message_auto_delete_time", 0)
             )
 
         return data_class
@@ -47345,8 +47339,8 @@ class ChatEventSlowModeDelayChanged(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventSlowModeDelayChanged", None]:
         if data:
             data_class = cls()
-            data_class.old_slow_mode_delay = data.get("old_slow_mode_delay", 0)
-            data_class.new_slow_mode_delay = data.get("new_slow_mode_delay", 0)
+            data_class.old_slow_mode_delay = int(data.get("old_slow_mode_delay", 0))
+            data_class.new_slow_mode_delay = int(data.get("new_slow_mode_delay", 0))
 
         return data_class
 
@@ -47391,8 +47385,8 @@ class ChatEventStickerSetChanged(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventStickerSetChanged", None]:
         if data:
             data_class = cls()
-            data_class.old_sticker_set_id = data.get("old_sticker_set_id", 0)
-            data_class.new_sticker_set_id = data.get("new_sticker_set_id", 0)
+            data_class.old_sticker_set_id = int(data.get("old_sticker_set_id", 0))
+            data_class.new_sticker_set_id = int(data.get("new_sticker_set_id", 0))
 
         return data_class
 
@@ -47439,8 +47433,8 @@ class ChatEventCustomEmojiStickerSetChanged(TlObject, ChatEventAction):
     ) -> Union["ChatEventCustomEmojiStickerSetChanged", None]:
         if data:
             data_class = cls()
-            data_class.old_sticker_set_id = data.get("old_sticker_set_id", 0)
-            data_class.new_sticker_set_id = data.get("new_sticker_set_id", 0)
+            data_class.old_sticker_set_id = int(data.get("old_sticker_set_id", 0))
+            data_class.new_sticker_set_id = int(data.get("new_sticker_set_id", 0))
 
         return data_class
 
@@ -47635,13 +47629,13 @@ class ChatEventAccentColorChanged(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventAccentColorChanged", None]:
         if data:
             data_class = cls()
-            data_class.old_accent_color_id = data.get("old_accent_color_id", 0)
-            data_class.old_background_custom_emoji_id = data.get(
-                "old_background_custom_emoji_id", 0
+            data_class.old_accent_color_id = int(data.get("old_accent_color_id", 0))
+            data_class.old_background_custom_emoji_id = int(
+                data.get("old_background_custom_emoji_id", 0)
             )
-            data_class.new_accent_color_id = data.get("new_accent_color_id", 0)
-            data_class.new_background_custom_emoji_id = data.get(
-                "new_background_custom_emoji_id", 0
+            data_class.new_accent_color_id = int(data.get("new_accent_color_id", 0))
+            data_class.new_background_custom_emoji_id = int(
+                data.get("new_background_custom_emoji_id", 0)
             )
 
         return data_class
@@ -47707,17 +47701,17 @@ class ChatEventProfileAccentColorChanged(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventProfileAccentColorChanged", None]:
         if data:
             data_class = cls()
-            data_class.old_profile_accent_color_id = data.get(
-                "old_profile_accent_color_id", 0
+            data_class.old_profile_accent_color_id = int(
+                data.get("old_profile_accent_color_id", 0)
             )
-            data_class.old_profile_background_custom_emoji_id = data.get(
-                "old_profile_background_custom_emoji_id", 0
+            data_class.old_profile_background_custom_emoji_id = int(
+                data.get("old_profile_background_custom_emoji_id", 0)
             )
-            data_class.new_profile_accent_color_id = data.get(
-                "new_profile_accent_color_id", 0
+            data_class.new_profile_accent_color_id = int(
+                data.get("new_profile_accent_color_id", 0)
             )
-            data_class.new_profile_background_custom_emoji_id = data.get(
-                "new_profile_background_custom_emoji_id", 0
+            data_class.new_profile_background_custom_emoji_id = int(
+                data.get("new_profile_background_custom_emoji_id", 0)
             )
 
         return data_class
@@ -48059,7 +48053,7 @@ class ChatEventVideoChatCreated(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventVideoChatCreated", None]:
         if data:
             data_class = cls()
-            data_class.group_call_id = data.get("group_call_id", 0)
+            data_class.group_call_id = int(data.get("group_call_id", 0))
 
         return data_class
 
@@ -48093,7 +48087,7 @@ class ChatEventVideoChatEnded(TlObject, ChatEventAction):
     def from_dict(cls, data: dict) -> Union["ChatEventVideoChatEnded", None]:
         if data:
             data_class = cls()
-            data_class.group_call_id = data.get("group_call_id", 0)
+            data_class.group_call_id = int(data.get("group_call_id", 0))
 
         return data_class
 
@@ -48232,7 +48226,7 @@ class ChatEventVideoChatParticipantVolumeLevelChanged(TlObject, ChatEventAction)
         if data:
             data_class = cls()
             data_class.participant_id = data.get("participant_id", None)
-            data_class.volume_level = data.get("volume_level", 0)
+            data_class.volume_level = int(data.get("volume_level", 0))
 
         return data_class
 
@@ -48610,8 +48604,8 @@ class ChatEvent(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatEvent", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.date = data.get("date", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.date = int(data.get("date", 0))
             data_class.member_id = data.get("member_id", None)
             data_class.action = data.get("action", None)
 
@@ -49135,9 +49129,11 @@ class LanguagePackInfo(TlObject):
             data_class.is_rtl = data.get("is_rtl", False)
             data_class.is_beta = data.get("is_beta", False)
             data_class.is_installed = data.get("is_installed", False)
-            data_class.total_string_count = data.get("total_string_count", 0)
-            data_class.translated_string_count = data.get("translated_string_count", 0)
-            data_class.local_string_count = data.get("local_string_count", 0)
+            data_class.total_string_count = int(data.get("total_string_count", 0))
+            data_class.translated_string_count = int(
+                data.get("translated_string_count", 0)
+            )
+            data_class.local_string_count = int(data.get("local_string_count", 0))
             data_class.translation_url = data.get("translation_url", "")
 
         return data_class
@@ -50844,8 +50840,8 @@ class PremiumLimit(TlObject):
         if data:
             data_class = cls()
             data_class.type = data.get("type", None)
-            data_class.default_value = data.get("default_value", 0)
-            data_class.premium_value = data.get("premium_value", 0)
+            data_class.default_value = int(data.get("default_value", 0))
+            data_class.premium_value = int(data.get("premium_value", 0))
 
         return data_class
 
@@ -51536,9 +51532,9 @@ class StorePaymentPurposeGiftedPremium(TlObject, StorePaymentPurpose):
     def from_dict(cls, data: dict) -> Union["StorePaymentPurposeGiftedPremium", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
+            data_class.amount = int(data.get("amount", 0))
 
         return data_class
 
@@ -51601,9 +51597,9 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
     ) -> Union["StorePaymentPurposePremiumGiftCodes", None]:
         if data:
             data_class = cls()
-            data_class.boosted_chat_id = data.get("boosted_chat_id", 0)
+            data_class.boosted_chat_id = int(data.get("boosted_chat_id", 0))
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
+            data_class.amount = int(data.get("amount", 0))
             data_class.user_ids = data.get("user_ids", None)
 
         return data_class
@@ -51660,7 +51656,7 @@ class StorePaymentPurposePremiumGiveaway(TlObject, StorePaymentPurpose):
             data_class = cls()
             data_class.parameters = data.get("parameters", None)
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
+            data_class.amount = int(data.get("amount", 0))
 
         return data_class
 
@@ -51712,8 +51708,8 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
         if data:
             data_class = cls()
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
-            data_class.star_count = data.get("star_count", 0)
+            data_class.amount = int(data.get("amount", 0))
+            data_class.star_count = int(data.get("star_count", 0))
 
         return data_class
 
@@ -51783,11 +51779,11 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
     ) -> Union["TelegramPaymentPurposePremiumGiftCodes", None]:
         if data:
             data_class = cls()
-            data_class.boosted_chat_id = data.get("boosted_chat_id", 0)
+            data_class.boosted_chat_id = int(data.get("boosted_chat_id", 0))
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
+            data_class.amount = int(data.get("amount", 0))
             data_class.user_ids = data.get("user_ids", None)
-            data_class.month_count = data.get("month_count", 0)
+            data_class.month_count = int(data.get("month_count", 0))
 
         return data_class
 
@@ -51859,9 +51855,9 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
             data_class = cls()
             data_class.parameters = data.get("parameters", None)
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
-            data_class.winner_count = data.get("winner_count", 0)
-            data_class.month_count = data.get("month_count", 0)
+            data_class.amount = int(data.get("amount", 0))
+            data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.month_count = int(data.get("month_count", 0))
 
         return data_class
 
@@ -51913,8 +51909,8 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
         if data:
             data_class = cls()
             data_class.currency = data.get("currency", "")
-            data_class.amount = data.get("amount", 0)
-            data_class.star_count = data.get("star_count", 0)
+            data_class.amount = int(data.get("amount", 0))
+            data_class.star_count = int(data.get("star_count", 0))
 
         return data_class
 
@@ -52419,7 +52415,7 @@ class PushReceiverId(TlObject):
     def from_dict(cls, data: dict) -> Union["PushReceiverId", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
 
         return data_class
 
@@ -52453,7 +52449,7 @@ class BackgroundFillSolid(TlObject, BackgroundFill):
     def from_dict(cls, data: dict) -> Union["BackgroundFillSolid", None]:
         if data:
             data_class = cls()
-            data_class.color = data.get("color", 0)
+            data_class.color = int(data.get("color", 0))
 
         return data_class
 
@@ -52504,9 +52500,9 @@ class BackgroundFillGradient(TlObject, BackgroundFill):
     def from_dict(cls, data: dict) -> Union["BackgroundFillGradient", None]:
         if data:
             data_class = cls()
-            data_class.top_color = data.get("top_color", 0)
-            data_class.bottom_color = data.get("bottom_color", 0)
-            data_class.rotation_angle = data.get("rotation_angle", 0)
+            data_class.top_color = int(data.get("top_color", 0))
+            data_class.bottom_color = int(data.get("bottom_color", 0))
+            data_class.rotation_angle = int(data.get("rotation_angle", 0))
 
         return data_class
 
@@ -52651,7 +52647,7 @@ class BackgroundTypePattern(TlObject, BackgroundType):
         if data:
             data_class = cls()
             data_class.fill = data.get("fill", None)
-            data_class.intensity = data.get("intensity", 0)
+            data_class.intensity = int(data.get("intensity", 0))
             data_class.is_inverted = data.get("is_inverted", False)
             data_class.is_moving = data.get("is_moving", False)
 
@@ -52796,7 +52792,7 @@ class InputBackgroundRemote(TlObject, InputBackground):
     def from_dict(cls, data: dict) -> Union["InputBackgroundRemote", None]:
         if data:
             data_class = cls()
-            data_class.background_id = data.get("background_id", 0)
+            data_class.background_id = int(data.get("background_id", 0))
 
         return data_class
 
@@ -52830,7 +52826,7 @@ class InputBackgroundPrevious(TlObject, InputBackground):
     def from_dict(cls, data: dict) -> Union["InputBackgroundPrevious", None]:
         if data:
             data_class = cls()
-            data_class.message_id = data.get("message_id", 0)
+            data_class.message_id = int(data.get("message_id", 0))
 
         return data_class
 
@@ -52903,14 +52899,14 @@ class ThemeSettings(TlObject):
     def from_dict(cls, data: dict) -> Union["ThemeSettings", None]:
         if data:
             data_class = cls()
-            data_class.accent_color = data.get("accent_color", 0)
+            data_class.accent_color = int(data.get("accent_color", 0))
             data_class.background = data.get("background", None)
             data_class.outgoing_message_fill = data.get("outgoing_message_fill", None)
             data_class.animate_outgoing_message_fill = data.get(
                 "animate_outgoing_message_fill", False
             )
-            data_class.outgoing_message_accent_color = data.get(
-                "outgoing_message_accent_color", 0
+            data_class.outgoing_message_accent_color = int(
+                data.get("outgoing_message_accent_color", 0)
             )
 
         return data_class
@@ -53018,7 +53014,7 @@ class TimeZone(TlObject):
             data_class = cls()
             data_class.id = data.get("id", "")
             data_class.name = data.get("name", "")
-            data_class.utc_time_offset = data.get("utc_time_offset", 0)
+            data_class.utc_time_offset = int(data.get("utc_time_offset", 0))
 
         return data_class
 
@@ -53228,7 +53224,7 @@ class CanSendStoryResultWeeklyLimitExceeded(TlObject, CanSendStoryResult):
     ) -> Union["CanSendStoryResultWeeklyLimitExceeded", None]:
         if data:
             data_class = cls()
-            data_class.retry_after = data.get("retry_after", 0)
+            data_class.retry_after = int(data.get("retry_after", 0))
 
         return data_class
 
@@ -53264,7 +53260,7 @@ class CanSendStoryResultMonthlyLimitExceeded(TlObject, CanSendStoryResult):
     ) -> Union["CanSendStoryResultMonthlyLimitExceeded", None]:
         if data:
             data_class = cls()
-            data_class.retry_after = data.get("retry_after", 0)
+            data_class.retry_after = int(data.get("retry_after", 0))
 
         return data_class
 
@@ -53354,7 +53350,7 @@ class CanTransferOwnershipResultPasswordTooFresh(TlObject, CanTransferOwnershipR
     ) -> Union["CanTransferOwnershipResultPasswordTooFresh", None]:
         if data:
             data_class = cls()
-            data_class.retry_after = data.get("retry_after", 0)
+            data_class.retry_after = int(data.get("retry_after", 0))
 
         return data_class
 
@@ -53390,7 +53386,7 @@ class CanTransferOwnershipResultSessionTooFresh(TlObject, CanTransferOwnershipRe
     ) -> Union["CanTransferOwnershipResultSessionTooFresh", None]:
         if data:
             data_class = cls()
-            data_class.retry_after = data.get("retry_after", 0)
+            data_class.retry_after = int(data.get("retry_after", 0))
 
         return data_class
 
@@ -53698,7 +53694,7 @@ class ResetPasswordResultPending(TlObject, ResetPasswordResult):
     def from_dict(cls, data: dict) -> Union["ResetPasswordResultPending", None]:
         if data:
             data_class = cls()
-            data_class.pending_reset_date = data.get("pending_reset_date", 0)
+            data_class.pending_reset_date = int(data.get("pending_reset_date", 0))
 
         return data_class
 
@@ -53732,7 +53728,7 @@ class ResetPasswordResultDeclined(TlObject, ResetPasswordResult):
     def from_dict(cls, data: dict) -> Union["ResetPasswordResultDeclined", None]:
         if data:
             data_class = cls()
-            data_class.retry_date = data.get("retry_date", 0)
+            data_class.retry_date = int(data.get("retry_date", 0))
 
         return data_class
 
@@ -54165,7 +54161,7 @@ class PushMessageContentGameScore(TlObject, PushMessageContent):
         if data:
             data_class = cls()
             data_class.title = data.get("title", "")
-            data_class.score = data.get("score", 0)
+            data_class.score = int(data.get("score", 0))
             data_class.is_pinned = data.get("is_pinned", False)
 
         return data_class
@@ -54405,7 +54401,7 @@ class PushMessageContentPremiumGiftCode(TlObject, PushMessageContent):
     def from_dict(cls, data: dict) -> Union["PushMessageContentPremiumGiftCode", None]:
         if data:
             data_class = cls()
-            data_class.month_count = data.get("month_count", 0)
+            data_class.month_count = int(data.get("month_count", 0))
 
         return data_class
 
@@ -54456,8 +54452,8 @@ class PushMessageContentPremiumGiveaway(TlObject, PushMessageContent):
     def from_dict(cls, data: dict) -> Union["PushMessageContentPremiumGiveaway", None]:
         if data:
             data_class = cls()
-            data_class.winner_count = data.get("winner_count", 0)
-            data_class.month_count = data.get("month_count", 0)
+            data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.month_count = int(data.get("month_count", 0))
             data_class.is_pinned = data.get("is_pinned", False)
 
         return data_class
@@ -55183,7 +55179,7 @@ class PushMessageContentMessageForwards(TlObject, PushMessageContent):
     def from_dict(cls, data: dict) -> Union["PushMessageContentMessageForwards", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
 
         return data_class
 
@@ -55251,7 +55247,7 @@ class PushMessageContentMediaAlbum(TlObject, PushMessageContent):
     def from_dict(cls, data: dict) -> Union["PushMessageContentMediaAlbum", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.has_photos = data.get("has_photos", False)
             data_class.has_videos = data.get("has_videos", False)
             data_class.has_audios = data.get("has_audios", False)
@@ -55359,7 +55355,7 @@ class NotificationTypeNewCall(TlObject, NotificationType):
     def from_dict(cls, data: dict) -> Union["NotificationTypeNewCall", None]:
         if data:
             data_class = cls()
-            data_class.call_id = data.get("call_id", 0)
+            data_class.call_id = int(data.get("call_id", 0))
 
         return data_class
 
@@ -55463,7 +55459,7 @@ class NotificationTypeNewPushMessage(TlObject, NotificationType):
     def from_dict(cls, data: dict) -> Union["NotificationTypeNewPushMessage", None]:
         if data:
             data_class = cls()
-            data_class.message_id = data.get("message_id", 0)
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.sender_id = data.get("sender_id", None)
             data_class.sender_name = data.get("sender_name", "")
             data_class.is_outgoing = data.get("is_outgoing", False)
@@ -55646,9 +55642,9 @@ class NotificationSound(TlObject):
     def from_dict(cls, data: dict) -> Union["NotificationSound", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.duration = data.get("duration", 0)
-            data_class.date = data.get("date", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.duration = int(data.get("duration", 0))
+            data_class.date = int(data.get("date", 0))
             data_class.title = data.get("title", "")
             data_class.data = data.get("data", "")
             data_class.sound = data.get("sound", None)
@@ -55755,8 +55751,8 @@ class Notification(TlObject):
     def from_dict(cls, data: dict) -> Union["Notification", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.date = data.get("date", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.date = int(data.get("date", 0))
             data_class.is_silent = data.get("is_silent", False)
             data_class.type = data.get("type", None)
 
@@ -55832,10 +55828,10 @@ class NotificationGroup(TlObject):
     def from_dict(cls, data: dict) -> Union["NotificationGroup", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.type = data.get("type", None)
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.total_count = data.get("total_count", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.notifications = data.get("notifications", None)
 
         return data_class
@@ -55930,7 +55926,7 @@ class OptionValueInteger(TlObject, OptionValue):
     def from_dict(cls, data: dict) -> Union["OptionValueInteger", None]:
         if data:
             data_class = cls()
-            data_class.value = data.get("value", 0)
+            data_class.value = int(data.get("value", 0))
 
         return data_class
 
@@ -57139,7 +57135,7 @@ class AccountTtl(TlObject):
     def from_dict(cls, data: dict) -> Union["AccountTtl", None]:
         if data:
             data_class = cls()
-            data_class.days = data.get("days", 0)
+            data_class.days = int(data.get("days", 0))
 
         return data_class
 
@@ -57173,7 +57169,7 @@ class MessageAutoDeleteTime(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageAutoDeleteTime", None]:
         if data:
             data_class = cls()
-            data_class.time = data.get("time", 0)
+            data_class.time = int(data.get("time", 0))
 
         return data_class
 
@@ -57793,7 +57789,7 @@ class Session(TlObject):
     def from_dict(cls, data: dict) -> Union["Session", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.is_current = data.get("is_current", False)
             data_class.is_password_pending = data.get("is_password_pending", False)
             data_class.is_unconfirmed = data.get("is_unconfirmed", False)
@@ -57802,7 +57798,7 @@ class Session(TlObject):
             )
             data_class.can_accept_calls = data.get("can_accept_calls", False)
             data_class.type = data.get("type", None)
-            data_class.api_id = data.get("api_id", 0)
+            data_class.api_id = int(data.get("api_id", 0))
             data_class.application_name = data.get("application_name", "")
             data_class.application_version = data.get("application_version", "")
             data_class.is_official_application = data.get(
@@ -57811,8 +57807,8 @@ class Session(TlObject):
             data_class.device_model = data.get("device_model", "")
             data_class.platform = data.get("platform", "")
             data_class.system_version = data.get("system_version", "")
-            data_class.log_in_date = data.get("log_in_date", 0)
-            data_class.last_active_date = data.get("last_active_date", 0)
+            data_class.log_in_date = int(data.get("log_in_date", 0))
+            data_class.last_active_date = int(data.get("last_active_date", 0))
             data_class.ip_address = data.get("ip_address", "")
             data_class.location = data.get("location", "")
 
@@ -57860,8 +57856,8 @@ class Sessions(TlObject):
         if data:
             data_class = cls()
             data_class.sessions = data.get("sessions", None)
-            data_class.inactive_session_ttl_days = data.get(
-                "inactive_session_ttl_days", 0
+            data_class.inactive_session_ttl_days = int(
+                data.get("inactive_session_ttl_days", 0)
             )
 
         return data_class
@@ -57923,8 +57919,8 @@ class UnconfirmedSession(TlObject):
     def from_dict(cls, data: dict) -> Union["UnconfirmedSession", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.log_in_date = data.get("log_in_date", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.log_in_date = int(data.get("log_in_date", 0))
             data_class.device_model = data.get("device_model", "")
             data_class.location = data.get("location", "")
 
@@ -58022,13 +58018,13 @@ class ConnectedWebsite(TlObject):
     def from_dict(cls, data: dict) -> Union["ConnectedWebsite", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.domain_name = data.get("domain_name", "")
-            data_class.bot_user_id = data.get("bot_user_id", 0)
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
             data_class.browser = data.get("browser", "")
             data_class.platform = data.get("platform", "")
-            data_class.log_in_date = data.get("log_in_date", 0)
-            data_class.last_active_date = data.get("last_active_date", 0)
+            data_class.log_in_date = int(data.get("log_in_date", 0))
+            data_class.last_active_date = int(data.get("last_active_date", 0))
             data_class.ip_address = data.get("ip_address", "")
             data_class.location = data.get("location", "")
 
@@ -59380,7 +59376,7 @@ class InternalLinkTypePassportDataRequest(TlObject, InternalLinkType):
     ) -> Union["InternalLinkTypePassportDataRequest", None]:
         if data:
             data_class = cls()
-            data_class.bot_user_id = data.get("bot_user_id", 0)
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
             data_class.scope = data.get("scope", "")
             data_class.public_key = data.get("public_key", "")
             data_class.nonce = data.get("nonce", "")
@@ -59610,7 +59606,7 @@ class InternalLinkTypeProxy(TlObject, InternalLinkType):
         if data:
             data_class = cls()
             data_class.server = data.get("server", "")
-            data_class.port = data.get("port", 0)
+            data_class.port = int(data.get("port", 0))
             data_class.type = data.get("type", None)
 
         return data_class
@@ -59869,7 +59865,7 @@ class InternalLinkTypeStory(TlObject, InternalLinkType):
         if data:
             data_class = cls()
             data_class.story_sender_username = data.get("story_sender_username", "")
-            data_class.story_id = data.get("story_id", 0)
+            data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
 
@@ -60295,10 +60291,10 @@ class MessageLinkInfo(TlObject):
         if data:
             data_class = cls()
             data_class.is_public = data.get("is_public", False)
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_thread_id = data.get("message_thread_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_thread_id = int(data.get("message_thread_id", 0))
             data_class.message = data.get("message", None)
-            data_class.media_timestamp = data.get("media_timestamp", 0)
+            data_class.media_timestamp = int(data.get("media_timestamp", 0))
             data_class.for_album = data.get("for_album", False)
 
         return data_class
@@ -60383,7 +60379,7 @@ class ChatBoostLinkInfo(TlObject):
         if data:
             data_class = cls()
             data_class.is_public = data.get("is_public", False)
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -60450,7 +60446,7 @@ class FilePart(TlObject):
     """
 
     def __init__(self, data: bytes = b"") -> None:
-        self.data: bytes = b64encode(data) if isinstance(data, bytes) else data
+        self.data: Union[bytes, None] = data
         r"""File bytes"""
 
     def __str__(self):
@@ -60469,7 +60465,7 @@ class FilePart(TlObject):
     def from_dict(cls, data: dict) -> Union["FilePart", None]:
         if data:
             data_class = cls()
-            data_class.data = data.get("data", b"")
+            data_class.data = b64decode(data.get("data", b""))
 
         return data_class
 
@@ -61036,8 +61032,8 @@ class StorageStatisticsByFileType(TlObject):
         if data:
             data_class = cls()
             data_class.file_type = data.get("file_type", None)
-            data_class.size = data.get("size", 0)
-            data_class.count = data.get("count", 0)
+            data_class.size = int(data.get("size", 0))
+            data_class.count = int(data.get("count", 0))
 
         return data_class
 
@@ -61098,9 +61094,9 @@ class StorageStatisticsByChat(TlObject):
     def from_dict(cls, data: dict) -> Union["StorageStatisticsByChat", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.size = data.get("size", 0)
-            data_class.count = data.get("count", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.size = int(data.get("size", 0))
+            data_class.count = int(data.get("count", 0))
             data_class.by_file_type = data.get("by_file_type", None)
 
         return data_class
@@ -61155,8 +61151,8 @@ class StorageStatistics(TlObject):
     def from_dict(cls, data: dict) -> Union["StorageStatistics", None]:
         if data:
             data_class = cls()
-            data_class.size = data.get("size", 0)
-            data_class.count = data.get("count", 0)
+            data_class.size = int(data.get("size", 0))
+            data_class.count = int(data.get("count", 0))
             data_class.by_chat = data.get("by_chat", None)
 
         return data_class
@@ -61225,13 +61221,13 @@ class StorageStatisticsFast(TlObject):
     def from_dict(cls, data: dict) -> Union["StorageStatisticsFast", None]:
         if data:
             data_class = cls()
-            data_class.files_size = data.get("files_size", 0)
-            data_class.file_count = data.get("file_count", 0)
-            data_class.database_size = data.get("database_size", 0)
-            data_class.language_pack_database_size = data.get(
-                "language_pack_database_size", 0
+            data_class.files_size = int(data.get("files_size", 0))
+            data_class.file_count = int(data.get("file_count", 0))
+            data_class.database_size = int(data.get("database_size", 0))
+            data_class.language_pack_database_size = int(
+                data.get("language_pack_database_size", 0)
             )
-            data_class.log_size = data.get("log_size", 0)
+            data_class.log_size = int(data.get("log_size", 0))
 
         return data_class
 
@@ -61486,8 +61482,8 @@ class NetworkStatisticsEntryFile(TlObject, NetworkStatisticsEntry):
             data_class = cls()
             data_class.file_type = data.get("file_type", None)
             data_class.network_type = data.get("network_type", None)
-            data_class.sent_bytes = data.get("sent_bytes", 0)
-            data_class.received_bytes = data.get("received_bytes", 0)
+            data_class.sent_bytes = int(data.get("sent_bytes", 0))
+            data_class.received_bytes = int(data.get("received_bytes", 0))
 
         return data_class
 
@@ -61556,8 +61552,8 @@ class NetworkStatisticsEntryCall(TlObject, NetworkStatisticsEntry):
         if data:
             data_class = cls()
             data_class.network_type = data.get("network_type", None)
-            data_class.sent_bytes = data.get("sent_bytes", 0)
-            data_class.received_bytes = data.get("received_bytes", 0)
+            data_class.sent_bytes = int(data.get("sent_bytes", 0))
+            data_class.received_bytes = int(data.get("received_bytes", 0))
             data_class.duration = data.get("duration", 0.0)
 
         return data_class
@@ -61603,7 +61599,7 @@ class NetworkStatistics(TlObject):
     def from_dict(cls, data: dict) -> Union["NetworkStatistics", None]:
         if data:
             data_class = cls()
-            data_class.since_date = data.get("since_date", 0)
+            data_class.since_date = int(data.get("since_date", 0))
             data_class.entries = data.get("entries", None)
 
         return data_class
@@ -61703,10 +61699,10 @@ class AutoDownloadSettings(TlObject):
             data_class.is_auto_download_enabled = data.get(
                 "is_auto_download_enabled", False
             )
-            data_class.max_photo_file_size = data.get("max_photo_file_size", 0)
-            data_class.max_video_file_size = data.get("max_video_file_size", 0)
-            data_class.max_other_file_size = data.get("max_other_file_size", 0)
-            data_class.video_upload_bitrate = data.get("video_upload_bitrate", 0)
+            data_class.max_photo_file_size = int(data.get("max_photo_file_size", 0))
+            data_class.max_video_file_size = int(data.get("max_video_file_size", 0))
+            data_class.max_other_file_size = int(data.get("max_other_file_size", 0))
+            data_class.video_upload_bitrate = int(data.get("video_upload_bitrate", 0))
             data_class.preload_large_videos = data.get("preload_large_videos", False)
             data_class.preload_next_audio = data.get("preload_next_audio", False)
             data_class.preload_stories = data.get("preload_stories", False)
@@ -61880,7 +61876,7 @@ class AutosaveSettingsScopeChat(TlObject, AutosaveSettingsScope):
     def from_dict(cls, data: dict) -> Union["AutosaveSettingsScopeChat", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -61936,7 +61932,7 @@ class ScopeAutosaveSettings(TlObject):
             data_class = cls()
             data_class.autosave_photos = data.get("autosave_photos", False)
             data_class.autosave_videos = data.get("autosave_videos", False)
-            data_class.max_video_file_size = data.get("max_video_file_size", 0)
+            data_class.max_video_file_size = int(data.get("max_video_file_size", 0))
 
         return data_class
 
@@ -61981,7 +61977,7 @@ class AutosaveSettingsException(TlObject):
     def from_dict(cls, data: dict) -> Union["AutosaveSettingsException", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.settings = data.get("settings", None)
 
         return data_class
@@ -62394,7 +62390,7 @@ class FoundPosition(TlObject):
     def from_dict(cls, data: dict) -> Union["FoundPosition", None]:
         if data:
             data_class = cls()
-            data_class.position = data.get("position", 0)
+            data_class.position = int(data.get("position", 0))
 
         return data_class
 
@@ -62437,7 +62433,7 @@ class FoundPositions(TlObject):
     def from_dict(cls, data: dict) -> Union["FoundPositions", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.positions = data.get("positions", None)
 
         return data_class
@@ -62472,7 +62468,7 @@ class TMeUrlTypeUser(TlObject, TMeUrlType):
     def from_dict(cls, data: dict) -> Union["TMeUrlTypeUser", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -62506,7 +62502,7 @@ class TMeUrlTypeSupergroup(TlObject, TMeUrlType):
     def from_dict(cls, data: dict) -> Union["TMeUrlTypeSupergroup", None]:
         if data:
             data_class = cls()
-            data_class.supergroup_id = data.get("supergroup_id", 0)
+            data_class.supergroup_id = int(data.get("supergroup_id", 0))
 
         return data_class
 
@@ -62574,7 +62570,7 @@ class TMeUrlTypeStickerSet(TlObject, TMeUrlType):
     def from_dict(cls, data: dict) -> Union["TMeUrlTypeStickerSet", None]:
         if data:
             data_class = cls()
-            data_class.sticker_set_id = data.get("sticker_set_id", 0)
+            data_class.sticker_set_id = int(data.get("sticker_set_id", 0))
 
         return data_class
 
@@ -62796,7 +62792,7 @@ class SuggestedActionConvertToBroadcastGroup(TlObject, SuggestedAction):
     ) -> Union["SuggestedActionConvertToBroadcastGroup", None]:
         if data:
             data_class = cls()
-            data_class.supergroup_id = data.get("supergroup_id", 0)
+            data_class.supergroup_id = int(data.get("supergroup_id", 0))
 
         return data_class
 
@@ -62833,7 +62829,7 @@ class SuggestedActionSetPassword(TlObject, SuggestedAction):
     def from_dict(cls, data: dict) -> Union["SuggestedActionSetPassword", None]:
         if data:
             data_class = cls()
-            data_class.authorization_delay = data.get("authorization_delay", 0)
+            data_class.authorization_delay = int(data.get("authorization_delay", 0))
 
         return data_class
 
@@ -63042,7 +63038,7 @@ class Count(TlObject):
     def from_dict(cls, data: dict) -> Union["Count", None]:
         if data:
             data_class = cls()
-            data_class.count = data.get("count", 0)
+            data_class.count = int(data.get("count", 0))
 
         return data_class
 
@@ -63144,7 +63140,7 @@ class FileDownloadedPrefixSize(TlObject):
     def from_dict(cls, data: dict) -> Union["FileDownloadedPrefixSize", None]:
         if data:
             data_class = cls()
-            data_class.size = data.get("size", 0)
+            data_class.size = int(data.get("size", 0))
 
         return data_class
 
@@ -63226,7 +63222,7 @@ class TextParseModeMarkdown(TlObject, TextParseMode):
     def from_dict(cls, data: dict) -> Union["TextParseModeMarkdown", None]:
         if data:
             data_class = cls()
-            data_class.version = data.get("version", 0)
+            data_class.version = int(data.get("version", 0))
 
         return data_class
 
@@ -63458,10 +63454,10 @@ class Proxy(TlObject):
     def from_dict(cls, data: dict) -> Union["Proxy", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.server = data.get("server", "")
-            data_class.port = data.get("port", 0)
-            data_class.last_used_date = data.get("last_used_date", 0)
+            data_class.port = int(data.get("port", 0))
+            data_class.last_used_date = int(data.get("last_used_date", 0))
             data_class.is_enabled = data.get("is_enabled", False)
             data_class.type = data.get("type", None)
 
@@ -63616,8 +63612,8 @@ class DateRange(TlObject):
     def from_dict(cls, data: dict) -> Union["DateRange", None]:
         if data:
             data_class = cls()
-            data_class.start_date = data.get("start_date", 0)
-            data_class.end_date = data.get("end_date", 0)
+            data_class.start_date = int(data.get("start_date", 0))
+            data_class.end_date = int(data.get("end_date", 0))
 
         return data_class
 
@@ -63819,7 +63815,7 @@ class ChatStatisticsObjectTypeMessage(TlObject, ChatStatisticsObjectType):
     def from_dict(cls, data: dict) -> Union["ChatStatisticsObjectTypeMessage", None]:
         if data:
             data_class = cls()
-            data_class.message_id = data.get("message_id", 0)
+            data_class.message_id = int(data.get("message_id", 0))
 
         return data_class
 
@@ -63853,7 +63849,7 @@ class ChatStatisticsObjectTypeStory(TlObject, ChatStatisticsObjectType):
     def from_dict(cls, data: dict) -> Union["ChatStatisticsObjectTypeStory", None]:
         if data:
             data_class = cls()
-            data_class.story_id = data.get("story_id", 0)
+            data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
 
@@ -63917,9 +63913,9 @@ class ChatStatisticsInteractionInfo(TlObject):
         if data:
             data_class = cls()
             data_class.object_type = data.get("object_type", None)
-            data_class.view_count = data.get("view_count", 0)
-            data_class.forward_count = data.get("forward_count", 0)
-            data_class.reaction_count = data.get("reaction_count", 0)
+            data_class.view_count = int(data.get("view_count", 0))
+            data_class.forward_count = int(data.get("forward_count", 0))
+            data_class.reaction_count = int(data.get("reaction_count", 0))
 
         return data_class
 
@@ -63973,9 +63969,11 @@ class ChatStatisticsMessageSenderInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatStatisticsMessageSenderInfo", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
-            data_class.sent_message_count = data.get("sent_message_count", 0)
-            data_class.average_character_count = data.get("average_character_count", 0)
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.sent_message_count = int(data.get("sent_message_count", 0))
+            data_class.average_character_count = int(
+                data.get("average_character_count", 0)
+            )
 
         return data_class
 
@@ -64038,10 +64036,10 @@ class ChatStatisticsAdministratorActionsInfo(TlObject):
     ) -> Union["ChatStatisticsAdministratorActionsInfo", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
-            data_class.deleted_message_count = data.get("deleted_message_count", 0)
-            data_class.banned_user_count = data.get("banned_user_count", 0)
-            data_class.restricted_user_count = data.get("restricted_user_count", 0)
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.deleted_message_count = int(data.get("deleted_message_count", 0))
+            data_class.banned_user_count = int(data.get("banned_user_count", 0))
+            data_class.restricted_user_count = int(data.get("restricted_user_count", 0))
 
         return data_class
 
@@ -64084,8 +64082,8 @@ class ChatStatisticsInviterInfo(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatStatisticsInviterInfo", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
-            data_class.added_member_count = data.get("added_member_count", 0)
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.added_member_count = int(data.get("added_member_count", 0))
 
         return data_class
 
@@ -64593,9 +64591,9 @@ class ChatRevenueAmount(TlObject):
         if data:
             data_class = cls()
             data_class.cryptocurrency = data.get("cryptocurrency", "")
-            data_class.total_amount = data.get("total_amount", 0)
-            data_class.balance_amount = data.get("balance_amount", 0)
-            data_class.available_amount = data.get("available_amount", 0)
+            data_class.total_amount = int(data.get("total_amount", 0))
+            data_class.balance_amount = int(data.get("balance_amount", 0))
+            data_class.available_amount = int(data.get("available_amount", 0))
 
         return data_class
 
@@ -64838,7 +64836,7 @@ class ChatRevenueWithdrawalStateCompleted(TlObject, ChatRevenueWithdrawalState):
     ) -> Union["ChatRevenueWithdrawalStateCompleted", None]:
         if data:
             data_class = cls()
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
             data_class.url = data.get("url", "")
 
         return data_class
@@ -64908,8 +64906,8 @@ class ChatRevenueTransactionTypeEarnings(TlObject, ChatRevenueTransactionType):
     def from_dict(cls, data: dict) -> Union["ChatRevenueTransactionTypeEarnings", None]:
         if data:
             data_class = cls()
-            data_class.start_date = data.get("start_date", 0)
-            data_class.end_date = data.get("end_date", 0)
+            data_class.start_date = int(data.get("start_date", 0))
+            data_class.end_date = int(data.get("end_date", 0))
 
         return data_class
 
@@ -64970,7 +64968,7 @@ class ChatRevenueTransactionTypeWithdrawal(TlObject, ChatRevenueTransactionType)
     ) -> Union["ChatRevenueTransactionTypeWithdrawal", None]:
         if data:
             data_class = cls()
-            data_class.withdrawal_date = data.get("withdrawal_date", 0)
+            data_class.withdrawal_date = int(data.get("withdrawal_date", 0))
             data_class.provider = data.get("provider", "")
             data_class.state = data.get("state", None)
 
@@ -65015,7 +65013,7 @@ class ChatRevenueTransactionTypeRefund(TlObject, ChatRevenueTransactionType):
     def from_dict(cls, data: dict) -> Union["ChatRevenueTransactionTypeRefund", None]:
         if data:
             data_class = cls()
-            data_class.refund_date = data.get("refund_date", 0)
+            data_class.refund_date = int(data.get("refund_date", 0))
             data_class.provider = data.get("provider", "")
 
         return data_class
@@ -65076,7 +65074,7 @@ class ChatRevenueTransaction(TlObject):
         if data:
             data_class = cls()
             data_class.cryptocurrency = data.get("cryptocurrency", "")
-            data_class.cryptocurrency_amount = data.get("cryptocurrency_amount", 0)
+            data_class.cryptocurrency_amount = int(data.get("cryptocurrency_amount", 0))
             data_class.type = data.get("type", None)
 
         return data_class
@@ -65122,7 +65120,7 @@ class ChatRevenueTransactions(TlObject):
     def from_dict(cls, data: dict) -> Union["ChatRevenueTransactions", None]:
         if data:
             data_class = cls()
-            data_class.total_count = data.get("total_count", 0)
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.transactions = data.get("transactions", None)
 
         return data_class
@@ -65393,7 +65391,7 @@ class BotCommandScopeChat(TlObject, BotCommandScope):
     def from_dict(cls, data: dict) -> Union["BotCommandScopeChat", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -65427,7 +65425,7 @@ class BotCommandScopeChatAdministrators(TlObject, BotCommandScope):
     def from_dict(cls, data: dict) -> Union["BotCommandScopeChatAdministrators", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -65470,8 +65468,8 @@ class BotCommandScopeChatMember(TlObject, BotCommandScope):
     def from_dict(cls, data: dict) -> Union["BotCommandScopeChatMember", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.user_id = data.get("user_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.user_id = int(data.get("user_id", 0))
 
         return data_class
 
@@ -65637,7 +65635,7 @@ class LogStreamFile(TlObject, LogStream):
         if data:
             data_class = cls()
             data_class.path = data.get("path", "")
-            data_class.max_file_size = data.get("max_file_size", 0)
+            data_class.max_file_size = int(data.get("max_file_size", 0))
             data_class.redirect_stderr = data.get("redirect_stderr", False)
 
         return data_class
@@ -65698,7 +65696,7 @@ class LogVerbosityLevel(TlObject):
     def from_dict(cls, data: dict) -> Union["LogVerbosityLevel", None]:
         if data:
             data_class = cls()
-            data_class.verbosity_level = data.get("verbosity_level", 0)
+            data_class.verbosity_level = int(data.get("verbosity_level", 0))
 
         return data_class
 
@@ -65785,7 +65783,7 @@ class UserSupportInfo(TlObject):
             data_class = cls()
             data_class.message = data.get("message", None)
             data_class.author = data.get("author", "")
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
 
         return data_class
 
@@ -65819,7 +65817,7 @@ class TestInt(TlObject):
     def from_dict(cls, data: dict) -> Union["TestInt", None]:
         if data:
             data_class = cls()
-            data_class.value = data.get("value", 0)
+            data_class.value = int(data.get("value", 0))
 
         return data_class
 
@@ -65868,7 +65866,7 @@ class TestBytes(TlObject):
     """
 
     def __init__(self, value: bytes = b"") -> None:
-        self.value: bytes = b64encode(value) if isinstance(value, bytes) else value
+        self.value: Union[bytes, None] = value
         r"""Bytes"""
 
     def __str__(self):
@@ -65887,7 +65885,7 @@ class TestBytes(TlObject):
     def from_dict(cls, data: dict) -> Union["TestBytes", None]:
         if data:
             data_class = cls()
-            data_class.value = data.get("value", b"")
+            data_class.value = b64decode(data.get("value", b""))
 
         return data_class
 
@@ -66151,8 +66149,8 @@ class UpdateMessageSendAcknowledged(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageSendAcknowledged", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
 
         return data_class
 
@@ -66196,7 +66194,7 @@ class UpdateMessageSendSucceeded(TlObject, Update):
         if data:
             data_class = cls()
             data_class.message = data.get("message", None)
-            data_class.old_message_id = data.get("old_message_id", 0)
+            data_class.old_message_id = int(data.get("old_message_id", 0))
 
         return data_class
 
@@ -66248,7 +66246,7 @@ class UpdateMessageSendFailed(TlObject, Update):
         if data:
             data_class = cls()
             data_class.message = data.get("message", None)
-            data_class.old_message_id = data.get("old_message_id", 0)
+            data_class.old_message_id = int(data.get("old_message_id", 0))
             data_class.error = data.get("error", None)
 
         return data_class
@@ -66371,8 +66369,8 @@ class UpdateMessageContent(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageContent", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.new_content = data.get("new_content", None)
 
         return data_class
@@ -66440,9 +66438,9 @@ class UpdateMessageEdited(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageEdited", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
-            data_class.edit_date = data.get("edit_date", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.edit_date = int(data.get("edit_date", 0))
             data_class.reply_markup = data.get("reply_markup", None)
 
         return data_class
@@ -66494,8 +66492,8 @@ class UpdateMessageIsPinned(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageIsPinned", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.is_pinned = data.get("is_pinned", False)
 
         return data_class
@@ -66550,8 +66548,8 @@ class UpdateMessageInteractionInfo(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageInteractionInfo", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.interaction_info = data.get("interaction_info", None)
 
         return data_class
@@ -66595,8 +66593,8 @@ class UpdateMessageContentOpened(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageContentOpened", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
 
         return data_class
 
@@ -66647,9 +66645,9 @@ class UpdateMessageMentionRead(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageMentionRead", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
-            data_class.unread_mention_count = data.get("unread_mention_count", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.unread_mention_count = int(data.get("unread_mention_count", 0))
 
         return data_class
 
@@ -66710,10 +66708,10 @@ class UpdateMessageUnreadReactions(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageUnreadReactions", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.unread_reactions = data.get("unread_reactions", None)
-            data_class.unread_reaction_count = data.get("unread_reaction_count", 0)
+            data_class.unread_reaction_count = int(data.get("unread_reaction_count", 0))
 
         return data_class
 
@@ -66764,8 +66762,8 @@ class UpdateMessageFactCheck(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageFactCheck", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.fact_check = data.get("fact_check", None)
 
         return data_class
@@ -66809,8 +66807,8 @@ class UpdateMessageLiveLocationViewed(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageLiveLocationViewed", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
 
         return data_class
 
@@ -66883,7 +66881,7 @@ class UpdateChatTitle(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatTitle", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.title = data.get("title", "")
 
         return data_class
@@ -66923,7 +66921,7 @@ class UpdateChatPhoto(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatPhoto", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.photo = data.get("photo", None)
 
         return data_class
@@ -66994,14 +66992,16 @@ class UpdateChatAccentColors(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatAccentColors", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.accent_color_id = data.get("accent_color_id", 0)
-            data_class.background_custom_emoji_id = data.get(
-                "background_custom_emoji_id", 0
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.accent_color_id = int(data.get("accent_color_id", 0))
+            data_class.background_custom_emoji_id = int(
+                data.get("background_custom_emoji_id", 0)
             )
-            data_class.profile_accent_color_id = data.get("profile_accent_color_id", 0)
-            data_class.profile_background_custom_emoji_id = data.get(
-                "profile_background_custom_emoji_id", 0
+            data_class.profile_accent_color_id = int(
+                data.get("profile_accent_color_id", 0)
+            )
+            data_class.profile_background_custom_emoji_id = int(
+                data.get("profile_background_custom_emoji_id", 0)
             )
 
         return data_class
@@ -67045,7 +67045,7 @@ class UpdateChatPermissions(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatPermissions", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.permissions = data.get("permissions", None)
 
         return data_class
@@ -67100,7 +67100,7 @@ class UpdateChatLastMessage(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatLastMessage", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.last_message = data.get("last_message", None)
             data_class.positions = data.get("positions", None)
 
@@ -67145,7 +67145,7 @@ class UpdateChatPosition(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatPosition", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.position = data.get("position", None)
 
         return data_class
@@ -67191,7 +67191,7 @@ class UpdateChatAddedToList(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatAddedToList", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.chat_list = data.get("chat_list", None)
 
         return data_class
@@ -67237,7 +67237,7 @@ class UpdateChatRemovedFromList(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatRemovedFromList", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.chat_list = data.get("chat_list", None)
 
         return data_class
@@ -67292,11 +67292,11 @@ class UpdateChatReadInbox(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatReadInbox", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.last_read_inbox_message_id = data.get(
-                "last_read_inbox_message_id", 0
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.last_read_inbox_message_id = int(
+                data.get("last_read_inbox_message_id", 0)
             )
-            data_class.unread_count = data.get("unread_count", 0)
+            data_class.unread_count = int(data.get("unread_count", 0))
 
         return data_class
 
@@ -67339,9 +67339,9 @@ class UpdateChatReadOutbox(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatReadOutbox", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.last_read_outbox_message_id = data.get(
-                "last_read_outbox_message_id", 0
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.last_read_outbox_message_id = int(
+                data.get("last_read_outbox_message_id", 0)
             )
 
         return data_class
@@ -67394,7 +67394,7 @@ class UpdateChatActionBar(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatActionBar", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.action_bar = data.get("action_bar", None)
 
         return data_class
@@ -67442,7 +67442,7 @@ class UpdateChatBusinessBotManageBar(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatBusinessBotManageBar", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.business_bot_manage_bar = data.get(
                 "business_bot_manage_bar", None
             )
@@ -67492,7 +67492,7 @@ class UpdateChatAvailableReactions(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatAvailableReactions", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.available_reactions = data.get("available_reactions", None)
 
         return data_class
@@ -67547,7 +67547,7 @@ class UpdateChatDraftMessage(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatDraftMessage", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.draft_message = data.get("draft_message", None)
             data_class.positions = data.get("positions", None)
 
@@ -67592,7 +67592,7 @@ class UpdateChatEmojiStatus(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatEmojiStatus", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.emoji_status = data.get("emoji_status", None)
 
         return data_class
@@ -67640,7 +67640,7 @@ class UpdateChatMessageSender(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatMessageSender", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.message_sender_id = data.get("message_sender_id", None)
 
         return data_class
@@ -67684,9 +67684,9 @@ class UpdateChatMessageAutoDeleteTime(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatMessageAutoDeleteTime", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_auto_delete_time = data.get(
-                "message_auto_delete_time", 0
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_auto_delete_time = int(
+                data.get("message_auto_delete_time", 0)
             )
 
         return data_class
@@ -67734,7 +67734,7 @@ class UpdateChatNotificationSettings(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatNotificationSettings", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.notification_settings = data.get("notification_settings", None)
 
         return data_class
@@ -67782,7 +67782,7 @@ class UpdateChatPendingJoinRequests(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatPendingJoinRequests", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.pending_join_requests = data.get("pending_join_requests", None)
 
         return data_class
@@ -67826,8 +67826,10 @@ class UpdateChatReplyMarkup(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatReplyMarkup", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.reply_markup_message_id = data.get("reply_markup_message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.reply_markup_message_id = int(
+                data.get("reply_markup_message_id", 0)
+            )
 
         return data_class
 
@@ -67870,7 +67872,7 @@ class UpdateChatBackground(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatBackground", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.background = data.get("background", None)
 
         return data_class
@@ -67914,7 +67916,7 @@ class UpdateChatTheme(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatTheme", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.theme_name = data.get("theme_name", "")
 
         return data_class
@@ -67958,8 +67960,8 @@ class UpdateChatUnreadMentionCount(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatUnreadMentionCount", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.unread_mention_count = data.get("unread_mention_count", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.unread_mention_count = int(data.get("unread_mention_count", 0))
 
         return data_class
 
@@ -68002,8 +68004,8 @@ class UpdateChatUnreadReactionCount(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatUnreadReactionCount", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.unread_reaction_count = data.get("unread_reaction_count", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.unread_reaction_count = int(data.get("unread_reaction_count", 0))
 
         return data_class
 
@@ -68046,7 +68048,7 @@ class UpdateChatVideoChat(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatVideoChat", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.video_chat = data.get("video_chat", None)
 
         return data_class
@@ -68094,7 +68096,7 @@ class UpdateChatDefaultDisableNotification(TlObject, Update):
     ) -> Union["UpdateChatDefaultDisableNotification", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.default_disable_notification = data.get(
                 "default_disable_notification", False
             )
@@ -68140,7 +68142,7 @@ class UpdateChatHasProtectedContent(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatHasProtectedContent", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.has_protected_content = data.get("has_protected_content", False)
 
         return data_class
@@ -68184,7 +68186,7 @@ class UpdateChatIsTranslatable(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatIsTranslatable", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.is_translatable = data.get("is_translatable", False)
 
         return data_class
@@ -68228,7 +68230,7 @@ class UpdateChatIsMarkedAsUnread(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatIsMarkedAsUnread", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.is_marked_as_unread = data.get("is_marked_as_unread", False)
 
         return data_class
@@ -68272,7 +68274,7 @@ class UpdateChatViewAsTopics(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatViewAsTopics", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.view_as_topics = data.get("view_as_topics", False)
 
         return data_class
@@ -68316,7 +68318,7 @@ class UpdateChatBlockList(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatBlockList", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.block_list = data.get("block_list", None)
 
         return data_class
@@ -68360,7 +68362,7 @@ class UpdateChatHasScheduledMessages(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatHasScheduledMessages", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.has_scheduled_messages = data.get(
                 "has_scheduled_messages", False
             )
@@ -68418,7 +68420,9 @@ class UpdateChatFolders(TlObject, Update):
         if data:
             data_class = cls()
             data_class.chat_folders = data.get("chat_folders", None)
-            data_class.main_chat_list_position = data.get("main_chat_list_position", 0)
+            data_class.main_chat_list_position = int(
+                data.get("main_chat_list_position", 0)
+            )
             data_class.are_tags_enabled = data.get("are_tags_enabled", False)
 
         return data_class
@@ -68462,8 +68466,8 @@ class UpdateChatOnlineMemberCount(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatOnlineMemberCount", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.online_member_count = data.get("online_member_count", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.online_member_count = int(data.get("online_member_count", 0))
 
         return data_class
 
@@ -68531,7 +68535,7 @@ class UpdateSavedMessagesTopicCount(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateSavedMessagesTopicCount", None]:
         if data:
             data_class = cls()
-            data_class.topic_count = data.get("topic_count", 0)
+            data_class.topic_count = int(data.get("topic_count", 0))
 
         return data_class
 
@@ -68599,7 +68603,7 @@ class UpdateQuickReplyShortcutDeleted(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateQuickReplyShortcutDeleted", None]:
         if data:
             data_class = cls()
-            data_class.shortcut_id = data.get("shortcut_id", 0)
+            data_class.shortcut_id = int(data.get("shortcut_id", 0))
 
         return data_class
 
@@ -68678,7 +68682,7 @@ class UpdateQuickReplyShortcutMessages(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateQuickReplyShortcutMessages", None]:
         if data:
             data_class = cls()
-            data_class.shortcut_id = data.get("shortcut_id", 0)
+            data_class.shortcut_id = int(data.get("shortcut_id", 0))
             data_class.messages = data.get("messages", None)
 
         return data_class
@@ -68718,7 +68722,7 @@ class UpdateForumTopicInfo(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateForumTopicInfo", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.info = data.get("info", None)
 
         return data_class
@@ -68860,7 +68864,7 @@ class UpdateNotification(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNotification", None]:
         if data:
             data_class = cls()
-            data_class.notification_group_id = data.get("notification_group_id", 0)
+            data_class.notification_group_id = int(data.get("notification_group_id", 0))
             data_class.notification = data.get("notification", None)
 
         return data_class
@@ -68956,14 +68960,14 @@ class UpdateNotificationGroup(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNotificationGroup", None]:
         if data:
             data_class = cls()
-            data_class.notification_group_id = data.get("notification_group_id", 0)
+            data_class.notification_group_id = int(data.get("notification_group_id", 0))
             data_class.type = data.get("type", None)
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.notification_settings_chat_id = data.get(
-                "notification_settings_chat_id", 0
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.notification_settings_chat_id = int(
+                data.get("notification_settings_chat_id", 0)
             )
-            data_class.notification_sound_id = data.get("notification_sound_id", 0)
-            data_class.total_count = data.get("total_count", 0)
+            data_class.notification_sound_id = int(data.get("notification_sound_id", 0))
+            data_class.total_count = int(data.get("total_count", 0))
             data_class.added_notifications = data.get("added_notifications", None)
             data_class.removed_notification_ids = data.get(
                 "removed_notification_ids", None
@@ -69114,7 +69118,7 @@ class UpdateDeleteMessages(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateDeleteMessages", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.message_ids = data.get("message_ids", None)
             data_class.is_permanent = data.get("is_permanent", False)
             data_class.from_cache = data.get("from_cache", False)
@@ -69195,8 +69199,8 @@ class UpdateChatAction(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatAction", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_thread_id = data.get("message_thread_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_thread_id = int(data.get("message_thread_id", 0))
             data_class.sender_id = data.get("sender_id", None)
             data_class.action = data.get("action", None)
 
@@ -69245,7 +69249,7 @@ class UpdateUserStatus(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateUserStatus", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.status = data.get("status", None)
 
         return data_class
@@ -69425,7 +69429,7 @@ class UpdateUserFullInfo(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateUserFullInfo", None]:
         if data:
             data_class = cls()
-            data_class.user_id = data.get("user_id", 0)
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.user_full_info = data.get("user_full_info", None)
 
         return data_class
@@ -69473,7 +69477,7 @@ class UpdateBasicGroupFullInfo(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateBasicGroupFullInfo", None]:
         if data:
             data_class = cls()
-            data_class.basic_group_id = data.get("basic_group_id", 0)
+            data_class.basic_group_id = int(data.get("basic_group_id", 0))
             data_class.basic_group_full_info = data.get("basic_group_full_info", None)
 
         return data_class
@@ -69521,7 +69525,7 @@ class UpdateSupergroupFullInfo(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateSupergroupFullInfo", None]:
         if data:
             data_class = cls()
-            data_class.supergroup_id = data.get("supergroup_id", 0)
+            data_class.supergroup_id = int(data.get("supergroup_id", 0))
             data_class.supergroup_full_info = data.get("supergroup_full_info", None)
 
         return data_class
@@ -69728,7 +69732,7 @@ class UpdateFileGenerationStart(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateFileGenerationStart", None]:
         if data:
             data_class = cls()
-            data_class.generation_id = data.get("generation_id", 0)
+            data_class.generation_id = int(data.get("generation_id", 0))
             data_class.original_path = data.get("original_path", "")
             data_class.destination_path = data.get("destination_path", "")
             data_class.conversion = data.get("conversion", "")
@@ -69765,7 +69769,7 @@ class UpdateFileGenerationStop(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateFileGenerationStop", None]:
         if data:
             data_class = cls()
-            data_class.generation_id = data.get("generation_id", 0)
+            data_class.generation_id = int(data.get("generation_id", 0))
 
         return data_class
 
@@ -69816,9 +69820,9 @@ class UpdateFileDownloads(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateFileDownloads", None]:
         if data:
             data_class = cls()
-            data_class.total_size = data.get("total_size", 0)
-            data_class.total_count = data.get("total_count", 0)
-            data_class.downloaded_size = data.get("downloaded_size", 0)
+            data_class.total_size = int(data.get("total_size", 0))
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.downloaded_size = int(data.get("downloaded_size", 0))
 
         return data_class
 
@@ -69925,8 +69929,8 @@ class UpdateFileDownload(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateFileDownload", None]:
         if data:
             data_class = cls()
-            data_class.file_id = data.get("file_id", 0)
-            data_class.complete_date = data.get("complete_date", 0)
+            data_class.file_id = int(data.get("file_id", 0))
+            data_class.complete_date = int(data.get("complete_date", 0))
             data_class.is_paused = data.get("is_paused", False)
             data_class.counts = data.get("counts", None)
 
@@ -69967,7 +69971,7 @@ class UpdateFileRemovedFromDownloads(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateFileRemovedFromDownloads", None]:
         if data:
             data_class = cls()
-            data_class.file_id = data.get("file_id", 0)
+            data_class.file_id = int(data.get("file_id", 0))
             data_class.counts = data.get("counts", None)
 
         return data_class
@@ -70013,7 +70017,7 @@ class UpdateApplicationVerificationRequired(TlObject, Update):
     ) -> Union["UpdateApplicationVerificationRequired", None]:
         if data:
             data_class = cls()
-            data_class.verification_id = data.get("verification_id", 0)
+            data_class.verification_id = int(data.get("verification_id", 0))
             data_class.nonce = data.get("nonce", "")
 
         return data_class
@@ -70127,7 +70131,7 @@ class UpdateGroupCallParticipant(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateGroupCallParticipant", None]:
         if data:
             data_class = cls()
-            data_class.group_call_id = data.get("group_call_id", 0)
+            data_class.group_call_id = int(data.get("group_call_id", 0))
             data_class.participant = data.get("participant", None)
 
         return data_class
@@ -70148,7 +70152,7 @@ class UpdateNewCallSignalingData(TlObject, Update):
     def __init__(self, call_id: int = 0, data: bytes = b"") -> None:
         self.call_id: int = int(call_id)
         r"""The call identifier"""
-        self.data: bytes = b64encode(data) if isinstance(data, bytes) else data
+        self.data: Union[bytes, None] = data
         r"""The data"""
 
     def __str__(self):
@@ -70167,8 +70171,8 @@ class UpdateNewCallSignalingData(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNewCallSignalingData", None]:
         if data:
             data_class = cls()
-            data_class.call_id = data.get("call_id", 0)
-            data_class.data = data.get("data", b"")
+            data_class.call_id = int(data.get("call_id", 0))
+            data_class.data = b64decode(data.get("data", b""))
 
         return data_class
 
@@ -70280,8 +70284,8 @@ class UpdateUnreadMessageCount(TlObject, Update):
         if data:
             data_class = cls()
             data_class.chat_list = data.get("chat_list", None)
-            data_class.unread_count = data.get("unread_count", 0)
-            data_class.unread_unmuted_count = data.get("unread_unmuted_count", 0)
+            data_class.unread_count = int(data.get("unread_count", 0))
+            data_class.unread_unmuted_count = int(data.get("unread_unmuted_count", 0))
 
         return data_class
 
@@ -70359,12 +70363,14 @@ class UpdateUnreadChatCount(TlObject, Update):
         if data:
             data_class = cls()
             data_class.chat_list = data.get("chat_list", None)
-            data_class.total_count = data.get("total_count", 0)
-            data_class.unread_count = data.get("unread_count", 0)
-            data_class.unread_unmuted_count = data.get("unread_unmuted_count", 0)
-            data_class.marked_as_unread_count = data.get("marked_as_unread_count", 0)
-            data_class.marked_as_unread_unmuted_count = data.get(
-                "marked_as_unread_unmuted_count", 0
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.unread_count = int(data.get("unread_count", 0))
+            data_class.unread_unmuted_count = int(data.get("unread_unmuted_count", 0))
+            data_class.marked_as_unread_count = int(
+                data.get("marked_as_unread_count", 0)
+            )
+            data_class.marked_as_unread_unmuted_count = int(
+                data.get("marked_as_unread_unmuted_count", 0)
             )
 
         return data_class
@@ -70442,8 +70448,8 @@ class UpdateStoryDeleted(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateStoryDeleted", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = data.get("story_sender_chat_id", 0)
-            data_class.story_id = data.get("story_id", 0)
+            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
 
@@ -70487,7 +70493,7 @@ class UpdateStorySendSucceeded(TlObject, Update):
         if data:
             data_class = cls()
             data_class.story = data.get("story", None)
-            data_class.old_story_id = data.get("old_story_id", 0)
+            data_class.old_story_id = int(data.get("old_story_id", 0))
 
         return data_class
 
@@ -70629,7 +70635,7 @@ class UpdateStoryListChatCount(TlObject, Update):
         if data:
             data_class = cls()
             data_class.story_list = data.get("story_list", None)
-            data_class.chat_count = data.get("chat_count", 0)
+            data_class.chat_count = int(data.get("chat_count", 0))
 
         return data_class
 
@@ -70674,8 +70680,8 @@ class UpdateStoryStealthMode(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateStoryStealthMode", None]:
         if data:
             data_class = cls()
-            data_class.active_until_date = data.get("active_until_date", 0)
-            data_class.cooldown_until_date = data.get("cooldown_until_date", 0)
+            data_class.active_until_date = int(data.get("active_until_date", 0))
+            data_class.cooldown_until_date = int(data.get("cooldown_until_date", 0))
 
         return data_class
 
@@ -71461,7 +71467,7 @@ class UpdateWebAppMessageSent(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateWebAppMessageSent", None]:
         if data:
             data_class = cls()
-            data_class.web_app_launch_id = data.get("web_app_launch_id", 0)
+            data_class.web_app_launch_id = int(data.get("web_app_launch_id", 0))
 
         return data_class
 
@@ -71624,7 +71630,9 @@ class UpdateSavedMessagesTags(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateSavedMessagesTags", None]:
         if data:
             data_class = cls()
-            data_class.saved_messages_topic_id = data.get("saved_messages_topic_id", 0)
+            data_class.saved_messages_topic_id = int(
+                data.get("saved_messages_topic_id", 0)
+            )
             data_class.tags = data.get("tags", None)
 
         return data_class
@@ -71659,7 +71667,7 @@ class UpdateOwnedStarCount(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateOwnedStarCount", None]:
         if data:
             data_class = cls()
-            data_class.star_count = data.get("star_count", 0)
+            data_class.star_count = int(data.get("star_count", 0))
 
         return data_class
 
@@ -71704,7 +71712,7 @@ class UpdateChatRevenueAmount(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatRevenueAmount", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.revenue_amount = data.get("revenue_amount", None)
 
         return data_class
@@ -71766,10 +71774,10 @@ class UpdateSpeechRecognitionTrial(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateSpeechRecognitionTrial", None]:
         if data:
             data_class = cls()
-            data_class.max_media_duration = data.get("max_media_duration", 0)
-            data_class.weekly_count = data.get("weekly_count", 0)
-            data_class.left_count = data.get("left_count", 0)
-            data_class.next_reset_date = data.get("next_reset_date", 0)
+            data_class.max_media_duration = int(data.get("max_media_duration", 0))
+            data_class.weekly_count = int(data.get("weekly_count", 0))
+            data_class.left_count = int(data.get("left_count", 0))
+            data_class.next_reset_date = int(data.get("next_reset_date", 0))
 
         return data_class
 
@@ -71854,8 +71862,8 @@ class UpdateAnimatedEmojiMessageClicked(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateAnimatedEmojiMessageClicked", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.sticker = data.get("sticker", None)
 
         return data_class
@@ -72247,7 +72255,7 @@ class UpdateBusinessMessagesDeleted(TlObject, Update):
         if data:
             data_class = cls()
             data_class.connection_id = data.get("connection_id", "")
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.message_ids = data.get("message_ids", None)
 
         return data_class
@@ -72329,8 +72337,8 @@ class UpdateNewInlineQuery(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNewInlineQuery", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.sender_user_id = data.get("sender_user_id", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
             data_class.user_location = data.get("user_location", None)
             data_class.chat_type = data.get("chat_type", None)
             data_class.query = data.get("query", "")
@@ -72402,7 +72410,7 @@ class UpdateNewChosenInlineResult(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNewChosenInlineResult", None]:
         if data:
             data_class = cls()
-            data_class.sender_user_id = data.get("sender_user_id", 0)
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
             data_class.user_location = data.get("user_location", None)
             data_class.query = data.get("query", "")
             data_class.result_id = data.get("result_id", "")
@@ -72486,11 +72494,11 @@ class UpdateNewCallbackQuery(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNewCallbackQuery", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.sender_user_id = data.get("sender_user_id", 0)
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
-            data_class.chat_instance = data.get("chat_instance", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.chat_instance = int(data.get("chat_instance", 0))
             data_class.payload = data.get("payload", None)
 
         return data_class
@@ -72564,10 +72572,10 @@ class UpdateNewInlineCallbackQuery(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNewInlineCallbackQuery", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.sender_user_id = data.get("sender_user_id", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
             data_class.inline_message_id = data.get("inline_message_id", "")
-            data_class.chat_instance = data.get("chat_instance", 0)
+            data_class.chat_instance = int(data.get("chat_instance", 0))
             data_class.payload = data.get("payload", None)
 
         return data_class
@@ -72629,8 +72637,8 @@ class UpdateNewShippingQuery(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNewShippingQuery", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.sender_user_id = data.get("sender_user_id", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
             data_class.invoice_payload = data.get("invoice_payload", "")
             data_class.shipping_address = data.get("shipping_address", None)
 
@@ -72682,11 +72690,7 @@ class UpdateNewPreCheckoutQuery(TlObject, Update):
         r"""Currency for the product price"""
         self.total_amount: int = int(total_amount)
         r"""Total price for the product, in the smallest units of the currency"""
-        self.invoice_payload: bytes = (
-            b64encode(invoice_payload)
-            if isinstance(invoice_payload, bytes)
-            else invoice_payload
-        )
+        self.invoice_payload: Union[bytes, None] = invoice_payload
         r"""Invoice payload"""
         self.shipping_option_id: Union[str, None] = shipping_option_id
         r"""Identifier of a shipping option chosen by the user; may be empty if not applicable"""
@@ -72718,11 +72722,11 @@ class UpdateNewPreCheckoutQuery(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNewPreCheckoutQuery", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
-            data_class.sender_user_id = data.get("sender_user_id", 0)
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
             data_class.currency = data.get("currency", "")
-            data_class.total_amount = data.get("total_amount", 0)
-            data_class.invoice_payload = data.get("invoice_payload", b"")
+            data_class.total_amount = int(data.get("total_amount", 0))
+            data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
             data_class.shipping_option_id = data.get("shipping_option_id", "")
             data_class.order_info = data.get("order_info", None)
 
@@ -72807,9 +72811,9 @@ class UpdateNewCustomQuery(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNewCustomQuery", None]:
         if data:
             data_class = cls()
-            data_class.id = data.get("id", 0)
+            data_class.id = int(data.get("id", 0))
             data_class.data = data.get("data", "")
-            data_class.timeout = data.get("timeout", 0)
+            data_class.timeout = int(data.get("timeout", 0))
 
         return data_class
 
@@ -72897,7 +72901,7 @@ class UpdatePollAnswer(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdatePollAnswer", None]:
         if data:
             data_class = cls()
-            data_class.poll_id = data.get("poll_id", 0)
+            data_class.poll_id = int(data.get("poll_id", 0))
             data_class.voter_id = data.get("voter_id", None)
             data_class.option_ids = data.get("option_ids", None)
 
@@ -72988,9 +72992,9 @@ class UpdateChatMember(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatMember", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.actor_user_id = data.get("actor_user_id", 0)
-            data_class.date = data.get("date", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.actor_user_id = int(data.get("actor_user_id", 0))
+            data_class.date = int(data.get("date", 0))
             data_class.invite_link = data.get("invite_link", None)
             data_class.via_join_request = data.get("via_join_request", False)
             data_class.via_chat_folder_invite_link = data.get(
@@ -73058,9 +73062,9 @@ class UpdateNewChatJoinRequest(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateNewChatJoinRequest", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.request = data.get("request", None)
-            data_class.user_chat_id = data.get("user_chat_id", 0)
+            data_class.user_chat_id = int(data.get("user_chat_id", 0))
             data_class.invite_link = data.get("invite_link", None)
 
         return data_class
@@ -73100,7 +73104,7 @@ class UpdateChatBoost(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateChatBoost", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
             data_class.boost = data.get("boost", None)
 
         return data_class
@@ -73176,10 +73180,10 @@ class UpdateMessageReaction(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageReaction", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
             data_class.actor_id = data.get("actor_id", None)
-            data_class.date = data.get("date", 0)
+            data_class.date = int(data.get("date", 0))
             data_class.old_reaction_types = data.get("old_reaction_types", None)
             data_class.new_reaction_types = data.get("new_reaction_types", None)
 
@@ -73242,9 +73246,9 @@ class UpdateMessageReactions(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateMessageReactions", None]:
         if data:
             data_class = cls()
-            data_class.chat_id = data.get("chat_id", 0)
-            data_class.message_id = data.get("message_id", 0)
-            data_class.date = data.get("date", 0)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.date = int(data.get("date", 0))
             data_class.reactions = data.get("reactions", None)
 
         return data_class

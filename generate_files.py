@@ -73,10 +73,6 @@ def generate_arg_value(arg_type, arg_name):
         arg_value = f"int({arg_name})"
     elif arg_type == "float":
         arg_value = f"float({arg_name})"
-    elif arg_type == "bytes":
-        arg_value = (
-            f"b64encode({arg_name}) if isinstance({arg_name}, bytes) else {arg_name}"
-        )
     elif arg_type == "bool":
         arg_value = f"bool({arg_name})"
     elif arg_type.startswith("List[") or arg_type == "list":
@@ -169,9 +165,18 @@ def generate_from_dict_kwargs(args):
         if arg_name in keyword.kwlist:
             arg_name += "_"
 
-        args_list.append(
-            f'data_class.{arg_name} = data.get("{arg_name}", {generate_arg_default(getArgTypePython(arg_data["type"]))})'
-        )
+        arg_type = getArgTypePython(arg_data["type"])
+
+        if arg_type == "bytes":
+            args_list.append(
+                f'data_class.{arg_name} = b64decode(data.get("{arg_name}", b""))'
+            )
+        elif arg_type == "int":  # Some values are int but in string format
+            args_list.append(f'data_class.{arg_name} = int(data.get("{arg_name}", 0))')
+        else:
+            args_list.append(
+                f'data_class.{arg_name} = data.get("{arg_name}", {generate_arg_default(arg_type)})'
+            )
 
     return "; ".join(args_list)
 
@@ -359,7 +364,7 @@ if __name__ == "__main__":
 
     with open("pytdbot/types/td_types/types.py", "w") as types_file:
         types_file.write("from typing import Union, Literal, List\n")
-        types_file.write("from base64 import b64encode\n")
+        types_file.write("from base64 import b64decode\n")
         types_file.write("import pytdbot\n\n")
         types_file.write(
             """class TlObject:
