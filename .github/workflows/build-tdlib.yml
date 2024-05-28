@@ -93,7 +93,7 @@ jobs:
           python generate_json.py "${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}" "${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }}"
           python generate_files.py
           python -m pip install ruff
-          python -m ruff format "methods/td_functions.py" "handlers/td_updates.py"
+          python -m ruff format .
 
           CURRENT_VERSION=${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }}
           sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g" README.md
@@ -102,7 +102,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: "Update TDLib to ${{ steps.vars.outputs.LATEST_TDLIB_VERSION }} (tdlib/td@${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }})"
-          add: '["td_api.tl"]'
+          add: '["td_api.tl", "td_api.json"]'
           committer_name: GitHub Actions
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
 
@@ -110,6 +110,6 @@ jobs:
         uses: EndBug/add-and-commit@v9
         with:
           message: "Generate Pytdbot files"
-          add: '["README.md", "pytdbot/methods/td_functions.py","pytdbot/handlers/td_updates.py", "pytdbot/td_api.json",]'
+          add: '["README.md", "pytdbot/"]'
           committer_name: GitHub Actions
           committer_email: 41898282+github-actions[bot]@users.noreply.github.com
