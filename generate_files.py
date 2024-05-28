@@ -400,7 +400,7 @@ if __name__ == "__main__":
 
         classes_import = f"from .td_types import TlObject, {', '.join(types_names)}\nfrom .plugins import Plugins"
         types_init_file.write(classes_import)
-        types_init_file.write(f'\n\nTDLIB_VERSION = "{tl_json['version']}"')
+        types_init_file.write('\n\nTDLIB_VERSION = "{}"'.format(tl_json["version"]))
 
     with open("pytdbot/methods/td_functions.py", "w") as functions_file:
         functions_file.write("from typing import Union, List\nfrom .. import types\n\n")
