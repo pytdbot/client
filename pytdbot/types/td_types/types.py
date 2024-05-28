@@ -110,6 +110,18 @@ class InputChatPhoto:
     pass
 
 
+class StarTransactionDirection:
+    r"""Describes direction of a transaction with Telegram stars"""
+
+    pass
+
+
+class StarTransactionSource:
+    r"""Describes source or recipient of a transaction with Telegram stars"""
+
+    pass
+
+
 class PremiumGiveawayParticipantStatus:
     r"""Contains information about status of a user in a Telegram Premium giveaway"""
 
@@ -172,6 +184,12 @@ class MessageOrigin:
 
 class ReactionType:
     r"""Describes type of message reaction"""
+
+    pass
+
+
+class MessageEffectType:
+    r"""Describes type of emoji effect"""
 
     pass
 
@@ -243,7 +261,7 @@ class ChatAvailableReactions:
 
 
 class PublicChatType:
-    r"""Describes a type of public chats"""
+    r"""Describes type of public chat"""
 
     pass
 
@@ -322,6 +340,18 @@ class InputCredentials:
 
 class PaymentProvider:
     r"""Contains information about a payment provider"""
+
+    pass
+
+
+class PaymentFormType:
+    r"""Describes type of payment form"""
+
+    pass
+
+
+class PaymentReceiptType:
+    r"""Describes type of successful payment"""
 
     pass
 
@@ -482,6 +512,12 @@ class ChatBoostSource:
     pass
 
 
+class ResendCodeReason:
+    r"""Describes the reason why a code needs to be re\-sent"""
+
+    pass
+
+
 class CallDiscardReason:
     r"""Describes the reason why a call was discarded"""
 
@@ -555,7 +591,7 @@ class InlineQueryResult:
 
 
 class InlineQueryResultsButtonType:
-    r"""Represents a type of button in results of inline query"""
+    r"""Represents type of button in results of inline query"""
 
     pass
 
@@ -759,7 +795,7 @@ class InternalLinkType:
 
 
 class BlockList:
-    r"""Describes a type of block list"""
+    r"""Describes type of block list"""
 
     pass
 
@@ -1244,17 +1280,24 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
     r"""A digit\-only authentication code is delivered via Firebase Authentication to the official Android application
 
     Parameters:
+        use_play_integrity (:class:`bool`):
+            True, if Play Integrity API must be used for device verification\. Otherwise, SafetyNet Attestation API must be used
+
         nonce (:class:`bytes`):
-            Nonce to pass to the SafetyNet Attestation API
+            Nonce to pass to the Play Integrity API or the SafetyNet Attestation API
 
         length (:class:`int`):
             Length of the code
 
     """
 
-    def __init__(self, nonce: bytes = b"", length: int = 0) -> None:
+    def __init__(
+        self, use_play_integrity: bool = False, nonce: bytes = b"", length: int = 0
+    ) -> None:
+        self.use_play_integrity: bool = bool(use_play_integrity)
+        r"""True, if Play Integrity API must be used for device verification\. Otherwise, SafetyNet Attestation API must be used"""
         self.nonce: bytes = b64encode(nonce) if isinstance(nonce, bytes) else nonce
-        r"""Nonce to pass to the SafetyNet Attestation API"""
+        r"""Nonce to pass to the Play Integrity API or the SafetyNet Attestation API"""
         self.length: int = int(length)
         r"""Length of the code"""
 
@@ -1268,7 +1311,12 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
         return "AuthenticationCodeType"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "nonce": self.nonce, "length": self.length}
+        return {
+            "@type": self.getType(),
+            "use_play_integrity": self.use_play_integrity,
+            "nonce": self.nonce,
+            "length": self.length,
+        }
 
     @classmethod
     def from_dict(
@@ -1276,6 +1324,7 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
     ) -> Union["AuthenticationCodeTypeFirebaseAndroid", None]:
         if data:
             data_class = cls()
+            data_class.use_play_integrity = data.get("use_play_integrity", False)
             data_class.nonce = data.get("nonce", b"")
             data_class.length = data.get("length", 0)
 
@@ -1677,6 +1726,7 @@ class TextEntity(TlObject):
             TextEntityTypePre,
             TextEntityTypePreCode,
             TextEntityTypeBlockQuote,
+            TextEntityTypeExpandableBlockQuote,
             TextEntityTypeTextUrl,
             TextEntityTypeMentionName,
             TextEntityTypeCustomEmoji,
@@ -7611,6 +7661,59 @@ class ChatAdministratorRights(TlObject):
         return data_class
 
 
+class ProductInfo(TlObject):
+    r"""Contains information about a product that can be paid with invoice
+
+    Parameters:
+        title (:class:`str`):
+            Product title
+
+        description (:class:`"types.FormattedText"`):
+            Product description
+
+        photo (:class:`"types.Photo"`):
+            Product photo; may be null
+
+    """
+
+    def __init__(
+        self, title: str = "", description: FormattedText = None, photo: Photo = None
+    ) -> None:
+        self.title: Union[str, None] = title
+        r"""Product title"""
+        self.description: Union[FormattedText, None] = description
+        r"""Product description"""
+        self.photo: Union[Photo, None] = photo
+        r"""Product photo; may be null"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["productInfo"]:
+        return "productInfo"
+
+    def getClass(self) -> Literal["ProductInfo"]:
+        return "ProductInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "title": self.title,
+            "description": self.description,
+            "photo": self.photo,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ProductInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.title = data.get("title", "")
+            data_class.description = data.get("description", None)
+            data_class.photo = data.get("photo", None)
+
+        return data_class
+
+
 class PremiumPaymentOption(TlObject):
     r"""Describes an option for buying Telegram Premium to a user
 
@@ -7999,6 +8102,474 @@ class PremiumGiftCodeInfo(TlObject):
             data_class.month_count = data.get("month_count", 0)
             data_class.user_id = data.get("user_id", 0)
             data_class.use_date = data.get("use_date", 0)
+
+        return data_class
+
+
+class StarPaymentOption(TlObject):
+    r"""Describes an option for buying Telegram stars
+
+    Parameters:
+        currency (:class:`str`):
+            ISO 4217 currency code for the payment
+
+        amount (:class:`int`):
+            The amount to pay, in the smallest units of the currency
+
+        star_count (:class:`int`):
+            Number of stars that will be purchased
+
+        store_product_id (:class:`str`):
+            Identifier of the store product associated with the option; may be empty if none
+
+        is_additional (:class:`bool`):
+            True, if the option must be shown only in the full list of payment options
+
+    """
+
+    def __init__(
+        self,
+        currency: str = "",
+        amount: int = 0,
+        star_count: int = 0,
+        store_product_id: str = "",
+        is_additional: bool = False,
+    ) -> None:
+        self.currency: Union[str, None] = currency
+        r"""ISO 4217 currency code for the payment"""
+        self.amount: int = int(amount)
+        r"""The amount to pay, in the smallest units of the currency"""
+        self.star_count: int = int(star_count)
+        r"""Number of stars that will be purchased"""
+        self.store_product_id: Union[str, None] = store_product_id
+        r"""Identifier of the store product associated with the option; may be empty if none"""
+        self.is_additional: bool = bool(is_additional)
+        r"""True, if the option must be shown only in the full list of payment options"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starPaymentOption"]:
+        return "starPaymentOption"
+
+    def getClass(self) -> Literal["StarPaymentOption"]:
+        return "StarPaymentOption"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "currency": self.currency,
+            "amount": self.amount,
+            "star_count": self.star_count,
+            "store_product_id": self.store_product_id,
+            "is_additional": self.is_additional,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarPaymentOption", None]:
+        if data:
+            data_class = cls()
+            data_class.currency = data.get("currency", "")
+            data_class.amount = data.get("amount", 0)
+            data_class.star_count = data.get("star_count", 0)
+            data_class.store_product_id = data.get("store_product_id", "")
+            data_class.is_additional = data.get("is_additional", False)
+
+        return data_class
+
+
+class StarPaymentOptions(TlObject):
+    r"""Contains a list of options for buying Telegram stars
+
+    Parameters:
+        options (:class:`List["types.StarPaymentOption"]`):
+            The list of options
+
+    """
+
+    def __init__(self, options: List[StarPaymentOption] = None) -> None:
+        self.options: List[StarPaymentOption] = options or []
+        r"""The list of options"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starPaymentOptions"]:
+        return "starPaymentOptions"
+
+    def getClass(self) -> Literal["StarPaymentOptions"]:
+        return "StarPaymentOptions"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "options": self.options}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarPaymentOptions", None]:
+        if data:
+            data_class = cls()
+            data_class.options = data.get("options", None)
+
+        return data_class
+
+
+class StarTransactionDirectionIncoming(TlObject, StarTransactionDirection):
+    r"""The transaction is incoming and increases the number of owned Telegram stars"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionDirectionIncoming"]:
+        return "starTransactionDirectionIncoming"
+
+    def getClass(self) -> Literal["StarTransactionDirection"]:
+        return "StarTransactionDirection"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionDirectionIncoming", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class StarTransactionDirectionOutgoing(TlObject, StarTransactionDirection):
+    r"""The transaction is outgoing and decreases the number of owned Telegram stars"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionDirectionOutgoing"]:
+        return "starTransactionDirectionOutgoing"
+
+    def getClass(self) -> Literal["StarTransactionDirection"]:
+        return "StarTransactionDirection"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionDirectionOutgoing", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class StarTransactionSourceTelegram(TlObject, StarTransactionSource):
+    r"""The transaction is a transaction with Telegram through a bot"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionSourceTelegram"]:
+        return "starTransactionSourceTelegram"
+
+    def getClass(self) -> Literal["StarTransactionSource"]:
+        return "StarTransactionSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionSourceTelegram", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class StarTransactionSourceAppStore(TlObject, StarTransactionSource):
+    r"""The transaction is a transaction with App Store"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionSourceAppStore"]:
+        return "starTransactionSourceAppStore"
+
+    def getClass(self) -> Literal["StarTransactionSource"]:
+        return "StarTransactionSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionSourceAppStore", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class StarTransactionSourceGooglePlay(TlObject, StarTransactionSource):
+    r"""The transaction is a transaction with Google Play"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionSourceGooglePlay"]:
+        return "starTransactionSourceGooglePlay"
+
+    def getClass(self) -> Literal["StarTransactionSource"]:
+        return "StarTransactionSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionSourceGooglePlay", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class StarTransactionSourceFragment(TlObject, StarTransactionSource):
+    r"""The transaction is a transaction with Fragment"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionSourceFragment"]:
+        return "starTransactionSourceFragment"
+
+    def getClass(self) -> Literal["StarTransactionSource"]:
+        return "StarTransactionSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionSourceFragment", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class StarTransactionSourceUser(TlObject, StarTransactionSource):
+    r"""The transaction is a transaction with another user
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user
+
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the bought product; may be null if none
+
+    """
+
+    def __init__(self, user_id: int = 0, product_info: ProductInfo = None) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user"""
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the bought product; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionSourceUser"]:
+        return "starTransactionSourceUser"
+
+    def getClass(self) -> Literal["StarTransactionSource"]:
+        return "StarTransactionSource"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "product_info": self.product_info,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionSourceUser", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = data.get("user_id", 0)
+            data_class.product_info = data.get("product_info", None)
+
+        return data_class
+
+
+class StarTransactionSourceUnsupported(TlObject, StarTransactionSource):
+    r"""The transaction is a transaction with unknown source"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionSourceUnsupported"]:
+        return "starTransactionSourceUnsupported"
+
+    def getClass(self) -> Literal["StarTransactionSource"]:
+        return "StarTransactionSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionSourceUnsupported", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class StarTransaction(TlObject):
+    r"""Represents a transaction changing the amount of owned Telegram stars
+
+    Parameters:
+        id (:class:`str`):
+            Unique identifier of the transaction
+
+        star_count (:class:`int`):
+            The amount of added owned Telegram stars; negative for outgoing transactions
+
+        is_refund (:class:`bool`):
+            True, if the transaction is a refund of a previous transaction
+
+        date (:class:`int`):
+            Point in time \(Unix timestamp\) when the transaction was completed
+
+        source (:class:`"types.StarTransactionSource"`):
+            Source of the transaction, or its recipient for outgoing transactions
+
+    """
+
+    def __init__(
+        self,
+        id: str = "",
+        star_count: int = 0,
+        is_refund: bool = False,
+        date: int = 0,
+        source: StarTransactionSource = None,
+    ) -> None:
+        self.id: Union[str, None] = id
+        r"""Unique identifier of the transaction"""
+        self.star_count: int = int(star_count)
+        r"""The amount of added owned Telegram stars; negative for outgoing transactions"""
+        self.is_refund: bool = bool(is_refund)
+        r"""True, if the transaction is a refund of a previous transaction"""
+        self.date: int = int(date)
+        r"""Point in time \(Unix timestamp\) when the transaction was completed"""
+        self.source: Union[
+            StarTransactionSourceTelegram,
+            StarTransactionSourceAppStore,
+            StarTransactionSourceGooglePlay,
+            StarTransactionSourceFragment,
+            StarTransactionSourceUser,
+            StarTransactionSourceUnsupported,
+            None,
+        ] = source
+        r"""Source of the transaction, or its recipient for outgoing transactions"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransaction"]:
+        return "starTransaction"
+
+    def getClass(self) -> Literal["StarTransaction"]:
+        return "StarTransaction"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "star_count": self.star_count,
+            "is_refund": self.is_refund,
+            "date": self.date,
+            "source": self.source,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransaction", None]:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", "")
+            data_class.star_count = data.get("star_count", 0)
+            data_class.is_refund = data.get("is_refund", False)
+            data_class.date = data.get("date", 0)
+            data_class.source = data.get("source", None)
+
+        return data_class
+
+
+class StarTransactions(TlObject):
+    r"""Represents a list of Telegram star transactions
+
+    Parameters:
+        star_count (:class:`int`):
+            The amount of owned Telegram stars
+
+        transactions (:class:`List["types.StarTransaction"]`):
+            List of transactions with Telegram stars
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self,
+        star_count: int = 0,
+        transactions: List[StarTransaction] = None,
+        next_offset: str = "",
+    ) -> None:
+        self.star_count: int = int(star_count)
+        r"""The amount of owned Telegram stars"""
+        self.transactions: List[StarTransaction] = transactions or []
+        r"""List of transactions with Telegram stars"""
+        self.next_offset: Union[str, None] = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactions"]:
+        return "starTransactions"
+
+    def getClass(self) -> Literal["StarTransactions"]:
+        return "StarTransactions"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "transactions": self.transactions,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactions", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = data.get("star_count", 0)
+            data_class.transactions = data.get("transactions", None)
+            data_class.next_offset = data.get("next_offset", "")
 
         return data_class
 
@@ -11366,7 +11937,7 @@ class Supergroup(TlObject):
             Status of the current user in the supergroup or channel; custom title will always be empty
 
         member_count (:class:`int`):
-            Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or for public chats in which where sent messages and posted stories from publicForwards, or for public chats in which where sent messages from getMessagePublicForwards response
+            Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards
 
         boost_level (:class:`int`):
             Approximate boost level for the chat
@@ -11459,7 +12030,7 @@ class Supergroup(TlObject):
         ] = status
         r"""Status of the current user in the supergroup or channel; custom title will always be empty"""
         self.member_count: int = int(member_count)
-        r"""Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or for public chats in which where sent messages and posted stories from publicForwards, or for public chats in which where sent messages from getMessagePublicForwards response"""
+        r"""Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards"""
         self.boost_level: int = int(boost_level)
         r"""Approximate boost level for the chat"""
         self.has_linked_chat: bool = bool(has_linked_chat)
@@ -13174,6 +13745,160 @@ class UnreadReaction(TlObject):
         return data_class
 
 
+class MessageEffectTypeEmojiReaction(TlObject, MessageEffectType):
+    r"""An effect from an emoji reaction
+
+    Parameters:
+        select_animation (:class:`"types.Sticker"`):
+            Select animation for the effect in TGS format
+
+        effect_animation (:class:`"types.Sticker"`):
+            Effect animation for the effect in TGS format
+
+    """
+
+    def __init__(
+        self, select_animation: Sticker = None, effect_animation: Sticker = None
+    ) -> None:
+        self.select_animation: Union[Sticker, None] = select_animation
+        r"""Select animation for the effect in TGS format"""
+        self.effect_animation: Union[Sticker, None] = effect_animation
+        r"""Effect animation for the effect in TGS format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageEffectTypeEmojiReaction"]:
+        return "messageEffectTypeEmojiReaction"
+
+    def getClass(self) -> Literal["MessageEffectType"]:
+        return "MessageEffectType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "select_animation": self.select_animation,
+            "effect_animation": self.effect_animation,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageEffectTypeEmojiReaction", None]:
+        if data:
+            data_class = cls()
+            data_class.select_animation = data.get("select_animation", None)
+            data_class.effect_animation = data.get("effect_animation", None)
+
+        return data_class
+
+
+class MessageEffectTypePremiumSticker(TlObject, MessageEffectType):
+    r"""An effect from a premium sticker
+
+    Parameters:
+        sticker (:class:`"types.Sticker"`):
+            The premium sticker\. The effect can be found at sticker\.full\_type\.premium\_animation
+
+    """
+
+    def __init__(self, sticker: Sticker = None) -> None:
+        self.sticker: Union[Sticker, None] = sticker
+        r"""The premium sticker\. The effect can be found at sticker\.full\_type\.premium\_animation"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageEffectTypePremiumSticker"]:
+        return "messageEffectTypePremiumSticker"
+
+    def getClass(self) -> Literal["MessageEffectType"]:
+        return "MessageEffectType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "sticker": self.sticker}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageEffectTypePremiumSticker", None]:
+        if data:
+            data_class = cls()
+            data_class.sticker = data.get("sticker", None)
+
+        return data_class
+
+
+class MessageEffect(TlObject):
+    r"""Contains information about an effect added to a message
+
+    Parameters:
+        id (:class:`int`):
+            Unique identifier of the effect
+
+        static_icon (:class:`"types.Sticker"`):
+            Static icon for the effect in WEBP format; may be null if none
+
+        emoji (:class:`str`):
+            Emoji corresponding to the effect that can be used if static icon isn't available
+
+        is_premium (:class:`bool`):
+            True, if Telegram Premium subscription is required to use the effect
+
+        type (:class:`"types.MessageEffectType"`):
+            Type of the effect
+
+    """
+
+    def __init__(
+        self,
+        id: int = 0,
+        static_icon: Sticker = None,
+        emoji: str = "",
+        is_premium: bool = False,
+        type: MessageEffectType = None,
+    ) -> None:
+        self.id: int = int(id)
+        r"""Unique identifier of the effect"""
+        self.static_icon: Union[Sticker, None] = static_icon
+        r"""Static icon for the effect in WEBP format; may be null if none"""
+        self.emoji: Union[str, None] = emoji
+        r"""Emoji corresponding to the effect that can be used if static icon isn't available"""
+        self.is_premium: bool = bool(is_premium)
+        r"""True, if Telegram Premium subscription is required to use the effect"""
+        self.type: Union[
+            MessageEffectTypeEmojiReaction, MessageEffectTypePremiumSticker, None
+        ] = type
+        r"""Type of the effect"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageEffect"]:
+        return "messageEffect"
+
+    def getClass(self) -> Literal["MessageEffect"]:
+        return "MessageEffect"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "static_icon": self.static_icon,
+            "emoji": self.emoji,
+            "is_premium": self.is_premium,
+            "type": self.type,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageEffect", None]:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", 0)
+            data_class.static_icon = data.get("static_icon", None)
+            data_class.emoji = data.get("emoji", "")
+            data_class.is_premium = data.get("is_premium", False)
+            data_class.type = data.get("type", None)
+
+        return data_class
+
+
 class MessageSendingStatePending(TlObject, MessageSendingState):
     r"""The message is being sent now, but has not yet been delivered to the server
 
@@ -13681,6 +14406,50 @@ class InputMessageReplyToStory(TlObject, InputMessageReplyTo):
         return data_class
 
 
+class FactCheck(TlObject):
+    r"""Describes a fact\-check added to the message by an independent checker
+
+    Parameters:
+        text (:class:`"types.FormattedText"`):
+            Text of the fact\-check
+
+        country_code (:class:`str`):
+            A two\-letter ISO 3166\-1 alpha\-2 country code of the country for which the fact\-check is shown
+
+    """
+
+    def __init__(self, text: FormattedText = None, country_code: str = "") -> None:
+        self.text: Union[FormattedText, None] = text
+        r"""Text of the fact\-check"""
+        self.country_code: Union[str, None] = country_code
+        r"""A two\-letter ISO 3166\-1 alpha\-2 country code of the country for which the fact\-check is shown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["factCheck"]:
+        return "factCheck"
+
+    def getClass(self) -> Literal["FactCheck"]:
+        return "FactCheck"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "text": self.text,
+            "country_code": self.country_code,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["FactCheck", None]:
+        if data:
+            data_class = cls()
+            data_class.text = data.get("text", None)
+            data_class.country_code = data.get("country_code", "")
+
+        return data_class
+
+
 class Message(TlObject):
     r"""Describes a message
 
@@ -13778,6 +14547,9 @@ class Message(TlObject):
         unread_reactions (:class:`List["types.UnreadReaction"]`):
             Information about unread reactions added to the message
 
+        fact_check (:class:`"types.FactCheck"`):
+            Information about fact\-check added to the message; may be null if none
+
         reply_to (:class:`"types.MessageReplyTo"`):
             Information about the message or the story this message is replying to; may be null if none
 
@@ -13810,6 +14582,9 @@ class Message(TlObject):
 
         media_album_id (:class:`int`):
             Unique identifier of an album this message belongs to; 0 if none\. Only audios, documents, photos and videos can be grouped together in albums
+
+        effect_id (:class:`int`):
+            Unique identifier of the effect added to the message; 0 if none
 
         restriction_reason (:class:`str`):
             If non\-empty, contains a human\-readable description of the reason why access to this message must be restricted
@@ -13855,6 +14630,7 @@ class Message(TlObject):
         import_info: MessageImportInfo = None,
         interaction_info: MessageInteractionInfo = None,
         unread_reactions: List[UnreadReaction] = None,
+        fact_check: FactCheck = None,
         reply_to: MessageReplyTo = None,
         message_thread_id: int = 0,
         saved_messages_topic_id: int = 0,
@@ -13866,6 +14642,7 @@ class Message(TlObject):
         sender_boost_count: int = 0,
         author_signature: str = "",
         media_album_id: int = 0,
+        effect_id: int = 0,
         restriction_reason: str = "",
         content: MessageContent = None,
         reply_markup: ReplyMarkup = None,
@@ -13936,6 +14713,8 @@ class Message(TlObject):
         r"""Information about interactions with the message; may be null if none"""
         self.unread_reactions: List[UnreadReaction] = unread_reactions or []
         r"""Information about unread reactions added to the message"""
+        self.fact_check: Union[FactCheck, None] = fact_check
+        r"""Information about fact\-check added to the message; may be null if none"""
         self.reply_to: Union[MessageReplyToMessage, MessageReplyToStory, None] = (
             reply_to
         )
@@ -13962,6 +14741,8 @@ class Message(TlObject):
         r"""For channel posts and anonymous group messages, optional author signature"""
         self.media_album_id: int = int(media_album_id)
         r"""Unique identifier of an album this message belongs to; 0 if none\. Only audios, documents, photos and videos can be grouped together in albums"""
+        self.effect_id: int = int(effect_id)
+        r"""Unique identifier of the effect added to the message; 0 if none"""
         self.restriction_reason: Union[str, None] = restriction_reason
         r"""If non\-empty, contains a human\-readable description of the reason why access to this message must be restricted"""
         self.content: Union[
@@ -14089,6 +14870,7 @@ class Message(TlObject):
             "import_info": self.import_info,
             "interaction_info": self.interaction_info,
             "unread_reactions": self.unread_reactions,
+            "fact_check": self.fact_check,
             "reply_to": self.reply_to,
             "message_thread_id": self.message_thread_id,
             "saved_messages_topic_id": self.saved_messages_topic_id,
@@ -14100,6 +14882,7 @@ class Message(TlObject):
             "sender_boost_count": self.sender_boost_count,
             "author_signature": self.author_signature,
             "media_album_id": self.media_album_id,
+            "effect_id": self.effect_id,
             "restriction_reason": self.restriction_reason,
             "content": self.content,
             "reply_markup": self.reply_markup,
@@ -14154,6 +14937,7 @@ class Message(TlObject):
             data_class.import_info = data.get("import_info", None)
             data_class.interaction_info = data.get("interaction_info", None)
             data_class.unread_reactions = data.get("unread_reactions", None)
+            data_class.fact_check = data.get("fact_check", None)
             data_class.reply_to = data.get("reply_to", None)
             data_class.message_thread_id = data.get("message_thread_id", 0)
             data_class.saved_messages_topic_id = data.get("saved_messages_topic_id", 0)
@@ -14167,6 +14951,7 @@ class Message(TlObject):
             data_class.sender_boost_count = data.get("sender_boost_count", 0)
             data_class.author_signature = data.get("author_signature", "")
             data_class.media_album_id = data.get("media_album_id", 0)
+            data_class.effect_id = data.get("effect_id", 0)
             data_class.restriction_reason = data.get("restriction_reason", "")
             data_class.content = data.get("content", None)
             data_class.reply_markup = data.get("reply_markup", None)
@@ -25163,18 +25948,12 @@ class PaymentOption(TlObject):
         return data_class
 
 
-class PaymentForm(TlObject):
-    r"""Contains information about an invoice payment form
+class PaymentFormTypeRegular(TlObject, PaymentFormType):
+    r"""The payment form is for a regular payment
 
     Parameters:
-        id (:class:`int`):
-            The payment form identifier
-
         invoice (:class:`"types.Invoice"`):
             Full information about the invoice
-
-        seller_bot_user_id (:class:`int`):
-            User identifier of the seller bot
 
         payment_provider_user_id (:class:`int`):
             User identifier of the payment provider bot
@@ -25197,22 +25976,11 @@ class PaymentForm(TlObject):
         need_password (:class:`bool`):
             True, if the user will be able to save credentials, if sets up a 2\-step verification password
 
-        product_title (:class:`str`):
-            Product title
-
-        product_description (:class:`"types.FormattedText"`):
-            Product description
-
-        product_photo (:class:`"types.Photo"`):
-            Product photo; may be null
-
     """
 
     def __init__(
         self,
-        id: int = 0,
         invoice: Invoice = None,
-        seller_bot_user_id: int = 0,
         payment_provider_user_id: int = 0,
         payment_provider: PaymentProvider = None,
         additional_payment_options: List[PaymentOption] = None,
@@ -25220,16 +25988,9 @@ class PaymentForm(TlObject):
         saved_credentials: List[SavedCredentials] = None,
         can_save_credentials: bool = False,
         need_password: bool = False,
-        product_title: str = "",
-        product_description: FormattedText = None,
-        product_photo: Photo = None,
     ) -> None:
-        self.id: int = int(id)
-        r"""The payment form identifier"""
         self.invoice: Union[Invoice, None] = invoice
         r"""Full information about the invoice"""
-        self.seller_bot_user_id: int = int(seller_bot_user_id)
-        r"""User identifier of the seller bot"""
         self.payment_provider_user_id: int = int(payment_provider_user_id)
         r"""User identifier of the payment provider bot"""
         self.payment_provider: Union[
@@ -25251,12 +26012,116 @@ class PaymentForm(TlObject):
         r"""True, if the user can choose to save credentials"""
         self.need_password: bool = bool(need_password)
         r"""True, if the user will be able to save credentials, if sets up a 2\-step verification password"""
-        self.product_title: Union[str, None] = product_title
-        r"""Product title"""
-        self.product_description: Union[FormattedText, None] = product_description
-        r"""Product description"""
-        self.product_photo: Union[Photo, None] = product_photo
-        r"""Product photo; may be null"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["paymentFormTypeRegular"]:
+        return "paymentFormTypeRegular"
+
+    def getClass(self) -> Literal["PaymentFormType"]:
+        return "PaymentFormType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "invoice": self.invoice,
+            "payment_provider_user_id": self.payment_provider_user_id,
+            "payment_provider": self.payment_provider,
+            "additional_payment_options": self.additional_payment_options,
+            "saved_order_info": self.saved_order_info,
+            "saved_credentials": self.saved_credentials,
+            "can_save_credentials": self.can_save_credentials,
+            "need_password": self.need_password,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PaymentFormTypeRegular", None]:
+        if data:
+            data_class = cls()
+            data_class.invoice = data.get("invoice", None)
+            data_class.payment_provider_user_id = data.get(
+                "payment_provider_user_id", 0
+            )
+            data_class.payment_provider = data.get("payment_provider", None)
+            data_class.additional_payment_options = data.get(
+                "additional_payment_options", None
+            )
+            data_class.saved_order_info = data.get("saved_order_info", None)
+            data_class.saved_credentials = data.get("saved_credentials", None)
+            data_class.can_save_credentials = data.get("can_save_credentials", False)
+            data_class.need_password = data.get("need_password", False)
+
+        return data_class
+
+
+class PaymentFormTypeStars(TlObject, PaymentFormType):
+    r"""The payment form is for a payment in Telegram stars
+
+    Parameters:
+        star_count (:class:`int`):
+            Number of stars that will be paid
+
+    """
+
+    def __init__(self, star_count: int = 0) -> None:
+        self.star_count: int = int(star_count)
+        r"""Number of stars that will be paid"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["paymentFormTypeStars"]:
+        return "paymentFormTypeStars"
+
+    def getClass(self) -> Literal["PaymentFormType"]:
+        return "PaymentFormType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "star_count": self.star_count}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PaymentFormTypeStars", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = data.get("star_count", 0)
+
+        return data_class
+
+
+class PaymentForm(TlObject):
+    r"""Contains information about an invoice payment form
+
+    Parameters:
+        id (:class:`int`):
+            The payment form identifier
+
+        type (:class:`"types.PaymentFormType"`):
+            Type of the payment form
+
+        seller_bot_user_id (:class:`int`):
+            User identifier of the seller bot
+
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the product
+
+    """
+
+    def __init__(
+        self,
+        id: int = 0,
+        type: PaymentFormType = None,
+        seller_bot_user_id: int = 0,
+        product_info: ProductInfo = None,
+    ) -> None:
+        self.id: int = int(id)
+        r"""The payment form identifier"""
+        self.type: Union[PaymentFormTypeRegular, PaymentFormTypeStars, None] = type
+        r"""Type of the payment form"""
+        self.seller_bot_user_id: int = int(seller_bot_user_id)
+        r"""User identifier of the seller bot"""
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the product"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -25271,18 +26136,9 @@ class PaymentForm(TlObject):
         return {
             "@type": self.getType(),
             "id": self.id,
-            "invoice": self.invoice,
+            "type": self.type,
             "seller_bot_user_id": self.seller_bot_user_id,
-            "payment_provider_user_id": self.payment_provider_user_id,
-            "payment_provider": self.payment_provider,
-            "additional_payment_options": self.additional_payment_options,
-            "saved_order_info": self.saved_order_info,
-            "saved_credentials": self.saved_credentials,
-            "can_save_credentials": self.can_save_credentials,
-            "need_password": self.need_password,
-            "product_title": self.product_title,
-            "product_description": self.product_description,
-            "product_photo": self.product_photo,
+            "product_info": self.product_info,
         }
 
     @classmethod
@@ -25290,22 +26146,9 @@ class PaymentForm(TlObject):
         if data:
             data_class = cls()
             data_class.id = data.get("id", 0)
-            data_class.invoice = data.get("invoice", None)
+            data_class.type = data.get("type", None)
             data_class.seller_bot_user_id = data.get("seller_bot_user_id", 0)
-            data_class.payment_provider_user_id = data.get(
-                "payment_provider_user_id", 0
-            )
-            data_class.payment_provider = data.get("payment_provider", None)
-            data_class.additional_payment_options = data.get(
-                "additional_payment_options", None
-            )
-            data_class.saved_order_info = data.get("saved_order_info", None)
-            data_class.saved_credentials = data.get("saved_credentials", None)
-            data_class.can_save_credentials = data.get("can_save_credentials", False)
-            data_class.need_password = data.get("need_password", False)
-            data_class.product_title = data.get("product_title", "")
-            data_class.product_description = data.get("product_description", None)
-            data_class.product_photo = data.get("product_photo", None)
+            data_class.product_info = data.get("product_info", None)
 
         return data_class
 
@@ -25400,25 +26243,10 @@ class PaymentResult(TlObject):
         return data_class
 
 
-class PaymentReceipt(TlObject):
-    r"""Contains information about a successful payment
+class PaymentReceiptTypeRegular(TlObject, PaymentReceiptType):
+    r"""The payment was done using a third\-party payment provider
 
     Parameters:
-        title (:class:`str`):
-            Product title
-
-        description (:class:`"types.FormattedText"`):
-            Product description
-
-        photo (:class:`"types.Photo"`):
-            Product photo; may be null
-
-        date (:class:`int`):
-            Point in time \(Unix timestamp\) when the payment was made
-
-        seller_bot_user_id (:class:`int`):
-            User identifier of the seller bot
-
         payment_provider_user_id (:class:`int`):
             User identifier of the payment provider bot
 
@@ -25441,11 +26269,6 @@ class PaymentReceipt(TlObject):
 
     def __init__(
         self,
-        title: str = "",
-        description: FormattedText = None,
-        photo: Photo = None,
-        date: int = 0,
-        seller_bot_user_id: int = 0,
         payment_provider_user_id: int = 0,
         invoice: Invoice = None,
         order_info: OrderInfo = None,
@@ -25453,16 +26276,6 @@ class PaymentReceipt(TlObject):
         credentials_title: str = "",
         tip_amount: int = 0,
     ) -> None:
-        self.title: Union[str, None] = title
-        r"""Product title"""
-        self.description: Union[FormattedText, None] = description
-        r"""Product description"""
-        self.photo: Union[Photo, None] = photo
-        r"""Product photo; may be null"""
-        self.date: int = int(date)
-        r"""Point in time \(Unix timestamp\) when the payment was made"""
-        self.seller_bot_user_id: int = int(seller_bot_user_id)
-        r"""User identifier of the seller bot"""
         self.payment_provider_user_id: int = int(payment_provider_user_id)
         r"""User identifier of the payment provider bot"""
         self.invoice: Union[Invoice, None] = invoice
@@ -25479,20 +26292,15 @@ class PaymentReceipt(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["paymentReceipt"]:
-        return "paymentReceipt"
+    def getType(self) -> Literal["paymentReceiptTypeRegular"]:
+        return "paymentReceiptTypeRegular"
 
-    def getClass(self) -> Literal["PaymentReceipt"]:
-        return "PaymentReceipt"
+    def getClass(self) -> Literal["PaymentReceiptType"]:
+        return "PaymentReceiptType"
 
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "title": self.title,
-            "description": self.description,
-            "photo": self.photo,
-            "date": self.date,
-            "seller_bot_user_id": self.seller_bot_user_id,
             "payment_provider_user_id": self.payment_provider_user_id,
             "invoice": self.invoice,
             "order_info": self.order_info,
@@ -25502,14 +26310,9 @@ class PaymentReceipt(TlObject):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["PaymentReceipt", None]:
+    def from_dict(cls, data: dict) -> Union["PaymentReceiptTypeRegular", None]:
         if data:
             data_class = cls()
-            data_class.title = data.get("title", "")
-            data_class.description = data.get("description", None)
-            data_class.photo = data.get("photo", None)
-            data_class.date = data.get("date", 0)
-            data_class.seller_bot_user_id = data.get("seller_bot_user_id", 0)
             data_class.payment_provider_user_id = data.get(
                 "payment_provider_user_id", 0
             )
@@ -25518,6 +26321,116 @@ class PaymentReceipt(TlObject):
             data_class.shipping_option = data.get("shipping_option", None)
             data_class.credentials_title = data.get("credentials_title", "")
             data_class.tip_amount = data.get("tip_amount", 0)
+
+        return data_class
+
+
+class PaymentReceiptTypeStars(TlObject, PaymentReceiptType):
+    r"""The payment was done using Telegram stars
+
+    Parameters:
+        star_count (:class:`int`):
+            Number of stars that were paid
+
+        transaction_id (:class:`str`):
+            Unique identifier of the transaction that can be used to dispute it
+
+    """
+
+    def __init__(self, star_count: int = 0, transaction_id: str = "") -> None:
+        self.star_count: int = int(star_count)
+        r"""Number of stars that were paid"""
+        self.transaction_id: Union[str, None] = transaction_id
+        r"""Unique identifier of the transaction that can be used to dispute it"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["paymentReceiptTypeStars"]:
+        return "paymentReceiptTypeStars"
+
+    def getClass(self) -> Literal["PaymentReceiptType"]:
+        return "PaymentReceiptType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "transaction_id": self.transaction_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PaymentReceiptTypeStars", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = data.get("star_count", 0)
+            data_class.transaction_id = data.get("transaction_id", "")
+
+        return data_class
+
+
+class PaymentReceipt(TlObject):
+    r"""Contains information about a successful payment
+
+    Parameters:
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the product
+
+        date (:class:`int`):
+            Point in time \(Unix timestamp\) when the payment was made
+
+        seller_bot_user_id (:class:`int`):
+            User identifier of the seller bot
+
+        type (:class:`"types.PaymentReceiptType"`):
+            Type of the payment receipt
+
+    """
+
+    def __init__(
+        self,
+        product_info: ProductInfo = None,
+        date: int = 0,
+        seller_bot_user_id: int = 0,
+        type: PaymentReceiptType = None,
+    ) -> None:
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the product"""
+        self.date: int = int(date)
+        r"""Point in time \(Unix timestamp\) when the payment was made"""
+        self.seller_bot_user_id: int = int(seller_bot_user_id)
+        r"""User identifier of the seller bot"""
+        self.type: Union[PaymentReceiptTypeRegular, PaymentReceiptTypeStars, None] = (
+            type
+        )
+        r"""Type of the payment receipt"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["paymentReceipt"]:
+        return "paymentReceipt"
+
+    def getClass(self) -> Literal["PaymentReceipt"]:
+        return "PaymentReceipt"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "product_info": self.product_info,
+            "date": self.date,
+            "seller_bot_user_id": self.seller_bot_user_id,
+            "type": self.type,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PaymentReceipt", None]:
+        if data:
+            data_class = cls()
+            data_class.product_info = data.get("product_info", None)
+            data_class.date = data.get("date", 0)
+            data_class.seller_bot_user_id = data.get("seller_bot_user_id", 0)
+            data_class.type = data.get("type", None)
 
         return data_class
 
@@ -25613,6 +26526,7 @@ class InputInvoiceTelegram(TlObject, InputInvoice):
         self.purpose: Union[
             TelegramPaymentPurposePremiumGiftCodes,
             TelegramPaymentPurposePremiumGiveaway,
+            TelegramPaymentPurposeStars,
             None,
         ] = purpose
         r"""Transaction purpose"""
@@ -28924,6 +29838,9 @@ class MessageAnimation(TlObject, MessageContent):
         caption (:class:`"types.FormattedText"`):
             Animation caption
 
+        show_caption_above_media (:class:`bool`):
+            True, if caption must be shown above the animation; otherwise, caption must be shown below the animation
+
         has_spoiler (:class:`bool`):
             True, if the animation preview must be covered by a spoiler animation
 
@@ -28936,6 +29853,7 @@ class MessageAnimation(TlObject, MessageContent):
         self,
         animation: Animation = None,
         caption: FormattedText = None,
+        show_caption_above_media: bool = False,
         has_spoiler: bool = False,
         is_secret: bool = False,
     ) -> None:
@@ -28943,6 +29861,8 @@ class MessageAnimation(TlObject, MessageContent):
         r"""The animation description"""
         self.caption: Union[FormattedText, None] = caption
         r"""Animation caption"""
+        self.show_caption_above_media: bool = bool(show_caption_above_media)
+        r"""True, if caption must be shown above the animation; otherwise, caption must be shown below the animation"""
         self.has_spoiler: bool = bool(has_spoiler)
         r"""True, if the animation preview must be covered by a spoiler animation"""
         self.is_secret: bool = bool(is_secret)
@@ -28962,6 +29882,7 @@ class MessageAnimation(TlObject, MessageContent):
             "@type": self.getType(),
             "animation": self.animation,
             "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
             "has_spoiler": self.has_spoiler,
             "is_secret": self.is_secret,
         }
@@ -28972,6 +29893,9 @@ class MessageAnimation(TlObject, MessageContent):
             data_class = cls()
             data_class.animation = data.get("animation", None)
             data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
             data_class.has_spoiler = data.get("has_spoiler", False)
             data_class.is_secret = data.get("is_secret", False)
 
@@ -29074,6 +29998,9 @@ class MessagePhoto(TlObject, MessageContent):
         caption (:class:`"types.FormattedText"`):
             Photo caption
 
+        show_caption_above_media (:class:`bool`):
+            True, if caption must be shown above the photo; otherwise, caption must be shown below the photo
+
         has_spoiler (:class:`bool`):
             True, if the photo preview must be covered by a spoiler animation
 
@@ -29086,6 +30013,7 @@ class MessagePhoto(TlObject, MessageContent):
         self,
         photo: Photo = None,
         caption: FormattedText = None,
+        show_caption_above_media: bool = False,
         has_spoiler: bool = False,
         is_secret: bool = False,
     ) -> None:
@@ -29093,6 +30021,8 @@ class MessagePhoto(TlObject, MessageContent):
         r"""The photo"""
         self.caption: Union[FormattedText, None] = caption
         r"""Photo caption"""
+        self.show_caption_above_media: bool = bool(show_caption_above_media)
+        r"""True, if caption must be shown above the photo; otherwise, caption must be shown below the photo"""
         self.has_spoiler: bool = bool(has_spoiler)
         r"""True, if the photo preview must be covered by a spoiler animation"""
         self.is_secret: bool = bool(is_secret)
@@ -29112,6 +30042,7 @@ class MessagePhoto(TlObject, MessageContent):
             "@type": self.getType(),
             "photo": self.photo,
             "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
             "has_spoiler": self.has_spoiler,
             "is_secret": self.is_secret,
         }
@@ -29122,6 +30053,9 @@ class MessagePhoto(TlObject, MessageContent):
             data_class = cls()
             data_class.photo = data.get("photo", None)
             data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
             data_class.has_spoiler = data.get("has_spoiler", False)
             data_class.is_secret = data.get("is_secret", False)
 
@@ -29182,6 +30116,9 @@ class MessageVideo(TlObject, MessageContent):
         caption (:class:`"types.FormattedText"`):
             Video caption
 
+        show_caption_above_media (:class:`bool`):
+            True, if caption must be shown above the video; otherwise, caption must be shown below the video
+
         has_spoiler (:class:`bool`):
             True, if the video preview must be covered by a spoiler animation
 
@@ -29194,6 +30131,7 @@ class MessageVideo(TlObject, MessageContent):
         self,
         video: Video = None,
         caption: FormattedText = None,
+        show_caption_above_media: bool = False,
         has_spoiler: bool = False,
         is_secret: bool = False,
     ) -> None:
@@ -29201,6 +30139,8 @@ class MessageVideo(TlObject, MessageContent):
         r"""The video description"""
         self.caption: Union[FormattedText, None] = caption
         r"""Video caption"""
+        self.show_caption_above_media: bool = bool(show_caption_above_media)
+        r"""True, if caption must be shown above the video; otherwise, caption must be shown below the video"""
         self.has_spoiler: bool = bool(has_spoiler)
         r"""True, if the video preview must be covered by a spoiler animation"""
         self.is_secret: bool = bool(is_secret)
@@ -29220,6 +30160,7 @@ class MessageVideo(TlObject, MessageContent):
             "@type": self.getType(),
             "video": self.video,
             "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
             "has_spoiler": self.has_spoiler,
             "is_secret": self.is_secret,
         }
@@ -29230,6 +30171,9 @@ class MessageVideo(TlObject, MessageContent):
             data_class = cls()
             data_class.video = data.get("video", None)
             data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
             data_class.has_spoiler = data.get("has_spoiler", False)
             data_class.is_secret = data.get("is_secret", False)
 
@@ -29842,14 +30786,8 @@ class MessageInvoice(TlObject, MessageContent):
     r"""A message with an invoice from a bot\. Use getInternalLink with internalLinkTypeBotStart to share the invoice
 
     Parameters:
-        title (:class:`str`):
-            Product title
-
-        description (:class:`"types.FormattedText"`):
-            Product description
-
-        photo (:class:`"types.Photo"`):
-            Product photo; may be null
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the product
 
         currency (:class:`str`):
             Currency for the product price
@@ -29876,9 +30814,7 @@ class MessageInvoice(TlObject, MessageContent):
 
     def __init__(
         self,
-        title: str = "",
-        description: FormattedText = None,
-        photo: Photo = None,
+        product_info: ProductInfo = None,
         currency: str = "",
         total_amount: int = 0,
         start_parameter: str = "",
@@ -29887,12 +30823,8 @@ class MessageInvoice(TlObject, MessageContent):
         receipt_message_id: int = 0,
         extended_media: MessageExtendedMedia = None,
     ) -> None:
-        self.title: Union[str, None] = title
-        r"""Product title"""
-        self.description: Union[FormattedText, None] = description
-        r"""Product description"""
-        self.photo: Union[Photo, None] = photo
-        r"""Product photo; may be null"""
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the product"""
         self.currency: Union[str, None] = currency
         r"""Currency for the product price"""
         self.total_amount: int = int(total_amount)
@@ -29926,9 +30858,7 @@ class MessageInvoice(TlObject, MessageContent):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "title": self.title,
-            "description": self.description,
-            "photo": self.photo,
+            "product_info": self.product_info,
             "currency": self.currency,
             "total_amount": self.total_amount,
             "start_parameter": self.start_parameter,
@@ -29942,9 +30872,7 @@ class MessageInvoice(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageInvoice", None]:
         if data:
             data_class = cls()
-            data_class.title = data.get("title", "")
-            data_class.description = data.get("description", None)
-            data_class.photo = data.get("photo", None)
+            data_class.product_info = data.get("product_info", None)
             data_class.currency = data.get("currency", "")
             data_class.total_amount = data.get("total_amount", 0)
             data_class.start_parameter = data.get("start_parameter", "")
@@ -32555,7 +33483,7 @@ class TextEntityTypePreCode(TlObject, TextEntityType):
 
 
 class TextEntityTypeBlockQuote(TlObject, TextEntityType):
-    r"""Text that must be formatted as if inside a blockquote HTML tag"""
+    r"""Text that must be formatted as if inside a blockquote HTML tag; not supported in secret chats"""
 
     def __init__(self) -> None:
         pass
@@ -32574,6 +33502,32 @@ class TextEntityTypeBlockQuote(TlObject, TextEntityType):
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["TextEntityTypeBlockQuote", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TextEntityTypeExpandableBlockQuote(TlObject, TextEntityType):
+    r"""Text that must be formatted as if inside a blockquote HTML tag and collapsed by default to 3 lines with the ability to show full text; not supported in secret chats"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["textEntityTypeExpandableBlockQuote"]:
+        return "textEntityTypeExpandableBlockQuote"
+
+    def getClass(self) -> Literal["TextEntityType"]:
+        return "TextEntityType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TextEntityTypeExpandableBlockQuote", None]:
         if data:
             data_class = cls()
 
@@ -32912,6 +33866,9 @@ class MessageSendOptions(TlObject):
         scheduling_state (:class:`"types.MessageSchedulingState"`):
             Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, live location messages and self\-destructing messages can't be scheduled
 
+        effect_id (:class:`int`):
+            Identifier of the effect to apply to the message; applicable only to sendMessage and sendMessageAlbum in private chats
+
         sending_id (:class:`int`):
             Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates
 
@@ -32927,6 +33884,7 @@ class MessageSendOptions(TlObject):
         protect_content: bool = False,
         update_order_of_installed_sticker_sets: bool = False,
         scheduling_state: MessageSchedulingState = None,
+        effect_id: int = 0,
         sending_id: int = 0,
         only_preview: bool = False,
     ) -> None:
@@ -32944,6 +33902,8 @@ class MessageSendOptions(TlObject):
             MessageSchedulingStateSendAtDate, MessageSchedulingStateSendWhenOnline, None
         ] = scheduling_state
         r"""Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, live location messages and self\-destructing messages can't be scheduled"""
+        self.effect_id: int = int(effect_id)
+        r"""Identifier of the effect to apply to the message; applicable only to sendMessage and sendMessageAlbum in private chats"""
         self.sending_id: int = int(sending_id)
         r"""Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates"""
         self.only_preview: bool = bool(only_preview)
@@ -32966,6 +33926,7 @@ class MessageSendOptions(TlObject):
             "protect_content": self.protect_content,
             "update_order_of_installed_sticker_sets": self.update_order_of_installed_sticker_sets,
             "scheduling_state": self.scheduling_state,
+            "effect_id": self.effect_id,
             "sending_id": self.sending_id,
             "only_preview": self.only_preview,
         }
@@ -32981,6 +33942,7 @@ class MessageSendOptions(TlObject):
                 "update_order_of_installed_sticker_sets", False
             )
             data_class.scheduling_state = data.get("scheduling_state", None)
+            data_class.effect_id = data.get("effect_id", 0)
             data_class.sending_id = data.get("sending_id", 0)
             data_class.only_preview = data.get("only_preview", False)
 
@@ -33000,6 +33962,9 @@ class MessageCopyOptions(TlObject):
         new_caption (:class:`"types.FormattedText"`):
             New message caption; pass null to copy message without caption\. Ignored if replace\_caption is false
 
+        new_show_caption_above_media (:class:`bool`):
+            True, if new caption must be shown above the animation; otherwise, new caption must be shown below the animation; not supported in secret chats\. Ignored if replace\_caption is false
+
     """
 
     def __init__(
@@ -33007,6 +33972,7 @@ class MessageCopyOptions(TlObject):
         send_copy: bool = False,
         replace_caption: bool = False,
         new_caption: FormattedText = None,
+        new_show_caption_above_media: bool = False,
     ) -> None:
         self.send_copy: bool = bool(send_copy)
         r"""True, if content of the message needs to be copied without reference to the original sender\. Always true if the message is forwarded to a secret chat or is local"""
@@ -33014,6 +33980,8 @@ class MessageCopyOptions(TlObject):
         r"""True, if media caption of the message copy needs to be replaced\. Ignored if send\_copy is false"""
         self.new_caption: Union[FormattedText, None] = new_caption
         r"""New message caption; pass null to copy message without caption\. Ignored if replace\_caption is false"""
+        self.new_show_caption_above_media: bool = bool(new_show_caption_above_media)
+        r"""True, if new caption must be shown above the animation; otherwise, new caption must be shown below the animation; not supported in secret chats\. Ignored if replace\_caption is false"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -33030,6 +33998,7 @@ class MessageCopyOptions(TlObject):
             "send_copy": self.send_copy,
             "replace_caption": self.replace_caption,
             "new_caption": self.new_caption,
+            "new_show_caption_above_media": self.new_show_caption_above_media,
         }
 
     @classmethod
@@ -33039,6 +34008,9 @@ class MessageCopyOptions(TlObject):
             data_class.send_copy = data.get("send_copy", False)
             data_class.replace_caption = data.get("replace_caption", False)
             data_class.new_caption = data.get("new_caption", None)
+            data_class.new_show_caption_above_media = data.get(
+                "new_show_caption_above_media", False
+            )
 
         return data_class
 
@@ -33048,7 +34020,7 @@ class InputMessageText(TlObject, InputMessageContent):
 
     Parameters:
         text (:class:`"types.FormattedText"`):
-            Formatted text to be sent; 0\-getOption\(\"message\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
+            Formatted text to be sent; 0\-getOption\(\"message\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
 
         link_preview_options (:class:`"types.LinkPreviewOptions"`):
             Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options
@@ -33065,7 +34037,7 @@ class InputMessageText(TlObject, InputMessageContent):
         clear_draft: bool = False,
     ) -> None:
         self.text: Union[FormattedText, None] = text
-        r"""Formatted text to be sent; 0\-getOption\(\"message\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually"""
+        r"""Formatted text to be sent; 0\-getOption\(\"message\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually"""
         self.link_preview_options: Union[LinkPreviewOptions, None] = (
             link_preview_options
         )
@@ -33126,6 +34098,9 @@ class InputMessageAnimation(TlObject, InputMessageContent):
         caption (:class:`"types.FormattedText"`):
             Animation caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
+        show_caption_above_media (:class:`bool`):
+            True, if caption must be shown above the animation; otherwise, caption must be shown below the animation; not supported in secret chats
+
         has_spoiler (:class:`bool`):
             True, if the animation preview must be covered by a spoiler animation; not supported in secret chats
 
@@ -33140,6 +34115,7 @@ class InputMessageAnimation(TlObject, InputMessageContent):
         width: int = 0,
         height: int = 0,
         caption: FormattedText = None,
+        show_caption_above_media: bool = False,
         has_spoiler: bool = False,
     ) -> None:
         self.animation: Union[
@@ -33158,6 +34134,8 @@ class InputMessageAnimation(TlObject, InputMessageContent):
         r"""Height of the animation; may be replaced by the server"""
         self.caption: Union[FormattedText, None] = caption
         r"""Animation caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
+        self.show_caption_above_media: bool = bool(show_caption_above_media)
+        r"""True, if caption must be shown above the animation; otherwise, caption must be shown below the animation; not supported in secret chats"""
         self.has_spoiler: bool = bool(has_spoiler)
         r"""True, if the animation preview must be covered by a spoiler animation; not supported in secret chats"""
 
@@ -33180,6 +34158,7 @@ class InputMessageAnimation(TlObject, InputMessageContent):
             "width": self.width,
             "height": self.height,
             "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
             "has_spoiler": self.has_spoiler,
         }
 
@@ -33194,6 +34173,9 @@ class InputMessageAnimation(TlObject, InputMessageContent):
             data_class.width = data.get("width", 0)
             data_class.height = data.get("height", 0)
             data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
             data_class.has_spoiler = data.get("has_spoiler", False)
 
         return data_class
@@ -33371,6 +34353,9 @@ class InputMessagePhoto(TlObject, InputMessageContent):
         caption (:class:`"types.FormattedText"`):
             Photo caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
+        show_caption_above_media (:class:`bool`):
+            True, if caption must be shown above the photo; otherwise, caption must be shown below the photo; not supported in secret chats
+
         self_destruct_type (:class:`"types.MessageSelfDestructType"`):
             Photo self\-destruct type; pass null if none; private chats only
 
@@ -33387,6 +34372,7 @@ class InputMessagePhoto(TlObject, InputMessageContent):
         width: int = 0,
         height: int = 0,
         caption: FormattedText = None,
+        show_caption_above_media: bool = False,
         self_destruct_type: MessageSelfDestructType = None,
         has_spoiler: bool = False,
     ) -> None:
@@ -33404,6 +34390,8 @@ class InputMessagePhoto(TlObject, InputMessageContent):
         r"""Photo height"""
         self.caption: Union[FormattedText, None] = caption
         r"""Photo caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
+        self.show_caption_above_media: bool = bool(show_caption_above_media)
+        r"""True, if caption must be shown above the photo; otherwise, caption must be shown below the photo; not supported in secret chats"""
         self.self_destruct_type: Union[
             MessageSelfDestructTypeTimer, MessageSelfDestructTypeImmediately, None
         ] = self_destruct_type
@@ -33429,6 +34417,7 @@ class InputMessagePhoto(TlObject, InputMessageContent):
             "width": self.width,
             "height": self.height,
             "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
             "self_destruct_type": self.self_destruct_type,
             "has_spoiler": self.has_spoiler,
         }
@@ -33443,6 +34432,9 @@ class InputMessagePhoto(TlObject, InputMessageContent):
             data_class.width = data.get("width", 0)
             data_class.height = data.get("height", 0)
             data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
             data_class.self_destruct_type = data.get("self_destruct_type", None)
             data_class.has_spoiler = data.get("has_spoiler", False)
 
@@ -33551,6 +34543,9 @@ class InputMessageVideo(TlObject, InputMessageContent):
         caption (:class:`"types.FormattedText"`):
             Video caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
+        show_caption_above_media (:class:`bool`):
+            True, if caption must be shown above the video; otherwise, caption must be shown below the video; not supported in secret chats
+
         self_destruct_type (:class:`"types.MessageSelfDestructType"`):
             Video self\-destruct type; pass null if none; private chats only
 
@@ -33569,6 +34564,7 @@ class InputMessageVideo(TlObject, InputMessageContent):
         height: int = 0,
         supports_streaming: bool = False,
         caption: FormattedText = None,
+        show_caption_above_media: bool = False,
         self_destruct_type: MessageSelfDestructType = None,
         has_spoiler: bool = False,
     ) -> None:
@@ -33590,6 +34586,8 @@ class InputMessageVideo(TlObject, InputMessageContent):
         r"""True, if the video is supposed to be streamed"""
         self.caption: Union[FormattedText, None] = caption
         r"""Video caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
+        self.show_caption_above_media: bool = bool(show_caption_above_media)
+        r"""True, if caption must be shown above the video; otherwise, caption must be shown below the video; not supported in secret chats"""
         self.self_destruct_type: Union[
             MessageSelfDestructTypeTimer, MessageSelfDestructTypeImmediately, None
         ] = self_destruct_type
@@ -33617,6 +34615,7 @@ class InputMessageVideo(TlObject, InputMessageContent):
             "height": self.height,
             "supports_streaming": self.supports_streaming,
             "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
             "self_destruct_type": self.self_destruct_type,
             "has_spoiler": self.has_spoiler,
         }
@@ -33633,6 +34632,9 @@ class InputMessageVideo(TlObject, InputMessageContent):
             data_class.height = data.get("height", 0)
             data_class.supports_streaming = data.get("supports_streaming", False)
             data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
             data_class.self_destruct_type = data.get("self_destruct_type", None)
             data_class.has_spoiler = data.get("has_spoiler", False)
 
@@ -34042,7 +35044,7 @@ class InputMessageInvoice(TlObject, InputMessageContent):
             The invoice payload
 
         provider_token (:class:`str`):
-            Payment provider token
+            Payment provider token; may be empty for payments in Telegram Stars
 
         provider_data (:class:`str`):
             JSON\-encoded data about the invoice, which will be shared with the payment provider
@@ -34089,7 +35091,7 @@ class InputMessageInvoice(TlObject, InputMessageContent):
         )
         r"""The invoice payload"""
         self.provider_token: Union[str, None] = provider_token
-        r"""Payment provider token"""
+        r"""Payment provider token; may be empty for payments in Telegram Stars"""
         self.provider_data: Union[str, None] = provider_data
         r"""JSON\-encoded data about the invoice, which will be shared with the payment provider"""
         self.start_parameter: Union[str, None] = start_parameter
@@ -36045,7 +37047,7 @@ class EmojiCategorySourceSearch(TlObject, EmojiCategorySource):
 
 
 class EmojiCategorySourcePremium(TlObject, EmojiCategorySource):
-    r"""The category contains Premium stickers that must be found by getPremiumStickers"""
+    r"""The category contains premium stickers that must be found by getPremiumStickers"""
 
     def __init__(self) -> None:
         pass
@@ -36197,7 +37199,7 @@ class EmojiCategoryTypeDefault(TlObject, EmojiCategoryType):
 
 
 class EmojiCategoryTypeRegularStickers(TlObject, EmojiCategoryType):
-    r"""The category must be used by default for regular sticker selection\. It may contain greeting emoji category and Premium stickers"""
+    r"""The category must be used by default for regular sticker selection\. It may contain greeting emoji category and premium stickers"""
 
     def __init__(self) -> None:
         pass
@@ -39416,6 +40418,66 @@ class ChatBoostSlots(TlObject):
         if data:
             data_class = cls()
             data_class.slots = data.get("slots", None)
+
+        return data_class
+
+
+class ResendCodeReasonUserRequest(TlObject, ResendCodeReason):
+    r"""The user requested to resend the code"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["resendCodeReasonUserRequest"]:
+        return "resendCodeReasonUserRequest"
+
+    def getClass(self) -> Literal["ResendCodeReason"]:
+        return "ResendCodeReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ResendCodeReasonUserRequest", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ResendCodeReasonVerificationFailed(TlObject, ResendCodeReason):
+    r"""The code is re\-sent, because device verification has failed
+
+    Parameters:
+        error_message (:class:`str`):
+            Cause of the verification failure, for example, PLAY\_SERVICES\_NOT\_AVAILABLE, APNS\_RECEIVE\_TIMEOUT, APNS\_INIT\_FAILED, etc\.
+
+    """
+
+    def __init__(self, error_message: str = "") -> None:
+        self.error_message: Union[str, None] = error_message
+        r"""Cause of the verification failure, for example, PLAY\_SERVICES\_NOT\_AVAILABLE, APNS\_RECEIVE\_TIMEOUT, APNS\_INIT\_FAILED, etc\."""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["resendCodeReasonVerificationFailed"]:
+        return "resendCodeReasonVerificationFailed"
+
+    def getClass(self) -> Literal["ResendCodeReason"]:
+        return "ResendCodeReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "error_message": self.error_message}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ResendCodeReasonVerificationFailed", None]:
+        if data:
+            data_class = cls()
+            data_class.error_message = data.get("error_message", "")
 
         return data_class
 
@@ -50603,6 +51665,59 @@ class StorePaymentPurposePremiumGiveaway(TlObject, StorePaymentPurpose):
         return data_class
 
 
+class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
+    r"""The user buying Telegram stars
+
+    Parameters:
+        currency (:class:`str`):
+            ISO 4217 currency code of the payment currency
+
+        amount (:class:`int`):
+            Paid amount, in the smallest units of the currency
+
+        star_count (:class:`int`):
+            Number of bought stars
+
+    """
+
+    def __init__(
+        self, currency: str = "", amount: int = 0, star_count: int = 0
+    ) -> None:
+        self.currency: Union[str, None] = currency
+        r"""ISO 4217 currency code of the payment currency"""
+        self.amount: int = int(amount)
+        r"""Paid amount, in the smallest units of the currency"""
+        self.star_count: int = int(star_count)
+        r"""Number of bought stars"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["storePaymentPurposeStars"]:
+        return "storePaymentPurposeStars"
+
+    def getClass(self) -> Literal["StorePaymentPurpose"]:
+        return "StorePaymentPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "currency": self.currency,
+            "amount": self.amount,
+            "star_count": self.star_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StorePaymentPurposeStars", None]:
+        if data:
+            data_class = cls()
+            data_class.currency = data.get("currency", "")
+            data_class.amount = data.get("amount", 0)
+            data_class.star_count = data.get("star_count", 0)
+
+        return data_class
+
+
 class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
     r"""The user creating Telegram Premium gift codes for other users
 
@@ -50747,6 +51862,59 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
             data_class.amount = data.get("amount", 0)
             data_class.winner_count = data.get("winner_count", 0)
             data_class.month_count = data.get("month_count", 0)
+
+        return data_class
+
+
+class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
+    r"""The user buying Telegram stars
+
+    Parameters:
+        currency (:class:`str`):
+            ISO 4217 currency code of the payment currency
+
+        amount (:class:`int`):
+            Paid amount, in the smallest units of the currency
+
+        star_count (:class:`int`):
+            Number of bought stars
+
+    """
+
+    def __init__(
+        self, currency: str = "", amount: int = 0, star_count: int = 0
+    ) -> None:
+        self.currency: Union[str, None] = currency
+        r"""ISO 4217 currency code of the payment currency"""
+        self.amount: int = int(amount)
+        r"""Paid amount, in the smallest units of the currency"""
+        self.star_count: int = int(star_count)
+        r"""Number of bought stars"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["telegramPaymentPurposeStars"]:
+        return "telegramPaymentPurposeStars"
+
+    def getClass(self) -> Literal["TelegramPaymentPurpose"]:
+        return "TelegramPaymentPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "currency": self.currency,
+            "amount": self.amount,
+            "star_count": self.star_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TelegramPaymentPurposeStars", None]:
+        if data:
+            data_class = cls()
+            data_class.currency = data.get("currency", "")
+            data_class.amount = data.get("amount", 0)
+            data_class.star_count = data.get("star_count", 0)
 
         return data_class
 
@@ -58449,7 +59617,7 @@ class InternalLinkTypeProxy(TlObject, InternalLinkType):
 
 
 class InternalLinkTypePublicChat(TlObject, InternalLinkType):
-    r"""The link is a link to a chat by its username\. Call searchPublicChat with the given chat username to process the link If the chat is found, open its profile information screen or the chat itself\. If draft text isn't empty and the chat is a private chat, then put the draft text in the input field
+    r"""The link is a link to a chat by its username\. Call searchPublicChat with the given chat username to process the link If the chat is found, open its profile information screen or the chat itself\. If draft text isn't empty and the chat is a private chat with a regular user, then put the draft text in the input field
 
     Parameters:
         chat_username (:class:`str`):
@@ -64309,7 +65477,7 @@ class BotCommandScopeChatMember(TlObject, BotCommandScope):
 
 
 class PhoneNumberCodeTypeChange(TlObject, PhoneNumberCodeType):
-    r"""Checks ownership of a new phone number to change the user's authentication phone number; for official Android and iOS applications only\."""
+    r"""Checks ownership of a new phone number to change the user's authentication phone number; for official Android and iOS applications only"""
 
     def __init__(self) -> None:
         pass
@@ -65546,6 +66714,59 @@ class UpdateMessageUnreadReactions(TlObject, Update):
             data_class.message_id = data.get("message_id", 0)
             data_class.unread_reactions = data.get("unread_reactions", None)
             data_class.unread_reaction_count = data.get("unread_reaction_count", 0)
+
+        return data_class
+
+
+class UpdateMessageFactCheck(TlObject, Update):
+    r"""A fact\-check added to a message was changed
+
+    Parameters:
+        chat_id (:class:`int`):
+            Chat identifier
+
+        message_id (:class:`int`):
+            Message identifier
+
+        fact_check (:class:`"types.FactCheck"`):
+            The new fact\-check
+
+    """
+
+    def __init__(
+        self, chat_id: int = 0, message_id: int = 0, fact_check: FactCheck = None
+    ) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Chat identifier"""
+        self.message_id: int = int(message_id)
+        r"""Message identifier"""
+        self.fact_check: Union[FactCheck, None] = fact_check
+        r"""The new fact\-check"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateMessageFactCheck"]:
+        return "updateMessageFactCheck"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+            "fact_check": self.fact_check,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateMessageFactCheck", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = data.get("chat_id", 0)
+            data_class.message_id = data.get("message_id", 0)
+            data_class.fact_check = data.get("fact_check", None)
 
         return data_class
 
@@ -68752,6 +69973,52 @@ class UpdateFileRemovedFromDownloads(TlObject, Update):
         return data_class
 
 
+class UpdateApplicationVerificationRequired(TlObject, Update):
+    r"""A request can't be completed unless application verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
+
+    Parameters:
+        verification_id (:class:`int`):
+            Unique identifier for the verification process
+
+        nonce (:class:`str`):
+            Unique nonce for the classic Play Integrity verification \(https://developer\.android\.com/google/play/integrity/classic\) for Android, or a unique string to compare with verify\_nonce field from a push notification for iOS
+
+    """
+
+    def __init__(self, verification_id: int = 0, nonce: str = "") -> None:
+        self.verification_id: int = int(verification_id)
+        r"""Unique identifier for the verification process"""
+        self.nonce: Union[str, None] = nonce
+        r"""Unique nonce for the classic Play Integrity verification \(https://developer\.android\.com/google/play/integrity/classic\) for Android, or a unique string to compare with verify\_nonce field from a push notification for iOS"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateApplicationVerificationRequired"]:
+        return "updateApplicationVerificationRequired"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "verification_id": self.verification_id,
+            "nonce": self.nonce,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["UpdateApplicationVerificationRequired", None]:
+        if data:
+            data_class = cls()
+            data_class.verification_id = data.get("verification_id", 0)
+            data_class.nonce = data.get("nonce", "")
+
+        return data_class
+
+
 class UpdateCall(TlObject, Update):
     r"""New call was created or information about a call was updated
 
@@ -70233,6 +71500,54 @@ class UpdateActiveEmojiReactions(TlObject, Update):
         return data_class
 
 
+class UpdateAvailableMessageEffects(TlObject, Update):
+    r"""The list of available message effects has changed
+
+    Parameters:
+        reaction_effect_ids (:class:`List[int]`):
+            The new list of available message effects from emoji reactions
+
+        sticker_effect_ids (:class:`List[int]`):
+            The new list of available message effects from Premium stickers
+
+    """
+
+    def __init__(
+        self,
+        reaction_effect_ids: List[int] = None,
+        sticker_effect_ids: List[int] = None,
+    ) -> None:
+        self.reaction_effect_ids: List[int] = reaction_effect_ids or []
+        r"""The new list of available message effects from emoji reactions"""
+        self.sticker_effect_ids: List[int] = sticker_effect_ids or []
+        r"""The new list of available message effects from Premium stickers"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateAvailableMessageEffects"]:
+        return "updateAvailableMessageEffects"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "reaction_effect_ids": self.reaction_effect_ids,
+            "sticker_effect_ids": self.sticker_effect_ids,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateAvailableMessageEffects", None]:
+        if data:
+            data_class = cls()
+            data_class.reaction_effect_ids = data.get("reaction_effect_ids", None)
+            data_class.sticker_effect_ids = data.get("sticker_effect_ids", None)
+
+        return data_class
+
+
 class UpdateDefaultReactionType(TlObject, Update):
     r"""The type of default reaction has changed
 
@@ -70315,11 +71630,59 @@ class UpdateSavedMessagesTags(TlObject, Update):
         return data_class
 
 
-class UpdateChatRevenueAmount(TlObject, Update):
-    r"""The revenue earned from sponsored messages in a chat has changed\. If chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions"""
+class UpdateOwnedStarCount(TlObject, Update):
+    r"""The number of Telegram stars owned by the current user has changed
 
-    def __init__(self) -> None:
-        pass
+    Parameters:
+        star_count (:class:`int`):
+            The new number of Telegram stars owned
+
+    """
+
+    def __init__(self, star_count: int = 0) -> None:
+        self.star_count: int = int(star_count)
+        r"""The new number of Telegram stars owned"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateOwnedStarCount"]:
+        return "updateOwnedStarCount"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "star_count": self.star_count}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateOwnedStarCount", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = data.get("star_count", 0)
+
+        return data_class
+
+
+class UpdateChatRevenueAmount(TlObject, Update):
+    r"""The revenue earned from sponsored messages in a chat has changed\. If chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat
+
+        revenue_amount (:class:`"types.ChatRevenueAmount"`):
+            New amount of earned revenue
+
+    """
+
+    def __init__(
+        self, chat_id: int = 0, revenue_amount: ChatRevenueAmount = None
+    ) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat"""
+        self.revenue_amount: Union[ChatRevenueAmount, None] = revenue_amount
+        r"""New amount of earned revenue"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -70331,12 +71694,18 @@ class UpdateChatRevenueAmount(TlObject, Update):
         return "Update"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType()}
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "revenue_amount": self.revenue_amount,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["UpdateChatRevenueAmount", None]:
         if data:
             data_class = cls()
+            data_class.chat_id = data.get("chat_id", 0)
+            data_class.revenue_amount = data.get("revenue_amount", None)
 
         return data_class
 

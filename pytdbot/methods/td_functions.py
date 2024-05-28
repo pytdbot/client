@@ -153,18 +153,22 @@ class TDLibFunctions:
             {"@type": "setAuthenticationEmailAddress", "email_address": email_address}
         )
 
-    async def resendAuthenticationCode(self) -> Union["types.Error", "types.Ok"]:
+    async def resendAuthenticationCode(
+        self, reason: "types.ResendCodeReason" = None
+    ) -> Union["types.Error", "types.Ok"]:
         r"""
         Resends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitCode, the next\_code\_type of the result is not null and the server\-specified timeout has passed, or when the current authorization state is authorizationStateWaitEmailCode
+
+        Parameters:
+            reason (:class:`"types.ResendCodeReason"`):
+                Reason of code resending; pass null if unknown
 
         Returns:
             :class:`~pytdbot.types.Ok`
         """
 
         return await self.invoke(
-            {
-                "@type": "resendAuthenticationCode",
-            }
+            {"@type": "resendAuthenticationCode", "reason": reason}
         )
 
     async def checkAuthenticationEmailCode(
@@ -357,7 +361,7 @@ class TDLibFunctions:
 
         Parameters:
             token (:class:`str`):
-                SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
+                Play Integrity API or SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -371,7 +375,7 @@ class TDLibFunctions:
         self, mobile_network_code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Reports that authentication code wasn't delivered via SMS; for official mobile apps only\. Works only when the current authorization state is authorizationStateWaitCode
+        Reports that authentication code wasn't delivered via SMS; for official mobile applications only\. Works only when the current authorization state is authorizationStateWaitCode
 
         Parameters:
             mobile_network_code (:class:`str`):
@@ -2243,6 +2247,88 @@ class TDLibFunctions:
             {"@type": "searchOutgoingDocumentMessages", "query": query, "limit": limit}
         )
 
+    async def searchPublicHashtagMessages(
+        self, hashtag: str = "", offset: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.FoundMessages"]:
+        r"""
+        Searches for public channel posts with the given hashtag\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+        Parameters:
+            hashtag (:class:`str`):
+                Hashtag to search for
+
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of messages to be returned; up to 100\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+        Returns:
+            :class:`~pytdbot.types.FoundMessages`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "searchPublicHashtagMessages",
+                "hashtag": hashtag,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def getSearchedForHashtags(
+        self, prefix: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.Hashtags"]:
+        r"""
+        Returns recently searched for hashtags by their prefix
+
+        Parameters:
+            prefix (:class:`str`):
+                Prefix of hashtags to return
+
+            limit (:class:`int`):
+                The maximum number of hashtags to be returned
+
+        Returns:
+            :class:`~pytdbot.types.Hashtags`
+        """
+
+        return await self.invoke(
+            {"@type": "getSearchedForHashtags", "prefix": prefix, "limit": limit}
+        )
+
+    async def removeSearchedForHashtag(
+        self, hashtag: str = ""
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Removes a hashtag from the list of recently searched for hashtags
+
+        Parameters:
+            hashtag (:class:`str`):
+                Hashtag to delete
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "removeSearchedForHashtag", "hashtag": hashtag}
+        )
+
+    async def clearSearchedForHashtags(self) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Clears the list of recently searched for hashtags
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "clearSearchedForHashtags",
+            }
+        )
+
     async def deleteAllCallMessages(
         self, revoke: bool = False
     ) -> Union["types.Error", "types.Ok"]:
@@ -2925,7 +3011,7 @@ class TDLibFunctions:
                 Options to be used to send the messages; pass null to use default options
 
             input_message_contents (:class:`List["types.InputMessageContent"]`):
-                Contents of messages to be sent\. At most 10 messages can be added to an album
+                Contents of messages to be sent\. At most 10 messages can be added to an album\. All messages must have the same value of show\_caption\_above\_media
 
         Returns:
             :class:`~pytdbot.types.Messages`
@@ -3277,7 +3363,7 @@ class TDLibFunctions:
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side
+        Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -3317,7 +3403,7 @@ class TDLibFunctions:
         proximity_alert_radius: int = 0,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side
+        Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -3366,7 +3452,7 @@ class TDLibFunctions:
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side
+        Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -3401,9 +3487,10 @@ class TDLibFunctions:
         message_id: int = 0,
         reply_markup: "types.ReplyMarkup" = None,
         caption: "types.FormattedText" = None,
+        show_caption_above_media: bool = False,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the message content caption\. Returns the edited message after the edit is completed on the server side
+        Edits the message content caption\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -3418,6 +3505,9 @@ class TDLibFunctions:
             caption (:class:`"types.FormattedText"`):
                 New message content caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters; pass null to remove caption
 
+            show_caption_above_media (:class:`bool`):
+                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
+
         Returns:
             :class:`~pytdbot.types.Message`
         """
@@ -3429,6 +3519,7 @@ class TDLibFunctions:
                 "message_id": message_id,
                 "reply_markup": reply_markup,
                 "caption": caption,
+                "show_caption_above_media": show_caption_above_media,
             }
         )
 
@@ -3439,7 +3530,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side
+        Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -3580,6 +3671,7 @@ class TDLibFunctions:
         inline_message_id: str = "",
         reply_markup: "types.ReplyMarkup" = None,
         caption: "types.FormattedText" = None,
+        show_caption_above_media: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
         r"""
         Edits the caption of an inline message sent via a bot; for bots only
@@ -3594,6 +3686,9 @@ class TDLibFunctions:
             caption (:class:`"types.FormattedText"`):
                 New message content caption; pass null to remove caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
+            show_caption_above_media (:class:`bool`):
+                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
+
         Returns:
             :class:`~pytdbot.types.Ok`
         """
@@ -3604,6 +3699,7 @@ class TDLibFunctions:
                 "inline_message_id": inline_message_id,
                 "reply_markup": reply_markup,
                 "caption": caption,
+                "show_caption_above_media": show_caption_above_media,
             }
         )
 
@@ -3664,6 +3760,35 @@ class TDLibFunctions:
             }
         )
 
+    async def setMessageFactCheck(
+        self, chat_id: int = 0, message_id: int = 0, text: "types.FormattedText" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Changes the fact\-check of a message\. Can be only used if getOption\(\"can\_edit\_fact\_check\"\) \=\= true
+
+        Parameters:
+            chat_id (:class:`int`):
+                The channel chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            text (:class:`"types.FormattedText"`):
+                New text of the fact\-check; 0\-getOption\(\"fact\_check\_length\_max\"\) characters; pass null to remove it\. Only Bold, Italic, and TextUrl entities with https://t\.me/ links are supported
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setMessageFactCheck",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "text": text,
+            }
+        )
+
     async def sendBusinessMessage(
         self,
         business_connection_id: str = "",
@@ -3671,6 +3796,7 @@ class TDLibFunctions:
         reply_to: "types.InputMessageReplyTo" = None,
         disable_notification: bool = False,
         protect_content: bool = False,
+        effect_id: int = 0,
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.BusinessMessage"]:
@@ -3693,6 +3819,9 @@ class TDLibFunctions:
             protect_content (:class:`bool`):
                 Pass true if the content of the message must be protected from forwarding and saving
 
+            effect_id (:class:`int`):
+                Identifier of the effect to apply to the message
+
             reply_markup (:class:`"types.ReplyMarkup"`):
                 Markup for replying to the message; pass null if none
 
@@ -3711,6 +3840,7 @@ class TDLibFunctions:
                 "reply_to": reply_to,
                 "disable_notification": disable_notification,
                 "protect_content": protect_content,
+                "effect_id": effect_id,
                 "reply_markup": reply_markup,
                 "input_message_content": input_message_content,
             }
@@ -3723,6 +3853,7 @@ class TDLibFunctions:
         reply_to: "types.InputMessageReplyTo" = None,
         disable_notification: bool = False,
         protect_content: bool = False,
+        effect_id: int = 0,
         input_message_contents: List["types.InputMessageContent"] = None,
     ) -> Union["types.Error", "types.BusinessMessages"]:
         r"""
@@ -3744,8 +3875,11 @@ class TDLibFunctions:
             protect_content (:class:`bool`):
                 Pass true if the content of the message must be protected from forwarding and saving
 
+            effect_id (:class:`int`):
+                Identifier of the effect to apply to the message
+
             input_message_contents (:class:`List["types.InputMessageContent"]`):
-                Contents of messages to be sent\. At most 10 messages can be added to an album
+                Contents of messages to be sent\. At most 10 messages can be added to an album\. All messages must have the same value of show\_caption\_above\_media
 
         Returns:
             :class:`~pytdbot.types.BusinessMessages`
@@ -3759,6 +3893,7 @@ class TDLibFunctions:
                 "reply_to": reply_to,
                 "disable_notification": disable_notification,
                 "protect_content": protect_content,
+                "effect_id": effect_id,
                 "input_message_contents": input_message_contents,
             }
         )
@@ -3988,7 +4123,7 @@ class TDLibFunctions:
                 Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none
 
             input_message_contents (:class:`List["types.InputMessageContent"]`):
-                Contents of messages to be sent\. At most 10 messages can be added to an album
+                Contents of messages to be sent\. At most 10 messages can be added to an album\. All messages must have the same value of show\_caption\_above\_media
 
         Returns:
             :class:`~pytdbot.types.QuickReplyMessages`
@@ -4695,6 +4830,22 @@ class TDLibFunctions:
             {"@type": "setSavedMessagesTagLabel", "tag": tag, "label": label}
         )
 
+    async def getMessageEffect(
+        self, effect_id: int = 0
+    ) -> Union["types.Error", "types.MessageEffect"]:
+        r"""
+        Returns information about a message effect\. Returns a 404 error if the effect is not found
+
+        Parameters:
+            effect_id (:class:`int`):
+                Unique identifier of the effect
+
+        Returns:
+            :class:`~pytdbot.types.MessageEffect`
+        """
+
+        return await self.invoke({"@type": "getMessageEffect", "effect_id": effect_id})
+
     async def searchQuote(
         self,
         text: "types.FormattedText" = None,
@@ -4747,7 +4898,7 @@ class TDLibFunctions:
         self, text: str = "", parse_mode: "types.TextParseMode" = None
     ) -> Union["types.Error", "types.FormattedText"]:
         r"""
-        Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked\-up text\. Can be called synchronously
+        Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked\-up text\. Can be called synchronously
 
         Parameters:
             text (:class:`str`):
@@ -9623,6 +9774,31 @@ class TDLibFunctions:
             }
         )
 
+    async def setApplicationVerificationToken(
+        self, verification_id: int = 0, token: str = ""
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Application verification has been completed\. Can be called before authorization
+
+        Parameters:
+            verification_id (:class:`int`):
+                Unique identifier for the verification process as received from updateApplicationVerificationRequired
+
+            token (:class:`str`):
+                Play Integrity API token for the Android application, or secret from push notification for the iOS application; pass an empty string to abort verification and receive error VERIFICATION\_FAILED for the request
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setApplicationVerificationToken",
+                "verification_id": verification_id,
+                "token": token,
+            }
+        )
+
     async def getMessageFileType(
         self, message_file_head: str = ""
     ) -> Union["types.Error", "types.MessageFileType"]:
@@ -11407,7 +11583,7 @@ class TDLibFunctions:
         )
 
     async def searchUserByPhoneNumber(
-        self, phone_number: str = ""
+        self, phone_number: str = "", only_local: bool = False
     ) -> Union["types.Error", "types.User"]:
         r"""
         Searches a user by their phone number\. Returns a 404 error if the user can't be found
@@ -11416,12 +11592,19 @@ class TDLibFunctions:
             phone_number (:class:`str`):
                 Phone number to search for
 
+            only_local (:class:`bool`):
+                Pass true to get only locally available information without sending network requests
+
         Returns:
             :class:`~pytdbot.types.User`
         """
 
         return await self.invoke(
-            {"@type": "searchUserByPhoneNumber", "phone_number": phone_number}
+            {
+                "@type": "searchUserByPhoneNumber",
+                "phone_number": phone_number,
+                "only_local": only_local,
+            }
         )
 
     async def sharePhoneNumber(
@@ -12720,7 +12903,7 @@ class TDLibFunctions:
 
         Parameters:
             token (:class:`str`):
-                SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
+                Play Integrity API or SafetyNet Attestation API token for the Android application, or secret from push notification for the iOS application
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -12734,7 +12917,7 @@ class TDLibFunctions:
         self, mobile_network_code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Reports that authentication code wasn't delivered via SMS to the specified phone number; for official mobile apps only
+        Reports that authentication code wasn't delivered via SMS to the specified phone number; for official mobile applications only
 
         Parameters:
             mobile_network_code (:class:`str`):
@@ -12752,20 +12935,20 @@ class TDLibFunctions:
         )
 
     async def resendPhoneNumberCode(
-        self,
+        self, reason: "types.ResendCodeReason" = None
     ) -> Union["types.Error", "types.AuthenticationCodeInfo"]:
         r"""
         Resends the authentication code sent to a phone number\. Works only if the previously received authenticationCodeInfo next\_code\_type was not null and the server\-specified timeout has passed
+
+        Parameters:
+            reason (:class:`"types.ResendCodeReason"`):
+                Reason of code resending; pass null if unknown
 
         Returns:
             :class:`~pytdbot.types.AuthenticationCodeInfo`
         """
 
-        return await self.invoke(
-            {
-                "@type": "resendPhoneNumberCode",
-            }
-        )
+        return await self.invoke({"@type": "resendPhoneNumberCode", "reason": reason})
 
     async def checkPhoneNumberCode(
         self, code: str = ""
@@ -13837,7 +14020,7 @@ class TDLibFunctions:
 
         Parameters:
             supergroup_id (:class:`int`):
-                Identifier of the supergroup
+                Identifier of the supergroup that isn't a broadcast group
 
             join_to_send_messages (:class:`bool`):
                 New value of join\_to\_send\_messages
@@ -13862,7 +14045,7 @@ class TDLibFunctions:
 
         Parameters:
             supergroup_id (:class:`int`):
-                Identifier of the channel
+                Identifier of the supergroup that isn't a broadcast group
 
             join_by_request (:class:`bool`):
                 New value of join\_by\_request
@@ -14272,7 +14455,7 @@ class TDLibFunctions:
                 Identifier of a chosen shipping option, if applicable
 
             credentials (:class:`"types.InputCredentials"`):
-                The credentials chosen by user for payment
+                The credentials chosen by user for payment; pass null for a payment in Telegram stars
 
             tip_amount (:class:`int`):
                 Chosen by the user amount of tip in the smallest units of the currency
@@ -14371,6 +14554,31 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "createInvoiceLink", "invoice": invoice})
+
+    async def refundStarPayment(
+        self, user_id: int = 0, telegram_payment_charge_id: str = ""
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Refunds a previously done payment in Telegram Stars
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user that did the payment
+
+            telegram_payment_charge_id (:class:`str`):
+                Telegram payment identifier
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "refundStarPayment",
+                "user_id": user_id,
+                "telegram_payment_charge_id": telegram_payment_charge_id,
+            }
+        )
 
     async def getSupportUser(self) -> Union["types.Error", "types.User"]:
         r"""
@@ -16604,11 +16812,48 @@ class TDLibFunctions:
             }
         )
 
-    async def canPurchasePremium(
+    async def getStarPaymentOptions(
+        self,
+    ) -> Union["types.Error", "types.StarPaymentOptions"]:
+        r"""
+        Returns available options for Telegram stars purchase
+
+        Returns:
+            :class:`~pytdbot.types.StarPaymentOptions`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getStarPaymentOptions",
+            }
+        )
+
+    async def getStarTransactions(
+        self, offset: str = "", direction: "types.StarTransactionDirection" = None
+    ) -> Union["types.Error", "types.StarTransactions"]:
+        r"""
+        Returns the list of Telegram star transactions for the current user
+
+        Parameters:
+            offset (:class:`str`):
+                Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results
+
+            direction (:class:`"types.StarTransactionDirection"`):
+                Direction of the transactions to receive; pass null to get all transactions
+
+        Returns:
+            :class:`~pytdbot.types.StarTransactions`
+        """
+
+        return await self.invoke(
+            {"@type": "getStarTransactions", "offset": offset, "direction": direction}
+        )
+
+    async def canPurchaseFromStore(
         self, purpose: "types.StorePaymentPurpose" = None
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Checks whether Telegram Premium purchase is possible\. Must be called before in\-store Premium purchase
+        Checks whether an in\-store purchase is possible\. Must be called before any in\-store purchase
 
         Parameters:
             purpose (:class:`"types.StorePaymentPurpose"`):
@@ -16618,7 +16863,7 @@ class TDLibFunctions:
             :class:`~pytdbot.types.Ok`
         """
 
-        return await self.invoke({"@type": "canPurchasePremium", "purpose": purpose})
+        return await self.invoke({"@type": "canPurchaseFromStore", "purpose": purpose})
 
     async def assignAppStoreTransaction(
         self, receipt: bytes = b"", purpose: "types.StorePaymentPurpose" = None
