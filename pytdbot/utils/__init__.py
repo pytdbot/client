@@ -16,6 +16,7 @@ __all__ = [
     "code",
     "pre",
     "pre_code",
+    "quote",
 ]
 
 from .escape import escape_markdown, escape_html
@@ -32,4 +33,5 @@ from .text_format import (
     code,
     pre,
     pre_code,
+    quote,
 )
