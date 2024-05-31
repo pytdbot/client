@@ -370,6 +370,9 @@ if __name__ == "__main__":
             """class TlObject:
     \"\"\"Base class for TL Objects\"\"\"
 
+    def __bool__(self):
+        return not isinstance(self, Error)
+
     def getType(self):
         raise NotImplementedError
 
