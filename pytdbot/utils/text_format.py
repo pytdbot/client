@@ -290,6 +290,6 @@ def quote(text: str, expandable: bool = False, html: bool = False, escape: bool 
     """
 
     if html:
-        return f"<blockquote{" expandable" if expandable else ""}>{text if escape is False else escape_html(text)}</blockquote>"
+        return f"<blockquote{' expandable' if expandable else ''}>{text if escape is False else escape_html(text)}</blockquote>"
     else:
-        return f"{"**" if expandable else ""}>{text if escape is False else escape_markdown(text)}"
+        return f"{'**' if expandable else ''}>{text if escape is False else escape_markdown(text)}"
