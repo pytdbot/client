@@ -186,9 +186,9 @@ class Methods(TDLibFunctions):
         """
 
         parse_mode = parse_mode or self.default_parse_mode
-        if isinstance(entities, list):
+        if entities and isinstance(entities, list):
             text = FormattedText(text=text, entities=entities)
-        elif isinstance(parse_mode, str):
+        elif parse_mode and isinstance(parse_mode, str):
             parse = await self.parseText(text, parse_mode=parse_mode)
             if isinstance(parse, Error):
                 return parse
@@ -228,9 +228,9 @@ class Methods(TDLibFunctions):
         caption_entities: list = None,
         parse_mode: str = None,
         added_sticker_file_ids: list = None,
-        duration: int = None,
-        width: int = None,
-        height: int = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
         has_spoiler: bool = False,
@@ -314,7 +314,7 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption_entities, list):
             caption = FormattedText(text=caption, entities=caption_entities)
-        elif isinstance(parse_mode, str):
+        elif parse_mode and isinstance(parse_mode, str):
             parse = await self.parseText(caption, parse_mode=parse_mode)
             if isinstance(parse, Error):
                 return parse
@@ -357,7 +357,7 @@ class Methods(TDLibFunctions):
         parse_mode: str = None,
         title: str = None,
         performer: str = None,
-        duration: int = None,
+        duration: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
@@ -435,7 +435,7 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption_entities, list):
             caption = FormattedText(text=caption, entities=caption_entities)
-        elif isinstance(parse_mode, str):
+        elif parse_mode and isinstance(parse_mode, str):
             parse = await self.parseText(caption, parse_mode=parse_mode)
             if isinstance(parse, Error):
                 return parse
@@ -545,7 +545,7 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption_entities, list):
             caption = FormattedText(text=caption, entities=caption_entities)
-        elif isinstance(parse_mode, str):
+        elif parse_mode and isinstance(parse_mode, str):
             parse = await self.parseText(caption, parse_mode=parse_mode)
             if isinstance(parse, Error):
                 return parse
@@ -583,8 +583,8 @@ class Methods(TDLibFunctions):
         caption_entities: list = None,
         parse_mode: str = None,
         added_sticker_file_ids: list = None,
-        width: int = None,
-        height: int = None,
+        width: int = 0,
+        height: int = 0,
         self_destruct_type: MessageSelfDestructType = None,
         disable_notification: bool = False,
         protect_content: bool = False,
@@ -669,7 +669,7 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption_entities, list):
             caption = FormattedText(text=caption, entities=caption_entities)
-        elif isinstance(parse_mode, str):
+        elif parse_mode and isinstance(parse_mode, str):
             parse = await self.parseText(caption, parse_mode=parse_mode)
             if isinstance(parse, Error):
                 return parse
@@ -712,9 +712,9 @@ class Methods(TDLibFunctions):
         parse_mode: str = None,
         added_sticker_file_ids: list = None,
         supports_streaming: bool = None,
-        duration: int = None,
-        width: int = None,
-        height: int = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
         self_destruct_type: MessageSelfDestructType = None,
         disable_notification: bool = False,
         protect_content: bool = False,
@@ -805,7 +805,7 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption_entities, list):
             caption = FormattedText(text=caption, entities=caption_entities)
-        elif isinstance(parse_mode, str):
+        elif parse_mode and isinstance(parse_mode, str):
             parse = await self.parseText(caption, parse_mode=parse_mode)
             if isinstance(parse, Error):
                 return parse
@@ -845,8 +845,8 @@ class Methods(TDLibFunctions):
         chat_id: int,
         video_note: Union[InputFile, str],
         thumbnail: InputThumbnail = None,
-        duration: int = None,
-        length: int = None,
+        duration: int = 0,
+        length: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
@@ -937,7 +937,7 @@ class Methods(TDLibFunctions):
         caption: str = None,
         caption_entities: list = None,
         parse_mode: str = None,
-        duration: int = None,
+        duration: int = 0,
         waveform: bytes = None,
         disable_notification: bool = False,
         protect_content: bool = False,
@@ -1009,7 +1009,7 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode or self.default_parse_mode
         if isinstance(caption_entities, list):
             caption = FormattedText(text=caption, entities=caption_entities)
-        elif isinstance(parse_mode, str):
+        elif parse_mode and isinstance(parse_mode, str):
             parse = await self.parseText(caption, parse_mode=parse_mode)
             if isinstance(parse, Error):
                 return parse
@@ -1044,8 +1044,8 @@ class Methods(TDLibFunctions):
         sticker: Union[InputFile, str],
         emoji: str = None,
         thumbnail: InputThumbnail = None,
-        width: int = None,
-        height: int = None,
+        width: int = 0,
+        height: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
         message_thread_id: int = 0,
@@ -1204,9 +1204,9 @@ class Methods(TDLibFunctions):
         """
 
         parse_mode = parse_mode or self.default_parse_mode
-        if isinstance(new_caption_entities, list):
+        if new_caption_entities and isinstance(new_caption_entities, list):
             caption = FormattedText(text=new_caption, entities=new_caption_entities)
-        elif isinstance(parse_mode, str):
+        elif parse_mode and isinstance(parse_mode, str):
             parse = await self.parseText(new_caption, parse_mode=parse_mode)
             if isinstance(parse, Error):
                 return parse
@@ -1334,9 +1334,9 @@ class Methods(TDLibFunctions):
                 return load_message
 
         parse_mode = parse_mode or self.default_parse_mode
-        if isinstance(entities, list):
+        if entities and isinstance(entities, list):
             text = FormattedText(text=text, entities=entities)
-        elif isinstance(parse_mode, str):
+        elif parse_mode and isinstance(parse_mode, str):
             parse = await self.parseText(text, parse_mode=parse_mode)
             if isinstance(parse, Error):
                 return parse
