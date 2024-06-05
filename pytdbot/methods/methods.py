@@ -43,7 +43,7 @@ from .td_functions import TDLibFunctions
 class Methods(TDLibFunctions):
     """TDLib API functions class"""
 
-    async def __sendMessage(
+    async def sendMessageWithContent(
         self,
         chat_id: int,
         content: InputMessageContent,
@@ -196,7 +196,7 @@ class Methods(TDLibFunctions):
         else:
             text = FormattedText(text)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageText(
                 text,
@@ -325,7 +325,7 @@ class Methods(TDLibFunctions):
         if isinstance(animation, str):
             animation = InputFileRemote(animation)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageAnimation(
                 animation=animation,
@@ -446,7 +446,7 @@ class Methods(TDLibFunctions):
         if isinstance(audio, str):
             audio = InputFileRemote(audio)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageAudio(
                 audio=audio,
@@ -556,7 +556,7 @@ class Methods(TDLibFunctions):
         if isinstance(document, str):
             document = InputFileRemote(document)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageDocument(
                 document=document,
@@ -680,7 +680,7 @@ class Methods(TDLibFunctions):
         if isinstance(photo, str):
             photo = InputFileRemote(photo)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessagePhoto(
                 photo=photo,
@@ -816,7 +816,7 @@ class Methods(TDLibFunctions):
         if isinstance(video, str):
             video = InputFileRemote(video)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageVideo(
                 video=video,
@@ -912,7 +912,7 @@ class Methods(TDLibFunctions):
         if isinstance(video_note, str):
             video_note = InputFileRemote(video_note)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageVideoNote(
                 video_note=video_note,
@@ -1020,7 +1020,7 @@ class Methods(TDLibFunctions):
         if isinstance(voice, str):
             voice = InputFileRemote(voice)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageVoiceNote(
                 voice=voice,
@@ -1113,7 +1113,7 @@ class Methods(TDLibFunctions):
         if isinstance(sticker, str):
             sticker = InputFileRemote(sticker)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageSticker(
                 sticker=sticker,
@@ -1214,7 +1214,7 @@ class Methods(TDLibFunctions):
         else:
             caption = FormattedText(new_caption)
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageForwarded(
                 from_chat_id=from_chat_id,
@@ -1263,7 +1263,7 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Message`
         """
 
-        return await self.__sendMessage(
+        return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageForwarded(
                 from_chat_id=from_chat_id,
