@@ -3551,7 +3551,7 @@ class TDLibFunctions:
                 "@type": "editMessageReplyMarkup",
                 "chat_id": chat_id,
                 "message_id": message_id,
-                "reply_markup": reply_markup,
+                "reply_markup": reply_markup.to_dict(),
             }
         )
 
