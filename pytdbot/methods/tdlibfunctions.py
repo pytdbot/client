@@ -2311,14 +2311,14 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def searchPublicHashtagMessages(
-        self, hashtag: str, offset: str, limit: int
+    async def searchPublicMessagesByTag(
+        self, tag: str, offset: str, limit: int
     ) -> Result:
-        """Searches for public channel posts with the given hashtag\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        """Searches for public channel posts containing the given hashtag or cashtag\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Args:
-            hashtag (``str``):
-                Hashtag to search for
+            tag (``str``):
+                Hashtag or cashtag to search for
 
             offset (``str``):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
@@ -2332,23 +2332,114 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "searchPublicHashtagMessages",
-            "hashtag": hashtag,
+            "@type": "searchPublicMessagesByTag",
+            "tag": tag,
             "offset": offset,
             "limit": limit,
         }
 
         return await self.invoke(data)
 
-    async def getSearchedForHashtags(self, prefix: str, limit: int) -> Result:
-        """Returns recently searched for hashtags by their prefix
+    async def searchPublicStoriesByTag(
+        self, tag: str, offset: str, limit: int
+    ) -> Result:
+        """Searches for public stories containing the given hashtag or cashtag\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
         Args:
-            prefix (``str``):
-                Prefix of hashtags to return
+            tag (``str``):
+                Hashtag or cashtag to search for
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
 
             limit (``int``):
-                The maximum number of hashtags to be returned
+                The maximum number of stories to be returned; up to 100\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundStories``)
+        """
+
+        data = {
+            "@type": "searchPublicStoriesByTag",
+            "tag": tag,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def searchPublicStoriesByLocation(
+        self, address: dict, offset: str, limit: int
+    ) -> Result:
+        """Searches for public stories by the given address location\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+        Args:
+            address (``locationAddress``):
+                Address of the location
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of stories to be returned; up to 100\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundStories``)
+        """
+
+        data = {
+            "@type": "searchPublicStoriesByLocation",
+            "address": address,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def searchPublicStoriesByVenue(
+        self, venue_provider: str, venue_id: str, offset: str, limit: int
+    ) -> Result:
+        """Searches for public stories from the given venue\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+        Args:
+            venue_provider (``str``):
+                Provider of the venue
+
+            venue_id (``str``):
+                Identifier of the venue in the provider database
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of stories to be returned; up to 100\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundStories``)
+        """
+
+        data = {
+            "@type": "searchPublicStoriesByVenue",
+            "venue_provider": venue_provider,
+            "venue_id": venue_id,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getSearchedForTags(self, tag_prefix: str, limit: int) -> Result:
+        """Returns recently searched for hashtags or cashtags by their prefix
+
+        Args:
+            tag_prefix (``str``):
+                Prefix of hashtags or cashtags to return
+
+            limit (``int``):
+                The maximum number of items to be returned
 
 
         Returns:
@@ -2356,19 +2447,19 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "getSearchedForHashtags",
-            "prefix": prefix,
+            "@type": "getSearchedForTags",
+            "tag_prefix": tag_prefix,
             "limit": limit,
         }
 
         return await self.invoke(data)
 
-    async def removeSearchedForHashtag(self, hashtag: str) -> Result:
-        """Removes a hashtag from the list of recently searched for hashtags
+    async def removeSearchedForTag(self, tag: str) -> Result:
+        """Removes a hashtag or a cashtag from the list of recently searched for hashtags or cashtags
 
         Args:
-            hashtag (``str``):
-                Hashtag to delete
+            tag (``str``):
+                Hashtag or cashtag to delete
 
 
         Returns:
@@ -2376,14 +2467,18 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "removeSearchedForHashtag",
-            "hashtag": hashtag,
+            "@type": "removeSearchedForTag",
+            "tag": tag,
         }
 
         return await self.invoke(data)
 
-    async def clearSearchedForHashtags(self) -> Result:
-        """Clears the list of recently searched for hashtags
+    async def clearSearchedForTags(self, clear_cashtags: bool) -> Result:
+        """Clears the list of recently searched for hashtags or cashtags
+
+        Args:
+            clear_cashtags (``bool``):
+                Pass true to clear the list of recently searched for cashtags; otherwise, the list of recently searched for hashtags will be cleared
 
 
         Returns:
@@ -2391,7 +2486,8 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "clearSearchedForHashtags",
+            "@type": "clearSearchedForTags",
+            "clear_cashtags": clear_cashtags,
         }
 
         return await self.invoke(data)
@@ -3829,7 +3925,7 @@ class TDLibFunctions:
                 The channel chat the message belongs to
 
             message_id (``int``):
-                Identifier of the message
+                Identifier of the message\. The message must be one of the following types: messageAnimation, messageAudio, messageDocument, messagePhoto, messageText, messageVideo
 
             text (``formattedText``, *optional*):
                 New text of the fact\-check; 0\-getOption\("fact\_check\_length\_max"\) characters; pass null to remove it\. Only Bold, Italic, and TextUrl entities with https://t\.me/ links are supported
@@ -3953,6 +4049,268 @@ class TDLibFunctions:
             "protect_content": protect_content,
             "effect_id": effect_id,
             "input_message_contents": input_message_contents,
+        }
+
+        return await self.invoke(data)
+
+    async def editBusinessMessageText(
+        self,
+        business_connection_id: str,
+        chat_id: int,
+        message_id: int,
+        input_message_content: dict,
+        reply_markup: dict = None,
+    ) -> Result:
+        """Edits the text of a text or game message sent on behalf of a business account; for bots only
+
+        Args:
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (``int``):
+                The chat the message belongs to
+
+            message_id (``int``):
+                Identifier of the message
+
+            input_message_content (``InputMessageContent``):
+                New text content of the message\. Must be of type inputMessageText
+
+            reply_markup (``ReplyMarkup``, *optional*):
+                The new message reply markup; pass null if none
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessMessage``)
+        """
+
+        data = {
+            "@type": "editBusinessMessageText",
+            "business_connection_id": business_connection_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "reply_markup": reply_markup,
+            "input_message_content": input_message_content,
+        }
+
+        return await self.invoke(data)
+
+    async def editBusinessMessageLiveLocation(
+        self,
+        business_connection_id: str,
+        chat_id: int,
+        message_id: int,
+        live_period: int,
+        heading: int,
+        proximity_alert_radius: int,
+        reply_markup: dict = None,
+        location: dict = None,
+    ) -> Result:
+        """Edits the content of a live location in a message sent on behalf of a business account; for bots only
+
+        Args:
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (``int``):
+                The chat the message belongs to
+
+            message_id (``int``):
+                Identifier of the message
+
+            live_period (``int``):
+                New time relative to the message send date, for which the location can be updated, in seconds\. If 0x7FFFFFFF specified, then the location can be updated forever\. Otherwise, must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days\. Pass 0 to keep the current live\_period
+
+            heading (``int``):
+                The new direction in which the location moves, in degrees; 1\-360\. Pass 0 if unknown
+
+            proximity_alert_radius (``int``):
+                The new maximum distance for proximity alerts, in meters \(0\-100000\)\. Pass 0 if the notification is disabled
+
+            reply_markup (``ReplyMarkup``, *optional*):
+                The new message reply markup; pass null if none
+
+            location (``location``, *optional*):
+                New location content of the message; pass null to stop sharing the live location
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessMessage``)
+        """
+
+        data = {
+            "@type": "editBusinessMessageLiveLocation",
+            "business_connection_id": business_connection_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "reply_markup": reply_markup,
+            "location": location,
+            "live_period": live_period,
+            "heading": heading,
+            "proximity_alert_radius": proximity_alert_radius,
+        }
+
+        return await self.invoke(data)
+
+    async def editBusinessMessageMedia(
+        self,
+        business_connection_id: str,
+        chat_id: int,
+        message_id: int,
+        input_message_content: dict,
+        reply_markup: dict = None,
+    ) -> Result:
+        """Edits the content of a message with an animation, an audio, a document, a photo or a video in a message sent on behalf of a business account; for bots only
+
+        Args:
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (``int``):
+                The chat the message belongs to
+
+            message_id (``int``):
+                Identifier of the message
+
+            input_message_content (``InputMessageContent``):
+                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
+
+            reply_markup (``ReplyMarkup``, *optional*):
+                The new message reply markup; pass null if none; for bots only
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessMessage``)
+        """
+
+        data = {
+            "@type": "editBusinessMessageMedia",
+            "business_connection_id": business_connection_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "reply_markup": reply_markup,
+            "input_message_content": input_message_content,
+        }
+
+        return await self.invoke(data)
+
+    async def editBusinessMessageCaption(
+        self,
+        business_connection_id: str,
+        chat_id: int,
+        message_id: int,
+        show_caption_above_media: bool,
+        reply_markup: dict = None,
+        caption: dict = None,
+    ) -> Result:
+        """Edits the caption of a message sent on behalf of a business account; for bots only
+
+        Args:
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (``int``):
+                The chat the message belongs to
+
+            message_id (``int``):
+                Identifier of the message
+
+            show_caption_above_media (``bool``):
+                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
+
+            reply_markup (``ReplyMarkup``, *optional*):
+                The new message reply markup; pass null if none
+
+            caption (``formattedText``, *optional*):
+                New message content caption; pass null to remove caption; 0\-getOption\("message\_caption\_length\_max"\) characters
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessMessage``)
+        """
+
+        data = {
+            "@type": "editBusinessMessageCaption",
+            "business_connection_id": business_connection_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "reply_markup": reply_markup,
+            "caption": caption,
+            "show_caption_above_media": show_caption_above_media,
+        }
+
+        return await self.invoke(data)
+
+    async def editBusinessMessageReplyMarkup(
+        self,
+        business_connection_id: str,
+        chat_id: int,
+        message_id: int,
+        reply_markup: dict = None,
+    ) -> Result:
+        """Edits the reply markup of a message sent on behalf of a business account; for bots only
+
+        Args:
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (``int``):
+                The chat the message belongs to
+
+            message_id (``int``):
+                Identifier of the message
+
+            reply_markup (``ReplyMarkup``, *optional*):
+                The new message reply markup; pass null if none
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessMessage``)
+        """
+
+        data = {
+            "@type": "editBusinessMessageReplyMarkup",
+            "business_connection_id": business_connection_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "reply_markup": reply_markup,
+        }
+
+        return await self.invoke(data)
+
+    async def stopBusinessPoll(
+        self,
+        business_connection_id: str,
+        chat_id: int,
+        message_id: int,
+        reply_markup: dict = None,
+    ) -> Result:
+        """Stops a poll sent on behalf of a business account; for bots only
+
+        Args:
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which the message with the poll was sent
+
+            chat_id (``int``):
+                The chat the message belongs to
+
+            message_id (``int``):
+                Identifier of the message containing the poll
+
+            reply_markup (``ReplyMarkup``, *optional*):
+                The new message reply markup; pass null if none
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BusinessMessage``)
+        """
+
+        data = {
+            "@type": "stopBusinessPoll",
+            "business_connection_id": business_connection_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "reply_markup": reply_markup,
         }
 
         return await self.invoke(data)
@@ -4250,7 +4608,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getForumTopicDefaultIcons(self) -> Result:
-        """Returns the list of custom emojis, which can be used as forum topic icon by all users
+        """Returns the list of custom emoji, which can be used as forum topic icon by all users
 
 
         Returns:
@@ -11689,7 +12047,7 @@ class TDLibFunctions:
                 Type of the stickers to return
 
             query (``str``):
-                Search query; a space\-separated list of emoji or a keyword prefix\. If empty, returns all known installed stickers
+                Search query; a space\-separated list of emojis or a keyword prefix\. If empty, returns all known installed stickers
 
             limit (``int``):
                 The maximum number of stickers to be returned
@@ -11755,7 +12113,7 @@ class TDLibFunctions:
                 Type of the stickers to return
 
             emojis (``str``):
-                Space\-separated list of emoji to search for; must be non\-empty
+                Space\-separated list of emojis to search for; must be non\-empty
 
             limit (``int``):
                 The maximum number of stickers to be returned; 0\-100
@@ -12272,7 +12630,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getEmojiCategories(self, type: dict = None) -> Result:
-        """Returns available emojis categories
+        """Returns available emoji categories
 
         Args:
             type (``EmojiCategoryType``, *optional*):
@@ -15544,6 +15902,58 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getStarRevenueStatistics(self, owner_id: dict, is_dark: bool) -> Result:
+        """Returns detailed Telegram star revenue statistics
+
+        Args:
+            owner_id (``MessageSender``):
+                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+
+            is_dark (``bool``):
+                Pass true if a dark theme is used by the application
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StarRevenueStatistics``)
+        """
+
+        data = {
+            "@type": "getStarRevenueStatistics",
+            "owner_id": owner_id,
+            "is_dark": is_dark,
+        }
+
+        return await self.invoke(data)
+
+    async def getStarWithdrawalUrl(
+        self, owner_id: dict, star_count: int, password: str
+    ) -> Result:
+        """Returns URL for Telegram star withdrawal
+
+        Args:
+            owner_id (``MessageSender``):
+                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+
+            star_count (``int``):
+                The number of Telegram stars to withdraw\. Must be at least getOption\("star\_withdrawal\_count\_min"\)
+
+            password (``str``):
+                The 2\-step verification password of the current user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``HttpUrl``)
+        """
+
+        data = {
+            "@type": "getStarWithdrawalUrl",
+            "owner_id": owner_id,
+            "star_count": star_count,
+            "password": password,
+        }
+
+        return await self.invoke(data)
+
     async def getChatStatistics(self, chat_id: int, is_dark: bool) -> Result:
         """Returns detailed statistics about a chat\. Currently, this method can be used only for supergroups and channels\. Can be used only if supergroupFullInfo\.can\_get\_statistics \=\= true
 
@@ -16580,7 +16990,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def setStickerEmojis(self, sticker: dict, emojis: str) -> Result:
-        """Changes the list of emoji corresponding to a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
+        """Changes the list of emojis corresponding to a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
 
         Args:
             sticker (``InputFile``):
@@ -16940,12 +17350,20 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getStarTransactions(self, offset: str, direction: dict = None) -> Result:
-        """Returns the list of Telegram star transactions for the current user
+    async def getStarTransactions(
+        self, owner_id: dict, offset: str, limit: int, direction: dict = None
+    ) -> Result:
+        """Returns the list of Telegram star transactions for the specified owner
 
         Args:
+            owner_id (``MessageSender``):
+                Identifier of the owner of the Telegram stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+
             offset (``str``):
                 Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of transactions to return
 
             direction (``StarTransactionDirection``, *optional*):
                 Direction of the transactions to receive; pass null to get all transactions
@@ -16957,8 +17375,10 @@ class TDLibFunctions:
 
         data = {
             "@type": "getStarTransactions",
-            "offset": offset,
+            "owner_id": owner_id,
             "direction": direction,
+            "offset": offset,
+            "limit": limit,
         }
 
         return await self.invoke(data)

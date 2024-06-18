@@ -4475,6 +4475,42 @@ class Updates:
 
         return decorator
 
+    def on_updateStarRevenueStatus(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The Telegram star revenue earned by a bot or a chat has changed\. If star transactions screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateStarRevenueStatus", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateStarRevenueStatus", self, position)
+            else:
+                func._handler = Handler(
+                    func, "updateStarRevenueStatus", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateSpeechRecognitionTrial(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -5086,6 +5122,46 @@ class Updates:
             else:
                 func._handler = Handler(
                     func, "updateNewInlineCallbackQuery", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateNewBusinessCallbackQuery(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """A new incoming callback query from a business message; for bots only
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateNewBusinessCallbackQuery", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateNewBusinessCallbackQuery", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateNewBusinessCallbackQuery", filters, position
                 )
             return func
 

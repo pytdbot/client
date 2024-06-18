@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.30",
-    "commit_hash": "fab354add5a257a8121a4a7f1ff6b1b9fa9a9073",
+    "version": "1.8.31",
+    "commit_hash": "8f19c751dc296cedb9a921badb7a02a8c0cb1aeb",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for an email address",
@@ -19,7 +19,7 @@
         "ChatPhotoStickerType": "Describes type of sticker, which was used to create a chat photo",
         "InputChatPhoto": "Describes a photo to be set as a user profile or chat photo",
         "StarTransactionDirection": "Describes direction of a transaction with Telegram stars",
-        "StarTransactionSource": "Describes source or recipient of a transaction with Telegram stars",
+        "StarTransactionPartner": "Describes source or recipient of a transaction with Telegram stars",
         "PremiumGiveawayParticipantStatus": "Contains information about status of a user in a Telegram Premium giveaway",
         "PremiumGiveawayInfo": "Contains information about Telegram Premium giveaway",
         "ChatMemberStatus": "Provides information about the status of a member in a chat",
@@ -146,7 +146,7 @@
         "StatisticalGraph": "Describes a statistical graph",
         "ChatStatisticsObjectType": "Describes type of object, for which statistics are provided",
         "ChatStatistics": "Contains a detailed statistics about a chat",
-        "ChatRevenueWithdrawalState": "Describes state of a chat revenue withdrawal",
+        "RevenueWithdrawalState": "Describes state of a revenue withdrawal",
         "ChatRevenueTransactionType": "Describes type of transaction for revenue earned from sponsored messages in a chat",
         "VectorPathCommand": "Represents a vector path command",
         "BotCommandScope": "Represents the scope to which bot commands are relevant",
@@ -2868,7 +2868,7 @@
                     "type": "int53"
                 },
                 "star_count": {
-                    "description": "Number of stars that will be purchased",
+                    "description": "Number of Telegram stars that will be purchased",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -2906,27 +2906,33 @@
             "args": {},
             "type": "StarTransactionDirection"
         },
-        "starTransactionSourceTelegram": {
+        "starTransactionPartnerTelegram": {
             "description": "The transaction is a transaction with Telegram through a bot",
             "args": {},
-            "type": "StarTransactionSource"
+            "type": "StarTransactionPartner"
         },
-        "starTransactionSourceAppStore": {
+        "starTransactionPartnerAppStore": {
             "description": "The transaction is a transaction with App Store",
             "args": {},
-            "type": "StarTransactionSource"
+            "type": "StarTransactionPartner"
         },
-        "starTransactionSourceGooglePlay": {
+        "starTransactionPartnerGooglePlay": {
             "description": "The transaction is a transaction with Google Play",
             "args": {},
-            "type": "StarTransactionSource"
+            "type": "StarTransactionPartner"
         },
-        "starTransactionSourceFragment": {
+        "starTransactionPartnerFragment": {
             "description": "The transaction is a transaction with Fragment",
-            "args": {},
-            "type": "StarTransactionSource"
+            "args": {
+                "withdrawal_state": {
+                    "description": "State of the withdrawal; may be null for refunds from Fragment",
+                    "is_optional": true,
+                    "type": "RevenueWithdrawalState"
+                }
+            },
+            "type": "StarTransactionPartner"
         },
-        "starTransactionSourceUser": {
+        "starTransactionPartnerUser": {
             "description": "The transaction is a transaction with another user",
             "args": {
                 "user_id": {
@@ -2940,12 +2946,23 @@
                     "type": "productInfo"
                 }
             },
-            "type": "StarTransactionSource"
+            "type": "StarTransactionPartner"
         },
-        "starTransactionSourceUnsupported": {
-            "description": "The transaction is a transaction with unknown source",
+        "starTransactionPartnerChannel": {
+            "description": "The transaction is a transaction with a channel chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StarTransactionPartner"
+        },
+        "starTransactionPartnerUnsupported": {
+            "description": "The transaction is a transaction with unknown partner",
             "args": {},
-            "type": "StarTransactionSource"
+            "type": "StarTransactionPartner"
         },
         "starTransaction": {
             "description": "Represents a transaction changing the amount of owned Telegram stars",
@@ -2970,10 +2987,10 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "source": {
-                    "description": "Source of the transaction, or its recipient for outgoing transactions",
+                "partner": {
+                    "description": "Source of the incoming transaction, or its recipient for outgoing transactions",
                     "is_optional": false,
-                    "type": "StarTransactionSource"
+                    "type": "StarTransactionPartner"
                 }
             },
             "type": "StarTransaction"
@@ -3600,7 +3617,7 @@
             "description": "The user is the owner of the chat and has all the administrator privileges",
             "args": {
                 "custom_title": {
-                    "description": "A custom title of the owner; 0-16 characters without emojis; applicable to supergroups only",
+                    "description": "A custom title of the owner; 0-16 characters without emoji; applicable to supergroups only",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -3621,7 +3638,7 @@
             "description": "The user is a member of the chat and has some additional privileges. In basic groups, administrators can edit and delete messages sent by others, add new members, ban unprivileged members, and manage video chats. In supergroups and channels, there are more detailed options for administrator privileges",
             "args": {
                 "custom_title": {
-                    "description": "A custom title of the administrator; 0-16 characters without emojis; applicable to supergroups only",
+                    "description": "A custom title of the administrator; 0-16 characters without emoji; applicable to supergroups only",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -5135,20 +5152,36 @@
             "type": "MessageReplyTo"
         },
         "inputMessageReplyToMessage": {
-            "description": "Describes a message to be replied",
+            "description": "Describes a message to be replied in the same chat and forum topic",
             "args": {
-                "chat_id": {
-                    "description": "The identifier of the chat to which the message to be replied belongs; pass 0 if the message to be replied is in the same chat. Must always be 0 for replies in secret chats. A message can be replied in another chat or topic only if message.can_be_replied_in_another_chat",
-                    "is_optional": false,
-                    "type": "int53"
-                },
                 "message_id": {
-                    "description": "The identifier of the message to be replied in the same or the specified chat",
+                    "description": "The identifier of the message to be replied in the same chat and forum topic",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "quote": {
                     "description": "Quote from the message to be replied; pass null if none. Must always be null for replies in secret chats",
+                    "is_optional": true,
+                    "type": "inputTextQuote"
+                }
+            },
+            "type": "InputMessageReplyTo"
+        },
+        "inputMessageReplyToExternalMessage": {
+            "description": "Describes a message to be replied that is from a different chat or a forum topic; not supported in secret chats",
+            "args": {
+                "chat_id": {
+                    "description": "The identifier of the chat to which the message to be replied belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "The identifier of the message to be replied in the specified chat. A message can be replied in another chat or topic only if message.can_be_replied_in_another_chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "quote": {
+                    "description": "Quote from the message to be replied; pass null if none",
                     "is_optional": true,
                     "type": "inputTextQuote"
                 }
@@ -6060,6 +6093,11 @@
                     "description": "Content of the message draft; must be of the type inputMessageText, inputMessageVideoNote, or inputMessageVoiceNote",
                     "is_optional": false,
                     "type": "InputMessageContent"
+                },
+                "effect_id": {
+                    "description": "Identifier of the effect to apply to the message when it is sent; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
                 }
             },
             "type": "DraftMessage"
@@ -8963,6 +9001,32 @@
             },
             "type": "Address"
         },
+        "locationAddress": {
+            "description": "Describes an address of a location",
+            "args": {
+                "country_code": {
+                    "description": "A two-letter ISO 3166-1 alpha-2 country code",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "state": {
+                    "description": "State, if applicable; empty if unknown",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "city": {
+                    "description": "City; empty if unknown",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "street": {
+                    "description": "The address; empty if unknown",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LocationAddress"
+        },
         "themeParameters": {
             "description": "Contains parameters of the application theme",
             "args": {
@@ -9357,7 +9421,7 @@
             "description": "The payment form is for a payment in Telegram stars",
             "args": {
                 "star_count": {
-                    "description": "Number of stars that will be paid",
+                    "description": "Number of Telegram stars that will be paid",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -9462,7 +9526,7 @@
             "description": "The payment was done using Telegram stars",
             "args": {
                 "star_count": {
-                    "description": "Number of stars that were paid",
+                    "description": "Number of Telegram stars that were paid",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -11997,7 +12061,7 @@
                     "type": "MessageSchedulingState"
                 },
                 "effect_id": {
-                    "description": "Identifier of the effect to apply to the message; applicable only to sendMessage and sendMessageAlbum in private chats",
+                    "description": "Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage and sendMessageAlbum in private chats",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -12881,10 +12945,10 @@
             "type": "EmojiKeyword"
         },
         "emojiKeywords": {
-            "description": "Represents a list of emoji with their keywords",
+            "description": "Represents a list of emojis with their keywords",
             "args": {
                 "emoji_keywords": {
-                    "description": "List of emoji with their keywords",
+                    "description": "List of emojis with their keywords",
                     "is_optional": false,
                     "type": "vector<emojiKeyword>"
                 }
@@ -12903,7 +12967,7 @@
             "type": "Stickers"
         },
         "emojis": {
-            "description": "Represents a list of emoji",
+            "description": "Represents a list of emojis",
             "args": {
                 "emojis": {
                     "description": "List of emojis",
@@ -12987,7 +13051,7 @@
                     "type": "vector<sticker>"
                 },
                 "emojis": {
-                    "description": "A list of emoji corresponding to the stickers in the same order. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object",
+                    "description": "A list of emojis corresponding to the stickers in the same order. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object",
                     "is_optional": false,
                     "type": "vector<emojis>"
                 }
@@ -13116,7 +13180,7 @@
             "description": "The category contains a list of similar emoji to search for in getStickers and searchStickers for stickers, or getInlineQueryResults with the bot getOption(\"animation_search_bot_username\") for animations",
             "args": {
                 "emojis": {
-                    "description": "List of emojis for search for",
+                    "description": "List of emojis to search for",
                     "is_optional": false,
                     "type": "vector<string>"
                 }
@@ -13212,6 +13276,11 @@
                     "description": "Clockwise rotation angle of the rectangle, in degrees; 0-360",
                     "is_optional": false,
                     "type": "double"
+                },
+                "corner_radius_percentage": {
+                    "description": "The radius of the rectangle corner rounding, as a percentage of the media width",
+                    "is_optional": false,
+                    "type": "double"
                 }
             },
             "type": "StoryAreaPosition"
@@ -13223,6 +13292,11 @@
                     "description": "The location",
                     "is_optional": false,
                     "type": "location"
+                },
+                "address": {
+                    "description": "Address of the location; may be null if unknown",
+                    "is_optional": true,
+                    "type": "locationAddress"
                 }
             },
             "type": "StoryAreaType"
@@ -13280,6 +13354,17 @@
             },
             "type": "StoryAreaType"
         },
+        "storyAreaTypeLink": {
+            "description": "An area pointing to a HTTP or tg:// link",
+            "args": {
+                "url": {
+                    "description": "HTTP or tg:// URL to be opened when the area is clicked",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StoryAreaType"
+        },
         "storyArea": {
             "description": "Describes a clickable rectangle area on a story media",
             "args": {
@@ -13303,6 +13388,11 @@
                     "description": "The location",
                     "is_optional": false,
                     "type": "location"
+                },
+                "address": {
+                    "description": "Address of the location; pass null if unknown",
+                    "is_optional": true,
+                    "type": "locationAddress"
                 }
             },
             "type": "InputStoryAreaType"
@@ -13376,6 +13466,17 @@
             },
             "type": "InputStoryAreaType"
         },
+        "inputStoryAreaTypeLink": {
+            "description": "An area pointing to a HTTP or tg:// link",
+            "args": {
+                "url": {
+                    "description": "HTTP or tg:// URL to be opened when the area is clicked",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
         "inputStoryArea": {
             "description": "Describes a clickable rectangle area on a story media to be added",
             "args": {
@@ -13396,7 +13497,7 @@
             "description": "Contains a list of story areas to be added",
             "args": {
                 "areas": {
-                    "description": "List of input story areas. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption(\"story_suggested_reaction_area_count_max\") inputStoryAreaTypeSuggestedReaction areas, and up to 1 inputStoryAreaTypeMessage area",
+                    "description": "List of input story areas. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption(\"story_suggested_reaction_area_count_max\") inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, and up to getOption(\"story_link_area_count_max\") inputStoryAreaTypeLink areas if the current user is a Telegram Premium user",
                     "is_optional": false,
                     "type": "vector<inputStoryArea>"
                 }
@@ -13753,6 +13854,27 @@
                 }
             },
             "type": "Stories"
+        },
+        "foundStories": {
+            "description": "Contains a list of stories found by a search",
+            "args": {
+                "total_count": {
+                    "description": "Approximate total number of stories found",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "stories": {
+                    "description": "List of stories",
+                    "is_optional": false,
+                    "type": "vector<story>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "FoundStories"
         },
         "storyFullId": {
             "description": "Contains identifier of a story along with identifier of its sender",
@@ -14606,7 +14728,7 @@
                     "type": "bytes"
                 },
                 "emojis": {
-                    "description": "Encryption key emojis fingerprint",
+                    "description": "Encryption key fingerprint represented as 4 emoji",
                     "is_optional": false,
                     "type": "vector<string>"
                 },
@@ -17893,7 +18015,7 @@
             "type": "PremiumStoryFeature"
         },
         "premiumStoryFeatureLinksAndFormatting": {
-            "description": "The ability to use links and formatting in story caption",
+            "description": "The ability to use links and formatting in story caption, and use inputStoryAreaTypeLink areas",
             "args": {},
             "type": "PremiumStoryFeature"
         },
@@ -22270,13 +22392,13 @@
             },
             "type": "StoryStatistics"
         },
-        "chatRevenueWithdrawalStatePending": {
+        "revenueWithdrawalStatePending": {
             "description": "Withdrawal is pending",
             "args": {},
-            "type": "ChatRevenueWithdrawalState"
+            "type": "RevenueWithdrawalState"
         },
-        "chatRevenueWithdrawalStateCompleted": {
-            "description": "Withdrawal was completed",
+        "revenueWithdrawalStateSucceeded": {
+            "description": "Withdrawal succeeded",
             "args": {
                 "date": {
                     "description": "Point in time (Unix timestamp) when the withdrawal was completed",
@@ -22289,12 +22411,12 @@
                     "type": "string"
                 }
             },
-            "type": "ChatRevenueWithdrawalState"
+            "type": "RevenueWithdrawalState"
         },
-        "chatRevenueWithdrawalStateFailed": {
-            "description": "Withdrawal has_failed",
+        "revenueWithdrawalStateFailed": {
+            "description": "Withdrawal failed",
             "args": {},
-            "type": "ChatRevenueWithdrawalState"
+            "type": "RevenueWithdrawalState"
         },
         "chatRevenueTransactionTypeEarnings": {
             "description": "Describes earnings from sponsored messages in a chat in some time frame",
@@ -22328,7 +22450,7 @@
                 "state": {
                     "description": "State of the withdrawal",
                     "is_optional": false,
-                    "type": "ChatRevenueWithdrawalState"
+                    "type": "RevenueWithdrawalState"
                 }
             },
             "type": "ChatRevenueTransactionType"
@@ -22385,6 +22507,58 @@
                 }
             },
             "type": "ChatRevenueTransactions"
+        },
+        "starRevenueStatus": {
+            "description": "Contains information about Telegram stars earned by a bot or a chat",
+            "args": {
+                "total_count": {
+                    "description": "Total number of the stars earned",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "current_count": {
+                    "description": "The number of Telegram stars that aren't withdrawn yet",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "available_count": {
+                    "description": "The number of Telegram stars that are available for withdrawal",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "withdrawal_enabled": {
+                    "description": "True, if Telegram stars can be withdrawn now or later",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "next_withdrawal_in": {
+                    "description": "Time left before the next withdrawal can be started, in seconds; 0 if withdrawal can be started now",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StarRevenueStatus"
+        },
+        "starRevenueStatistics": {
+            "description": "A detailed statistics about Telegram stars earned by a bot or a chat",
+            "args": {
+                "revenue_by_day_graph": {
+                    "description": "A graph containing amount of revenue in a given day",
+                    "is_optional": false,
+                    "type": "StatisticalGraph"
+                },
+                "status": {
+                    "description": "Telegram star revenue status",
+                    "is_optional": false,
+                    "type": "starRevenueStatus"
+                },
+                "usd_rate": {
+                    "description": "Current conversion rate of a Telegram star to USD",
+                    "is_optional": false,
+                    "type": "double"
+                }
+            },
+            "type": "StarRevenueStatistics"
         },
         "point": {
             "description": "A point on a Cartesian plane",
@@ -24616,6 +24790,22 @@
             },
             "type": "Update"
         },
+        "updateStarRevenueStatus": {
+            "description": "The Telegram star revenue earned by a bot or a chat has changed. If star transactions screen of the chat is opened, then getStarTransactions may be called to fetch new transactions",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the owner of the Telegram stars",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "status": {
+                    "description": "New Telegram star revenue status",
+                    "is_optional": false,
+                    "type": "starRevenueStatus"
+                }
+            },
+            "type": "Update"
+        },
         "updateSpeechRecognitionTrial": {
             "description": "The parameters of speech recognition without Telegram Premium subscription has changed",
             "args": {
@@ -24928,6 +25118,42 @@
                     "description": "Identifier of the inline message from which the query originated",
                     "is_optional": false,
                     "type": "string"
+                },
+                "chat_instance": {
+                    "description": "An identifier uniquely corresponding to the chat a message was sent to",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "payload": {
+                    "description": "Query payload",
+                    "is_optional": false,
+                    "type": "CallbackQueryPayload"
+                }
+            },
+            "type": "Update"
+        },
+        "updateNewBusinessCallbackQuery": {
+            "description": "A new incoming callback query from a business message; for bots only",
+            "args": {
+                "id": {
+                    "description": "Unique query identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "sender_user_id": {
+                    "description": "Identifier of the user who sent the query",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "connection_id": {
+                    "description": "Unique identifier of the business connection",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "message": {
+                    "description": "The message from the business account from which the query originated",
+                    "is_optional": false,
+                    "type": "businessMessage"
                 },
                 "chat_instance": {
                     "description": "An identifier uniquely corresponding to the chat a message was sent to",
@@ -26692,11 +26918,11 @@
             },
             "type": "FoundMessages"
         },
-        "searchPublicHashtagMessages": {
-            "description": "Searches for public channel posts with the given hashtag. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+        "searchPublicMessagesByTag": {
+            "description": "Searches for public channel posts containing the given hashtag or cashtag. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
             "args": {
-                "hashtag": {
-                    "description": "Hashtag to search for",
+                "tag": {
+                    "description": "Hashtag or cashtag to search for",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -26713,36 +26939,110 @@
             },
             "type": "FoundMessages"
         },
-        "getSearchedForHashtags": {
-            "description": "Returns recently searched for hashtags by their prefix",
+        "searchPublicStoriesByTag": {
+            "description": "Searches for public stories containing the given hashtag or cashtag. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
             "args": {
-                "prefix": {
-                    "description": "Prefix of hashtags to return",
+                "tag": {
+                    "description": "Hashtag or cashtag to search for",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
                     "is_optional": false,
                     "type": "string"
                 },
                 "limit": {
-                    "description": "The maximum number of hashtags to be returned",
+                    "description": "The maximum number of stories to be returned; up to 100. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "FoundStories"
+        },
+        "searchPublicStoriesByLocation": {
+            "description": "Searches for public stories by the given address location. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
+            "args": {
+                "address": {
+                    "description": "Address of the location",
+                    "is_optional": false,
+                    "type": "locationAddress"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of stories to be returned; up to 100. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "FoundStories"
+        },
+        "searchPublicStoriesByVenue": {
+            "description": "Searches for public stories from the given venue. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
+            "args": {
+                "venue_provider": {
+                    "description": "Provider of the venue",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "venue_id": {
+                    "description": "Identifier of the venue in the provider database",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of stories to be returned; up to 100. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "FoundStories"
+        },
+        "getSearchedForTags": {
+            "description": "Returns recently searched for hashtags or cashtags by their prefix",
+            "args": {
+                "tag_prefix": {
+                    "description": "Prefix of hashtags or cashtags to return",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of items to be returned",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
             "type": "Hashtags"
         },
-        "removeSearchedForHashtag": {
-            "description": "Removes a hashtag from the list of recently searched for hashtags",
+        "removeSearchedForTag": {
+            "description": "Removes a hashtag or a cashtag from the list of recently searched for hashtags or cashtags",
             "args": {
-                "hashtag": {
-                    "description": "Hashtag to delete",
+                "tag": {
+                    "description": "Hashtag or cashtag to delete",
                     "is_optional": false,
                     "type": "string"
                 }
             },
             "type": "Ok"
         },
-        "clearSearchedForHashtags": {
-            "description": "Clears the list of recently searched for hashtags",
-            "args": {},
+        "clearSearchedForTags": {
+            "description": "Clears the list of recently searched for hashtags or cashtags",
+            "args": {
+                "clear_cashtags": {
+                    "description": "Pass true to clear the list of recently searched for cashtags; otherwise, the list of recently searched for hashtags will be cleared",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
             "type": "Ok"
         },
         "deleteAllCallMessages": {
@@ -27763,7 +28063,7 @@
                     "type": "int53"
                 },
                 "message_id": {
-                    "description": "Identifier of the message",
+                    "description": "Identifier of the message. The message must be one of the following types: messageAnimation, messageAudio, messageDocument, messagePhoto, messageText, messageVideo",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -27861,6 +28161,202 @@
                 }
             },
             "type": "BusinessMessages"
+        },
+        "editBusinessMessageText": {
+            "description": "Edits the text of a text or game message sent on behalf of a business account; for bots only",
+            "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which the message was sent",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "The chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_markup": {
+                    "description": "The new message reply markup; pass null if none",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                },
+                "input_message_content": {
+                    "description": "New text content of the message. Must be of type inputMessageText",
+                    "is_optional": false,
+                    "type": "InputMessageContent"
+                }
+            },
+            "type": "BusinessMessage"
+        },
+        "editBusinessMessageLiveLocation": {
+            "description": "Edits the content of a live location in a message sent on behalf of a business account; for bots only",
+            "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which the message was sent",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "The chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_markup": {
+                    "description": "The new message reply markup; pass null if none",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                },
+                "location": {
+                    "description": "New location content of the message; pass null to stop sharing the live location",
+                    "is_optional": true,
+                    "type": "location"
+                },
+                "live_period": {
+                    "description": "New time relative to the message send date, for which the location can be updated, in seconds. If 0x7FFFFFFF specified, then the location can be updated forever. Otherwise, must not exceed the current live_period by more than a day, and the live location expiration date must remain in the next 90 days. Pass 0 to keep the current live_period",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "heading": {
+                    "description": "The new direction in which the location moves, in degrees; 1-360. Pass 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "proximity_alert_radius": {
+                    "description": "The new maximum distance for proximity alerts, in meters (0-100000). Pass 0 if the notification is disabled",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "BusinessMessage"
+        },
+        "editBusinessMessageMedia": {
+            "description": "Edits the content of a message with an animation, an audio, a document, a photo or a video in a message sent on behalf of a business account; for bots only",
+            "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which the message was sent",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "The chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_markup": {
+                    "description": "The new message reply markup; pass null if none; for bots only",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                },
+                "input_message_content": {
+                    "description": "New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo",
+                    "is_optional": false,
+                    "type": "InputMessageContent"
+                }
+            },
+            "type": "BusinessMessage"
+        },
+        "editBusinessMessageCaption": {
+            "description": "Edits the caption of a message sent on behalf of a business account; for bots only",
+            "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which the message was sent",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "The chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_markup": {
+                    "description": "The new message reply markup; pass null if none",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                },
+                "caption": {
+                    "description": "New message content caption; pass null to remove caption; 0-getOption(\"message_caption_length_max\") characters",
+                    "is_optional": true,
+                    "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "Pass true to show the caption above the media; otherwise, caption will be shown below the media. Can be true only for animation, photo, and video messages",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "BusinessMessage"
+        },
+        "editBusinessMessageReplyMarkup": {
+            "description": "Edits the reply markup of a message sent on behalf of a business account; for bots only",
+            "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which the message was sent",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "The chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_markup": {
+                    "description": "The new message reply markup; pass null if none",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                }
+            },
+            "type": "BusinessMessage"
+        },
+        "stopBusinessPoll": {
+            "description": "Stops a poll sent on behalf of a business account; for bots only",
+            "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which the message with the poll was sent",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "The chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message containing the poll",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_markup": {
+                    "description": "The new message reply markup; pass null if none",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                }
+            },
+            "type": "BusinessMessage"
         },
         "checkQuickReplyShortcutName": {
             "description": "Checks validness of a name for a quick reply shortcut. Can be called synchronously",
@@ -28054,7 +28550,7 @@
             "type": "Ok"
         },
         "getForumTopicDefaultIcons": {
-            "description": "Returns the list of custom emojis, which can be used as forum topic icon by all users",
+            "description": "Returns the list of custom emoji, which can be used as forum topic icon by all users",
             "args": {},
             "type": "Stickers"
         },
@@ -33042,7 +33538,7 @@
                     "type": "StickerType"
                 },
                 "query": {
-                    "description": "Search query; a space-separated list of emoji or a keyword prefix. If empty, returns all known installed stickers",
+                    "description": "Search query; a space-separated list of emojis or a keyword prefix. If empty, returns all known installed stickers",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -33094,7 +33590,7 @@
                     "type": "StickerType"
                 },
                 "emojis": {
-                    "description": "Space-separated list of emoji to search for; must be non-empty",
+                    "description": "Space-separated list of emojis to search for; must be non-empty",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -33418,7 +33914,7 @@
             "type": "Emojis"
         },
         "getEmojiCategories": {
-            "description": "Returns available emojis categories",
+            "description": "Returns available emoji categories",
             "args": {
                 "type": {
                     "description": "Type of emoji categories to return; pass null to get default emoji categories",
@@ -35428,6 +35924,43 @@
             },
             "type": "ChatRevenueTransactions"
         },
+        "getStarRevenueStatistics": {
+            "description": "Returns detailed Telegram star revenue statistics",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_revenue_statistics == true",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "is_dark": {
+                    "description": "Pass true if a dark theme is used by the application",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StarRevenueStatistics"
+        },
+        "getStarWithdrawalUrl": {
+            "description": "Returns URL for Telegram star withdrawal",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_revenue_statistics == true",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "star_count": {
+                    "description": "The number of Telegram stars to withdraw. Must be at least getOption(\"star_withdrawal_count_min\")",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "password": {
+                    "description": "The 2-step verification password of the current user",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "HttpUrl"
+        },
         "getChatStatistics": {
             "description": "Returns detailed statistics about a chat. Currently, this method can be used only for supergroups and channels. Can be used only if supergroupFullInfo.can_get_statistics == true",
             "args": {
@@ -36111,7 +36644,7 @@
             "type": "Ok"
         },
         "setStickerEmojis": {
-            "description": "Changes the list of emoji corresponding to a sticker. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user",
+            "description": "Changes the list of emojis corresponding to a sticker. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user",
             "args": {
                 "sticker": {
                     "description": "Sticker",
@@ -36329,17 +36862,27 @@
             "type": "StarPaymentOptions"
         },
         "getStarTransactions": {
-            "description": "Returns the list of Telegram star transactions for the current user",
+            "description": "Returns the list of Telegram star transactions for the specified owner",
             "args": {
-                "offset": {
-                    "description": "Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results",
+                "owner_id": {
+                    "description": "Identifier of the owner of the Telegram stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_revenue_statistics == true",
                     "is_optional": false,
-                    "type": "string"
+                    "type": "MessageSender"
                 },
                 "direction": {
                     "description": "Direction of the transactions to receive; pass null to get all transactions",
                     "is_optional": true,
                     "type": "StarTransactionDirection"
+                },
+                "offset": {
+                    "description": "Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of transactions to return",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "StarTransactions"
