@@ -282,7 +282,7 @@ class Methods(TDLibFunctions):
             else:
                 caption = {"@type": "formattedText", "text": caption, "entities": []}
 
-        if load_replied_message == None and not self.use_message_database:
+        if load_replied_message is None and not self.use_message_database:
             load_replied_message = True
 
         if (
@@ -450,7 +450,7 @@ class Methods(TDLibFunctions):
             else:
                 caption = {"@type": "formattedText", "text": caption, "entities": []}
 
-        if load_replied_message == None and not self.use_message_database:
+        if load_replied_message is None and not self.use_message_database:
             load_replied_message = True
 
         if (
@@ -609,7 +609,7 @@ class Methods(TDLibFunctions):
             else:
                 caption = {"@type": "formattedText", "text": caption, "entities": []}
 
-        if load_replied_message == None and not self.use_message_database:
+        if load_replied_message is None and not self.use_message_database:
             load_replied_message = True
 
         if (
@@ -780,7 +780,7 @@ class Methods(TDLibFunctions):
             else:
                 caption = {"@type": "formattedText", "text": caption, "entities": []}
 
-        if load_replied_message == None and not self.use_message_database:
+        if load_replied_message is None and not self.use_message_database:
             load_replied_message = True
 
         if (
@@ -963,7 +963,7 @@ class Methods(TDLibFunctions):
             else:
                 caption = {"@type": "formattedText", "text": caption, "entities": []}
 
-        if load_replied_message == None and not self.use_message_database:
+        if load_replied_message is None and not self.use_message_database:
             load_replied_message = True
 
         if (
@@ -1101,7 +1101,7 @@ class Methods(TDLibFunctions):
 
         """
 
-        if load_replied_message == None and not self.use_message_database:
+        if load_replied_message is None and not self.use_message_database:
             load_replied_message = True
 
         if (
@@ -1256,7 +1256,7 @@ class Methods(TDLibFunctions):
             else:
                 caption = {"@type": "formattedText", "text": caption, "entities": []}
 
-        if load_replied_message == None and not self.use_message_database:
+        if load_replied_message is None and not self.use_message_database:
             load_replied_message = True
 
         if (
@@ -1391,7 +1391,7 @@ class Methods(TDLibFunctions):
             :class:`~pytdbot.types.Result`
         """
 
-        if load_replied_message == None and not self.use_message_database:
+        if load_replied_message is None and not self.use_message_database:
             load_replied_message = True
 
         if (
@@ -1551,7 +1551,7 @@ class Methods(TDLibFunctions):
                     "entities": [],
                 }
 
-        if load_replied_message == None and not self.use_message_database:
+        if load_replied_message is None and not self.use_message_database:
             load_replied_message = True
 
         if (
