@@ -1,12 +1,13 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.31",
-    "commit_hash": "8f19c751dc296cedb9a921badb7a02a8c0cb1aeb",
+    "version": "1.8.32",
+    "commit_hash": "35cfcf5d15981b99e8f31a2195641f035dd516c3",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for an email address",
         "EmailAddressResetState": "Describes reset state of an email address",
         "AuthorizationState": "Represents the current authorization state of the TDLib client",
+        "FirebaseDeviceVerificationParameters": "Describes parameters to be used for device verification",
         "InputFile": "Points to a file",
         "ThumbnailFormat": "Describes format of a thumbnail",
         "MaskPoint": "Part of the face, relative to which a mask is placed",
@@ -60,7 +61,7 @@
         "PaymentFormType": "Describes type of payment form",
         "PaymentReceiptType": "Describes type of successful payment",
         "InputInvoice": "Describes an invoice to process",
-        "MessageExtendedMedia": "Describes a media, which is attached to an invoice",
+        "PaidMedia": "Describes a paid media",
         "PassportElementType": "Contains the type of Telegram Passport element",
         "PassportElement": "Contains information about a Telegram Passport element",
         "InputPassportElement": "Contains information about a Telegram Passport element to be saved",
@@ -68,6 +69,7 @@
         "InputPassportElementErrorSource": "Contains the description of an error in a Telegram Passport element; for bots only",
         "MessageContent": "Contains the content of a message",
         "TextEntityType": "Represents a part of the text which must be formatted differently",
+        "InputPaidMediaType": "Describes type of paid media to sent",
         "MessageSchedulingState": "Contains information about the time when a scheduled message will be sent",
         "MessageSelfDestructType": "Describes when a message will be self-destructed",
         "InputMessageContent": "The content of a message to send",
@@ -277,15 +279,10 @@
         "authenticationCodeTypeFirebaseAndroid": {
             "description": "A digit-only authentication code is delivered via Firebase Authentication to the official Android application",
             "args": {
-                "use_play_integrity": {
-                    "description": "True, if Play Integrity API must be used for device verification. Otherwise, SafetyNet Attestation API must be used",
+                "device_verification_parameters": {
+                    "description": "Parameters to be used for device verification",
                     "is_optional": false,
-                    "type": "Bool"
-                },
-                "nonce": {
-                    "description": "Nonce to pass to the Play Integrity API or the SafetyNet Attestation API",
-                    "is_optional": false,
-                    "type": "bytes"
+                    "type": "FirebaseDeviceVerificationParameters"
                 },
                 "length": {
                     "description": "Length of the code",
@@ -612,6 +609,33 @@
             "description": "TDLib client is in its final state. All databases are closed and all resources are released. No other updates will be received after this. All queries will be responded to with error code 500. To continue working, one must create a new instance of the TDLib client",
             "args": {},
             "type": "AuthorizationState"
+        },
+        "firebaseDeviceVerificationParametersSafetyNet": {
+            "description": "Device verification must be performed with the SafetyNet Attestation API",
+            "args": {
+                "nonce": {
+                    "description": "Nonce to pass to the SafetyNet Attestation API",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "FirebaseDeviceVerificationParameters"
+        },
+        "firebaseDeviceVerificationParametersPlayIntegrity": {
+            "description": "Device verification must be performed with the classic Play Integrity verification (https://developer.android.com/google/play/integrity/classic)",
+            "args": {
+                "nonce": {
+                    "description": "Base64url-encoded nonce to pass to the Play Integrity API",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "cloud_project_number": {
+                    "description": "Cloud project number to pass to the Play Integrity API",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "FirebaseDeviceVerificationParameters"
         },
         "passwordState": {
             "description": "Represents the current state of 2-step verification",
@@ -1956,7 +1980,7 @@
                     "type": "string"
                 },
                 "url": {
-                    "description": "URL to be passed to openWebApp",
+                    "description": "URL of a Web App to open when the button is pressed. If the link is of the type internalLinkTypeWebApp, then it must be processed accordingly. Otherwise, the link must be passed to openWebApp",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -2767,7 +2791,7 @@
             "type": "PremiumStatePaymentOption"
         },
         "premiumGiftCodePaymentOption": {
-            "description": "Describes an option for creating Telegram Premium gift codes",
+            "description": "Describes an option for creating Telegram Premium gift codes. Use telegramPaymentPurposePremiumGiftCodes for out-of-store payments",
             "args": {
                 "currency": {
                     "description": "ISO 4217 currency code for Telegram Premium gift code payment",
@@ -2855,7 +2879,7 @@
             "type": "PremiumGiftCodeInfo"
         },
         "starPaymentOption": {
-            "description": "Describes an option for buying Telegram stars",
+            "description": "Describes an option for buying Telegram stars. Use telegramPaymentPurposeStars for out-of-store payments",
             "args": {
                 "currency": {
                     "description": "ISO 4217 currency code for the payment",
@@ -2932,18 +2956,28 @@
             },
             "type": "StarTransactionPartner"
         },
-        "starTransactionPartnerUser": {
-            "description": "The transaction is a transaction with another user",
+        "starTransactionPartnerTelegramAds": {
+            "description": "The transaction is a transaction with Telegram Ad platform",
+            "args": {},
+            "type": "StarTransactionPartner"
+        },
+        "starTransactionPartnerBot": {
+            "description": "The transaction is a transaction with a bot",
             "args": {
-                "user_id": {
-                    "description": "Identifier of the user",
+                "bot_user_id": {
+                    "description": "Identifier of the bot",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "product_info": {
-                    "description": "Information about the bought product; may be null if none",
+                    "description": "Information about the bought product; may be null if not applicable",
                     "is_optional": true,
                     "type": "productInfo"
+                },
+                "invoice_payload": {
+                    "description": "Invoice payload; for bots only",
+                    "is_optional": false,
+                    "type": "bytes"
                 }
             },
             "type": "StarTransactionPartner"
@@ -2955,6 +2989,16 @@
                     "description": "Identifier of the chat",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "paid_media_message_id": {
+                    "description": "Identifier of the corresponding message with paid media; can be an identifier of a deleted message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "media": {
+                    "description": "Information about the bought media",
+                    "is_optional": false,
+                    "type": "vector<PaidMedia>"
                 }
             },
             "type": "StarTransactionPartner"
@@ -4446,6 +4490,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "has_paid_media_allowed": {
+                    "description": "True, if paid media can be sent and forwarded to the channel chat; for channels only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "has_pinned_stories": {
                     "description": "True, if the supergroup or channel has pinned stories",
                     "is_optional": false,
@@ -5128,7 +5177,7 @@
                     "type": "int32"
                 },
                 "content": {
-                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageInvoice, messageLocation, messagePhoto, messagePoll, messagePremiumGiveaway, messagePremiumGiveawayWinners, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
+                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messagePremiumGiveaway, messagePremiumGiveawayWinners, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
                     "is_optional": true,
                     "type": "MessageContent"
                 }
@@ -7139,7 +7188,7 @@
             "description": "A button that opens a specified URL",
             "args": {
                 "url": {
-                    "description": "HTTP or tg:// URL to open",
+                    "description": "HTTP or tg:// URL to open. If the link is of the type internalLinkTypeWebApp, then the button must be marked as a Web App button",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -9050,6 +9099,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "section_separator_color": {
+                    "description": "A color of the section separator in the RGB24 format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "text_color": {
                     "description": "A color of text in the RGB24 format",
                     "is_optional": false,
@@ -9565,7 +9619,7 @@
             "type": "PaymentReceipt"
         },
         "inputInvoiceMessage": {
-            "description": "An invoice from a message of the type messageInvoice",
+            "description": "An invoice from a message of the type messageInvoice or paid media purchase from messagePaidMedia",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier of the message",
@@ -9602,7 +9656,7 @@
             },
             "type": "InputInvoice"
         },
-        "messageExtendedMediaPreview": {
+        "paidMediaPreview": {
             "description": "The media is hidden until the invoice is paid",
             "args": {
                 "width": {
@@ -9624,57 +9678,36 @@
                     "description": "Media minithumbnail; may be null",
                     "is_optional": true,
                     "type": "minithumbnail"
-                },
-                "caption": {
-                    "description": "Media caption",
-                    "is_optional": false,
-                    "type": "formattedText"
                 }
             },
-            "type": "MessageExtendedMedia"
+            "type": "PaidMedia"
         },
-        "messageExtendedMediaPhoto": {
+        "paidMediaPhoto": {
             "description": "The media is a photo",
             "args": {
                 "photo": {
                     "description": "The photo",
                     "is_optional": false,
                     "type": "photo"
-                },
-                "caption": {
-                    "description": "Photo caption",
-                    "is_optional": false,
-                    "type": "formattedText"
                 }
             },
-            "type": "MessageExtendedMedia"
+            "type": "PaidMedia"
         },
-        "messageExtendedMediaVideo": {
+        "paidMediaVideo": {
             "description": "The media is a video",
             "args": {
                 "video": {
                     "description": "The video",
                     "is_optional": false,
                     "type": "video"
-                },
-                "caption": {
-                    "description": "Photo caption",
-                    "is_optional": false,
-                    "type": "formattedText"
                 }
             },
-            "type": "MessageExtendedMedia"
+            "type": "PaidMedia"
         },
-        "messageExtendedMediaUnsupported": {
+        "paidMediaUnsupported": {
             "description": "The media is unsupported",
-            "args": {
-                "caption": {
-                    "description": "Media caption",
-                    "is_optional": false,
-                    "type": "formattedText"
-                }
-            },
-            "type": "MessageExtendedMedia"
+            "args": {},
+            "type": "PaidMedia"
         },
         "premiumGiveawayParameters": {
             "description": "Describes parameters of a Telegram Premium giveaway",
@@ -10666,7 +10699,7 @@
                     "type": "formattedText"
                 },
                 "show_caption_above_media": {
-                    "description": "True, if caption must be shown above the animation; otherwise, caption must be shown below the animation",
+                    "description": "True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -10715,6 +10748,32 @@
             },
             "type": "MessageContent"
         },
+        "messagePaidMedia": {
+            "description": "A message with paid media",
+            "args": {
+                "star_count": {
+                    "description": "Number of stars needed to buy access to the media in the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "media": {
+                    "description": "Information about the media",
+                    "is_optional": false,
+                    "type": "vector<PaidMedia>"
+                },
+                "caption": {
+                    "description": "Media caption",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "True, if the caption must be shown above the media; otherwise, the caption must be shown below the media",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messagePhoto": {
             "description": "A photo message",
             "args": {
@@ -10729,7 +10788,7 @@
                     "type": "formattedText"
                 },
                 "show_caption_above_media": {
-                    "description": "True, if caption must be shown above the photo; otherwise, caption must be shown below the photo",
+                    "description": "True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -10776,7 +10835,7 @@
                     "type": "formattedText"
                 },
                 "show_caption_above_media": {
-                    "description": "True, if caption must be shown above the video; otherwise, caption must be shown below the video",
+                    "description": "True, if the caption must be shown above the video; otherwise, the caption must be shown below the video",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -11036,10 +11095,15 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "extended_media": {
-                    "description": "Extended media attached to the invoice; may be null",
+                "paid_media": {
+                    "description": "Extended media attached to the invoice; may be null if none",
                     "is_optional": true,
-                    "type": "MessageExtendedMedia"
+                    "type": "PaidMedia"
+                },
+                "paid_media_caption": {
+                    "description": "Extended media caption; may be null if none",
+                    "is_optional": true,
+                    "type": "formattedText"
                 }
             },
             "type": "MessageContent"
@@ -11599,7 +11663,7 @@
             "type": "MessageContent"
         },
         "messagePremiumGiveawayCreated": {
-            "description": "A Telegram Premium giveaway was created for the chat",
+            "description": "A Telegram Premium giveaway was created for the chat. Use telegramPaymentPurposePremiumGiveaway or storePaymentPurposePremiumGiveaway to create a giveaway",
             "args": {},
             "type": "MessageContent"
         },
@@ -12000,6 +12064,63 @@
             },
             "type": "InputThumbnail"
         },
+        "inputPaidMediaTypePhoto": {
+            "description": "The media is a photo. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20",
+            "args": {},
+            "type": "InputPaidMediaType"
+        },
+        "inputPaidMediaTypeVideo": {
+            "description": "The media is a video",
+            "args": {
+                "duration": {
+                    "description": "Duration of the video, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "supports_streaming": {
+                    "description": "True, if the video is supposed to be streamed",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "InputPaidMediaType"
+        },
+        "inputPaidMedia": {
+            "description": "Describes a paid media to be sent",
+            "args": {
+                "type": {
+                    "description": "Type of the media",
+                    "is_optional": false,
+                    "type": "InputPaidMediaType"
+                },
+                "media": {
+                    "description": "Photo or video to be sent",
+                    "is_optional": false,
+                    "type": "InputFile"
+                },
+                "thumbnail": {
+                    "description": "Media thumbnail; pass null to skip thumbnail uploading",
+                    "is_optional": true,
+                    "type": "inputThumbnail"
+                },
+                "added_sticker_file_ids": {
+                    "description": "File identifiers of the stickers added to the media, if applicable",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                },
+                "width": {
+                    "description": "Media width",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "height": {
+                    "description": "Media height",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "InputPaidMedia"
+        },
         "messageSchedulingStateSendAtDate": {
             "description": "The message will be sent at the specified date",
             "args": {
@@ -12079,7 +12200,7 @@
             "type": "MessageSendOptions"
         },
         "messageCopyOptions": {
-            "description": "Options to be used when a message content is copied without reference to the original sender. Service messages, messages with messageInvoice, messagePremiumGiveaway, or messagePremiumGiveawayWinners content can't be copied",
+            "description": "Options to be used when a message content is copied without reference to the original sender. Service messages, messages with messageInvoice, messagePaidMedia, messagePremiumGiveaway, or messagePremiumGiveawayWinners content can't be copied",
             "args": {
                 "send_copy": {
                     "description": "True, if content of the message needs to be copied without reference to the original sender. Always true if the message is forwarded to a secret chat or is local",
@@ -12164,7 +12285,7 @@
                     "type": "formattedText"
                 },
                 "show_caption_above_media": {
-                    "description": "True, if caption must be shown above the animation; otherwise, caption must be shown below the animation; not supported in secret chats",
+                    "description": "True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation; not supported in secret chats",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -12238,6 +12359,32 @@
             },
             "type": "InputMessageContent"
         },
+        "inputMessagePaidMedia": {
+            "description": "A message with paid media; can be used only in channel chats with supergroupFullInfo.has_paid_media_allowed",
+            "args": {
+                "star_count": {
+                    "description": "The number of stars that must be paid to see the media; 1-getOption(\"paid_media_message_star_count_max\")",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "paid_media": {
+                    "description": "The content of the paid media",
+                    "is_optional": false,
+                    "type": "vector<inputPaidMedia>"
+                },
+                "caption": {
+                    "description": "Message caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
+                    "is_optional": true,
+                    "type": "formattedText"
+                },
+                "show_caption_above_media": {
+                    "description": "True, if the caption must be shown above the video; otherwise, the caption must be shown below the video; not supported in secret chats",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "InputMessageContent"
+        },
         "inputMessagePhoto": {
             "description": "A photo message",
             "args": {
@@ -12272,7 +12419,7 @@
                     "type": "formattedText"
                 },
                 "show_caption_above_media": {
-                    "description": "True, if caption must be shown above the photo; otherwise, caption must be shown below the photo; not supported in secret chats",
+                    "description": "True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo; not supported in secret chats",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -12364,7 +12511,7 @@
                     "type": "formattedText"
                 },
                 "show_caption_above_media": {
-                    "description": "True, if caption must be shown above the video; otherwise, caption must be shown below the video; not supported in secret chats",
+                    "description": "True, if the caption must be shown above the video; otherwise, the caption must be shown below the video; not supported in secret chats",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -12581,10 +12728,15 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "extended_media_content": {
-                    "description": "The content of extended media attached to the invoice. The content of the message to be sent. Must be one of the following types: inputMessagePhoto, inputMessageVideo",
-                    "is_optional": false,
-                    "type": "InputMessageContent"
+                "paid_media": {
+                    "description": "The content of paid media attached to the invoice; pass null if none",
+                    "is_optional": true,
+                    "type": "inputPaidMedia"
+                },
+                "paid_media_caption": {
+                    "description": "Paid media caption; pass null to use an empty caption; 0-getOption(\"message_caption_length_max\") characters",
+                    "is_optional": true,
+                    "type": "formattedText"
                 }
             },
             "type": "InputMessageContent"
@@ -14525,7 +14677,7 @@
             "description": "The code is re-sent, because device verification has failed",
             "args": {
                 "error_message": {
-                    "description": "Cause of the verification failure, for example, PLAY_SERVICES_NOT_AVAILABLE, APNS_RECEIVE_TIMEOUT, APNS_INIT_FAILED, etc.",
+                    "description": "Cause of the verification failure, for example, PLAY_SERVICES_NOT_AVAILABLE, APNS_RECEIVE_TIMEOUT, or APNS_INIT_FAILED",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -17934,6 +18086,11 @@
             "args": {},
             "type": "PremiumFeature"
         },
+        "premiumFeatureMessageEffects": {
+            "description": "The ability to use all available message effects",
+            "args": {},
+            "type": "PremiumFeature"
+        },
         "businessFeatureLocation": {
             "description": "The ability to set location",
             "args": {},
@@ -18629,7 +18786,7 @@
                     "type": "BackgroundFill"
                 },
                 "intensity": {
-                    "description": "Intensity of the pattern when it is shown above the filled background; 0-100.",
+                    "description": "Intensity of the pattern when it is shown above the filled background; 0-100",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -19114,6 +19271,22 @@
                     "description": "True, if the location is live",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "is_pinned": {
+                    "description": "True, if the message is a pinned message with the specified content",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "PushMessageContent"
+        },
+        "pushMessageContentPaidMedia": {
+            "description": "A message with paid media",
+            "args": {
+                "star_count": {
+                    "description": "Number of stars needed to buy access to the media in the message; 0 for pinned message",
+                    "is_optional": false,
+                    "type": "int53"
                 },
                 "is_pinned": {
                     "description": "True, if the message is a pinned message with the specified content",
@@ -19944,7 +20117,7 @@
             "description": "Contains privacy settings for message read date in private chats. Read dates are always shown to the users that can see online status of the current user regardless of this setting",
             "args": {
                 "show_read_date": {
-                    "description": "True, if message read date is shown to other users in private chats. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date.",
+                    "description": "True, if message read date is shown to other users in private chats. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -20462,7 +20635,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeBotStartInGroup": {
-            "description": "The link is a link to a Telegram bot, which is supposed to be added to a group chat. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to groups, ask the current user to select a basic group or a supergroup chat to add the bot to, taking into account that bots can be added to a public supergroup only by administrators of the supergroup. If administrator rights are provided by the link, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights, combine received rights with the requested administrator rights, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed administrator rights. Before call to setChatMemberStatus it may be required to upgrade the chosen basic group chat to a supergroup chat. Then, if start_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat; otherwise, just send /start message with bot's username added to the chat.",
+            "description": "The link is a link to a Telegram bot, which is supposed to be added to a group chat. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to groups, ask the current user to select a basic group or a supergroup chat to add the bot to, taking into account that bots can be added to a public supergroup only by administrators of the supergroup. If administrator rights are provided by the link, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights, combine received rights with the requested administrator rights, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed administrator rights. Before call to setChatMemberStatus it may be required to upgrade the chosen basic group chat to a supergroup chat. Then, if start_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat; otherwise, just send /start message with bot's username added to the chat",
             "args": {
                 "bot_username": {
                     "description": "Username of the bot",
@@ -20781,6 +20954,11 @@
                     "description": "URL to be passed to getWebAppUrl",
                     "is_optional": false,
                     "type": "string"
+                },
+                "is_compact": {
+                    "description": "True, if the Web App must be opened in a compact mode instead of a full-size mode",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "InternalLinkType"
@@ -20914,6 +21092,11 @@
                     "description": "Start parameter to be passed to getWebAppLinkUrl",
                     "is_optional": false,
                     "type": "string"
+                },
+                "is_compact": {
+                    "description": "True, if the Web App must be opened in a compact mode instead of a full-size mode",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "InternalLinkType"
@@ -24209,9 +24392,14 @@
                     "type": "int53"
                 },
                 "nonce": {
-                    "description": "Unique nonce for the classic Play Integrity verification (https://developer.android.com/google/play/integrity/classic) for Android, or a unique string to compare with verify_nonce field from a push notification for iOS",
+                    "description": "Unique base64url-encoded nonce for the classic Play Integrity verification (https://developer.android.com/google/play/integrity/classic) for Android, or a unique string to compare with verify_nonce field from a push notification for iOS",
                     "is_optional": false,
                     "type": "string"
+                },
+                "cloud_project_number": {
+                    "description": "Cloud project number to pass to the Play Integrity API on Android",
+                    "is_optional": false,
+                    "type": "int64"
                 }
             },
             "type": "Update"
@@ -27885,7 +28073,7 @@
                     "type": "formattedText"
                 },
                 "show_caption_above_media": {
-                    "description": "Pass true to show the caption above the media; otherwise, caption will be shown below the media. Can be true only for animation, photo, and video messages",
+                    "description": "Pass true to show the caption above the media; otherwise, the caption will be shown below the media. Can be true only for animation, photo, and video messages",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -28010,7 +28198,7 @@
                     "type": "formattedText"
                 },
                 "show_caption_above_media": {
-                    "description": "Pass true to show the caption above the media; otherwise, caption will be shown below the media. Can be true only for animation, photo, and video messages",
+                    "description": "Pass true to show the caption above the media; otherwise, the caption will be shown below the media. Can be true only for animation, photo, and video messages",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -28299,7 +28487,7 @@
                     "type": "formattedText"
                 },
                 "show_caption_above_media": {
-                    "description": "Pass true to show the caption above the media; otherwise, caption will be shown below the media. Can be true only for animation, photo, and video messages",
+                    "description": "Pass true to show the caption above the media; otherwise, the caption will be shown below the media. Can be true only for animation, photo, and video messages",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -35253,7 +35441,7 @@
             "type": "TimeZones"
         },
         "getPaymentForm": {
-            "description": "Returns an invoice payment form. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy",
+            "description": "Returns an invoice payment form. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy, or wants to buy access to media in a messagePaidMedia message",
             "args": {
                 "input_invoice": {
                     "description": "The invoice",
@@ -35888,7 +36076,7 @@
             "type": "ChatRevenueStatistics"
         },
         "getChatRevenueWithdrawalUrl": {
-            "description": "Returns URL for chat revenue withdrawal; requires owner privileges in the chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true and getOption(\"can_withdraw_chat_revenue\")",
+            "description": "Returns a URL for chat revenue withdrawal; requires owner privileges in the chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true and getOption(\"can_withdraw_chat_revenue\")",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -35928,7 +36116,7 @@
             "description": "Returns detailed Telegram star revenue statistics",
             "args": {
                 "owner_id": {
-                    "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_revenue_statistics == true",
+                    "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
@@ -35941,10 +36129,10 @@
             "type": "StarRevenueStatistics"
         },
         "getStarWithdrawalUrl": {
-            "description": "Returns URL for Telegram star withdrawal",
+            "description": "Returns a URL for Telegram star withdrawal",
             "args": {
                 "owner_id": {
-                    "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_revenue_statistics == true",
+                    "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
@@ -35957,6 +36145,17 @@
                     "description": "The 2-step verification password of the current user",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "HttpUrl"
+        },
+        "getStarAdAccountUrl": {
+            "description": "Returns a URL for a Telegram Ad platform account that can be used to set up advertisments for the chat paid in the owned Telegram stars",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat",
+                    "is_optional": false,
+                    "type": "MessageSender"
                 }
             },
             "type": "HttpUrl"

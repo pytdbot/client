@@ -3660,7 +3660,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             show_caption_above_media (``bool``):
-                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none; for bots only
@@ -3838,7 +3838,7 @@ class TDLibFunctions:
                 Inline message identifier
 
             show_caption_above_media (``bool``):
-                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none
@@ -4216,7 +4216,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             show_caption_above_media (``bool``):
-                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none
@@ -14821,7 +14821,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getPaymentForm(self, input_invoice: dict, theme: dict = None) -> Result:
-        """Returns an invoice payment form\. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy
+        """Returns an invoice payment form\. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy, or wants to buy access to media in a messagePaidMedia message
 
         Args:
             input_invoice (``InputInvoice``):
@@ -15851,7 +15851,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatRevenueWithdrawalUrl(self, chat_id: int, password: str) -> Result:
-        """Returns URL for chat revenue withdrawal; requires owner privileges in the chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true and getOption\("can\_withdraw\_chat\_revenue"\)
+        """Returns a URL for chat revenue withdrawal; requires owner privileges in the chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true and getOption\("can\_withdraw\_chat\_revenue"\)
 
         Args:
             chat_id (``int``):
@@ -15907,7 +15907,7 @@ class TDLibFunctions:
 
         Args:
             owner_id (``MessageSender``):
-                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat
 
             is_dark (``bool``):
                 Pass true if a dark theme is used by the application
@@ -15928,11 +15928,11 @@ class TDLibFunctions:
     async def getStarWithdrawalUrl(
         self, owner_id: dict, star_count: int, password: str
     ) -> Result:
-        """Returns URL for Telegram star withdrawal
+        """Returns a URL for Telegram star withdrawal
 
         Args:
             owner_id (``MessageSender``):
-                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat
 
             star_count (``int``):
                 The number of Telegram stars to withdraw\. Must be at least getOption\("star\_withdrawal\_count\_min"\)
@@ -15950,6 +15950,25 @@ class TDLibFunctions:
             "owner_id": owner_id,
             "star_count": star_count,
             "password": password,
+        }
+
+        return await self.invoke(data)
+
+    async def getStarAdAccountUrl(self, owner_id: dict) -> Result:
+        """Returns a URL for a Telegram Ad platform account that can be used to set up advertisments for the chat paid in the owned Telegram stars
+
+        Args:
+            owner_id (``MessageSender``):
+                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``HttpUrl``)
+        """
+
+        data = {
+            "@type": "getStarAdAccountUrl",
+            "owner_id": owner_id,
         }
 
         return await self.invoke(data)
