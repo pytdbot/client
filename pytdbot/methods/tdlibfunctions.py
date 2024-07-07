@@ -2889,7 +2889,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             media_timestamp (``int``):
-                If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the message content or in its web page preview
+                If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the message content or in its link preview
 
             for_album (``bool``):
                 Pass true to create a link for the whole media album
@@ -6623,7 +6623,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getExternalLinkInfo(self, link: str) -> Result:
-        """Returns information about an action to be done when the current user clicks an external link\. Don't use this method for links from secret chats if web page preview is disabled in secret chats
+        """Returns information about an action to be done when the current user clicks an external link\. Don't use this method for links from secret chats if link preview is disabled in secret chats
 
         Args:
             link (``str``):
@@ -12855,7 +12855,7 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getWebPagePreview(
+    async def getLinkPreview(
         self, text: dict, link_preview_options: dict = None
     ) -> Result:
         """Returns a link preview by the text of a message\. Do not call this function too often\. Returns a 404 error if the text has no link preview
@@ -12869,11 +12869,11 @@ class TDLibFunctions:
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``WebPage``)
+            :class:`~pytdbot.types.Result` (``LinkPreview``)
         """
 
         data = {
-            "@type": "getWebPagePreview",
+            "@type": "getLinkPreview",
             "text": text,
             "link_preview_options": link_preview_options,
         }
@@ -15907,7 +15907,7 @@ class TDLibFunctions:
 
         Args:
             owner_id (``MessageSender``):
-                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat
+                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
 
             is_dark (``bool``):
                 Pass true if a dark theme is used by the application
@@ -15955,7 +15955,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getStarAdAccountUrl(self, owner_id: dict) -> Result:
-        """Returns a URL for a Telegram Ad platform account that can be used to set up advertisments for the chat paid in the owned Telegram stars
+        """Returns a URL for a Telegram Ad platform account that can be used to set up advertisements for the chat paid in the owned Telegram stars
 
         Args:
             owner_id (``MessageSender``):
@@ -17376,7 +17376,7 @@ class TDLibFunctions:
 
         Args:
             owner_id (``MessageSender``):
-                Identifier of the owner of the Telegram stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+                Identifier of the owner of the Telegram stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
 
             offset (``str``):
                 Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results

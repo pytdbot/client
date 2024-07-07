@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.32",
-    "commit_hash": "35cfcf5d15981b99e8f31a2195641f035dd516c3",
+    "version": "1.8.33",
+    "commit_hash": "cb164927417f22811c74cd8678ed4a5ab7cb80ba",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for an email address",
@@ -51,10 +51,12 @@
         "ReplyMarkup": "Contains a description of a custom keyboard and actions that can be done with it to quickly reply to bots",
         "LoginUrlInfo": "Contains information about an inline button of type inlineKeyboardButtonTypeLoginUrl",
         "SavedMessagesTopicType": "Describes type of Saved Messages topic",
-        "RichText": "Describes a text object inside an instant-view web page",
+        "RichText": "Describes a formatted text object",
         "PageBlockHorizontalAlignment": "Describes a horizontal alignment of a table cell content",
         "PageBlockVerticalAlignment": "Describes a Vertical alignment of a table cell content",
-        "PageBlock": "Describes a block of an instant view web page",
+        "PageBlock": "Describes a block of an instant view for a web page",
+        "LinkPreviewAlbumMedia": "Describes a media from a link preview album",
+        "LinkPreviewType": "Describes type of link preview",
         "CollectibleItemType": "Describes a collectible item that can be purchased at https://fragment.com",
         "InputCredentials": "Contains information about the payment method chosen by the user",
         "PaymentProvider": "Contains information about a payment provider",
@@ -2598,8 +2600,8 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "can_add_web_page_previews": {
-                    "description": "True, if the user may add a web page preview to their messages",
+                "can_add_link_previews": {
+                    "description": "True, if the user may add a link preview to their messages",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4470,6 +4472,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_get_star_revenue_statistics": {
+                    "description": "True, if the supergroup or channel Telegram Star revenue statistics are available",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_toggle_aggressive_anti_spam": {
                     "description": "True, if aggressive anti-spam checks can be enabled or disabled in the supergroup",
                     "is_optional": false,
@@ -5368,7 +5375,7 @@
                     "type": "Bool"
                 },
                 "can_get_media_timestamp_links": {
-                    "description": "True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description through getMessageLink",
+                    "description": "True, if media timestamp links can be generated for media timestamp entities in the message text, caption or link preview description through getMessageLink",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -7790,6 +7797,37 @@
             },
             "type": "SharedChat"
         },
+        "themeSettings": {
+            "description": "Describes theme settings",
+            "args": {
+                "accent_color": {
+                    "description": "Theme accent color in ARGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "background": {
+                    "description": "The background to be used in chats; may be null",
+                    "is_optional": true,
+                    "type": "background"
+                },
+                "outgoing_message_fill": {
+                    "description": "The fill to be used as a background for outgoing messages",
+                    "is_optional": false,
+                    "type": "BackgroundFill"
+                },
+                "animate_outgoing_message_fill": {
+                    "description": "If true, the freeform gradient fill needs to be animated on every sent message",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "outgoing_message_accent_color": {
+                    "description": "Accent color of outgoing messages in ARGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ThemeSettings"
+        },
         "richTextPlain": {
             "description": "A plain text",
             "args": {
@@ -7964,7 +8002,7 @@
             "type": "RichText"
         },
         "richTextReference": {
-            "description": "A reference to a richTexts object on the same web page",
+            "description": "A reference to a richTexts object on the same page",
             "args": {
                 "text": {
                     "description": "The text",
@@ -7996,7 +8034,7 @@
             "type": "RichText"
         },
         "richTextAnchorLink": {
-            "description": "A link to an anchor on the same web page",
+            "description": "A link to an anchor on the same page",
             "args": {
                 "text": {
                     "description": "The link text",
@@ -8028,7 +8066,7 @@
             "type": "RichText"
         },
         "pageBlockCaption": {
-            "description": "Contains a caption of an instant view web page block, consisting of a text and a trailing credit",
+            "description": "Contains a caption of another block",
             "args": {
                 "text": {
                     "description": "Content of the caption",
@@ -8444,7 +8482,7 @@
             "description": "An embedded web page",
             "args": {
                 "url": {
-                    "description": "Web page URL, if available",
+                    "description": "URL of the embedded page, if available",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -8490,7 +8528,7 @@
             "description": "An embedded post",
             "args": {
                 "url": {
-                    "description": "Web page URL",
+                    "description": "URL of the embedded post",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -8678,7 +8716,7 @@
             "description": "Describes an instant view page for a web page",
             "args": {
                 "page_blocks": {
-                    "description": "Content of the web page",
+                    "description": "Content of the instant view page",
                     "is_optional": false,
                     "type": "vector<PageBlock>"
                 },
@@ -8698,7 +8736,7 @@
                     "type": "Bool"
                 },
                 "is_full": {
-                    "description": "True, if the instant view contains the full page. A network request might be needed to get the full web page instant view",
+                    "description": "True, if the instant view contains the full page. A network request might be needed to get the full instant view",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -8710,7 +8748,447 @@
             },
             "type": "WebPageInstantView"
         },
-        "webPage": {
+        "linkPreviewAlbumMediaPhoto": {
+            "description": "The media is a photo",
+            "args": {
+                "photo": {
+                    "description": "Photo description",
+                    "is_optional": false,
+                    "type": "photo"
+                }
+            },
+            "type": "LinkPreviewAlbumMedia"
+        },
+        "linkPreviewAlbumMediaVideo": {
+            "description": "The media is a video",
+            "args": {
+                "video": {
+                    "description": "Video description",
+                    "is_optional": false,
+                    "type": "video"
+                }
+            },
+            "type": "LinkPreviewAlbumMedia"
+        },
+        "linkPreviewTypeAlbum": {
+            "description": "The link is a link to a media album consisting of photos and videos",
+            "args": {
+                "media": {
+                    "description": "The list of album media",
+                    "is_optional": false,
+                    "type": "vector<LinkPreviewAlbumMedia>"
+                },
+                "caption": {
+                    "description": "Album caption",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeAnimation": {
+            "description": "The link is a link to an animation",
+            "args": {
+                "animation": {
+                    "description": "The animation",
+                    "is_optional": false,
+                    "type": "animation"
+                },
+                "author": {
+                    "description": "Author of the animation",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeApp": {
+            "description": "The link is a link to an app at App Store or Google Play",
+            "args": {
+                "photo": {
+                    "description": "Photo for the app",
+                    "is_optional": false,
+                    "type": "photo"
+                },
+                "author": {
+                    "description": "Author of the app",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeArticle": {
+            "description": "The link is a link to a web site",
+            "args": {
+                "photo": {
+                    "description": "Article's main photo; may be null",
+                    "is_optional": true,
+                    "type": "photo"
+                },
+                "author": {
+                    "description": "Author of the article",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeAudio": {
+            "description": "The link is a link to an audio",
+            "args": {
+                "url": {
+                    "description": "URL of the audio; may be empty if none",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "mime_type": {
+                    "description": "MIME type of the audio file",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "audio": {
+                    "description": "The audio description; may be null if unknown",
+                    "is_optional": true,
+                    "type": "audio"
+                },
+                "duration": {
+                    "description": "Duration of the audio, in seconds; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "author": {
+                    "description": "Author of the audio",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeBackground": {
+            "description": "The link is a link to a background. Link preview title and description are available only for filled backgrounds",
+            "args": {
+                "document": {
+                    "description": "Document with the background; may be null for filled backgrounds",
+                    "is_optional": true,
+                    "type": "document"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeChannelBoost": {
+            "description": "The link is a link to boost a channel chat",
+            "args": {
+                "photo": {
+                    "description": "Photo of the chat; may be null",
+                    "is_optional": true,
+                    "type": "chatPhoto"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeChat": {
+            "description": "The link is a link to a chat",
+            "args": {
+                "type": {
+                    "description": "Type of the chat",
+                    "is_optional": false,
+                    "type": "InviteLinkChatType"
+                },
+                "photo": {
+                    "description": "Photo of the chat; may be null",
+                    "is_optional": true,
+                    "type": "chatPhoto"
+                },
+                "creates_join_request": {
+                    "description": "True, if the link only creates join request",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeDocument": {
+            "description": "The link is a link to a general file",
+            "args": {
+                "document": {
+                    "description": "The document description",
+                    "is_optional": false,
+                    "type": "document"
+                },
+                "author": {
+                    "description": "Author of the document",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeEmbeddedAudioPlayer": {
+            "description": "The link is a link to an audio player",
+            "args": {
+                "url": {
+                    "description": "URL of the external audio player",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "duration": {
+                    "description": "Duration of the audio, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "author": {
+                    "description": "Author of the audio",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeEmbeddedVideoPlayer": {
+            "description": "The link is a link to a video player",
+            "args": {
+                "url": {
+                    "description": "URL of the external video player",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "duration": {
+                    "description": "Duration of the video, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "author": {
+                    "description": "Author of the video",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "width": {
+                    "description": "Expected width of the preview",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "height": {
+                    "description": "Expected height of the preview",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeInvoice": {
+            "description": "The link is a link to an invoice",
+            "args": {},
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeMessage": {
+            "description": "The link is a link to a text or a poll Telegram message",
+            "args": {},
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypePhoto": {
+            "description": "The link is a link to a photo",
+            "args": {
+                "photo": {
+                    "description": "The photo",
+                    "is_optional": false,
+                    "type": "photo"
+                },
+                "author": {
+                    "description": "Author of the photo",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypePremiumGiftCode": {
+            "description": "The link is a link to a Telegram Premium gift code",
+            "args": {},
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeShareableChatFolder": {
+            "description": "The link is a link to a shareable chat folder",
+            "args": {},
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeSticker": {
+            "description": "The link is a link to a sticker message",
+            "args": {
+                "sticker": {
+                    "description": "The sticker",
+                    "is_optional": false,
+                    "type": "sticker"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeStickerSet": {
+            "description": "The link is a link to a sticker set",
+            "args": {
+                "stickers": {
+                    "description": "Up to 4 stickers from the sticker set",
+                    "is_optional": false,
+                    "type": "vector<sticker>"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeStory": {
+            "description": "The link is a link to a story. Link preview description is unavailable",
+            "args": {
+                "story_sender_chat_id": {
+                    "description": "The identifier of the chat that posted the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_id": {
+                    "description": "Story identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeSupergroupBoost": {
+            "description": "The link is a link to boost a supergroup chat",
+            "args": {
+                "photo": {
+                    "description": "Photo of the chat; may be null",
+                    "is_optional": true,
+                    "type": "chatPhoto"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeTheme": {
+            "description": "The link is a link to a cloud theme. TDLib has no theme support yet",
+            "args": {
+                "documents": {
+                    "description": "The list of files with theme description",
+                    "is_optional": false,
+                    "type": "vector<document>"
+                },
+                "settings": {
+                    "description": "Settings for the cloud theme",
+                    "is_optional": false,
+                    "type": "themeSettings"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeUnsupported": {
+            "description": "The link preview type is unsupported yet",
+            "args": {},
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeUser": {
+            "description": "The link is a link to a user",
+            "args": {
+                "photo": {
+                    "description": "Photo of the user; may be null if none",
+                    "is_optional": true,
+                    "type": "chatPhoto"
+                },
+                "is_bot": {
+                    "description": "True, if the user is a bot",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeVideo": {
+            "description": "The link is a link to a video",
+            "args": {
+                "url": {
+                    "description": "URL of the video; may be empty if none",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "mime_type": {
+                    "description": "MIME type of the video file",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "video": {
+                    "description": "The video description; may be null if unknown",
+                    "is_optional": true,
+                    "type": "video"
+                },
+                "width": {
+                    "description": "Expected width of the preview",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "height": {
+                    "description": "Expected height of the preview",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "duration": {
+                    "description": "Duration of the video, in seconds; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "author": {
+                    "description": "Author of the video",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeVideoChat": {
+            "description": "The link is a link to a video chat",
+            "args": {
+                "photo": {
+                    "description": "Photo of the chat with the video chat; may be null if none",
+                    "is_optional": true,
+                    "type": "chatPhoto"
+                },
+                "is_live_stream": {
+                    "description": "True, if the video chat is expected to be a live stream in a channel or a broadcast group",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeVideoNote": {
+            "description": "The link is a link to a video note message",
+            "args": {
+                "video_note": {
+                    "description": "The video note",
+                    "is_optional": false,
+                    "type": "videoNote"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeVoiceNote": {
+            "description": "The link is a link to a voice note message",
+            "args": {
+                "voice_note": {
+                    "description": "The voice note",
+                    "is_optional": false,
+                    "type": "voiceNote"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeWebApp": {
+            "description": "The link is a link to a Web App",
+            "args": {
+                "photo": {
+                    "description": "Web App photo",
+                    "is_optional": false,
+                    "type": "photo"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreview": {
             "description": "Describes a link preview",
             "args": {
                 "url": {
@@ -8720,11 +9198,6 @@
                 },
                 "display_url": {
                     "description": "URL to display",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "type": {
-                    "description": "Type of the web page. Can be: article, photo, audio, video, document, profile, app, or something else",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -8743,40 +9216,10 @@
                     "is_optional": false,
                     "type": "formattedText"
                 },
-                "photo": {
-                    "description": "Image representing the content; may be null",
-                    "is_optional": true,
-                    "type": "photo"
-                },
-                "embed_url": {
-                    "description": "URL to show in the embedded preview",
+                "type": {
+                    "description": "Type of the link preview",
                     "is_optional": false,
-                    "type": "string"
-                },
-                "embed_type": {
-                    "description": "MIME type of the embedded preview, (e.g., text/html or video/mp4)",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "embed_width": {
-                    "description": "Width of the embedded preview",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "embed_height": {
-                    "description": "Height of the embedded preview",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "duration": {
-                    "description": "Duration of the content, in seconds",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "author": {
-                    "description": "Author of the content",
-                    "is_optional": false,
-                    "type": "string"
+                    "type": "LinkPreviewType"
                 },
                 "has_large_media": {
                     "description": "True, if size of media in the preview can be changed",
@@ -8798,63 +9241,13 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "animation": {
-                    "description": "Preview of the content as an animation, if available; may be null",
-                    "is_optional": true,
-                    "type": "animation"
-                },
-                "audio": {
-                    "description": "Preview of the content as an audio file, if available; may be null",
-                    "is_optional": true,
-                    "type": "audio"
-                },
-                "document": {
-                    "description": "Preview of the content as a document, if available; may be null",
-                    "is_optional": true,
-                    "type": "document"
-                },
-                "sticker": {
-                    "description": "Preview of the content as a sticker for small WEBP files, if available; may be null",
-                    "is_optional": true,
-                    "type": "sticker"
-                },
-                "video": {
-                    "description": "Preview of the content as a video, if available; may be null",
-                    "is_optional": true,
-                    "type": "video"
-                },
-                "video_note": {
-                    "description": "Preview of the content as a video note, if available; may be null",
-                    "is_optional": true,
-                    "type": "videoNote"
-                },
-                "voice_note": {
-                    "description": "Preview of the content as a voice note, if available; may be null",
-                    "is_optional": true,
-                    "type": "voiceNote"
-                },
-                "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the previewed story; 0 if none",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "story_id": {
-                    "description": "The identifier of the previewed story; 0 if none",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "stickers": {
-                    "description": "Up to 4 stickers from the sticker set available via the link",
-                    "is_optional": false,
-                    "type": "vector<sticker>"
-                },
                 "instant_view_version": {
-                    "description": "Version of web page instant view (currently, can be 1 or 2); 0 if none",
+                    "description": "Version of instant view (currently, can be 1 or 2) for the web page; 0 if none",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "WebPage"
+            "type": "LinkPreview"
         },
         "countryInfo": {
             "description": "Contains information about a country",
@@ -10672,10 +11065,10 @@
                     "is_optional": false,
                     "type": "formattedText"
                 },
-                "web_page": {
+                "link_preview": {
                     "description": "A link preview attached to the message; may be null",
                     "is_optional": true,
-                    "type": "webPage"
+                    "type": "linkPreview"
                 },
                 "link_preview_options": {
                     "description": "Options which were used for generation of the link preview; may be null if default options were used",
@@ -11565,6 +11958,42 @@
             },
             "type": "MessageContent"
         },
+        "messagePaymentRefunded": {
+            "description": "A payment has been refunded",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the previous owner of the Telegram stars that refunds them",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "currency": {
+                    "description": "Currency for the price of the product",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "total_amount": {
+                    "description": "Total price for the product, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "invoice_payload": {
+                    "description": "Invoice payload; only for bots",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "telegram_payment_charge_id": {
+                    "description": "Telegram payment identifier",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "provider_payment_charge_id": {
+                    "description": "Provider payment identifier",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messageGiftedPremium": {
             "description": "Telegram Premium was gifted to the user",
             "args": {
@@ -12036,7 +12465,7 @@
             "description": "A media timestamp",
             "args": {
                 "media_timestamp": {
-                    "description": "Timestamp from which a video/audio/video note/voice note/story playing must start, in seconds. The media can be in the content or the web page preview of the current message, or in the same places in the replied message",
+                    "description": "Timestamp from which a video/audio/video note/voice note/story playing must start, in seconds. The media can be in the content or the link preview of the current message, or in the same places in the replied message",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -18858,37 +19287,6 @@
             },
             "type": "InputBackground"
         },
-        "themeSettings": {
-            "description": "Describes theme settings",
-            "args": {
-                "accent_color": {
-                    "description": "Theme accent color in ARGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "background": {
-                    "description": "The background to be used in chats; may be null",
-                    "is_optional": true,
-                    "type": "background"
-                },
-                "outgoing_message_fill": {
-                    "description": "The fill to be used as a background for outgoing messages",
-                    "is_optional": false,
-                    "type": "BackgroundFill"
-                },
-                "animate_outgoing_message_fill": {
-                    "description": "If true, the freeform gradient fill needs to be animated on every sent message",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "outgoing_message_accent_color": {
-                    "description": "Accent color of outgoing messages in ARGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                }
-            },
-            "type": "ThemeSettings"
-        },
         "chatTheme": {
             "description": "Describes a chat theme",
             "args": {
@@ -20996,7 +21394,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeTheme": {
-            "description": "The link is a link to a theme. TDLib has no theme support yet",
+            "description": "The link is a link to a cloud theme. TDLib has no theme support yet",
             "args": {
                 "theme_name": {
                     "description": "Name of the theme",
@@ -21141,7 +21539,7 @@
                     "type": "message"
                 },
                 "media_timestamp": {
-                    "description": "Timestamp from which the video/audio/video note/voice note/story playing must start, in seconds; 0 if not specified. The media can be in the message content or in its web page preview",
+                    "description": "Timestamp from which the video/audio/video note/voice note/story playing must start, in seconds; 0 if not specified. The media can be in the message content or in its link preview",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -27500,7 +27898,7 @@
                     "type": "int53"
                 },
                 "media_timestamp": {
-                    "description": "If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds. The media can be in the message content or in its web page preview",
+                    "description": "If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds. The media can be in the message content or in its link preview",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -30137,7 +30535,7 @@
             "type": "InternalLinkType"
         },
         "getExternalLinkInfo": {
-            "description": "Returns information about an action to be done when the current user clicks an external link. Don't use this method for links from secret chats if web page preview is disabled in secret chats",
+            "description": "Returns information about an action to be done when the current user clicks an external link. Don't use this method for links from secret chats if link preview is disabled in secret chats",
             "args": {
                 "link": {
                     "description": "The link",
@@ -34219,7 +34617,7 @@
             },
             "type": "Ok"
         },
-        "getWebPagePreview": {
+        "getLinkPreview": {
             "description": "Returns a link preview by the text of a message. Do not call this function too often. Returns a 404 error if the text has no link preview",
             "args": {
                 "text": {
@@ -34233,7 +34631,7 @@
                     "type": "linkPreviewOptions"
                 }
             },
-            "type": "WebPage"
+            "type": "LinkPreview"
         },
         "getWebPageInstantView": {
             "description": "Returns an instant view version of a web page if available. Returns a 404 error if the web page has no instant view page",
@@ -36116,7 +36514,7 @@
             "description": "Returns detailed Telegram star revenue statistics",
             "args": {
                 "owner_id": {
-                    "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat",
+                    "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_star_revenue_statistics == true",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
@@ -36150,7 +36548,7 @@
             "type": "HttpUrl"
         },
         "getStarAdAccountUrl": {
-            "description": "Returns a URL for a Telegram Ad platform account that can be used to set up advertisments for the chat paid in the owned Telegram stars",
+            "description": "Returns a URL for a Telegram Ad platform account that can be used to set up advertisements for the chat paid in the owned Telegram stars",
             "args": {
                 "owner_id": {
                     "description": "Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat",
@@ -37064,7 +37462,7 @@
             "description": "Returns the list of Telegram star transactions for the specified owner",
             "args": {
                 "owner_id": {
-                    "description": "Identifier of the owner of the Telegram stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_revenue_statistics == true",
+                    "description": "Identifier of the owner of the Telegram stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_star_revenue_statistics == true",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
