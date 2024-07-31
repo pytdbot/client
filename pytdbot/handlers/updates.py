@@ -4410,7 +4410,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The number of Telegram stars owned by the current user has changed
+        """The number of Telegram Stars owned by the current user has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4480,7 +4480,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The Telegram star revenue earned by a bot or a chat has changed\. If star transactions screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
+        """The Telegram Star revenue earned by a bot or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):

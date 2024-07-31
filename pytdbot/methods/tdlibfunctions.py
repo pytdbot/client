@@ -1134,8 +1134,31 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getMessageProperties(self, chat_id: int, message_id: int) -> Result:
+        """Returns properties of a message; this is an offline request
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            message_id (``int``):
+                Identifier of the message
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``MessageProperties``)
+        """
+
+        data = {
+            "@type": "getMessageProperties",
+            "chat_id": chat_id,
+            "message_id": message_id,
+        }
+
+        return await self.invoke(data)
+
     async def getMessageThread(self, chat_id: int, message_id: int) -> Result:
-        """Returns information about a message thread\. Can be used only if message\.can\_get\_message\_thread \=\= true
+        """Returns information about a message thread\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true
 
         Args:
             chat_id (``int``):
@@ -1158,7 +1181,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getMessageReadDate(self, chat_id: int, message_id: int) -> Result:
-        """Returns read date of a recent outgoing message in a private chat\. The method can be called if message\.can\_get\_read\_date \=\= true and the message is read
+        """Returns read date of a recent outgoing message in a private chat\. The method can be called if messageProperties\.can\_get\_read\_date \=\= true
 
         Args:
             chat_id (``int``):
@@ -1181,7 +1204,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getMessageViewers(self, chat_id: int, message_id: int) -> Result:
-        """Returns viewers of a recent outgoing message in a basic group or a supergroup chat\. For video notes and voice notes only users, opened content of the message, are returned\. The method can be called if message\.can\_get\_viewers \=\= true
+        """Returns viewers of a recent outgoing message in a basic group or a supergroup chat\. For video notes and voice notes only users, opened content of the message, are returned\. The method can be called if messageProperties\.can\_get\_viewers \=\= true
 
         Args:
             chat_id (``int``):
@@ -1744,7 +1767,7 @@ class TDLibFunctions:
         offset: int,
         limit: int,
     ) -> Result:
-        """Returns messages in a Saved Messages topic\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+        """Returns messages in a Saved Messages topic\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
 
         Args:
             saved_messages_topic_id (``int``):
@@ -1932,7 +1955,7 @@ class TDLibFunctions:
         limit: int,
         only_local: bool,
     ) -> Result:
-        """Returns messages in a chat\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline request if only\_local is true
+        """Returns messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline request if only\_local is true
 
         Args:
             chat_id (``int``):
@@ -1974,7 +1997,7 @@ class TDLibFunctions:
         offset: int,
         limit: int,
     ) -> Result:
-        """Returns messages in a message thread of a message\. Can be used only if message\.can\_get\_message\_thread \=\= true\. Message thread of a channel message is in the channel's linked supergroup\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
+        """Returns messages in a message thread of a message\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true\. Message thread of a channel message is in the channel's linked supergroup\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
 
         Args:
             chat_id (``int``):
@@ -2732,7 +2755,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatScheduledMessages(self, chat_id: int) -> Result:
-        """Returns all scheduled messages in a chat\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+        """Returns all scheduled messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
 
         Args:
             chat_id (``int``):
@@ -2879,7 +2902,7 @@ class TDLibFunctions:
         for_album: bool,
         in_message_thread: bool,
     ) -> Result:
-        """Returns an HTTPS link to a message in a chat\. Available only for already sent messages in supergroups and channels, or if message\.can\_get\_media\_timestamp\_links and a media timestamp link is generated\. This is an offline request
+        """Returns an HTTPS link to a message in a chat\. Available only if messageProperties\.can\_get\_link, or if messageProperties\.can\_get\_media\_timestamp\_links and a media timestamp link is generated\. This is an offline request
 
         Args:
             chat_id (``int``):
@@ -2916,7 +2939,7 @@ class TDLibFunctions:
     async def getMessageEmbeddingCode(
         self, chat_id: int, message_id: int, for_album: bool
     ) -> Result:
-        """Returns an HTML code for embedding the message\. Available only for messages in supergroups and channels with a username
+        """Returns an HTML code for embedding the message\. Available only if messageProperties\.can\_get\_embedding\_code
 
         Args:
             chat_id (``int``):
@@ -3014,14 +3037,14 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def recognizeSpeech(self, chat_id: int, message_id: int) -> Result:
-        """Recognizes speech in a video note or a voice note message\. The message must be successfully sent, must not be scheduled, and must be from a non\-secret chat
+        """Recognizes speech in a video note or a voice note message
 
         Args:
             chat_id (``int``):
                 Identifier of the chat to which the message belongs
 
             message_id (``int``):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_recognize\_speech to check whether the message is suitable
 
 
         Returns:
@@ -3302,7 +3325,7 @@ class TDLibFunctions:
                 Identifier of the chat from which to forward messages
 
             message_ids (``list``):
-                Identifiers of the messages to forward\. Message identifiers must be in a strictly increasing order\. At most 100 messages can be forwarded simultaneously\. A message can be forwarded only if message\.can\_be\_forwarded
+                Identifiers of the messages to forward\. Message identifiers must be in a strictly increasing order\. At most 100 messages can be forwarded simultaneously\. A message can be forwarded only if messageProperties\.can\_be\_forwarded
 
             send_copy (``bool``):
                 Pass true to copy content of the messages without reference to the original sender\. Always true if the messages are forwarded to a secret chat or are local
@@ -3441,7 +3464,7 @@ class TDLibFunctions:
                 Chat identifier
 
             message_ids (``list``):
-                Identifiers of the messages to be deleted
+                Identifiers of the messages to be deleted\. Use messageProperties\.can\_be\_deleted\_only\_for\_self and messageProperties\.can\_be\_deleted\_for\_all\_users to get suitable messages
 
             revoke (``bool``):
                 Pass true to delete messages for all chat members\. Always true for supergroups, channels and secret chats
@@ -3523,14 +3546,14 @@ class TDLibFunctions:
         input_message_content: dict,
         reply_markup: dict = None,
     ) -> Result:
-        """Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        """Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side
 
         Args:
             chat_id (``int``):
                 The chat the message belongs to
 
             message_id (``int``):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             input_message_content (``InputMessageContent``):
                 New text content of the message\. Must be of type inputMessageText
@@ -3563,14 +3586,14 @@ class TDLibFunctions:
         reply_markup: dict = None,
         location: dict = None,
     ) -> Result:
-        """Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        """Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side
 
         Args:
             chat_id (``int``):
                 The chat the message belongs to
 
             message_id (``int``):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             live_period (``int``):
                 New time relative to the message send date, for which the location can be updated, in seconds\. If 0x7FFFFFFF specified, then the location can be updated forever\. Otherwise, must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days\. Pass 0 to keep the current live\_period
@@ -3612,14 +3635,14 @@ class TDLibFunctions:
         input_message_content: dict,
         reply_markup: dict = None,
     ) -> Result:
-        """Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        """Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side
 
         Args:
             chat_id (``int``):
                 The chat the message belongs to
 
             message_id (``int``):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             input_message_content (``InputMessageContent``):
                 New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
@@ -3650,14 +3673,14 @@ class TDLibFunctions:
         reply_markup: dict = None,
         caption: dict = None,
     ) -> Result:
-        """Edits the message content caption\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        """Edits the message content caption\. Returns the edited message after the edit is completed on the server side
 
         Args:
             chat_id (``int``):
                 The chat the message belongs to
 
             message_id (``int``):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             show_caption_above_media (``bool``):
                 Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
@@ -3687,14 +3710,14 @@ class TDLibFunctions:
     async def editMessageReplyMarkup(
         self, chat_id: int, message_id: int, reply_markup: dict = None
     ) -> Result:
-        """Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        """Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side
 
         Args:
             chat_id (``int``):
                 The chat the message belongs to
 
             message_id (``int``):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none
@@ -3896,7 +3919,7 @@ class TDLibFunctions:
                 The chat the message belongs to
 
             message_id (``int``):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_edit\_scheduling\_state to check whether the message is suitable
 
             scheduling_state (``MessageSchedulingState``, *optional*):
                 The new message scheduling state; pass null to send the message immediately
@@ -3918,14 +3941,14 @@ class TDLibFunctions:
     async def setMessageFactCheck(
         self, chat_id: int, message_id: int, text: dict = None
     ) -> Result:
-        """Changes the fact\-check of a message\. Can be only used if getOption\("can\_edit\_fact\_check"\) \=\= true
+        """Changes the fact\-check of a message\. Can be only used if messageProperties\.can\_set\_fact\_check \=\= true
 
         Args:
             chat_id (``int``):
                 The channel chat the message belongs to
 
             message_id (``int``):
-                Identifier of the message\. The message must be one of the following types: messageAnimation, messageAudio, messageDocument, messagePhoto, messageText, messageVideo
+                Identifier of the message
 
             text (``formattedText``, *optional*):
                 New text of the fact\-check; 0\-getOption\("fact\_check\_length\_max"\) characters; pass null to remove it\. Only Bold, Italic, and TextUrl entities with https://t\.me/ links are supported
@@ -4311,6 +4334,43 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "message_id": message_id,
             "reply_markup": reply_markup,
+        }
+
+        return await self.invoke(data)
+
+    async def setBusinessMessageIsPinned(
+        self,
+        business_connection_id: str,
+        chat_id: int,
+        message_id: int,
+        is_pinned: bool,
+    ) -> Result:
+        """Pins or unpins a message sent on behalf of a business account; for bots only
+
+        Args:
+            business_connection_id (``str``):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (``int``):
+                The chat the message belongs to
+
+            message_id (``int``):
+                Identifier of the message
+
+            is_pinned (``bool``):
+                Pass true to pin the message, pass false to unpin it
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "setBusinessMessageIsPinned",
+            "business_connection_id": business_connection_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "is_pinned": is_pinned,
         }
 
         return await self.invoke(data)
@@ -5138,7 +5198,7 @@ class TDLibFunctions:
                 Identifier of the chat to which the message belongs
 
             message_id (``int``):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_get\_added\_reactions to check whether added reactions can be received for the message
 
             offset (``str``):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
@@ -5591,14 +5651,14 @@ class TDLibFunctions:
     async def stopPoll(
         self, chat_id: int, message_id: int, reply_markup: dict = None
     ) -> Result:
-        """Stops a poll\. A poll in a message can be stopped when the message has can\_be\_edited flag is set
+        """Stops a poll
 
         Args:
             chat_id (``int``):
                 Identifier of the chat to which the poll belongs
 
             message_id (``int``):
-                Identifier of the message containing the poll
+                Identifier of the message containing the poll\. Use messageProperties\.can\_be\_edited to check whether the poll can be stopped
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none; for bots only
@@ -5679,7 +5739,7 @@ class TDLibFunctions:
                 Chat identifier of the message with the button
 
             message_id (``int``):
-                Message identifier of the message with the button
+                Message identifier of the message with the button\. The message must not be scheduled
 
             button_id (``int``):
                 Button identifier
@@ -5904,6 +5964,29 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getPopularWebAppBots(self, offset: str, limit: int) -> Result:
+        """Returns popular Web App bots
+
+        Args:
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of bots to be returned; up to 100
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``FoundUsers``)
+        """
+
+        data = {
+            "@type": "getPopularWebAppBots",
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
     async def searchWebApp(self, bot_user_id: int, web_app_short_name: str) -> Result:
         """Returns information about a Web App by its short name\. Returns a 404 error if the Web App is not found
 
@@ -5953,7 +6036,7 @@ class TDLibFunctions:
                 Start parameter from internalLinkTypeWebApp
 
             application_name (``str``):
-                Short name of the application; 0\-64 English letters, digits, and underscores
+                Short name of the current application; 0\-64 English letters, digits, and underscores
 
             allow_write_access (``bool``):
                 Pass true if the current user allowed the bot to send them messages
@@ -5979,20 +6062,62 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getMainWebApp(
+        self,
+        chat_id: int,
+        bot_user_id: int,
+        start_parameter: str,
+        application_name: str,
+        theme: dict = None,
+    ) -> Result:
+        """Returns information needed to open the main Web App of a bot
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat in which the Web App is opened; pass 0 if none
+
+            bot_user_id (``int``):
+                Identifier of the target bot
+
+            start_parameter (``str``):
+                Start parameter from internalLinkTypeMainWebApp
+
+            application_name (``str``):
+                Short name of the current application; 0\-64 English letters, digits, and underscores
+
+            theme (``themeParameters``, *optional*):
+                Preferred Web App theme; pass null to use the default theme
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``MainWebApp``)
+        """
+
+        data = {
+            "@type": "getMainWebApp",
+            "chat_id": chat_id,
+            "bot_user_id": bot_user_id,
+            "start_parameter": start_parameter,
+            "theme": theme,
+            "application_name": application_name,
+        }
+
+        return await self.invoke(data)
+
     async def getWebAppUrl(
         self, bot_user_id: int, url: str, application_name: str, theme: dict = None
     ) -> Result:
-        """Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, an inlineQueryResultsButtonTypeWebApp button, or an internalLinkTypeSideMenuBot link
+        """Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, or an inlineQueryResultsButtonTypeWebApp button
 
         Args:
             bot_user_id (``int``):
                 Identifier of the target bot
 
             url (``str``):
-                The URL from a keyboardButtonTypeWebApp button, inlineQueryResultsButtonTypeWebApp button, an internalLinkTypeSideMenuBot link, or an empty when the bot is opened from the side menu
+                The URL from a keyboardButtonTypeWebApp button, inlineQueryResultsButtonTypeWebApp button, or an empty string when the bot is opened from the side menu
 
             application_name (``str``):
-                Short name of the application; 0\-64 English letters, digits, and underscores
+                Short name of the current application; 0\-64 English letters, digits, and underscores
 
             theme (``themeParameters``, *optional*):
                 Preferred Web App theme; pass null to use the default theme
@@ -6064,7 +6189,7 @@ class TDLibFunctions:
                 The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
 
             application_name (``str``):
-                Short name of the application; 0\-64 English letters, digits, and underscores
+                Short name of the current application; 0\-64 English letters, digits, and underscores
 
             message_thread_id (``int``):
                 If not 0, the message thread identifier in which the message will be sent
@@ -6145,7 +6270,7 @@ class TDLibFunctions:
                 Identifier of the chat with the message
 
             message_id (``int``):
-                Identifier of the message from which the query originated
+                Identifier of the message from which the query originated\. The message must not be scheduled
 
             payload (``CallbackQueryPayload``):
                 Query payload
@@ -8046,7 +8171,7 @@ class TDLibFunctions:
         disable_notification: bool,
         only_for_self: bool,
     ) -> Result:
-        """Pins a message in a chat; requires can\_pin\_messages member right if the chat is a basic group or supergroup, or can\_edit\_messages administrator right if the chat is a channel
+        """Pins a message in a chat\. A message can be pinned only if messageProperties\.can\_be\_pinned
 
         Args:
             chat_id (``int``):
@@ -8682,6 +8807,25 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getCurrentWeather(self, location: dict) -> Result:
+        """Returns the current weather in the given location
+
+        Args:
+            location (``location``):
+                The location
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``CurrentWeather``)
+        """
+
+        data = {
+            "@type": "getCurrentWeather",
+            "location": location,
+        }
+
+        return await self.invoke(data)
+
     async def getStory(
         self, story_sender_chat_id: int, story_id: int, only_local: bool
     ) -> Result:
@@ -8730,7 +8874,7 @@ class TDLibFunctions:
 
         Args:
             chat_id (``int``):
-                Chat identifier
+                Chat identifier\. Pass Saved Messages chat identifier when posting a story on behalf of the current user
 
 
         Returns:
@@ -8750,17 +8894,17 @@ class TDLibFunctions:
         content: dict,
         privacy_settings: dict,
         active_period: int,
-        from_story_full_id: dict,
         is_posted_to_chat_page: bool,
         protect_content: bool,
         areas: dict = None,
         caption: dict = None,
+        from_story_full_id: dict = None,
     ) -> Result:
         """Sends a new story to a chat; requires can\_post\_stories right for supergroup and channel chats\. Returns a temporary story
 
         Args:
             chat_id (``int``):
-                Identifier of the chat that will post the story
+                Identifier of the chat that will post the story\. Pass Saved Messages chat identifier when posting a story on behalf of the current user
 
             content (``InputStoryContent``):
                 Content of the story
@@ -8770,9 +8914,6 @@ class TDLibFunctions:
 
             active_period (``int``):
                 Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, or 2 \* 86400 for Telegram Premium users, and 86400 otherwise
-
-            from_story_full_id (``storyFullId``):
-                Full identifier of the original story, which content was used to create the story
 
             is_posted_to_chat_page (``bool``):
                 Pass true to keep the story accessible after expiration
@@ -8785,6 +8926,9 @@ class TDLibFunctions:
 
             caption (``formattedText``, *optional*):
                 Story caption; pass null to use an empty caption; 0\-getOption\("story\_caption\_length\_max"\) characters; can have entities only if getOption\("can\_use\_text\_entities\_in\_story\_caption"\)
+
+            from_story_full_id (``storyFullId``, *optional*):
+                Full identifier of the original story, which content was used to create the story; pass null if the story isn't repost of another story
 
 
         Returns:
@@ -8844,6 +8988,35 @@ class TDLibFunctions:
             "content": content,
             "areas": areas,
             "caption": caption,
+        }
+
+        return await self.invoke(data)
+
+    async def editStoryCover(
+        self, story_sender_chat_id: int, story_id: int, cover_frame_timestamp: float
+    ) -> Result:
+        """Changes cover of a video story\. Can be called only if story\.can\_be\_edited \=\= true and the story isn't being edited now
+
+        Args:
+            story_sender_chat_id (``int``):
+                Identifier of the chat that posted the story
+
+            story_id (``int``):
+                Identifier of the story to edit
+
+            cover_frame_timestamp (``float``):
+                New timestamp of the frame, which will be used as video thumbnail
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "editStoryCover",
+            "story_sender_chat_id": story_sender_chat_id,
+            "story_id": story_id,
+            "cover_frame_timestamp": cover_frame_timestamp,
         }
 
         return await self.invoke(data)
@@ -9003,7 +9176,7 @@ class TDLibFunctions:
     async def getChatPostedToChatPageStories(
         self, chat_id: int, from_story_id: int, limit: int
     ) -> Result:
-        """Returns the list of stories that posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        """Returns the list of stories that posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Args:
             chat_id (``int``):
@@ -9032,7 +9205,7 @@ class TDLibFunctions:
     async def getChatArchivedStories(
         self, chat_id: int, from_story_id: int, limit: int
     ) -> Result:
-        """Returns the list of all stories posted by the given chat; requires can\_edit\_stories right in the chat\. The stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        """Returns the list of all stories posted by the given chat; requires can\_edit\_stories right in the chat\. The stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Args:
             chat_id (``int``):
@@ -13848,6 +14021,170 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getBotMediaPreviews(self, bot_user_id: int) -> Result:
+        """Returns the list of media previews of a bot
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot\. The bot must have the main Web App
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BotMediaPreviews``)
+        """
+
+        data = {
+            "@type": "getBotMediaPreviews",
+            "bot_user_id": bot_user_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getBotMediaPreviewInfo(
+        self, bot_user_id: int, language_code: str
+    ) -> Result:
+        """Returns the list of media previews for the given language and the list of languages for which the bot has dedicated previews
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            language_code (``str``):
+                A two\-letter ISO 639\-1 language code for which to get previews\. If empty, then default previews are returned
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BotMediaPreviewInfo``)
+        """
+
+        data = {
+            "@type": "getBotMediaPreviewInfo",
+            "bot_user_id": bot_user_id,
+            "language_code": language_code,
+        }
+
+        return await self.invoke(data)
+
+    async def addBotMediaPreview(
+        self, bot_user_id: int, content: dict, language_code: str = None
+    ) -> Result:
+        """Adds a new media preview to the beginning of the list of media previews of a bot\. Returns the added preview after addition is completed server\-side\. The total number of previews must not exceed getOption\("bot\_media\_preview\_count\_max"\) for the given language
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            content (``InputStoryContent``):
+                Content of the added preview
+
+            language_code (``str``, *optional*):
+                A two\-letter ISO 639\-1 language code for which preview is added\. If empty, then the preview will be shown to all users for whose languages there are no dedicated previews\. If non\-empty, then there must be an official language pack of the same name, which is returned by getLocalizationTargetInfo
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BotMediaPreview``)
+        """
+
+        data = {
+            "@type": "addBotMediaPreview",
+            "bot_user_id": bot_user_id,
+            "language_code": language_code,
+            "content": content,
+        }
+
+        return await self.invoke(data)
+
+    async def editBotMediaPreview(
+        self, bot_user_id: int, language_code: str, file_id: int, content: dict
+    ) -> Result:
+        """Replaces media preview in the list of media previews of a bot\. Returns the new preview after edit is completed server\-side
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            language_code (``str``):
+                Language code of the media preview to edit
+
+            file_id (``int``):
+                File identifier of the media to replace
+
+            content (``InputStoryContent``):
+                Content of the new preview
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``BotMediaPreview``)
+        """
+
+        data = {
+            "@type": "editBotMediaPreview",
+            "bot_user_id": bot_user_id,
+            "language_code": language_code,
+            "file_id": file_id,
+            "content": content,
+        }
+
+        return await self.invoke(data)
+
+    async def reorderBotMediaPreviews(
+        self, bot_user_id: int, language_code: str, file_ids: list
+    ) -> Result:
+        """Changes order of media previews in the list of media previews of a bot
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            language_code (``str``):
+                Language code of the media previews to reorder
+
+            file_ids (``list``):
+                File identifiers of the media in the new order
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "reorderBotMediaPreviews",
+            "bot_user_id": bot_user_id,
+            "language_code": language_code,
+            "file_ids": file_ids,
+        }
+
+        return await self.invoke(data)
+
+    async def deleteBotMediaPreviews(
+        self, bot_user_id: int, language_code: str, file_ids: list
+    ) -> Result:
+        """Delete media previews from the list of media previews of a bot
+
+        Args:
+            bot_user_id (``int``):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            language_code (``str``):
+                Language code of the media previews to delete
+
+            file_ids (``list``):
+                File identifiers of the media to delete
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "deleteBotMediaPreviews",
+            "bot_user_id": bot_user_id,
+            "language_code": language_code,
+            "file_ids": file_ids,
+        }
+
+        return await self.invoke(data)
+
     async def setBotName(
         self, bot_user_id: int, language_code: str, name: str
     ) -> Result:
@@ -14667,7 +15004,7 @@ class TDLibFunctions:
                 Supergroup identifier
 
             message_ids (``list``):
-                Identifiers of messages to report
+                Identifiers of messages to report\. Use messageProperties\.can\_be\_reported to check whether the message can be reported
 
 
         Returns:
@@ -14692,7 +15029,7 @@ class TDLibFunctions:
                 Supergroup identifier
 
             message_id (``int``):
-                Identifier of the erroneously deleted message
+                Identifier of the erroneously deleted message from chatEventMessageDeleted
 
 
         Returns:
@@ -14900,7 +15237,7 @@ class TDLibFunctions:
                 Chosen by the user amount of tip in the smallest units of the currency
 
             credentials (``InputCredentials``, *optional*):
-                The credentials chosen by user for payment; pass null for a payment in Telegram stars
+                The credentials chosen by user for payment; pass null for a payment in Telegram Stars
 
 
         Returns:
@@ -15748,7 +16085,7 @@ class TDLibFunctions:
                 Additional report details; 0\-1024 characters
 
             message_ids (``list``, *optional*):
-                Identifiers of reported messages; may be empty to report the whole chat
+                Identifiers of reported messages; may be empty to report the whole chat\. Use messageProperties\.can\_be\_reported to check whether the message can be reported
 
 
         Returns:
@@ -15801,7 +16138,7 @@ class TDLibFunctions:
     async def reportMessageReactions(
         self, chat_id: int, message_id: int, sender_id: dict
     ) -> Result:
-        """Reports reactions set on a message to the Telegram moderators\. Reactions on a message can be reported only if message\.can\_report\_reactions
+        """Reports reactions set on a message to the Telegram moderators\. Reactions on a message can be reported only if messageProperties\.can\_report\_reactions
 
         Args:
             chat_id (``int``):
@@ -15903,11 +16240,11 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getStarRevenueStatistics(self, owner_id: dict, is_dark: bool) -> Result:
-        """Returns detailed Telegram star revenue statistics
+        """Returns detailed Telegram Star revenue statistics
 
         Args:
             owner_id (``MessageSender``):
-                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
+                Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
 
             is_dark (``bool``):
                 Pass true if a dark theme is used by the application
@@ -15928,14 +16265,14 @@ class TDLibFunctions:
     async def getStarWithdrawalUrl(
         self, owner_id: dict, star_count: int, password: str
     ) -> Result:
-        """Returns a URL for Telegram star withdrawal
+        """Returns a URL for Telegram Star withdrawal
 
         Args:
             owner_id (``MessageSender``):
-                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat
+                Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of an owned channel chat
 
             star_count (``int``):
-                The number of Telegram stars to withdraw\. Must be at least getOption\("star\_withdrawal\_count\_min"\)
+                The number of Telegram Stars to withdraw\. Must be at least getOption\("star\_withdrawal\_count\_min"\)
 
             password (``str``):
                 The 2\-step verification password of the current user
@@ -15955,11 +16292,11 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getStarAdAccountUrl(self, owner_id: dict) -> Result:
-        """Returns a URL for a Telegram Ad platform account that can be used to set up advertisements for the chat paid in the owned Telegram stars
+        """Returns a URL for a Telegram Ad platform account that can be used to set up advertisements for the chat paid in the owned Telegram Stars
 
         Args:
             owner_id (``MessageSender``):
-                Identifier of the owner of the Telegram stars; can be identifier of an owned bot, or identifier of an owned channel chat
+                Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of an owned channel chat
 
 
         Returns:
@@ -15999,7 +16336,7 @@ class TDLibFunctions:
     async def getMessageStatistics(
         self, chat_id: int, message_id: int, is_dark: bool
     ) -> Result:
-        """Returns detailed statistics about a message\. Can be used only if message\.can\_get\_statistics \=\= true
+        """Returns detailed statistics about a message\. Can be used only if messageProperties\.can\_get\_statistics \=\= true
 
         Args:
             chat_id (``int``):
@@ -16028,7 +16365,7 @@ class TDLibFunctions:
     async def getMessagePublicForwards(
         self, chat_id: int, message_id: int, offset: str, limit: int
     ) -> Result:
-        """Returns forwarded copies of a channel message to different public channels and public reposts as a story\. Can be used only if message\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
+        """Returns forwarded copies of a channel message to different public channels and public reposts as a story\. Can be used only if messageProperties\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
 
         Args:
             chat_id (``int``):
@@ -17356,7 +17693,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getStarPaymentOptions(self) -> Result:
-        """Returns available options for Telegram stars purchase
+        """Returns available options for Telegram Stars purchase
 
 
         Returns:
@@ -17369,14 +17706,33 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getStarGiftPaymentOptions(self, user_id: int) -> Result:
+        """Returns available options for Telegram Stars gifting
+
+        Args:
+            user_id (``int``):
+                Identifier of the user that will receive Telegram Stars; pass 0 to get options for an unspecified user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StarPaymentOptions``)
+        """
+
+        data = {
+            "@type": "getStarGiftPaymentOptions",
+            "user_id": user_id,
+        }
+
+        return await self.invoke(data)
+
     async def getStarTransactions(
         self, owner_id: dict, offset: str, limit: int, direction: dict = None
     ) -> Result:
-        """Returns the list of Telegram star transactions for the specified owner
+        """Returns the list of Telegram Star transactions for the specified owner
 
         Args:
             owner_id (``MessageSender``):
-                Identifier of the owner of the Telegram stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
+                Identifier of the owner of the Telegram Stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
 
             offset (``str``):
                 Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results
