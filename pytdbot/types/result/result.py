@@ -1,6 +1,7 @@
 from asyncio import Event
 from json import dumps
-import binascii, os
+import binascii
+import os
 
 RETRY_AFTER_PREFEX = "Too Many Requests: retry after "
 
