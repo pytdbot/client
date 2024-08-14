@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.34",
-    "commit_hash": "98a2dc2a4576544b2ef346ba6f6737b65f4b570b",
+    "version": "1.8.35",
+    "commit_hash": "8d08b34e22a08e58db8341839c4e18ee06c516c5",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for an email address",
@@ -20,6 +20,8 @@
         "ChatPhotoStickerType": "Describes type of sticker, which was used to create a chat photo",
         "InputChatPhoto": "Describes a photo to be set as a user profile or chat photo",
         "StarTransactionDirection": "Describes direction of a transaction with Telegram Stars",
+        "BotTransactionPurpose": "Describes purpose of a transaction with a bot",
+        "ChannelTransactionPurpose": "Describes purpose of a transaction with a channel",
         "StarTransactionPartner": "Describes source or recipient of a transaction with Telegram Stars",
         "PremiumGiveawayParticipantStatus": "Contains information about status of a user in a Telegram Premium giveaway",
         "PremiumGiveawayInfo": "Contains information about Telegram Premium giveaway",
@@ -2719,6 +2721,94 @@
             },
             "type": "ChatAdministratorRights"
         },
+        "starSubscriptionPricing": {
+            "description": "Describes subscription plan paid in Telegram Stars",
+            "args": {
+                "period": {
+                    "description": "The number of seconds between consecutive Telegram Star debiting",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "star_count": {
+                    "description": "The amount of Telegram Stars that must be paid for each period",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StarSubscriptionPricing"
+        },
+        "starSubscription": {
+            "description": "Contains information about subscription to a channel chat paid in Telegram Stars",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the subscription",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "Identifier of the channel chat that is subscribed",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "expiration_date": {
+                    "description": "Point in time (Unix timestamp) when the subscription will expire or expired",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "can_reuse": {
+                    "description": "True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_canceled": {
+                    "description": "True, if the subscription was canceled",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_expiring": {
+                    "description": "True, if the subscription expires soon and there are no enough Telegram Stars on the user's balance to extend it",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "invite_link": {
+                    "description": "The invite link that can be used to renew the subscription if it has been expired; may be empty, if the link isn't available anymore",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "pricing": {
+                    "description": "The subscription plan",
+                    "is_optional": false,
+                    "type": "starSubscriptionPricing"
+                }
+            },
+            "type": "StarSubscription"
+        },
+        "starSubscriptions": {
+            "description": "Represents a list of Telegram Star subscriptions",
+            "args": {
+                "star_count": {
+                    "description": "The amount of owned Telegram Stars",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "subscriptions": {
+                    "description": "List of subbscriptions for Telegram Stars",
+                    "is_optional": false,
+                    "type": "vector<starSubscription>"
+                },
+                "required_star_count": {
+                    "description": "The number of Telegram Stars required to buy to extend subscriptions expiring soon",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StarSubscriptions"
+        },
         "productInfo": {
             "description": "Contains information about a product that can be paid with invoice",
             "args": {
@@ -2942,6 +3032,71 @@
             "args": {},
             "type": "StarTransactionDirection"
         },
+        "botTransactionPurposePaidMedia": {
+            "description": "Paid media were bought",
+            "args": {
+                "media": {
+                    "description": "The bought media if the trancastion wasn't refunded",
+                    "is_optional": false,
+                    "type": "vector<PaidMedia>"
+                }
+            },
+            "type": "BotTransactionPurpose"
+        },
+        "botTransactionPurposeInvoicePayment": {
+            "description": "User bought a product from the bot",
+            "args": {
+                "product_info": {
+                    "description": "Information about the bought product; may be null if not applicable",
+                    "is_optional": true,
+                    "type": "productInfo"
+                },
+                "invoice_payload": {
+                    "description": "Invoice payload; for bots only",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "BotTransactionPurpose"
+        },
+        "channelTransactionPurposePaidMedia": {
+            "description": "Paid media were bought",
+            "args": {
+                "message_id": {
+                    "description": "Identifier of the corresponding message with paid media; can be an identifier of a deleted message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "media": {
+                    "description": "The bought media if the trancastion wasn't refunded",
+                    "is_optional": false,
+                    "type": "vector<PaidMedia>"
+                }
+            },
+            "type": "ChannelTransactionPurpose"
+        },
+        "channelTransactionPurposeJoin": {
+            "description": "User joined the channel and subscribed to regular payments in Telegram Stars",
+            "args": {
+                "period": {
+                    "description": "The number of seconds between consecutive Telegram Star debiting",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChannelTransactionPurpose"
+        },
+        "channelTransactionPurposeReaction": {
+            "description": "User paid for a reaction",
+            "args": {
+                "message_id": {
+                    "description": "Identifier of the reacted message; can be an identifier of a deleted message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "ChannelTransactionPurpose"
+        },
         "starTransactionPartnerTelegram": {
             "description": "The transaction is a transaction with Telegram through a bot",
             "args": {},
@@ -2977,19 +3132,30 @@
             "description": "The transaction is a transaction with a bot",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the bot for the user, or the user for the bot",
+                    "description": "Identifier of the bot",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "product_info": {
-                    "description": "Information about the bought product; may be null if not applicable",
-                    "is_optional": true,
-                    "type": "productInfo"
-                },
-                "invoice_payload": {
-                    "description": "Invoice payload; for bots only",
+                "purpose": {
+                    "description": "Purpose of the transaction",
                     "is_optional": false,
-                    "type": "bytes"
+                    "type": "BotTransactionPurpose"
+                }
+            },
+            "type": "StarTransactionPartner"
+        },
+        "starTransactionPartnerBusiness": {
+            "description": "The transaction is a transaction with a business account",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the business account user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "media": {
+                    "description": "The bought media if the trancastion wasn't refunded",
+                    "is_optional": false,
+                    "type": "vector<PaidMedia>"
                 }
             },
             "type": "StarTransactionPartner"
@@ -3002,15 +3168,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "paid_media_message_id": {
-                    "description": "Identifier of the corresponding message with paid media; can be an identifier of a deleted message",
+                "purpose": {
+                    "description": "Purpose of the transaction",
                     "is_optional": false,
-                    "type": "int53"
-                },
-                "media": {
-                    "description": "Information about the bought media",
-                    "is_optional": false,
-                    "type": "vector<PaidMedia>"
+                    "type": "ChannelTransactionPurpose"
                 }
             },
             "type": "StarTransactionPartner"
@@ -3498,6 +3659,11 @@
                     "is_optional": false,
                     "type": "vector<botCommand>"
                 },
+                "privacy_policy_url": {
+                    "description": "The HTTP link to the privacy policy of the bot. If empty, then /privacy command must be used if supported by the bot. If the command isn't supported, then https://telegram.org/privacy-tpa must be opened",
+                    "is_optional": false,
+                    "type": "string"
+                },
                 "default_group_administrator_rights": {
                     "description": "Default administrator rights for adding the bot to basic group and supergroup chats; may be null",
                     "is_optional": true,
@@ -3750,7 +3916,13 @@
         },
         "chatMemberStatusMember": {
             "description": "The user is a member of the chat, without any additional privileges or restrictions",
-            "args": {},
+            "args": {
+                "member_until_date": {
+                    "description": "Point in time (Unix timestamp) when the user will be removed from the chat because of the expired subscription; 0 if never. Ignored in setChatMemberStatus",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
             "type": "ChatMemberStatus"
         },
         "chatMemberStatusRestricted": {
@@ -3981,6 +4153,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "subscription_pricing": {
+                    "description": "Information about subscription plan that is applied to the users joining the chat by the link; may be null if the link doesn't require subscription",
+                    "is_optional": true,
+                    "type": "starSubscriptionPricing"
+                },
                 "member_limit": {
                     "description": "The maximum number of members, which can join the chat using the link simultaneously; 0 if not limited. Always 0 if the link requires approval",
                     "is_optional": false,
@@ -3988,6 +4165,11 @@
                 },
                 "member_count": {
                     "description": "Number of chat members, which joined the chat using the link",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "expired_member_count": {
+                    "description": "Number of chat members, which joined the chat using the link, but have already left because of expired subscription; for subscription links only",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -4119,6 +4301,27 @@
             "args": {},
             "type": "InviteLinkChatType"
         },
+        "chatInviteLinkSubscriptionInfo": {
+            "description": "Contains information about subscription plan that must be paid by the user to use a chat invite link",
+            "args": {
+                "pricing": {
+                    "description": "Information about subscription plan that must be paid by the user to use the link",
+                    "is_optional": false,
+                    "type": "starSubscriptionPricing"
+                },
+                "can_reuse": {
+                    "description": "True, if the user has already paid for the subscription and can use joinChatByInviteLink to join the subscribed chat again",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "form_id": {
+                    "description": "Identifier of the payment form to use for subscription payment; 0 if the subscription can't be paid",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "ChatInviteLinkSubscriptionInfo"
+        },
         "chatInviteLinkInfo": {
             "description": "Contains information about a chat invite link",
             "args": {
@@ -4166,6 +4369,11 @@
                     "description": "User identifiers of some chat members that may be known to the current user",
                     "is_optional": false,
                     "type": "vector<int53>"
+                },
+                "subscription_info": {
+                    "description": "Information about subscription plan that must be paid by the user to use the link; may be null if the link doesn't require subscription",
+                    "is_optional": true,
+                    "type": "chatInviteLinkSubscriptionInfo"
                 },
                 "creates_join_request": {
                     "description": "True, if the link only creates join request",
@@ -4369,7 +4577,12 @@
                     "type": "Bool"
                 },
                 "sign_messages": {
-                    "description": "True, if messages sent to the channel need to contain information about the sender. This field is only applicable to channels",
+                    "description": "True, if messages sent to the channel contains name of the sender. This field is only applicable to channels",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "show_message_sender": {
+                    "description": "True, if messages sent to the channel have information about the sender user. This field is only applicable to channels",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4405,6 +4618,11 @@
                 },
                 "is_verified": {
                     "description": "True, if the supergroup or channel is verified",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_sensitive_content": {
+                    "description": "True, if content of media messages in the supergroup or channel chat must be hidden with 18+ spoiler",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -4483,6 +4701,11 @@
                     "description": "Time left before next message can be sent in the supergroup, in seconds. An updateSupergroupFullInfo update is not triggered when value of this field changes, but both new and old values are non-zero",
                     "is_optional": false,
                     "type": "double"
+                },
+                "can_enable_paid_reaction": {
+                    "description": "True, if paid reaction can be enabled in the channel chat; for channels only",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "can_get_members": {
                     "description": "True, if members of the chat can be retrieved via getSupergroupMembers or searchChatMembers",
@@ -4893,6 +5116,42 @@
             },
             "type": "ReactionType"
         },
+        "reactionTypePaid": {
+            "description": "The paid reaction in a channel chat",
+            "args": {},
+            "type": "ReactionType"
+        },
+        "paidReactor": {
+            "description": "Contains information about a user that added paid reactions",
+            "args": {
+                "sender_id": {
+                    "description": "Identifier of the user or chat that added the reactions; may be null for anonymous reactors that aren't the current user",
+                    "is_optional": true,
+                    "type": "MessageSender"
+                },
+                "star_count": {
+                    "description": "Number of Telegram Stars added",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_top": {
+                    "description": "True, if the reactor is one of the most active reactors; can be false if the reactor is the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_me": {
+                    "description": "True, if the paid reaction was added by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_anonymous": {
+                    "description": "True, if the reactor is anonymous",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "PaidReactor"
+        },
         "messageForwardInfo": {
             "description": "Contains information about a forwarded message",
             "args": {
@@ -5007,6 +5266,16 @@
                 },
                 "are_tags": {
                     "description": "True, if the reactions are tags and Telegram Premium users can filter messages by them",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "paid_reactors": {
+                    "description": "Information about top users that added the paid reaction",
+                    "is_optional": false,
+                    "type": "vector<paidReactor>"
+                },
+                "can_get_added_reactions": {
+                    "description": "True, if the list of added reactions is available using getMessageAddedReactions",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -5486,6 +5755,11 @@
                     "is_optional": false,
                     "type": "int64"
                 },
+                "has_sensitive_content": {
+                    "description": "True, if media content of the message must be hidden with 18+ spoiler",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "restriction_reason": {
                     "description": "If non-empty, contains a human-readable description of the reason why access to this message must be restricted",
                     "is_optional": true,
@@ -5748,7 +6022,7 @@
                     "type": "Bool"
                 },
                 "content": {
-                    "description": "Content of the message. Currently, can be only of the type messageText",
+                    "description": "Content of the message. Currently, can be only of the types messageText, messageAnimation, messagePhoto, or messageVideo",
                     "is_optional": false,
                     "type": "MessageContent"
                 },
@@ -6508,7 +6782,7 @@
             "type": "ChatPosition"
         },
         "chatAvailableReactionsAll": {
-            "description": "All reactions are available in the chat",
+            "description": "All reactions are available in the chat, excluding the paid reaction and custom reactions in channel chats",
             "args": {
                 "max_reaction_count": {
                     "description": "The maximum allowed number of reactions per message; 1-11",
@@ -8875,6 +9149,11 @@
                     "description": "Document with the background; may be null for filled backgrounds",
                     "is_optional": true,
                     "type": "document"
+                },
+                "background_type": {
+                    "description": "Type of the background; may be null if unknown",
+                    "is_optional": true,
+                    "type": "BackgroundType"
                 }
             },
             "type": "LinkPreviewType"
@@ -9072,10 +9351,10 @@
             "type": "LinkPreviewType"
         },
         "linkPreviewTypeSticker": {
-            "description": "The link is a link to a sticker message",
+            "description": "The link is a link to a sticker",
             "args": {
                 "sticker": {
-                    "description": "The sticker",
+                    "description": "The sticker. It can be an arbitrary WEBP image and can have dimensions bigger than 512",
                     "is_optional": false,
                     "type": "sticker"
                 }
@@ -13428,11 +13707,6 @@
                 },
                 "can_edit_scheduling_state": {
                     "description": "True, if scheduling state of the message can be edited",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "can_get_added_reactions": {
-                    "description": "True, if the list of added reactions is available using getMessageAddedReactions",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -18208,6 +18482,17 @@
             },
             "type": "ChatEventAction"
         },
+        "chatEventShowMessageSenderToggled": {
+            "description": "The show_message_sender setting of a channel was toggled",
+            "args": {
+                "show_message_sender": {
+                    "description": "New value of show_message_sender",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "ChatEventAction"
+        },
         "chatEventInviteLinkEdited": {
             "description": "A chat invite link was edited",
             "args": {
@@ -19379,6 +19664,17 @@
                     "description": "Number of bought Telegram Stars",
                     "is_optional": false,
                     "type": "int53"
+                }
+            },
+            "type": "TelegramPaymentPurpose"
+        },
+        "telegramPaymentPurposeJoinChat": {
+            "description": "The user joins a chat and subscribes to regular payments in Telegram Stars",
+            "args": {
+                "invite_link": {
+                    "description": "Invite link to use",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "TelegramPaymentPurpose"
@@ -21367,7 +21663,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeAttachmentMenuBot": {
-            "description": "The link is a link to an attachment menu bot to be opened in the specified or a chosen chat. Process given target_chat to open the chat. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to attachment menu, then show a disclaimer about Mini Apps being third-party apps, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. If the attachment menu bot can't be used in the opened chat, show an error to the user. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL",
+            "description": "The link is a link to an attachment menu bot to be opened in the specified or a chosen chat. Process given target_chat to open the chat. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to attachment menu, then show a disclaimer about Mini Apps being third-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. If the attachment menu bot can't be used in the opened chat, show an error to the user. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL",
             "args": {
                 "target_chat": {
                     "description": "Target chat to be opened",
@@ -21478,8 +21774,24 @@
             },
             "type": "InternalLinkType"
         },
+        "internalLinkTypeBuyStars": {
+            "description": "The link is a link to the Telegram Star purchase section of the application",
+            "args": {
+                "star_count": {
+                    "description": "The number of Telegram Stars that must be owned by the user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "purpose": {
+                    "description": "Purpose of Telegram Star purchase. Arbitrary string specified by the server, for example, \"subs\" if the Telegram Stars are required to extend channel subscriptions",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeChangePhoneNumber": {
-            "description": "The link is a link to the change phone number section of the app",
+            "description": "The link is a link to the change phone number section of the application",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -21506,7 +21818,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeChatFolderSettings": {
-            "description": "The link is a link to the folder section of the app settings",
+            "description": "The link is a link to the folder section of the application settings",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -21522,12 +21834,12 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeDefaultMessageAutoDeleteTimerSettings": {
-            "description": "The link is a link to the default message auto-delete timer settings section of the app settings",
+            "description": "The link is a link to the default message auto-delete timer settings section of the application settings",
             "args": {},
             "type": "InternalLinkType"
         },
         "internalLinkTypeEditProfileSettings": {
-            "description": "The link is a link to the edit profile section of the app settings",
+            "description": "The link is a link to the edit profile section of the application settings",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -21586,12 +21898,12 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeLanguageSettings": {
-            "description": "The link is a link to the language section of the app settings",
+            "description": "The link is a link to the language section of the application settings",
             "args": {},
             "type": "InternalLinkType"
         },
         "internalLinkTypeMainWebApp": {
-            "description": "The link is a link to the main Web App of a bot. Call searchPublicChat with the given bot username, check that the user is a bot and has the main Web App. If the bot can be added to attachment menu, then use getAttachmentMenuBot to receive information about the bot, then if the bot isn't added to side menu, show a disclaimer about Mini Apps being third-party apps, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu, then if the user accepts the terms and confirms adding, use toggleBotIsAddedToAttachmentMenu to add the bot. Then, use getMainWebApp with the given start parameter and open the returned URL as a Web App",
+            "description": "The link is a link to the main Web App of a bot. Call searchPublicChat with the given bot username, check that the user is a bot and has the main Web App. If the bot can be added to attachment menu, then use getAttachmentMenuBot to receive information about the bot, then if the bot isn't added to side menu, show a disclaimer about Mini Apps being third-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu, then if the user accepts the terms and confirms adding, use toggleBotIsAddedToAttachmentMenu to add the bot. Then, use getMainWebApp with the given start parameter and open the returned URL as a Web App",
             "args": {
                 "bot_username": {
                     "description": "Username of the bot",
@@ -21719,7 +22031,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePrivacyAndSecuritySettings": {
-            "description": "The link is a link to the privacy and security section of the app settings",
+            "description": "The link is a link to the privacy and security section of the application settings",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -21824,7 +22136,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeThemeSettings": {
-            "description": "The link is a link to the theme section of the app settings",
+            "description": "The link is a link to the theme section of the application settings",
             "args": {},
             "type": "InternalLinkType"
         },
@@ -21898,7 +22210,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeWebApp": {
-            "description": "The link is a link to a Web App. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web_app_short_name. Process received foundWebApp by showing a confirmation dialog if needed. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being third-party apps instead of the dialog and ask the user to accept their Terms of service. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. Then, call getWebAppLinkUrl and open the returned URL as a Web App",
+            "description": "The link is a link to a Web App. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web_app_short_name. Process received foundWebApp by showing a confirmation dialog if needed. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being third-party applications instead of the dialog and ask the user to accept their Terms of service. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. Then, call getWebAppLinkUrl and open the returned URL as a Web App",
             "args": {
                 "bot_username": {
                     "description": "Username of the bot that owns the Web App",
@@ -22726,6 +23038,11 @@
                     "type": "string"
                 }
             },
+            "type": "SuggestedAction"
+        },
+        "suggestedActionExtendStarSubscriptions": {
+            "description": "Suggests the user to extend their expiring Telegram Star subscriptions. Call getStarSubscriptions with only_expiring == true to get the number of expiring subscriptions and the number of required to buy Telegram Stars",
+            "args": {},
             "type": "SuggestedAction"
         },
         "count": {
@@ -25778,6 +26095,17 @@
             },
             "type": "Update"
         },
+        "updateActiveLiveLocationMessages": {
+            "description": "The list of messages with active live location that need to be updated by the application has changed. The list is persistent across application restarts only if the message database is used",
+            "args": {
+                "messages": {
+                    "description": "The list of messages with active live locations",
+                    "is_optional": false,
+                    "type": "vector<message>"
+                }
+            },
+            "type": "Update"
+        },
         "updateOwnedStarCount": {
             "description": "The number of Telegram Stars owned by the current user has changed",
             "args": {
@@ -28103,11 +28431,6 @@
             },
             "type": "Messages"
         },
-        "getActiveLiveLocationMessages": {
-            "description": "Returns all active live locations that need to be updated by the application. The list is persistent across application restarts only if the message database is used",
-            "args": {},
-            "type": "Messages"
-        },
         "getChatMessageByDate": {
             "description": "Returns the last message sent in a chat no later than the specified date",
             "args": {
@@ -29898,7 +30221,7 @@
                     "type": "int53"
                 },
                 "reaction_type": {
-                    "description": "Type of the reaction to add",
+                    "description": "Type of the reaction to add. Use addPaidMessageReaction instead to add the paid reaction",
                     "is_optional": false,
                     "type": "ReactionType"
                 },
@@ -29929,9 +30252,72 @@
                     "type": "int53"
                 },
                 "reaction_type": {
-                    "description": "Type of the reaction to remove",
+                    "description": "Type of the reaction to remove. The paid reaction can't be removed",
                     "is_optional": false,
                     "type": "ReactionType"
+                }
+            },
+            "type": "Ok"
+        },
+        "addPaidMessageReaction": {
+            "description": "Adds the paid message reaction to a message. Use getMessageAvailableReactions to receive the list of available reactions for the message",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the message belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "star_count": {
+                    "description": "Number of Telegram Stars to be used for the reaction; 1-getOption(\"paid_reaction_star_count_max\")",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_anonymous": {
+                    "description": "Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "removePendingPaidMessageReactions": {
+            "description": "Removes all pending paid reactions on a message. Can be called within 5 seconds after the last addPaidMessageReaction call",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the message belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "togglePaidMessageReactionIsAnonymous": {
+            "description": "Changes whether the paid message reaction of the user to a message is anonymous. The message must have paid reaction added by the user",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the message belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_anonymous": {
+                    "description": "Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Ok"
@@ -29971,12 +30357,12 @@
                     "type": "int53"
                 },
                 "message_id": {
-                    "description": "Identifier of the message. Use messageProperties.can_get_added_reactions to check whether added reactions can be received for the message",
+                    "description": "Identifier of the message. Use message.interaction_info.reactions.can_get_added_reactions to check whether added reactions can be received for the message",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "reaction_type": {
-                    "description": "Type of the reactions to return; pass null to return all added reactions",
+                    "description": "Type of the reactions to return; pass null to return all added reactions; reactionTypePaid isn't supported",
                     "is_optional": true,
                     "type": "ReactionType"
                 },
@@ -29997,7 +30383,7 @@
             "description": "Changes type of default reaction for the current user",
             "args": {
                 "reaction_type": {
-                    "description": "New type of the default reaction",
+                    "description": "New type of the default reaction. The paid reaction can't be set as default",
                     "is_optional": false,
                     "type": "ReactionType"
                 }
@@ -32747,7 +33133,7 @@
                     "type": "int32"
                 },
                 "reaction_type": {
-                    "description": "Type of the reaction to set; pass null to remove the reaction. `reactionTypeCustomEmoji` reactions can be used only by Telegram Premium users",
+                    "description": "Type of the reaction to set; pass null to remove the reaction. Custom emoji reactions can be used only by Telegram Premium users. Paid reactions can't be set",
                     "is_optional": true,
                     "type": "ReactionType"
                 },
@@ -32814,7 +33200,7 @@
                     "type": "int32"
                 },
                 "reaction_type": {
-                    "description": "Pass the default heart reaction or a suggested reaction type to receive only interactions with the specified reaction type; pass null to receive all interactions",
+                    "description": "Pass the default heart reaction or a suggested reaction type to receive only interactions with the specified reaction type; pass null to receive all interactions; reactionTypePaid isn't supported",
                     "is_optional": true,
                     "type": "ReactionType"
                 },
@@ -33506,8 +33892,29 @@
             },
             "type": "ChatInviteLink"
         },
+        "createChatSubscriptionInviteLink": {
+            "description": "Creates a new subscription invite link for a channel chat. Requires can_invite_users right in the chat",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "name": {
+                    "description": "Invite link name; 0-32 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "subscription_pricing": {
+                    "description": "Information about subscription plan that will be applied to the users joining the chat via the link. Subscription period must be 2592000 in production environment, and 60 or 300 if Telegram test environment is used",
+                    "is_optional": false,
+                    "type": "starSubscriptionPricing"
+                }
+            },
+            "type": "ChatInviteLink"
+        },
         "editChatInviteLink": {
-            "description": "Edits a non-primary invite link for a chat. Available for basic groups, supergroups, and channels. Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for other links",
+            "description": "Edits a non-primary invite link for a chat. Available for basic groups, supergroups, and channels. If the link creates a subscription, then expiration_date, member_limit and creates_join_request must not be used Requires administrator privileges and can_invite_users right in the chat for own links and owner privileges for other links",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -33538,6 +33945,27 @@
                     "description": "Pass true if users joining the chat via the link need to be approved by chat administrators. In this case, member_limit must be 0",
                     "is_optional": false,
                     "type": "Bool"
+                }
+            },
+            "type": "ChatInviteLink"
+        },
+        "editChatSubscriptionInviteLink": {
+            "description": "Edits a subscription invite link for a channel chat. Requires can_invite_users right in the chat for own links and owner privileges for other links",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "invite_link": {
+                    "description": "Invite link to be edited",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Invite link name; 0-32 characters",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "ChatInviteLink"
@@ -33617,6 +34045,11 @@
                     "description": "Invite link for which to return chat members",
                     "is_optional": false,
                     "type": "string"
+                },
+                "only_with_expired_subscription": {
+                    "description": "Pass true if the link is a subscription link and only members with expired subscription must be returned",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "offset_member": {
                     "description": "A chat member from which to return next chat members; pass null to get results from the beginning",
@@ -36256,7 +36689,7 @@
             "type": "Ok"
         },
         "toggleSupergroupSignMessages": {
-            "description": "Toggles whether sender signature is added to sent messages in a channel; requires can_change_info member right",
+            "description": "Toggles whether sender signature or link to the account is added to sent messages in a channel; requires can_change_info member right",
             "args": {
                 "supergroup_id": {
                     "description": "Identifier of the channel",
@@ -36265,6 +36698,11 @@
                 },
                 "sign_messages": {
                     "description": "New value of sign_messages",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "show_message_sender": {
+                    "description": "New value of show_message_sender",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -38143,6 +38581,11 @@
                     "is_optional": false,
                     "type": "MessageSender"
                 },
+                "subscription_id": {
+                    "description": "If non-empty, only transactions related to the Star Subscription will be returned",
+                    "is_optional": true,
+                    "type": "string"
+                },
                 "direction": {
                     "description": "Direction of the transactions to receive; pass null to get all transactions",
                     "is_optional": true,
@@ -38160,6 +38603,22 @@
                 }
             },
             "type": "StarTransactions"
+        },
+        "getStarSubscriptions": {
+            "description": "Returns the list of Telegram Star subscriptions for the current user",
+            "args": {
+                "only_expiring": {
+                    "description": "Pass true to receive only expiring subscriptions for which there are no enough Telegram Stars to extend",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "offset": {
+                    "description": "Offset of the first subscription to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StarSubscriptions"
         },
         "canPurchaseFromStore": {
             "description": "Checks whether an in-store purchase is possible. Must be called before any in-store purchase",
@@ -38210,6 +38669,33 @@
                     "description": "Transaction purpose",
                     "is_optional": false,
                     "type": "StorePaymentPurpose"
+                }
+            },
+            "type": "Ok"
+        },
+        "editStarSubscription": {
+            "description": "Cancels or reenables Telegram Star subscription to a channel",
+            "args": {
+                "subscription_id": {
+                    "description": "Identifier of the subscription to change",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_canceled": {
+                    "description": "New value of is_canceled",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "reuseStarSubscription": {
+            "description": "Reuses an active subscription and joins the subscribed chat again",
+            "args": {
+                "subscription_id": {
+                    "description": "Identifier of the subscription",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "Ok"

@@ -4405,6 +4405,46 @@ class Updates:
 
         return decorator
 
+    def on_updateActiveLiveLocationMessages(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """The list of messages with active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateActiveLiveLocationMessages", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateActiveLiveLocationMessages", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateActiveLiveLocationMessages", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateOwnedStarCount(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,

@@ -2559,20 +2559,6 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getActiveLiveLocationMessages(self) -> Result:
-        """Returns all active live locations that need to be updated by the application\. The list is persistent across application restarts only if the message database is used
-
-
-        Returns:
-            :class:`~pytdbot.types.Result` (``Messages``)
-        """
-
-        data = {
-            "@type": "getActiveLiveLocationMessages",
-        }
-
-        return await self.invoke(data)
-
     async def getChatMessageByDate(self, chat_id: int, date: int) -> Result:
         """Returns the last message sent in a chat no later than the specified date
 
@@ -5097,7 +5083,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             reaction_type (``ReactionType``):
-                Type of the reaction to add
+                Type of the reaction to add\. Use addPaidMessageReaction instead to add the paid reaction
 
             is_big (``bool``):
                 Pass true if the reaction is added with a big animation
@@ -5134,7 +5120,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             reaction_type (``ReactionType``):
-                Type of the reaction to remove
+                Type of the reaction to remove\. The paid reaction can't be removed
 
 
         Returns:
@@ -5146,6 +5132,93 @@ class TDLibFunctions:
             "chat_id": chat_id,
             "message_id": message_id,
             "reaction_type": reaction_type,
+        }
+
+        return await self.invoke(data)
+
+    async def addPaidMessageReaction(
+        self, chat_id: int, message_id: int, star_count: int, is_anonymous: bool
+    ) -> Result:
+        """Adds the paid message reaction to a message\. Use getMessageAvailableReactions to receive the list of available reactions for the message
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which the message belongs
+
+            message_id (``int``):
+                Identifier of the message
+
+            star_count (``int``):
+                Number of Telegram Stars to be used for the reaction; 1\-getOption\("paid\_reaction\_star\_count\_max"\)
+
+            is_anonymous (``bool``):
+                Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "addPaidMessageReaction",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "star_count": star_count,
+            "is_anonymous": is_anonymous,
+        }
+
+        return await self.invoke(data)
+
+    async def removePendingPaidMessageReactions(
+        self, chat_id: int, message_id: int
+    ) -> Result:
+        """Removes all pending paid reactions on a message\. Can be called within 5 seconds after the last addPaidMessageReaction call
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which the message belongs
+
+            message_id (``int``):
+                Identifier of the message
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "removePendingPaidMessageReactions",
+            "chat_id": chat_id,
+            "message_id": message_id,
+        }
+
+        return await self.invoke(data)
+
+    async def togglePaidMessageReactionIsAnonymous(
+        self, chat_id: int, message_id: int, is_anonymous: bool
+    ) -> Result:
+        """Changes whether the paid message reaction of the user to a message is anonymous\. The message must have paid reaction added by the user
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which the message belongs
+
+            message_id (``int``):
+                Identifier of the message
+
+            is_anonymous (``bool``):
+                Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "togglePaidMessageReactionIsAnonymous",
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "is_anonymous": is_anonymous,
         }
 
         return await self.invoke(data)
@@ -5198,7 +5271,7 @@ class TDLibFunctions:
                 Identifier of the chat to which the message belongs
 
             message_id (``int``):
-                Identifier of the message\. Use messageProperties\.can\_get\_added\_reactions to check whether added reactions can be received for the message
+                Identifier of the message\. Use message\.interaction\_info\.reactions\.can\_get\_added\_reactions to check whether added reactions can be received for the message
 
             offset (``str``):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
@@ -5207,7 +5280,7 @@ class TDLibFunctions:
                 The maximum number of reactions to be returned; must be positive and can't be greater than 100
 
             reaction_type (``ReactionType``, *optional*):
-                Type of the reactions to return; pass null to return all added reactions
+                Type of the reactions to return; pass null to return all added reactions; reactionTypePaid isn't supported
 
 
         Returns:
@@ -5230,7 +5303,7 @@ class TDLibFunctions:
 
         Args:
             reaction_type (``ReactionType``):
-                New type of the default reaction
+                New type of the default reaction\. The paid reaction can't be set as default
 
 
         Returns:
@@ -9339,7 +9412,7 @@ class TDLibFunctions:
                 Pass true if the reaction needs to be added to recent reactions
 
             reaction_type (``ReactionType``, *optional*):
-                Type of the reaction to set; pass null to remove the reaction\. \`reactionTypeCustomEmoji\` reactions can be used only by Telegram Premium users
+                Type of the reaction to set; pass null to remove the reaction\. Custom emoji reactions can be used only by Telegram Premium users\. Paid reactions can't be set
 
 
         Returns:
@@ -9436,7 +9509,7 @@ class TDLibFunctions:
                 The maximum number of story interactions to return
 
             reaction_type (``ReactionType``, *optional*):
-                Pass the default heart reaction or a suggested reaction type to receive only interactions with the specified reaction type; pass null to receive all interactions
+                Pass the default heart reaction or a suggested reaction type to receive only interactions with the specified reaction type; pass null to receive all interactions; reactionTypePaid isn't supported
 
 
         Returns:
@@ -10480,6 +10553,35 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def createChatSubscriptionInviteLink(
+        self, chat_id: int, name: str, subscription_pricing: dict
+    ) -> Result:
+        """Creates a new subscription invite link for a channel chat\. Requires can\_invite\_users right in the chat
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            name (``str``):
+                Invite link name; 0\-32 characters
+
+            subscription_pricing (``starSubscriptionPricing``):
+                Information about subscription plan that will be applied to the users joining the chat via the link\. Subscription period must be 2592000 in production environment, and 60 or 300 if Telegram test environment is used
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatInviteLink``)
+        """
+
+        data = {
+            "@type": "createChatSubscriptionInviteLink",
+            "chat_id": chat_id,
+            "name": name,
+            "subscription_pricing": subscription_pricing,
+        }
+
+        return await self.invoke(data)
+
     async def editChatInviteLink(
         self,
         chat_id: int,
@@ -10489,7 +10591,7 @@ class TDLibFunctions:
         member_limit: int,
         creates_join_request: bool,
     ) -> Result:
-        """Edits a non\-primary invite link for a chat\. Available for basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
+        """Edits a non\-primary invite link for a chat\. Available for basic groups, supergroups, and channels\. If the link creates a subscription, then expiration\_date, member\_limit and creates\_join\_request must not be used Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Args:
             chat_id (``int``):
@@ -10523,6 +10625,35 @@ class TDLibFunctions:
             "expiration_date": expiration_date,
             "member_limit": member_limit,
             "creates_join_request": creates_join_request,
+        }
+
+        return await self.invoke(data)
+
+    async def editChatSubscriptionInviteLink(
+        self, chat_id: int, invite_link: str, name: str
+    ) -> Result:
+        """Edits a subscription invite link for a channel chat\. Requires can\_invite\_users right in the chat for own links and owner privileges for other links
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+            invite_link (``str``):
+                Invite link to be edited
+
+            name (``str``):
+                Invite link name; 0\-32 characters
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``ChatInviteLink``)
+        """
+
+        data = {
+            "@type": "editChatSubscriptionInviteLink",
+            "chat_id": chat_id,
+            "invite_link": invite_link,
+            "name": name,
         }
 
         return await self.invoke(data)
@@ -10617,7 +10748,12 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatInviteLinkMembers(
-        self, chat_id: int, invite_link: str, limit: int, offset_member: dict = None
+        self,
+        chat_id: int,
+        invite_link: str,
+        only_with_expired_subscription: bool,
+        limit: int,
+        offset_member: dict = None,
     ) -> Result:
         """Returns chat members joined a chat via an invite link\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
@@ -10627,6 +10763,9 @@ class TDLibFunctions:
 
             invite_link (``str``):
                 Invite link for which to return chat members
+
+            only_with_expired_subscription (``bool``):
+                Pass true if the link is a subscription link and only members with expired subscription must be returned
 
             limit (``int``):
                 The maximum number of chat members to return; up to 100
@@ -10643,6 +10782,7 @@ class TDLibFunctions:
             "@type": "getChatInviteLinkMembers",
             "chat_id": chat_id,
             "invite_link": invite_link,
+            "only_with_expired_subscription": only_with_expired_subscription,
             "offset_member": offset_member,
             "limit": limit,
         }
@@ -14776,9 +14916,9 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def toggleSupergroupSignMessages(
-        self, supergroup_id: int, sign_messages: bool
+        self, supergroup_id: int, sign_messages: bool, show_message_sender: bool
     ) -> Result:
-        """Toggles whether sender signature is added to sent messages in a channel; requires can\_change\_info member right
+        """Toggles whether sender signature or link to the account is added to sent messages in a channel; requires can\_change\_info member right
 
         Args:
             supergroup_id (``int``):
@@ -14786,6 +14926,9 @@ class TDLibFunctions:
 
             sign_messages (``bool``):
                 New value of sign\_messages
+
+            show_message_sender (``bool``):
+                New value of show\_message\_sender
 
 
         Returns:
@@ -14796,6 +14939,7 @@ class TDLibFunctions:
             "@type": "toggleSupergroupSignMessages",
             "supergroup_id": supergroup_id,
             "sign_messages": sign_messages,
+            "show_message_sender": show_message_sender,
         }
 
         return await self.invoke(data)
@@ -17726,7 +17870,12 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getStarTransactions(
-        self, owner_id: dict, offset: str, limit: int, direction: dict = None
+        self,
+        owner_id: dict,
+        offset: str,
+        limit: int,
+        subscription_id: str = None,
+        direction: dict = None,
     ) -> Result:
         """Returns the list of Telegram Star transactions for the specified owner
 
@@ -17740,6 +17889,9 @@ class TDLibFunctions:
             limit (``int``):
                 The maximum number of transactions to return
 
+            subscription_id (``str``, *optional*):
+                If non\-empty, only transactions related to the Star Subscription will be returned
+
             direction (``StarTransactionDirection``, *optional*):
                 Direction of the transactions to receive; pass null to get all transactions
 
@@ -17751,9 +17903,33 @@ class TDLibFunctions:
         data = {
             "@type": "getStarTransactions",
             "owner_id": owner_id,
+            "subscription_id": subscription_id,
             "direction": direction,
             "offset": offset,
             "limit": limit,
+        }
+
+        return await self.invoke(data)
+
+    async def getStarSubscriptions(self, only_expiring: bool, offset: str) -> Result:
+        """Returns the list of Telegram Star subscriptions for the current user
+
+        Args:
+            only_expiring (``bool``):
+                Pass true to receive only expiring subscriptions for which there are no enough Telegram Stars to extend
+
+            offset (``str``):
+                Offset of the first subscription to return as received from the previous request; use empty string to get the first chunk of results
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StarSubscriptions``)
+        """
+
+        data = {
+            "@type": "getStarSubscriptions",
+            "only_expiring": only_expiring,
+            "offset": offset,
         }
 
         return await self.invoke(data)
@@ -17833,6 +18009,50 @@ class TDLibFunctions:
             "store_product_id": store_product_id,
             "purchase_token": purchase_token,
             "purpose": purpose,
+        }
+
+        return await self.invoke(data)
+
+    async def editStarSubscription(
+        self, subscription_id: str, is_canceled: bool
+    ) -> Result:
+        """Cancels or reenables Telegram Star subscription to a channel
+
+        Args:
+            subscription_id (``str``):
+                Identifier of the subscription to change
+
+            is_canceled (``bool``):
+                New value of is\_canceled
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "editStarSubscription",
+            "subscription_id": subscription_id,
+            "is_canceled": is_canceled,
+        }
+
+        return await self.invoke(data)
+
+    async def reuseStarSubscription(self, subscription_id: str) -> Result:
+        """Reuses an active subscription and joins the subscribed chat again
+
+        Args:
+            subscription_id (``str``):
+                Identifier of the subscription
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "reuseStarSubscription",
+            "subscription_id": subscription_id,
         }
 
         return await self.invoke(data)
