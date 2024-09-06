@@ -1041,7 +1041,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getRepliedMessage(self, chat_id: int, message_id: int) -> Result:
-        """Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messagePremiumGiveawayCompleted and topic messages without non\-bundled replied message respectively
+        """Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non\-bundled replied message respectively
 
         Args:
             chat_id (``int``):
@@ -4381,7 +4381,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def loadQuickReplyShortcuts(self) -> Result:
-        """Loads quick reply shortcuts created by the current user\. The loaded topics will be sent through updateQuickReplyShortcuts
+        """Loads quick reply shortcuts created by the current user\. The loaded data will be sent through updateQuickReplyShortcut and updateQuickReplyShortcuts
 
 
         Returns:
@@ -5083,7 +5083,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             reaction_type (``ReactionType``):
-                Type of the reaction to add\. Use addPaidMessageReaction instead to add the paid reaction
+                Type of the reaction to add\. Use addPendingPaidMessageReaction instead to add the paid reaction
 
             is_big (``bool``):
                 Pass true if the reaction is added with a big animation
@@ -5136,10 +5136,15 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def addPaidMessageReaction(
-        self, chat_id: int, message_id: int, star_count: int, is_anonymous: bool
+    async def addPendingPaidMessageReaction(
+        self,
+        chat_id: int,
+        message_id: int,
+        star_count: int,
+        use_default_is_anonymous: bool,
+        is_anonymous: bool,
     ) -> Result:
-        """Adds the paid message reaction to a message\. Use getMessageAvailableReactions to receive the list of available reactions for the message
+        """Adds the paid message reaction to a message\. Use getMessageAvailableReactions to check whether the reaction is available for the message
 
         Args:
             chat_id (``int``):
@@ -5149,10 +5154,13 @@ class TDLibFunctions:
                 Identifier of the message
 
             star_count (``int``):
-                Number of Telegram Stars to be used for the reaction; 1\-getOption\("paid\_reaction\_star\_count\_max"\)
+                Number of Telegram Stars to be used for the reaction\. The total number of pending paid reactions must not exceed getOption\("paid\_reaction\_star\_count\_max"\)
+
+            use_default_is_anonymous (``bool``):
+                Pass true if the user didn't choose anonymity explicitly, for example, the reaction is set from the message bubble
 
             is_anonymous (``bool``):
-                Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors
+                Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors\. Ignored if use\_default\_is\_anonymous \=\= true
 
 
         Returns:
@@ -5160,11 +5168,37 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "addPaidMessageReaction",
+            "@type": "addPendingPaidMessageReaction",
             "chat_id": chat_id,
             "message_id": message_id,
             "star_count": star_count,
+            "use_default_is_anonymous": use_default_is_anonymous,
             "is_anonymous": is_anonymous,
+        }
+
+        return await self.invoke(data)
+
+    async def commitPendingPaidMessageReactions(
+        self, chat_id: int, message_id: int
+    ) -> Result:
+        """Applies all pending paid reactions on a message
+
+        Args:
+            chat_id (``int``):
+                Identifier of the chat to which the message belongs
+
+            message_id (``int``):
+                Identifier of the message
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "commitPendingPaidMessageReactions",
+            "chat_id": chat_id,
+            "message_id": message_id,
         }
 
         return await self.invoke(data)
@@ -5172,7 +5206,7 @@ class TDLibFunctions:
     async def removePendingPaidMessageReactions(
         self, chat_id: int, message_id: int
     ) -> Result:
-        """Removes all pending paid reactions on a message\. Can be called within 5 seconds after the last addPaidMessageReaction call
+        """Removes all pending paid reactions on a message
 
         Args:
             chat_id (``int``):
@@ -6037,8 +6071,8 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def getPopularWebAppBots(self, offset: str, limit: int) -> Result:
-        """Returns popular Web App bots
+    async def getGrossingWebAppBots(self, offset: str, limit: int) -> Result:
+        """Returns the most grossing Web App bots
 
         Args:
             offset (``str``):
@@ -6053,7 +6087,7 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "getPopularWebAppBots",
+            "@type": "getGrossingWebAppBots",
             "offset": offset,
             "limit": limit,
         }
@@ -12593,6 +12627,25 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getStickerSetName(self, set_id: int) -> Result:
+        """Returns name of a sticker set by its identifier
+
+        Args:
+            set_id (``int``):
+                Identifier of the sticker set
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Text``)
+        """
+
+        data = {
+            "@type": "getStickerSetName",
+            "set_id": set_id,
+        }
+
+        return await self.invoke(data)
+
     async def searchStickerSet(self, name: str) -> Result:
         """Searches for a sticker set by its name
 
@@ -17732,7 +17785,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getPremiumGiftCodePaymentOptions(self, boosted_chat_id: int) -> Result:
-        """Returns available options for Telegram Premium gift code or giveaway creation
+        """Returns available options for Telegram Premium gift code or Telegram Premium giveaway creation
 
         Args:
             boosted_chat_id (``int``):
@@ -17788,17 +17841,23 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def launchPrepaidPremiumGiveaway(
-        self, giveaway_id: int, parameters: dict
+    async def launchPrepaidGiveaway(
+        self, giveaway_id: int, parameters: dict, winner_count: int, star_count: int
     ) -> Result:
-        """Launches a prepaid Telegram Premium giveaway
+        """Launches a prepaid giveaway
 
         Args:
             giveaway_id (``int``):
                 Unique identifier of the prepaid giveaway
 
-            parameters (``premiumGiveawayParameters``):
+            parameters (``giveawayParameters``):
                 Giveaway parameters
+
+            winner_count (``int``):
+                The number of users to receive giveaway prize
+
+            star_count (``int``):
+                The number of Telegram Stars to be distributed through the giveaway; pass 0 for Telegram Premium giveaways
 
 
         Returns:
@@ -17806,15 +17865,17 @@ class TDLibFunctions:
         """
 
         data = {
-            "@type": "launchPrepaidPremiumGiveaway",
+            "@type": "launchPrepaidGiveaway",
             "giveaway_id": giveaway_id,
             "parameters": parameters,
+            "winner_count": winner_count,
+            "star_count": star_count,
         }
 
         return await self.invoke(data)
 
-    async def getPremiumGiveawayInfo(self, chat_id: int, message_id: int) -> Result:
-        """Returns information about a Telegram Premium giveaway
+    async def getGiveawayInfo(self, chat_id: int, message_id: int) -> Result:
+        """Returns information about a giveaway
 
         Args:
             chat_id (``int``):
@@ -17825,11 +17886,11 @@ class TDLibFunctions:
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``PremiumGiveawayInfo``)
+            :class:`~pytdbot.types.Result` (``GiveawayInfo``)
         """
 
         data = {
-            "@type": "getPremiumGiveawayInfo",
+            "@type": "getGiveawayInfo",
             "chat_id": chat_id,
             "message_id": message_id,
         }
@@ -17865,6 +17926,20 @@ class TDLibFunctions:
         data = {
             "@type": "getStarGiftPaymentOptions",
             "user_id": user_id,
+        }
+
+        return await self.invoke(data)
+
+    async def getStarGiveawayPaymentOptions(self) -> Result:
+        """Returns available options for Telegram Star giveaway creation
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``StarGiveawayPaymentOptions``)
+        """
+
+        data = {
+            "@type": "getStarGiveawayPaymentOptions",
         }
 
         return await self.invoke(data)

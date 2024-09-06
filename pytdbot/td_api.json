@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.35",
-    "commit_hash": "8d08b34e22a08e58db8341839c4e18ee06c516c5",
+    "version": "1.8.36",
+    "commit_hash": "87d881071fe514936bb17029e96761141287d2be",
     "classes": {
         "AuthenticationCodeType": "Provides information about the method by which an authentication code is delivered to the user",
         "EmailAddressAuthentication": "Contains authentication data for an email address",
@@ -21,10 +21,11 @@
         "InputChatPhoto": "Describes a photo to be set as a user profile or chat photo",
         "StarTransactionDirection": "Describes direction of a transaction with Telegram Stars",
         "BotTransactionPurpose": "Describes purpose of a transaction with a bot",
-        "ChannelTransactionPurpose": "Describes purpose of a transaction with a channel",
+        "ChatTransactionPurpose": "Describes purpose of a transaction with a supergroup or a channel",
         "StarTransactionPartner": "Describes source or recipient of a transaction with Telegram Stars",
-        "PremiumGiveawayParticipantStatus": "Contains information about status of a user in a Telegram Premium giveaway",
-        "PremiumGiveawayInfo": "Contains information about Telegram Premium giveaway",
+        "GiveawayParticipantStatus": "Contains information about status of a user in a giveaway",
+        "GiveawayInfo": "Contains information about a giveaway",
+        "GiveawayPrize": "Contains information about a giveaway prize",
         "ChatMemberStatus": "Provides information about the status of a member in a chat",
         "ChatMembersFilter": "Specifies the kind of chat members to return in searchChatMembers",
         "SupergroupMembersFilter": "Specifies the kind of chat members to return in getSupergroupMembers",
@@ -2893,7 +2894,7 @@
             "type": "PremiumStatePaymentOption"
         },
         "premiumGiftCodePaymentOption": {
-            "description": "Describes an option for creating Telegram Premium gift codes. Use telegramPaymentPurposePremiumGiftCodes for out-of-store payments",
+            "description": "Describes an option for creating Telegram Premium gift codes or Telegram Premium giveaway. Use telegramPaymentPurposePremiumGiftCodes or telegramPaymentPurposePremiumGiveaway for out-of-store payments",
             "args": {
                 "currency": {
                     "description": "ISO 4217 currency code for Telegram Premium gift code payment",
@@ -2905,7 +2906,7 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "user_count": {
+                "winner_count": {
                     "description": "Number of users which will be able to activate the gift codes",
                     "is_optional": false,
                     "type": "int32"
@@ -2929,7 +2930,7 @@
             "type": "PremiumGiftCodePaymentOption"
         },
         "premiumGiftCodePaymentOptions": {
-            "description": "Contains a list of options for creating Telegram Premium gift codes",
+            "description": "Contains a list of options for creating Telegram Premium gift codes or Telegram Premium giveaway",
             "args": {
                 "options": {
                     "description": "The list of options",
@@ -3022,6 +3023,84 @@
             },
             "type": "StarPaymentOptions"
         },
+        "starGiveawayWinnerOption": {
+            "description": "Describes an option for the number of winners of a Telegram Star giveaway",
+            "args": {
+                "winner_count": {
+                    "description": "The number of users that will be chosen as winners",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "won_star_count": {
+                    "description": "The number of Telegram Stars that will be won by the winners of the giveaway",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_default": {
+                    "description": "True, if the option must be chosen by default",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StarGiveawayWinnerOption"
+        },
+        "starGiveawayPaymentOption": {
+            "description": "Describes an option for creating Telegram Star giveaway. Use telegramPaymentPurposeStarGiveaway for out-of-store payments",
+            "args": {
+                "currency": {
+                    "description": "ISO 4217 currency code for the payment",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "The amount to pay, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "star_count": {
+                    "description": "Number of Telegram Stars that will be distributed among winners",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "store_product_id": {
+                    "description": "Identifier of the store product associated with the option; may be empty if none",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "yearly_boost_count": {
+                    "description": "Number of times the chat will be boosted for one year if the option is chosen",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "winner_options": {
+                    "description": "Allowed options for the number of giveaway winners",
+                    "is_optional": false,
+                    "type": "vector<starGiveawayWinnerOption>"
+                },
+                "is_default": {
+                    "description": "True, if the option must be chosen by default",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_additional": {
+                    "description": "True, if the option must be shown only in the full list of payment options",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StarGiveawayPaymentOption"
+        },
+        "starGiveawayPaymentOptions": {
+            "description": "Contains a list of options for creating Telegram Star giveaway",
+            "args": {
+                "options": {
+                    "description": "The list of options",
+                    "is_optional": false,
+                    "type": "vector<starGiveawayPaymentOption>"
+                }
+            },
+            "type": "StarGiveawayPaymentOptions"
+        },
         "starTransactionDirectionIncoming": {
             "description": "The transaction is incoming and increases the number of owned Telegram Stars",
             "args": {},
@@ -3039,6 +3118,11 @@
                     "description": "The bought media if the trancastion wasn't refunded",
                     "is_optional": false,
                     "type": "vector<PaidMedia>"
+                },
+                "payload": {
+                    "description": "Bot-provided payload; for bots only",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "BotTransactionPurpose"
@@ -3059,11 +3143,11 @@
             },
             "type": "BotTransactionPurpose"
         },
-        "channelTransactionPurposePaidMedia": {
+        "chatTransactionPurposePaidMedia": {
             "description": "Paid media were bought",
             "args": {
                 "message_id": {
-                    "description": "Identifier of the corresponding message with paid media; can be an identifier of a deleted message",
+                    "description": "Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -3073,9 +3157,9 @@
                     "type": "vector<PaidMedia>"
                 }
             },
-            "type": "ChannelTransactionPurpose"
+            "type": "ChatTransactionPurpose"
         },
-        "channelTransactionPurposeJoin": {
+        "chatTransactionPurposeJoin": {
             "description": "User joined the channel and subscribed to regular payments in Telegram Stars",
             "args": {
                 "period": {
@@ -3084,18 +3168,29 @@
                     "type": "int32"
                 }
             },
-            "type": "ChannelTransactionPurpose"
+            "type": "ChatTransactionPurpose"
         },
-        "channelTransactionPurposeReaction": {
+        "chatTransactionPurposeReaction": {
             "description": "User paid for a reaction",
             "args": {
                 "message_id": {
-                    "description": "Identifier of the reacted message; can be an identifier of a deleted message",
+                    "description": "Identifier of the reacted message; can be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 }
             },
-            "type": "ChannelTransactionPurpose"
+            "type": "ChatTransactionPurpose"
+        },
+        "chatTransactionPurposeGiveaway": {
+            "description": "User received Telegram Stars from a giveaway",
+            "args": {
+                "giveaway_message_id": {
+                    "description": "Identifier of the message with giveaway; can be 0 or an identifier of a deleted message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "ChatTransactionPurpose"
         },
         "starTransactionPartnerTelegram": {
             "description": "The transaction is a transaction with Telegram through a bot",
@@ -3160,8 +3255,8 @@
             },
             "type": "StarTransactionPartner"
         },
-        "starTransactionPartnerChannel": {
-            "description": "The transaction is a transaction with a channel chat",
+        "starTransactionPartnerChat": {
+            "description": "The transaction is a transaction with a supergroup or a channel chat",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -3171,7 +3266,7 @@
                 "purpose": {
                     "description": "Purpose of the transaction",
                     "is_optional": false,
-                    "type": "ChannelTransactionPurpose"
+                    "type": "ChatTransactionPurpose"
                 }
             },
             "type": "StarTransactionPartner"
@@ -3249,17 +3344,17 @@
             },
             "type": "StarTransactions"
         },
-        "premiumGiveawayParticipantStatusEligible": {
+        "giveawayParticipantStatusEligible": {
             "description": "The user is eligible for the giveaway",
             "args": {},
-            "type": "PremiumGiveawayParticipantStatus"
+            "type": "GiveawayParticipantStatus"
         },
-        "premiumGiveawayParticipantStatusParticipating": {
+        "giveawayParticipantStatusParticipating": {
             "description": "The user participates in the giveaway",
             "args": {},
-            "type": "PremiumGiveawayParticipantStatus"
+            "type": "GiveawayParticipantStatus"
         },
-        "premiumGiveawayParticipantStatusAlreadyWasMember": {
+        "giveawayParticipantStatusAlreadyWasMember": {
             "description": "The user can't participate in the giveaway, because they have already been member of the chat",
             "args": {
                 "joined_chat_date": {
@@ -3268,9 +3363,9 @@
                     "type": "int32"
                 }
             },
-            "type": "PremiumGiveawayParticipantStatus"
+            "type": "GiveawayParticipantStatus"
         },
-        "premiumGiveawayParticipantStatusAdministrator": {
+        "giveawayParticipantStatusAdministrator": {
             "description": "The user can't participate in the giveaway, because they are an administrator in one of the chats that created the giveaway",
             "args": {
                 "chat_id": {
@@ -3279,9 +3374,9 @@
                     "type": "int53"
                 }
             },
-            "type": "PremiumGiveawayParticipantStatus"
+            "type": "GiveawayParticipantStatus"
         },
-        "premiumGiveawayParticipantStatusDisallowedCountry": {
+        "giveawayParticipantStatusDisallowedCountry": {
             "description": "The user can't participate in the giveaway, because they phone number is from a disallowed country",
             "args": {
                 "user_country_code": {
@@ -3290,9 +3385,9 @@
                     "type": "string"
                 }
             },
-            "type": "PremiumGiveawayParticipantStatus"
+            "type": "GiveawayParticipantStatus"
         },
-        "premiumGiveawayInfoOngoing": {
+        "giveawayInfoOngoing": {
             "description": "Describes an ongoing giveaway",
             "args": {
                 "creation_date": {
@@ -3303,7 +3398,7 @@
                 "status": {
                     "description": "Status of the current user in the giveaway",
                     "is_optional": false,
-                    "type": "PremiumGiveawayParticipantStatus"
+                    "type": "GiveawayParticipantStatus"
                 },
                 "is_ended": {
                     "description": "True, if the giveaway has ended and results are being prepared",
@@ -3311,9 +3406,9 @@
                     "type": "Bool"
                 }
             },
-            "type": "PremiumGiveawayInfo"
+            "type": "GiveawayInfo"
         },
-        "premiumGiveawayInfoCompleted": {
+        "giveawayInfoCompleted": {
             "description": "Describes a completed giveaway",
             "args": {
                 "creation_date": {
@@ -3331,23 +3426,55 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_winner": {
+                    "description": "True, if the cuurent user is a winner of the giveaway",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "winner_count": {
                     "description": "Number of winners in the giveaway",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "activation_count": {
-                    "description": "Number of winners, which activated their gift codes",
+                    "description": "Number of winners, which activated their gift codes; for Telegram Premium giveaways only",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "gift_code": {
-                    "description": "Telegram Premium gift code that was received by the current user; empty if the user isn't a winner in the giveaway",
+                    "description": "Telegram Premium gift code that was received by the current user; empty if the user isn't a winner in the giveaway or the giveaway isn't a Telegram Premium giveaway",
                     "is_optional": false,
                     "type": "string"
+                },
+                "won_star_count": {
+                    "description": "The amount of Telegram Stars won by the current user; 0 if the user isn't a winner in the giveaway or the giveaway isn't a Telegram Star giveaway",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
-            "type": "PremiumGiveawayInfo"
+            "type": "GiveawayInfo"
+        },
+        "giveawayPrizePremium": {
+            "description": "The giveaway sends Telegram Premium subscriptions to the winners",
+            "args": {
+                "month_count": {
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "GiveawayPrize"
+        },
+        "giveawayPrizeStars": {
+            "description": "The giveaway sends Telegram Stars to the winners",
+            "args": {
+                "star_count": {
+                    "description": "Number of Telegram Stars that will be shared by all winners",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "GiveawayPrize"
         },
         "accentColor": {
             "description": "Contains information about supported accent color for user/chat name, background of empty chat photo, replies to messages and link previews",
@@ -5500,7 +5627,7 @@
                     "type": "int32"
                 },
                 "content": {
-                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messagePremiumGiveaway, messagePremiumGiveawayWinners, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
+                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
                     "is_optional": true,
                     "type": "MessageContent"
                 }
@@ -9070,11 +9197,6 @@
                     "description": "The animation",
                     "is_optional": false,
                     "type": "animation"
-                },
-                "author": {
-                    "description": "Author of the animation",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "LinkPreviewType"
@@ -9086,11 +9208,6 @@
                     "description": "Photo for the app",
                     "is_optional": false,
                     "type": "photo"
-                },
-                "author": {
-                    "description": "Author of the app",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "LinkPreviewType"
@@ -9102,11 +9219,6 @@
                     "description": "Article's main photo; may be null",
                     "is_optional": true,
                     "type": "photo"
-                },
-                "author": {
-                    "description": "Author of the article",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "LinkPreviewType"
@@ -9114,30 +9226,10 @@
         "linkPreviewTypeAudio": {
             "description": "The link is a link to an audio",
             "args": {
-                "url": {
-                    "description": "URL of the audio; may be empty if none",
-                    "is_optional": true,
-                    "type": "string"
-                },
-                "mime_type": {
-                    "description": "MIME type of the audio file",
-                    "is_optional": false,
-                    "type": "string"
-                },
                 "audio": {
-                    "description": "The audio description; may be null if unknown",
-                    "is_optional": true,
+                    "description": "The audio description",
+                    "is_optional": false,
                     "type": "audio"
-                },
-                "duration": {
-                    "description": "Duration of the audio, in seconds; 0 if unknown",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "author": {
-                    "description": "Author of the audio",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "LinkPreviewType"
@@ -9197,11 +9289,6 @@
                     "description": "The document description",
                     "is_optional": false,
                     "type": "document"
-                },
-                "author": {
-                    "description": "Author of the document",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "LinkPreviewType"
@@ -9223,11 +9310,6 @@
                     "description": "Duration of the animation, in seconds",
                     "is_optional": false,
                     "type": "int32"
-                },
-                "author": {
-                    "description": "Author of the animation",
-                    "is_optional": false,
-                    "type": "string"
                 },
                 "width": {
                     "description": "Expected width of the embedded player",
@@ -9260,11 +9342,6 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "author": {
-                    "description": "Author of the audio",
-                    "is_optional": false,
-                    "type": "string"
-                },
                 "width": {
                     "description": "Expected width of the embedded player",
                     "is_optional": false,
@@ -9296,11 +9373,6 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "author": {
-                    "description": "Author of the video",
-                    "is_optional": false,
-                    "type": "string"
-                },
                 "width": {
                     "description": "Expected width of the embedded player",
                     "is_optional": false,
@@ -9308,6 +9380,58 @@
                 },
                 "height": {
                     "description": "Expected height of the embedded player",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeExternalAudio": {
+            "description": "The link is a link to an audio file",
+            "args": {
+                "url": {
+                    "description": "URL of the audio file",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "mime_type": {
+                    "description": "MIME type of the audio file",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "duration": {
+                    "description": "Duration of the audio, in seconds; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeExternalVideo": {
+            "description": "The link is a link to a video file",
+            "args": {
+                "url": {
+                    "description": "URL of the video file",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "mime_type": {
+                    "description": "MIME type of the video file",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "width": {
+                    "description": "Expected width of the video preview; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "height": {
+                    "description": "Expected height of the video preview; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "duration": {
+                    "description": "Duration of the video, in seconds; 0 if unknown",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -9331,11 +9455,6 @@
                     "description": "The photo",
                     "is_optional": false,
                     "type": "photo"
-                },
-                "author": {
-                    "description": "Author of the photo",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "LinkPreviewType"
@@ -9439,40 +9558,10 @@
         "linkPreviewTypeVideo": {
             "description": "The link is a link to a video",
             "args": {
-                "url": {
-                    "description": "URL of the video; may be empty if none",
-                    "is_optional": true,
-                    "type": "string"
-                },
-                "mime_type": {
-                    "description": "MIME type of the video file",
-                    "is_optional": false,
-                    "type": "string"
-                },
                 "video": {
-                    "description": "The video description; may be null if unknown",
-                    "is_optional": true,
+                    "description": "The video description",
+                    "is_optional": false,
                     "type": "video"
-                },
-                "width": {
-                    "description": "Expected width of the preview",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "height": {
-                    "description": "Expected height of the preview",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "duration": {
-                    "description": "Duration of the video, in seconds; 0 if unknown",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "author": {
-                    "description": "Author of the video",
-                    "is_optional": false,
-                    "type": "string"
                 }
             },
             "type": "LinkPreviewType"
@@ -9553,6 +9642,11 @@
                     "description": "Description of the content",
                     "is_optional": false,
                     "type": "formattedText"
+                },
+                "author": {
+                    "description": "Author of the content",
+                    "is_optional": false,
+                    "type": "string"
                 },
                 "type": {
                     "description": "Type of the link preview",
@@ -9827,6 +9921,11 @@
                 },
                 "header_background_color": {
                     "description": "A color of the header background in the RGB24 format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "bottom_bar_background_color": {
+                    "description": "A color of the bottom bar background in the RGB24 format",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -10445,11 +10544,11 @@
             "args": {},
             "type": "PaidMedia"
         },
-        "premiumGiveawayParameters": {
-            "description": "Describes parameters of a Telegram Premium giveaway",
+        "giveawayParameters": {
+            "description": "Describes parameters of a giveaway",
             "args": {
                 "boosted_chat_id": {
-                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Premium subscription. If the chat is a channel, then can_post_messages right is required in the channel, otherwise, the user must be an administrator in the supergroup",
+                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Telegram Premium subscription, or for the specified time. If the chat is a channel, then can_post_messages right is required in the channel, otherwise, the user must be an administrator in the supergroup",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -10484,7 +10583,7 @@
                     "type": "string"
                 }
             },
-            "type": "PremiumGiveawayParameters"
+            "type": "GiveawayParameters"
         },
         "datedFile": {
             "description": "File with the date it was uploaded",
@@ -12439,28 +12538,34 @@
             },
             "type": "MessageContent"
         },
-        "messagePremiumGiveawayCreated": {
-            "description": "A Telegram Premium giveaway was created for the chat. Use telegramPaymentPurposePremiumGiveaway or storePaymentPurposePremiumGiveaway to create a giveaway",
-            "args": {},
+        "messageGiveawayCreated": {
+            "description": "A giveaway was created for the chat. Use telegramPaymentPurposePremiumGiveaway, storePaymentPurposePremiumGiveaway, telegramPaymentPurposeStarGiveaway, or storePaymentPurposeStarGiveaway to create a giveaway",
+            "args": {
+                "star_count": {
+                    "description": "Number of Telegram Stars that will be shared by winners of the giveaway; 0 for Telegram Premium giveaways",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
             "type": "MessageContent"
         },
-        "messagePremiumGiveaway": {
-            "description": "A Telegram Premium giveaway",
+        "messageGiveaway": {
+            "description": "A giveaway",
             "args": {
                 "parameters": {
                     "description": "Giveaway parameters",
                     "is_optional": false,
-                    "type": "premiumGiveawayParameters"
+                    "type": "giveawayParameters"
                 },
                 "winner_count": {
                     "description": "Number of users which will receive Telegram Premium subscription gift codes",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "month_count": {
-                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
+                "prize": {
+                    "description": "Prize of the giveaway",
                     "is_optional": false,
-                    "type": "int32"
+                    "type": "GiveawayPrize"
                 },
                 "sticker": {
                     "description": "A sticker to be shown in the message; may be null if unknown",
@@ -12470,8 +12575,8 @@
             },
             "type": "MessageContent"
         },
-        "messagePremiumGiveawayCompleted": {
-            "description": "A Telegram Premium giveaway without public winners has been completed for the chat",
+        "messageGiveawayCompleted": {
+            "description": "A giveaway without public winners has been completed for the chat",
             "args": {
                 "giveaway_message_id": {
                     "description": "Identifier of the message with the giveaway; can be 0 if the message was deleted",
@@ -12483,19 +12588,24 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "is_star_giveaway": {
+                    "description": "True, if the giveaway is a Telegram Star giveaway",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "unclaimed_prize_count": {
-                    "description": "Number of undistributed prizes",
+                    "description": "Number of undistributed prizes; for Telegram Premium giveaways only",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
             "type": "MessageContent"
         },
-        "messagePremiumGiveawayWinners": {
-            "description": "A Telegram Premium giveaway with public winners has been completed for the chat",
+        "messageGiveawayWinners": {
+            "description": "A giveaway with public winners has been completed for the chat",
             "args": {
                 "boosted_chat_id": {
-                    "description": "Identifier of the channel chat, which was automatically boosted by the winners of the giveaway for duration of the Premium subscription",
+                    "description": "Identifier of the supergroup or channel chat, which was automatically boosted by the winners of the giveaway",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -12524,10 +12634,10 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "month_count": {
-                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
+                "prize": {
+                    "description": "Prize of the giveaway",
                     "is_optional": false,
-                    "type": "int32"
+                    "type": "GiveawayPrize"
                 },
                 "prize_description": {
                     "description": "Additional description of the giveaway prize",
@@ -12545,7 +12655,7 @@
                     "type": "vector<int53>"
                 },
                 "unclaimed_prize_count": {
-                    "description": "Number of undistributed prizes",
+                    "description": "Number of undistributed prizes; for Telegram Premium giveaways only",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -12594,6 +12704,42 @@
                     "description": "Identifier of the transaction for Telegram Stars purchase; for receiver only",
                     "is_optional": false,
                     "type": "string"
+                },
+                "sticker": {
+                    "description": "A sticker to be shown in the message; may be null if unknown",
+                    "is_optional": true,
+                    "type": "sticker"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageGiveawayPrizeStars": {
+            "description": "A Telegram Stars were received by the cuurent user from a giveaway",
+            "args": {
+                "star_count": {
+                    "description": "Number of Telegram Stars that were received",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "transaction_id": {
+                    "description": "Identifier of the transaction for Telegram Stars credit",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "boosted_chat_id": {
+                    "description": "Identifier of the supergroup or channel chat, which was automatically boosted by the winners of the giveaway",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "giveaway_message_id": {
+                    "description": "Identifier of the message with the giveaway in the boosted chat; can be 0 if the message was deleted",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_unclaimed": {
+                    "description": "True, if the corresponding winner wasn't chosen and the Telegram Stars were received by the owner of the boosted chat",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "sticker": {
                     "description": "A sticker to be shown in the message; may be null if unknown",
@@ -13028,7 +13174,7 @@
             "type": "MessageSendOptions"
         },
         "messageCopyOptions": {
-            "description": "Options to be used when a message content is copied without reference to the original sender. Service messages, messages with messageInvoice, messagePaidMedia, messagePremiumGiveaway, or messagePremiumGiveawayWinners content can't be copied",
+            "description": "Options to be used when a message content is copied without reference to the original sender. Service messages, messages with messageInvoice, messagePaidMedia, messageGiveaway, or messageGiveawayWinners content can't be copied",
             "args": {
                 "send_copy": {
                     "description": "True, if content of the message needs to be copied without reference to the original sender. Always true if the message is forwarded to a secret chat or is local",
@@ -13209,6 +13355,11 @@
                     "description": "True, if the caption must be shown above the video; otherwise, the caption must be shown below the video; not supported in secret chats",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "payload": {
+                    "description": "Bot-provided data for the paid media; bots only",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "InputMessageContent"
@@ -13655,6 +13806,11 @@
         "messageProperties": {
             "description": "Contains properties of a message and describes actions that can be done with the message right now",
             "args": {
+                "can_be_copied_to_secret_chat": {
+                    "description": "True, if content of the message can be copied to a secret chat using inputMessageForwarded or forwardMessages with copy options",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_be_deleted_only_for_self": {
                     "description": "True, if the message can be deleted only for the current user while other users will continue to see it using the method deleteMessages with revoke == false",
                     "is_optional": false,
@@ -15521,7 +15677,7 @@
             "type": "ChatBoostSource"
         },
         "chatBoostSourceGiveaway": {
-            "description": "The chat created a Telegram Premium giveaway",
+            "description": "The chat created a giveaway",
             "args": {
                 "user_id": {
                     "description": "Identifier of a user that won in the giveaway; 0 if none",
@@ -15529,9 +15685,14 @@
                     "type": "int53"
                 },
                 "gift_code": {
-                    "description": "The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise",
+                    "description": "The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise; for Telegram Premium giveways only",
                     "is_optional": false,
                     "type": "string"
+                },
+                "star_count": {
+                    "description": "Number of Telegram Stars distributed among winners of the giveaway",
+                    "is_optional": false,
+                    "type": "int53"
                 },
                 "giveaway_message_id": {
                     "description": "Identifier of the corresponding giveaway message; can be an identifier of a deleted message",
@@ -15539,7 +15700,7 @@
                     "type": "int53"
                 },
                 "is_unclaimed": {
-                    "description": "True, if the winner for the corresponding Telegram Premium subscription wasn't chosen, because there were not enough participants",
+                    "description": "True, if the winner for the corresponding giveaway prize wasn't chosen, because there were not enough participants",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -15557,8 +15718,8 @@
             },
             "type": "ChatBoostSource"
         },
-        "prepaidPremiumGiveaway": {
-            "description": "Describes a prepaid Telegram Premium giveaway",
+        "prepaidGiveaway": {
+            "description": "Describes a prepaid giveaway",
             "args": {
                 "id": {
                     "description": "Unique identifier of the prepaid giveaway",
@@ -15566,12 +15727,17 @@
                     "type": "int64"
                 },
                 "winner_count": {
-                    "description": "Number of users which will receive Telegram Premium subscription gift codes",
+                    "description": "Number of users which will receive giveaway prize",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "month_count": {
-                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
+                "prize": {
+                    "description": "Prize of the giveaway",
+                    "is_optional": false,
+                    "type": "GiveawayPrize"
+                },
+                "boost_count": {
+                    "description": "The number of boosts received by the chat from the giveaway; for Telegram Star giveaways only",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -15581,7 +15747,7 @@
                     "type": "int32"
                 }
             },
-            "type": "PrepaidPremiumGiveaway"
+            "type": "PrepaidGiveaway"
         },
         "chatBoostStatus": {
             "description": "Describes current boost status of a chat",
@@ -15634,7 +15800,7 @@
                 "prepaid_giveaways": {
                     "description": "The list of prepaid giveaways available for the chat; only for chat administrators",
                     "is_optional": false,
-                    "type": "vector<prepaidPremiumGiveaway>"
+                    "type": "vector<prepaidGiveaway>"
                 }
             },
             "type": "ChatBoostStatus"
@@ -18135,6 +18301,27 @@
             },
             "type": "ChatEventAction"
         },
+        "chatEventMemberSubscriptionExtended": {
+            "description": "A chat member extended their subscription to the chat",
+            "args": {
+                "user_id": {
+                    "description": "Affected chat member user identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "old_status": {
+                    "description": "Previous status of the chat member",
+                    "is_optional": false,
+                    "type": "ChatMemberStatus"
+                },
+                "new_status": {
+                    "description": "New status of the chat member",
+                    "is_optional": false,
+                    "type": "ChatMemberStatus"
+                }
+            },
+            "type": "ChatEventAction"
+        },
         "chatEventAvailableReactionsChanged": {
             "description": "The chat available reactions were changed",
             "args": {
@@ -18785,6 +18972,11 @@
                 },
                 "forum_changes": {
                     "description": "True, if forum-related actions need to be returned",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "subscription_extensions": {
+                    "description": "True, if subscription extensions need to be returned",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -19497,7 +19689,7 @@
                 "parameters": {
                     "description": "Giveaway parameters",
                     "is_optional": false,
-                    "type": "premiumGiveawayParameters"
+                    "type": "giveawayParameters"
                 },
                 "currency": {
                     "description": "ISO 4217 currency code of the payment currency",
@@ -19506,6 +19698,37 @@
                 },
                 "amount": {
                     "description": "Paid amount, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StorePaymentPurpose"
+        },
+        "storePaymentPurposeStarGiveaway": {
+            "description": "The user creating a Telegram Star giveaway",
+            "args": {
+                "parameters": {
+                    "description": "Giveaway parameters",
+                    "is_optional": false,
+                    "type": "giveawayParameters"
+                },
+                "currency": {
+                    "description": "ISO 4217 currency code of the payment currency",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "Paid amount, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "winner_count": {
+                    "description": "The number of users to receive Telegram Stars",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "star_count": {
+                    "description": "The number of Telegram Stars to be distributed through the giveaway",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -19596,7 +19819,7 @@
                 "parameters": {
                     "description": "Giveaway parameters",
                     "is_optional": false,
-                    "type": "premiumGiveawayParameters"
+                    "type": "giveawayParameters"
                 },
                 "currency": {
                     "description": "ISO 4217 currency code of the payment currency",
@@ -19662,6 +19885,37 @@
                 },
                 "star_count": {
                     "description": "Number of bought Telegram Stars",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "TelegramPaymentPurpose"
+        },
+        "telegramPaymentPurposeStarGiveaway": {
+            "description": "The user creating a Telegram Star giveaway",
+            "args": {
+                "parameters": {
+                    "description": "Giveaway parameters",
+                    "is_optional": false,
+                    "type": "giveawayParameters"
+                },
+                "currency": {
+                    "description": "ISO 4217 currency code of the payment currency",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "Paid amount, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "winner_count": {
+                    "description": "The number of users to receive Telegram Stars",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "star_count": {
+                    "description": "The number of Telegram Stars to be distributed through the giveaway",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -20462,18 +20716,18 @@
             },
             "type": "PushMessageContent"
         },
-        "pushMessageContentPremiumGiveaway": {
-            "description": "A message with a Telegram Premium giveaway",
+        "pushMessageContentGiveaway": {
+            "description": "A message with a giveaway",
             "args": {
                 "winner_count": {
-                    "description": "Number of users which will receive Telegram Premium subscription gift codes; 0 for pinned message",
+                    "description": "Number of users which will receive giveaway prizes; 0 for pinned message",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "month_count": {
-                    "description": "Number of months the Telegram Premium subscription will be active after code activation; 0 for pinned message",
-                    "is_optional": false,
-                    "type": "int32"
+                "prize": {
+                    "description": "Prize of the giveaway; may be null for pinned message",
+                    "is_optional": true,
+                    "type": "GiveawayPrize"
                 },
                 "is_pinned": {
                     "description": "True, if the message is a pinned message with the specified content",
@@ -21262,7 +21516,7 @@
             "description": "Contains information about the period of inactivity after which the current user's account will automatically be deleted",
             "args": {
                 "days": {
-                    "description": "Number of days of inactivity before the account will be flagged for deletion; 30-366 days",
+                    "description": "Number of days of inactivity before the account will be flagged for deletion; 30-730 days",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -23657,6 +23911,11 @@
                     "description": "Amount of the cryptocurrency available for withdrawal, in the smallest units of the cryptocurrency",
                     "is_optional": false,
                     "type": "int64"
+                },
+                "withdrawal_enabled": {
+                    "description": "True, if Telegram Stars can be withdrawn now or later",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "ChatRevenueAmount"
@@ -26792,6 +27051,22 @@
             },
             "type": "Update"
         },
+        "updatePaidMediaPurchased": {
+            "description": "Paid media were purchased by a user; for bots only",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "payload": {
+                    "description": "Bot-specified payload for the paid media",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Update"
+        },
         "updates": {
             "description": "Contains a list of updates",
             "args": {
@@ -27411,7 +27686,7 @@
             "type": "Message"
         },
         "getRepliedMessage": {
-            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messagePremiumGiveawayCompleted and topic messages without non-bundled replied message respectively",
+            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non-bundled replied message respectively",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat the message belongs to",
@@ -29750,7 +30025,7 @@
             "type": "Ok"
         },
         "loadQuickReplyShortcuts": {
-            "description": "Loads quick reply shortcuts created by the current user. The loaded topics will be sent through updateQuickReplyShortcuts",
+            "description": "Loads quick reply shortcuts created by the current user. The loaded data will be sent through updateQuickReplyShortcut and updateQuickReplyShortcuts",
             "args": {},
             "type": "Ok"
         },
@@ -30221,7 +30496,7 @@
                     "type": "int53"
                 },
                 "reaction_type": {
-                    "description": "Type of the reaction to add. Use addPaidMessageReaction instead to add the paid reaction",
+                    "description": "Type of the reaction to add. Use addPendingPaidMessageReaction instead to add the paid reaction",
                     "is_optional": false,
                     "type": "ReactionType"
                 },
@@ -30259,8 +30534,8 @@
             },
             "type": "Ok"
         },
-        "addPaidMessageReaction": {
-            "description": "Adds the paid message reaction to a message. Use getMessageAvailableReactions to receive the list of available reactions for the message",
+        "addPendingPaidMessageReaction": {
+            "description": "Adds the paid message reaction to a message. Use getMessageAvailableReactions to check whether the reaction is available for the message",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which the message belongs",
@@ -30273,20 +30548,41 @@
                     "type": "int53"
                 },
                 "star_count": {
-                    "description": "Number of Telegram Stars to be used for the reaction; 1-getOption(\"paid_reaction_star_count_max\")",
+                    "description": "Number of Telegram Stars to be used for the reaction. The total number of pending paid reactions must not exceed getOption(\"paid_reaction_star_count_max\")",
                     "is_optional": false,
                     "type": "int53"
                 },
+                "use_default_is_anonymous": {
+                    "description": "Pass true if the user didn't choose anonymity explicitly, for example, the reaction is set from the message bubble",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_anonymous": {
-                    "description": "Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors",
+                    "description": "Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors. Ignored if use_default_is_anonymous == true",
                     "is_optional": false,
                     "type": "Bool"
                 }
             },
             "type": "Ok"
         },
+        "commitPendingPaidMessageReactions": {
+            "description": "Applies all pending paid reactions on a message",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the message belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
         "removePendingPaidMessageReactions": {
-            "description": "Removes all pending paid reactions on a message. Can be called within 5 seconds after the last addPaidMessageReaction call",
+            "description": "Removes all pending paid reactions on a message",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which the message belongs",
@@ -30877,8 +31173,8 @@
             },
             "type": "Ok"
         },
-        "getPopularWebAppBots": {
-            "description": "Returns popular Web App bots",
+        "getGrossingWebAppBots": {
+            "description": "Returns the most grossing Web App bots",
             "args": {
                 "offset": {
                     "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
@@ -35262,6 +35558,17 @@
             },
             "type": "StickerSet"
         },
+        "getStickerSetName": {
+            "description": "Returns name of a sticker set by its identifier",
+            "args": {
+                "set_id": {
+                    "description": "Identifier of the sticker set",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Text"
+        },
         "searchStickerSet": {
             "description": "Searches for a sticker set by its name",
             "args": {
@@ -38493,7 +38800,7 @@
             "type": "PremiumState"
         },
         "getPremiumGiftCodePaymentOptions": {
-            "description": "Returns available options for Telegram Premium gift code or giveaway creation",
+            "description": "Returns available options for Telegram Premium gift code or Telegram Premium giveaway creation",
             "args": {
                 "boosted_chat_id": {
                     "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user; 0 if none",
@@ -38525,8 +38832,8 @@
             },
             "type": "Ok"
         },
-        "launchPrepaidPremiumGiveaway": {
-            "description": "Launches a prepaid Telegram Premium giveaway",
+        "launchPrepaidGiveaway": {
+            "description": "Launches a prepaid giveaway",
             "args": {
                 "giveaway_id": {
                     "description": "Unique identifier of the prepaid giveaway",
@@ -38536,13 +38843,23 @@
                 "parameters": {
                     "description": "Giveaway parameters",
                     "is_optional": false,
-                    "type": "premiumGiveawayParameters"
+                    "type": "giveawayParameters"
+                },
+                "winner_count": {
+                    "description": "The number of users to receive giveaway prize",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "star_count": {
+                    "description": "The number of Telegram Stars to be distributed through the giveaway; pass 0 for Telegram Premium giveaways",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "Ok"
         },
-        "getPremiumGiveawayInfo": {
-            "description": "Returns information about a Telegram Premium giveaway",
+        "getGiveawayInfo": {
+            "description": "Returns information about a giveaway",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the channel chat which started the giveaway",
@@ -38555,7 +38872,7 @@
                     "type": "int53"
                 }
             },
-            "type": "PremiumGiveawayInfo"
+            "type": "GiveawayInfo"
         },
         "getStarPaymentOptions": {
             "description": "Returns available options for Telegram Stars purchase",
@@ -38572,6 +38889,11 @@
                 }
             },
             "type": "StarPaymentOptions"
+        },
+        "getStarGiveawayPaymentOptions": {
+            "description": "Returns available options for Telegram Star giveaway creation",
+            "args": {},
+            "type": "StarGiveawayPaymentOptions"
         },
         "getStarTransactions": {
             "description": "Returns the list of Telegram Star transactions for the specified owner",

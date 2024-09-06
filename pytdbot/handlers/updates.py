@@ -5599,6 +5599,46 @@ class Updates:
 
         return decorator
 
+    def on_updatePaidMediaPurchased(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        """Paid media were purchased by a user; for bots only
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updatePaidMediaPurchased", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updatePaidMediaPurchased", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updatePaidMediaPurchased", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updates(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
