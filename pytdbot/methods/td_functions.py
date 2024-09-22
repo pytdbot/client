@@ -1031,7 +1031,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messagePremiumGiveawayCompleted and topic messages without non\-bundled replied message respectively
+        Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non\-bundled replied message respectively
 
         Parameters:
             chat_id (:class:`int`):
@@ -1114,11 +1114,36 @@ class TDLibFunctions:
             {"@type": "getMessages", "chat_id": chat_id, "message_ids": message_ids}
         )
 
+    async def getMessageProperties(
+        self, chat_id: int = 0, message_id: int = 0
+    ) -> Union["types.Error", "types.MessageProperties"]:
+        r"""
+        Returns properties of a message; this is an offline request
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+        Returns:
+            :class:`~pytdbot.types.MessageProperties`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getMessageProperties",
+                "chat_id": chat_id,
+                "message_id": message_id,
+            }
+        )
+
     async def getMessageThread(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.MessageThreadInfo"]:
         r"""
-        Returns information about a message thread\. Can be used only if message\.can\_get\_message\_thread \=\= true
+        Returns information about a message thread\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -1139,7 +1164,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.MessageReadDate"]:
         r"""
-        Returns read date of a recent outgoing message in a private chat\. The method can be called if message\.can\_get\_read\_date \=\= true and the message is read
+        Returns read date of a recent outgoing message in a private chat\. The method can be called if messageProperties\.can\_get\_read\_date \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -1164,7 +1189,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.MessageViewers"]:
         r"""
-        Returns viewers of a recent outgoing message in a basic group or a supergroup chat\. For video notes and voice notes only users, opened content of the message, are returned\. The method can be called if message\.can\_get\_viewers \=\= true
+        Returns viewers of a recent outgoing message in a basic group or a supergroup chat\. For video notes and voice notes only users, opened content of the message, are returned\. The method can be called if messageProperties\.can\_get\_viewers \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -1680,7 +1705,7 @@ class TDLibFunctions:
         limit: int = 0,
     ) -> Union["types.Error", "types.Messages"]:
         r"""
-        Returns messages in a Saved Messages topic\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+        Returns messages in a Saved Messages topic\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -1868,7 +1893,7 @@ class TDLibFunctions:
         only_local: bool = False,
     ) -> Union["types.Error", "types.Messages"]:
         r"""
-        Returns messages in a chat\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline request if only\_local is true
+        Returns messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline request if only\_local is true
 
         Parameters:
             chat_id (:class:`int`):
@@ -1910,7 +1935,7 @@ class TDLibFunctions:
         limit: int = 0,
     ) -> Union["types.Error", "types.Messages"]:
         r"""
-        Returns messages in a message thread of a message\. Can be used only if message\.can\_get\_message\_thread \=\= true\. Message thread of a channel message is in the channel's linked supergroup\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
+        Returns messages in a message thread of a message\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true\. Message thread of a channel message is in the channel's linked supergroup\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -2160,7 +2185,7 @@ class TDLibFunctions:
         limit: int = 0,
     ) -> Union["types.Error", "types.FoundChatMessages"]:
         r"""
-        Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -2247,15 +2272,15 @@ class TDLibFunctions:
             {"@type": "searchOutgoingDocumentMessages", "query": query, "limit": limit}
         )
 
-    async def searchPublicHashtagMessages(
-        self, hashtag: str = "", offset: str = "", limit: int = 0
+    async def searchPublicMessagesByTag(
+        self, tag: str = "", offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.FoundMessages"]:
         r"""
-        Searches for public channel posts with the given hashtag\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        Searches for public channel posts containing the given hashtag or cashtag\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
-            hashtag (:class:`str`):
-                Hashtag to search for
+            tag (:class:`str`):
+                Hashtag or cashtag to search for
 
             offset (:class:`str`):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
@@ -2269,64 +2294,161 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "searchPublicHashtagMessages",
-                "hashtag": hashtag,
+                "@type": "searchPublicMessagesByTag",
+                "tag": tag,
                 "offset": offset,
                 "limit": limit,
             }
         )
 
-    async def getSearchedForHashtags(
-        self, prefix: str = "", limit: int = 0
-    ) -> Union["types.Error", "types.Hashtags"]:
+    async def searchPublicStoriesByTag(
+        self, tag: str = "", offset: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.FoundStories"]:
         r"""
-        Returns recently searched for hashtags by their prefix
+        Searches for public stories containing the given hashtag or cashtag\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
-            prefix (:class:`str`):
-                Prefix of hashtags to return
+            tag (:class:`str`):
+                Hashtag or cashtag to search for
+
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
 
             limit (:class:`int`):
-                The maximum number of hashtags to be returned
+                The maximum number of stories to be returned; up to 100\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+        Returns:
+            :class:`~pytdbot.types.FoundStories`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "searchPublicStoriesByTag",
+                "tag": tag,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def searchPublicStoriesByLocation(
+        self, address: "types.LocationAddress" = None, offset: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.FoundStories"]:
+        r"""
+        Searches for public stories by the given address location\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+        Parameters:
+            address (:class:`"types.LocationAddress"`):
+                Address of the location
+
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of stories to be returned; up to 100\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+        Returns:
+            :class:`~pytdbot.types.FoundStories`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "searchPublicStoriesByLocation",
+                "address": address,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def searchPublicStoriesByVenue(
+        self,
+        venue_provider: str = "",
+        venue_id: str = "",
+        offset: str = "",
+        limit: int = 0,
+    ) -> Union["types.Error", "types.FoundStories"]:
+        r"""
+        Searches for public stories from the given venue\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+        Parameters:
+            venue_provider (:class:`str`):
+                Provider of the venue
+
+            venue_id (:class:`str`):
+                Identifier of the venue in the provider database
+
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of stories to be returned; up to 100\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+        Returns:
+            :class:`~pytdbot.types.FoundStories`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "searchPublicStoriesByVenue",
+                "venue_provider": venue_provider,
+                "venue_id": venue_id,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def getSearchedForTags(
+        self, tag_prefix: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.Hashtags"]:
+        r"""
+        Returns recently searched for hashtags or cashtags by their prefix
+
+        Parameters:
+            tag_prefix (:class:`str`):
+                Prefix of hashtags or cashtags to return
+
+            limit (:class:`int`):
+                The maximum number of items to be returned
 
         Returns:
             :class:`~pytdbot.types.Hashtags`
         """
 
         return await self.invoke(
-            {"@type": "getSearchedForHashtags", "prefix": prefix, "limit": limit}
+            {"@type": "getSearchedForTags", "tag_prefix": tag_prefix, "limit": limit}
         )
 
-    async def removeSearchedForHashtag(
-        self, hashtag: str = ""
+    async def removeSearchedForTag(
+        self, tag: str = ""
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Removes a hashtag from the list of recently searched for hashtags
+        Removes a hashtag or a cashtag from the list of recently searched for hashtags or cashtags
 
         Parameters:
-            hashtag (:class:`str`):
-                Hashtag to delete
+            tag (:class:`str`):
+                Hashtag or cashtag to delete
 
         Returns:
             :class:`~pytdbot.types.Ok`
         """
 
-        return await self.invoke(
-            {"@type": "removeSearchedForHashtag", "hashtag": hashtag}
-        )
+        return await self.invoke({"@type": "removeSearchedForTag", "tag": tag})
 
-    async def clearSearchedForHashtags(self) -> Union["types.Error", "types.Ok"]:
+    async def clearSearchedForTags(
+        self, clear_cashtags: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Clears the list of recently searched for hashtags
+        Clears the list of recently searched for hashtags or cashtags
+
+        Parameters:
+            clear_cashtags (:class:`bool`):
+                Pass true to clear the list of recently searched for cashtags; otherwise, the list of recently searched for hashtags will be cleared
 
         Returns:
             :class:`~pytdbot.types.Ok`
         """
 
         return await self.invoke(
-            {
-                "@type": "clearSearchedForHashtags",
-            }
+            {"@type": "clearSearchedForTags", "clear_cashtags": clear_cashtags}
         )
 
     async def deleteAllCallMessages(
@@ -2367,22 +2489,6 @@ class TDLibFunctions:
                 "@type": "searchChatRecentLocationMessages",
                 "chat_id": chat_id,
                 "limit": limit,
-            }
-        )
-
-    async def getActiveLiveLocationMessages(
-        self,
-    ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Returns all active live locations that need to be updated by the application\. The list is persistent across application restarts only if the message database is used
-
-        Returns:
-            :class:`~pytdbot.types.Messages`
-        """
-
-        return await self.invoke(
-            {
-                "@type": "getActiveLiveLocationMessages",
             }
         )
 
@@ -2569,7 +2675,7 @@ class TDLibFunctions:
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Messages"]:
         r"""
-        Returns all scheduled messages in a chat\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+        Returns all scheduled messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -2714,7 +2820,7 @@ class TDLibFunctions:
         in_message_thread: bool = False,
     ) -> Union["types.Error", "types.MessageLink"]:
         r"""
-        Returns an HTTPS link to a message in a chat\. Available only for already sent messages in supergroups and channels, or if message\.can\_get\_media\_timestamp\_links and a media timestamp link is generated\. This is an offline request
+        Returns an HTTPS link to a message in a chat\. Available only if messageProperties\.can\_get\_link, or if messageProperties\.can\_get\_media\_timestamp\_links and a media timestamp link is generated\. This is an offline request
 
         Parameters:
             chat_id (:class:`int`):
@@ -2724,7 +2830,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             media_timestamp (:class:`int`):
-                If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the message content or in its web page preview
+                If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the message content or in its link preview
 
             for_album (:class:`bool`):
                 Pass true to create a link for the whole media album
@@ -2751,7 +2857,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0, for_album: bool = False
     ) -> Union["types.Error", "types.Text"]:
         r"""
-        Returns an HTML code for embedding the message\. Available only for messages in supergroups and channels with a username
+        Returns an HTML code for embedding the message\. Available only if messageProperties\.can\_get\_embedding\_code
 
         Parameters:
             chat_id (:class:`int`):
@@ -2850,14 +2956,14 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Recognizes speech in a video note or a voice note message\. The message must be successfully sent, must not be scheduled, and must be from a non\-secret chat
+        Recognizes speech in a video note or a voice note message
 
         Parameters:
             chat_id (:class:`int`):
                 Identifier of the chat to which the message belongs
 
             message_id (:class:`int`):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_recognize\_speech to check whether the message is suitable
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -3133,7 +3239,7 @@ class TDLibFunctions:
                 Identifier of the chat from which to forward messages
 
             message_ids (:class:`List[int]`):
-                Identifiers of the messages to forward\. Message identifiers must be in a strictly increasing order\. At most 100 messages can be forwarded simultaneously\. A message can be forwarded only if message\.can\_be\_forwarded
+                Identifiers of the messages to forward\. Message identifiers must be in a strictly increasing order\. At most 100 messages can be forwarded simultaneously\. A message can be forwarded only if messageProperties\.can\_be\_forwarded
 
             options (:class:`"types.MessageSendOptions"`):
                 Options to be used to send the messages; pass null to use default options
@@ -3275,7 +3381,7 @@ class TDLibFunctions:
                 Chat identifier
 
             message_ids (:class:`List[int]`):
-                Identifiers of the messages to be deleted
+                Identifiers of the messages to be deleted\. Use messageProperties\.can\_be\_deleted\_only\_for\_self and messageProperties\.can\_be\_deleted\_for\_all\_users to get suitable messages
 
             revoke (:class:`bool`):
                 Pass true to delete messages for all chat members\. Always true for supergroups, channels and secret chats
@@ -3363,14 +3469,14 @@ class TDLibFunctions:
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
                 The chat the message belongs to
 
             message_id (:class:`int`):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             reply_markup (:class:`"types.ReplyMarkup"`):
                 The new message reply markup; pass null if none; for bots only
@@ -3403,14 +3509,14 @@ class TDLibFunctions:
         proximity_alert_radius: int = 0,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
                 The chat the message belongs to
 
             message_id (:class:`int`):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             reply_markup (:class:`"types.ReplyMarkup"`):
                 The new message reply markup; pass null if none; for bots only
@@ -3452,14 +3558,14 @@ class TDLibFunctions:
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
                 The chat the message belongs to
 
             message_id (:class:`int`):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             reply_markup (:class:`"types.ReplyMarkup"`):
                 The new message reply markup; pass null if none; for bots only
@@ -3490,14 +3596,14 @@ class TDLibFunctions:
         show_caption_above_media: bool = False,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the message content caption\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        Edits the message content caption\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
                 The chat the message belongs to
 
             message_id (:class:`int`):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             reply_markup (:class:`"types.ReplyMarkup"`):
                 The new message reply markup; pass null if none; for bots only
@@ -3506,7 +3612,7 @@ class TDLibFunctions:
                 New message content caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters; pass null to remove caption
 
             show_caption_above_media (:class:`bool`):
-                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
 
         Returns:
             :class:`~pytdbot.types.Message`
@@ -3530,14 +3636,14 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side\. Can be used only if message\.can\_be\_edited \=\= true
+        Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
                 The chat the message belongs to
 
             message_id (:class:`int`):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             reply_markup (:class:`"types.ReplyMarkup"`):
                 The new message reply markup; pass null if none
@@ -3687,7 +3793,7 @@ class TDLibFunctions:
                 New message content caption; pass null to remove caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
             show_caption_above_media (:class:`bool`):
-                Pass true to show the caption above the media; otherwise, caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -3742,7 +3848,7 @@ class TDLibFunctions:
                 The chat the message belongs to
 
             message_id (:class:`int`):
-                Identifier of the message
+                Identifier of the message\. Use messageProperties\.can\_edit\_scheduling\_state to check whether the message is suitable
 
             scheduling_state (:class:`"types.MessageSchedulingState"`):
                 The new message scheduling state; pass null to send the message immediately
@@ -3764,7 +3870,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0, text: "types.FormattedText" = None
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Changes the fact\-check of a message\. Can be only used if getOption\(\"can\_edit\_fact\_check\"\) \=\= true
+        Changes the fact\-check of a message\. Can be only used if messageProperties\.can\_set\_fact\_check \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -3898,6 +4004,305 @@ class TDLibFunctions:
             }
         )
 
+    async def editBusinessMessageText(
+        self,
+        business_connection_id: str = "",
+        chat_id: int = 0,
+        message_id: int = 0,
+        reply_markup: "types.ReplyMarkup" = None,
+        input_message_content: "types.InputMessageContent" = None,
+    ) -> Union["types.Error", "types.BusinessMessage"]:
+        r"""
+        Edits the text of a text or game message sent on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            reply_markup (:class:`"types.ReplyMarkup"`):
+                The new message reply markup; pass null if none
+
+            input_message_content (:class:`"types.InputMessageContent"`):
+                New text content of the message\. Must be of type inputMessageText
+
+        Returns:
+            :class:`~pytdbot.types.BusinessMessage`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editBusinessMessageText",
+                "business_connection_id": business_connection_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "reply_markup": reply_markup,
+                "input_message_content": input_message_content,
+            }
+        )
+
+    async def editBusinessMessageLiveLocation(
+        self,
+        business_connection_id: str = "",
+        chat_id: int = 0,
+        message_id: int = 0,
+        reply_markup: "types.ReplyMarkup" = None,
+        location: "types.Location" = None,
+        live_period: int = 0,
+        heading: int = 0,
+        proximity_alert_radius: int = 0,
+    ) -> Union["types.Error", "types.BusinessMessage"]:
+        r"""
+        Edits the content of a live location in a message sent on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            reply_markup (:class:`"types.ReplyMarkup"`):
+                The new message reply markup; pass null if none
+
+            location (:class:`"types.Location"`):
+                New location content of the message; pass null to stop sharing the live location
+
+            live_period (:class:`int`):
+                New time relative to the message send date, for which the location can be updated, in seconds\. If 0x7FFFFFFF specified, then the location can be updated forever\. Otherwise, must not exceed the current live\_period by more than a day, and the live location expiration date must remain in the next 90 days\. Pass 0 to keep the current live\_period
+
+            heading (:class:`int`):
+                The new direction in which the location moves, in degrees; 1\-360\. Pass 0 if unknown
+
+            proximity_alert_radius (:class:`int`):
+                The new maximum distance for proximity alerts, in meters \(0\-100000\)\. Pass 0 if the notification is disabled
+
+        Returns:
+            :class:`~pytdbot.types.BusinessMessage`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editBusinessMessageLiveLocation",
+                "business_connection_id": business_connection_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "reply_markup": reply_markup,
+                "location": location,
+                "live_period": live_period,
+                "heading": heading,
+                "proximity_alert_radius": proximity_alert_radius,
+            }
+        )
+
+    async def editBusinessMessageMedia(
+        self,
+        business_connection_id: str = "",
+        chat_id: int = 0,
+        message_id: int = 0,
+        reply_markup: "types.ReplyMarkup" = None,
+        input_message_content: "types.InputMessageContent" = None,
+    ) -> Union["types.Error", "types.BusinessMessage"]:
+        r"""
+        Edits the content of a message with an animation, an audio, a document, a photo or a video in a message sent on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            reply_markup (:class:`"types.ReplyMarkup"`):
+                The new message reply markup; pass null if none; for bots only
+
+            input_message_content (:class:`"types.InputMessageContent"`):
+                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
+
+        Returns:
+            :class:`~pytdbot.types.BusinessMessage`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editBusinessMessageMedia",
+                "business_connection_id": business_connection_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "reply_markup": reply_markup,
+                "input_message_content": input_message_content,
+            }
+        )
+
+    async def editBusinessMessageCaption(
+        self,
+        business_connection_id: str = "",
+        chat_id: int = 0,
+        message_id: int = 0,
+        reply_markup: "types.ReplyMarkup" = None,
+        caption: "types.FormattedText" = None,
+        show_caption_above_media: bool = False,
+    ) -> Union["types.Error", "types.BusinessMessage"]:
+        r"""
+        Edits the caption of a message sent on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            reply_markup (:class:`"types.ReplyMarkup"`):
+                The new message reply markup; pass null if none
+
+            caption (:class:`"types.FormattedText"`):
+                New message content caption; pass null to remove caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
+
+            show_caption_above_media (:class:`bool`):
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
+
+        Returns:
+            :class:`~pytdbot.types.BusinessMessage`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editBusinessMessageCaption",
+                "business_connection_id": business_connection_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "reply_markup": reply_markup,
+                "caption": caption,
+                "show_caption_above_media": show_caption_above_media,
+            }
+        )
+
+    async def editBusinessMessageReplyMarkup(
+        self,
+        business_connection_id: str = "",
+        chat_id: int = 0,
+        message_id: int = 0,
+        reply_markup: "types.ReplyMarkup" = None,
+    ) -> Union["types.Error", "types.BusinessMessage"]:
+        r"""
+        Edits the reply markup of a message sent on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            reply_markup (:class:`"types.ReplyMarkup"`):
+                The new message reply markup; pass null if none
+
+        Returns:
+            :class:`~pytdbot.types.BusinessMessage`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editBusinessMessageReplyMarkup",
+                "business_connection_id": business_connection_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "reply_markup": reply_markup,
+            }
+        )
+
+    async def stopBusinessPoll(
+        self,
+        business_connection_id: str = "",
+        chat_id: int = 0,
+        message_id: int = 0,
+        reply_markup: "types.ReplyMarkup" = None,
+    ) -> Union["types.Error", "types.BusinessMessage"]:
+        r"""
+        Stops a poll sent on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which the message with the poll was sent
+
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message containing the poll
+
+            reply_markup (:class:`"types.ReplyMarkup"`):
+                The new message reply markup; pass null if none
+
+        Returns:
+            :class:`~pytdbot.types.BusinessMessage`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "stopBusinessPoll",
+                "business_connection_id": business_connection_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "reply_markup": reply_markup,
+            }
+        )
+
+    async def setBusinessMessageIsPinned(
+        self,
+        business_connection_id: str = "",
+        chat_id: int = 0,
+        message_id: int = 0,
+        is_pinned: bool = False,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Pins or unpins a message sent on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            is_pinned (:class:`bool`):
+                Pass true to pin the message, pass false to unpin it
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setBusinessMessageIsPinned",
+                "business_connection_id": business_connection_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "is_pinned": is_pinned,
+            }
+        )
+
     async def checkQuickReplyShortcutName(
         self, name: str = ""
     ) -> Union["types.Error", "types.Ok"]:
@@ -3916,7 +4321,7 @@ class TDLibFunctions:
 
     async def loadQuickReplyShortcuts(self) -> Union["types.Error", "types.Ok"]:
         r"""
-        Loads quick reply shortcuts created by the current user\. The loaded topics will be sent through updateQuickReplyShortcuts
+        Loads quick reply shortcuts created by the current user\. The loaded data will be sent through updateQuickReplyShortcut and updateQuickReplyShortcuts
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -4197,7 +4602,7 @@ class TDLibFunctions:
 
     async def getForumTopicDefaultIcons(self) -> Union["types.Error", "types.Stickers"]:
         r"""
-        Returns the list of custom emojis, which can be used as forum topic icon by all users
+        Returns the list of custom emoji, which can be used as forum topic icon by all users
 
         Returns:
             :class:`~pytdbot.types.Stickers`
@@ -4636,7 +5041,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             reaction_type (:class:`"types.ReactionType"`):
-                Type of the reaction to add
+                Type of the reaction to add\. Use addPendingPaidMessageReaction instead to add the paid reaction
 
             is_big (:class:`bool`):
                 Pass true if the reaction is added with a big animation
@@ -4676,7 +5081,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             reaction_type (:class:`"types.ReactionType"`):
-                Type of the reaction to remove
+                Type of the reaction to remove\. The paid reaction can't be removed
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -4688,6 +5093,127 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "message_id": message_id,
                 "reaction_type": reaction_type,
+            }
+        )
+
+    async def addPendingPaidMessageReaction(
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        star_count: int = 0,
+        use_default_is_anonymous: bool = False,
+        is_anonymous: bool = False,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Adds the paid message reaction to a message\. Use getMessageAvailableReactions to check whether the reaction is available for the message
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat to which the message belongs
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            star_count (:class:`int`):
+                Number of Telegram Stars to be used for the reaction\. The total number of pending paid reactions must not exceed getOption\(\"paid\_reaction\_star\_count\_max\"\)
+
+            use_default_is_anonymous (:class:`bool`):
+                Pass true if the user didn't choose anonymity explicitly, for example, the reaction is set from the message bubble
+
+            is_anonymous (:class:`bool`):
+                Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors\. Ignored if use\_default\_is\_anonymous \=\= true
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addPendingPaidMessageReaction",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "star_count": star_count,
+                "use_default_is_anonymous": use_default_is_anonymous,
+                "is_anonymous": is_anonymous,
+            }
+        )
+
+    async def commitPendingPaidMessageReactions(
+        self, chat_id: int = 0, message_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Applies all pending paid reactions on a message
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat to which the message belongs
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "commitPendingPaidMessageReactions",
+                "chat_id": chat_id,
+                "message_id": message_id,
+            }
+        )
+
+    async def removePendingPaidMessageReactions(
+        self, chat_id: int = 0, message_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Removes all pending paid reactions on a message
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat to which the message belongs
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "removePendingPaidMessageReactions",
+                "chat_id": chat_id,
+                "message_id": message_id,
+            }
+        )
+
+    async def togglePaidMessageReactionIsAnonymous(
+        self, chat_id: int = 0, message_id: int = 0, is_anonymous: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Changes whether the paid message reaction of the user to a message is anonymous\. The message must have paid reaction added by the user
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat to which the message belongs
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            is_anonymous (:class:`bool`):
+                Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "togglePaidMessageReactionIsAnonymous",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "is_anonymous": is_anonymous,
             }
         )
 
@@ -4744,10 +5270,10 @@ class TDLibFunctions:
                 Identifier of the chat to which the message belongs
 
             message_id (:class:`int`):
-                Identifier of the message
+                Identifier of the message\. Use message\.interaction\_info\.reactions\.can\_get\_added\_reactions to check whether added reactions can be received for the message
 
             reaction_type (:class:`"types.ReactionType"`):
-                Type of the reactions to return; pass null to return all added reactions
+                Type of the reactions to return; pass null to return all added reactions; reactionTypePaid isn't supported
 
             offset (:class:`str`):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
@@ -4778,7 +5304,7 @@ class TDLibFunctions:
 
         Parameters:
             reaction_type (:class:`"types.ReactionType"`):
-                New type of the default reaction
+                New type of the default reaction\. The paid reaction can't be set as default
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5178,14 +5704,14 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Stops a poll\. A poll in a message can be stopped when the message has can\_be\_edited flag is set
+        Stops a poll
 
         Parameters:
             chat_id (:class:`int`):
                 Identifier of the chat to which the poll belongs
 
             message_id (:class:`int`):
-                Identifier of the message containing the poll
+                Identifier of the message containing the poll\. Use messageProperties\.can\_be\_edited to check whether the poll can be stopped
 
             reply_markup (:class:`"types.ReplyMarkup"`):
                 The new message reply markup; pass null if none; for bots only
@@ -5262,7 +5788,7 @@ class TDLibFunctions:
                 Chat identifier of the message with the button
 
             message_id (:class:`int`):
-                Message identifier of the message with the button
+                Message identifier of the message with the button\. The message must not be scheduled
 
             button_id (:class:`int`):
                 Button identifier
@@ -5490,6 +6016,27 @@ class TDLibFunctions:
             }
         )
 
+    async def getGrossingWebAppBots(
+        self, offset: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.FoundUsers"]:
+        r"""
+        Returns the most grossing Web App bots
+
+        Parameters:
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of bots to be returned; up to 100
+
+        Returns:
+            :class:`~pytdbot.types.FoundUsers`
+        """
+
+        return await self.invoke(
+            {"@type": "getGrossingWebAppBots", "offset": offset, "limit": limit}
+        )
+
     async def searchWebApp(
         self, bot_user_id: int = 0, web_app_short_name: str = ""
     ) -> Union["types.Error", "types.FoundWebApp"]:
@@ -5545,7 +6092,7 @@ class TDLibFunctions:
                 Preferred Web App theme; pass null to use the default theme
 
             application_name (:class:`str`):
-                Short name of the application; 0\-64 English letters, digits, and underscores
+                Short name of the current application; 0\-64 English letters, digits, and underscores
 
             allow_write_access (:class:`bool`):
                 Pass true if the current user allowed the bot to send them messages
@@ -5567,6 +6114,48 @@ class TDLibFunctions:
             }
         )
 
+    async def getMainWebApp(
+        self,
+        chat_id: int = 0,
+        bot_user_id: int = 0,
+        start_parameter: str = "",
+        theme: "types.ThemeParameters" = None,
+        application_name: str = "",
+    ) -> Union["types.Error", "types.MainWebApp"]:
+        r"""
+        Returns information needed to open the main Web App of a bot
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat in which the Web App is opened; pass 0 if none
+
+            bot_user_id (:class:`int`):
+                Identifier of the target bot
+
+            start_parameter (:class:`str`):
+                Start parameter from internalLinkTypeMainWebApp
+
+            theme (:class:`"types.ThemeParameters"`):
+                Preferred Web App theme; pass null to use the default theme
+
+            application_name (:class:`str`):
+                Short name of the current application; 0\-64 English letters, digits, and underscores
+
+        Returns:
+            :class:`~pytdbot.types.MainWebApp`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getMainWebApp",
+                "chat_id": chat_id,
+                "bot_user_id": bot_user_id,
+                "start_parameter": start_parameter,
+                "theme": theme,
+                "application_name": application_name,
+            }
+        )
+
     async def getWebAppUrl(
         self,
         bot_user_id: int = 0,
@@ -5575,20 +6164,20 @@ class TDLibFunctions:
         application_name: str = "",
     ) -> Union["types.Error", "types.HttpUrl"]:
         r"""
-        Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, an inlineQueryResultsButtonTypeWebApp button, or an internalLinkTypeSideMenuBot link
+        Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, or an inlineQueryResultsButtonTypeWebApp button
 
         Parameters:
             bot_user_id (:class:`int`):
                 Identifier of the target bot
 
             url (:class:`str`):
-                The URL from a keyboardButtonTypeWebApp button, inlineQueryResultsButtonTypeWebApp button, an internalLinkTypeSideMenuBot link, or an empty when the bot is opened from the side menu
+                The URL from a keyboardButtonTypeWebApp button, inlineQueryResultsButtonTypeWebApp button, or an empty string when the bot is opened from the side menu
 
             theme (:class:`"types.ThemeParameters"`):
                 Preferred Web App theme; pass null to use the default theme
 
             application_name (:class:`str`):
-                Short name of the application; 0\-64 English letters, digits, and underscores
+                Short name of the current application; 0\-64 English letters, digits, and underscores
 
         Returns:
             :class:`~pytdbot.types.HttpUrl`
@@ -5660,7 +6249,7 @@ class TDLibFunctions:
                 Preferred Web App theme; pass null to use the default theme
 
             application_name (:class:`str`):
-                Short name of the application; 0\-64 English letters, digits, and underscores
+                Short name of the current application; 0\-64 English letters, digits, and underscores
 
             message_thread_id (:class:`int`):
                 If not 0, the message thread identifier in which the message will be sent
@@ -5742,7 +6331,7 @@ class TDLibFunctions:
                 Identifier of the chat with the message
 
             message_id (:class:`int`):
-                Identifier of the message from which the query originated
+                Identifier of the message from which the query originated\. The message must not be scheduled
 
             payload (:class:`"types.CallbackQueryPayload"`):
                 Query payload
@@ -6220,7 +6809,7 @@ class TDLibFunctions:
         self, link: str = ""
     ) -> Union["types.Error", "types.LoginUrlInfo"]:
         r"""
-        Returns information about an action to be done when the current user clicks an external link\. Don't use this method for links from secret chats if web page preview is disabled in secret chats
+        Returns information about an action to be done when the current user clicks an external link\. Don't use this method for links from secret chats if link preview is disabled in secret chats
 
         Parameters:
             link (:class:`str`):
@@ -7138,7 +7727,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_auto_delete_time: int = 0
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Changes the message auto\-delete or self\-destruct \(for secret chats\) time in a chat\. Requires change\_info administrator right in basic groups, supergroups and channels Message auto\-delete time can't be changed in a chat with the current user \(Saved Messages\) and the chat 777000 \(Telegram\)\.
+        Changes the message auto\-delete or self\-destruct \(for secret chats\) time in a chat\. Requires change\_info administrator right in basic groups, supergroups and channels\. Message auto\-delete time can't be changed in a chat with the current user \(Saved Messages\) and the chat 777000 \(Telegram\)\.
 
         Parameters:
             chat_id (:class:`int`):
@@ -7637,7 +8226,7 @@ class TDLibFunctions:
         only_for_self: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Pins a message in a chat; requires can\_pin\_messages member right if the chat is a basic group or supergroup, or can\_edit\_messages administrator right if the chat is a channel
+        Pins a message in a chat\. A message can be pinned only if messageProperties\.can\_be\_pinned
 
         Parameters:
             chat_id (:class:`int`):
@@ -8265,6 +8854,22 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "readChatList", "chat_list": chat_list})
 
+    async def getCurrentWeather(
+        self, location: "types.Location" = None
+    ) -> Union["types.Error", "types.CurrentWeather"]:
+        r"""
+        Returns the current weather in the given location
+
+        Parameters:
+            location (:class:`"types.Location"`):
+                The location
+
+        Returns:
+            :class:`~pytdbot.types.CurrentWeather`
+        """
+
+        return await self.invoke({"@type": "getCurrentWeather", "location": location})
+
     async def getStory(
         self, story_sender_chat_id: int = 0, story_id: int = 0, only_local: bool = False
     ) -> Union["types.Error", "types.Story"]:
@@ -8316,7 +8921,7 @@ class TDLibFunctions:
 
         Parameters:
             chat_id (:class:`int`):
-                Chat identifier
+                Chat identifier\. Pass Saved Messages chat identifier when posting a story on behalf of the current user
 
         Returns:
             :class:`~pytdbot.types.CanSendStoryResult`
@@ -8341,7 +8946,7 @@ class TDLibFunctions:
 
         Parameters:
             chat_id (:class:`int`):
-                Identifier of the chat that will post the story
+                Identifier of the chat that will post the story\. Pass Saved Messages chat identifier when posting a story on behalf of the current user
 
             content (:class:`"types.InputStoryContent"`):
                 Content of the story
@@ -8359,7 +8964,7 @@ class TDLibFunctions:
                 Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, or 2 \* 86400 for Telegram Premium users, and 86400 otherwise
 
             from_story_full_id (:class:`"types.StoryFullId"`):
-                Full identifier of the original story, which content was used to create the story
+                Full identifier of the original story, which content was used to create the story; pass null if the story isn't repost of another story
 
             is_posted_to_chat_page (:class:`bool`):
                 Pass true to keep the story accessible after expiration
@@ -8425,6 +9030,38 @@ class TDLibFunctions:
                 "content": content,
                 "areas": areas,
                 "caption": caption,
+            }
+        )
+
+    async def editStoryCover(
+        self,
+        story_sender_chat_id: int = 0,
+        story_id: int = 0,
+        cover_frame_timestamp: float = 0.0,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Changes cover of a video story\. Can be called only if story\.can\_be\_edited \=\= true and the story isn't being edited now
+
+        Parameters:
+            story_sender_chat_id (:class:`int`):
+                Identifier of the chat that posted the story
+
+            story_id (:class:`int`):
+                Identifier of the story to edit
+
+            cover_frame_timestamp (:class:`float`):
+                New timestamp of the frame, which will be used as video thumbnail
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editStoryCover",
+                "story_sender_chat_id": story_sender_chat_id,
+                "story_id": story_id,
+                "cover_frame_timestamp": cover_frame_timestamp,
             }
         )
 
@@ -8589,7 +9226,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, from_story_id: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.Stories"]:
         r"""
-        Returns the list of stories that posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        Returns the list of stories that posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -8599,7 +9236,7 @@ class TDLibFunctions:
                 Identifier of the story starting from which stories must be returned; use 0 to get results from pinned and the newest story
 
             limit (:class:`int`):
-                The maximum number of stories to be returned For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of stories to be returned\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
         Returns:
             :class:`~pytdbot.types.Stories`
@@ -8618,7 +9255,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, from_story_id: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.Stories"]:
         r"""
-        Returns the list of all stories posted by the given chat; requires can\_edit\_stories right in the chat\. The stories are returned in a reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        Returns the list of all stories posted by the given chat; requires can\_edit\_stories right in the chat\. The stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -8628,7 +9265,7 @@ class TDLibFunctions:
                 Identifier of the story starting from which stories must be returned; use 0 to get results from the last story
 
             limit (:class:`int`):
-                The maximum number of stories to be returned For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of stories to be returned\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
         Returns:
             :class:`~pytdbot.types.Stories`
@@ -8754,7 +9391,7 @@ class TDLibFunctions:
                 The identifier of the story
 
             reaction_type (:class:`"types.ReactionType"`):
-                Type of the reaction to set; pass null to remove the reaction\. \`reactionTypeCustomEmoji\` reactions can be used only by Telegram Premium users
+                Type of the reaction to set; pass null to remove the reaction\. Custom emoji reactions can be used only by Telegram Premium users\. Paid reactions can't be set
 
             update_recent_reactions (:class:`bool`):
                 Pass true if the reaction needs to be added to recent reactions
@@ -8845,7 +9482,7 @@ class TDLibFunctions:
                 Story identifier
 
             reaction_type (:class:`"types.ReactionType"`):
-                Pass the default heart reaction or a suggested reaction type to receive only interactions with the specified reaction type; pass null to receive all interactions
+                Pass the default heart reaction or a suggested reaction type to receive only interactions with the specified reaction type; pass null to receive all interactions; reactionTypePaid isn't supported
 
             prefer_forwards (:class:`bool`):
                 Pass true to get forwards and reposts first, then reactions, then other views; pass false to get interactions sorted just by interaction date
@@ -9927,6 +10564,38 @@ class TDLibFunctions:
             }
         )
 
+    async def createChatSubscriptionInviteLink(
+        self,
+        chat_id: int = 0,
+        name: str = "",
+        subscription_pricing: "types.StarSubscriptionPricing" = None,
+    ) -> Union["types.Error", "types.ChatInviteLink"]:
+        r"""
+        Creates a new subscription invite link for a channel chat\. Requires can\_invite\_users right in the chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            name (:class:`str`):
+                Invite link name; 0\-32 characters
+
+            subscription_pricing (:class:`"types.StarSubscriptionPricing"`):
+                Information about subscription plan that will be applied to the users joining the chat via the link\. Subscription period must be 2592000 in production environment, and 60 or 300 if Telegram test environment is used
+
+        Returns:
+            :class:`~pytdbot.types.ChatInviteLink`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "createChatSubscriptionInviteLink",
+                "chat_id": chat_id,
+                "name": name,
+                "subscription_pricing": subscription_pricing,
+            }
+        )
+
     async def editChatInviteLink(
         self,
         chat_id: int = 0,
@@ -9937,7 +10606,7 @@ class TDLibFunctions:
         creates_join_request: bool = False,
     ) -> Union["types.Error", "types.ChatInviteLink"]:
         r"""
-        Edits a non\-primary invite link for a chat\. Available for basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
+        Edits a non\-primary invite link for a chat\. Available for basic groups, supergroups, and channels\. If the link creates a subscription, then expiration\_date, member\_limit and creates\_join\_request must not be used\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Parameters:
             chat_id (:class:`int`):
@@ -9971,6 +10640,35 @@ class TDLibFunctions:
                 "expiration_date": expiration_date,
                 "member_limit": member_limit,
                 "creates_join_request": creates_join_request,
+            }
+        )
+
+    async def editChatSubscriptionInviteLink(
+        self, chat_id: int = 0, invite_link: str = "", name: str = ""
+    ) -> Union["types.Error", "types.ChatInviteLink"]:
+        r"""
+        Edits a subscription invite link for a channel chat\. Requires can\_invite\_users right in the chat for own links and owner privileges for other links
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            invite_link (:class:`str`):
+                Invite link to be edited
+
+            name (:class:`str`):
+                Invite link name; 0\-32 characters
+
+        Returns:
+            :class:`~pytdbot.types.ChatInviteLink`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editChatSubscriptionInviteLink",
+                "chat_id": chat_id,
+                "invite_link": invite_link,
+                "name": name,
             }
         )
 
@@ -10068,6 +10766,7 @@ class TDLibFunctions:
         self,
         chat_id: int = 0,
         invite_link: str = "",
+        only_with_expired_subscription: bool = False,
         offset_member: "types.ChatInviteLinkMember" = None,
         limit: int = 0,
     ) -> Union["types.Error", "types.ChatInviteLinkMembers"]:
@@ -10080,6 +10779,9 @@ class TDLibFunctions:
 
             invite_link (:class:`str`):
                 Invite link for which to return chat members
+
+            only_with_expired_subscription (:class:`bool`):
+                Pass true if the link is a subscription link and only members with expired subscription must be returned
 
             offset_member (:class:`"types.ChatInviteLinkMember"`):
                 A chat member from which to return next chat members; pass null to get results from the beginning
@@ -10096,6 +10798,7 @@ class TDLibFunctions:
                 "@type": "getChatInviteLinkMembers",
                 "chat_id": chat_id,
                 "invite_link": invite_link,
+                "only_with_expired_subscription": only_with_expired_subscription,
                 "offset_member": offset_member,
                 "limit": limit,
             }
@@ -11667,7 +12370,7 @@ class TDLibFunctions:
                 Type of the stickers to return
 
             query (:class:`str`):
-                Search query; a space\-separated list of emoji or a keyword prefix\. If empty, returns all known installed stickers
+                Search query; a space\-separated list of emojis or a keyword prefix\. If empty, returns all known installed stickers
 
             limit (:class:`int`):
                 The maximum number of stickers to be returned
@@ -11737,7 +12440,7 @@ class TDLibFunctions:
                 Type of the stickers to return
 
             emojis (:class:`str`):
-                Space\-separated list of emoji to search for; must be non\-empty
+                Space\-separated list of emojis to search for; must be non\-empty
 
             limit (:class:`int`):
                 The maximum number of stickers to be returned; 0\-100
@@ -11897,6 +12600,22 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "getStickerSet", "set_id": set_id})
+
+    async def getStickerSetName(
+        self, set_id: int = 0
+    ) -> Union["types.Error", "types.Text"]:
+        r"""
+        Returns name of a sticker set by its identifier
+
+        Parameters:
+            set_id (:class:`int`):
+                Identifier of the sticker set
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke({"@type": "getStickerSetName", "set_id": set_id})
 
     async def searchStickerSet(
         self, name: str = ""
@@ -12240,7 +12959,7 @@ class TDLibFunctions:
         self, type: "types.EmojiCategoryType" = None
     ) -> Union["types.Error", "types.EmojiCategories"]:
         r"""
-        Returns available emojis categories
+        Returns available emoji categories
 
         Parameters:
             type (:class:`"types.EmojiCategoryType"`):
@@ -12451,11 +13170,11 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "removeRecentHashtag", "hashtag": hashtag})
 
-    async def getWebPagePreview(
+    async def getLinkPreview(
         self,
         text: "types.FormattedText" = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
-    ) -> Union["types.Error", "types.WebPage"]:
+    ) -> Union["types.Error", "types.LinkPreview"]:
         r"""
         Returns a link preview by the text of a message\. Do not call this function too often\. Returns a 404 error if the text has no link preview
 
@@ -12467,12 +13186,12 @@ class TDLibFunctions:
                 Options to be used for generation of the link preview; pass null to use default link preview options
 
         Returns:
-            :class:`~pytdbot.types.WebPage`
+            :class:`~pytdbot.types.LinkPreview`
         """
 
         return await self.invoke(
             {
-                "@type": "getWebPagePreview",
+                "@type": "getLinkPreview",
                 "text": text,
                 "link_preview_options": link_preview_options,
             }
@@ -13397,6 +14116,176 @@ class TDLibFunctions:
             }
         )
 
+    async def getBotMediaPreviews(
+        self, bot_user_id: int = 0
+    ) -> Union["types.Error", "types.BotMediaPreviews"]:
+        r"""
+        Returns the list of media previews of a bot
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the target bot\. The bot must have the main Web App
+
+        Returns:
+            :class:`~pytdbot.types.BotMediaPreviews`
+        """
+
+        return await self.invoke(
+            {"@type": "getBotMediaPreviews", "bot_user_id": bot_user_id}
+        )
+
+    async def getBotMediaPreviewInfo(
+        self, bot_user_id: int = 0, language_code: str = ""
+    ) -> Union["types.Error", "types.BotMediaPreviewInfo"]:
+        r"""
+        Returns the list of media previews for the given language and the list of languages for which the bot has dedicated previews
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            language_code (:class:`str`):
+                A two\-letter ISO 639\-1 language code for which to get previews\. If empty, then default previews are returned
+
+        Returns:
+            :class:`~pytdbot.types.BotMediaPreviewInfo`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getBotMediaPreviewInfo",
+                "bot_user_id": bot_user_id,
+                "language_code": language_code,
+            }
+        )
+
+    async def addBotMediaPreview(
+        self,
+        bot_user_id: int = 0,
+        language_code: str = "",
+        content: "types.InputStoryContent" = None,
+    ) -> Union["types.Error", "types.BotMediaPreview"]:
+        r"""
+        Adds a new media preview to the beginning of the list of media previews of a bot\. Returns the added preview after addition is completed server\-side\. The total number of previews must not exceed getOption\(\"bot\_media\_preview\_count\_max\"\) for the given language
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            language_code (:class:`str`):
+                A two\-letter ISO 639\-1 language code for which preview is added\. If empty, then the preview will be shown to all users for whose languages there are no dedicated previews\. If non\-empty, then there must be an official language pack of the same name, which is returned by getLocalizationTargetInfo
+
+            content (:class:`"types.InputStoryContent"`):
+                Content of the added preview
+
+        Returns:
+            :class:`~pytdbot.types.BotMediaPreview`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addBotMediaPreview",
+                "bot_user_id": bot_user_id,
+                "language_code": language_code,
+                "content": content,
+            }
+        )
+
+    async def editBotMediaPreview(
+        self,
+        bot_user_id: int = 0,
+        language_code: str = "",
+        file_id: int = 0,
+        content: "types.InputStoryContent" = None,
+    ) -> Union["types.Error", "types.BotMediaPreview"]:
+        r"""
+        Replaces media preview in the list of media previews of a bot\. Returns the new preview after edit is completed server\-side
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            language_code (:class:`str`):
+                Language code of the media preview to edit
+
+            file_id (:class:`int`):
+                File identifier of the media to replace
+
+            content (:class:`"types.InputStoryContent"`):
+                Content of the new preview
+
+        Returns:
+            :class:`~pytdbot.types.BotMediaPreview`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editBotMediaPreview",
+                "bot_user_id": bot_user_id,
+                "language_code": language_code,
+                "file_id": file_id,
+                "content": content,
+            }
+        )
+
+    async def reorderBotMediaPreviews(
+        self, bot_user_id: int = 0, language_code: str = "", file_ids: List[int] = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Changes order of media previews in the list of media previews of a bot
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            language_code (:class:`str`):
+                Language code of the media previews to reorder
+
+            file_ids (:class:`List[int]`):
+                File identifiers of the media in the new order
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "reorderBotMediaPreviews",
+                "bot_user_id": bot_user_id,
+                "language_code": language_code,
+                "file_ids": file_ids,
+            }
+        )
+
+    async def deleteBotMediaPreviews(
+        self, bot_user_id: int = 0, language_code: str = "", file_ids: List[int] = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Delete media previews from the list of media previews of a bot
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the target bot\. The bot must be owned and must have the main Web App
+
+            language_code (:class:`str`):
+                Language code of the media previews to delete
+
+            file_ids (:class:`List[int]`):
+                File identifiers of the media to delete
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteBotMediaPreviews",
+                "bot_user_id": bot_user_id,
+                "language_code": language_code,
+                "file_ids": file_ids,
+            }
+        )
+
     async def setBotName(
         self, bot_user_id: int = 0, language_code: str = "", name: str = ""
     ) -> Union["types.Error", "types.Ok"]:
@@ -13988,10 +14877,13 @@ class TDLibFunctions:
         )
 
     async def toggleSupergroupSignMessages(
-        self, supergroup_id: int = 0, sign_messages: bool = False
+        self,
+        supergroup_id: int = 0,
+        sign_messages: bool = False,
+        show_message_sender: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Toggles whether sender signature is added to sent messages in a channel; requires can\_change\_info member right
+        Toggles whether sender signature or link to the account is added to sent messages in a channel; requires can\_change\_info member right
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -13999,6 +14891,9 @@ class TDLibFunctions:
 
             sign_messages (:class:`bool`):
                 New value of sign\_messages
+
+            show_message_sender (:class:`bool`):
+                New value of show\_message\_sender
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -14009,6 +14904,7 @@ class TDLibFunctions:
                 "@type": "toggleSupergroupSignMessages",
                 "supergroup_id": supergroup_id,
                 "sign_messages": sign_messages,
+                "show_message_sender": show_message_sender,
             }
         )
 
@@ -14219,7 +15115,7 @@ class TDLibFunctions:
                 Supergroup identifier
 
             message_ids (:class:`List[int]`):
-                Identifiers of messages to report
+                Identifiers of messages to report\. Use messageProperties\.can\_be\_reported to check whether the message can be reported
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -14244,7 +15140,7 @@ class TDLibFunctions:
                 Supergroup identifier
 
             message_id (:class:`int`):
-                Identifier of the erroneously deleted message
+                Identifier of the erroneously deleted message from chatEventMessageDeleted
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -14380,7 +15276,7 @@ class TDLibFunctions:
         theme: "types.ThemeParameters" = None,
     ) -> Union["types.Error", "types.PaymentForm"]:
         r"""
-        Returns an invoice payment form\. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy
+        Returns an invoice payment form\. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy, or wants to buy access to media in a messagePaidMedia message
 
         Parameters:
             input_invoice (:class:`"types.InputInvoice"`):
@@ -14455,7 +15351,7 @@ class TDLibFunctions:
                 Identifier of a chosen shipping option, if applicable
 
             credentials (:class:`"types.InputCredentials"`):
-                The credentials chosen by user for payment; pass null for a payment in Telegram stars
+                The credentials chosen by user for payment; pass null for a payment in Telegram Stars
 
             tip_amount (:class:`int`):
                 Chosen by the user amount of tip in the smallest units of the currency
@@ -15278,7 +16174,7 @@ class TDLibFunctions:
                 Chat identifier
 
             message_ids (:class:`List[int]`):
-                Identifiers of reported messages; may be empty to report the whole chat
+                Identifiers of reported messages; may be empty to report the whole chat\. Use messageProperties\.can\_be\_reported to check whether the message can be reported
 
             reason (:class:`"types.ReportReason"`):
                 The reason for reporting the chat
@@ -15344,7 +16240,7 @@ class TDLibFunctions:
         sender_id: "types.MessageSender" = None,
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Reports reactions set on a message to the Telegram moderators\. Reactions on a message can be reported only if message\.can\_report\_reactions
+        Reports reactions set on a message to the Telegram moderators\. Reactions on a message can be reported only if messageProperties\.can\_report\_reactions
 
         Parameters:
             chat_id (:class:`int`):
@@ -15398,7 +16294,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, password: str = ""
     ) -> Union["types.Error", "types.HttpUrl"]:
         r"""
-        Returns URL for chat revenue withdrawal; requires owner privileges in the chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true and getOption\(\"can\_withdraw\_chat\_revenue\"\)
+        Returns a URL for chat revenue withdrawal; requires owner privileges in the chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true and getOption\(\"can\_withdraw\_chat\_revenue\"\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -15448,6 +16344,79 @@ class TDLibFunctions:
             }
         )
 
+    async def getStarRevenueStatistics(
+        self, owner_id: "types.MessageSender" = None, is_dark: bool = False
+    ) -> Union["types.Error", "types.StarRevenueStatistics"]:
+        r"""
+        Returns detailed Telegram Star revenue statistics
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
+
+            is_dark (:class:`bool`):
+                Pass true if a dark theme is used by the application
+
+        Returns:
+            :class:`~pytdbot.types.StarRevenueStatistics`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getStarRevenueStatistics",
+                "owner_id": owner_id,
+                "is_dark": is_dark,
+            }
+        )
+
+    async def getStarWithdrawalUrl(
+        self,
+        owner_id: "types.MessageSender" = None,
+        star_count: int = 0,
+        password: str = "",
+    ) -> Union["types.Error", "types.HttpUrl"]:
+        r"""
+        Returns a URL for Telegram Star withdrawal
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of an owned channel chat
+
+            star_count (:class:`int`):
+                The number of Telegram Stars to withdraw\. Must be at least getOption\(\"star\_withdrawal\_count\_min\"\)
+
+            password (:class:`str`):
+                The 2\-step verification password of the current user
+
+        Returns:
+            :class:`~pytdbot.types.HttpUrl`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getStarWithdrawalUrl",
+                "owner_id": owner_id,
+                "star_count": star_count,
+                "password": password,
+            }
+        )
+
+    async def getStarAdAccountUrl(
+        self, owner_id: "types.MessageSender" = None
+    ) -> Union["types.Error", "types.HttpUrl"]:
+        r"""
+        Returns a URL for a Telegram Ad platform account that can be used to set up advertisements for the chat paid in the owned Telegram Stars
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of an owned channel chat
+
+        Returns:
+            :class:`~pytdbot.types.HttpUrl`
+        """
+
+        return await self.invoke({"@type": "getStarAdAccountUrl", "owner_id": owner_id})
+
     async def getChatStatistics(
         self, chat_id: int = 0, is_dark: bool = False
     ) -> Union["types.Error", "types.ChatStatistics"]:
@@ -15473,7 +16442,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0, is_dark: bool = False
     ) -> Union["types.Error", "types.MessageStatistics"]:
         r"""
-        Returns detailed statistics about a message\. Can be used only if message\.can\_get\_statistics \=\= true
+        Returns detailed statistics about a message\. Can be used only if messageProperties\.can\_get\_statistics \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -15502,7 +16471,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0, offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.PublicForwards"]:
         r"""
-        Returns forwarded copies of a channel message to different public channels and public reposts as a story\. Can be used only if message\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
+        Returns forwarded copies of a channel message to different public channels and public reposts as a story\. Can be used only if messageProperties\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -16482,7 +17451,7 @@ class TDLibFunctions:
         self, sticker: "types.InputFile" = None, emojis: str = ""
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Changes the list of emoji corresponding to a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
+        Changes the list of emojis corresponding to a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
 
         Parameters:
             sticker (:class:`"types.InputFile"`):
@@ -16713,7 +17682,7 @@ class TDLibFunctions:
         self, boosted_chat_id: int = 0
     ) -> Union["types.Error", "types.PremiumGiftCodePaymentOptions"]:
         r"""
-        Returns available options for Telegram Premium gift code or giveaway creation
+        Returns available options for Telegram Premium gift code or Telegram Premium giveaway creation
 
         Parameters:
             boosted_chat_id (:class:`int`):
@@ -16762,18 +17731,28 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "applyPremiumGiftCode", "code": code})
 
-    async def launchPrepaidPremiumGiveaway(
-        self, giveaway_id: int = 0, parameters: "types.PremiumGiveawayParameters" = None
+    async def launchPrepaidGiveaway(
+        self,
+        giveaway_id: int = 0,
+        parameters: "types.GiveawayParameters" = None,
+        winner_count: int = 0,
+        star_count: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Launches a prepaid Telegram Premium giveaway
+        Launches a prepaid giveaway
 
         Parameters:
             giveaway_id (:class:`int`):
                 Unique identifier of the prepaid giveaway
 
-            parameters (:class:`"types.PremiumGiveawayParameters"`):
+            parameters (:class:`"types.GiveawayParameters"`):
                 Giveaway parameters
+
+            winner_count (:class:`int`):
+                The number of users to receive giveaway prize
+
+            star_count (:class:`int`):
+                The number of Telegram Stars to be distributed through the giveaway; pass 0 for Telegram Premium giveaways
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -16781,17 +17760,19 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "launchPrepaidPremiumGiveaway",
+                "@type": "launchPrepaidGiveaway",
                 "giveaway_id": giveaway_id,
                 "parameters": parameters,
+                "winner_count": winner_count,
+                "star_count": star_count,
             }
         )
 
-    async def getPremiumGiveawayInfo(
+    async def getGiveawayInfo(
         self, chat_id: int = 0, message_id: int = 0
-    ) -> Union["types.Error", "types.PremiumGiveawayInfo"]:
+    ) -> Union["types.Error", "types.GiveawayInfo"]:
         r"""
-        Returns information about a Telegram Premium giveaway
+        Returns information about a giveaway
 
         Parameters:
             chat_id (:class:`int`):
@@ -16801,22 +17782,18 @@ class TDLibFunctions:
                 Identifier of the giveaway or a giveaway winners message in the chat
 
         Returns:
-            :class:`~pytdbot.types.PremiumGiveawayInfo`
+            :class:`~pytdbot.types.GiveawayInfo`
         """
 
         return await self.invoke(
-            {
-                "@type": "getPremiumGiveawayInfo",
-                "chat_id": chat_id,
-                "message_id": message_id,
-            }
+            {"@type": "getGiveawayInfo", "chat_id": chat_id, "message_id": message_id}
         )
 
     async def getStarPaymentOptions(
         self,
     ) -> Union["types.Error", "types.StarPaymentOptions"]:
         r"""
-        Returns available options for Telegram stars purchase
+        Returns available options for Telegram Stars purchase
 
         Returns:
             :class:`~pytdbot.types.StarPaymentOptions`
@@ -16828,25 +17805,105 @@ class TDLibFunctions:
             }
         )
 
-    async def getStarTransactions(
-        self, offset: str = "", direction: "types.StarTransactionDirection" = None
-    ) -> Union["types.Error", "types.StarTransactions"]:
+    async def getStarGiftPaymentOptions(
+        self, user_id: int = 0
+    ) -> Union["types.Error", "types.StarPaymentOptions"]:
         r"""
-        Returns the list of Telegram star transactions for the current user
+        Returns available options for Telegram Stars gifting
 
         Parameters:
-            offset (:class:`str`):
-                Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results
+            user_id (:class:`int`):
+                Identifier of the user that will receive Telegram Stars; pass 0 to get options for an unspecified user
+
+        Returns:
+            :class:`~pytdbot.types.StarPaymentOptions`
+        """
+
+        return await self.invoke(
+            {"@type": "getStarGiftPaymentOptions", "user_id": user_id}
+        )
+
+    async def getStarGiveawayPaymentOptions(
+        self,
+    ) -> Union["types.Error", "types.StarGiveawayPaymentOptions"]:
+        r"""
+        Returns available options for Telegram Star giveaway creation
+
+        Returns:
+            :class:`~pytdbot.types.StarGiveawayPaymentOptions`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getStarGiveawayPaymentOptions",
+            }
+        )
+
+    async def getStarTransactions(
+        self,
+        owner_id: "types.MessageSender" = None,
+        subscription_id: str = "",
+        direction: "types.StarTransactionDirection" = None,
+        offset: str = "",
+        limit: int = 0,
+    ) -> Union["types.Error", "types.StarTransactions"]:
+        r"""
+        Returns the list of Telegram Star transactions for the specified owner
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the owner of the Telegram Stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
+
+            subscription_id (:class:`str`):
+                If non\-empty, only transactions related to the Star Subscription will be returned
 
             direction (:class:`"types.StarTransactionDirection"`):
                 Direction of the transactions to receive; pass null to get all transactions
+
+            offset (:class:`str`):
+                Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of transactions to return
 
         Returns:
             :class:`~pytdbot.types.StarTransactions`
         """
 
         return await self.invoke(
-            {"@type": "getStarTransactions", "offset": offset, "direction": direction}
+            {
+                "@type": "getStarTransactions",
+                "owner_id": owner_id,
+                "subscription_id": subscription_id,
+                "direction": direction,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def getStarSubscriptions(
+        self, only_expiring: bool = False, offset: str = ""
+    ) -> Union["types.Error", "types.StarSubscriptions"]:
+        r"""
+        Returns the list of Telegram Star subscriptions for the current user
+
+        Parameters:
+            only_expiring (:class:`bool`):
+                Pass true to receive only expiring subscriptions for which there are no enough Telegram Stars to extend
+
+            offset (:class:`str`):
+                Offset of the first subscription to return as received from the previous request; use empty string to get the first chunk of results
+
+        Returns:
+            :class:`~pytdbot.types.StarSubscriptions`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getStarSubscriptions",
+                "only_expiring": only_expiring,
+                "offset": offset,
+            }
         )
 
     async def canPurchaseFromStore(
@@ -16925,6 +17982,49 @@ class TDLibFunctions:
                 "purchase_token": purchase_token,
                 "purpose": purpose,
             }
+        )
+
+    async def editStarSubscription(
+        self, subscription_id: str = "", is_canceled: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Cancels or reenables Telegram Star subscription to a channel
+
+        Parameters:
+            subscription_id (:class:`str`):
+                Identifier of the subscription to change
+
+            is_canceled (:class:`bool`):
+                New value of is\_canceled
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editStarSubscription",
+                "subscription_id": subscription_id,
+                "is_canceled": is_canceled,
+            }
+        )
+
+    async def reuseStarSubscription(
+        self, subscription_id: str = ""
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Reuses an active subscription and joins the subscribed chat again
+
+        Parameters:
+            subscription_id (:class:`str`):
+                Identifier of the subscription
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "reuseStarSubscription", "subscription_id": subscription_id}
         )
 
     async def getBusinessFeatures(

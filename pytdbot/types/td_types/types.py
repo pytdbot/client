@@ -47,6 +47,12 @@ class AuthorizationState:
     pass
 
 
+class FirebaseDeviceVerificationParameters:
+    r"""Describes parameters to be used for device verification"""
+
+    pass
+
+
 class InputFile:
     r"""Points to a file"""
 
@@ -114,25 +120,43 @@ class InputChatPhoto:
 
 
 class StarTransactionDirection:
-    r"""Describes direction of a transaction with Telegram stars"""
+    r"""Describes direction of a transaction with Telegram Stars"""
 
     pass
 
 
-class StarTransactionSource:
-    r"""Describes source or recipient of a transaction with Telegram stars"""
+class BotTransactionPurpose:
+    r"""Describes purpose of a transaction with a bot"""
 
     pass
 
 
-class PremiumGiveawayParticipantStatus:
-    r"""Contains information about status of a user in a Telegram Premium giveaway"""
+class ChatTransactionPurpose:
+    r"""Describes purpose of a transaction with a supergroup or a channel"""
 
     pass
 
 
-class PremiumGiveawayInfo:
-    r"""Contains information about Telegram Premium giveaway"""
+class StarTransactionPartner:
+    r"""Describes source or recipient of a transaction with Telegram Stars"""
+
+    pass
+
+
+class GiveawayParticipantStatus:
+    r"""Contains information about status of a user in a giveaway"""
+
+    pass
+
+
+class GiveawayInfo:
+    r"""Contains information about a giveaway"""
+
+    pass
+
+
+class GiveawayPrize:
+    r"""Contains information about a giveaway prize"""
 
     pass
 
@@ -306,7 +330,7 @@ class SavedMessagesTopicType:
 
 
 class RichText:
-    r"""Describes a text object inside an instant\-view web page"""
+    r"""Describes a formatted text object"""
 
     pass
 
@@ -324,7 +348,19 @@ class PageBlockVerticalAlignment:
 
 
 class PageBlock:
-    r"""Describes a block of an instant view web page"""
+    r"""Describes a block of an instant view for a web page"""
+
+    pass
+
+
+class LinkPreviewAlbumMedia:
+    r"""Describes a media from a link preview album"""
+
+    pass
+
+
+class LinkPreviewType:
+    r"""Describes type of link preview"""
 
     pass
 
@@ -365,8 +401,8 @@ class InputInvoice:
     pass
 
 
-class MessageExtendedMedia:
-    r"""Describes a media, which is attached to an invoice"""
+class PaidMedia:
+    r"""Describes a paid media"""
 
     pass
 
@@ -409,6 +445,12 @@ class MessageContent:
 
 class TextEntityType:
     r"""Represents a part of the text which must be formatted differently"""
+
+    pass
+
+
+class InputPaidMediaType:
+    r"""Describes type of paid media to sent"""
 
     pass
 
@@ -462,13 +504,13 @@ class EmojiCategoryType:
 
 
 class StoryAreaType:
-    r"""Describes type of clickable rectangle area on a story media"""
+    r"""Describes type of clickable area on a story media"""
 
     pass
 
 
 class InputStoryAreaType:
-    r"""Describes type of clickable rectangle area on a story media to be added"""
+    r"""Describes type of clickable area on a story media to be added"""
 
     pass
 
@@ -881,8 +923,8 @@ class ChatStatistics:
     pass
 
 
-class ChatRevenueWithdrawalState:
-    r"""Describes state of a chat revenue withdrawal"""
+class RevenueWithdrawalState:
+    r"""Describes state of a revenue withdrawal"""
 
     pass
 
@@ -1283,11 +1325,8 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
     r"""A digit\-only authentication code is delivered via Firebase Authentication to the official Android application
 
     Parameters:
-        use_play_integrity (:class:`bool`):
-            True, if Play Integrity API must be used for device verification\. Otherwise, SafetyNet Attestation API must be used
-
-        nonce (:class:`bytes`):
-            Nonce to pass to the Play Integrity API or the SafetyNet Attestation API
+        device_verification_parameters (:class:`"types.FirebaseDeviceVerificationParameters"`):
+            Parameters to be used for device verification
 
         length (:class:`int`):
             Length of the code
@@ -1295,12 +1334,16 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
     """
 
     def __init__(
-        self, use_play_integrity: bool = False, nonce: bytes = b"", length: int = 0
+        self,
+        device_verification_parameters: FirebaseDeviceVerificationParameters = None,
+        length: int = 0,
     ) -> None:
-        self.use_play_integrity: bool = bool(use_play_integrity)
-        r"""True, if Play Integrity API must be used for device verification\. Otherwise, SafetyNet Attestation API must be used"""
-        self.nonce: Union[bytes, None] = nonce
-        r"""Nonce to pass to the Play Integrity API or the SafetyNet Attestation API"""
+        self.device_verification_parameters: Union[
+            FirebaseDeviceVerificationParametersSafetyNet,
+            FirebaseDeviceVerificationParametersPlayIntegrity,
+            None,
+        ] = device_verification_parameters
+        r"""Parameters to be used for device verification"""
         self.length: int = int(length)
         r"""Length of the code"""
 
@@ -1316,8 +1359,7 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "use_play_integrity": self.use_play_integrity,
-            "nonce": self.nonce,
+            "device_verification_parameters": self.device_verification_parameters,
             "length": self.length,
         }
 
@@ -1327,8 +1369,9 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
     ) -> Union["AuthenticationCodeTypeFirebaseAndroid", None]:
         if data:
             data_class = cls()
-            data_class.use_play_integrity = data.get("use_play_integrity", False)
-            data_class.nonce = b64decode(data.get("nonce", b""))
+            data_class.device_verification_parameters = data.get(
+                "device_verification_parameters", None
+            )
             data_class.length = int(data.get("length", 0))
 
         return data_class
@@ -2338,6 +2381,92 @@ class AuthorizationStateClosed(TlObject, AuthorizationState):
     def from_dict(cls, data: dict) -> Union["AuthorizationStateClosed", None]:
         if data:
             data_class = cls()
+
+        return data_class
+
+
+class FirebaseDeviceVerificationParametersSafetyNet(
+    TlObject, FirebaseDeviceVerificationParameters
+):
+    r"""Device verification must be performed with the SafetyNet Attestation API
+
+    Parameters:
+        nonce (:class:`bytes`):
+            Nonce to pass to the SafetyNet Attestation API
+
+    """
+
+    def __init__(self, nonce: bytes = b"") -> None:
+        self.nonce: Union[bytes, None] = nonce
+        r"""Nonce to pass to the SafetyNet Attestation API"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["firebaseDeviceVerificationParametersSafetyNet"]:
+        return "firebaseDeviceVerificationParametersSafetyNet"
+
+    def getClass(self) -> Literal["FirebaseDeviceVerificationParameters"]:
+        return "FirebaseDeviceVerificationParameters"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "nonce": self.nonce}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["FirebaseDeviceVerificationParametersSafetyNet", None]:
+        if data:
+            data_class = cls()
+            data_class.nonce = b64decode(data.get("nonce", b""))
+
+        return data_class
+
+
+class FirebaseDeviceVerificationParametersPlayIntegrity(
+    TlObject, FirebaseDeviceVerificationParameters
+):
+    r"""Device verification must be performed with the classic Play Integrity verification \(https://developer\.android\.com/google/play/integrity/classic\)
+
+    Parameters:
+        nonce (:class:`str`):
+            Base64url\-encoded nonce to pass to the Play Integrity API
+
+        cloud_project_number (:class:`int`):
+            Cloud project number to pass to the Play Integrity API
+
+    """
+
+    def __init__(self, nonce: str = "", cloud_project_number: int = 0) -> None:
+        self.nonce: Union[str, None] = nonce
+        r"""Base64url\-encoded nonce to pass to the Play Integrity API"""
+        self.cloud_project_number: int = int(cloud_project_number)
+        r"""Cloud project number to pass to the Play Integrity API"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["firebaseDeviceVerificationParametersPlayIntegrity"]:
+        return "firebaseDeviceVerificationParametersPlayIntegrity"
+
+    def getClass(self) -> Literal["FirebaseDeviceVerificationParameters"]:
+        return "FirebaseDeviceVerificationParameters"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "nonce": self.nonce,
+            "cloud_project_number": self.cloud_project_number,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["FirebaseDeviceVerificationParametersPlayIntegrity", None]:
+        if data:
+            data_class = cls()
+            data_class.nonce = data.get("nonce", "")
+            data_class.cloud_project_number = int(data.get("cloud_project_number", 0))
 
         return data_class
 
@@ -5609,6 +5738,9 @@ class UserTypeBot(TlObject, UserType):
         can_read_all_group_messages (:class:`bool`):
             True, if the bot can read all messages in basic group or supergroup chats and not just those addressed to the bot\. In private and channel chats a bot can always read all messages
 
+        has_main_web_app (:class:`bool`):
+            True, if the bot has the main Web App
+
         is_inline (:class:`bool`):
             True, if the bot supports inline queries
 
@@ -5624,6 +5756,9 @@ class UserTypeBot(TlObject, UserType):
         can_be_added_to_attachment_menu (:class:`bool`):
             True, if the bot can be added to attachment or side menu
 
+        active_user_count (:class:`int`):
+            The number of recently active users of the bot
+
     """
 
     def __init__(
@@ -5631,11 +5766,13 @@ class UserTypeBot(TlObject, UserType):
         can_be_edited: bool = False,
         can_join_groups: bool = False,
         can_read_all_group_messages: bool = False,
+        has_main_web_app: bool = False,
         is_inline: bool = False,
         inline_query_placeholder: str = "",
         need_location: bool = False,
         can_connect_to_business: bool = False,
         can_be_added_to_attachment_menu: bool = False,
+        active_user_count: int = 0,
     ) -> None:
         self.can_be_edited: bool = bool(can_be_edited)
         r"""True, if the bot is owned by the current user and can be edited using the methods toggleBotUsernameIsActive, reorderBotActiveUsernames, setBotProfilePhoto, setBotName, setBotInfoDescription, and setBotInfoShortDescription"""
@@ -5643,6 +5780,8 @@ class UserTypeBot(TlObject, UserType):
         r"""True, if the bot can be invited to basic group and supergroup chats"""
         self.can_read_all_group_messages: bool = bool(can_read_all_group_messages)
         r"""True, if the bot can read all messages in basic group or supergroup chats and not just those addressed to the bot\. In private and channel chats a bot can always read all messages"""
+        self.has_main_web_app: bool = bool(has_main_web_app)
+        r"""True, if the bot has the main Web App"""
         self.is_inline: bool = bool(is_inline)
         r"""True, if the bot supports inline queries"""
         self.inline_query_placeholder: Union[str, None] = inline_query_placeholder
@@ -5655,6 +5794,8 @@ class UserTypeBot(TlObject, UserType):
             can_be_added_to_attachment_menu
         )
         r"""True, if the bot can be added to attachment or side menu"""
+        self.active_user_count: int = int(active_user_count)
+        r"""The number of recently active users of the bot"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -5671,11 +5812,13 @@ class UserTypeBot(TlObject, UserType):
             "can_be_edited": self.can_be_edited,
             "can_join_groups": self.can_join_groups,
             "can_read_all_group_messages": self.can_read_all_group_messages,
+            "has_main_web_app": self.has_main_web_app,
             "is_inline": self.is_inline,
             "inline_query_placeholder": self.inline_query_placeholder,
             "need_location": self.need_location,
             "can_connect_to_business": self.can_connect_to_business,
             "can_be_added_to_attachment_menu": self.can_be_added_to_attachment_menu,
+            "active_user_count": self.active_user_count,
         }
 
     @classmethod
@@ -5687,6 +5830,7 @@ class UserTypeBot(TlObject, UserType):
             data_class.can_read_all_group_messages = data.get(
                 "can_read_all_group_messages", False
             )
+            data_class.has_main_web_app = data.get("has_main_web_app", False)
             data_class.is_inline = data.get("is_inline", False)
             data_class.inline_query_placeholder = data.get(
                 "inline_query_placeholder", ""
@@ -5698,6 +5842,7 @@ class UserTypeBot(TlObject, UserType):
             data_class.can_be_added_to_attachment_menu = data.get(
                 "can_be_added_to_attachment_menu", False
             )
+            data_class.active_user_count = int(data.get("active_user_count", 0))
 
         return data_class
 
@@ -5824,7 +5969,7 @@ class BotMenuButton(TlObject):
             Text of the button
 
         url (:class:`str`):
-            URL to be passed to openWebApp
+            URL of a Web App to open when the button is pressed\. If the link is of the type internalLinkTypeWebApp, then it must be processed accordingly\. Otherwise, the link must be passed to openWebApp
 
     """
 
@@ -5832,7 +5977,7 @@ class BotMenuButton(TlObject):
         self.text: Union[str, None] = text
         r"""Text of the button"""
         self.url: Union[str, None] = url
-        r"""URL to be passed to openWebApp"""
+        r"""URL of a Web App to open when the button is pressed\. If the link is of the type internalLinkTypeWebApp, then it must be processed accordingly\. Otherwise, the link must be passed to openWebApp"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -7389,8 +7534,8 @@ class ChatPermissions(TlObject):
         can_send_other_messages (:class:`bool`):
             True, if the user can send animations, games, stickers, and dice and use inline bots
 
-        can_add_web_page_previews (:class:`bool`):
-            True, if the user may add a web page preview to their messages
+        can_add_link_previews (:class:`bool`):
+            True, if the user may add a link preview to their messages
 
         can_change_info (:class:`bool`):
             True, if the user can change the chat title, photo, and other settings
@@ -7417,7 +7562,7 @@ class ChatPermissions(TlObject):
         can_send_voice_notes: bool = False,
         can_send_polls: bool = False,
         can_send_other_messages: bool = False,
-        can_add_web_page_previews: bool = False,
+        can_add_link_previews: bool = False,
         can_change_info: bool = False,
         can_invite_users: bool = False,
         can_pin_messages: bool = False,
@@ -7441,8 +7586,8 @@ class ChatPermissions(TlObject):
         r"""True, if the user can send polls"""
         self.can_send_other_messages: bool = bool(can_send_other_messages)
         r"""True, if the user can send animations, games, stickers, and dice and use inline bots"""
-        self.can_add_web_page_previews: bool = bool(can_add_web_page_previews)
-        r"""True, if the user may add a web page preview to their messages"""
+        self.can_add_link_previews: bool = bool(can_add_link_previews)
+        r"""True, if the user may add a link preview to their messages"""
         self.can_change_info: bool = bool(can_change_info)
         r"""True, if the user can change the chat title, photo, and other settings"""
         self.can_invite_users: bool = bool(can_invite_users)
@@ -7473,7 +7618,7 @@ class ChatPermissions(TlObject):
             "can_send_voice_notes": self.can_send_voice_notes,
             "can_send_polls": self.can_send_polls,
             "can_send_other_messages": self.can_send_other_messages,
-            "can_add_web_page_previews": self.can_add_web_page_previews,
+            "can_add_link_previews": self.can_add_link_previews,
             "can_change_info": self.can_change_info,
             "can_invite_users": self.can_invite_users,
             "can_pin_messages": self.can_pin_messages,
@@ -7497,9 +7642,7 @@ class ChatPermissions(TlObject):
             data_class.can_send_other_messages = data.get(
                 "can_send_other_messages", False
             )
-            data_class.can_add_web_page_previews = data.get(
-                "can_add_web_page_previews", False
-            )
+            data_class.can_add_link_previews = data.get("can_add_link_previews", False)
             data_class.can_change_info = data.get("can_change_info", False)
             data_class.can_invite_users = data.get("can_invite_users", False)
             data_class.can_pin_messages = data.get("can_pin_messages", False)
@@ -7662,6 +7805,210 @@ class ChatAdministratorRights(TlObject):
         return data_class
 
 
+class StarSubscriptionPricing(TlObject):
+    r"""Describes subscription plan paid in Telegram Stars
+
+    Parameters:
+        period (:class:`int`):
+            The number of seconds between consecutive Telegram Star debiting
+
+        star_count (:class:`int`):
+            The amount of Telegram Stars that must be paid for each period
+
+    """
+
+    def __init__(self, period: int = 0, star_count: int = 0) -> None:
+        self.period: int = int(period)
+        r"""The number of seconds between consecutive Telegram Star debiting"""
+        self.star_count: int = int(star_count)
+        r"""The amount of Telegram Stars that must be paid for each period"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starSubscriptionPricing"]:
+        return "starSubscriptionPricing"
+
+    def getClass(self) -> Literal["StarSubscriptionPricing"]:
+        return "StarSubscriptionPricing"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "period": self.period,
+            "star_count": self.star_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarSubscriptionPricing", None]:
+        if data:
+            data_class = cls()
+            data_class.period = int(data.get("period", 0))
+            data_class.star_count = int(data.get("star_count", 0))
+
+        return data_class
+
+
+class StarSubscription(TlObject):
+    r"""Contains information about subscription to a channel chat paid in Telegram Stars
+
+    Parameters:
+        id (:class:`str`):
+            Unique identifier of the subscription
+
+        chat_id (:class:`int`):
+            Identifier of the channel chat that is subscribed
+
+        expiration_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the subscription will expire or expired
+
+        can_reuse (:class:`bool`):
+            True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again
+
+        is_canceled (:class:`bool`):
+            True, if the subscription was canceled
+
+        is_expiring (:class:`bool`):
+            True, if the subscription expires soon and there are no enough Telegram Stars on the user's balance to extend it
+
+        invite_link (:class:`str`):
+            The invite link that can be used to renew the subscription if it has been expired; may be empty, if the link isn't available anymore
+
+        pricing (:class:`"types.StarSubscriptionPricing"`):
+            The subscription plan
+
+    """
+
+    def __init__(
+        self,
+        id: str = "",
+        chat_id: int = 0,
+        expiration_date: int = 0,
+        can_reuse: bool = False,
+        is_canceled: bool = False,
+        is_expiring: bool = False,
+        invite_link: str = "",
+        pricing: StarSubscriptionPricing = None,
+    ) -> None:
+        self.id: Union[str, None] = id
+        r"""Unique identifier of the subscription"""
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the channel chat that is subscribed"""
+        self.expiration_date: int = int(expiration_date)
+        r"""Point in time \(Unix timestamp\) when the subscription will expire or expired"""
+        self.can_reuse: bool = bool(can_reuse)
+        r"""True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again"""
+        self.is_canceled: bool = bool(is_canceled)
+        r"""True, if the subscription was canceled"""
+        self.is_expiring: bool = bool(is_expiring)
+        r"""True, if the subscription expires soon and there are no enough Telegram Stars on the user's balance to extend it"""
+        self.invite_link: Union[str, None] = invite_link
+        r"""The invite link that can be used to renew the subscription if it has been expired; may be empty, if the link isn't available anymore"""
+        self.pricing: Union[StarSubscriptionPricing, None] = pricing
+        r"""The subscription plan"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starSubscription"]:
+        return "starSubscription"
+
+    def getClass(self) -> Literal["StarSubscription"]:
+        return "StarSubscription"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "chat_id": self.chat_id,
+            "expiration_date": self.expiration_date,
+            "can_reuse": self.can_reuse,
+            "is_canceled": self.is_canceled,
+            "is_expiring": self.is_expiring,
+            "invite_link": self.invite_link,
+            "pricing": self.pricing,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarSubscription", None]:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", "")
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.expiration_date = int(data.get("expiration_date", 0))
+            data_class.can_reuse = data.get("can_reuse", False)
+            data_class.is_canceled = data.get("is_canceled", False)
+            data_class.is_expiring = data.get("is_expiring", False)
+            data_class.invite_link = data.get("invite_link", "")
+            data_class.pricing = data.get("pricing", None)
+
+        return data_class
+
+
+class StarSubscriptions(TlObject):
+    r"""Represents a list of Telegram Star subscriptions
+
+    Parameters:
+        star_count (:class:`int`):
+            The amount of owned Telegram Stars
+
+        subscriptions (:class:`List["types.StarSubscription"]`):
+            List of subbscriptions for Telegram Stars
+
+        required_star_count (:class:`int`):
+            The number of Telegram Stars required to buy to extend subscriptions expiring soon
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self,
+        star_count: int = 0,
+        subscriptions: List[StarSubscription] = None,
+        required_star_count: int = 0,
+        next_offset: str = "",
+    ) -> None:
+        self.star_count: int = int(star_count)
+        r"""The amount of owned Telegram Stars"""
+        self.subscriptions: List[StarSubscription] = subscriptions or []
+        r"""List of subbscriptions for Telegram Stars"""
+        self.required_star_count: int = int(required_star_count)
+        r"""The number of Telegram Stars required to buy to extend subscriptions expiring soon"""
+        self.next_offset: Union[str, None] = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starSubscriptions"]:
+        return "starSubscriptions"
+
+    def getClass(self) -> Literal["StarSubscriptions"]:
+        return "StarSubscriptions"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "subscriptions": self.subscriptions,
+            "required_star_count": self.required_star_count,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarSubscriptions", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.subscriptions = data.get("subscriptions", None)
+            data_class.required_star_count = int(data.get("required_star_count", 0))
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
 class ProductInfo(TlObject):
     r"""Contains information about a product that can be paid with invoice
 
@@ -7767,6 +8114,7 @@ class PremiumPaymentOption(TlObject):
             InternalLinkTypeBotStart,
             InternalLinkTypeBotStartInGroup,
             InternalLinkTypeBusinessChat,
+            InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
@@ -7779,6 +8127,7 @@ class PremiumPaymentOption(TlObject):
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
             InternalLinkTypeLanguageSettings,
+            InternalLinkTypeMainWebApp,
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypePassportDataRequest,
@@ -7792,7 +8141,6 @@ class PremiumPaymentOption(TlObject):
             InternalLinkTypeQrCodeAuthentication,
             InternalLinkTypeRestorePurchases,
             InternalLinkTypeSettings,
-            InternalLinkTypeSideMenuBot,
             InternalLinkTypeStickerSet,
             InternalLinkTypeStory,
             InternalLinkTypeTheme,
@@ -7906,7 +8254,7 @@ class PremiumStatePaymentOption(TlObject):
 
 
 class PremiumGiftCodePaymentOption(TlObject):
-    r"""Describes an option for creating Telegram Premium gift codes
+    r"""Describes an option for creating Telegram Premium gift codes or Telegram Premium giveaway\. Use telegramPaymentPurposePremiumGiftCodes or telegramPaymentPurposePremiumGiveaway for out\-of\-store payments
 
     Parameters:
         currency (:class:`str`):
@@ -7915,7 +8263,7 @@ class PremiumGiftCodePaymentOption(TlObject):
         amount (:class:`int`):
             The amount to pay, in the smallest units of the currency
 
-        user_count (:class:`int`):
+        winner_count (:class:`int`):
             Number of users which will be able to activate the gift codes
 
         month_count (:class:`int`):
@@ -7933,7 +8281,7 @@ class PremiumGiftCodePaymentOption(TlObject):
         self,
         currency: str = "",
         amount: int = 0,
-        user_count: int = 0,
+        winner_count: int = 0,
         month_count: int = 0,
         store_product_id: str = "",
         store_product_quantity: int = 0,
@@ -7942,7 +8290,7 @@ class PremiumGiftCodePaymentOption(TlObject):
         r"""ISO 4217 currency code for Telegram Premium gift code payment"""
         self.amount: int = int(amount)
         r"""The amount to pay, in the smallest units of the currency"""
-        self.user_count: int = int(user_count)
+        self.winner_count: int = int(winner_count)
         r"""Number of users which will be able to activate the gift codes"""
         self.month_count: int = int(month_count)
         r"""Number of months the Telegram Premium subscription will be active"""
@@ -7965,7 +8313,7 @@ class PremiumGiftCodePaymentOption(TlObject):
             "@type": self.getType(),
             "currency": self.currency,
             "amount": self.amount,
-            "user_count": self.user_count,
+            "winner_count": self.winner_count,
             "month_count": self.month_count,
             "store_product_id": self.store_product_id,
             "store_product_quantity": self.store_product_quantity,
@@ -7977,7 +8325,7 @@ class PremiumGiftCodePaymentOption(TlObject):
             data_class = cls()
             data_class.currency = data.get("currency", "")
             data_class.amount = int(data.get("amount", 0))
-            data_class.user_count = int(data.get("user_count", 0))
+            data_class.winner_count = int(data.get("winner_count", 0))
             data_class.month_count = int(data.get("month_count", 0))
             data_class.store_product_id = data.get("store_product_id", "")
             data_class.store_product_quantity = int(
@@ -7988,7 +8336,7 @@ class PremiumGiftCodePaymentOption(TlObject):
 
 
 class PremiumGiftCodePaymentOptions(TlObject):
-    r"""Contains a list of options for creating Telegram Premium gift codes
+    r"""Contains a list of options for creating Telegram Premium gift codes or Telegram Premium giveaway
 
     Parameters:
         options (:class:`List["types.PremiumGiftCodePaymentOption"]`):
@@ -8110,7 +8458,7 @@ class PremiumGiftCodeInfo(TlObject):
 
 
 class StarPaymentOption(TlObject):
-    r"""Describes an option for buying Telegram stars
+    r"""Describes an option for buying Telegram Stars\. Use telegramPaymentPurposeStars for out\-of\-store payments
 
     Parameters:
         currency (:class:`str`):
@@ -8120,7 +8468,7 @@ class StarPaymentOption(TlObject):
             The amount to pay, in the smallest units of the currency
 
         star_count (:class:`int`):
-            Number of stars that will be purchased
+            Number of Telegram Stars that will be purchased
 
         store_product_id (:class:`str`):
             Identifier of the store product associated with the option; may be empty if none
@@ -8143,7 +8491,7 @@ class StarPaymentOption(TlObject):
         self.amount: int = int(amount)
         r"""The amount to pay, in the smallest units of the currency"""
         self.star_count: int = int(star_count)
-        r"""Number of stars that will be purchased"""
+        r"""Number of Telegram Stars that will be purchased"""
         self.store_product_id: Union[str, None] = store_product_id
         r"""Identifier of the store product associated with the option; may be empty if none"""
         self.is_additional: bool = bool(is_additional)
@@ -8182,7 +8530,7 @@ class StarPaymentOption(TlObject):
 
 
 class StarPaymentOptions(TlObject):
-    r"""Contains a list of options for buying Telegram stars
+    r"""Contains a list of options for buying Telegram Stars
 
     Parameters:
         options (:class:`List["types.StarPaymentOption"]`):
@@ -8215,8 +8563,191 @@ class StarPaymentOptions(TlObject):
         return data_class
 
 
+class StarGiveawayWinnerOption(TlObject):
+    r"""Describes an option for the number of winners of a Telegram Star giveaway
+
+    Parameters:
+        winner_count (:class:`int`):
+            The number of users that will be chosen as winners
+
+        won_star_count (:class:`int`):
+            The number of Telegram Stars that will be won by the winners of the giveaway
+
+        is_default (:class:`bool`):
+            True, if the option must be chosen by default
+
+    """
+
+    def __init__(
+        self, winner_count: int = 0, won_star_count: int = 0, is_default: bool = False
+    ) -> None:
+        self.winner_count: int = int(winner_count)
+        r"""The number of users that will be chosen as winners"""
+        self.won_star_count: int = int(won_star_count)
+        r"""The number of Telegram Stars that will be won by the winners of the giveaway"""
+        self.is_default: bool = bool(is_default)
+        r"""True, if the option must be chosen by default"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starGiveawayWinnerOption"]:
+        return "starGiveawayWinnerOption"
+
+    def getClass(self) -> Literal["StarGiveawayWinnerOption"]:
+        return "StarGiveawayWinnerOption"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "winner_count": self.winner_count,
+            "won_star_count": self.won_star_count,
+            "is_default": self.is_default,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarGiveawayWinnerOption", None]:
+        if data:
+            data_class = cls()
+            data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.won_star_count = int(data.get("won_star_count", 0))
+            data_class.is_default = data.get("is_default", False)
+
+        return data_class
+
+
+class StarGiveawayPaymentOption(TlObject):
+    r"""Describes an option for creating Telegram Star giveaway\. Use telegramPaymentPurposeStarGiveaway for out\-of\-store payments
+
+    Parameters:
+        currency (:class:`str`):
+            ISO 4217 currency code for the payment
+
+        amount (:class:`int`):
+            The amount to pay, in the smallest units of the currency
+
+        star_count (:class:`int`):
+            Number of Telegram Stars that will be distributed among winners
+
+        store_product_id (:class:`str`):
+            Identifier of the store product associated with the option; may be empty if none
+
+        yearly_boost_count (:class:`int`):
+            Number of times the chat will be boosted for one year if the option is chosen
+
+        winner_options (:class:`List["types.StarGiveawayWinnerOption"]`):
+            Allowed options for the number of giveaway winners
+
+        is_default (:class:`bool`):
+            True, if the option must be chosen by default
+
+        is_additional (:class:`bool`):
+            True, if the option must be shown only in the full list of payment options
+
+    """
+
+    def __init__(
+        self,
+        currency: str = "",
+        amount: int = 0,
+        star_count: int = 0,
+        store_product_id: str = "",
+        yearly_boost_count: int = 0,
+        winner_options: List[StarGiveawayWinnerOption] = None,
+        is_default: bool = False,
+        is_additional: bool = False,
+    ) -> None:
+        self.currency: Union[str, None] = currency
+        r"""ISO 4217 currency code for the payment"""
+        self.amount: int = int(amount)
+        r"""The amount to pay, in the smallest units of the currency"""
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars that will be distributed among winners"""
+        self.store_product_id: Union[str, None] = store_product_id
+        r"""Identifier of the store product associated with the option; may be empty if none"""
+        self.yearly_boost_count: int = int(yearly_boost_count)
+        r"""Number of times the chat will be boosted for one year if the option is chosen"""
+        self.winner_options: List[StarGiveawayWinnerOption] = winner_options or []
+        r"""Allowed options for the number of giveaway winners"""
+        self.is_default: bool = bool(is_default)
+        r"""True, if the option must be chosen by default"""
+        self.is_additional: bool = bool(is_additional)
+        r"""True, if the option must be shown only in the full list of payment options"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starGiveawayPaymentOption"]:
+        return "starGiveawayPaymentOption"
+
+    def getClass(self) -> Literal["StarGiveawayPaymentOption"]:
+        return "StarGiveawayPaymentOption"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "currency": self.currency,
+            "amount": self.amount,
+            "star_count": self.star_count,
+            "store_product_id": self.store_product_id,
+            "yearly_boost_count": self.yearly_boost_count,
+            "winner_options": self.winner_options,
+            "is_default": self.is_default,
+            "is_additional": self.is_additional,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarGiveawayPaymentOption", None]:
+        if data:
+            data_class = cls()
+            data_class.currency = data.get("currency", "")
+            data_class.amount = int(data.get("amount", 0))
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.store_product_id = data.get("store_product_id", "")
+            data_class.yearly_boost_count = int(data.get("yearly_boost_count", 0))
+            data_class.winner_options = data.get("winner_options", None)
+            data_class.is_default = data.get("is_default", False)
+            data_class.is_additional = data.get("is_additional", False)
+
+        return data_class
+
+
+class StarGiveawayPaymentOptions(TlObject):
+    r"""Contains a list of options for creating Telegram Star giveaway
+
+    Parameters:
+        options (:class:`List["types.StarGiveawayPaymentOption"]`):
+            The list of options
+
+    """
+
+    def __init__(self, options: List[StarGiveawayPaymentOption] = None) -> None:
+        self.options: List[StarGiveawayPaymentOption] = options or []
+        r"""The list of options"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starGiveawayPaymentOptions"]:
+        return "starGiveawayPaymentOptions"
+
+    def getClass(self) -> Literal["StarGiveawayPaymentOptions"]:
+        return "StarGiveawayPaymentOptions"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "options": self.options}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarGiveawayPaymentOptions", None]:
+        if data:
+            data_class = cls()
+            data_class.options = data.get("options", None)
+
+        return data_class
+
+
 class StarTransactionDirectionIncoming(TlObject, StarTransactionDirection):
-    r"""The transaction is incoming and increases the number of owned Telegram stars"""
+    r"""The transaction is incoming and increases the number of owned Telegram Stars"""
 
     def __init__(self) -> None:
         pass
@@ -8242,7 +8773,7 @@ class StarTransactionDirectionIncoming(TlObject, StarTransactionDirection):
 
 
 class StarTransactionDirectionOutgoing(TlObject, StarTransactionDirection):
-    r"""The transaction is outgoing and decreases the number of owned Telegram stars"""
+    r"""The transaction is outgoing and decreases the number of owned Telegram Stars"""
 
     def __init__(self) -> None:
         pass
@@ -8267,7 +8798,244 @@ class StarTransactionDirectionOutgoing(TlObject, StarTransactionDirection):
         return data_class
 
 
-class StarTransactionSourceTelegram(TlObject, StarTransactionSource):
+class BotTransactionPurposePaidMedia(TlObject, BotTransactionPurpose):
+    r"""Paid media were bought
+
+    Parameters:
+        media (:class:`List["types.PaidMedia"]`):
+            The bought media if the trancastion wasn't refunded
+
+        payload (:class:`str`):
+            Bot\-provided payload; for bots only
+
+    """
+
+    def __init__(self, media: List[PaidMedia] = None, payload: str = "") -> None:
+        self.media: List[PaidMedia] = media or []
+        r"""The bought media if the trancastion wasn't refunded"""
+        self.payload: Union[str, None] = payload
+        r"""Bot\-provided payload; for bots only"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["botTransactionPurposePaidMedia"]:
+        return "botTransactionPurposePaidMedia"
+
+    def getClass(self) -> Literal["BotTransactionPurpose"]:
+        return "BotTransactionPurpose"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "media": self.media, "payload": self.payload}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BotTransactionPurposePaidMedia", None]:
+        if data:
+            data_class = cls()
+            data_class.media = data.get("media", None)
+            data_class.payload = data.get("payload", "")
+
+        return data_class
+
+
+class BotTransactionPurposeInvoicePayment(TlObject, BotTransactionPurpose):
+    r"""User bought a product from the bot
+
+    Parameters:
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the bought product; may be null if not applicable
+
+        invoice_payload (:class:`bytes`):
+            Invoice payload; for bots only
+
+    """
+
+    def __init__(
+        self, product_info: ProductInfo = None, invoice_payload: bytes = b""
+    ) -> None:
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the bought product; may be null if not applicable"""
+        self.invoice_payload: Union[bytes, None] = invoice_payload
+        r"""Invoice payload; for bots only"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["botTransactionPurposeInvoicePayment"]:
+        return "botTransactionPurposeInvoicePayment"
+
+    def getClass(self) -> Literal["BotTransactionPurpose"]:
+        return "BotTransactionPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "product_info": self.product_info,
+            "invoice_payload": self.invoice_payload,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["BotTransactionPurposeInvoicePayment", None]:
+        if data:
+            data_class = cls()
+            data_class.product_info = data.get("product_info", None)
+            data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
+
+        return data_class
+
+
+class ChatTransactionPurposePaidMedia(TlObject, ChatTransactionPurpose):
+    r"""Paid media were bought
+
+    Parameters:
+        message_id (:class:`int`):
+            Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message
+
+        media (:class:`List["types.PaidMedia"]`):
+            The bought media if the trancastion wasn't refunded
+
+    """
+
+    def __init__(self, message_id: int = 0, media: List[PaidMedia] = None) -> None:
+        self.message_id: int = int(message_id)
+        r"""Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message"""
+        self.media: List[PaidMedia] = media or []
+        r"""The bought media if the trancastion wasn't refunded"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["chatTransactionPurposePaidMedia"]:
+        return "chatTransactionPurposePaidMedia"
+
+    def getClass(self) -> Literal["ChatTransactionPurpose"]:
+        return "ChatTransactionPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "message_id": self.message_id,
+            "media": self.media,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatTransactionPurposePaidMedia", None]:
+        if data:
+            data_class = cls()
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.media = data.get("media", None)
+
+        return data_class
+
+
+class ChatTransactionPurposeJoin(TlObject, ChatTransactionPurpose):
+    r"""User joined the channel and subscribed to regular payments in Telegram Stars
+
+    Parameters:
+        period (:class:`int`):
+            The number of seconds between consecutive Telegram Star debiting
+
+    """
+
+    def __init__(self, period: int = 0) -> None:
+        self.period: int = int(period)
+        r"""The number of seconds between consecutive Telegram Star debiting"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["chatTransactionPurposeJoin"]:
+        return "chatTransactionPurposeJoin"
+
+    def getClass(self) -> Literal["ChatTransactionPurpose"]:
+        return "ChatTransactionPurpose"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "period": self.period}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatTransactionPurposeJoin", None]:
+        if data:
+            data_class = cls()
+            data_class.period = int(data.get("period", 0))
+
+        return data_class
+
+
+class ChatTransactionPurposeReaction(TlObject, ChatTransactionPurpose):
+    r"""User paid for a reaction
+
+    Parameters:
+        message_id (:class:`int`):
+            Identifier of the reacted message; can be 0 or an identifier of a deleted message
+
+    """
+
+    def __init__(self, message_id: int = 0) -> None:
+        self.message_id: int = int(message_id)
+        r"""Identifier of the reacted message; can be 0 or an identifier of a deleted message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["chatTransactionPurposeReaction"]:
+        return "chatTransactionPurposeReaction"
+
+    def getClass(self) -> Literal["ChatTransactionPurpose"]:
+        return "ChatTransactionPurpose"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "message_id": self.message_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatTransactionPurposeReaction", None]:
+        if data:
+            data_class = cls()
+            data_class.message_id = int(data.get("message_id", 0))
+
+        return data_class
+
+
+class ChatTransactionPurposeGiveaway(TlObject, ChatTransactionPurpose):
+    r"""User received Telegram Stars from a giveaway
+
+    Parameters:
+        giveaway_message_id (:class:`int`):
+            Identifier of the message with giveaway; can be 0 or an identifier of a deleted message
+
+    """
+
+    def __init__(self, giveaway_message_id: int = 0) -> None:
+        self.giveaway_message_id: int = int(giveaway_message_id)
+        r"""Identifier of the message with giveaway; can be 0 or an identifier of a deleted message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["chatTransactionPurposeGiveaway"]:
+        return "chatTransactionPurposeGiveaway"
+
+    def getClass(self) -> Literal["ChatTransactionPurpose"]:
+        return "ChatTransactionPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "giveaway_message_id": self.giveaway_message_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatTransactionPurposeGiveaway", None]:
+        if data:
+            data_class = cls()
+            data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
+
+        return data_class
+
+
+class StarTransactionPartnerTelegram(TlObject, StarTransactionPartner):
     r"""The transaction is a transaction with Telegram through a bot"""
 
     def __init__(self) -> None:
@@ -8276,24 +9044,24 @@ class StarTransactionSourceTelegram(TlObject, StarTransactionSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionSourceTelegram"]:
-        return "starTransactionSourceTelegram"
+    def getType(self) -> Literal["starTransactionPartnerTelegram"]:
+        return "starTransactionPartnerTelegram"
 
-    def getClass(self) -> Literal["StarTransactionSource"]:
-        return "StarTransactionSource"
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionSourceTelegram", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerTelegram", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class StarTransactionSourceAppStore(TlObject, StarTransactionSource):
+class StarTransactionPartnerAppStore(TlObject, StarTransactionPartner):
     r"""The transaction is a transaction with App Store"""
 
     def __init__(self) -> None:
@@ -8302,24 +9070,24 @@ class StarTransactionSourceAppStore(TlObject, StarTransactionSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionSourceAppStore"]:
-        return "starTransactionSourceAppStore"
+    def getType(self) -> Literal["starTransactionPartnerAppStore"]:
+        return "starTransactionPartnerAppStore"
 
-    def getClass(self) -> Literal["StarTransactionSource"]:
-        return "StarTransactionSource"
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionSourceAppStore", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerAppStore", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class StarTransactionSourceGooglePlay(TlObject, StarTransactionSource):
+class StarTransactionPartnerGooglePlay(TlObject, StarTransactionPartner):
     r"""The transaction is a transaction with Google Play"""
 
     def __init__(self) -> None:
@@ -8328,25 +9096,64 @@ class StarTransactionSourceGooglePlay(TlObject, StarTransactionSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionSourceGooglePlay"]:
-        return "starTransactionSourceGooglePlay"
+    def getType(self) -> Literal["starTransactionPartnerGooglePlay"]:
+        return "starTransactionPartnerGooglePlay"
 
-    def getClass(self) -> Literal["StarTransactionSource"]:
-        return "StarTransactionSource"
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionSourceGooglePlay", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerGooglePlay", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class StarTransactionSourceFragment(TlObject, StarTransactionSource):
-    r"""The transaction is a transaction with Fragment"""
+class StarTransactionPartnerFragment(TlObject, StarTransactionPartner):
+    r"""The transaction is a transaction with Fragment
+
+    Parameters:
+        withdrawal_state (:class:`"types.RevenueWithdrawalState"`):
+            State of the withdrawal; may be null for refunds from Fragment
+
+    """
+
+    def __init__(self, withdrawal_state: RevenueWithdrawalState = None) -> None:
+        self.withdrawal_state: Union[
+            RevenueWithdrawalStatePending,
+            RevenueWithdrawalStateSucceeded,
+            RevenueWithdrawalStateFailed,
+            None,
+        ] = withdrawal_state
+        r"""State of the withdrawal; may be null for refunds from Fragment"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionPartnerFragment"]:
+        return "starTransactionPartnerFragment"
+
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "withdrawal_state": self.withdrawal_state}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerFragment", None]:
+        if data:
+            data_class = cls()
+            data_class.withdrawal_state = data.get("withdrawal_state", None)
+
+        return data_class
+
+
+class StarTransactionPartnerTelegramAds(TlObject, StarTransactionPartner):
+    r"""The transaction is a transaction with Telegram Ad platform"""
 
     def __init__(self) -> None:
         pass
@@ -8354,69 +9161,207 @@ class StarTransactionSourceFragment(TlObject, StarTransactionSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionSourceFragment"]:
-        return "starTransactionSourceFragment"
+    def getType(self) -> Literal["starTransactionPartnerTelegramAds"]:
+        return "starTransactionPartnerTelegramAds"
 
-    def getClass(self) -> Literal["StarTransactionSource"]:
-        return "StarTransactionSource"
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionSourceFragment", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerTelegramAds", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class StarTransactionSourceUser(TlObject, StarTransactionSource):
-    r"""The transaction is a transaction with another user
+class StarTransactionPartnerBot(TlObject, StarTransactionPartner):
+    r"""The transaction is a transaction with a bot
 
     Parameters:
         user_id (:class:`int`):
-            Identifier of the user
+            Identifier of the bot
 
-        product_info (:class:`"types.ProductInfo"`):
-            Information about the bought product; may be null if none
+        purpose (:class:`"types.BotTransactionPurpose"`):
+            Purpose of the transaction
 
     """
 
-    def __init__(self, user_id: int = 0, product_info: ProductInfo = None) -> None:
+    def __init__(self, user_id: int = 0, purpose: BotTransactionPurpose = None) -> None:
         self.user_id: int = int(user_id)
-        r"""Identifier of the user"""
-        self.product_info: Union[ProductInfo, None] = product_info
-        r"""Information about the bought product; may be null if none"""
+        r"""Identifier of the bot"""
+        self.purpose: Union[
+            BotTransactionPurposePaidMedia, BotTransactionPurposeInvoicePayment, None
+        ] = purpose
+        r"""Purpose of the transaction"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionSourceUser"]:
-        return "starTransactionSourceUser"
+    def getType(self) -> Literal["starTransactionPartnerBot"]:
+        return "starTransactionPartnerBot"
 
-    def getClass(self) -> Literal["StarTransactionSource"]:
-        return "StarTransactionSource"
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
 
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
             "user_id": self.user_id,
-            "product_info": self.product_info,
+            "purpose": self.purpose,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionSourceUser", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerBot", None]:
         if data:
             data_class = cls()
             data_class.user_id = int(data.get("user_id", 0))
-            data_class.product_info = data.get("product_info", None)
+            data_class.purpose = data.get("purpose", None)
 
         return data_class
 
 
-class StarTransactionSourceUnsupported(TlObject, StarTransactionSource):
-    r"""The transaction is a transaction with unknown source"""
+class StarTransactionPartnerBusiness(TlObject, StarTransactionPartner):
+    r"""The transaction is a transaction with a business account
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the business account user
+
+        media (:class:`List["types.PaidMedia"]`):
+            The bought media if the trancastion wasn't refunded
+
+    """
+
+    def __init__(self, user_id: int = 0, media: List[PaidMedia] = None) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the business account user"""
+        self.media: List[PaidMedia] = media or []
+        r"""The bought media if the trancastion wasn't refunded"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionPartnerBusiness"]:
+        return "starTransactionPartnerBusiness"
+
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "user_id": self.user_id, "media": self.media}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerBusiness", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.media = data.get("media", None)
+
+        return data_class
+
+
+class StarTransactionPartnerChat(TlObject, StarTransactionPartner):
+    r"""The transaction is a transaction with a supergroup or a channel chat
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat
+
+        purpose (:class:`"types.ChatTransactionPurpose"`):
+            Purpose of the transaction
+
+    """
+
+    def __init__(
+        self, chat_id: int = 0, purpose: ChatTransactionPurpose = None
+    ) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat"""
+        self.purpose: Union[
+            ChatTransactionPurposePaidMedia,
+            ChatTransactionPurposeJoin,
+            ChatTransactionPurposeReaction,
+            ChatTransactionPurposeGiveaway,
+            None,
+        ] = purpose
+        r"""Purpose of the transaction"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionPartnerChat"]:
+        return "starTransactionPartnerChat"
+
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "purpose": self.purpose,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerChat", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.purpose = data.get("purpose", None)
+
+        return data_class
+
+
+class StarTransactionPartnerUser(TlObject, StarTransactionPartner):
+    r"""The transaction is a gift of Telegram Stars from another user
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user; 0 if the gift was anonymous
+
+        sticker (:class:`"types.Sticker"`):
+            A sticker to be shown in the transaction information; may be null if unknown
+
+    """
+
+    def __init__(self, user_id: int = 0, sticker: Sticker = None) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user; 0 if the gift was anonymous"""
+        self.sticker: Union[Sticker, None] = sticker
+        r"""A sticker to be shown in the transaction information; may be null if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionPartnerUser"]:
+        return "starTransactionPartnerUser"
+
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "sticker": self.sticker,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerUser", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.sticker = data.get("sticker", None)
+
+        return data_class
+
+
+class StarTransactionPartnerUnsupported(TlObject, StarTransactionPartner):
+    r"""The transaction is a transaction with unknown partner"""
 
     def __init__(self) -> None:
         pass
@@ -8424,17 +9369,17 @@ class StarTransactionSourceUnsupported(TlObject, StarTransactionSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionSourceUnsupported"]:
-        return "starTransactionSourceUnsupported"
+    def getType(self) -> Literal["starTransactionPartnerUnsupported"]:
+        return "starTransactionPartnerUnsupported"
 
-    def getClass(self) -> Literal["StarTransactionSource"]:
-        return "StarTransactionSource"
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionSourceUnsupported", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerUnsupported", None]:
         if data:
             data_class = cls()
 
@@ -8442,14 +9387,14 @@ class StarTransactionSourceUnsupported(TlObject, StarTransactionSource):
 
 
 class StarTransaction(TlObject):
-    r"""Represents a transaction changing the amount of owned Telegram stars
+    r"""Represents a transaction changing the amount of owned Telegram Stars
 
     Parameters:
         id (:class:`str`):
             Unique identifier of the transaction
 
         star_count (:class:`int`):
-            The amount of added owned Telegram stars; negative for outgoing transactions
+            The amount of added owned Telegram Stars; negative for outgoing transactions
 
         is_refund (:class:`bool`):
             True, if the transaction is a refund of a previous transaction
@@ -8457,8 +9402,8 @@ class StarTransaction(TlObject):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the transaction was completed
 
-        source (:class:`"types.StarTransactionSource"`):
-            Source of the transaction, or its recipient for outgoing transactions
+        partner (:class:`"types.StarTransactionPartner"`):
+            Source of the incoming transaction, or its recipient for outgoing transactions
 
     """
 
@@ -8468,26 +9413,30 @@ class StarTransaction(TlObject):
         star_count: int = 0,
         is_refund: bool = False,
         date: int = 0,
-        source: StarTransactionSource = None,
+        partner: StarTransactionPartner = None,
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the transaction"""
         self.star_count: int = int(star_count)
-        r"""The amount of added owned Telegram stars; negative for outgoing transactions"""
+        r"""The amount of added owned Telegram Stars; negative for outgoing transactions"""
         self.is_refund: bool = bool(is_refund)
         r"""True, if the transaction is a refund of a previous transaction"""
         self.date: int = int(date)
         r"""Point in time \(Unix timestamp\) when the transaction was completed"""
-        self.source: Union[
-            StarTransactionSourceTelegram,
-            StarTransactionSourceAppStore,
-            StarTransactionSourceGooglePlay,
-            StarTransactionSourceFragment,
-            StarTransactionSourceUser,
-            StarTransactionSourceUnsupported,
+        self.partner: Union[
+            StarTransactionPartnerTelegram,
+            StarTransactionPartnerAppStore,
+            StarTransactionPartnerGooglePlay,
+            StarTransactionPartnerFragment,
+            StarTransactionPartnerTelegramAds,
+            StarTransactionPartnerBot,
+            StarTransactionPartnerBusiness,
+            StarTransactionPartnerChat,
+            StarTransactionPartnerUser,
+            StarTransactionPartnerUnsupported,
             None,
-        ] = source
-        r"""Source of the transaction, or its recipient for outgoing transactions"""
+        ] = partner
+        r"""Source of the incoming transaction, or its recipient for outgoing transactions"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -8505,7 +9454,7 @@ class StarTransaction(TlObject):
             "star_count": self.star_count,
             "is_refund": self.is_refund,
             "date": self.date,
-            "source": self.source,
+            "partner": self.partner,
         }
 
     @classmethod
@@ -8516,20 +9465,20 @@ class StarTransaction(TlObject):
             data_class.star_count = int(data.get("star_count", 0))
             data_class.is_refund = data.get("is_refund", False)
             data_class.date = int(data.get("date", 0))
-            data_class.source = data.get("source", None)
+            data_class.partner = data.get("partner", None)
 
         return data_class
 
 
 class StarTransactions(TlObject):
-    r"""Represents a list of Telegram star transactions
+    r"""Represents a list of Telegram Star transactions
 
     Parameters:
         star_count (:class:`int`):
-            The amount of owned Telegram stars
+            The amount of owned Telegram Stars
 
         transactions (:class:`List["types.StarTransaction"]`):
-            List of transactions with Telegram stars
+            List of transactions with Telegram Stars
 
         next_offset (:class:`str`):
             The offset for the next request\. If empty, then there are no more results
@@ -8543,9 +9492,9 @@ class StarTransactions(TlObject):
         next_offset: str = "",
     ) -> None:
         self.star_count: int = int(star_count)
-        r"""The amount of owned Telegram stars"""
+        r"""The amount of owned Telegram Stars"""
         self.transactions: List[StarTransaction] = transactions or []
-        r"""List of transactions with Telegram stars"""
+        r"""List of transactions with Telegram Stars"""
         self.next_offset: Union[str, None] = next_offset
         r"""The offset for the next request\. If empty, then there are no more results"""
 
@@ -8577,9 +9526,7 @@ class StarTransactions(TlObject):
         return data_class
 
 
-class PremiumGiveawayParticipantStatusEligible(
-    TlObject, PremiumGiveawayParticipantStatus
-):
+class GiveawayParticipantStatusEligible(TlObject, GiveawayParticipantStatus):
     r"""The user is eligible for the giveaway"""
 
     def __init__(self) -> None:
@@ -8588,28 +9535,24 @@ class PremiumGiveawayParticipantStatusEligible(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumGiveawayParticipantStatusEligible"]:
-        return "premiumGiveawayParticipantStatusEligible"
+    def getType(self) -> Literal["giveawayParticipantStatusEligible"]:
+        return "giveawayParticipantStatusEligible"
 
-    def getClass(self) -> Literal["PremiumGiveawayParticipantStatus"]:
-        return "PremiumGiveawayParticipantStatus"
+    def getClass(self) -> Literal["GiveawayParticipantStatus"]:
+        return "GiveawayParticipantStatus"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(
-        cls, data: dict
-    ) -> Union["PremiumGiveawayParticipantStatusEligible", None]:
+    def from_dict(cls, data: dict) -> Union["GiveawayParticipantStatusEligible", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class PremiumGiveawayParticipantStatusParticipating(
-    TlObject, PremiumGiveawayParticipantStatus
-):
+class GiveawayParticipantStatusParticipating(TlObject, GiveawayParticipantStatus):
     r"""The user participates in the giveaway"""
 
     def __init__(self) -> None:
@@ -8618,11 +9561,11 @@ class PremiumGiveawayParticipantStatusParticipating(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumGiveawayParticipantStatusParticipating"]:
-        return "premiumGiveawayParticipantStatusParticipating"
+    def getType(self) -> Literal["giveawayParticipantStatusParticipating"]:
+        return "giveawayParticipantStatusParticipating"
 
-    def getClass(self) -> Literal["PremiumGiveawayParticipantStatus"]:
-        return "PremiumGiveawayParticipantStatus"
+    def getClass(self) -> Literal["GiveawayParticipantStatus"]:
+        return "GiveawayParticipantStatus"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
@@ -8630,16 +9573,14 @@ class PremiumGiveawayParticipantStatusParticipating(
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["PremiumGiveawayParticipantStatusParticipating", None]:
+    ) -> Union["GiveawayParticipantStatusParticipating", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class PremiumGiveawayParticipantStatusAlreadyWasMember(
-    TlObject, PremiumGiveawayParticipantStatus
-):
+class GiveawayParticipantStatusAlreadyWasMember(TlObject, GiveawayParticipantStatus):
     r"""The user can't participate in the giveaway, because they have already been member of the chat
 
     Parameters:
@@ -8655,11 +9596,11 @@ class PremiumGiveawayParticipantStatusAlreadyWasMember(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumGiveawayParticipantStatusAlreadyWasMember"]:
-        return "premiumGiveawayParticipantStatusAlreadyWasMember"
+    def getType(self) -> Literal["giveawayParticipantStatusAlreadyWasMember"]:
+        return "giveawayParticipantStatusAlreadyWasMember"
 
-    def getClass(self) -> Literal["PremiumGiveawayParticipantStatus"]:
-        return "PremiumGiveawayParticipantStatus"
+    def getClass(self) -> Literal["GiveawayParticipantStatus"]:
+        return "GiveawayParticipantStatus"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "joined_chat_date": self.joined_chat_date}
@@ -8667,7 +9608,7 @@ class PremiumGiveawayParticipantStatusAlreadyWasMember(
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["PremiumGiveawayParticipantStatusAlreadyWasMember", None]:
+    ) -> Union["GiveawayParticipantStatusAlreadyWasMember", None]:
         if data:
             data_class = cls()
             data_class.joined_chat_date = int(data.get("joined_chat_date", 0))
@@ -8675,9 +9616,7 @@ class PremiumGiveawayParticipantStatusAlreadyWasMember(
         return data_class
 
 
-class PremiumGiveawayParticipantStatusAdministrator(
-    TlObject, PremiumGiveawayParticipantStatus
-):
+class GiveawayParticipantStatusAdministrator(TlObject, GiveawayParticipantStatus):
     r"""The user can't participate in the giveaway, because they are an administrator in one of the chats that created the giveaway
 
     Parameters:
@@ -8693,11 +9632,11 @@ class PremiumGiveawayParticipantStatusAdministrator(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumGiveawayParticipantStatusAdministrator"]:
-        return "premiumGiveawayParticipantStatusAdministrator"
+    def getType(self) -> Literal["giveawayParticipantStatusAdministrator"]:
+        return "giveawayParticipantStatusAdministrator"
 
-    def getClass(self) -> Literal["PremiumGiveawayParticipantStatus"]:
-        return "PremiumGiveawayParticipantStatus"
+    def getClass(self) -> Literal["GiveawayParticipantStatus"]:
+        return "GiveawayParticipantStatus"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "chat_id": self.chat_id}
@@ -8705,7 +9644,7 @@ class PremiumGiveawayParticipantStatusAdministrator(
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["PremiumGiveawayParticipantStatusAdministrator", None]:
+    ) -> Union["GiveawayParticipantStatusAdministrator", None]:
         if data:
             data_class = cls()
             data_class.chat_id = int(data.get("chat_id", 0))
@@ -8713,9 +9652,7 @@ class PremiumGiveawayParticipantStatusAdministrator(
         return data_class
 
 
-class PremiumGiveawayParticipantStatusDisallowedCountry(
-    TlObject, PremiumGiveawayParticipantStatus
-):
+class GiveawayParticipantStatusDisallowedCountry(TlObject, GiveawayParticipantStatus):
     r"""The user can't participate in the giveaway, because they phone number is from a disallowed country
 
     Parameters:
@@ -8731,11 +9668,11 @@ class PremiumGiveawayParticipantStatusDisallowedCountry(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumGiveawayParticipantStatusDisallowedCountry"]:
-        return "premiumGiveawayParticipantStatusDisallowedCountry"
+    def getType(self) -> Literal["giveawayParticipantStatusDisallowedCountry"]:
+        return "giveawayParticipantStatusDisallowedCountry"
 
-    def getClass(self) -> Literal["PremiumGiveawayParticipantStatus"]:
-        return "PremiumGiveawayParticipantStatus"
+    def getClass(self) -> Literal["GiveawayParticipantStatus"]:
+        return "GiveawayParticipantStatus"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "user_country_code": self.user_country_code}
@@ -8743,7 +9680,7 @@ class PremiumGiveawayParticipantStatusDisallowedCountry(
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["PremiumGiveawayParticipantStatusDisallowedCountry", None]:
+    ) -> Union["GiveawayParticipantStatusDisallowedCountry", None]:
         if data:
             data_class = cls()
             data_class.user_country_code = data.get("user_country_code", "")
@@ -8751,14 +9688,14 @@ class PremiumGiveawayParticipantStatusDisallowedCountry(
         return data_class
 
 
-class PremiumGiveawayInfoOngoing(TlObject, PremiumGiveawayInfo):
+class GiveawayInfoOngoing(TlObject, GiveawayInfo):
     r"""Describes an ongoing giveaway
 
     Parameters:
         creation_date (:class:`int`):
             Point in time \(Unix timestamp\) when the giveaway was created
 
-        status (:class:`"types.PremiumGiveawayParticipantStatus"`):
+        status (:class:`"types.GiveawayParticipantStatus"`):
             Status of the current user in the giveaway
 
         is_ended (:class:`bool`):
@@ -8769,17 +9706,17 @@ class PremiumGiveawayInfoOngoing(TlObject, PremiumGiveawayInfo):
     def __init__(
         self,
         creation_date: int = 0,
-        status: PremiumGiveawayParticipantStatus = None,
+        status: GiveawayParticipantStatus = None,
         is_ended: bool = False,
     ) -> None:
         self.creation_date: int = int(creation_date)
         r"""Point in time \(Unix timestamp\) when the giveaway was created"""
         self.status: Union[
-            PremiumGiveawayParticipantStatusEligible,
-            PremiumGiveawayParticipantStatusParticipating,
-            PremiumGiveawayParticipantStatusAlreadyWasMember,
-            PremiumGiveawayParticipantStatusAdministrator,
-            PremiumGiveawayParticipantStatusDisallowedCountry,
+            GiveawayParticipantStatusEligible,
+            GiveawayParticipantStatusParticipating,
+            GiveawayParticipantStatusAlreadyWasMember,
+            GiveawayParticipantStatusAdministrator,
+            GiveawayParticipantStatusDisallowedCountry,
             None,
         ] = status
         r"""Status of the current user in the giveaway"""
@@ -8789,11 +9726,11 @@ class PremiumGiveawayInfoOngoing(TlObject, PremiumGiveawayInfo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumGiveawayInfoOngoing"]:
-        return "premiumGiveawayInfoOngoing"
+    def getType(self) -> Literal["giveawayInfoOngoing"]:
+        return "giveawayInfoOngoing"
 
-    def getClass(self) -> Literal["PremiumGiveawayInfo"]:
-        return "PremiumGiveawayInfo"
+    def getClass(self) -> Literal["GiveawayInfo"]:
+        return "GiveawayInfo"
 
     def to_dict(self) -> dict:
         return {
@@ -8804,7 +9741,7 @@ class PremiumGiveawayInfoOngoing(TlObject, PremiumGiveawayInfo):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["PremiumGiveawayInfoOngoing", None]:
+    def from_dict(cls, data: dict) -> Union["GiveawayInfoOngoing", None]:
         if data:
             data_class = cls()
             data_class.creation_date = int(data.get("creation_date", 0))
@@ -8814,7 +9751,7 @@ class PremiumGiveawayInfoOngoing(TlObject, PremiumGiveawayInfo):
         return data_class
 
 
-class PremiumGiveawayInfoCompleted(TlObject, PremiumGiveawayInfo):
+class GiveawayInfoCompleted(TlObject, GiveawayInfo):
     r"""Describes a completed giveaway
 
     Parameters:
@@ -8827,14 +9764,20 @@ class PremiumGiveawayInfoCompleted(TlObject, PremiumGiveawayInfo):
         was_refunded (:class:`bool`):
             True, if the giveaway was canceled and was fully refunded
 
+        is_winner (:class:`bool`):
+            True, if the cuurent user is a winner of the giveaway
+
         winner_count (:class:`int`):
             Number of winners in the giveaway
 
         activation_count (:class:`int`):
-            Number of winners, which activated their gift codes
+            Number of winners, which activated their gift codes; for Telegram Premium giveaways only
 
         gift_code (:class:`str`):
-            Telegram Premium gift code that was received by the current user; empty if the user isn't a winner in the giveaway
+            Telegram Premium gift code that was received by the current user; empty if the user isn't a winner in the giveaway or the giveaway isn't a Telegram Premium giveaway
+
+        won_star_count (:class:`int`):
+            The amount of Telegram Stars won by the current user; 0 if the user isn't a winner in the giveaway or the giveaway isn't a Telegram Star giveaway
 
     """
 
@@ -8843,9 +9786,11 @@ class PremiumGiveawayInfoCompleted(TlObject, PremiumGiveawayInfo):
         creation_date: int = 0,
         actual_winners_selection_date: int = 0,
         was_refunded: bool = False,
+        is_winner: bool = False,
         winner_count: int = 0,
         activation_count: int = 0,
         gift_code: str = "",
+        won_star_count: int = 0,
     ) -> None:
         self.creation_date: int = int(creation_date)
         r"""Point in time \(Unix timestamp\) when the giveaway was created"""
@@ -8853,21 +9798,25 @@ class PremiumGiveawayInfoCompleted(TlObject, PremiumGiveawayInfo):
         r"""Point in time \(Unix timestamp\) when the winners were selected\. May be bigger than winners selection date specified in parameters of the giveaway"""
         self.was_refunded: bool = bool(was_refunded)
         r"""True, if the giveaway was canceled and was fully refunded"""
+        self.is_winner: bool = bool(is_winner)
+        r"""True, if the cuurent user is a winner of the giveaway"""
         self.winner_count: int = int(winner_count)
         r"""Number of winners in the giveaway"""
         self.activation_count: int = int(activation_count)
-        r"""Number of winners, which activated their gift codes"""
+        r"""Number of winners, which activated their gift codes; for Telegram Premium giveaways only"""
         self.gift_code: Union[str, None] = gift_code
-        r"""Telegram Premium gift code that was received by the current user; empty if the user isn't a winner in the giveaway"""
+        r"""Telegram Premium gift code that was received by the current user; empty if the user isn't a winner in the giveaway or the giveaway isn't a Telegram Premium giveaway"""
+        self.won_star_count: int = int(won_star_count)
+        r"""The amount of Telegram Stars won by the current user; 0 if the user isn't a winner in the giveaway or the giveaway isn't a Telegram Star giveaway"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumGiveawayInfoCompleted"]:
-        return "premiumGiveawayInfoCompleted"
+    def getType(self) -> Literal["giveawayInfoCompleted"]:
+        return "giveawayInfoCompleted"
 
-    def getClass(self) -> Literal["PremiumGiveawayInfo"]:
-        return "PremiumGiveawayInfo"
+    def getClass(self) -> Literal["GiveawayInfo"]:
+        return "GiveawayInfo"
 
     def to_dict(self) -> dict:
         return {
@@ -8875,13 +9824,15 @@ class PremiumGiveawayInfoCompleted(TlObject, PremiumGiveawayInfo):
             "creation_date": self.creation_date,
             "actual_winners_selection_date": self.actual_winners_selection_date,
             "was_refunded": self.was_refunded,
+            "is_winner": self.is_winner,
             "winner_count": self.winner_count,
             "activation_count": self.activation_count,
             "gift_code": self.gift_code,
+            "won_star_count": self.won_star_count,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["PremiumGiveawayInfoCompleted", None]:
+    def from_dict(cls, data: dict) -> Union["GiveawayInfoCompleted", None]:
         if data:
             data_class = cls()
             data_class.creation_date = int(data.get("creation_date", 0))
@@ -8889,9 +9840,79 @@ class PremiumGiveawayInfoCompleted(TlObject, PremiumGiveawayInfo):
                 data.get("actual_winners_selection_date", 0)
             )
             data_class.was_refunded = data.get("was_refunded", False)
+            data_class.is_winner = data.get("is_winner", False)
             data_class.winner_count = int(data.get("winner_count", 0))
             data_class.activation_count = int(data.get("activation_count", 0))
             data_class.gift_code = data.get("gift_code", "")
+            data_class.won_star_count = int(data.get("won_star_count", 0))
+
+        return data_class
+
+
+class GiveawayPrizePremium(TlObject, GiveawayPrize):
+    r"""The giveaway sends Telegram Premium subscriptions to the winners
+
+    Parameters:
+        month_count (:class:`int`):
+            Number of months the Telegram Premium subscription will be active after code activation
+
+    """
+
+    def __init__(self, month_count: int = 0) -> None:
+        self.month_count: int = int(month_count)
+        r"""Number of months the Telegram Premium subscription will be active after code activation"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["giveawayPrizePremium"]:
+        return "giveawayPrizePremium"
+
+    def getClass(self) -> Literal["GiveawayPrize"]:
+        return "GiveawayPrize"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "month_count": self.month_count}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiveawayPrizePremium", None]:
+        if data:
+            data_class = cls()
+            data_class.month_count = int(data.get("month_count", 0))
+
+        return data_class
+
+
+class GiveawayPrizeStars(TlObject, GiveawayPrize):
+    r"""The giveaway sends Telegram Stars to the winners
+
+    Parameters:
+        star_count (:class:`int`):
+            Number of Telegram Stars that will be shared by all winners
+
+    """
+
+    def __init__(self, star_count: int = 0) -> None:
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars that will be shared by all winners"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["giveawayPrizeStars"]:
+        return "giveawayPrizeStars"
+
+    def getClass(self) -> Literal["GiveawayPrize"]:
+        return "GiveawayPrize"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "star_count": self.star_count}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiveawayPrizeStars", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
 
         return data_class
 
@@ -9538,11 +10559,17 @@ class BotInfo(TlObject):
         commands (:class:`List["types.BotCommand"]`):
             List of the bot commands
 
+        privacy_policy_url (:class:`str`):
+            The HTTP link to the privacy policy of the bot\. If empty, then /privacy command must be used if supported by the bot\. If the command isn't supported, then https://telegram\.org/privacy\-tpa must be opened
+
         default_group_administrator_rights (:class:`"types.ChatAdministratorRights"`):
             Default administrator rights for adding the bot to basic group and supergroup chats; may be null
 
         default_channel_administrator_rights (:class:`"types.ChatAdministratorRights"`):
             Default administrator rights for adding the bot to channels; may be null
+
+        has_media_previews (:class:`bool`):
+            True, if the bot has media previews
 
         edit_commands_link (:class:`"types.InternalLinkType"`):
             The internal link, which can be used to edit bot commands; may be null
@@ -9566,8 +10593,10 @@ class BotInfo(TlObject):
         animation: Animation = None,
         menu_button: BotMenuButton = None,
         commands: List[BotCommand] = None,
+        privacy_policy_url: str = "",
         default_group_administrator_rights: ChatAdministratorRights = None,
         default_channel_administrator_rights: ChatAdministratorRights = None,
+        has_media_previews: bool = False,
         edit_commands_link: InternalLinkType = None,
         edit_description_link: InternalLinkType = None,
         edit_description_media_link: InternalLinkType = None,
@@ -9585,6 +10614,8 @@ class BotInfo(TlObject):
         r"""Information about a button to show instead of the bot commands menu button; may be null if ordinary bot commands menu must be shown"""
         self.commands: List[BotCommand] = commands or []
         r"""List of the bot commands"""
+        self.privacy_policy_url: Union[str, None] = privacy_policy_url
+        r"""The HTTP link to the privacy policy of the bot\. If empty, then /privacy command must be used if supported by the bot\. If the command isn't supported, then https://telegram\.org/privacy\-tpa must be opened"""
         self.default_group_administrator_rights: Union[
             ChatAdministratorRights, None
         ] = default_group_administrator_rights
@@ -9593,6 +10624,8 @@ class BotInfo(TlObject):
             ChatAdministratorRights, None
         ] = default_channel_administrator_rights
         r"""Default administrator rights for adding the bot to channels; may be null"""
+        self.has_media_previews: bool = bool(has_media_previews)
+        r"""True, if the bot has media previews"""
         self.edit_commands_link: Union[
             InternalLinkTypeActiveSessions,
             InternalLinkTypeAttachmentMenuBot,
@@ -9602,6 +10635,7 @@ class BotInfo(TlObject):
             InternalLinkTypeBotStart,
             InternalLinkTypeBotStartInGroup,
             InternalLinkTypeBusinessChat,
+            InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
@@ -9614,6 +10648,7 @@ class BotInfo(TlObject):
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
             InternalLinkTypeLanguageSettings,
+            InternalLinkTypeMainWebApp,
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypePassportDataRequest,
@@ -9627,7 +10662,6 @@ class BotInfo(TlObject):
             InternalLinkTypeQrCodeAuthentication,
             InternalLinkTypeRestorePurchases,
             InternalLinkTypeSettings,
-            InternalLinkTypeSideMenuBot,
             InternalLinkTypeStickerSet,
             InternalLinkTypeStory,
             InternalLinkTypeTheme,
@@ -9650,6 +10684,7 @@ class BotInfo(TlObject):
             InternalLinkTypeBotStart,
             InternalLinkTypeBotStartInGroup,
             InternalLinkTypeBusinessChat,
+            InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
@@ -9662,6 +10697,7 @@ class BotInfo(TlObject):
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
             InternalLinkTypeLanguageSettings,
+            InternalLinkTypeMainWebApp,
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypePassportDataRequest,
@@ -9675,7 +10711,6 @@ class BotInfo(TlObject):
             InternalLinkTypeQrCodeAuthentication,
             InternalLinkTypeRestorePurchases,
             InternalLinkTypeSettings,
-            InternalLinkTypeSideMenuBot,
             InternalLinkTypeStickerSet,
             InternalLinkTypeStory,
             InternalLinkTypeTheme,
@@ -9698,6 +10733,7 @@ class BotInfo(TlObject):
             InternalLinkTypeBotStart,
             InternalLinkTypeBotStartInGroup,
             InternalLinkTypeBusinessChat,
+            InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
@@ -9710,6 +10746,7 @@ class BotInfo(TlObject):
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
             InternalLinkTypeLanguageSettings,
+            InternalLinkTypeMainWebApp,
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypePassportDataRequest,
@@ -9723,7 +10760,6 @@ class BotInfo(TlObject):
             InternalLinkTypeQrCodeAuthentication,
             InternalLinkTypeRestorePurchases,
             InternalLinkTypeSettings,
-            InternalLinkTypeSideMenuBot,
             InternalLinkTypeStickerSet,
             InternalLinkTypeStory,
             InternalLinkTypeTheme,
@@ -9746,6 +10782,7 @@ class BotInfo(TlObject):
             InternalLinkTypeBotStart,
             InternalLinkTypeBotStartInGroup,
             InternalLinkTypeBusinessChat,
+            InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
@@ -9758,6 +10795,7 @@ class BotInfo(TlObject):
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
             InternalLinkTypeLanguageSettings,
+            InternalLinkTypeMainWebApp,
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypePassportDataRequest,
@@ -9771,7 +10809,6 @@ class BotInfo(TlObject):
             InternalLinkTypeQrCodeAuthentication,
             InternalLinkTypeRestorePurchases,
             InternalLinkTypeSettings,
-            InternalLinkTypeSideMenuBot,
             InternalLinkTypeStickerSet,
             InternalLinkTypeStory,
             InternalLinkTypeTheme,
@@ -9804,8 +10841,10 @@ class BotInfo(TlObject):
             "animation": self.animation,
             "menu_button": self.menu_button,
             "commands": self.commands,
+            "privacy_policy_url": self.privacy_policy_url,
             "default_group_administrator_rights": self.default_group_administrator_rights,
             "default_channel_administrator_rights": self.default_channel_administrator_rights,
+            "has_media_previews": self.has_media_previews,
             "edit_commands_link": self.edit_commands_link,
             "edit_description_link": self.edit_description_link,
             "edit_description_media_link": self.edit_description_media_link,
@@ -9822,12 +10861,14 @@ class BotInfo(TlObject):
             data_class.animation = data.get("animation", None)
             data_class.menu_button = data.get("menu_button", None)
             data_class.commands = data.get("commands", None)
+            data_class.privacy_policy_url = data.get("privacy_policy_url", "")
             data_class.default_group_administrator_rights = data.get(
                 "default_group_administrator_rights", None
             )
             data_class.default_channel_administrator_rights = data.get(
                 "default_channel_administrator_rights", None
             )
+            data_class.has_media_previews = data.get("has_media_previews", False)
             data_class.edit_commands_link = data.get("edit_commands_link", None)
             data_class.edit_description_link = data.get("edit_description_link", None)
             data_class.edit_description_media_link = data.get(
@@ -10088,6 +11129,50 @@ class Users(TlObject):
         return data_class
 
 
+class FoundUsers(TlObject):
+    r"""Represents a list of found users
+
+    Parameters:
+        user_ids (:class:`List[int]`):
+            Identifiers of the found users
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(self, user_ids: List[int] = None, next_offset: str = "") -> None:
+        self.user_ids: List[int] = user_ids or []
+        r"""Identifiers of the found users"""
+        self.next_offset: Union[str, None] = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["foundUsers"]:
+        return "foundUsers"
+
+    def getClass(self) -> Literal["FoundUsers"]:
+        return "FoundUsers"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_ids": self.user_ids,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["FoundUsers", None]:
+        if data:
+            data_class = cls()
+            data_class.user_ids = data.get("user_ids", None)
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
 class ChatAdministrator(TlObject):
     r"""Contains information about a chat administrator
 
@@ -10180,7 +11265,7 @@ class ChatMemberStatusCreator(TlObject, ChatMemberStatus):
 
     Parameters:
         custom_title (:class:`str`):
-            A custom title of the owner; 0\-16 characters without emojis; applicable to supergroups only
+            A custom title of the owner; 0\-16 characters without emoji; applicable to supergroups only
 
         is_anonymous (:class:`bool`):
             True, if the creator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only
@@ -10197,7 +11282,7 @@ class ChatMemberStatusCreator(TlObject, ChatMemberStatus):
         is_member: bool = False,
     ) -> None:
         self.custom_title: Union[str, None] = custom_title
-        r"""A custom title of the owner; 0\-16 characters without emojis; applicable to supergroups only"""
+        r"""A custom title of the owner; 0\-16 characters without emoji; applicable to supergroups only"""
         self.is_anonymous: bool = bool(is_anonymous)
         r"""True, if the creator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only"""
         self.is_member: bool = bool(is_member)
@@ -10236,7 +11321,7 @@ class ChatMemberStatusAdministrator(TlObject, ChatMemberStatus):
 
     Parameters:
         custom_title (:class:`str`):
-            A custom title of the administrator; 0\-16 characters without emojis; applicable to supergroups only
+            A custom title of the administrator; 0\-16 characters without emoji; applicable to supergroups only
 
         can_be_edited (:class:`bool`):
             True, if the current user can edit the administrator privileges for the called user
@@ -10253,7 +11338,7 @@ class ChatMemberStatusAdministrator(TlObject, ChatMemberStatus):
         rights: ChatAdministratorRights = None,
     ) -> None:
         self.custom_title: Union[str, None] = custom_title
-        r"""A custom title of the administrator; 0\-16 characters without emojis; applicable to supergroups only"""
+        r"""A custom title of the administrator; 0\-16 characters without emoji; applicable to supergroups only"""
         self.can_be_edited: bool = bool(can_be_edited)
         r"""True, if the current user can edit the administrator privileges for the called user"""
         self.rights: Union[ChatAdministratorRights, None] = rights
@@ -10288,10 +11373,17 @@ class ChatMemberStatusAdministrator(TlObject, ChatMemberStatus):
 
 
 class ChatMemberStatusMember(TlObject, ChatMemberStatus):
-    r"""The user is a member of the chat, without any additional privileges or restrictions"""
+    r"""The user is a member of the chat, without any additional privileges or restrictions
 
-    def __init__(self) -> None:
-        pass
+    Parameters:
+        member_until_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the user will be removed from the chat because of the expired subscription; 0 if never\. Ignored in setChatMemberStatus
+
+    """
+
+    def __init__(self, member_until_date: int = 0) -> None:
+        self.member_until_date: int = int(member_until_date)
+        r"""Point in time \(Unix timestamp\) when the user will be removed from the chat because of the expired subscription; 0 if never\. Ignored in setChatMemberStatus"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -10303,12 +11395,13 @@ class ChatMemberStatusMember(TlObject, ChatMemberStatus):
         return "ChatMemberStatus"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType()}
+        return {"@type": self.getType(), "member_until_date": self.member_until_date}
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["ChatMemberStatusMember", None]:
         if data:
             data_class = cls()
+            data_class.member_until_date = int(data.get("member_until_date", 0))
 
         return data_class
 
@@ -11017,11 +12110,17 @@ class ChatInviteLink(TlObject):
         expiration_date (:class:`int`):
             Point in time \(Unix timestamp\) when the link will expire; 0 if never
 
+        subscription_pricing (:class:`"types.StarSubscriptionPricing"`):
+            Information about subscription plan that is applied to the users joining the chat by the link; may be null if the link doesn't require subscription
+
         member_limit (:class:`int`):
             The maximum number of members, which can join the chat using the link simultaneously; 0 if not limited\. Always 0 if the link requires approval
 
         member_count (:class:`int`):
             Number of chat members, which joined the chat using the link
+
+        expired_member_count (:class:`int`):
+            Number of chat members, which joined the chat using the link, but have already left because of expired subscription; for subscription links only
 
         pending_join_request_count (:class:`int`):
             Number of pending join requests created using this link
@@ -11045,8 +12144,10 @@ class ChatInviteLink(TlObject):
         date: int = 0,
         edit_date: int = 0,
         expiration_date: int = 0,
+        subscription_pricing: StarSubscriptionPricing = None,
         member_limit: int = 0,
         member_count: int = 0,
+        expired_member_count: int = 0,
         pending_join_request_count: int = 0,
         creates_join_request: bool = False,
         is_primary: bool = False,
@@ -11064,10 +12165,16 @@ class ChatInviteLink(TlObject):
         r"""Point in time \(Unix timestamp\) when the link was last edited; 0 if never or unknown"""
         self.expiration_date: int = int(expiration_date)
         r"""Point in time \(Unix timestamp\) when the link will expire; 0 if never"""
+        self.subscription_pricing: Union[StarSubscriptionPricing, None] = (
+            subscription_pricing
+        )
+        r"""Information about subscription plan that is applied to the users joining the chat by the link; may be null if the link doesn't require subscription"""
         self.member_limit: int = int(member_limit)
         r"""The maximum number of members, which can join the chat using the link simultaneously; 0 if not limited\. Always 0 if the link requires approval"""
         self.member_count: int = int(member_count)
         r"""Number of chat members, which joined the chat using the link"""
+        self.expired_member_count: int = int(expired_member_count)
+        r"""Number of chat members, which joined the chat using the link, but have already left because of expired subscription; for subscription links only"""
         self.pending_join_request_count: int = int(pending_join_request_count)
         r"""Number of pending join requests created using this link"""
         self.creates_join_request: bool = bool(creates_join_request)
@@ -11095,8 +12202,10 @@ class ChatInviteLink(TlObject):
             "date": self.date,
             "edit_date": self.edit_date,
             "expiration_date": self.expiration_date,
+            "subscription_pricing": self.subscription_pricing,
             "member_limit": self.member_limit,
             "member_count": self.member_count,
+            "expired_member_count": self.expired_member_count,
             "pending_join_request_count": self.pending_join_request_count,
             "creates_join_request": self.creates_join_request,
             "is_primary": self.is_primary,
@@ -11113,8 +12222,10 @@ class ChatInviteLink(TlObject):
             data_class.date = int(data.get("date", 0))
             data_class.edit_date = int(data.get("edit_date", 0))
             data_class.expiration_date = int(data.get("expiration_date", 0))
+            data_class.subscription_pricing = data.get("subscription_pricing", None)
             data_class.member_limit = int(data.get("member_limit", 0))
             data_class.member_count = int(data.get("member_count", 0))
+            data_class.expired_member_count = int(data.get("expired_member_count", 0))
             data_class.pending_join_request_count = int(
                 data.get("pending_join_request_count", 0)
             )
@@ -11453,6 +12564,62 @@ class InviteLinkChatTypeChannel(TlObject, InviteLinkChatType):
         return data_class
 
 
+class ChatInviteLinkSubscriptionInfo(TlObject):
+    r"""Contains information about subscription plan that must be paid by the user to use a chat invite link
+
+    Parameters:
+        pricing (:class:`"types.StarSubscriptionPricing"`):
+            Information about subscription plan that must be paid by the user to use the link
+
+        can_reuse (:class:`bool`):
+            True, if the user has already paid for the subscription and can use joinChatByInviteLink to join the subscribed chat again
+
+        form_id (:class:`int`):
+            Identifier of the payment form to use for subscription payment; 0 if the subscription can't be paid
+
+    """
+
+    def __init__(
+        self,
+        pricing: StarSubscriptionPricing = None,
+        can_reuse: bool = False,
+        form_id: int = 0,
+    ) -> None:
+        self.pricing: Union[StarSubscriptionPricing, None] = pricing
+        r"""Information about subscription plan that must be paid by the user to use the link"""
+        self.can_reuse: bool = bool(can_reuse)
+        r"""True, if the user has already paid for the subscription and can use joinChatByInviteLink to join the subscribed chat again"""
+        self.form_id: int = int(form_id)
+        r"""Identifier of the payment form to use for subscription payment; 0 if the subscription can't be paid"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["chatInviteLinkSubscriptionInfo"]:
+        return "chatInviteLinkSubscriptionInfo"
+
+    def getClass(self) -> Literal["ChatInviteLinkSubscriptionInfo"]:
+        return "ChatInviteLinkSubscriptionInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "pricing": self.pricing,
+            "can_reuse": self.can_reuse,
+            "form_id": self.form_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatInviteLinkSubscriptionInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.pricing = data.get("pricing", None)
+            data_class.can_reuse = data.get("can_reuse", False)
+            data_class.form_id = int(data.get("form_id", 0))
+
+        return data_class
+
+
 class ChatInviteLinkInfo(TlObject):
     r"""Contains information about a chat invite link
 
@@ -11484,6 +12651,9 @@ class ChatInviteLinkInfo(TlObject):
         member_user_ids (:class:`List[int]`):
             User identifiers of some chat members that may be known to the current user
 
+        subscription_info (:class:`"types.ChatInviteLinkSubscriptionInfo"`):
+            Information about subscription plan that must be paid by the user to use the link; may be null if the link doesn't require subscription
+
         creates_join_request (:class:`bool`):
             True, if the link only creates join request
 
@@ -11512,6 +12682,7 @@ class ChatInviteLinkInfo(TlObject):
         description: str = "",
         member_count: int = 0,
         member_user_ids: List[int] = None,
+        subscription_info: ChatInviteLinkSubscriptionInfo = None,
         creates_join_request: bool = False,
         is_public: bool = False,
         is_verified: bool = False,
@@ -11541,6 +12712,10 @@ class ChatInviteLinkInfo(TlObject):
         r"""Number of members in the chat"""
         self.member_user_ids: List[int] = member_user_ids or []
         r"""User identifiers of some chat members that may be known to the current user"""
+        self.subscription_info: Union[ChatInviteLinkSubscriptionInfo, None] = (
+            subscription_info
+        )
+        r"""Information about subscription plan that must be paid by the user to use the link; may be null if the link doesn't require subscription"""
         self.creates_join_request: bool = bool(creates_join_request)
         r"""True, if the link only creates join request"""
         self.is_public: bool = bool(is_public)
@@ -11573,6 +12748,7 @@ class ChatInviteLinkInfo(TlObject):
             "description": self.description,
             "member_count": self.member_count,
             "member_user_ids": self.member_user_ids,
+            "subscription_info": self.subscription_info,
             "creates_join_request": self.creates_join_request,
             "is_public": self.is_public,
             "is_verified": self.is_verified,
@@ -11593,6 +12769,7 @@ class ChatInviteLinkInfo(TlObject):
             data_class.description = data.get("description", "")
             data_class.member_count = int(data.get("member_count", 0))
             data_class.member_user_ids = data.get("member_user_ids", None)
+            data_class.subscription_info = data.get("subscription_info", None)
             data_class.creates_join_request = data.get("creates_join_request", False)
             data_class.is_public = data.get("is_public", False)
             data_class.is_verified = data.get("is_verified", False)
@@ -11942,7 +13119,7 @@ class Supergroup(TlObject):
             Status of the current user in the supergroup or channel; custom title will always be empty
 
         member_count (:class:`int`):
-            Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards
+            Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories
 
         boost_level (:class:`int`):
             Approximate boost level for the chat
@@ -11954,7 +13131,10 @@ class Supergroup(TlObject):
             True, if the supergroup is connected to a location, i\.e\. the supergroup is a location\-based supergroup
 
         sign_messages (:class:`bool`):
-            True, if messages sent to the channel need to contain information about the sender\. This field is only applicable to channels
+            True, if messages sent to the channel contains name of the sender\. This field is only applicable to channels
+
+        show_message_sender (:class:`bool`):
+            True, if messages sent to the channel have information about the sender user\. This field is only applicable to channels
 
         join_to_send_messages (:class:`bool`):
             True, if users need to join the supergroup before they can send messages\. Always true for channels and non\-discussion supergroups
@@ -11976,6 +13156,9 @@ class Supergroup(TlObject):
 
         is_verified (:class:`bool`):
             True, if the supergroup or channel is verified
+
+        has_sensitive_content (:class:`bool`):
+            True, if content of media messages in the supergroup or channel chat must be hidden with 18\+ spoiler
 
         restriction_reason (:class:`str`):
             If non\-empty, contains a human\-readable description of the reason why access to this supergroup or channel must be restricted
@@ -12005,6 +13188,7 @@ class Supergroup(TlObject):
         has_linked_chat: bool = False,
         has_location: bool = False,
         sign_messages: bool = False,
+        show_message_sender: bool = False,
         join_to_send_messages: bool = False,
         join_by_request: bool = False,
         is_slow_mode_enabled: bool = False,
@@ -12012,6 +13196,7 @@ class Supergroup(TlObject):
         is_broadcast_group: bool = False,
         is_forum: bool = False,
         is_verified: bool = False,
+        has_sensitive_content: bool = False,
         restriction_reason: str = "",
         is_scam: bool = False,
         is_fake: bool = False,
@@ -12035,7 +13220,7 @@ class Supergroup(TlObject):
         ] = status
         r"""Status of the current user in the supergroup or channel; custom title will always be empty"""
         self.member_count: int = int(member_count)
-        r"""Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards"""
+        r"""Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories"""
         self.boost_level: int = int(boost_level)
         r"""Approximate boost level for the chat"""
         self.has_linked_chat: bool = bool(has_linked_chat)
@@ -12043,7 +13228,9 @@ class Supergroup(TlObject):
         self.has_location: bool = bool(has_location)
         r"""True, if the supergroup is connected to a location, i\.e\. the supergroup is a location\-based supergroup"""
         self.sign_messages: bool = bool(sign_messages)
-        r"""True, if messages sent to the channel need to contain information about the sender\. This field is only applicable to channels"""
+        r"""True, if messages sent to the channel contains name of the sender\. This field is only applicable to channels"""
+        self.show_message_sender: bool = bool(show_message_sender)
+        r"""True, if messages sent to the channel have information about the sender user\. This field is only applicable to channels"""
         self.join_to_send_messages: bool = bool(join_to_send_messages)
         r"""True, if users need to join the supergroup before they can send messages\. Always true for channels and non\-discussion supergroups"""
         self.join_by_request: bool = bool(join_by_request)
@@ -12058,6 +13245,8 @@ class Supergroup(TlObject):
         r"""True, if the supergroup is a forum with topics"""
         self.is_verified: bool = bool(is_verified)
         r"""True, if the supergroup or channel is verified"""
+        self.has_sensitive_content: bool = bool(has_sensitive_content)
+        r"""True, if content of media messages in the supergroup or channel chat must be hidden with 18\+ spoiler"""
         self.restriction_reason: Union[str, None] = restriction_reason
         r"""If non\-empty, contains a human\-readable description of the reason why access to this supergroup or channel must be restricted"""
         self.is_scam: bool = bool(is_scam)
@@ -12090,6 +13279,7 @@ class Supergroup(TlObject):
             "has_linked_chat": self.has_linked_chat,
             "has_location": self.has_location,
             "sign_messages": self.sign_messages,
+            "show_message_sender": self.show_message_sender,
             "join_to_send_messages": self.join_to_send_messages,
             "join_by_request": self.join_by_request,
             "is_slow_mode_enabled": self.is_slow_mode_enabled,
@@ -12097,6 +13287,7 @@ class Supergroup(TlObject):
             "is_broadcast_group": self.is_broadcast_group,
             "is_forum": self.is_forum,
             "is_verified": self.is_verified,
+            "has_sensitive_content": self.has_sensitive_content,
             "restriction_reason": self.restriction_reason,
             "is_scam": self.is_scam,
             "is_fake": self.is_fake,
@@ -12117,6 +13308,7 @@ class Supergroup(TlObject):
             data_class.has_linked_chat = data.get("has_linked_chat", False)
             data_class.has_location = data.get("has_location", False)
             data_class.sign_messages = data.get("sign_messages", False)
+            data_class.show_message_sender = data.get("show_message_sender", False)
             data_class.join_to_send_messages = data.get("join_to_send_messages", False)
             data_class.join_by_request = data.get("join_by_request", False)
             data_class.is_slow_mode_enabled = data.get("is_slow_mode_enabled", False)
@@ -12124,6 +13316,7 @@ class Supergroup(TlObject):
             data_class.is_broadcast_group = data.get("is_broadcast_group", False)
             data_class.is_forum = data.get("is_forum", False)
             data_class.is_verified = data.get("is_verified", False)
+            data_class.has_sensitive_content = data.get("has_sensitive_content", False)
             data_class.restriction_reason = data.get("restriction_reason", "")
             data_class.is_scam = data.get("is_scam", False)
             data_class.is_fake = data.get("is_fake", False)
@@ -12166,6 +13359,9 @@ class SupergroupFullInfo(TlObject):
         slow_mode_delay_expires_in (:class:`float`):
             Time left before next message can be sent in the supergroup, in seconds\. An updateSupergroupFullInfo update is not triggered when value of this field changes, but both new and old values are non\-zero
 
+        can_enable_paid_reaction (:class:`bool`):
+            True, if paid reaction can be enabled in the channel chat; for channels only
+
         can_get_members (:class:`bool`):
             True, if members of the chat can be retrieved via getSupergroupMembers or searchChatMembers
 
@@ -12187,6 +13383,9 @@ class SupergroupFullInfo(TlObject):
         can_get_revenue_statistics (:class:`bool`):
             True, if the supergroup or channel revenue statistics are available
 
+        can_get_star_revenue_statistics (:class:`bool`):
+            True, if the supergroup or channel Telegram Star revenue statistics are available
+
         can_toggle_aggressive_anti_spam (:class:`bool`):
             True, if aggressive anti\-spam checks can be enabled or disabled in the supergroup
 
@@ -12198,6 +13397,9 @@ class SupergroupFullInfo(TlObject):
 
         has_aggressive_anti_spam_enabled (:class:`bool`):
             True, if aggressive anti\-spam checks are enabled in the supergroup\. The value of this field is only available to chat administrators
+
+        has_paid_media_allowed (:class:`bool`):
+            True, if paid media can be sent and forwarded to the channel chat; for channels only
 
         has_pinned_stories (:class:`bool`):
             True, if the supergroup or channel has pinned stories
@@ -12242,6 +13444,7 @@ class SupergroupFullInfo(TlObject):
         linked_chat_id: int = 0,
         slow_mode_delay: int = 0,
         slow_mode_delay_expires_in: float = 0.0,
+        can_enable_paid_reaction: bool = False,
         can_get_members: bool = False,
         has_hidden_members: bool = False,
         can_hide_members: bool = False,
@@ -12249,10 +13452,12 @@ class SupergroupFullInfo(TlObject):
         can_set_location: bool = False,
         can_get_statistics: bool = False,
         can_get_revenue_statistics: bool = False,
+        can_get_star_revenue_statistics: bool = False,
         can_toggle_aggressive_anti_spam: bool = False,
         is_all_history_available: bool = False,
         can_have_sponsored_messages: bool = False,
         has_aggressive_anti_spam_enabled: bool = False,
+        has_paid_media_allowed: bool = False,
         has_pinned_stories: bool = False,
         my_boost_count: int = 0,
         unrestrict_boost_count: int = 0,
@@ -12282,6 +13487,8 @@ class SupergroupFullInfo(TlObject):
         r"""Delay between consecutive sent messages for non\-administrator supergroup members, in seconds"""
         self.slow_mode_delay_expires_in: float = float(slow_mode_delay_expires_in)
         r"""Time left before next message can be sent in the supergroup, in seconds\. An updateSupergroupFullInfo update is not triggered when value of this field changes, but both new and old values are non\-zero"""
+        self.can_enable_paid_reaction: bool = bool(can_enable_paid_reaction)
+        r"""True, if paid reaction can be enabled in the channel chat; for channels only"""
         self.can_get_members: bool = bool(can_get_members)
         r"""True, if members of the chat can be retrieved via getSupergroupMembers or searchChatMembers"""
         self.has_hidden_members: bool = bool(has_hidden_members)
@@ -12296,6 +13503,10 @@ class SupergroupFullInfo(TlObject):
         r"""True, if the supergroup or channel statistics are available"""
         self.can_get_revenue_statistics: bool = bool(can_get_revenue_statistics)
         r"""True, if the supergroup or channel revenue statistics are available"""
+        self.can_get_star_revenue_statistics: bool = bool(
+            can_get_star_revenue_statistics
+        )
+        r"""True, if the supergroup or channel Telegram Star revenue statistics are available"""
         self.can_toggle_aggressive_anti_spam: bool = bool(
             can_toggle_aggressive_anti_spam
         )
@@ -12308,6 +13519,8 @@ class SupergroupFullInfo(TlObject):
             has_aggressive_anti_spam_enabled
         )
         r"""True, if aggressive anti\-spam checks are enabled in the supergroup\. The value of this field is only available to chat administrators"""
+        self.has_paid_media_allowed: bool = bool(has_paid_media_allowed)
+        r"""True, if paid media can be sent and forwarded to the channel chat; for channels only"""
         self.has_pinned_stories: bool = bool(has_pinned_stories)
         r"""True, if the supergroup or channel has pinned stories"""
         self.my_boost_count: int = int(my_boost_count)
@@ -12350,6 +13563,7 @@ class SupergroupFullInfo(TlObject):
             "linked_chat_id": self.linked_chat_id,
             "slow_mode_delay": self.slow_mode_delay,
             "slow_mode_delay_expires_in": self.slow_mode_delay_expires_in,
+            "can_enable_paid_reaction": self.can_enable_paid_reaction,
             "can_get_members": self.can_get_members,
             "has_hidden_members": self.has_hidden_members,
             "can_hide_members": self.can_hide_members,
@@ -12357,10 +13571,12 @@ class SupergroupFullInfo(TlObject):
             "can_set_location": self.can_set_location,
             "can_get_statistics": self.can_get_statistics,
             "can_get_revenue_statistics": self.can_get_revenue_statistics,
+            "can_get_star_revenue_statistics": self.can_get_star_revenue_statistics,
             "can_toggle_aggressive_anti_spam": self.can_toggle_aggressive_anti_spam,
             "is_all_history_available": self.is_all_history_available,
             "can_have_sponsored_messages": self.can_have_sponsored_messages,
             "has_aggressive_anti_spam_enabled": self.has_aggressive_anti_spam_enabled,
+            "has_paid_media_allowed": self.has_paid_media_allowed,
             "has_pinned_stories": self.has_pinned_stories,
             "my_boost_count": self.my_boost_count,
             "unrestrict_boost_count": self.unrestrict_boost_count,
@@ -12388,6 +13604,9 @@ class SupergroupFullInfo(TlObject):
             data_class.slow_mode_delay_expires_in = data.get(
                 "slow_mode_delay_expires_in", 0.0
             )
+            data_class.can_enable_paid_reaction = data.get(
+                "can_enable_paid_reaction", False
+            )
             data_class.can_get_members = data.get("can_get_members", False)
             data_class.has_hidden_members = data.get("has_hidden_members", False)
             data_class.can_hide_members = data.get("can_hide_members", False)
@@ -12396,6 +13615,9 @@ class SupergroupFullInfo(TlObject):
             data_class.can_get_statistics = data.get("can_get_statistics", False)
             data_class.can_get_revenue_statistics = data.get(
                 "can_get_revenue_statistics", False
+            )
+            data_class.can_get_star_revenue_statistics = data.get(
+                "can_get_star_revenue_statistics", False
             )
             data_class.can_toggle_aggressive_anti_spam = data.get(
                 "can_toggle_aggressive_anti_spam", False
@@ -12408,6 +13630,9 @@ class SupergroupFullInfo(TlObject):
             )
             data_class.has_aggressive_anti_spam_enabled = data.get(
                 "has_aggressive_anti_spam_enabled", False
+            )
+            data_class.has_paid_media_allowed = data.get(
+                "has_paid_media_allowed", False
             )
             data_class.has_pinned_stories = data.get("has_pinned_stories", False)
             data_class.my_boost_count = int(data.get("my_boost_count", 0))
@@ -13316,6 +14541,104 @@ class ReactionTypeCustomEmoji(TlObject, ReactionType):
         return data_class
 
 
+class ReactionTypePaid(TlObject, ReactionType):
+    r"""The paid reaction in a channel chat"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["reactionTypePaid"]:
+        return "reactionTypePaid"
+
+    def getClass(self) -> Literal["ReactionType"]:
+        return "ReactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ReactionTypePaid", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class PaidReactor(TlObject):
+    r"""Contains information about a user that added paid reactions
+
+    Parameters:
+        sender_id (:class:`"types.MessageSender"`):
+            Identifier of the user or chat that added the reactions; may be null for anonymous reactors that aren't the current user
+
+        star_count (:class:`int`):
+            Number of Telegram Stars added
+
+        is_top (:class:`bool`):
+            True, if the reactor is one of the most active reactors; can be false if the reactor is the current user
+
+        is_me (:class:`bool`):
+            True, if the paid reaction was added by the current user
+
+        is_anonymous (:class:`bool`):
+            True, if the reactor is anonymous
+
+    """
+
+    def __init__(
+        self,
+        sender_id: MessageSender = None,
+        star_count: int = 0,
+        is_top: bool = False,
+        is_me: bool = False,
+        is_anonymous: bool = False,
+    ) -> None:
+        self.sender_id: Union[MessageSenderUser, MessageSenderChat, None] = sender_id
+        r"""Identifier of the user or chat that added the reactions; may be null for anonymous reactors that aren't the current user"""
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars added"""
+        self.is_top: bool = bool(is_top)
+        r"""True, if the reactor is one of the most active reactors; can be false if the reactor is the current user"""
+        self.is_me: bool = bool(is_me)
+        r"""True, if the paid reaction was added by the current user"""
+        self.is_anonymous: bool = bool(is_anonymous)
+        r"""True, if the reactor is anonymous"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["paidReactor"]:
+        return "paidReactor"
+
+    def getClass(self) -> Literal["PaidReactor"]:
+        return "PaidReactor"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "sender_id": self.sender_id,
+            "star_count": self.star_count,
+            "is_top": self.is_top,
+            "is_me": self.is_me,
+            "is_anonymous": self.is_anonymous,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PaidReactor", None]:
+        if data:
+            data_class = cls()
+            data_class.sender_id = data.get("sender_id", None)
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.is_top = data.get("is_top", False)
+            data_class.is_me = data.get("is_me", False)
+            data_class.is_anonymous = data.get("is_anonymous", False)
+
+        return data_class
+
+
 class MessageForwardInfo(TlObject):
     r"""Contains information about a forwarded message
 
@@ -13539,7 +14862,9 @@ class MessageReaction(TlObject):
         used_sender_id: MessageSender = None,
         recent_sender_ids: List[MessageSender] = None,
     ) -> None:
-        self.type: Union[ReactionTypeEmoji, ReactionTypeCustomEmoji, None] = type
+        self.type: Union[
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
+        ] = type
         r"""Type of the reaction"""
         self.total_count: int = int(total_count)
         r"""Number of times the reaction was added"""
@@ -13594,15 +14919,29 @@ class MessageReactions(TlObject):
         are_tags (:class:`bool`):
             True, if the reactions are tags and Telegram Premium users can filter messages by them
 
+        paid_reactors (:class:`List["types.PaidReactor"]`):
+            Information about top users that added the paid reaction
+
+        can_get_added_reactions (:class:`bool`):
+            True, if the list of added reactions is available using getMessageAddedReactions
+
     """
 
     def __init__(
-        self, reactions: List[MessageReaction] = None, are_tags: bool = False
+        self,
+        reactions: List[MessageReaction] = None,
+        are_tags: bool = False,
+        paid_reactors: List[PaidReactor] = None,
+        can_get_added_reactions: bool = False,
     ) -> None:
         self.reactions: List[MessageReaction] = reactions or []
         r"""List of added reactions"""
         self.are_tags: bool = bool(are_tags)
         r"""True, if the reactions are tags and Telegram Premium users can filter messages by them"""
+        self.paid_reactors: List[PaidReactor] = paid_reactors or []
+        r"""Information about top users that added the paid reaction"""
+        self.can_get_added_reactions: bool = bool(can_get_added_reactions)
+        r"""True, if the list of added reactions is available using getMessageAddedReactions"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -13618,6 +14957,8 @@ class MessageReactions(TlObject):
             "@type": self.getType(),
             "reactions": self.reactions,
             "are_tags": self.are_tags,
+            "paid_reactors": self.paid_reactors,
+            "can_get_added_reactions": self.can_get_added_reactions,
         }
 
     @classmethod
@@ -13626,6 +14967,10 @@ class MessageReactions(TlObject):
             data_class = cls()
             data_class.reactions = data.get("reactions", None)
             data_class.are_tags = data.get("are_tags", False)
+            data_class.paid_reactors = data.get("paid_reactors", None)
+            data_class.can_get_added_reactions = data.get(
+                "can_get_added_reactions", False
+            )
 
         return data_class
 
@@ -13715,7 +15060,9 @@ class UnreadReaction(TlObject):
         sender_id: MessageSender = None,
         is_big: bool = False,
     ) -> None:
-        self.type: Union[ReactionTypeEmoji, ReactionTypeCustomEmoji, None] = type
+        self.type: Union[
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
+        ] = type
         r"""Type of the reaction"""
         self.sender_id: Union[MessageSenderUser, MessageSenderChat, None] = sender_id
         r"""Identifier of the sender, added the reaction"""
@@ -13946,7 +15293,7 @@ class MessageSendingStateFailed(TlObject, MessageSendingState):
             The cause of the message sending failure
 
         can_retry (:class:`bool`):
-            True, if the message can be re\-sent
+            True, if the message can be re\-sent using resendMessages or readdQuickReplyShortcutMessages
 
         need_another_sender (:class:`bool`):
             True, if the message can be re\-sent only on behalf of a different sender
@@ -13974,7 +15321,7 @@ class MessageSendingStateFailed(TlObject, MessageSendingState):
         self.error: Union[Error, None] = error
         r"""The cause of the message sending failure"""
         self.can_retry: bool = bool(can_retry)
-        r"""True, if the message can be re\-sent"""
+        r"""True, if the message can be re\-sent using resendMessages or readdQuickReplyShortcutMessages"""
         self.need_another_sender: bool = bool(need_another_sender)
         r"""True, if the message can be re\-sent only on behalf of a different sender"""
         self.need_another_reply_quote: bool = bool(need_another_reply_quote)
@@ -14133,7 +15480,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             Point in time \(Unix timestamp\) when the message was sent if the message was from another chat or topic; 0 for messages from the same chat
 
         content (:class:`"types.MessageContent"`):
-            Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageInvoice, messageLocation, messagePhoto, messagePoll, messagePremiumGiveaway, messagePremiumGiveawayWinners, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote
+            Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote
 
     """
 
@@ -14167,6 +15514,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageAnimation,
             MessageAudio,
             MessageDocument,
+            MessagePaidMedia,
             MessagePhoto,
             MessageSticker,
             MessageVideo,
@@ -14216,12 +15564,15 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageGameScore,
             MessagePaymentSuccessful,
             MessagePaymentSuccessfulBot,
+            MessagePaymentRefunded,
             MessageGiftedPremium,
             MessagePremiumGiftCode,
-            MessagePremiumGiveawayCreated,
-            MessagePremiumGiveaway,
-            MessagePremiumGiveawayCompleted,
-            MessagePremiumGiveawayWinners,
+            MessageGiveawayCreated,
+            MessageGiveaway,
+            MessageGiveawayCompleted,
+            MessageGiveawayWinners,
+            MessageGiftedStars,
+            MessageGiveawayPrizeStars,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -14234,7 +15585,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageUnsupported,
             None,
         ] = content
-        r"""Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageInvoice, messageLocation, messagePhoto, messagePoll, messagePremiumGiveaway, messagePremiumGiveawayWinners, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote"""
+        r"""Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -14315,27 +15666,20 @@ class MessageReplyToStory(TlObject, MessageReplyTo):
 
 
 class InputMessageReplyToMessage(TlObject, InputMessageReplyTo):
-    r"""Describes a message to be replied
+    r"""Describes a message to be replied in the same chat and forum topic
 
     Parameters:
-        chat_id (:class:`int`):
-            The identifier of the chat to which the message to be replied belongs; pass 0 if the message to be replied is in the same chat\. Must always be 0 for replies in secret chats\. A message can be replied in another chat or topic only if message\.can\_be\_replied\_in\_another\_chat
-
         message_id (:class:`int`):
-            The identifier of the message to be replied in the same or the specified chat
+            The identifier of the message to be replied in the same chat and forum topic\. A message can be replied in the same chat and forum topic only if messageProperties\.can\_be\_replied
 
         quote (:class:`"types.InputTextQuote"`):
             Quote from the message to be replied; pass null if none\. Must always be null for replies in secret chats
 
     """
 
-    def __init__(
-        self, chat_id: int = 0, message_id: int = 0, quote: InputTextQuote = None
-    ) -> None:
-        self.chat_id: int = int(chat_id)
-        r"""The identifier of the chat to which the message to be replied belongs; pass 0 if the message to be replied is in the same chat\. Must always be 0 for replies in secret chats\. A message can be replied in another chat or topic only if message\.can\_be\_replied\_in\_another\_chat"""
+    def __init__(self, message_id: int = 0, quote: InputTextQuote = None) -> None:
         self.message_id: int = int(message_id)
-        r"""The identifier of the message to be replied in the same or the specified chat"""
+        r"""The identifier of the message to be replied in the same chat and forum topic\. A message can be replied in the same chat and forum topic only if messageProperties\.can\_be\_replied"""
         self.quote: Union[InputTextQuote, None] = quote
         r"""Quote from the message to be replied; pass null if none\. Must always be null for replies in secret chats"""
 
@@ -14351,13 +15695,64 @@ class InputMessageReplyToMessage(TlObject, InputMessageReplyTo):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "chat_id": self.chat_id,
             "message_id": self.message_id,
             "quote": self.quote,
         }
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["InputMessageReplyToMessage", None]:
+        if data:
+            data_class = cls()
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.quote = data.get("quote", None)
+
+        return data_class
+
+
+class InputMessageReplyToExternalMessage(TlObject, InputMessageReplyTo):
+    r"""Describes a message to be replied that is from a different chat or a forum topic; not supported in secret chats
+
+    Parameters:
+        chat_id (:class:`int`):
+            The identifier of the chat to which the message to be replied belongs
+
+        message_id (:class:`int`):
+            The identifier of the message to be replied in the specified chat\. A message can be replied in another chat or forum topic only if messageProperties\.can\_be\_replied\_in\_another\_chat
+
+        quote (:class:`"types.InputTextQuote"`):
+            Quote from the message to be replied; pass null if none
+
+    """
+
+    def __init__(
+        self, chat_id: int = 0, message_id: int = 0, quote: InputTextQuote = None
+    ) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""The identifier of the chat to which the message to be replied belongs"""
+        self.message_id: int = int(message_id)
+        r"""The identifier of the message to be replied in the specified chat\. A message can be replied in another chat or forum topic only if messageProperties\.can\_be\_replied\_in\_another\_chat"""
+        self.quote: Union[InputTextQuote, None] = quote
+        r"""Quote from the message to be replied; pass null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputMessageReplyToExternalMessage"]:
+        return "inputMessageReplyToExternalMessage"
+
+    def getClass(self) -> Literal["InputMessageReplyTo"]:
+        return "InputMessageReplyTo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+            "quote": self.quote,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputMessageReplyToExternalMessage", None]:
         if data:
             data_class = cls()
             data_class.chat_id = int(data.get("chat_id", 0))
@@ -14483,44 +15878,8 @@ class Message(TlObject):
         is_from_offline (:class:`bool`):
             True, if the message was sent because of a scheduled action by the message sender, for example, as away, or greeting service message
 
-        can_be_edited (:class:`bool`):
-            True, if the message can be edited\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message by the application
-
-        can_be_forwarded (:class:`bool`):
-            True, if the message can be forwarded
-
-        can_be_replied_in_another_chat (:class:`bool`):
-            True, if the message can be replied in another chat or topic
-
         can_be_saved (:class:`bool`):
             True, if content of the message can be saved locally or copied
-
-        can_be_deleted_only_for_self (:class:`bool`):
-            True, if the message can be deleted only for the current user while other users will continue to see it
-
-        can_be_deleted_for_all_users (:class:`bool`):
-            True, if the message can be deleted for all users
-
-        can_get_added_reactions (:class:`bool`):
-            True, if the list of added reactions is available through getMessageAddedReactions
-
-        can_get_statistics (:class:`bool`):
-            True, if the message statistics are available through getMessageStatistics
-
-        can_get_message_thread (:class:`bool`):
-            True, if information about the message thread is available through getMessageThread and getMessageThreadHistory
-
-        can_get_read_date (:class:`bool`):
-            True, if read date of the message can be received through getMessageReadDate
-
-        can_get_viewers (:class:`bool`):
-            True, if chat members already viewed the message can be received through getMessageViewers
-
-        can_get_media_timestamp_links (:class:`bool`):
-            True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description through getMessageLink
-
-        can_report_reactions (:class:`bool`):
-            True, if reactions on the message can be reported through reportMessageReactions
 
         has_timestamped_media (:class:`bool`):
             True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message
@@ -14591,6 +15950,9 @@ class Message(TlObject):
         effect_id (:class:`int`):
             Unique identifier of the effect added to the message; 0 if none
 
+        has_sensitive_content (:class:`bool`):
+            True, if media content of the message must be hidden with 18\+ spoiler
+
         restriction_reason (:class:`str`):
             If non\-empty, contains a human\-readable description of the reason why access to this message must be restricted
 
@@ -14612,19 +15974,7 @@ class Message(TlObject):
         is_outgoing: bool = False,
         is_pinned: bool = False,
         is_from_offline: bool = False,
-        can_be_edited: bool = False,
-        can_be_forwarded: bool = False,
-        can_be_replied_in_another_chat: bool = False,
         can_be_saved: bool = False,
-        can_be_deleted_only_for_self: bool = False,
-        can_be_deleted_for_all_users: bool = False,
-        can_get_added_reactions: bool = False,
-        can_get_statistics: bool = False,
-        can_get_message_thread: bool = False,
-        can_get_read_date: bool = False,
-        can_get_viewers: bool = False,
-        can_get_media_timestamp_links: bool = False,
-        can_report_reactions: bool = False,
         has_timestamped_media: bool = False,
         is_channel_post: bool = False,
         is_topic_message: bool = False,
@@ -14648,6 +15998,7 @@ class Message(TlObject):
         author_signature: str = "",
         media_album_id: int = 0,
         effect_id: int = 0,
+        has_sensitive_content: bool = False,
         restriction_reason: str = "",
         content: MessageContent = None,
         reply_markup: ReplyMarkup = None,
@@ -14672,32 +16023,8 @@ class Message(TlObject):
         r"""True, if the message is pinned"""
         self.is_from_offline: bool = bool(is_from_offline)
         r"""True, if the message was sent because of a scheduled action by the message sender, for example, as away, or greeting service message"""
-        self.can_be_edited: bool = bool(can_be_edited)
-        r"""True, if the message can be edited\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message by the application"""
-        self.can_be_forwarded: bool = bool(can_be_forwarded)
-        r"""True, if the message can be forwarded"""
-        self.can_be_replied_in_another_chat: bool = bool(can_be_replied_in_another_chat)
-        r"""True, if the message can be replied in another chat or topic"""
         self.can_be_saved: bool = bool(can_be_saved)
         r"""True, if content of the message can be saved locally or copied"""
-        self.can_be_deleted_only_for_self: bool = bool(can_be_deleted_only_for_self)
-        r"""True, if the message can be deleted only for the current user while other users will continue to see it"""
-        self.can_be_deleted_for_all_users: bool = bool(can_be_deleted_for_all_users)
-        r"""True, if the message can be deleted for all users"""
-        self.can_get_added_reactions: bool = bool(can_get_added_reactions)
-        r"""True, if the list of added reactions is available through getMessageAddedReactions"""
-        self.can_get_statistics: bool = bool(can_get_statistics)
-        r"""True, if the message statistics are available through getMessageStatistics"""
-        self.can_get_message_thread: bool = bool(can_get_message_thread)
-        r"""True, if information about the message thread is available through getMessageThread and getMessageThreadHistory"""
-        self.can_get_read_date: bool = bool(can_get_read_date)
-        r"""True, if read date of the message can be received through getMessageReadDate"""
-        self.can_get_viewers: bool = bool(can_get_viewers)
-        r"""True, if chat members already viewed the message can be received through getMessageViewers"""
-        self.can_get_media_timestamp_links: bool = bool(can_get_media_timestamp_links)
-        r"""True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description through getMessageLink"""
-        self.can_report_reactions: bool = bool(can_report_reactions)
-        r"""True, if reactions on the message can be reported through reportMessageReactions"""
         self.has_timestamped_media: bool = bool(has_timestamped_media)
         r"""True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message"""
         self.is_channel_post: bool = bool(is_channel_post)
@@ -14748,6 +16075,8 @@ class Message(TlObject):
         r"""Unique identifier of an album this message belongs to; 0 if none\. Only audios, documents, photos and videos can be grouped together in albums"""
         self.effect_id: int = int(effect_id)
         r"""Unique identifier of the effect added to the message; 0 if none"""
+        self.has_sensitive_content: bool = bool(has_sensitive_content)
+        r"""True, if media content of the message must be hidden with 18\+ spoiler"""
         self.restriction_reason: Union[str, None] = restriction_reason
         r"""If non\-empty, contains a human\-readable description of the reason why access to this message must be restricted"""
         self.content: Union[
@@ -14755,6 +16084,7 @@ class Message(TlObject):
             MessageAnimation,
             MessageAudio,
             MessageDocument,
+            MessagePaidMedia,
             MessagePhoto,
             MessageSticker,
             MessageVideo,
@@ -14804,12 +16134,15 @@ class Message(TlObject):
             MessageGameScore,
             MessagePaymentSuccessful,
             MessagePaymentSuccessfulBot,
+            MessagePaymentRefunded,
             MessageGiftedPremium,
             MessagePremiumGiftCode,
-            MessagePremiumGiveawayCreated,
-            MessagePremiumGiveaway,
-            MessagePremiumGiveawayCompleted,
-            MessagePremiumGiveawayWinners,
+            MessageGiveawayCreated,
+            MessageGiveaway,
+            MessageGiveawayCompleted,
+            MessageGiveawayWinners,
+            MessageGiftedStars,
+            MessageGiveawayPrizeStars,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -14852,19 +16185,7 @@ class Message(TlObject):
             "is_outgoing": self.is_outgoing,
             "is_pinned": self.is_pinned,
             "is_from_offline": self.is_from_offline,
-            "can_be_edited": self.can_be_edited,
-            "can_be_forwarded": self.can_be_forwarded,
-            "can_be_replied_in_another_chat": self.can_be_replied_in_another_chat,
             "can_be_saved": self.can_be_saved,
-            "can_be_deleted_only_for_self": self.can_be_deleted_only_for_self,
-            "can_be_deleted_for_all_users": self.can_be_deleted_for_all_users,
-            "can_get_added_reactions": self.can_get_added_reactions,
-            "can_get_statistics": self.can_get_statistics,
-            "can_get_message_thread": self.can_get_message_thread,
-            "can_get_read_date": self.can_get_read_date,
-            "can_get_viewers": self.can_get_viewers,
-            "can_get_media_timestamp_links": self.can_get_media_timestamp_links,
-            "can_report_reactions": self.can_report_reactions,
             "has_timestamped_media": self.has_timestamped_media,
             "is_channel_post": self.is_channel_post,
             "is_topic_message": self.is_topic_message,
@@ -14888,6 +16209,7 @@ class Message(TlObject):
             "author_signature": self.author_signature,
             "media_album_id": self.media_album_id,
             "effect_id": self.effect_id,
+            "has_sensitive_content": self.has_sensitive_content,
             "restriction_reason": self.restriction_reason,
             "content": self.content,
             "reply_markup": self.reply_markup,
@@ -14905,31 +16227,7 @@ class Message(TlObject):
             data_class.is_outgoing = data.get("is_outgoing", False)
             data_class.is_pinned = data.get("is_pinned", False)
             data_class.is_from_offline = data.get("is_from_offline", False)
-            data_class.can_be_edited = data.get("can_be_edited", False)
-            data_class.can_be_forwarded = data.get("can_be_forwarded", False)
-            data_class.can_be_replied_in_another_chat = data.get(
-                "can_be_replied_in_another_chat", False
-            )
             data_class.can_be_saved = data.get("can_be_saved", False)
-            data_class.can_be_deleted_only_for_self = data.get(
-                "can_be_deleted_only_for_self", False
-            )
-            data_class.can_be_deleted_for_all_users = data.get(
-                "can_be_deleted_for_all_users", False
-            )
-            data_class.can_get_added_reactions = data.get(
-                "can_get_added_reactions", False
-            )
-            data_class.can_get_statistics = data.get("can_get_statistics", False)
-            data_class.can_get_message_thread = data.get(
-                "can_get_message_thread", False
-            )
-            data_class.can_get_read_date = data.get("can_get_read_date", False)
-            data_class.can_get_viewers = data.get("can_get_viewers", False)
-            data_class.can_get_media_timestamp_links = data.get(
-                "can_get_media_timestamp_links", False
-            )
-            data_class.can_report_reactions = data.get("can_report_reactions", False)
             data_class.has_timestamped_media = data.get("has_timestamped_media", False)
             data_class.is_channel_post = data.get("is_channel_post", False)
             data_class.is_topic_message = data.get("is_topic_message", False)
@@ -14959,6 +16257,7 @@ class Message(TlObject):
             data_class.author_signature = data.get("author_signature", "")
             data_class.media_album_id = int(data.get("media_album_id", 0))
             data_class.effect_id = int(data.get("effect_id", 0))
+            data_class.has_sensitive_content = data.get("has_sensitive_content", False)
             data_class.restriction_reason = data.get("restriction_reason", "")
             data_class.content = data.get("content", None)
             data_class.reply_markup = data.get("reply_markup", None)
@@ -15714,7 +17013,7 @@ class SponsoredMessage(TlObject):
             True, if the message can be reported to Telegram moderators through reportChatSponsoredMessage
 
         content (:class:`"types.MessageContent"`):
-            Content of the message\. Currently, can be only of the type messageText
+            Content of the message\. Currently, can be only of the types messageText, messageAnimation, messagePhoto, or messageVideo
 
         sponsor (:class:`"types.MessageSponsor"`):
             Information about the sponsor of the message
@@ -15760,6 +17059,7 @@ class SponsoredMessage(TlObject):
             MessageAnimation,
             MessageAudio,
             MessageDocument,
+            MessagePaidMedia,
             MessagePhoto,
             MessageSticker,
             MessageVideo,
@@ -15809,12 +17109,15 @@ class SponsoredMessage(TlObject):
             MessageGameScore,
             MessagePaymentSuccessful,
             MessagePaymentSuccessfulBot,
+            MessagePaymentRefunded,
             MessageGiftedPremium,
             MessagePremiumGiftCode,
-            MessagePremiumGiveawayCreated,
-            MessagePremiumGiveaway,
-            MessagePremiumGiveawayCompleted,
-            MessagePremiumGiveawayWinners,
+            MessageGiveawayCreated,
+            MessageGiveaway,
+            MessageGiveawayCompleted,
+            MessageGiveawayWinners,
+            MessageGiftedStars,
+            MessageGiveawayPrizeStars,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -15827,7 +17130,7 @@ class SponsoredMessage(TlObject):
             MessageUnsupported,
             None,
         ] = content
-        r"""Content of the message\. Currently, can be only of the type messageText"""
+        r"""Content of the message\. Currently, can be only of the types messageText, messageAnimation, messagePhoto, or messageVideo"""
         self.sponsor: Union[MessageSponsor, None] = sponsor
         r"""Information about the sponsor of the message"""
         self.title: Union[str, None] = title
@@ -16859,6 +18162,9 @@ class DraftMessage(TlObject):
         input_message_text (:class:`"types.InputMessageContent"`):
             Content of the message draft; must be of the type inputMessageText, inputMessageVideoNote, or inputMessageVoiceNote
 
+        effect_id (:class:`int`):
+            Identifier of the effect to apply to the message when it is sent; 0 if none
+
     """
 
     def __init__(
@@ -16866,9 +18172,13 @@ class DraftMessage(TlObject):
         reply_to: InputMessageReplyTo = None,
         date: int = 0,
         input_message_text: InputMessageContent = None,
+        effect_id: int = 0,
     ) -> None:
         self.reply_to: Union[
-            InputMessageReplyToMessage, InputMessageReplyToStory, None
+            InputMessageReplyToMessage,
+            InputMessageReplyToExternalMessage,
+            InputMessageReplyToStory,
+            None,
         ] = reply_to
         r"""Information about the message to be replied; must be of the type inputMessageReplyToMessage; may be null if none"""
         self.date: int = int(date)
@@ -16878,6 +18188,7 @@ class DraftMessage(TlObject):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -16895,6 +18206,8 @@ class DraftMessage(TlObject):
             None,
         ] = input_message_text
         r"""Content of the message draft; must be of the type inputMessageText, inputMessageVideoNote, or inputMessageVoiceNote"""
+        self.effect_id: int = int(effect_id)
+        r"""Identifier of the effect to apply to the message when it is sent; 0 if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -16911,6 +18224,7 @@ class DraftMessage(TlObject):
             "reply_to": self.reply_to,
             "date": self.date,
             "input_message_text": self.input_message_text,
+            "effect_id": self.effect_id,
         }
 
     @classmethod
@@ -16920,6 +18234,7 @@ class DraftMessage(TlObject):
             data_class.reply_to = data.get("reply_to", None)
             data_class.date = int(data.get("date", 0))
             data_class.input_message_text = data.get("input_message_text", None)
+            data_class.effect_id = int(data.get("effect_id", 0))
 
         return data_class
 
@@ -17888,7 +19203,7 @@ class ChatPosition(TlObject):
 
 
 class ChatAvailableReactionsAll(TlObject, ChatAvailableReactions):
-    r"""All reactions are available in the chat
+    r"""All reactions are available in the chat, excluding the paid reaction and custom reactions in channel chats
 
     Parameters:
         max_reaction_count (:class:`int`):
@@ -17985,7 +19300,9 @@ class SavedMessagesTag(TlObject):
     def __init__(
         self, tag: ReactionType = None, label: str = "", count: int = 0
     ) -> None:
-        self.tag: Union[ReactionTypeEmoji, ReactionTypeCustomEmoji, None] = tag
+        self.tag: Union[
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
+        ] = tag
         r"""The tag"""
         self.label: Union[str, None] = label
         r"""Label of the tag; 0\-12 characters\. Always empty if the tag is returned for a Saved Messages topic"""
@@ -19627,13 +20944,13 @@ class InlineKeyboardButtonTypeUrl(TlObject, InlineKeyboardButtonType):
 
     Parameters:
         url (:class:`str`):
-            HTTP or tg:// URL to open
+            HTTP or tg:// URL to open\. If the link is of the type internalLinkTypeWebApp, then the button must be marked as a Web App button
 
     """
 
     def __init__(self, url: str = "") -> None:
         self.url: Union[str, None] = url
-        r"""HTTP or tg:// URL to open"""
+        r"""HTTP or tg:// URL to open\. If the link is of the type internalLinkTypeWebApp, then the button must be marked as a Web App button"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -20396,6 +21713,46 @@ class WebAppInfo(TlObject):
         return data_class
 
 
+class MainWebApp(TlObject):
+    r"""Contains information about the main Web App of a bot
+
+    Parameters:
+        url (:class:`str`):
+            URL of the Web App to open
+
+        is_compact (:class:`bool`):
+            True, if the Web App must always be opened in the compact mode instead of the full\-size mode
+
+    """
+
+    def __init__(self, url: str = "", is_compact: bool = False) -> None:
+        self.url: Union[str, None] = url
+        r"""URL of the Web App to open"""
+        self.is_compact: bool = bool(is_compact)
+        r"""True, if the Web App must always be opened in the compact mode instead of the full\-size mode"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["mainWebApp"]:
+        return "mainWebApp"
+
+    def getClass(self) -> Literal["MainWebApp"]:
+        return "MainWebApp"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "url": self.url, "is_compact": self.is_compact}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MainWebApp", None]:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.is_compact = data.get("is_compact", False)
+
+        return data_class
+
+
 class MessageThreadInfo(TlObject):
     r"""Contains information about a message thread
 
@@ -20413,7 +21770,7 @@ class MessageThreadInfo(TlObject):
             Approximate number of unread messages in the message thread
 
         messages (:class:`List["types.Message"]`):
-            The messages from which the thread starts\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+            The messages from which the thread starts\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
 
         draft_message (:class:`"types.DraftMessage"`):
             A draft of a message in the message thread; may be null if none
@@ -20438,7 +21795,7 @@ class MessageThreadInfo(TlObject):
         self.unread_message_count: int = int(unread_message_count)
         r"""Approximate number of unread messages in the message thread"""
         self.messages: List[Message] = messages or []
-        r"""The messages from which the thread starts\. The messages are returned in a reverse chronological order \(i\.e\., in order of decreasing message\_id\)"""
+        r"""The messages from which the thread starts\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)"""
         self.draft_message: Union[DraftMessage, None] = draft_message
         r"""A draft of a message in the message thread; may be null if none"""
 
@@ -21195,6 +22552,87 @@ class SharedChat(TlObject):
         return data_class
 
 
+class ThemeSettings(TlObject):
+    r"""Describes theme settings
+
+    Parameters:
+        accent_color (:class:`int`):
+            Theme accent color in ARGB format
+
+        background (:class:`"types.Background"`):
+            The background to be used in chats; may be null
+
+        outgoing_message_fill (:class:`"types.BackgroundFill"`):
+            The fill to be used as a background for outgoing messages
+
+        animate_outgoing_message_fill (:class:`bool`):
+            If true, the freeform gradient fill needs to be animated on every sent message
+
+        outgoing_message_accent_color (:class:`int`):
+            Accent color of outgoing messages in ARGB format
+
+    """
+
+    def __init__(
+        self,
+        accent_color: int = 0,
+        background: Background = None,
+        outgoing_message_fill: BackgroundFill = None,
+        animate_outgoing_message_fill: bool = False,
+        outgoing_message_accent_color: int = 0,
+    ) -> None:
+        self.accent_color: int = int(accent_color)
+        r"""Theme accent color in ARGB format"""
+        self.background: Union[Background, None] = background
+        r"""The background to be used in chats; may be null"""
+        self.outgoing_message_fill: Union[
+            BackgroundFillSolid,
+            BackgroundFillGradient,
+            BackgroundFillFreeformGradient,
+            None,
+        ] = outgoing_message_fill
+        r"""The fill to be used as a background for outgoing messages"""
+        self.animate_outgoing_message_fill: bool = bool(animate_outgoing_message_fill)
+        r"""If true, the freeform gradient fill needs to be animated on every sent message"""
+        self.outgoing_message_accent_color: int = int(outgoing_message_accent_color)
+        r"""Accent color of outgoing messages in ARGB format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["themeSettings"]:
+        return "themeSettings"
+
+    def getClass(self) -> Literal["ThemeSettings"]:
+        return "ThemeSettings"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "accent_color": self.accent_color,
+            "background": self.background,
+            "outgoing_message_fill": self.outgoing_message_fill,
+            "animate_outgoing_message_fill": self.animate_outgoing_message_fill,
+            "outgoing_message_accent_color": self.outgoing_message_accent_color,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ThemeSettings", None]:
+        if data:
+            data_class = cls()
+            data_class.accent_color = int(data.get("accent_color", 0))
+            data_class.background = data.get("background", None)
+            data_class.outgoing_message_fill = data.get("outgoing_message_fill", None)
+            data_class.animate_outgoing_message_fill = data.get(
+                "animate_outgoing_message_fill", False
+            )
+            data_class.outgoing_message_accent_color = int(
+                data.get("outgoing_message_accent_color", 0)
+            )
+
+        return data_class
+
+
 class RichTextPlain(TlObject, RichText):
     r"""A plain text
 
@@ -21905,7 +23343,7 @@ class RichTextIcon(TlObject, RichText):
 
 
 class RichTextReference(TlObject, RichText):
-    r"""A reference to a richTexts object on the same web page
+    r"""A reference to a richTexts object on the same page
 
     Parameters:
         text (:class:`"types.RichText"`):
@@ -22011,7 +23449,7 @@ class RichTextAnchor(TlObject, RichText):
 
 
 class RichTextAnchorLink(TlObject, RichText):
-    r"""A link to an anchor on the same web page
+    r"""A link to an anchor on the same page
 
     Parameters:
         text (:class:`"types.RichText"`):
@@ -22117,7 +23555,7 @@ class RichTexts(TlObject, RichText):
 
 
 class PageBlockCaption(TlObject):
-    r"""Contains a caption of an instant view web page block, consisting of a text and a trailing credit
+    r"""Contains a caption of another block
 
     Parameters:
         text (:class:`"types.RichText"`):
@@ -23655,7 +25093,7 @@ class PageBlockEmbedded(TlObject, PageBlock):
 
     Parameters:
         url (:class:`str`):
-            Web page URL, if available
+            URL of the embedded page, if available
 
         html (:class:`str`):
             HTML\-markup of the embedded page
@@ -23692,7 +25130,7 @@ class PageBlockEmbedded(TlObject, PageBlock):
         allow_scrolling: bool = False,
     ) -> None:
         self.url: Union[str, None] = url
-        r"""Web page URL, if available"""
+        r"""URL of the embedded page, if available"""
         self.html: Union[str, None] = html
         r"""HTML\-markup of the embedded page"""
         self.poster_photo: Union[Photo, None] = poster_photo
@@ -23751,7 +25189,7 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
 
     Parameters:
         url (:class:`str`):
-            Web page URL
+            URL of the embedded post
 
         author (:class:`str`):
             Post author
@@ -23780,7 +25218,7 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
         caption: PageBlockCaption = None,
     ) -> None:
         self.url: Union[str, None] = url
-        r"""Web page URL"""
+        r"""URL of the embedded post"""
         self.author: Union[str, None] = author
         r"""Post author"""
         self.author_photo: Union[Photo, None] = author_photo
@@ -24282,7 +25720,7 @@ class WebPageInstantView(TlObject):
 
     Parameters:
         page_blocks (:class:`List["types.PageBlock"]`):
-            Content of the web page
+            Content of the instant view page
 
         view_count (:class:`int`):
             Number of the instant view views; 0 if unknown
@@ -24294,7 +25732,7 @@ class WebPageInstantView(TlObject):
             True, if the instant view must be shown from right to left
 
         is_full (:class:`bool`):
-            True, if the instant view contains the full page\. A network request might be needed to get the full web page instant view
+            True, if the instant view contains the full page\. A network request might be needed to get the full instant view
 
         feedback_link (:class:`"types.InternalLinkType"`):
             An internal link to be opened to leave feedback about the instant view
@@ -24311,7 +25749,7 @@ class WebPageInstantView(TlObject):
         feedback_link: InternalLinkType = None,
     ) -> None:
         self.page_blocks: List[PageBlock] = page_blocks or []
-        r"""Content of the web page"""
+        r"""Content of the instant view page"""
         self.view_count: int = int(view_count)
         r"""Number of the instant view views; 0 if unknown"""
         self.version: int = int(version)
@@ -24319,7 +25757,7 @@ class WebPageInstantView(TlObject):
         self.is_rtl: bool = bool(is_rtl)
         r"""True, if the instant view must be shown from right to left"""
         self.is_full: bool = bool(is_full)
-        r"""True, if the instant view contains the full page\. A network request might be needed to get the full web page instant view"""
+        r"""True, if the instant view contains the full page\. A network request might be needed to get the full instant view"""
         self.feedback_link: Union[
             InternalLinkTypeActiveSessions,
             InternalLinkTypeAttachmentMenuBot,
@@ -24329,6 +25767,7 @@ class WebPageInstantView(TlObject):
             InternalLinkTypeBotStart,
             InternalLinkTypeBotStartInGroup,
             InternalLinkTypeBusinessChat,
+            InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
@@ -24341,6 +25780,7 @@ class WebPageInstantView(TlObject):
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
             InternalLinkTypeLanguageSettings,
+            InternalLinkTypeMainWebApp,
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypePassportDataRequest,
@@ -24354,7 +25794,6 @@ class WebPageInstantView(TlObject):
             InternalLinkTypeQrCodeAuthentication,
             InternalLinkTypeRestorePurchases,
             InternalLinkTypeSettings,
-            InternalLinkTypeSideMenuBot,
             InternalLinkTypeStickerSet,
             InternalLinkTypeStory,
             InternalLinkTypeTheme,
@@ -24403,7 +25842,1351 @@ class WebPageInstantView(TlObject):
         return data_class
 
 
-class WebPage(TlObject):
+class LinkPreviewAlbumMediaPhoto(TlObject, LinkPreviewAlbumMedia):
+    r"""The media is a photo
+
+    Parameters:
+        photo (:class:`"types.Photo"`):
+            Photo description
+
+    """
+
+    def __init__(self, photo: Photo = None) -> None:
+        self.photo: Union[Photo, None] = photo
+        r"""Photo description"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewAlbumMediaPhoto"]:
+        return "linkPreviewAlbumMediaPhoto"
+
+    def getClass(self) -> Literal["LinkPreviewAlbumMedia"]:
+        return "LinkPreviewAlbumMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewAlbumMediaPhoto", None]:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+
+        return data_class
+
+
+class LinkPreviewAlbumMediaVideo(TlObject, LinkPreviewAlbumMedia):
+    r"""The media is a video
+
+    Parameters:
+        video (:class:`"types.Video"`):
+            Video description
+
+    """
+
+    def __init__(self, video: Video = None) -> None:
+        self.video: Union[Video, None] = video
+        r"""Video description"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewAlbumMediaVideo"]:
+        return "linkPreviewAlbumMediaVideo"
+
+    def getClass(self) -> Literal["LinkPreviewAlbumMedia"]:
+        return "LinkPreviewAlbumMedia"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "video": self.video}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewAlbumMediaVideo", None]:
+        if data:
+            data_class = cls()
+            data_class.video = data.get("video", None)
+
+        return data_class
+
+
+class LinkPreviewTypeAlbum(TlObject, LinkPreviewType):
+    r"""The link is a link to a media album consisting of photos and videos
+
+    Parameters:
+        media (:class:`List["types.LinkPreviewAlbumMedia"]`):
+            The list of album media
+
+        caption (:class:`str`):
+            Album caption
+
+    """
+
+    def __init__(
+        self, media: List[LinkPreviewAlbumMedia] = None, caption: str = ""
+    ) -> None:
+        self.media: List[LinkPreviewAlbumMedia] = media or []
+        r"""The list of album media"""
+        self.caption: Union[str, None] = caption
+        r"""Album caption"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeAlbum"]:
+        return "linkPreviewTypeAlbum"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "media": self.media, "caption": self.caption}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeAlbum", None]:
+        if data:
+            data_class = cls()
+            data_class.media = data.get("media", None)
+            data_class.caption = data.get("caption", "")
+
+        return data_class
+
+
+class LinkPreviewTypeAnimation(TlObject, LinkPreviewType):
+    r"""The link is a link to an animation
+
+    Parameters:
+        animation (:class:`"types.Animation"`):
+            The animation
+
+    """
+
+    def __init__(self, animation: Animation = None) -> None:
+        self.animation: Union[Animation, None] = animation
+        r"""The animation"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeAnimation"]:
+        return "linkPreviewTypeAnimation"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "animation": self.animation}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeAnimation", None]:
+        if data:
+            data_class = cls()
+            data_class.animation = data.get("animation", None)
+
+        return data_class
+
+
+class LinkPreviewTypeApp(TlObject, LinkPreviewType):
+    r"""The link is a link to an app at App Store or Google Play
+
+    Parameters:
+        photo (:class:`"types.Photo"`):
+            Photo for the app
+
+    """
+
+    def __init__(self, photo: Photo = None) -> None:
+        self.photo: Union[Photo, None] = photo
+        r"""Photo for the app"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeApp"]:
+        return "linkPreviewTypeApp"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeApp", None]:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+
+        return data_class
+
+
+class LinkPreviewTypeArticle(TlObject, LinkPreviewType):
+    r"""The link is a link to a web site
+
+    Parameters:
+        photo (:class:`"types.Photo"`):
+            Article's main photo; may be null
+
+    """
+
+    def __init__(self, photo: Photo = None) -> None:
+        self.photo: Union[Photo, None] = photo
+        r"""Article's main photo; may be null"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeArticle"]:
+        return "linkPreviewTypeArticle"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeArticle", None]:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+
+        return data_class
+
+
+class LinkPreviewTypeAudio(TlObject, LinkPreviewType):
+    r"""The link is a link to an audio
+
+    Parameters:
+        audio (:class:`"types.Audio"`):
+            The audio description
+
+    """
+
+    def __init__(self, audio: Audio = None) -> None:
+        self.audio: Union[Audio, None] = audio
+        r"""The audio description"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeAudio"]:
+        return "linkPreviewTypeAudio"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "audio": self.audio}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeAudio", None]:
+        if data:
+            data_class = cls()
+            data_class.audio = data.get("audio", None)
+
+        return data_class
+
+
+class LinkPreviewTypeBackground(TlObject, LinkPreviewType):
+    r"""The link is a link to a background\. Link preview title and description are available only for filled backgrounds
+
+    Parameters:
+        document (:class:`"types.Document"`):
+            Document with the background; may be null for filled backgrounds
+
+        background_type (:class:`"types.BackgroundType"`):
+            Type of the background; may be null if unknown
+
+    """
+
+    def __init__(
+        self, document: Document = None, background_type: BackgroundType = None
+    ) -> None:
+        self.document: Union[Document, None] = document
+        r"""Document with the background; may be null for filled backgrounds"""
+        self.background_type: Union[
+            BackgroundTypeWallpaper,
+            BackgroundTypePattern,
+            BackgroundTypeFill,
+            BackgroundTypeChatTheme,
+            None,
+        ] = background_type
+        r"""Type of the background; may be null if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeBackground"]:
+        return "linkPreviewTypeBackground"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "document": self.document,
+            "background_type": self.background_type,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeBackground", None]:
+        if data:
+            data_class = cls()
+            data_class.document = data.get("document", None)
+            data_class.background_type = data.get("background_type", None)
+
+        return data_class
+
+
+class LinkPreviewTypeChannelBoost(TlObject, LinkPreviewType):
+    r"""The link is a link to boost a channel chat
+
+    Parameters:
+        photo (:class:`"types.ChatPhoto"`):
+            Photo of the chat; may be null
+
+    """
+
+    def __init__(self, photo: ChatPhoto = None) -> None:
+        self.photo: Union[ChatPhoto, None] = photo
+        r"""Photo of the chat; may be null"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeChannelBoost"]:
+        return "linkPreviewTypeChannelBoost"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeChannelBoost", None]:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+
+        return data_class
+
+
+class LinkPreviewTypeChat(TlObject, LinkPreviewType):
+    r"""The link is a link to a chat
+
+    Parameters:
+        type (:class:`"types.InviteLinkChatType"`):
+            Type of the chat
+
+        photo (:class:`"types.ChatPhoto"`):
+            Photo of the chat; may be null
+
+        creates_join_request (:class:`bool`):
+            True, if the link only creates join request
+
+    """
+
+    def __init__(
+        self,
+        type: InviteLinkChatType = None,
+        photo: ChatPhoto = None,
+        creates_join_request: bool = False,
+    ) -> None:
+        self.type: Union[
+            InviteLinkChatTypeBasicGroup,
+            InviteLinkChatTypeSupergroup,
+            InviteLinkChatTypeChannel,
+            None,
+        ] = type
+        r"""Type of the chat"""
+        self.photo: Union[ChatPhoto, None] = photo
+        r"""Photo of the chat; may be null"""
+        self.creates_join_request: bool = bool(creates_join_request)
+        r"""True, if the link only creates join request"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeChat"]:
+        return "linkPreviewTypeChat"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "type": self.type,
+            "photo": self.photo,
+            "creates_join_request": self.creates_join_request,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeChat", None]:
+        if data:
+            data_class = cls()
+            data_class.type = data.get("type", None)
+            data_class.photo = data.get("photo", None)
+            data_class.creates_join_request = data.get("creates_join_request", False)
+
+        return data_class
+
+
+class LinkPreviewTypeDocument(TlObject, LinkPreviewType):
+    r"""The link is a link to a general file
+
+    Parameters:
+        document (:class:`"types.Document"`):
+            The document description
+
+    """
+
+    def __init__(self, document: Document = None) -> None:
+        self.document: Union[Document, None] = document
+        r"""The document description"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeDocument"]:
+        return "linkPreviewTypeDocument"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "document": self.document}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeDocument", None]:
+        if data:
+            data_class = cls()
+            data_class.document = data.get("document", None)
+
+        return data_class
+
+
+class LinkPreviewTypeEmbeddedAnimationPlayer(TlObject, LinkPreviewType):
+    r"""The link is a link to an animation player
+
+    Parameters:
+        url (:class:`str`):
+            URL of the external animation player
+
+        thumbnail (:class:`"types.Photo"`):
+            Thumbnail of the animation; may be null if unknown
+
+        duration (:class:`int`):
+            Duration of the animation, in seconds
+
+        width (:class:`int`):
+            Expected width of the embedded player
+
+        height (:class:`int`):
+            Expected height of the embedded player
+
+    """
+
+    def __init__(
+        self,
+        url: str = "",
+        thumbnail: Photo = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
+    ) -> None:
+        self.url: Union[str, None] = url
+        r"""URL of the external animation player"""
+        self.thumbnail: Union[Photo, None] = thumbnail
+        r"""Thumbnail of the animation; may be null if unknown"""
+        self.duration: int = int(duration)
+        r"""Duration of the animation, in seconds"""
+        self.width: int = int(width)
+        r"""Expected width of the embedded player"""
+        self.height: int = int(height)
+        r"""Expected height of the embedded player"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeEmbeddedAnimationPlayer"]:
+        return "linkPreviewTypeEmbeddedAnimationPlayer"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "thumbnail": self.thumbnail,
+            "duration": self.duration,
+            "width": self.width,
+            "height": self.height,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["LinkPreviewTypeEmbeddedAnimationPlayer", None]:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+
+        return data_class
+
+
+class LinkPreviewTypeEmbeddedAudioPlayer(TlObject, LinkPreviewType):
+    r"""The link is a link to an audio player
+
+    Parameters:
+        url (:class:`str`):
+            URL of the external audio player
+
+        thumbnail (:class:`"types.Photo"`):
+            Thumbnail of the audio; may be null if unknown
+
+        duration (:class:`int`):
+            Duration of the audio, in seconds
+
+        width (:class:`int`):
+            Expected width of the embedded player
+
+        height (:class:`int`):
+            Expected height of the embedded player
+
+    """
+
+    def __init__(
+        self,
+        url: str = "",
+        thumbnail: Photo = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
+    ) -> None:
+        self.url: Union[str, None] = url
+        r"""URL of the external audio player"""
+        self.thumbnail: Union[Photo, None] = thumbnail
+        r"""Thumbnail of the audio; may be null if unknown"""
+        self.duration: int = int(duration)
+        r"""Duration of the audio, in seconds"""
+        self.width: int = int(width)
+        r"""Expected width of the embedded player"""
+        self.height: int = int(height)
+        r"""Expected height of the embedded player"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeEmbeddedAudioPlayer"]:
+        return "linkPreviewTypeEmbeddedAudioPlayer"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "thumbnail": self.thumbnail,
+            "duration": self.duration,
+            "width": self.width,
+            "height": self.height,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeEmbeddedAudioPlayer", None]:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+
+        return data_class
+
+
+class LinkPreviewTypeEmbeddedVideoPlayer(TlObject, LinkPreviewType):
+    r"""The link is a link to a video player
+
+    Parameters:
+        url (:class:`str`):
+            URL of the external video player
+
+        thumbnail (:class:`"types.Photo"`):
+            Thumbnail of the video; may be null if unknown
+
+        duration (:class:`int`):
+            Duration of the video, in seconds
+
+        width (:class:`int`):
+            Expected width of the embedded player
+
+        height (:class:`int`):
+            Expected height of the embedded player
+
+    """
+
+    def __init__(
+        self,
+        url: str = "",
+        thumbnail: Photo = None,
+        duration: int = 0,
+        width: int = 0,
+        height: int = 0,
+    ) -> None:
+        self.url: Union[str, None] = url
+        r"""URL of the external video player"""
+        self.thumbnail: Union[Photo, None] = thumbnail
+        r"""Thumbnail of the video; may be null if unknown"""
+        self.duration: int = int(duration)
+        r"""Duration of the video, in seconds"""
+        self.width: int = int(width)
+        r"""Expected width of the embedded player"""
+        self.height: int = int(height)
+        r"""Expected height of the embedded player"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeEmbeddedVideoPlayer"]:
+        return "linkPreviewTypeEmbeddedVideoPlayer"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "thumbnail": self.thumbnail,
+            "duration": self.duration,
+            "width": self.width,
+            "height": self.height,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeEmbeddedVideoPlayer", None]:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+
+        return data_class
+
+
+class LinkPreviewTypeExternalAudio(TlObject, LinkPreviewType):
+    r"""The link is a link to an audio file
+
+    Parameters:
+        url (:class:`str`):
+            URL of the audio file
+
+        mime_type (:class:`str`):
+            MIME type of the audio file
+
+        duration (:class:`int`):
+            Duration of the audio, in seconds; 0 if unknown
+
+    """
+
+    def __init__(self, url: str = "", mime_type: str = "", duration: int = 0) -> None:
+        self.url: Union[str, None] = url
+        r"""URL of the audio file"""
+        self.mime_type: Union[str, None] = mime_type
+        r"""MIME type of the audio file"""
+        self.duration: int = int(duration)
+        r"""Duration of the audio, in seconds; 0 if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeExternalAudio"]:
+        return "linkPreviewTypeExternalAudio"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "mime_type": self.mime_type,
+            "duration": self.duration,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeExternalAudio", None]:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.mime_type = data.get("mime_type", "")
+            data_class.duration = int(data.get("duration", 0))
+
+        return data_class
+
+
+class LinkPreviewTypeExternalVideo(TlObject, LinkPreviewType):
+    r"""The link is a link to a video file
+
+    Parameters:
+        url (:class:`str`):
+            URL of the video file
+
+        mime_type (:class:`str`):
+            MIME type of the video file
+
+        width (:class:`int`):
+            Expected width of the video preview; 0 if unknown
+
+        height (:class:`int`):
+            Expected height of the video preview; 0 if unknown
+
+        duration (:class:`int`):
+            Duration of the video, in seconds; 0 if unknown
+
+    """
+
+    def __init__(
+        self,
+        url: str = "",
+        mime_type: str = "",
+        width: int = 0,
+        height: int = 0,
+        duration: int = 0,
+    ) -> None:
+        self.url: Union[str, None] = url
+        r"""URL of the video file"""
+        self.mime_type: Union[str, None] = mime_type
+        r"""MIME type of the video file"""
+        self.width: int = int(width)
+        r"""Expected width of the video preview; 0 if unknown"""
+        self.height: int = int(height)
+        r"""Expected height of the video preview; 0 if unknown"""
+        self.duration: int = int(duration)
+        r"""Duration of the video, in seconds; 0 if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeExternalVideo"]:
+        return "linkPreviewTypeExternalVideo"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "mime_type": self.mime_type,
+            "width": self.width,
+            "height": self.height,
+            "duration": self.duration,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeExternalVideo", None]:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.mime_type = data.get("mime_type", "")
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+            data_class.duration = int(data.get("duration", 0))
+
+        return data_class
+
+
+class LinkPreviewTypeInvoice(TlObject, LinkPreviewType):
+    r"""The link is a link to an invoice"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeInvoice"]:
+        return "linkPreviewTypeInvoice"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeInvoice", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class LinkPreviewTypeMessage(TlObject, LinkPreviewType):
+    r"""The link is a link to a text or a poll Telegram message"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeMessage"]:
+        return "linkPreviewTypeMessage"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeMessage", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class LinkPreviewTypePhoto(TlObject, LinkPreviewType):
+    r"""The link is a link to a photo
+
+    Parameters:
+        photo (:class:`"types.Photo"`):
+            The photo
+
+    """
+
+    def __init__(self, photo: Photo = None) -> None:
+        self.photo: Union[Photo, None] = photo
+        r"""The photo"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypePhoto"]:
+        return "linkPreviewTypePhoto"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypePhoto", None]:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+
+        return data_class
+
+
+class LinkPreviewTypePremiumGiftCode(TlObject, LinkPreviewType):
+    r"""The link is a link to a Telegram Premium gift code"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypePremiumGiftCode"]:
+        return "linkPreviewTypePremiumGiftCode"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypePremiumGiftCode", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class LinkPreviewTypeShareableChatFolder(TlObject, LinkPreviewType):
+    r"""The link is a link to a shareable chat folder"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeShareableChatFolder"]:
+        return "linkPreviewTypeShareableChatFolder"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeShareableChatFolder", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class LinkPreviewTypeSticker(TlObject, LinkPreviewType):
+    r"""The link is a link to a sticker
+
+    Parameters:
+        sticker (:class:`"types.Sticker"`):
+            The sticker\. It can be an arbitrary WEBP image and can have dimensions bigger than 512
+
+    """
+
+    def __init__(self, sticker: Sticker = None) -> None:
+        self.sticker: Union[Sticker, None] = sticker
+        r"""The sticker\. It can be an arbitrary WEBP image and can have dimensions bigger than 512"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeSticker"]:
+        return "linkPreviewTypeSticker"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "sticker": self.sticker}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeSticker", None]:
+        if data:
+            data_class = cls()
+            data_class.sticker = data.get("sticker", None)
+
+        return data_class
+
+
+class LinkPreviewTypeStickerSet(TlObject, LinkPreviewType):
+    r"""The link is a link to a sticker set
+
+    Parameters:
+        stickers (:class:`List["types.Sticker"]`):
+            Up to 4 stickers from the sticker set
+
+    """
+
+    def __init__(self, stickers: List[Sticker] = None) -> None:
+        self.stickers: List[Sticker] = stickers or []
+        r"""Up to 4 stickers from the sticker set"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeStickerSet"]:
+        return "linkPreviewTypeStickerSet"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "stickers": self.stickers}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeStickerSet", None]:
+        if data:
+            data_class = cls()
+            data_class.stickers = data.get("stickers", None)
+
+        return data_class
+
+
+class LinkPreviewTypeStory(TlObject, LinkPreviewType):
+    r"""The link is a link to a story\. Link preview description is unavailable
+
+    Parameters:
+        story_sender_chat_id (:class:`int`):
+            The identifier of the chat that posted the story
+
+        story_id (:class:`int`):
+            Story identifier
+
+    """
+
+    def __init__(self, story_sender_chat_id: int = 0, story_id: int = 0) -> None:
+        self.story_sender_chat_id: int = int(story_sender_chat_id)
+        r"""The identifier of the chat that posted the story"""
+        self.story_id: int = int(story_id)
+        r"""Story identifier"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeStory"]:
+        return "linkPreviewTypeStory"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "story_sender_chat_id": self.story_sender_chat_id,
+            "story_id": self.story_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeStory", None]:
+        if data:
+            data_class = cls()
+            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_id = int(data.get("story_id", 0))
+
+        return data_class
+
+
+class LinkPreviewTypeSupergroupBoost(TlObject, LinkPreviewType):
+    r"""The link is a link to boost a supergroup chat
+
+    Parameters:
+        photo (:class:`"types.ChatPhoto"`):
+            Photo of the chat; may be null
+
+    """
+
+    def __init__(self, photo: ChatPhoto = None) -> None:
+        self.photo: Union[ChatPhoto, None] = photo
+        r"""Photo of the chat; may be null"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeSupergroupBoost"]:
+        return "linkPreviewTypeSupergroupBoost"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeSupergroupBoost", None]:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+
+        return data_class
+
+
+class LinkPreviewTypeTheme(TlObject, LinkPreviewType):
+    r"""The link is a link to a cloud theme\. TDLib has no theme support yet
+
+    Parameters:
+        documents (:class:`List["types.Document"]`):
+            The list of files with theme description
+
+        settings (:class:`"types.ThemeSettings"`):
+            Settings for the cloud theme
+
+    """
+
+    def __init__(
+        self, documents: List[Document] = None, settings: ThemeSettings = None
+    ) -> None:
+        self.documents: List[Document] = documents or []
+        r"""The list of files with theme description"""
+        self.settings: Union[ThemeSettings, None] = settings
+        r"""Settings for the cloud theme"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeTheme"]:
+        return "linkPreviewTypeTheme"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "documents": self.documents,
+            "settings": self.settings,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeTheme", None]:
+        if data:
+            data_class = cls()
+            data_class.documents = data.get("documents", None)
+            data_class.settings = data.get("settings", None)
+
+        return data_class
+
+
+class LinkPreviewTypeUnsupported(TlObject, LinkPreviewType):
+    r"""The link preview type is unsupported yet"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeUnsupported"]:
+        return "linkPreviewTypeUnsupported"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeUnsupported", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class LinkPreviewTypeUser(TlObject, LinkPreviewType):
+    r"""The link is a link to a user
+
+    Parameters:
+        photo (:class:`"types.ChatPhoto"`):
+            Photo of the user; may be null if none
+
+        is_bot (:class:`bool`):
+            True, if the user is a bot
+
+    """
+
+    def __init__(self, photo: ChatPhoto = None, is_bot: bool = False) -> None:
+        self.photo: Union[ChatPhoto, None] = photo
+        r"""Photo of the user; may be null if none"""
+        self.is_bot: bool = bool(is_bot)
+        r"""True, if the user is a bot"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeUser"]:
+        return "linkPreviewTypeUser"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo, "is_bot": self.is_bot}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeUser", None]:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+            data_class.is_bot = data.get("is_bot", False)
+
+        return data_class
+
+
+class LinkPreviewTypeVideo(TlObject, LinkPreviewType):
+    r"""The link is a link to a video
+
+    Parameters:
+        video (:class:`"types.Video"`):
+            The video description
+
+    """
+
+    def __init__(self, video: Video = None) -> None:
+        self.video: Union[Video, None] = video
+        r"""The video description"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeVideo"]:
+        return "linkPreviewTypeVideo"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "video": self.video}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeVideo", None]:
+        if data:
+            data_class = cls()
+            data_class.video = data.get("video", None)
+
+        return data_class
+
+
+class LinkPreviewTypeVideoChat(TlObject, LinkPreviewType):
+    r"""The link is a link to a video chat
+
+    Parameters:
+        photo (:class:`"types.ChatPhoto"`):
+            Photo of the chat with the video chat; may be null if none
+
+        is_live_stream (:class:`bool`):
+            True, if the video chat is expected to be a live stream in a channel or a broadcast group
+
+    """
+
+    def __init__(self, photo: ChatPhoto = None, is_live_stream: bool = False) -> None:
+        self.photo: Union[ChatPhoto, None] = photo
+        r"""Photo of the chat with the video chat; may be null if none"""
+        self.is_live_stream: bool = bool(is_live_stream)
+        r"""True, if the video chat is expected to be a live stream in a channel or a broadcast group"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeVideoChat"]:
+        return "linkPreviewTypeVideoChat"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "photo": self.photo,
+            "is_live_stream": self.is_live_stream,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeVideoChat", None]:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+            data_class.is_live_stream = data.get("is_live_stream", False)
+
+        return data_class
+
+
+class LinkPreviewTypeVideoNote(TlObject, LinkPreviewType):
+    r"""The link is a link to a video note message
+
+    Parameters:
+        video_note (:class:`"types.VideoNote"`):
+            The video note
+
+    """
+
+    def __init__(self, video_note: VideoNote = None) -> None:
+        self.video_note: Union[VideoNote, None] = video_note
+        r"""The video note"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeVideoNote"]:
+        return "linkPreviewTypeVideoNote"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "video_note": self.video_note}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeVideoNote", None]:
+        if data:
+            data_class = cls()
+            data_class.video_note = data.get("video_note", None)
+
+        return data_class
+
+
+class LinkPreviewTypeVoiceNote(TlObject, LinkPreviewType):
+    r"""The link is a link to a voice note message
+
+    Parameters:
+        voice_note (:class:`"types.VoiceNote"`):
+            The voice note
+
+    """
+
+    def __init__(self, voice_note: VoiceNote = None) -> None:
+        self.voice_note: Union[VoiceNote, None] = voice_note
+        r"""The voice note"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeVoiceNote"]:
+        return "linkPreviewTypeVoiceNote"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "voice_note": self.voice_note}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeVoiceNote", None]:
+        if data:
+            data_class = cls()
+            data_class.voice_note = data.get("voice_note", None)
+
+        return data_class
+
+
+class LinkPreviewTypeWebApp(TlObject, LinkPreviewType):
+    r"""The link is a link to a Web App
+
+    Parameters:
+        photo (:class:`"types.Photo"`):
+            Web App photo
+
+    """
+
+    def __init__(self, photo: Photo = None) -> None:
+        self.photo: Union[Photo, None] = photo
+        r"""Web App photo"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeWebApp"]:
+        return "linkPreviewTypeWebApp"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "photo": self.photo}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeWebApp", None]:
+        if data:
+            data_class = cls()
+            data_class.photo = data.get("photo", None)
+
+        return data_class
+
+
+class LinkPreview(TlObject):
     r"""Describes a link preview
 
     Parameters:
@@ -24412,9 +27195,6 @@ class WebPage(TlObject):
 
         display_url (:class:`str`):
             URL to display
-
-        type (:class:`str`):
-            Type of the web page\. Can be: article, photo, audio, video, document, profile, app, or something else
 
         site_name (:class:`str`):
             Short name of the site \(e\.g\., Google Docs, App Store\)
@@ -24425,26 +27205,11 @@ class WebPage(TlObject):
         description (:class:`"types.FormattedText"`):
             Description of the content
 
-        photo (:class:`"types.Photo"`):
-            Image representing the content; may be null
-
-        embed_url (:class:`str`):
-            URL to show in the embedded preview
-
-        embed_type (:class:`str`):
-            MIME type of the embedded preview, \(e\.g\., text/html or video/mp4\)
-
-        embed_width (:class:`int`):
-            Width of the embedded preview
-
-        embed_height (:class:`int`):
-            Height of the embedded preview
-
-        duration (:class:`int`):
-            Duration of the content, in seconds
-
         author (:class:`str`):
             Author of the content
+
+        type (:class:`"types.LinkPreviewType"`):
+            Type of the link preview
 
         has_large_media (:class:`bool`):
             True, if size of media in the preview can be changed
@@ -24452,44 +27217,17 @@ class WebPage(TlObject):
         show_large_media (:class:`bool`):
             True, if large media preview must be shown; otherwise, the media preview must be shown small and only the first frame must be shown for videos
 
+        show_media_above_description (:class:`bool`):
+            True, if media must be shown above link preview description; otherwise, the media must be shown below the description
+
         skip_confirmation (:class:`bool`):
             True, if there is no need to show an ordinary open URL confirmation, when opening the URL from the preview, because the URL is shown in the message text in clear
 
         show_above_text (:class:`bool`):
             True, if the link preview must be shown above message text; otherwise, the link preview must be shown below the message text
 
-        animation (:class:`"types.Animation"`):
-            Preview of the content as an animation, if available; may be null
-
-        audio (:class:`"types.Audio"`):
-            Preview of the content as an audio file, if available; may be null
-
-        document (:class:`"types.Document"`):
-            Preview of the content as a document, if available; may be null
-
-        sticker (:class:`"types.Sticker"`):
-            Preview of the content as a sticker for small WEBP files, if available; may be null
-
-        video (:class:`"types.Video"`):
-            Preview of the content as a video, if available; may be null
-
-        video_note (:class:`"types.VideoNote"`):
-            Preview of the content as a video note, if available; may be null
-
-        voice_note (:class:`"types.VoiceNote"`):
-            Preview of the content as a voice note, if available; may be null
-
-        story_sender_chat_id (:class:`int`):
-            The identifier of the sender of the previewed story; 0 if none
-
-        story_id (:class:`int`):
-            The identifier of the previewed story; 0 if none
-
-        stickers (:class:`List["types.Sticker"]`):
-            Up to 4 stickers from the sticker set available via the link
-
         instant_view_version (:class:`int`):
-            Version of web page instant view \(currently, can be 1 or 2\); 0 if none
+            Version of instant view \(currently, can be 1 or 2\) for the web page; 0 if none
 
     """
 
@@ -24497,163 +27235,123 @@ class WebPage(TlObject):
         self,
         url: str = "",
         display_url: str = "",
-        type: str = "",
         site_name: str = "",
         title: str = "",
         description: FormattedText = None,
-        photo: Photo = None,
-        embed_url: str = "",
-        embed_type: str = "",
-        embed_width: int = 0,
-        embed_height: int = 0,
-        duration: int = 0,
         author: str = "",
+        type: LinkPreviewType = None,
         has_large_media: bool = False,
         show_large_media: bool = False,
+        show_media_above_description: bool = False,
         skip_confirmation: bool = False,
         show_above_text: bool = False,
-        animation: Animation = None,
-        audio: Audio = None,
-        document: Document = None,
-        sticker: Sticker = None,
-        video: Video = None,
-        video_note: VideoNote = None,
-        voice_note: VoiceNote = None,
-        story_sender_chat_id: int = 0,
-        story_id: int = 0,
-        stickers: List[Sticker] = None,
         instant_view_version: int = 0,
     ) -> None:
         self.url: Union[str, None] = url
         r"""Original URL of the link"""
         self.display_url: Union[str, None] = display_url
         r"""URL to display"""
-        self.type: Union[str, None] = type
-        r"""Type of the web page\. Can be: article, photo, audio, video, document, profile, app, or something else"""
         self.site_name: Union[str, None] = site_name
         r"""Short name of the site \(e\.g\., Google Docs, App Store\)"""
         self.title: Union[str, None] = title
         r"""Title of the content"""
         self.description: Union[FormattedText, None] = description
         r"""Description of the content"""
-        self.photo: Union[Photo, None] = photo
-        r"""Image representing the content; may be null"""
-        self.embed_url: Union[str, None] = embed_url
-        r"""URL to show in the embedded preview"""
-        self.embed_type: Union[str, None] = embed_type
-        r"""MIME type of the embedded preview, \(e\.g\., text/html or video/mp4\)"""
-        self.embed_width: int = int(embed_width)
-        r"""Width of the embedded preview"""
-        self.embed_height: int = int(embed_height)
-        r"""Height of the embedded preview"""
-        self.duration: int = int(duration)
-        r"""Duration of the content, in seconds"""
         self.author: Union[str, None] = author
         r"""Author of the content"""
+        self.type: Union[
+            LinkPreviewTypeAlbum,
+            LinkPreviewTypeAnimation,
+            LinkPreviewTypeApp,
+            LinkPreviewTypeArticle,
+            LinkPreviewTypeAudio,
+            LinkPreviewTypeBackground,
+            LinkPreviewTypeChannelBoost,
+            LinkPreviewTypeChat,
+            LinkPreviewTypeDocument,
+            LinkPreviewTypeEmbeddedAnimationPlayer,
+            LinkPreviewTypeEmbeddedAudioPlayer,
+            LinkPreviewTypeEmbeddedVideoPlayer,
+            LinkPreviewTypeExternalAudio,
+            LinkPreviewTypeExternalVideo,
+            LinkPreviewTypeInvoice,
+            LinkPreviewTypeMessage,
+            LinkPreviewTypePhoto,
+            LinkPreviewTypePremiumGiftCode,
+            LinkPreviewTypeShareableChatFolder,
+            LinkPreviewTypeSticker,
+            LinkPreviewTypeStickerSet,
+            LinkPreviewTypeStory,
+            LinkPreviewTypeSupergroupBoost,
+            LinkPreviewTypeTheme,
+            LinkPreviewTypeUnsupported,
+            LinkPreviewTypeUser,
+            LinkPreviewTypeVideo,
+            LinkPreviewTypeVideoChat,
+            LinkPreviewTypeVideoNote,
+            LinkPreviewTypeVoiceNote,
+            LinkPreviewTypeWebApp,
+            None,
+        ] = type
+        r"""Type of the link preview"""
         self.has_large_media: bool = bool(has_large_media)
         r"""True, if size of media in the preview can be changed"""
         self.show_large_media: bool = bool(show_large_media)
         r"""True, if large media preview must be shown; otherwise, the media preview must be shown small and only the first frame must be shown for videos"""
+        self.show_media_above_description: bool = bool(show_media_above_description)
+        r"""True, if media must be shown above link preview description; otherwise, the media must be shown below the description"""
         self.skip_confirmation: bool = bool(skip_confirmation)
         r"""True, if there is no need to show an ordinary open URL confirmation, when opening the URL from the preview, because the URL is shown in the message text in clear"""
         self.show_above_text: bool = bool(show_above_text)
         r"""True, if the link preview must be shown above message text; otherwise, the link preview must be shown below the message text"""
-        self.animation: Union[Animation, None] = animation
-        r"""Preview of the content as an animation, if available; may be null"""
-        self.audio: Union[Audio, None] = audio
-        r"""Preview of the content as an audio file, if available; may be null"""
-        self.document: Union[Document, None] = document
-        r"""Preview of the content as a document, if available; may be null"""
-        self.sticker: Union[Sticker, None] = sticker
-        r"""Preview of the content as a sticker for small WEBP files, if available; may be null"""
-        self.video: Union[Video, None] = video
-        r"""Preview of the content as a video, if available; may be null"""
-        self.video_note: Union[VideoNote, None] = video_note
-        r"""Preview of the content as a video note, if available; may be null"""
-        self.voice_note: Union[VoiceNote, None] = voice_note
-        r"""Preview of the content as a voice note, if available; may be null"""
-        self.story_sender_chat_id: int = int(story_sender_chat_id)
-        r"""The identifier of the sender of the previewed story; 0 if none"""
-        self.story_id: int = int(story_id)
-        r"""The identifier of the previewed story; 0 if none"""
-        self.stickers: List[Sticker] = stickers or []
-        r"""Up to 4 stickers from the sticker set available via the link"""
         self.instant_view_version: int = int(instant_view_version)
-        r"""Version of web page instant view \(currently, can be 1 or 2\); 0 if none"""
+        r"""Version of instant view \(currently, can be 1 or 2\) for the web page; 0 if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["webPage"]:
-        return "webPage"
+    def getType(self) -> Literal["linkPreview"]:
+        return "linkPreview"
 
-    def getClass(self) -> Literal["WebPage"]:
-        return "WebPage"
+    def getClass(self) -> Literal["LinkPreview"]:
+        return "LinkPreview"
 
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
             "url": self.url,
             "display_url": self.display_url,
-            "type": self.type,
             "site_name": self.site_name,
             "title": self.title,
             "description": self.description,
-            "photo": self.photo,
-            "embed_url": self.embed_url,
-            "embed_type": self.embed_type,
-            "embed_width": self.embed_width,
-            "embed_height": self.embed_height,
-            "duration": self.duration,
             "author": self.author,
+            "type": self.type,
             "has_large_media": self.has_large_media,
             "show_large_media": self.show_large_media,
+            "show_media_above_description": self.show_media_above_description,
             "skip_confirmation": self.skip_confirmation,
             "show_above_text": self.show_above_text,
-            "animation": self.animation,
-            "audio": self.audio,
-            "document": self.document,
-            "sticker": self.sticker,
-            "video": self.video,
-            "video_note": self.video_note,
-            "voice_note": self.voice_note,
-            "story_sender_chat_id": self.story_sender_chat_id,
-            "story_id": self.story_id,
-            "stickers": self.stickers,
             "instant_view_version": self.instant_view_version,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["WebPage", None]:
+    def from_dict(cls, data: dict) -> Union["LinkPreview", None]:
         if data:
             data_class = cls()
             data_class.url = data.get("url", "")
             data_class.display_url = data.get("display_url", "")
-            data_class.type = data.get("type", "")
             data_class.site_name = data.get("site_name", "")
             data_class.title = data.get("title", "")
             data_class.description = data.get("description", None)
-            data_class.photo = data.get("photo", None)
-            data_class.embed_url = data.get("embed_url", "")
-            data_class.embed_type = data.get("embed_type", "")
-            data_class.embed_width = int(data.get("embed_width", 0))
-            data_class.embed_height = int(data.get("embed_height", 0))
-            data_class.duration = int(data.get("duration", 0))
             data_class.author = data.get("author", "")
+            data_class.type = data.get("type", None)
             data_class.has_large_media = data.get("has_large_media", False)
             data_class.show_large_media = data.get("show_large_media", False)
+            data_class.show_media_above_description = data.get(
+                "show_media_above_description", False
+            )
             data_class.skip_confirmation = data.get("skip_confirmation", False)
             data_class.show_above_text = data.get("show_above_text", False)
-            data_class.animation = data.get("animation", None)
-            data_class.audio = data.get("audio", None)
-            data_class.document = data.get("document", None)
-            data_class.sticker = data.get("sticker", None)
-            data_class.video = data.get("video", None)
-            data_class.video_note = data.get("video_note", None)
-            data_class.voice_note = data.get("voice_note", None)
-            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
-            data_class.story_id = int(data.get("story_id", 0))
-            data_class.stickers = data.get("stickers", None)
             data_class.instant_view_version = int(data.get("instant_view_version", 0))
 
         return data_class
@@ -25139,6 +27837,66 @@ class Address(TlObject):
         return data_class
 
 
+class LocationAddress(TlObject):
+    r"""Describes an address of a location
+
+    Parameters:
+        country_code (:class:`str`):
+            A two\-letter ISO 3166\-1 alpha\-2 country code
+
+        state (:class:`str`):
+            State, if applicable; empty if unknown
+
+        city (:class:`str`):
+            City; empty if unknown
+
+        street (:class:`str`):
+            The address; empty if unknown
+
+    """
+
+    def __init__(
+        self, country_code: str = "", state: str = "", city: str = "", street: str = ""
+    ) -> None:
+        self.country_code: Union[str, None] = country_code
+        r"""A two\-letter ISO 3166\-1 alpha\-2 country code"""
+        self.state: Union[str, None] = state
+        r"""State, if applicable; empty if unknown"""
+        self.city: Union[str, None] = city
+        r"""City; empty if unknown"""
+        self.street: Union[str, None] = street
+        r"""The address; empty if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["locationAddress"]:
+        return "locationAddress"
+
+    def getClass(self) -> Literal["LocationAddress"]:
+        return "LocationAddress"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "country_code": self.country_code,
+            "state": self.state,
+            "city": self.city,
+            "street": self.street,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LocationAddress", None]:
+        if data:
+            data_class = cls()
+            data_class.country_code = data.get("country_code", "")
+            data_class.state = data.get("state", "")
+            data_class.city = data.get("city", "")
+            data_class.street = data.get("street", "")
+
+        return data_class
+
+
 class ThemeParameters(TlObject):
     r"""Contains parameters of the application theme
 
@@ -25152,8 +27910,14 @@ class ThemeParameters(TlObject):
         header_background_color (:class:`int`):
             A color of the header background in the RGB24 format
 
+        bottom_bar_background_color (:class:`int`):
+            A color of the bottom bar background in the RGB24 format
+
         section_background_color (:class:`int`):
             A color of the section background in the RGB24 format
+
+        section_separator_color (:class:`int`):
+            A color of the section separator in the RGB24 format
 
         text_color (:class:`int`):
             A color of text in the RGB24 format
@@ -25189,7 +27953,9 @@ class ThemeParameters(TlObject):
         background_color: int = 0,
         secondary_background_color: int = 0,
         header_background_color: int = 0,
+        bottom_bar_background_color: int = 0,
         section_background_color: int = 0,
+        section_separator_color: int = 0,
         text_color: int = 0,
         accent_text_color: int = 0,
         section_header_text_color: int = 0,
@@ -25206,8 +27972,12 @@ class ThemeParameters(TlObject):
         r"""A secondary color for the background in the RGB24 format"""
         self.header_background_color: int = int(header_background_color)
         r"""A color of the header background in the RGB24 format"""
+        self.bottom_bar_background_color: int = int(bottom_bar_background_color)
+        r"""A color of the bottom bar background in the RGB24 format"""
         self.section_background_color: int = int(section_background_color)
         r"""A color of the section background in the RGB24 format"""
+        self.section_separator_color: int = int(section_separator_color)
+        r"""A color of the section separator in the RGB24 format"""
         self.text_color: int = int(text_color)
         r"""A color of text in the RGB24 format"""
         self.accent_text_color: int = int(accent_text_color)
@@ -25242,7 +28012,9 @@ class ThemeParameters(TlObject):
             "background_color": self.background_color,
             "secondary_background_color": self.secondary_background_color,
             "header_background_color": self.header_background_color,
+            "bottom_bar_background_color": self.bottom_bar_background_color,
             "section_background_color": self.section_background_color,
+            "section_separator_color": self.section_separator_color,
             "text_color": self.text_color,
             "accent_text_color": self.accent_text_color,
             "section_header_text_color": self.section_header_text_color,
@@ -25265,8 +28037,14 @@ class ThemeParameters(TlObject):
             data_class.header_background_color = int(
                 data.get("header_background_color", 0)
             )
+            data_class.bottom_bar_background_color = int(
+                data.get("bottom_bar_background_color", 0)
+            )
             data_class.section_background_color = int(
                 data.get("section_background_color", 0)
+            )
+            data_class.section_separator_color = int(
+                data.get("section_separator_color", 0)
             )
             data_class.text_color = int(data.get("text_color", 0))
             data_class.accent_text_color = int(data.get("accent_text_color", 0))
@@ -26073,17 +28851,17 @@ class PaymentFormTypeRegular(TlObject, PaymentFormType):
 
 
 class PaymentFormTypeStars(TlObject, PaymentFormType):
-    r"""The payment form is for a payment in Telegram stars
+    r"""The payment form is for a payment in Telegram Stars
 
     Parameters:
         star_count (:class:`int`):
-            Number of stars that will be paid
+            Number of Telegram Stars that will be paid
 
     """
 
     def __init__(self, star_count: int = 0) -> None:
         self.star_count: int = int(star_count)
-        r"""Number of stars that will be paid"""
+        r"""Number of Telegram Stars that will be paid"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -26343,11 +29121,11 @@ class PaymentReceiptTypeRegular(TlObject, PaymentReceiptType):
 
 
 class PaymentReceiptTypeStars(TlObject, PaymentReceiptType):
-    r"""The payment was done using Telegram stars
+    r"""The payment was done using Telegram Stars
 
     Parameters:
         star_count (:class:`int`):
-            Number of stars that were paid
+            Number of Telegram Stars that were paid
 
         transaction_id (:class:`str`):
             Unique identifier of the transaction that can be used to dispute it
@@ -26356,7 +29134,7 @@ class PaymentReceiptTypeStars(TlObject, PaymentReceiptType):
 
     def __init__(self, star_count: int = 0, transaction_id: str = "") -> None:
         self.star_count: int = int(star_count)
-        r"""Number of stars that were paid"""
+        r"""Number of Telegram Stars that were paid"""
         self.transaction_id: Union[str, None] = transaction_id
         r"""Unique identifier of the transaction that can be used to dispute it"""
 
@@ -26453,7 +29231,7 @@ class PaymentReceipt(TlObject):
 
 
 class InputInvoiceMessage(TlObject, InputInvoice):
-    r"""An invoice from a message of the type messageInvoice
+    r"""An invoice from a message of the type messageInvoice or paid media purchase from messagePaidMedia
 
     Parameters:
         chat_id (:class:`int`):
@@ -26544,6 +29322,9 @@ class InputInvoiceTelegram(TlObject, InputInvoice):
             TelegramPaymentPurposePremiumGiftCodes,
             TelegramPaymentPurposePremiumGiveaway,
             TelegramPaymentPurposeStars,
+            TelegramPaymentPurposeGiftedStars,
+            TelegramPaymentPurposeStarGiveaway,
+            TelegramPaymentPurposeJoinChat,
             None,
         ] = purpose
         r"""Transaction purpose"""
@@ -26569,7 +29350,7 @@ class InputInvoiceTelegram(TlObject, InputInvoice):
         return data_class
 
 
-class MessageExtendedMediaPreview(TlObject, MessageExtendedMedia):
+class PaidMediaPreview(TlObject, PaidMedia):
     r"""The media is hidden until the invoice is paid
 
     Parameters:
@@ -26585,9 +29366,6 @@ class MessageExtendedMediaPreview(TlObject, MessageExtendedMedia):
         minithumbnail (:class:`"types.Minithumbnail"`):
             Media minithumbnail; may be null
 
-        caption (:class:`"types.FormattedText"`):
-            Media caption
-
     """
 
     def __init__(
@@ -26596,7 +29374,6 @@ class MessageExtendedMediaPreview(TlObject, MessageExtendedMedia):
         height: int = 0,
         duration: int = 0,
         minithumbnail: Minithumbnail = None,
-        caption: FormattedText = None,
     ) -> None:
         self.width: int = int(width)
         r"""Media width; 0 if unknown"""
@@ -26606,17 +29383,15 @@ class MessageExtendedMediaPreview(TlObject, MessageExtendedMedia):
         r"""Media duration, in seconds; 0 if unknown"""
         self.minithumbnail: Union[Minithumbnail, None] = minithumbnail
         r"""Media minithumbnail; may be null"""
-        self.caption: Union[FormattedText, None] = caption
-        r"""Media caption"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["messageExtendedMediaPreview"]:
-        return "messageExtendedMediaPreview"
+    def getType(self) -> Literal["paidMediaPreview"]:
+        return "paidMediaPreview"
 
-    def getClass(self) -> Literal["MessageExtendedMedia"]:
-        return "MessageExtendedMedia"
+    def getClass(self) -> Literal["PaidMedia"]:
+        return "PaidMedia"
 
     def to_dict(self) -> dict:
         return {
@@ -26625,142 +29400,120 @@ class MessageExtendedMediaPreview(TlObject, MessageExtendedMedia):
             "height": self.height,
             "duration": self.duration,
             "minithumbnail": self.minithumbnail,
-            "caption": self.caption,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["MessageExtendedMediaPreview", None]:
+    def from_dict(cls, data: dict) -> Union["PaidMediaPreview", None]:
         if data:
             data_class = cls()
             data_class.width = int(data.get("width", 0))
             data_class.height = int(data.get("height", 0))
             data_class.duration = int(data.get("duration", 0))
             data_class.minithumbnail = data.get("minithumbnail", None)
-            data_class.caption = data.get("caption", None)
 
         return data_class
 
 
-class MessageExtendedMediaPhoto(TlObject, MessageExtendedMedia):
+class PaidMediaPhoto(TlObject, PaidMedia):
     r"""The media is a photo
 
     Parameters:
         photo (:class:`"types.Photo"`):
             The photo
 
-        caption (:class:`"types.FormattedText"`):
-            Photo caption
-
     """
 
-    def __init__(self, photo: Photo = None, caption: FormattedText = None) -> None:
+    def __init__(self, photo: Photo = None) -> None:
         self.photo: Union[Photo, None] = photo
         r"""The photo"""
-        self.caption: Union[FormattedText, None] = caption
-        r"""Photo caption"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["messageExtendedMediaPhoto"]:
-        return "messageExtendedMediaPhoto"
+    def getType(self) -> Literal["paidMediaPhoto"]:
+        return "paidMediaPhoto"
 
-    def getClass(self) -> Literal["MessageExtendedMedia"]:
-        return "MessageExtendedMedia"
+    def getClass(self) -> Literal["PaidMedia"]:
+        return "PaidMedia"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "photo": self.photo, "caption": self.caption}
+        return {"@type": self.getType(), "photo": self.photo}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["MessageExtendedMediaPhoto", None]:
+    def from_dict(cls, data: dict) -> Union["PaidMediaPhoto", None]:
         if data:
             data_class = cls()
             data_class.photo = data.get("photo", None)
-            data_class.caption = data.get("caption", None)
 
         return data_class
 
 
-class MessageExtendedMediaVideo(TlObject, MessageExtendedMedia):
+class PaidMediaVideo(TlObject, PaidMedia):
     r"""The media is a video
 
     Parameters:
         video (:class:`"types.Video"`):
             The video
 
-        caption (:class:`"types.FormattedText"`):
-            Photo caption
-
     """
 
-    def __init__(self, video: Video = None, caption: FormattedText = None) -> None:
+    def __init__(self, video: Video = None) -> None:
         self.video: Union[Video, None] = video
         r"""The video"""
-        self.caption: Union[FormattedText, None] = caption
-        r"""Photo caption"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["messageExtendedMediaVideo"]:
-        return "messageExtendedMediaVideo"
+    def getType(self) -> Literal["paidMediaVideo"]:
+        return "paidMediaVideo"
 
-    def getClass(self) -> Literal["MessageExtendedMedia"]:
-        return "MessageExtendedMedia"
+    def getClass(self) -> Literal["PaidMedia"]:
+        return "PaidMedia"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "video": self.video, "caption": self.caption}
+        return {"@type": self.getType(), "video": self.video}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["MessageExtendedMediaVideo", None]:
+    def from_dict(cls, data: dict) -> Union["PaidMediaVideo", None]:
         if data:
             data_class = cls()
             data_class.video = data.get("video", None)
-            data_class.caption = data.get("caption", None)
 
         return data_class
 
 
-class MessageExtendedMediaUnsupported(TlObject, MessageExtendedMedia):
-    r"""The media is unsupported
+class PaidMediaUnsupported(TlObject, PaidMedia):
+    r"""The media is unsupported"""
 
-    Parameters:
-        caption (:class:`"types.FormattedText"`):
-            Media caption
-
-    """
-
-    def __init__(self, caption: FormattedText = None) -> None:
-        self.caption: Union[FormattedText, None] = caption
-        r"""Media caption"""
+    def __init__(self) -> None:
+        pass
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["messageExtendedMediaUnsupported"]:
-        return "messageExtendedMediaUnsupported"
+    def getType(self) -> Literal["paidMediaUnsupported"]:
+        return "paidMediaUnsupported"
 
-    def getClass(self) -> Literal["MessageExtendedMedia"]:
-        return "MessageExtendedMedia"
+    def getClass(self) -> Literal["PaidMedia"]:
+        return "PaidMedia"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "caption": self.caption}
+        return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["MessageExtendedMediaUnsupported", None]:
+    def from_dict(cls, data: dict) -> Union["PaidMediaUnsupported", None]:
         if data:
             data_class = cls()
-            data_class.caption = data.get("caption", None)
 
         return data_class
 
 
-class PremiumGiveawayParameters(TlObject):
-    r"""Describes parameters of a Telegram Premium giveaway
+class GiveawayParameters(TlObject):
+    r"""Describes parameters of a giveaway
 
     Parameters:
         boosted_chat_id (:class:`int`):
-            Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Premium subscription\. If the chat is a channel, then can\_post\_messages right is required in the channel, otherwise, the user must be an administrator in the supergroup
+            Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Telegram Premium subscription, or for the specified time\. If the chat is a channel, then can\_post\_messages right is required in the channel, otherwise, the user must be an administrator in the supergroup
 
         additional_chat_ids (:class:`List[int]`):
             Identifiers of other supergroup or channel chats that must be subscribed by the users to be eligible for the giveaway\. There can be up to getOption\(\"giveaway\_additional\_chat\_count\_max\"\) additional chats
@@ -26793,7 +29546,7 @@ class PremiumGiveawayParameters(TlObject):
         prize_description: str = "",
     ) -> None:
         self.boosted_chat_id: int = int(boosted_chat_id)
-        r"""Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Premium subscription\. If the chat is a channel, then can\_post\_messages right is required in the channel, otherwise, the user must be an administrator in the supergroup"""
+        r"""Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Telegram Premium subscription, or for the specified time\. If the chat is a channel, then can\_post\_messages right is required in the channel, otherwise, the user must be an administrator in the supergroup"""
         self.additional_chat_ids: List[int] = additional_chat_ids or []
         r"""Identifiers of other supergroup or channel chats that must be subscribed by the users to be eligible for the giveaway\. There can be up to getOption\(\"giveaway\_additional\_chat\_count\_max\"\) additional chats"""
         self.winners_selection_date: int = int(winners_selection_date)
@@ -26810,11 +29563,11 @@ class PremiumGiveawayParameters(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumGiveawayParameters"]:
-        return "premiumGiveawayParameters"
+    def getType(self) -> Literal["giveawayParameters"]:
+        return "giveawayParameters"
 
-    def getClass(self) -> Literal["PremiumGiveawayParameters"]:
-        return "PremiumGiveawayParameters"
+    def getClass(self) -> Literal["GiveawayParameters"]:
+        return "GiveawayParameters"
 
     def to_dict(self) -> dict:
         return {
@@ -26829,7 +29582,7 @@ class PremiumGiveawayParameters(TlObject):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["PremiumGiveawayParameters", None]:
+    def from_dict(cls, data: dict) -> Union["GiveawayParameters", None]:
         if data:
             data_class = cls()
             data_class.boosted_chat_id = int(data.get("boosted_chat_id", 0))
@@ -29782,7 +32535,7 @@ class MessageText(TlObject, MessageContent):
         text (:class:`"types.FormattedText"`):
             Text of the message
 
-        web_page (:class:`"types.WebPage"`):
+        link_preview (:class:`"types.LinkPreview"`):
             A link preview attached to the message; may be null
 
         link_preview_options (:class:`"types.LinkPreviewOptions"`):
@@ -29793,12 +32546,12 @@ class MessageText(TlObject, MessageContent):
     def __init__(
         self,
         text: FormattedText = None,
-        web_page: WebPage = None,
+        link_preview: LinkPreview = None,
         link_preview_options: LinkPreviewOptions = None,
     ) -> None:
         self.text: Union[FormattedText, None] = text
         r"""Text of the message"""
-        self.web_page: Union[WebPage, None] = web_page
+        self.link_preview: Union[LinkPreview, None] = link_preview
         r"""A link preview attached to the message; may be null"""
         self.link_preview_options: Union[LinkPreviewOptions, None] = (
             link_preview_options
@@ -29818,7 +32571,7 @@ class MessageText(TlObject, MessageContent):
         return {
             "@type": self.getType(),
             "text": self.text,
-            "web_page": self.web_page,
+            "link_preview": self.link_preview,
             "link_preview_options": self.link_preview_options,
         }
 
@@ -29827,7 +32580,7 @@ class MessageText(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.text = data.get("text", None)
-            data_class.web_page = data.get("web_page", None)
+            data_class.link_preview = data.get("link_preview", None)
             data_class.link_preview_options = data.get("link_preview_options", None)
 
         return data_class
@@ -29844,7 +32597,7 @@ class MessageAnimation(TlObject, MessageContent):
             Animation caption
 
         show_caption_above_media (:class:`bool`):
-            True, if caption must be shown above the animation; otherwise, caption must be shown below the animation
+            True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation
 
         has_spoiler (:class:`bool`):
             True, if the animation preview must be covered by a spoiler animation
@@ -29867,7 +32620,7 @@ class MessageAnimation(TlObject, MessageContent):
         self.caption: Union[FormattedText, None] = caption
         r"""Animation caption"""
         self.show_caption_above_media: bool = bool(show_caption_above_media)
-        r"""True, if caption must be shown above the animation; otherwise, caption must be shown below the animation"""
+        r"""True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation"""
         self.has_spoiler: bool = bool(has_spoiler)
         r"""True, if the animation preview must be covered by a spoiler animation"""
         self.is_secret: bool = bool(is_secret)
@@ -29993,6 +32746,72 @@ class MessageDocument(TlObject, MessageContent):
         return data_class
 
 
+class MessagePaidMedia(TlObject, MessageContent):
+    r"""A message with paid media
+
+    Parameters:
+        star_count (:class:`int`):
+            Number of Telegram Stars needed to buy access to the media in the message
+
+        media (:class:`List["types.PaidMedia"]`):
+            Information about the media
+
+        caption (:class:`"types.FormattedText"`):
+            Media caption
+
+        show_caption_above_media (:class:`bool`):
+            True, if the caption must be shown above the media; otherwise, the caption must be shown below the media
+
+    """
+
+    def __init__(
+        self,
+        star_count: int = 0,
+        media: List[PaidMedia] = None,
+        caption: FormattedText = None,
+        show_caption_above_media: bool = False,
+    ) -> None:
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars needed to buy access to the media in the message"""
+        self.media: List[PaidMedia] = media or []
+        r"""Information about the media"""
+        self.caption: Union[FormattedText, None] = caption
+        r"""Media caption"""
+        self.show_caption_above_media: bool = bool(show_caption_above_media)
+        r"""True, if the caption must be shown above the media; otherwise, the caption must be shown below the media"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messagePaidMedia"]:
+        return "messagePaidMedia"
+
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "media": self.media,
+            "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessagePaidMedia", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.media = data.get("media", None)
+            data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
+
+        return data_class
+
+
 class MessagePhoto(TlObject, MessageContent):
     r"""A photo message
 
@@ -30004,7 +32823,7 @@ class MessagePhoto(TlObject, MessageContent):
             Photo caption
 
         show_caption_above_media (:class:`bool`):
-            True, if caption must be shown above the photo; otherwise, caption must be shown below the photo
+            True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo
 
         has_spoiler (:class:`bool`):
             True, if the photo preview must be covered by a spoiler animation
@@ -30027,7 +32846,7 @@ class MessagePhoto(TlObject, MessageContent):
         self.caption: Union[FormattedText, None] = caption
         r"""Photo caption"""
         self.show_caption_above_media: bool = bool(show_caption_above_media)
-        r"""True, if caption must be shown above the photo; otherwise, caption must be shown below the photo"""
+        r"""True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo"""
         self.has_spoiler: bool = bool(has_spoiler)
         r"""True, if the photo preview must be covered by a spoiler animation"""
         self.is_secret: bool = bool(is_secret)
@@ -30122,7 +32941,7 @@ class MessageVideo(TlObject, MessageContent):
             Video caption
 
         show_caption_above_media (:class:`bool`):
-            True, if caption must be shown above the video; otherwise, caption must be shown below the video
+            True, if the caption must be shown above the video; otherwise, the caption must be shown below the video
 
         has_spoiler (:class:`bool`):
             True, if the video preview must be covered by a spoiler animation
@@ -30145,7 +32964,7 @@ class MessageVideo(TlObject, MessageContent):
         self.caption: Union[FormattedText, None] = caption
         r"""Video caption"""
         self.show_caption_above_media: bool = bool(show_caption_above_media)
-        r"""True, if caption must be shown above the video; otherwise, caption must be shown below the video"""
+        r"""True, if the caption must be shown above the video; otherwise, the caption must be shown below the video"""
         self.has_spoiler: bool = bool(has_spoiler)
         r"""True, if the video preview must be covered by a spoiler animation"""
         self.is_secret: bool = bool(is_secret)
@@ -30814,8 +33633,11 @@ class MessageInvoice(TlObject, MessageContent):
         receipt_message_id (:class:`int`):
             The identifier of the message with the receipt, after the product has been purchased
 
-        extended_media (:class:`"types.MessageExtendedMedia"`):
-            Extended media attached to the invoice; may be null
+        paid_media (:class:`"types.PaidMedia"`):
+            Extended media attached to the invoice; may be null if none
+
+        paid_media_caption (:class:`"types.FormattedText"`):
+            Extended media caption; may be null if none
 
     """
 
@@ -30828,7 +33650,8 @@ class MessageInvoice(TlObject, MessageContent):
         is_test: bool = False,
         need_shipping_address: bool = False,
         receipt_message_id: int = 0,
-        extended_media: MessageExtendedMedia = None,
+        paid_media: PaidMedia = None,
+        paid_media_caption: FormattedText = None,
     ) -> None:
         self.product_info: Union[ProductInfo, None] = product_info
         r"""Information about the product"""
@@ -30844,14 +33667,12 @@ class MessageInvoice(TlObject, MessageContent):
         r"""True, if the shipping address must be specified"""
         self.receipt_message_id: int = int(receipt_message_id)
         r"""The identifier of the message with the receipt, after the product has been purchased"""
-        self.extended_media: Union[
-            MessageExtendedMediaPreview,
-            MessageExtendedMediaPhoto,
-            MessageExtendedMediaVideo,
-            MessageExtendedMediaUnsupported,
-            None,
-        ] = extended_media
-        r"""Extended media attached to the invoice; may be null"""
+        self.paid_media: Union[
+            PaidMediaPreview, PaidMediaPhoto, PaidMediaVideo, PaidMediaUnsupported, None
+        ] = paid_media
+        r"""Extended media attached to the invoice; may be null if none"""
+        self.paid_media_caption: Union[FormattedText, None] = paid_media_caption
+        r"""Extended media caption; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -30872,7 +33693,8 @@ class MessageInvoice(TlObject, MessageContent):
             "is_test": self.is_test,
             "need_shipping_address": self.need_shipping_address,
             "receipt_message_id": self.receipt_message_id,
-            "extended_media": self.extended_media,
+            "paid_media": self.paid_media,
+            "paid_media_caption": self.paid_media_caption,
         }
 
     @classmethod
@@ -30886,7 +33708,8 @@ class MessageInvoice(TlObject, MessageContent):
             data_class.is_test = data.get("is_test", False)
             data_class.need_shipping_address = data.get("need_shipping_address", False)
             data_class.receipt_message_id = int(data.get("receipt_message_id", 0))
-            data_class.extended_media = data.get("extended_media", None)
+            data_class.paid_media = data.get("paid_media", None)
+            data_class.paid_media_caption = data.get("paid_media_caption", None)
 
         return data_class
 
@@ -32199,12 +35022,99 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
         return data_class
 
 
+class MessagePaymentRefunded(TlObject, MessageContent):
+    r"""A payment has been refunded
+
+    Parameters:
+        owner_id (:class:`"types.MessageSender"`):
+            Identifier of the previous owner of the Telegram Stars that refunds them
+
+        currency (:class:`str`):
+            Currency for the price of the product
+
+        total_amount (:class:`int`):
+            Total price for the product, in the smallest units of the currency
+
+        invoice_payload (:class:`bytes`):
+            Invoice payload; only for bots
+
+        telegram_payment_charge_id (:class:`str`):
+            Telegram payment identifier
+
+        provider_payment_charge_id (:class:`str`):
+            Provider payment identifier
+
+    """
+
+    def __init__(
+        self,
+        owner_id: MessageSender = None,
+        currency: str = "",
+        total_amount: int = 0,
+        invoice_payload: bytes = b"",
+        telegram_payment_charge_id: str = "",
+        provider_payment_charge_id: str = "",
+    ) -> None:
+        self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
+        r"""Identifier of the previous owner of the Telegram Stars that refunds them"""
+        self.currency: Union[str, None] = currency
+        r"""Currency for the price of the product"""
+        self.total_amount: int = int(total_amount)
+        r"""Total price for the product, in the smallest units of the currency"""
+        self.invoice_payload: Union[bytes, None] = invoice_payload
+        r"""Invoice payload; only for bots"""
+        self.telegram_payment_charge_id: Union[str, None] = telegram_payment_charge_id
+        r"""Telegram payment identifier"""
+        self.provider_payment_charge_id: Union[str, None] = provider_payment_charge_id
+        r"""Provider payment identifier"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messagePaymentRefunded"]:
+        return "messagePaymentRefunded"
+
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "owner_id": self.owner_id,
+            "currency": self.currency,
+            "total_amount": self.total_amount,
+            "invoice_payload": self.invoice_payload,
+            "telegram_payment_charge_id": self.telegram_payment_charge_id,
+            "provider_payment_charge_id": self.provider_payment_charge_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessagePaymentRefunded", None]:
+        if data:
+            data_class = cls()
+            data_class.owner_id = data.get("owner_id", None)
+            data_class.currency = data.get("currency", "")
+            data_class.total_amount = int(data.get("total_amount", 0))
+            data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
+            data_class.telegram_payment_charge_id = data.get(
+                "telegram_payment_charge_id", ""
+            )
+            data_class.provider_payment_charge_id = data.get(
+                "provider_payment_charge_id", ""
+            )
+
+        return data_class
+
+
 class MessageGiftedPremium(TlObject, MessageContent):
-    r"""Telegram Premium was gifted to the user
+    r"""Telegram Premium was gifted to a user
 
     Parameters:
         gifter_user_id (:class:`int`):
-            The identifier of a user that gifted Telegram Premium; 0 if the gift was anonymous
+            The identifier of a user that gifted Telegram Premium; 0 if the gift was anonymous or is outgoing
+
+        receiver_user_id (:class:`int`):
+            The identifier of a user that received Telegram Premium; 0 if the gift is incoming
 
         currency (:class:`str`):
             Currency for the paid amount
@@ -32229,6 +35139,7 @@ class MessageGiftedPremium(TlObject, MessageContent):
     def __init__(
         self,
         gifter_user_id: int = 0,
+        receiver_user_id: int = 0,
         currency: str = "",
         amount: int = 0,
         cryptocurrency: str = "",
@@ -32237,7 +35148,9 @@ class MessageGiftedPremium(TlObject, MessageContent):
         sticker: Sticker = None,
     ) -> None:
         self.gifter_user_id: int = int(gifter_user_id)
-        r"""The identifier of a user that gifted Telegram Premium; 0 if the gift was anonymous"""
+        r"""The identifier of a user that gifted Telegram Premium; 0 if the gift was anonymous or is outgoing"""
+        self.receiver_user_id: int = int(receiver_user_id)
+        r"""The identifier of a user that received Telegram Premium; 0 if the gift is incoming"""
         self.currency: Union[str, None] = currency
         r"""Currency for the paid amount"""
         self.amount: int = int(amount)
@@ -32264,6 +35177,7 @@ class MessageGiftedPremium(TlObject, MessageContent):
         return {
             "@type": self.getType(),
             "gifter_user_id": self.gifter_user_id,
+            "receiver_user_id": self.receiver_user_id,
             "currency": self.currency,
             "amount": self.amount,
             "cryptocurrency": self.cryptocurrency,
@@ -32277,6 +35191,7 @@ class MessageGiftedPremium(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.gifter_user_id = int(data.get("gifter_user_id", 0))
+            data_class.receiver_user_id = int(data.get("receiver_user_id", 0))
             data_class.currency = data.get("currency", "")
             data_class.amount = int(data.get("amount", 0))
             data_class.cryptocurrency = data.get("cryptocurrency", "")
@@ -32399,44 +35314,52 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
         return data_class
 
 
-class MessagePremiumGiveawayCreated(TlObject, MessageContent):
-    r"""A Telegram Premium giveaway was created for the chat"""
+class MessageGiveawayCreated(TlObject, MessageContent):
+    r"""A giveaway was created for the chat\. Use telegramPaymentPurposePremiumGiveaway, storePaymentPurposePremiumGiveaway, telegramPaymentPurposeStarGiveaway, or storePaymentPurposeStarGiveaway to create a giveaway
 
-    def __init__(self) -> None:
-        pass
+    Parameters:
+        star_count (:class:`int`):
+            Number of Telegram Stars that will be shared by winners of the giveaway; 0 for Telegram Premium giveaways
+
+    """
+
+    def __init__(self, star_count: int = 0) -> None:
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars that will be shared by winners of the giveaway; 0 for Telegram Premium giveaways"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["messagePremiumGiveawayCreated"]:
-        return "messagePremiumGiveawayCreated"
+    def getType(self) -> Literal["messageGiveawayCreated"]:
+        return "messageGiveawayCreated"
 
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType()}
+        return {"@type": self.getType(), "star_count": self.star_count}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["MessagePremiumGiveawayCreated", None]:
+    def from_dict(cls, data: dict) -> Union["MessageGiveawayCreated", None]:
         if data:
             data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
 
         return data_class
 
 
-class MessagePremiumGiveaway(TlObject, MessageContent):
-    r"""A Telegram Premium giveaway
+class MessageGiveaway(TlObject, MessageContent):
+    r"""A giveaway
 
     Parameters:
-        parameters (:class:`"types.PremiumGiveawayParameters"`):
+        parameters (:class:`"types.GiveawayParameters"`):
             Giveaway parameters
 
         winner_count (:class:`int`):
             Number of users which will receive Telegram Premium subscription gift codes
 
-        month_count (:class:`int`):
-            Number of months the Telegram Premium subscription will be active after code activation
+        prize (:class:`"types.GiveawayPrize"`):
+            Prize of the giveaway
 
         sticker (:class:`"types.Sticker"`):
             A sticker to be shown in the message; may be null if unknown
@@ -32445,25 +35368,25 @@ class MessagePremiumGiveaway(TlObject, MessageContent):
 
     def __init__(
         self,
-        parameters: PremiumGiveawayParameters = None,
+        parameters: GiveawayParameters = None,
         winner_count: int = 0,
-        month_count: int = 0,
+        prize: GiveawayPrize = None,
         sticker: Sticker = None,
     ) -> None:
-        self.parameters: Union[PremiumGiveawayParameters, None] = parameters
+        self.parameters: Union[GiveawayParameters, None] = parameters
         r"""Giveaway parameters"""
         self.winner_count: int = int(winner_count)
         r"""Number of users which will receive Telegram Premium subscription gift codes"""
-        self.month_count: int = int(month_count)
-        r"""Number of months the Telegram Premium subscription will be active after code activation"""
+        self.prize: Union[GiveawayPrizePremium, GiveawayPrizeStars, None] = prize
+        r"""Prize of the giveaway"""
         self.sticker: Union[Sticker, None] = sticker
         r"""A sticker to be shown in the message; may be null if unknown"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["messagePremiumGiveaway"]:
-        return "messagePremiumGiveaway"
+    def getType(self) -> Literal["messageGiveaway"]:
+        return "messageGiveaway"
 
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
@@ -32473,24 +35396,24 @@ class MessagePremiumGiveaway(TlObject, MessageContent):
             "@type": self.getType(),
             "parameters": self.parameters,
             "winner_count": self.winner_count,
-            "month_count": self.month_count,
+            "prize": self.prize,
             "sticker": self.sticker,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["MessagePremiumGiveaway", None]:
+    def from_dict(cls, data: dict) -> Union["MessageGiveaway", None]:
         if data:
             data_class = cls()
             data_class.parameters = data.get("parameters", None)
             data_class.winner_count = int(data.get("winner_count", 0))
-            data_class.month_count = int(data.get("month_count", 0))
+            data_class.prize = data.get("prize", None)
             data_class.sticker = data.get("sticker", None)
 
         return data_class
 
 
-class MessagePremiumGiveawayCompleted(TlObject, MessageContent):
-    r"""A Telegram Premium giveaway without public winners has been completed for the chat
+class MessageGiveawayCompleted(TlObject, MessageContent):
+    r"""A giveaway without public winners has been completed for the chat
 
     Parameters:
         giveaway_message_id (:class:`int`):
@@ -32499,8 +35422,11 @@ class MessagePremiumGiveawayCompleted(TlObject, MessageContent):
         winner_count (:class:`int`):
             Number of winners in the giveaway
 
+        is_star_giveaway (:class:`bool`):
+            True, if the giveaway is a Telegram Star giveaway
+
         unclaimed_prize_count (:class:`int`):
-            Number of undistributed prizes
+            Number of undistributed prizes; for Telegram Premium giveaways only
 
     """
 
@@ -32508,20 +35434,23 @@ class MessagePremiumGiveawayCompleted(TlObject, MessageContent):
         self,
         giveaway_message_id: int = 0,
         winner_count: int = 0,
+        is_star_giveaway: bool = False,
         unclaimed_prize_count: int = 0,
     ) -> None:
         self.giveaway_message_id: int = int(giveaway_message_id)
         r"""Identifier of the message with the giveaway; can be 0 if the message was deleted"""
         self.winner_count: int = int(winner_count)
         r"""Number of winners in the giveaway"""
+        self.is_star_giveaway: bool = bool(is_star_giveaway)
+        r"""True, if the giveaway is a Telegram Star giveaway"""
         self.unclaimed_prize_count: int = int(unclaimed_prize_count)
-        r"""Number of undistributed prizes"""
+        r"""Number of undistributed prizes; for Telegram Premium giveaways only"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["messagePremiumGiveawayCompleted"]:
-        return "messagePremiumGiveawayCompleted"
+    def getType(self) -> Literal["messageGiveawayCompleted"]:
+        return "messageGiveawayCompleted"
 
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
@@ -32531,26 +35460,28 @@ class MessagePremiumGiveawayCompleted(TlObject, MessageContent):
             "@type": self.getType(),
             "giveaway_message_id": self.giveaway_message_id,
             "winner_count": self.winner_count,
+            "is_star_giveaway": self.is_star_giveaway,
             "unclaimed_prize_count": self.unclaimed_prize_count,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["MessagePremiumGiveawayCompleted", None]:
+    def from_dict(cls, data: dict) -> Union["MessageGiveawayCompleted", None]:
         if data:
             data_class = cls()
             data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
             data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.is_star_giveaway = data.get("is_star_giveaway", False)
             data_class.unclaimed_prize_count = int(data.get("unclaimed_prize_count", 0))
 
         return data_class
 
 
-class MessagePremiumGiveawayWinners(TlObject, MessageContent):
-    r"""A Telegram Premium giveaway with public winners has been completed for the chat
+class MessageGiveawayWinners(TlObject, MessageContent):
+    r"""A giveaway with public winners has been completed for the chat
 
     Parameters:
         boosted_chat_id (:class:`int`):
-            Identifier of the channel chat, which was automatically boosted by the winners of the giveaway for duration of the Premium subscription
+            Identifier of the supergroup or channel chat, which was automatically boosted by the winners of the giveaway
 
         giveaway_message_id (:class:`int`):
             Identifier of the message with the giveaway in the boosted chat
@@ -32567,8 +35498,8 @@ class MessagePremiumGiveawayWinners(TlObject, MessageContent):
         was_refunded (:class:`bool`):
             True, if the giveaway was canceled and was fully refunded
 
-        month_count (:class:`int`):
-            Number of months the Telegram Premium subscription will be active after code activation
+        prize (:class:`"types.GiveawayPrize"`):
+            Prize of the giveaway
 
         prize_description (:class:`str`):
             Additional description of the giveaway prize
@@ -32580,7 +35511,7 @@ class MessagePremiumGiveawayWinners(TlObject, MessageContent):
             Up to 100 user identifiers of the winners of the giveaway
 
         unclaimed_prize_count (:class:`int`):
-            Number of undistributed prizes
+            Number of undistributed prizes; for Telegram Premium giveaways only
 
     """
 
@@ -32592,14 +35523,14 @@ class MessagePremiumGiveawayWinners(TlObject, MessageContent):
         actual_winners_selection_date: int = 0,
         only_new_members: bool = False,
         was_refunded: bool = False,
-        month_count: int = 0,
+        prize: GiveawayPrize = None,
         prize_description: str = "",
         winner_count: int = 0,
         winner_user_ids: List[int] = None,
         unclaimed_prize_count: int = 0,
     ) -> None:
         self.boosted_chat_id: int = int(boosted_chat_id)
-        r"""Identifier of the channel chat, which was automatically boosted by the winners of the giveaway for duration of the Premium subscription"""
+        r"""Identifier of the supergroup or channel chat, which was automatically boosted by the winners of the giveaway"""
         self.giveaway_message_id: int = int(giveaway_message_id)
         r"""Identifier of the message with the giveaway in the boosted chat"""
         self.additional_chat_count: int = int(additional_chat_count)
@@ -32610,8 +35541,8 @@ class MessagePremiumGiveawayWinners(TlObject, MessageContent):
         r"""True, if only new members of the chats were eligible for the giveaway"""
         self.was_refunded: bool = bool(was_refunded)
         r"""True, if the giveaway was canceled and was fully refunded"""
-        self.month_count: int = int(month_count)
-        r"""Number of months the Telegram Premium subscription will be active after code activation"""
+        self.prize: Union[GiveawayPrizePremium, GiveawayPrizeStars, None] = prize
+        r"""Prize of the giveaway"""
         self.prize_description: Union[str, None] = prize_description
         r"""Additional description of the giveaway prize"""
         self.winner_count: int = int(winner_count)
@@ -32619,13 +35550,13 @@ class MessagePremiumGiveawayWinners(TlObject, MessageContent):
         self.winner_user_ids: List[int] = winner_user_ids or []
         r"""Up to 100 user identifiers of the winners of the giveaway"""
         self.unclaimed_prize_count: int = int(unclaimed_prize_count)
-        r"""Number of undistributed prizes"""
+        r"""Number of undistributed prizes; for Telegram Premium giveaways only"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["messagePremiumGiveawayWinners"]:
-        return "messagePremiumGiveawayWinners"
+    def getType(self) -> Literal["messageGiveawayWinners"]:
+        return "messageGiveawayWinners"
 
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
@@ -32639,7 +35570,7 @@ class MessagePremiumGiveawayWinners(TlObject, MessageContent):
             "actual_winners_selection_date": self.actual_winners_selection_date,
             "only_new_members": self.only_new_members,
             "was_refunded": self.was_refunded,
-            "month_count": self.month_count,
+            "prize": self.prize,
             "prize_description": self.prize_description,
             "winner_count": self.winner_count,
             "winner_user_ids": self.winner_user_ids,
@@ -32647,7 +35578,7 @@ class MessagePremiumGiveawayWinners(TlObject, MessageContent):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["MessagePremiumGiveawayWinners", None]:
+    def from_dict(cls, data: dict) -> Union["MessageGiveawayWinners", None]:
         if data:
             data_class = cls()
             data_class.boosted_chat_id = int(data.get("boosted_chat_id", 0))
@@ -32658,11 +35589,195 @@ class MessagePremiumGiveawayWinners(TlObject, MessageContent):
             )
             data_class.only_new_members = data.get("only_new_members", False)
             data_class.was_refunded = data.get("was_refunded", False)
-            data_class.month_count = int(data.get("month_count", 0))
+            data_class.prize = data.get("prize", None)
             data_class.prize_description = data.get("prize_description", "")
             data_class.winner_count = int(data.get("winner_count", 0))
             data_class.winner_user_ids = data.get("winner_user_ids", None)
             data_class.unclaimed_prize_count = int(data.get("unclaimed_prize_count", 0))
+
+        return data_class
+
+
+class MessageGiftedStars(TlObject, MessageContent):
+    r"""Telegram Stars were gifted to a user
+
+    Parameters:
+        gifter_user_id (:class:`int`):
+            The identifier of a user that gifted Telegram Stars; 0 if the gift was anonymous or is outgoing
+
+        receiver_user_id (:class:`int`):
+            The identifier of a user that received Telegram Stars; 0 if the gift is incoming
+
+        currency (:class:`str`):
+            Currency for the paid amount
+
+        amount (:class:`int`):
+            The paid amount, in the smallest units of the currency
+
+        cryptocurrency (:class:`str`):
+            Cryptocurrency used to pay for the gift; may be empty if none
+
+        cryptocurrency_amount (:class:`int`):
+            The paid amount, in the smallest units of the cryptocurrency; 0 if none
+
+        star_count (:class:`int`):
+            Number of Telegram Stars that were gifted
+
+        transaction_id (:class:`str`):
+            Identifier of the transaction for Telegram Stars purchase; for receiver only
+
+        sticker (:class:`"types.Sticker"`):
+            A sticker to be shown in the message; may be null if unknown
+
+    """
+
+    def __init__(
+        self,
+        gifter_user_id: int = 0,
+        receiver_user_id: int = 0,
+        currency: str = "",
+        amount: int = 0,
+        cryptocurrency: str = "",
+        cryptocurrency_amount: int = 0,
+        star_count: int = 0,
+        transaction_id: str = "",
+        sticker: Sticker = None,
+    ) -> None:
+        self.gifter_user_id: int = int(gifter_user_id)
+        r"""The identifier of a user that gifted Telegram Stars; 0 if the gift was anonymous or is outgoing"""
+        self.receiver_user_id: int = int(receiver_user_id)
+        r"""The identifier of a user that received Telegram Stars; 0 if the gift is incoming"""
+        self.currency: Union[str, None] = currency
+        r"""Currency for the paid amount"""
+        self.amount: int = int(amount)
+        r"""The paid amount, in the smallest units of the currency"""
+        self.cryptocurrency: Union[str, None] = cryptocurrency
+        r"""Cryptocurrency used to pay for the gift; may be empty if none"""
+        self.cryptocurrency_amount: int = int(cryptocurrency_amount)
+        r"""The paid amount, in the smallest units of the cryptocurrency; 0 if none"""
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars that were gifted"""
+        self.transaction_id: Union[str, None] = transaction_id
+        r"""Identifier of the transaction for Telegram Stars purchase; for receiver only"""
+        self.sticker: Union[Sticker, None] = sticker
+        r"""A sticker to be shown in the message; may be null if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageGiftedStars"]:
+        return "messageGiftedStars"
+
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "gifter_user_id": self.gifter_user_id,
+            "receiver_user_id": self.receiver_user_id,
+            "currency": self.currency,
+            "amount": self.amount,
+            "cryptocurrency": self.cryptocurrency,
+            "cryptocurrency_amount": self.cryptocurrency_amount,
+            "star_count": self.star_count,
+            "transaction_id": self.transaction_id,
+            "sticker": self.sticker,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageGiftedStars", None]:
+        if data:
+            data_class = cls()
+            data_class.gifter_user_id = int(data.get("gifter_user_id", 0))
+            data_class.receiver_user_id = int(data.get("receiver_user_id", 0))
+            data_class.currency = data.get("currency", "")
+            data_class.amount = int(data.get("amount", 0))
+            data_class.cryptocurrency = data.get("cryptocurrency", "")
+            data_class.cryptocurrency_amount = int(data.get("cryptocurrency_amount", 0))
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.transaction_id = data.get("transaction_id", "")
+            data_class.sticker = data.get("sticker", None)
+
+        return data_class
+
+
+class MessageGiveawayPrizeStars(TlObject, MessageContent):
+    r"""A Telegram Stars were received by the cuurent user from a giveaway
+
+    Parameters:
+        star_count (:class:`int`):
+            Number of Telegram Stars that were received
+
+        transaction_id (:class:`str`):
+            Identifier of the transaction for Telegram Stars credit
+
+        boosted_chat_id (:class:`int`):
+            Identifier of the supergroup or channel chat, which was automatically boosted by the winners of the giveaway
+
+        giveaway_message_id (:class:`int`):
+            Identifier of the message with the giveaway in the boosted chat; can be 0 if the message was deleted
+
+        is_unclaimed (:class:`bool`):
+            True, if the corresponding winner wasn't chosen and the Telegram Stars were received by the owner of the boosted chat
+
+        sticker (:class:`"types.Sticker"`):
+            A sticker to be shown in the message; may be null if unknown
+
+    """
+
+    def __init__(
+        self,
+        star_count: int = 0,
+        transaction_id: str = "",
+        boosted_chat_id: int = 0,
+        giveaway_message_id: int = 0,
+        is_unclaimed: bool = False,
+        sticker: Sticker = None,
+    ) -> None:
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars that were received"""
+        self.transaction_id: Union[str, None] = transaction_id
+        r"""Identifier of the transaction for Telegram Stars credit"""
+        self.boosted_chat_id: int = int(boosted_chat_id)
+        r"""Identifier of the supergroup or channel chat, which was automatically boosted by the winners of the giveaway"""
+        self.giveaway_message_id: int = int(giveaway_message_id)
+        r"""Identifier of the message with the giveaway in the boosted chat; can be 0 if the message was deleted"""
+        self.is_unclaimed: bool = bool(is_unclaimed)
+        r"""True, if the corresponding winner wasn't chosen and the Telegram Stars were received by the owner of the boosted chat"""
+        self.sticker: Union[Sticker, None] = sticker
+        r"""A sticker to be shown in the message; may be null if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageGiveawayPrizeStars"]:
+        return "messageGiveawayPrizeStars"
+
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "transaction_id": self.transaction_id,
+            "boosted_chat_id": self.boosted_chat_id,
+            "giveaway_message_id": self.giveaway_message_id,
+            "is_unclaimed": self.is_unclaimed,
+            "sticker": self.sticker,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageGiveawayPrizeStars", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.transaction_id = data.get("transaction_id", "")
+            data_class.boosted_chat_id = int(data.get("boosted_chat_id", 0))
+            data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
+            data_class.is_unclaimed = data.get("is_unclaimed", False)
+            data_class.sticker = data.get("sticker", None)
 
         return data_class
 
@@ -33644,13 +36759,13 @@ class TextEntityTypeMediaTimestamp(TlObject, TextEntityType):
 
     Parameters:
         media_timestamp (:class:`int`):
-            Timestamp from which a video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the content or the web page preview of the current message, or in the same places in the replied message
+            Timestamp from which a video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the content or the link preview of the current message, or in the same places in the replied message
 
     """
 
     def __init__(self, media_timestamp: int = 0) -> None:
         self.media_timestamp: int = int(media_timestamp)
-        r"""Timestamp from which a video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the content or the web page preview of the current message, or in the same places in the replied message"""
+        r"""Timestamp from which a video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the content or the link preview of the current message, or in the same places in the replied message"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -33722,6 +36837,158 @@ class InputThumbnail(TlObject):
         if data:
             data_class = cls()
             data_class.thumbnail = data.get("thumbnail", None)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+
+        return data_class
+
+
+class InputPaidMediaTypePhoto(TlObject, InputPaidMediaType):
+    r"""The media is a photo\. The photo must be at most 10 MB in size\. The photo's width and height must not exceed 10000 in total\. Width and height ratio must be at most 20"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputPaidMediaTypePhoto"]:
+        return "inputPaidMediaTypePhoto"
+
+    def getClass(self) -> Literal["InputPaidMediaType"]:
+        return "InputPaidMediaType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputPaidMediaTypePhoto", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class InputPaidMediaTypeVideo(TlObject, InputPaidMediaType):
+    r"""The media is a video
+
+    Parameters:
+        duration (:class:`int`):
+            Duration of the video, in seconds
+
+        supports_streaming (:class:`bool`):
+            True, if the video is supposed to be streamed
+
+    """
+
+    def __init__(self, duration: int = 0, supports_streaming: bool = False) -> None:
+        self.duration: int = int(duration)
+        r"""Duration of the video, in seconds"""
+        self.supports_streaming: bool = bool(supports_streaming)
+        r"""True, if the video is supposed to be streamed"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputPaidMediaTypeVideo"]:
+        return "inputPaidMediaTypeVideo"
+
+    def getClass(self) -> Literal["InputPaidMediaType"]:
+        return "InputPaidMediaType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "duration": self.duration,
+            "supports_streaming": self.supports_streaming,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputPaidMediaTypeVideo", None]:
+        if data:
+            data_class = cls()
+            data_class.duration = int(data.get("duration", 0))
+            data_class.supports_streaming = data.get("supports_streaming", False)
+
+        return data_class
+
+
+class InputPaidMedia(TlObject):
+    r"""Describes a paid media to be sent
+
+    Parameters:
+        type (:class:`"types.InputPaidMediaType"`):
+            Type of the media
+
+        media (:class:`"types.InputFile"`):
+            Photo or video to be sent
+
+        thumbnail (:class:`"types.InputThumbnail"`):
+            Media thumbnail; pass null to skip thumbnail uploading
+
+        added_sticker_file_ids (:class:`List[int]`):
+            File identifiers of the stickers added to the media, if applicable
+
+        width (:class:`int`):
+            Media width
+
+        height (:class:`int`):
+            Media height
+
+    """
+
+    def __init__(
+        self,
+        type: InputPaidMediaType = None,
+        media: InputFile = None,
+        thumbnail: InputThumbnail = None,
+        added_sticker_file_ids: List[int] = None,
+        width: int = 0,
+        height: int = 0,
+    ) -> None:
+        self.type: Union[InputPaidMediaTypePhoto, InputPaidMediaTypeVideo, None] = type
+        r"""Type of the media"""
+        self.media: Union[
+            InputFileId, InputFileRemote, InputFileLocal, InputFileGenerated, None
+        ] = media
+        r"""Photo or video to be sent"""
+        self.thumbnail: Union[InputThumbnail, None] = thumbnail
+        r"""Media thumbnail; pass null to skip thumbnail uploading"""
+        self.added_sticker_file_ids: List[int] = added_sticker_file_ids or []
+        r"""File identifiers of the stickers added to the media, if applicable"""
+        self.width: int = int(width)
+        r"""Media width"""
+        self.height: int = int(height)
+        r"""Media height"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputPaidMedia"]:
+        return "inputPaidMedia"
+
+    def getClass(self) -> Literal["InputPaidMedia"]:
+        return "InputPaidMedia"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "type": self.type,
+            "media": self.media,
+            "thumbnail": self.thumbnail,
+            "added_sticker_file_ids": self.added_sticker_file_ids,
+            "width": self.width,
+            "height": self.height,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputPaidMedia", None]:
+        if data:
+            data_class = cls()
+            data_class.type = data.get("type", None)
+            data_class.media = data.get("media", None)
+            data_class.thumbnail = data.get("thumbnail", None)
+            data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
             data_class.width = int(data.get("width", 0))
             data_class.height = int(data.get("height", 0))
 
@@ -33870,7 +37137,7 @@ class MessageSendOptions(TlObject):
             Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, live location messages and self\-destructing messages can't be scheduled
 
         effect_id (:class:`int`):
-            Identifier of the effect to apply to the message; applicable only to sendMessage and sendMessageAlbum in private chats
+            Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage and sendMessageAlbum in private chats
 
         sending_id (:class:`int`):
             Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates
@@ -33906,7 +37173,7 @@ class MessageSendOptions(TlObject):
         ] = scheduling_state
         r"""Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, live location messages and self\-destructing messages can't be scheduled"""
         self.effect_id: int = int(effect_id)
-        r"""Identifier of the effect to apply to the message; applicable only to sendMessage and sendMessageAlbum in private chats"""
+        r"""Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage and sendMessageAlbum in private chats"""
         self.sending_id: int = int(sending_id)
         r"""Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates"""
         self.only_preview: bool = bool(only_preview)
@@ -33953,7 +37220,7 @@ class MessageSendOptions(TlObject):
 
 
 class MessageCopyOptions(TlObject):
-    r"""Options to be used when a message content is copied without reference to the original sender\. Service messages, messages with messageInvoice, messagePremiumGiveaway, or messagePremiumGiveawayWinners content can't be copied
+    r"""Options to be used when a message content is copied without reference to the original sender\. Service messages, messages with messageInvoice, messagePaidMedia, messageGiveaway, or messageGiveawayWinners content can't be copied
 
     Parameters:
         send_copy (:class:`bool`):
@@ -34102,7 +37369,7 @@ class InputMessageAnimation(TlObject, InputMessageContent):
             Animation caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
         show_caption_above_media (:class:`bool`):
-            True, if caption must be shown above the animation; otherwise, caption must be shown below the animation; not supported in secret chats
+            True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation; not supported in secret chats
 
         has_spoiler (:class:`bool`):
             True, if the animation preview must be covered by a spoiler animation; not supported in secret chats
@@ -34138,7 +37405,7 @@ class InputMessageAnimation(TlObject, InputMessageContent):
         self.caption: Union[FormattedText, None] = caption
         r"""Animation caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
         self.show_caption_above_media: bool = bool(show_caption_above_media)
-        r"""True, if caption must be shown above the animation; otherwise, caption must be shown below the animation; not supported in secret chats"""
+        r"""True, if the caption must be shown above the animation; otherwise, the caption must be shown below the animation; not supported in secret chats"""
         self.has_spoiler: bool = bool(has_spoiler)
         r"""True, if the animation preview must be covered by a spoiler animation; not supported in secret chats"""
 
@@ -34334,6 +37601,80 @@ class InputMessageDocument(TlObject, InputMessageContent):
         return data_class
 
 
+class InputMessagePaidMedia(TlObject, InputMessageContent):
+    r"""A message with paid media; can be used only in channel chats with supergroupFullInfo\.has\_paid\_media\_allowed
+
+    Parameters:
+        star_count (:class:`int`):
+            The number of Telegram Stars that must be paid to see the media; 1\-getOption\(\"paid\_media\_message\_star\_count\_max\"\)
+
+        paid_media (:class:`List["types.InputPaidMedia"]`):
+            The content of the paid media
+
+        caption (:class:`"types.FormattedText"`):
+            Message caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
+
+        show_caption_above_media (:class:`bool`):
+            True, if the caption must be shown above the video; otherwise, the caption must be shown below the video; not supported in secret chats
+
+        payload (:class:`str`):
+            Bot\-provided data for the paid media; bots only
+
+    """
+
+    def __init__(
+        self,
+        star_count: int = 0,
+        paid_media: List[InputPaidMedia] = None,
+        caption: FormattedText = None,
+        show_caption_above_media: bool = False,
+        payload: str = "",
+    ) -> None:
+        self.star_count: int = int(star_count)
+        r"""The number of Telegram Stars that must be paid to see the media; 1\-getOption\(\"paid\_media\_message\_star\_count\_max\"\)"""
+        self.paid_media: List[InputPaidMedia] = paid_media or []
+        r"""The content of the paid media"""
+        self.caption: Union[FormattedText, None] = caption
+        r"""Message caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
+        self.show_caption_above_media: bool = bool(show_caption_above_media)
+        r"""True, if the caption must be shown above the video; otherwise, the caption must be shown below the video; not supported in secret chats"""
+        self.payload: Union[str, None] = payload
+        r"""Bot\-provided data for the paid media; bots only"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputMessagePaidMedia"]:
+        return "inputMessagePaidMedia"
+
+    def getClass(self) -> Literal["InputMessageContent"]:
+        return "InputMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "paid_media": self.paid_media,
+            "caption": self.caption,
+            "show_caption_above_media": self.show_caption_above_media,
+            "payload": self.payload,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputMessagePaidMedia", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.paid_media = data.get("paid_media", None)
+            data_class.caption = data.get("caption", None)
+            data_class.show_caption_above_media = data.get(
+                "show_caption_above_media", False
+            )
+            data_class.payload = data.get("payload", "")
+
+        return data_class
+
+
 class InputMessagePhoto(TlObject, InputMessageContent):
     r"""A photo message
 
@@ -34357,7 +37698,7 @@ class InputMessagePhoto(TlObject, InputMessageContent):
             Photo caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
         show_caption_above_media (:class:`bool`):
-            True, if caption must be shown above the photo; otherwise, caption must be shown below the photo; not supported in secret chats
+            True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo; not supported in secret chats
 
         self_destruct_type (:class:`"types.MessageSelfDestructType"`):
             Photo self\-destruct type; pass null if none; private chats only
@@ -34394,7 +37735,7 @@ class InputMessagePhoto(TlObject, InputMessageContent):
         self.caption: Union[FormattedText, None] = caption
         r"""Photo caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
         self.show_caption_above_media: bool = bool(show_caption_above_media)
-        r"""True, if caption must be shown above the photo; otherwise, caption must be shown below the photo; not supported in secret chats"""
+        r"""True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo; not supported in secret chats"""
         self.self_destruct_type: Union[
             MessageSelfDestructTypeTimer, MessageSelfDestructTypeImmediately, None
         ] = self_destruct_type
@@ -34547,7 +37888,7 @@ class InputMessageVideo(TlObject, InputMessageContent):
             Video caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
         show_caption_above_media (:class:`bool`):
-            True, if caption must be shown above the video; otherwise, caption must be shown below the video; not supported in secret chats
+            True, if the caption must be shown above the video; otherwise, the caption must be shown below the video; not supported in secret chats
 
         self_destruct_type (:class:`"types.MessageSelfDestructType"`):
             Video self\-destruct type; pass null if none; private chats only
@@ -34590,7 +37931,7 @@ class InputMessageVideo(TlObject, InputMessageContent):
         self.caption: Union[FormattedText, None] = caption
         r"""Video caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
         self.show_caption_above_media: bool = bool(show_caption_above_media)
-        r"""True, if caption must be shown above the video; otherwise, caption must be shown below the video; not supported in secret chats"""
+        r"""True, if the caption must be shown above the video; otherwise, the caption must be shown below the video; not supported in secret chats"""
         self.self_destruct_type: Union[
             MessageSelfDestructTypeTimer, MessageSelfDestructTypeImmediately, None
         ] = self_destruct_type
@@ -35055,8 +38396,11 @@ class InputMessageInvoice(TlObject, InputMessageContent):
         start_parameter (:class:`str`):
             Unique invoice bot deep link parameter for the generation of this invoice\. If empty, it would be possible to pay directly from forwards of the invoice message
 
-        extended_media_content (:class:`"types.InputMessageContent"`):
-            The content of extended media attached to the invoice\. The content of the message to be sent\. Must be one of the following types: inputMessagePhoto, inputMessageVideo
+        paid_media (:class:`"types.InputPaidMedia"`):
+            The content of paid media attached to the invoice; pass null if none
+
+        paid_media_caption (:class:`"types.FormattedText"`):
+            Paid media caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
     """
 
@@ -35073,7 +38417,8 @@ class InputMessageInvoice(TlObject, InputMessageContent):
         provider_token: str = "",
         provider_data: str = "",
         start_parameter: str = "",
-        extended_media_content: InputMessageContent = None,
+        paid_media: InputPaidMedia = None,
+        paid_media_caption: FormattedText = None,
     ) -> None:
         self.invoice: Union[Invoice, None] = invoice
         r"""Invoice"""
@@ -35097,28 +38442,10 @@ class InputMessageInvoice(TlObject, InputMessageContent):
         r"""JSON\-encoded data about the invoice, which will be shared with the payment provider"""
         self.start_parameter: Union[str, None] = start_parameter
         r"""Unique invoice bot deep link parameter for the generation of this invoice\. If empty, it would be possible to pay directly from forwards of the invoice message"""
-        self.extended_media_content: Union[
-            InputMessageText,
-            InputMessageAnimation,
-            InputMessageAudio,
-            InputMessageDocument,
-            InputMessagePhoto,
-            InputMessageSticker,
-            InputMessageVideo,
-            InputMessageVideoNote,
-            InputMessageVoiceNote,
-            InputMessageLocation,
-            InputMessageVenue,
-            InputMessageContact,
-            InputMessageDice,
-            InputMessageGame,
-            InputMessageInvoice,
-            InputMessagePoll,
-            InputMessageStory,
-            InputMessageForwarded,
-            None,
-        ] = extended_media_content
-        r"""The content of extended media attached to the invoice\. The content of the message to be sent\. Must be one of the following types: inputMessagePhoto, inputMessageVideo"""
+        self.paid_media: Union[InputPaidMedia, None] = paid_media
+        r"""The content of paid media attached to the invoice; pass null if none"""
+        self.paid_media_caption: Union[FormattedText, None] = paid_media_caption
+        r"""Paid media caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -35143,7 +38470,8 @@ class InputMessageInvoice(TlObject, InputMessageContent):
             "provider_token": self.provider_token,
             "provider_data": self.provider_data,
             "start_parameter": self.start_parameter,
-            "extended_media_content": self.extended_media_content,
+            "paid_media": self.paid_media,
+            "paid_media_caption": self.paid_media_caption,
         }
 
     @classmethod
@@ -35161,7 +38489,8 @@ class InputMessageInvoice(TlObject, InputMessageContent):
             data_class.provider_token = data.get("provider_token", "")
             data_class.provider_data = data.get("provider_data", "")
             data_class.start_parameter = data.get("start_parameter", "")
-            data_class.extended_media_content = data.get("extended_media_content", None)
+            data_class.paid_media = data.get("paid_media", None)
+            data_class.paid_media_caption = data.get("paid_media_caption", None)
 
         return data_class
 
@@ -35306,7 +38635,7 @@ class InputMessageForwarded(TlObject, InputMessageContent):
             Identifier for the chat this forwarded message came from
 
         message_id (:class:`int`):
-            Identifier of the message to forward\. A message can be forwarded only if message\.can\_be\_forwarded
+            Identifier of the message to forward\. A message can be forwarded only if messageProperties\.can\_be\_forwarded
 
         in_game_share (:class:`bool`):
             True, if a game message is being shared from a launched game; applies only to game messages
@@ -35326,7 +38655,7 @@ class InputMessageForwarded(TlObject, InputMessageContent):
         self.from_chat_id: int = int(from_chat_id)
         r"""Identifier for the chat this forwarded message came from"""
         self.message_id: int = int(message_id)
-        r"""Identifier of the message to forward\. A message can be forwarded only if message\.can\_be\_forwarded"""
+        r"""Identifier of the message to forward\. A message can be forwarded only if messageProperties\.can\_be\_forwarded"""
         self.in_game_share: bool = bool(in_game_share)
         r"""True, if a game message is being shared from a launched game; applies only to game messages"""
         self.copy_options: Union[MessageCopyOptions, None] = copy_options
@@ -35358,6 +38687,258 @@ class InputMessageForwarded(TlObject, InputMessageContent):
             data_class.message_id = int(data.get("message_id", 0))
             data_class.in_game_share = data.get("in_game_share", False)
             data_class.copy_options = data.get("copy_options", None)
+
+        return data_class
+
+
+class MessageProperties(TlObject):
+    r"""Contains properties of a message and describes actions that can be done with the message right now
+
+    Parameters:
+        can_be_copied_to_secret_chat (:class:`bool`):
+            True, if content of the message can be copied to a secret chat using inputMessageForwarded or forwardMessages with copy options
+
+        can_be_deleted_only_for_self (:class:`bool`):
+            True, if the message can be deleted only for the current user while other users will continue to see it using the method deleteMessages with revoke \=\= false
+
+        can_be_deleted_for_all_users (:class:`bool`):
+            True, if the message can be deleted for all users using the method deleteMessages with revoke \=\= true
+
+        can_be_edited (:class:`bool`):
+            True, if the message can be edited using the methods editMessageText, editMessageMedia, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message
+
+        can_be_forwarded (:class:`bool`):
+            True, if the message can be forwarded using inputMessageForwarded or forwardMessages
+
+        can_be_paid (:class:`bool`):
+            True, if the message can be paid using inputInvoiceMessage
+
+        can_be_pinned (:class:`bool`):
+            True, if the message can be pinned or unpinned in the chat using pinChatMessage or unpinChatMessage
+
+        can_be_replied (:class:`bool`):
+            True, if the message can be replied in the same chat and forum topic using inputMessageReplyToMessage
+
+        can_be_replied_in_another_chat (:class:`bool`):
+            True, if the message can be replied in another chat or forum topic using inputMessageReplyToExternalMessage
+
+        can_be_saved (:class:`bool`):
+            True, if content of the message can be saved locally or copied using inputMessageForwarded or forwardMessages with copy options
+
+        can_be_shared_in_story (:class:`bool`):
+            True, if the message can be shared in a story using inputStoryAreaTypeMessage
+
+        can_edit_scheduling_state (:class:`bool`):
+            True, if scheduling state of the message can be edited
+
+        can_get_embedding_code (:class:`bool`):
+            True, if code for message embedding can be received using getMessageEmbeddingCode
+
+        can_get_link (:class:`bool`):
+            True, if a link can be generated for the message using getMessageLink
+
+        can_get_media_timestamp_links (:class:`bool`):
+            True, if media timestamp links can be generated for media timestamp entities in the message text, caption or link preview description using getMessageLink
+
+        can_get_message_thread (:class:`bool`):
+            True, if information about the message thread is available through getMessageThread and getMessageThreadHistory
+
+        can_get_read_date (:class:`bool`):
+            True, if read date of the message can be received through getMessageReadDate
+
+        can_get_statistics (:class:`bool`):
+            True, if message statistics are available through getMessageStatistics and message forwards can be received using getMessagePublicForwards
+
+        can_get_viewers (:class:`bool`):
+            True, if chat members already viewed the message can be received through getMessageViewers
+
+        can_recognize_speech (:class:`bool`):
+            True, if speech can be recognized for the message through recognizeSpeech
+
+        can_report_chat (:class:`bool`):
+            True, if the message can be reported using reportChat
+
+        can_report_reactions (:class:`bool`):
+            True, if reactions on the message can be reported through reportMessageReactions
+
+        can_report_supergroup_spam (:class:`bool`):
+            True, if the message can be reported using reportSupergroupSpam
+
+        can_set_fact_check (:class:`bool`):
+            True, if fact check for the message can be changed through setMessageFactCheck
+
+        need_show_statistics (:class:`bool`):
+            True, if message statistics must be available from context menu of the message
+
+    """
+
+    def __init__(
+        self,
+        can_be_copied_to_secret_chat: bool = False,
+        can_be_deleted_only_for_self: bool = False,
+        can_be_deleted_for_all_users: bool = False,
+        can_be_edited: bool = False,
+        can_be_forwarded: bool = False,
+        can_be_paid: bool = False,
+        can_be_pinned: bool = False,
+        can_be_replied: bool = False,
+        can_be_replied_in_another_chat: bool = False,
+        can_be_saved: bool = False,
+        can_be_shared_in_story: bool = False,
+        can_edit_scheduling_state: bool = False,
+        can_get_embedding_code: bool = False,
+        can_get_link: bool = False,
+        can_get_media_timestamp_links: bool = False,
+        can_get_message_thread: bool = False,
+        can_get_read_date: bool = False,
+        can_get_statistics: bool = False,
+        can_get_viewers: bool = False,
+        can_recognize_speech: bool = False,
+        can_report_chat: bool = False,
+        can_report_reactions: bool = False,
+        can_report_supergroup_spam: bool = False,
+        can_set_fact_check: bool = False,
+        need_show_statistics: bool = False,
+    ) -> None:
+        self.can_be_copied_to_secret_chat: bool = bool(can_be_copied_to_secret_chat)
+        r"""True, if content of the message can be copied to a secret chat using inputMessageForwarded or forwardMessages with copy options"""
+        self.can_be_deleted_only_for_self: bool = bool(can_be_deleted_only_for_self)
+        r"""True, if the message can be deleted only for the current user while other users will continue to see it using the method deleteMessages with revoke \=\= false"""
+        self.can_be_deleted_for_all_users: bool = bool(can_be_deleted_for_all_users)
+        r"""True, if the message can be deleted for all users using the method deleteMessages with revoke \=\= true"""
+        self.can_be_edited: bool = bool(can_be_edited)
+        r"""True, if the message can be edited using the methods editMessageText, editMessageMedia, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message"""
+        self.can_be_forwarded: bool = bool(can_be_forwarded)
+        r"""True, if the message can be forwarded using inputMessageForwarded or forwardMessages"""
+        self.can_be_paid: bool = bool(can_be_paid)
+        r"""True, if the message can be paid using inputInvoiceMessage"""
+        self.can_be_pinned: bool = bool(can_be_pinned)
+        r"""True, if the message can be pinned or unpinned in the chat using pinChatMessage or unpinChatMessage"""
+        self.can_be_replied: bool = bool(can_be_replied)
+        r"""True, if the message can be replied in the same chat and forum topic using inputMessageReplyToMessage"""
+        self.can_be_replied_in_another_chat: bool = bool(can_be_replied_in_another_chat)
+        r"""True, if the message can be replied in another chat or forum topic using inputMessageReplyToExternalMessage"""
+        self.can_be_saved: bool = bool(can_be_saved)
+        r"""True, if content of the message can be saved locally or copied using inputMessageForwarded or forwardMessages with copy options"""
+        self.can_be_shared_in_story: bool = bool(can_be_shared_in_story)
+        r"""True, if the message can be shared in a story using inputStoryAreaTypeMessage"""
+        self.can_edit_scheduling_state: bool = bool(can_edit_scheduling_state)
+        r"""True, if scheduling state of the message can be edited"""
+        self.can_get_embedding_code: bool = bool(can_get_embedding_code)
+        r"""True, if code for message embedding can be received using getMessageEmbeddingCode"""
+        self.can_get_link: bool = bool(can_get_link)
+        r"""True, if a link can be generated for the message using getMessageLink"""
+        self.can_get_media_timestamp_links: bool = bool(can_get_media_timestamp_links)
+        r"""True, if media timestamp links can be generated for media timestamp entities in the message text, caption or link preview description using getMessageLink"""
+        self.can_get_message_thread: bool = bool(can_get_message_thread)
+        r"""True, if information about the message thread is available through getMessageThread and getMessageThreadHistory"""
+        self.can_get_read_date: bool = bool(can_get_read_date)
+        r"""True, if read date of the message can be received through getMessageReadDate"""
+        self.can_get_statistics: bool = bool(can_get_statistics)
+        r"""True, if message statistics are available through getMessageStatistics and message forwards can be received using getMessagePublicForwards"""
+        self.can_get_viewers: bool = bool(can_get_viewers)
+        r"""True, if chat members already viewed the message can be received through getMessageViewers"""
+        self.can_recognize_speech: bool = bool(can_recognize_speech)
+        r"""True, if speech can be recognized for the message through recognizeSpeech"""
+        self.can_report_chat: bool = bool(can_report_chat)
+        r"""True, if the message can be reported using reportChat"""
+        self.can_report_reactions: bool = bool(can_report_reactions)
+        r"""True, if reactions on the message can be reported through reportMessageReactions"""
+        self.can_report_supergroup_spam: bool = bool(can_report_supergroup_spam)
+        r"""True, if the message can be reported using reportSupergroupSpam"""
+        self.can_set_fact_check: bool = bool(can_set_fact_check)
+        r"""True, if fact check for the message can be changed through setMessageFactCheck"""
+        self.need_show_statistics: bool = bool(need_show_statistics)
+        r"""True, if message statistics must be available from context menu of the message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageProperties"]:
+        return "messageProperties"
+
+    def getClass(self) -> Literal["MessageProperties"]:
+        return "MessageProperties"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "can_be_copied_to_secret_chat": self.can_be_copied_to_secret_chat,
+            "can_be_deleted_only_for_self": self.can_be_deleted_only_for_self,
+            "can_be_deleted_for_all_users": self.can_be_deleted_for_all_users,
+            "can_be_edited": self.can_be_edited,
+            "can_be_forwarded": self.can_be_forwarded,
+            "can_be_paid": self.can_be_paid,
+            "can_be_pinned": self.can_be_pinned,
+            "can_be_replied": self.can_be_replied,
+            "can_be_replied_in_another_chat": self.can_be_replied_in_another_chat,
+            "can_be_saved": self.can_be_saved,
+            "can_be_shared_in_story": self.can_be_shared_in_story,
+            "can_edit_scheduling_state": self.can_edit_scheduling_state,
+            "can_get_embedding_code": self.can_get_embedding_code,
+            "can_get_link": self.can_get_link,
+            "can_get_media_timestamp_links": self.can_get_media_timestamp_links,
+            "can_get_message_thread": self.can_get_message_thread,
+            "can_get_read_date": self.can_get_read_date,
+            "can_get_statistics": self.can_get_statistics,
+            "can_get_viewers": self.can_get_viewers,
+            "can_recognize_speech": self.can_recognize_speech,
+            "can_report_chat": self.can_report_chat,
+            "can_report_reactions": self.can_report_reactions,
+            "can_report_supergroup_spam": self.can_report_supergroup_spam,
+            "can_set_fact_check": self.can_set_fact_check,
+            "need_show_statistics": self.need_show_statistics,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageProperties", None]:
+        if data:
+            data_class = cls()
+            data_class.can_be_copied_to_secret_chat = data.get(
+                "can_be_copied_to_secret_chat", False
+            )
+            data_class.can_be_deleted_only_for_self = data.get(
+                "can_be_deleted_only_for_self", False
+            )
+            data_class.can_be_deleted_for_all_users = data.get(
+                "can_be_deleted_for_all_users", False
+            )
+            data_class.can_be_edited = data.get("can_be_edited", False)
+            data_class.can_be_forwarded = data.get("can_be_forwarded", False)
+            data_class.can_be_paid = data.get("can_be_paid", False)
+            data_class.can_be_pinned = data.get("can_be_pinned", False)
+            data_class.can_be_replied = data.get("can_be_replied", False)
+            data_class.can_be_replied_in_another_chat = data.get(
+                "can_be_replied_in_another_chat", False
+            )
+            data_class.can_be_saved = data.get("can_be_saved", False)
+            data_class.can_be_shared_in_story = data.get(
+                "can_be_shared_in_story", False
+            )
+            data_class.can_edit_scheduling_state = data.get(
+                "can_edit_scheduling_state", False
+            )
+            data_class.can_get_embedding_code = data.get(
+                "can_get_embedding_code", False
+            )
+            data_class.can_get_link = data.get("can_get_link", False)
+            data_class.can_get_media_timestamp_links = data.get(
+                "can_get_media_timestamp_links", False
+            )
+            data_class.can_get_message_thread = data.get(
+                "can_get_message_thread", False
+            )
+            data_class.can_get_read_date = data.get("can_get_read_date", False)
+            data_class.can_get_statistics = data.get("can_get_statistics", False)
+            data_class.can_get_viewers = data.get("can_get_viewers", False)
+            data_class.can_recognize_speech = data.get("can_recognize_speech", False)
+            data_class.can_report_chat = data.get("can_report_chat", False)
+            data_class.can_report_reactions = data.get("can_report_reactions", False)
+            data_class.can_report_supergroup_spam = data.get(
+                "can_report_supergroup_spam", False
+            )
+            data_class.can_set_fact_check = data.get("can_set_fact_check", False)
+            data_class.need_show_statistics = data.get("need_show_statistics", False)
 
         return data_class
 
@@ -36496,17 +40077,17 @@ class EmojiKeyword(TlObject):
 
 
 class EmojiKeywords(TlObject):
-    r"""Represents a list of emoji with their keywords
+    r"""Represents a list of emojis with their keywords
 
     Parameters:
         emoji_keywords (:class:`List["types.EmojiKeyword"]`):
-            List of emoji with their keywords
+            List of emojis with their keywords
 
     """
 
     def __init__(self, emoji_keywords: List[EmojiKeyword] = None) -> None:
         self.emoji_keywords: List[EmojiKeyword] = emoji_keywords or []
-        r"""List of emoji with their keywords"""
+        r"""List of emojis with their keywords"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -36564,7 +40145,7 @@ class Stickers(TlObject):
 
 
 class Emojis(TlObject):
-    r"""Represents a list of emoji
+    r"""Represents a list of emojis
 
     Parameters:
         emojis (:class:`List[str]`):
@@ -36644,7 +40225,7 @@ class StickerSet(TlObject):
             List of stickers in this set
 
         emojis (:class:`List["types.Emojis"]`):
-            A list of emoji corresponding to the stickers in the same order\. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object
+            A list of emojis corresponding to the stickers in the same order\. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object
 
     """
 
@@ -36699,7 +40280,7 @@ class StickerSet(TlObject):
         self.stickers: List[Sticker] = stickers or []
         r"""List of stickers in this set"""
         self.emojis: List[Emojis] = emojis or []
-        r"""A list of emoji corresponding to the stickers in the same order\. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object"""
+        r"""A list of emojis corresponding to the stickers in the same order\. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37018,13 +40599,13 @@ class EmojiCategorySourceSearch(TlObject, EmojiCategorySource):
 
     Parameters:
         emojis (:class:`List[str]`):
-            List of emojis for search for
+            List of emojis to search for
 
     """
 
     def __init__(self, emojis: List[str] = None) -> None:
         self.emojis: List[str] = emojis or []
-        r"""List of emojis for search for"""
+        r"""List of emojis to search for"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37277,6 +40858,50 @@ class EmojiCategoryTypeChatPhoto(TlObject, EmojiCategoryType):
         return data_class
 
 
+class CurrentWeather(TlObject):
+    r"""Describes the current weather
+
+    Parameters:
+        temperature (:class:`float`):
+            Temperature, in degree Celsius
+
+        emoji (:class:`str`):
+            Emoji representing the weather
+
+    """
+
+    def __init__(self, temperature: float = 0.0, emoji: str = "") -> None:
+        self.temperature: float = float(temperature)
+        r"""Temperature, in degree Celsius"""
+        self.emoji: Union[str, None] = emoji
+        r"""Emoji representing the weather"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["currentWeather"]:
+        return "currentWeather"
+
+    def getClass(self) -> Literal["CurrentWeather"]:
+        return "CurrentWeather"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "temperature": self.temperature,
+            "emoji": self.emoji,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["CurrentWeather", None]:
+        if data:
+            data_class = cls()
+            data_class.temperature = data.get("temperature", 0.0)
+            data_class.emoji = data.get("emoji", "")
+
+        return data_class
+
+
 class StoryAreaPosition(TlObject):
     r"""Describes position of a clickable rectangle area on a story media
 
@@ -37296,6 +40921,9 @@ class StoryAreaPosition(TlObject):
         rotation_angle (:class:`float`):
             Clockwise rotation angle of the rectangle, in degrees; 0\-360
 
+        corner_radius_percentage (:class:`float`):
+            The radius of the rectangle corner rounding, as a percentage of the media width
+
     """
 
     def __init__(
@@ -37305,6 +40933,7 @@ class StoryAreaPosition(TlObject):
         width_percentage: float = 0.0,
         height_percentage: float = 0.0,
         rotation_angle: float = 0.0,
+        corner_radius_percentage: float = 0.0,
     ) -> None:
         self.x_percentage: float = float(x_percentage)
         r"""The abscissa of the rectangle's center, as a percentage of the media width"""
@@ -37316,6 +40945,8 @@ class StoryAreaPosition(TlObject):
         r"""The height of the rectangle, as a percentage of the media height"""
         self.rotation_angle: float = float(rotation_angle)
         r"""Clockwise rotation angle of the rectangle, in degrees; 0\-360"""
+        self.corner_radius_percentage: float = float(corner_radius_percentage)
+        r"""The radius of the rectangle corner rounding, as a percentage of the media width"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37334,6 +40965,7 @@ class StoryAreaPosition(TlObject):
             "width_percentage": self.width_percentage,
             "height_percentage": self.height_percentage,
             "rotation_angle": self.rotation_angle,
+            "corner_radius_percentage": self.corner_radius_percentage,
         }
 
     @classmethod
@@ -37345,6 +40977,9 @@ class StoryAreaPosition(TlObject):
             data_class.width_percentage = data.get("width_percentage", 0.0)
             data_class.height_percentage = data.get("height_percentage", 0.0)
             data_class.rotation_angle = data.get("rotation_angle", 0.0)
+            data_class.corner_radius_percentage = data.get(
+                "corner_radius_percentage", 0.0
+            )
 
         return data_class
 
@@ -37356,11 +40991,18 @@ class StoryAreaTypeLocation(TlObject, StoryAreaType):
         location (:class:`"types.Location"`):
             The location
 
+        address (:class:`"types.LocationAddress"`):
+            Address of the location; may be null if unknown
+
     """
 
-    def __init__(self, location: Location = None) -> None:
+    def __init__(
+        self, location: Location = None, address: LocationAddress = None
+    ) -> None:
         self.location: Union[Location, None] = location
         r"""The location"""
+        self.address: Union[LocationAddress, None] = address
+        r"""Address of the location; may be null if unknown"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37372,13 +41014,18 @@ class StoryAreaTypeLocation(TlObject, StoryAreaType):
         return "StoryAreaType"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "location": self.location}
+        return {
+            "@type": self.getType(),
+            "location": self.location,
+            "address": self.address,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["StoryAreaTypeLocation", None]:
         if data:
             data_class = cls()
             data_class.location = data.get("location", None)
+            data_class.address = data.get("address", None)
 
         return data_class
 
@@ -37442,9 +41089,9 @@ class StoryAreaTypeSuggestedReaction(TlObject, StoryAreaType):
         is_dark: bool = False,
         is_flipped: bool = False,
     ) -> None:
-        self.reaction_type: Union[ReactionTypeEmoji, ReactionTypeCustomEmoji, None] = (
-            reaction_type
-        )
+        self.reaction_type: Union[
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
+        ] = reaction_type
         r"""Type of the reaction"""
         self.total_count: int = int(total_count)
         r"""Number of times the reaction was added"""
@@ -37527,6 +41174,93 @@ class StoryAreaTypeMessage(TlObject, StoryAreaType):
         return data_class
 
 
+class StoryAreaTypeLink(TlObject, StoryAreaType):
+    r"""An area pointing to a HTTP or tg:// link
+
+    Parameters:
+        url (:class:`str`):
+            HTTP or tg:// URL to be opened when the area is clicked
+
+    """
+
+    def __init__(self, url: str = "") -> None:
+        self.url: Union[str, None] = url
+        r"""HTTP or tg:// URL to be opened when the area is clicked"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["storyAreaTypeLink"]:
+        return "storyAreaTypeLink"
+
+    def getClass(self) -> Literal["StoryAreaType"]:
+        return "StoryAreaType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "url": self.url}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StoryAreaTypeLink", None]:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+
+        return data_class
+
+
+class StoryAreaTypeWeather(TlObject, StoryAreaType):
+    r"""An area with information about weather
+
+    Parameters:
+        temperature (:class:`float`):
+            Temperature, in degree Celsius
+
+        emoji (:class:`str`):
+            Emoji representing the weather
+
+        background_color (:class:`int`):
+            A color of the area background in the ARGB format
+
+    """
+
+    def __init__(
+        self, temperature: float = 0.0, emoji: str = "", background_color: int = 0
+    ) -> None:
+        self.temperature: float = float(temperature)
+        r"""Temperature, in degree Celsius"""
+        self.emoji: Union[str, None] = emoji
+        r"""Emoji representing the weather"""
+        self.background_color: int = int(background_color)
+        r"""A color of the area background in the ARGB format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["storyAreaTypeWeather"]:
+        return "storyAreaTypeWeather"
+
+    def getClass(self) -> Literal["StoryAreaType"]:
+        return "StoryAreaType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "temperature": self.temperature,
+            "emoji": self.emoji,
+            "background_color": self.background_color,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StoryAreaTypeWeather", None]:
+        if data:
+            data_class = cls()
+            data_class.temperature = data.get("temperature", 0.0)
+            data_class.emoji = data.get("emoji", "")
+            data_class.background_color = int(data.get("background_color", 0))
+
+        return data_class
+
+
 class StoryArea(TlObject):
     r"""Describes a clickable rectangle area on a story media
 
@@ -37549,6 +41283,8 @@ class StoryArea(TlObject):
             StoryAreaTypeVenue,
             StoryAreaTypeSuggestedReaction,
             StoryAreaTypeMessage,
+            StoryAreaTypeLink,
+            StoryAreaTypeWeather,
             None,
         ] = type
         r"""Type of the area"""
@@ -37582,11 +41318,18 @@ class InputStoryAreaTypeLocation(TlObject, InputStoryAreaType):
         location (:class:`"types.Location"`):
             The location
 
+        address (:class:`"types.LocationAddress"`):
+            Address of the location; pass null if unknown
+
     """
 
-    def __init__(self, location: Location = None) -> None:
+    def __init__(
+        self, location: Location = None, address: LocationAddress = None
+    ) -> None:
         self.location: Union[Location, None] = location
         r"""The location"""
+        self.address: Union[LocationAddress, None] = address
+        r"""Address of the location; pass null if unknown"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37598,13 +41341,18 @@ class InputStoryAreaTypeLocation(TlObject, InputStoryAreaType):
         return "InputStoryAreaType"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "location": self.location}
+        return {
+            "@type": self.getType(),
+            "location": self.location,
+            "address": self.address,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["InputStoryAreaTypeLocation", None]:
         if data:
             data_class = cls()
             data_class.location = data.get("location", None)
+            data_class.address = data.get("address", None)
 
         return data_class
 
@@ -37718,9 +41466,9 @@ class InputStoryAreaTypeSuggestedReaction(TlObject, InputStoryAreaType):
         is_dark: bool = False,
         is_flipped: bool = False,
     ) -> None:
-        self.reaction_type: Union[ReactionTypeEmoji, ReactionTypeCustomEmoji, None] = (
-            reaction_type
-        )
+        self.reaction_type: Union[
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
+        ] = reaction_type
         r"""Type of the reaction"""
         self.is_dark: bool = bool(is_dark)
         r"""True, if reaction has a dark background"""
@@ -37765,7 +41513,7 @@ class InputStoryAreaTypeMessage(TlObject, InputStoryAreaType):
             Identifier of the chat with the message\. Currently, the chat must be a supergroup or a channel chat
 
         message_id (:class:`int`):
-            Identifier of the message\. Only successfully sent non\-scheduled messages can be specified
+            Identifier of the message\. Use messageProperties\.can\_be\_shared\_in\_story to check whether the message is suitable
 
     """
 
@@ -37773,7 +41521,7 @@ class InputStoryAreaTypeMessage(TlObject, InputStoryAreaType):
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat with the message\. Currently, the chat must be a supergroup or a channel chat"""
         self.message_id: int = int(message_id)
-        r"""Identifier of the message\. Only successfully sent non\-scheduled messages can be specified"""
+        r"""Identifier of the message\. Use messageProperties\.can\_be\_shared\_in\_story to check whether the message is suitable"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37801,6 +41549,93 @@ class InputStoryAreaTypeMessage(TlObject, InputStoryAreaType):
         return data_class
 
 
+class InputStoryAreaTypeLink(TlObject, InputStoryAreaType):
+    r"""An area pointing to a HTTP or tg:// link
+
+    Parameters:
+        url (:class:`str`):
+            HTTP or tg:// URL to be opened when the area is clicked
+
+    """
+
+    def __init__(self, url: str = "") -> None:
+        self.url: Union[str, None] = url
+        r"""HTTP or tg:// URL to be opened when the area is clicked"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputStoryAreaTypeLink"]:
+        return "inputStoryAreaTypeLink"
+
+    def getClass(self) -> Literal["InputStoryAreaType"]:
+        return "InputStoryAreaType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "url": self.url}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputStoryAreaTypeLink", None]:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+
+        return data_class
+
+
+class InputStoryAreaTypeWeather(TlObject, InputStoryAreaType):
+    r"""An area with information about weather
+
+    Parameters:
+        temperature (:class:`float`):
+            Temperature, in degree Celsius
+
+        emoji (:class:`str`):
+            Emoji representing the weather
+
+        background_color (:class:`int`):
+            A color of the area background in the ARGB format
+
+    """
+
+    def __init__(
+        self, temperature: float = 0.0, emoji: str = "", background_color: int = 0
+    ) -> None:
+        self.temperature: float = float(temperature)
+        r"""Temperature, in degree Celsius"""
+        self.emoji: Union[str, None] = emoji
+        r"""Emoji representing the weather"""
+        self.background_color: int = int(background_color)
+        r"""A color of the area background in the ARGB format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputStoryAreaTypeWeather"]:
+        return "inputStoryAreaTypeWeather"
+
+    def getClass(self) -> Literal["InputStoryAreaType"]:
+        return "InputStoryAreaType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "temperature": self.temperature,
+            "emoji": self.emoji,
+            "background_color": self.background_color,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputStoryAreaTypeWeather", None]:
+        if data:
+            data_class = cls()
+            data_class.temperature = data.get("temperature", 0.0)
+            data_class.emoji = data.get("emoji", "")
+            data_class.background_color = int(data.get("background_color", 0))
+
+        return data_class
+
+
 class InputStoryArea(TlObject):
     r"""Describes a clickable rectangle area on a story media to be added
 
@@ -37824,6 +41659,8 @@ class InputStoryArea(TlObject):
             InputStoryAreaTypePreviousVenue,
             InputStoryAreaTypeSuggestedReaction,
             InputStoryAreaTypeMessage,
+            InputStoryAreaTypeLink,
+            InputStoryAreaTypeWeather,
             None,
         ] = type
         r"""Type of the area"""
@@ -37855,13 +41692,13 @@ class InputStoryAreas(TlObject):
 
     Parameters:
         areas (:class:`List["types.InputStoryArea"]`):
-            List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, and up to 1 inputStoryAreaTypeMessage area
+            List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption\(\"story\_link\_area\_count\_max\"\) inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, and up to 3 inputStoryAreaTypeWeather areas
 
     """
 
     def __init__(self, areas: List[InputStoryArea] = None) -> None:
         self.areas: List[InputStoryArea] = areas or []
-        r"""List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, and up to 1 inputStoryAreaTypeMessage area"""
+        r"""List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption\(\"story\_link\_area\_count\_max\"\) inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, and up to 3 inputStoryAreaTypeWeather areas"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -37912,6 +41749,9 @@ class StoryVideo(TlObject):
         preload_prefix_size (:class:`int`):
             Size of file prefix, which is supposed to be preloaded, in bytes
 
+        cover_frame_timestamp (:class:`float`):
+            Timestamp of the frame used as video thumbnail
+
         video (:class:`"types.File"`):
             File containing the video
 
@@ -37927,6 +41767,7 @@ class StoryVideo(TlObject):
         minithumbnail: Minithumbnail = None,
         thumbnail: Thumbnail = None,
         preload_prefix_size: int = 0,
+        cover_frame_timestamp: float = 0.0,
         video: File = None,
     ) -> None:
         self.duration: float = float(duration)
@@ -37945,6 +41786,8 @@ class StoryVideo(TlObject):
         r"""Video thumbnail in JPEG or MPEG4 format; may be null"""
         self.preload_prefix_size: int = int(preload_prefix_size)
         r"""Size of file prefix, which is supposed to be preloaded, in bytes"""
+        self.cover_frame_timestamp: float = float(cover_frame_timestamp)
+        r"""Timestamp of the frame used as video thumbnail"""
         self.video: Union[File, None] = video
         r"""File containing the video"""
 
@@ -37968,6 +41811,7 @@ class StoryVideo(TlObject):
             "minithumbnail": self.minithumbnail,
             "thumbnail": self.thumbnail,
             "preload_prefix_size": self.preload_prefix_size,
+            "cover_frame_timestamp": self.cover_frame_timestamp,
             "video": self.video,
         }
 
@@ -37983,6 +41827,7 @@ class StoryVideo(TlObject):
             data_class.minithumbnail = data.get("minithumbnail", None)
             data_class.thumbnail = data.get("thumbnail", None)
             data_class.preload_prefix_size = int(data.get("preload_prefix_size", 0))
+            data_class.cover_frame_timestamp = data.get("cover_frame_timestamp", 0.0)
             data_class.video = data.get("video", None)
 
         return data_class
@@ -38155,6 +42000,9 @@ class InputStoryContentVideo(TlObject, InputStoryContent):
         duration (:class:`float`):
             Precise duration of the video, in seconds; 0\-60
 
+        cover_frame_timestamp (:class:`float`):
+            Timestamp of the frame, which will be used as video thumbnail
+
         is_animation (:class:`bool`):
             True, if the video has no sound
 
@@ -38165,6 +42013,7 @@ class InputStoryContentVideo(TlObject, InputStoryContent):
         video: InputFile = None,
         added_sticker_file_ids: List[int] = None,
         duration: float = 0.0,
+        cover_frame_timestamp: float = 0.0,
         is_animation: bool = False,
     ) -> None:
         self.video: Union[
@@ -38175,6 +42024,8 @@ class InputStoryContentVideo(TlObject, InputStoryContent):
         r"""File identifiers of the stickers added to the video, if applicable"""
         self.duration: float = float(duration)
         r"""Precise duration of the video, in seconds; 0\-60"""
+        self.cover_frame_timestamp: float = float(cover_frame_timestamp)
+        r"""Timestamp of the frame, which will be used as video thumbnail"""
         self.is_animation: bool = bool(is_animation)
         r"""True, if the video has no sound"""
 
@@ -38193,6 +42044,7 @@ class InputStoryContentVideo(TlObject, InputStoryContent):
             "video": self.video,
             "added_sticker_file_ids": self.added_sticker_file_ids,
             "duration": self.duration,
+            "cover_frame_timestamp": self.cover_frame_timestamp,
             "is_animation": self.is_animation,
         }
 
@@ -38203,6 +42055,7 @@ class InputStoryContentVideo(TlObject, InputStoryContent):
             data_class.video = data.get("video", None)
             data_class.added_sticker_file_ids = data.get("added_sticker_file_ids", None)
             data_class.duration = data.get("duration", 0.0)
+            data_class.cover_frame_timestamp = data.get("cover_frame_timestamp", 0.0)
             data_class.is_animation = data.get("is_animation", False)
 
         return data_class
@@ -38594,7 +42447,7 @@ class Story(TlObject):
         self.interaction_info: Union[StoryInteractionInfo, None] = interaction_info
         r"""Information about interactions with the story; may be null if the story isn't owned or there were no interactions"""
         self.chosen_reaction_type: Union[
-            ReactionTypeEmoji, ReactionTypeCustomEmoji, None
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
         ] = chosen_reaction_type
         r"""Type of the chosen reaction; may be null if none"""
         self.privacy_settings: Union[
@@ -38746,6 +42599,59 @@ class Stories(TlObject):
         return data_class
 
 
+class FoundStories(TlObject):
+    r"""Contains a list of stories found by a search
+
+    Parameters:
+        total_count (:class:`int`):
+            Approximate total number of stories found
+
+        stories (:class:`List["types.Story"]`):
+            List of stories
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self, total_count: int = 0, stories: List[Story] = None, next_offset: str = ""
+    ) -> None:
+        self.total_count: int = int(total_count)
+        r"""Approximate total number of stories found"""
+        self.stories: List[Story] = stories or []
+        r"""List of stories"""
+        self.next_offset: Union[str, None] = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["foundStories"]:
+        return "foundStories"
+
+    def getClass(self) -> Literal["FoundStories"]:
+        return "FoundStories"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "total_count": self.total_count,
+            "stories": self.stories,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["FoundStories", None]:
+        if data:
+            data_class = cls()
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.stories = data.get("stories", None)
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
 class StoryFullId(TlObject):
     r"""Contains identifier of a story along with identifier of its sender
 
@@ -38860,7 +42766,7 @@ class ChatActiveStories(TlObject):
             Identifier of the last read active story
 
         stories (:class:`List["types.StoryInfo"]`):
-            Basic information about the stories; use getStory to get full information about the stories\. The stories are in a chronological order \(i\.e\., in order of increasing story identifiers\)
+            Basic information about the stories; use getStory to get full information about the stories\. The stories are in chronological order \(i\.e\., in order of increasing story identifiers\)
 
     """
 
@@ -38881,7 +42787,7 @@ class ChatActiveStories(TlObject):
         self.max_read_story_id: int = int(max_read_story_id)
         r"""Identifier of the last read active story"""
         self.stories: List[StoryInfo] = stories or []
-        r"""Basic information about the stories; use getStory to get full information about the stories\. The stories are in a chronological order \(i\.e\., in order of increasing story identifiers\)"""
+        r"""Basic information about the stories; use getStory to get full information about the stories\. The stories are in chronological order \(i\.e\., in order of increasing story identifiers\)"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -38926,7 +42832,7 @@ class StoryInteractionTypeView(TlObject, StoryInteractionType):
 
     def __init__(self, chosen_reaction_type: ReactionType = None) -> None:
         self.chosen_reaction_type: Union[
-            ReactionTypeEmoji, ReactionTypeCustomEmoji, None
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
         ] = chosen_reaction_type
         r"""Type of the reaction that was chosen by the viewer; may be null if none"""
 
@@ -39223,6 +43129,7 @@ class QuickReplyMessage(TlObject):
             MessageAnimation,
             MessageAudio,
             MessageDocument,
+            MessagePaidMedia,
             MessagePhoto,
             MessageSticker,
             MessageVideo,
@@ -39272,12 +43179,15 @@ class QuickReplyMessage(TlObject):
             MessageGameScore,
             MessagePaymentSuccessful,
             MessagePaymentSuccessfulBot,
+            MessagePaymentRefunded,
             MessageGiftedPremium,
             MessagePremiumGiftCode,
-            MessagePremiumGiveawayCreated,
-            MessagePremiumGiveaway,
-            MessagePremiumGiveawayCompleted,
-            MessagePremiumGiveawayWinners,
+            MessageGiveawayCreated,
+            MessageGiveaway,
+            MessageGiveawayCompleted,
+            MessageGiveawayWinners,
+            MessageGiftedStars,
+            MessageGiveawayPrizeStars,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -39556,6 +43466,128 @@ class PublicForwards(TlObject):
             data_class.total_count = int(data.get("total_count", 0))
             data_class.forwards = data.get("forwards", None)
             data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class BotMediaPreview(TlObject):
+    r"""Describes media previews of a bot
+
+    Parameters:
+        date (:class:`int`):
+            Point in time \(Unix timestamp\) when the preview was added or changed last time
+
+        content (:class:`"types.StoryContent"`):
+            Content of the preview
+
+    """
+
+    def __init__(self, date: int = 0, content: StoryContent = None) -> None:
+        self.date: int = int(date)
+        r"""Point in time \(Unix timestamp\) when the preview was added or changed last time"""
+        self.content: Union[
+            StoryContentPhoto, StoryContentVideo, StoryContentUnsupported, None
+        ] = content
+        r"""Content of the preview"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["botMediaPreview"]:
+        return "botMediaPreview"
+
+    def getClass(self) -> Literal["BotMediaPreview"]:
+        return "BotMediaPreview"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "date": self.date, "content": self.content}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BotMediaPreview", None]:
+        if data:
+            data_class = cls()
+            data_class.date = int(data.get("date", 0))
+            data_class.content = data.get("content", None)
+
+        return data_class
+
+
+class BotMediaPreviews(TlObject):
+    r"""Contains a list of media previews of a bot
+
+    Parameters:
+        previews (:class:`List["types.BotMediaPreview"]`):
+            List of media previews
+
+    """
+
+    def __init__(self, previews: List[BotMediaPreview] = None) -> None:
+        self.previews: List[BotMediaPreview] = previews or []
+        r"""List of media previews"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["botMediaPreviews"]:
+        return "botMediaPreviews"
+
+    def getClass(self) -> Literal["BotMediaPreviews"]:
+        return "BotMediaPreviews"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "previews": self.previews}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BotMediaPreviews", None]:
+        if data:
+            data_class = cls()
+            data_class.previews = data.get("previews", None)
+
+        return data_class
+
+
+class BotMediaPreviewInfo(TlObject):
+    r"""Contains a list of media previews of a bot for the given language and the list of languages for which the bot has dedicated previews
+
+    Parameters:
+        previews (:class:`List["types.BotMediaPreview"]`):
+            List of media previews
+
+        language_codes (:class:`List[str]`):
+            List of language codes for which the bot has dedicated previews
+
+    """
+
+    def __init__(
+        self, previews: List[BotMediaPreview] = None, language_codes: List[str] = None
+    ) -> None:
+        self.previews: List[BotMediaPreview] = previews or []
+        r"""List of media previews"""
+        self.language_codes: List[str] = language_codes or []
+        r"""List of language codes for which the bot has dedicated previews"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["botMediaPreviewInfo"]:
+        return "botMediaPreviewInfo"
+
+    def getClass(self) -> Literal["BotMediaPreviewInfo"]:
+        return "BotMediaPreviewInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "previews": self.previews,
+            "language_codes": self.language_codes,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BotMediaPreviewInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.previews = data.get("previews", None)
+            data_class.language_codes = data.get("language_codes", None)
 
         return data_class
 
@@ -39905,20 +43937,23 @@ class ChatBoostSourceGiftCode(TlObject, ChatBoostSource):
 
 
 class ChatBoostSourceGiveaway(TlObject, ChatBoostSource):
-    r"""The chat created a Telegram Premium giveaway
+    r"""The chat created a giveaway
 
     Parameters:
         user_id (:class:`int`):
             Identifier of a user that won in the giveaway; 0 if none
 
         gift_code (:class:`str`):
-            The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise
+            The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise; for Telegram Premium giveways only
+
+        star_count (:class:`int`):
+            Number of Telegram Stars distributed among winners of the giveaway
 
         giveaway_message_id (:class:`int`):
             Identifier of the corresponding giveaway message; can be an identifier of a deleted message
 
         is_unclaimed (:class:`bool`):
-            True, if the winner for the corresponding Telegram Premium subscription wasn't chosen, because there were not enough participants
+            True, if the winner for the corresponding giveaway prize wasn't chosen, because there were not enough participants
 
     """
 
@@ -39926,17 +43961,20 @@ class ChatBoostSourceGiveaway(TlObject, ChatBoostSource):
         self,
         user_id: int = 0,
         gift_code: str = "",
+        star_count: int = 0,
         giveaway_message_id: int = 0,
         is_unclaimed: bool = False,
     ) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of a user that won in the giveaway; 0 if none"""
         self.gift_code: Union[str, None] = gift_code
-        r"""The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise"""
+        r"""The created Telegram Premium gift code if it was used by the user or can be claimed by the current user; an empty string otherwise; for Telegram Premium giveways only"""
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars distributed among winners of the giveaway"""
         self.giveaway_message_id: int = int(giveaway_message_id)
         r"""Identifier of the corresponding giveaway message; can be an identifier of a deleted message"""
         self.is_unclaimed: bool = bool(is_unclaimed)
-        r"""True, if the winner for the corresponding Telegram Premium subscription wasn't chosen, because there were not enough participants"""
+        r"""True, if the winner for the corresponding giveaway prize wasn't chosen, because there were not enough participants"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -39952,6 +43990,7 @@ class ChatBoostSourceGiveaway(TlObject, ChatBoostSource):
             "@type": self.getType(),
             "user_id": self.user_id,
             "gift_code": self.gift_code,
+            "star_count": self.star_count,
             "giveaway_message_id": self.giveaway_message_id,
             "is_unclaimed": self.is_unclaimed,
         }
@@ -39962,6 +44001,7 @@ class ChatBoostSourceGiveaway(TlObject, ChatBoostSource):
             data_class = cls()
             data_class.user_id = int(data.get("user_id", 0))
             data_class.gift_code = data.get("gift_code", "")
+            data_class.star_count = int(data.get("star_count", 0))
             data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
             data_class.is_unclaimed = data.get("is_unclaimed", False)
 
@@ -40002,18 +44042,21 @@ class ChatBoostSourcePremium(TlObject, ChatBoostSource):
         return data_class
 
 
-class PrepaidPremiumGiveaway(TlObject):
-    r"""Describes a prepaid Telegram Premium giveaway
+class PrepaidGiveaway(TlObject):
+    r"""Describes a prepaid giveaway
 
     Parameters:
         id (:class:`int`):
             Unique identifier of the prepaid giveaway
 
         winner_count (:class:`int`):
-            Number of users which will receive Telegram Premium subscription gift codes
+            Number of users which will receive giveaway prize
 
-        month_count (:class:`int`):
-            Number of months the Telegram Premium subscription will be active after code activation
+        prize (:class:`"types.GiveawayPrize"`):
+            Prize of the giveaway
+
+        boost_count (:class:`int`):
+            The number of boosts received by the chat from the giveaway; for Telegram Star giveaways only
 
         payment_date (:class:`int`):
             Point in time \(Unix timestamp\) when the giveaway was paid
@@ -40024,43 +44067,48 @@ class PrepaidPremiumGiveaway(TlObject):
         self,
         id: int = 0,
         winner_count: int = 0,
-        month_count: int = 0,
+        prize: GiveawayPrize = None,
+        boost_count: int = 0,
         payment_date: int = 0,
     ) -> None:
         self.id: int = int(id)
         r"""Unique identifier of the prepaid giveaway"""
         self.winner_count: int = int(winner_count)
-        r"""Number of users which will receive Telegram Premium subscription gift codes"""
-        self.month_count: int = int(month_count)
-        r"""Number of months the Telegram Premium subscription will be active after code activation"""
+        r"""Number of users which will receive giveaway prize"""
+        self.prize: Union[GiveawayPrizePremium, GiveawayPrizeStars, None] = prize
+        r"""Prize of the giveaway"""
+        self.boost_count: int = int(boost_count)
+        r"""The number of boosts received by the chat from the giveaway; for Telegram Star giveaways only"""
         self.payment_date: int = int(payment_date)
         r"""Point in time \(Unix timestamp\) when the giveaway was paid"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["prepaidPremiumGiveaway"]:
-        return "prepaidPremiumGiveaway"
+    def getType(self) -> Literal["prepaidGiveaway"]:
+        return "prepaidGiveaway"
 
-    def getClass(self) -> Literal["PrepaidPremiumGiveaway"]:
-        return "PrepaidPremiumGiveaway"
+    def getClass(self) -> Literal["PrepaidGiveaway"]:
+        return "PrepaidGiveaway"
 
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
             "id": self.id,
             "winner_count": self.winner_count,
-            "month_count": self.month_count,
+            "prize": self.prize,
+            "boost_count": self.boost_count,
             "payment_date": self.payment_date,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["PrepaidPremiumGiveaway", None]:
+    def from_dict(cls, data: dict) -> Union["PrepaidGiveaway", None]:
         if data:
             data_class = cls()
             data_class.id = int(data.get("id", 0))
             data_class.winner_count = int(data.get("winner_count", 0))
-            data_class.month_count = int(data.get("month_count", 0))
+            data_class.prize = data.get("prize", None)
+            data_class.boost_count = int(data.get("boost_count", 0))
             data_class.payment_date = int(data.get("payment_date", 0))
 
         return data_class
@@ -40097,7 +44145,7 @@ class ChatBoostStatus(TlObject):
         premium_member_percentage (:class:`float`):
             A percentage of Telegram Premium subscribers joined the chat; always 0 if the current user isn't an administrator in the chat
 
-        prepaid_giveaways (:class:`List["types.PrepaidPremiumGiveaway"]`):
+        prepaid_giveaways (:class:`List["types.PrepaidGiveaway"]`):
             The list of prepaid giveaways available for the chat; only for chat administrators
 
     """
@@ -40113,7 +44161,7 @@ class ChatBoostStatus(TlObject):
         next_level_boost_count: int = 0,
         premium_member_count: int = 0,
         premium_member_percentage: float = 0.0,
-        prepaid_giveaways: List[PrepaidPremiumGiveaway] = None,
+        prepaid_giveaways: List[PrepaidGiveaway] = None,
     ) -> None:
         self.boost_url: Union[str, None] = boost_url
         r"""An HTTP URL, which can be used to boost the chat"""
@@ -40133,7 +44181,7 @@ class ChatBoostStatus(TlObject):
         r"""Approximate number of Telegram Premium subscribers joined the chat; always 0 if the current user isn't an administrator in the chat"""
         self.premium_member_percentage: float = float(premium_member_percentage)
         r"""A percentage of Telegram Premium subscribers joined the chat; always 0 if the current user isn't an administrator in the chat"""
-        self.prepaid_giveaways: List[PrepaidPremiumGiveaway] = prepaid_giveaways or []
+        self.prepaid_giveaways: List[PrepaidGiveaway] = prepaid_giveaways or []
         r"""The list of prepaid giveaways available for the chat; only for chat administrators"""
 
     def __str__(self):
@@ -40456,13 +44504,13 @@ class ResendCodeReasonVerificationFailed(TlObject, ResendCodeReason):
 
     Parameters:
         error_message (:class:`str`):
-            Cause of the verification failure, for example, PLAY\_SERVICES\_NOT\_AVAILABLE, APNS\_RECEIVE\_TIMEOUT, APNS\_INIT\_FAILED, etc\.
+            Cause of the verification failure, for example, PLAY\_SERVICES\_NOT\_AVAILABLE, APNS\_RECEIVE\_TIMEOUT, or APNS\_INIT\_FAILED
 
     """
 
     def __init__(self, error_message: str = "") -> None:
         self.error_message: Union[str, None] = error_message
-        r"""Cause of the verification failure, for example, PLAY\_SERVICES\_NOT\_AVAILABLE, APNS\_RECEIVE\_TIMEOUT, APNS\_INIT\_FAILED, etc\."""
+        r"""Cause of the verification failure, for example, PLAY\_SERVICES\_NOT\_AVAILABLE, APNS\_RECEIVE\_TIMEOUT, or APNS\_INIT\_FAILED"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -41024,7 +45072,7 @@ class CallStateReady(TlObject, CallState):
             Call encryption key
 
         emojis (:class:`List[str]`):
-            Encryption key emojis fingerprint
+            Encryption key fingerprint represented as 4 emoji
 
         allow_p2p (:class:`bool`):
             True, if peer\-to\-peer connection is allowed by users privacy settings
@@ -41053,7 +45101,7 @@ class CallStateReady(TlObject, CallState):
         self.encryption_key: Union[bytes, None] = encryption_key
         r"""Call encryption key"""
         self.emojis: List[str] = emojis or []
-        r"""Encryption key emojis fingerprint"""
+        r"""Encryption key fingerprint represented as 4 emoji"""
         self.allow_p2p: bool = bool(allow_p2p)
         r"""True, if peer\-to\-peer connection is allowed by users privacy settings"""
         self.custom_parameters: Union[str, None] = custom_parameters
@@ -42498,7 +46546,9 @@ class AddedReaction(TlObject):
         is_outgoing: bool = False,
         date: int = 0,
     ) -> None:
-        self.type: Union[ReactionTypeEmoji, ReactionTypeCustomEmoji, None] = type
+        self.type: Union[
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
+        ] = type
         r"""Type of the reaction"""
         self.sender_id: Union[MessageSenderUser, MessageSenderChat, None] = sender_id
         r"""Identifier of the chat member, applied the reaction"""
@@ -42606,7 +46656,9 @@ class AvailableReaction(TlObject):
     """
 
     def __init__(self, type: ReactionType = None, needs_premium: bool = False) -> None:
-        self.type: Union[ReactionTypeEmoji, ReactionTypeCustomEmoji, None] = type
+        self.type: Union[
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
+        ] = type
         r"""Type of the reaction"""
         self.needs_premium: bool = bool(needs_premium)
         r"""True, if Telegram Premium is needed to send the reaction"""
@@ -43845,6 +47897,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -43985,6 +48038,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -44105,6 +48159,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -44219,6 +48274,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -44351,6 +48407,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -44542,6 +48599,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -44672,6 +48730,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -44790,6 +48849,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -44904,6 +48964,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -45042,6 +49103,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -45158,6 +49220,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
             InputMessageAnimation,
             InputMessageAudio,
             InputMessageDocument,
+            InputMessagePaidMedia,
             InputMessagePhoto,
             InputMessageSticker,
             InputMessageVideo,
@@ -46868,6 +50931,80 @@ class ChatEventMemberRestricted(TlObject, ChatEventAction):
         return data_class
 
 
+class ChatEventMemberSubscriptionExtended(TlObject, ChatEventAction):
+    r"""A chat member extended their subscription to the chat
+
+    Parameters:
+        user_id (:class:`int`):
+            Affected chat member user identifier
+
+        old_status (:class:`"types.ChatMemberStatus"`):
+            Previous status of the chat member
+
+        new_status (:class:`"types.ChatMemberStatus"`):
+            New status of the chat member
+
+    """
+
+    def __init__(
+        self,
+        user_id: int = 0,
+        old_status: ChatMemberStatus = None,
+        new_status: ChatMemberStatus = None,
+    ) -> None:
+        self.user_id: int = int(user_id)
+        r"""Affected chat member user identifier"""
+        self.old_status: Union[
+            ChatMemberStatusCreator,
+            ChatMemberStatusAdministrator,
+            ChatMemberStatusMember,
+            ChatMemberStatusRestricted,
+            ChatMemberStatusLeft,
+            ChatMemberStatusBanned,
+            None,
+        ] = old_status
+        r"""Previous status of the chat member"""
+        self.new_status: Union[
+            ChatMemberStatusCreator,
+            ChatMemberStatusAdministrator,
+            ChatMemberStatusMember,
+            ChatMemberStatusRestricted,
+            ChatMemberStatusLeft,
+            ChatMemberStatusBanned,
+            None,
+        ] = new_status
+        r"""New status of the chat member"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["chatEventMemberSubscriptionExtended"]:
+        return "chatEventMemberSubscriptionExtended"
+
+    def getClass(self) -> Literal["ChatEventAction"]:
+        return "ChatEventAction"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "old_status": self.old_status,
+            "new_status": self.new_status,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["ChatEventMemberSubscriptionExtended", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.old_status = data.get("old_status", None)
+            data_class.new_status = data.get("new_status", None)
+
+        return data_class
+
+
 class ChatEventAvailableReactionsChanged(TlObject, ChatEventAction):
     r"""The chat available reactions were changed
 
@@ -47911,6 +52048,43 @@ class ChatEventSignMessagesToggled(TlObject, ChatEventAction):
         return data_class
 
 
+class ChatEventShowMessageSenderToggled(TlObject, ChatEventAction):
+    r"""The show\_message\_sender setting of a channel was toggled
+
+    Parameters:
+        show_message_sender (:class:`bool`):
+            New value of show\_message\_sender
+
+    """
+
+    def __init__(self, show_message_sender: bool = False) -> None:
+        self.show_message_sender: bool = bool(show_message_sender)
+        r"""New value of show\_message\_sender"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["chatEventShowMessageSenderToggled"]:
+        return "chatEventShowMessageSenderToggled"
+
+    def getClass(self) -> Literal["ChatEventAction"]:
+        return "ChatEventAction"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "show_message_sender": self.show_message_sender,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatEventShowMessageSenderToggled", None]:
+        if data:
+            data_class = cls()
+            data_class.show_message_sender = data.get("show_message_sender", False)
+
+        return data_class
+
+
 class ChatEventInviteLinkEdited(TlObject, ChatEventAction):
     r"""A chat invite link was edited
 
@@ -48544,6 +52718,7 @@ class ChatEvent(TlObject):
             ChatEventMemberLeft,
             ChatEventMemberPromoted,
             ChatEventMemberRestricted,
+            ChatEventMemberSubscriptionExtended,
             ChatEventAvailableReactionsChanged,
             ChatEventBackgroundChanged,
             ChatEventDescriptionChanged,
@@ -48566,6 +52741,7 @@ class ChatEvent(TlObject):
             ChatEventIsAllHistoryAvailableToggled,
             ChatEventHasAggressiveAntiSpamEnabledToggled,
             ChatEventSignMessagesToggled,
+            ChatEventShowMessageSenderToggled,
             ChatEventInviteLinkEdited,
             ChatEventInviteLinkRevoked,
             ChatEventInviteLinkDeleted,
@@ -48692,6 +52868,9 @@ class ChatEventLogFilters(TlObject):
         forum_changes (:class:`bool`):
             True, if forum\-related actions need to be returned
 
+        subscription_extensions (:class:`bool`):
+            True, if subscription extensions need to be returned
+
     """
 
     def __init__(
@@ -48709,6 +52888,7 @@ class ChatEventLogFilters(TlObject):
         invite_link_changes: bool = False,
         video_chat_changes: bool = False,
         forum_changes: bool = False,
+        subscription_extensions: bool = False,
     ) -> None:
         self.message_edits: bool = bool(message_edits)
         r"""True, if message edits need to be returned"""
@@ -48736,6 +52916,8 @@ class ChatEventLogFilters(TlObject):
         r"""True, if video chat actions need to be returned"""
         self.forum_changes: bool = bool(forum_changes)
         r"""True, if forum\-related actions need to be returned"""
+        self.subscription_extensions: bool = bool(subscription_extensions)
+        r"""True, if subscription extensions need to be returned"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -48762,6 +52944,7 @@ class ChatEventLogFilters(TlObject):
             "invite_link_changes": self.invite_link_changes,
             "video_chat_changes": self.video_chat_changes,
             "forum_changes": self.forum_changes,
+            "subscription_extensions": self.subscription_extensions,
         }
 
     @classmethod
@@ -48781,6 +52964,9 @@ class ChatEventLogFilters(TlObject):
             data_class.invite_link_changes = data.get("invite_link_changes", False)
             data_class.video_chat_changes = data.get("video_chat_changes", False)
             data_class.forum_changes = data.get("forum_changes", False)
+            data_class.subscription_extensions = data.get(
+                "subscription_extensions", False
+            )
 
         return data_class
 
@@ -50298,6 +54484,32 @@ class PremiumFeatureBusiness(TlObject, PremiumFeature):
         return data_class
 
 
+class PremiumFeatureMessageEffects(TlObject, PremiumFeature):
+    r"""The ability to use all available message effects"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["premiumFeatureMessageEffects"]:
+        return "premiumFeatureMessageEffects"
+
+    def getClass(self) -> Literal["PremiumFeature"]:
+        return "PremiumFeature"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PremiumFeatureMessageEffects", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class BusinessFeatureLocation(TlObject, BusinessFeature):
     r"""The ability to set location"""
 
@@ -50719,7 +54931,7 @@ class PremiumStoryFeatureSaveStories(TlObject, PremiumStoryFeature):
 
 
 class PremiumStoryFeatureLinksAndFormatting(TlObject, PremiumStoryFeature):
-    r"""The ability to use links and formatting in story caption"""
+    r"""The ability to use links and formatting in story caption, and use inputStoryAreaTypeLink areas"""
 
     def __init__(self) -> None:
         pass
@@ -50883,6 +55095,7 @@ class PremiumFeatures(TlObject):
             InternalLinkTypeBotStart,
             InternalLinkTypeBotStartInGroup,
             InternalLinkTypeBusinessChat,
+            InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
@@ -50895,6 +55108,7 @@ class PremiumFeatures(TlObject):
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
             InternalLinkTypeLanguageSettings,
+            InternalLinkTypeMainWebApp,
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypePassportDataRequest,
@@ -50908,7 +55122,6 @@ class PremiumFeatures(TlObject):
             InternalLinkTypeQrCodeAuthentication,
             InternalLinkTypeRestorePurchases,
             InternalLinkTypeSettings,
-            InternalLinkTypeSideMenuBot,
             InternalLinkTypeStickerSet,
             InternalLinkTypeStory,
             InternalLinkTypeTheme,
@@ -51074,6 +55287,7 @@ class PremiumSourceFeature(TlObject, PremiumSource):
             PremiumFeatureMessagePrivacy,
             PremiumFeatureLastSeenTimes,
             PremiumFeatureBusiness,
+            PremiumFeatureMessageEffects,
             None,
         ] = feature
         r"""The used feature"""
@@ -51288,6 +55502,7 @@ class PremiumFeaturePromotionAnimation(TlObject):
             PremiumFeatureMessagePrivacy,
             PremiumFeatureLastSeenTimes,
             PremiumFeatureBusiness,
+            PremiumFeatureMessageEffects,
             None,
         ] = feature
         r"""Premium feature"""
@@ -51496,7 +55711,7 @@ class StorePaymentPurposeGiftedPremium(TlObject, StorePaymentPurpose):
 
     Parameters:
         user_id (:class:`int`):
-            Identifier of the user to which Premium was gifted
+            Identifier of the user to which Telegram Premium is gifted
 
         currency (:class:`str`):
             ISO 4217 currency code of the payment currency
@@ -51508,7 +55723,7 @@ class StorePaymentPurposeGiftedPremium(TlObject, StorePaymentPurpose):
 
     def __init__(self, user_id: int = 0, currency: str = "", amount: int = 0) -> None:
         self.user_id: int = int(user_id)
-        r"""Identifier of the user to which Premium was gifted"""
+        r"""Identifier of the user to which Telegram Premium is gifted"""
         self.currency: Union[str, None] = currency
         r"""ISO 4217 currency code of the payment currency"""
         self.amount: int = int(amount)
@@ -51612,7 +55827,7 @@ class StorePaymentPurposePremiumGiveaway(TlObject, StorePaymentPurpose):
     r"""The user creating a Telegram Premium giveaway
 
     Parameters:
-        parameters (:class:`"types.PremiumGiveawayParameters"`):
+        parameters (:class:`"types.GiveawayParameters"`):
             Giveaway parameters
 
         currency (:class:`str`):
@@ -51624,12 +55839,9 @@ class StorePaymentPurposePremiumGiveaway(TlObject, StorePaymentPurpose):
     """
 
     def __init__(
-        self,
-        parameters: PremiumGiveawayParameters = None,
-        currency: str = "",
-        amount: int = 0,
+        self, parameters: GiveawayParameters = None, currency: str = "", amount: int = 0
     ) -> None:
-        self.parameters: Union[PremiumGiveawayParameters, None] = parameters
+        self.parameters: Union[GiveawayParameters, None] = parameters
         r"""Giveaway parameters"""
         self.currency: Union[str, None] = currency
         r"""ISO 4217 currency code of the payment currency"""
@@ -51664,8 +55876,80 @@ class StorePaymentPurposePremiumGiveaway(TlObject, StorePaymentPurpose):
         return data_class
 
 
+class StorePaymentPurposeStarGiveaway(TlObject, StorePaymentPurpose):
+    r"""The user creating a Telegram Star giveaway
+
+    Parameters:
+        parameters (:class:`"types.GiveawayParameters"`):
+            Giveaway parameters
+
+        currency (:class:`str`):
+            ISO 4217 currency code of the payment currency
+
+        amount (:class:`int`):
+            Paid amount, in the smallest units of the currency
+
+        winner_count (:class:`int`):
+            The number of users to receive Telegram Stars
+
+        star_count (:class:`int`):
+            The number of Telegram Stars to be distributed through the giveaway
+
+    """
+
+    def __init__(
+        self,
+        parameters: GiveawayParameters = None,
+        currency: str = "",
+        amount: int = 0,
+        winner_count: int = 0,
+        star_count: int = 0,
+    ) -> None:
+        self.parameters: Union[GiveawayParameters, None] = parameters
+        r"""Giveaway parameters"""
+        self.currency: Union[str, None] = currency
+        r"""ISO 4217 currency code of the payment currency"""
+        self.amount: int = int(amount)
+        r"""Paid amount, in the smallest units of the currency"""
+        self.winner_count: int = int(winner_count)
+        r"""The number of users to receive Telegram Stars"""
+        self.star_count: int = int(star_count)
+        r"""The number of Telegram Stars to be distributed through the giveaway"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["storePaymentPurposeStarGiveaway"]:
+        return "storePaymentPurposeStarGiveaway"
+
+    def getClass(self) -> Literal["StorePaymentPurpose"]:
+        return "StorePaymentPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "parameters": self.parameters,
+            "currency": self.currency,
+            "amount": self.amount,
+            "winner_count": self.winner_count,
+            "star_count": self.star_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StorePaymentPurposeStarGiveaway", None]:
+        if data:
+            data_class = cls()
+            data_class.parameters = data.get("parameters", None)
+            data_class.currency = data.get("currency", "")
+            data_class.amount = int(data.get("amount", 0))
+            data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.star_count = int(data.get("star_count", 0))
+
+        return data_class
+
+
 class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
-    r"""The user buying Telegram stars
+    r"""The user buying Telegram Stars
 
     Parameters:
         currency (:class:`str`):
@@ -51675,7 +55959,7 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
             Paid amount, in the smallest units of the currency
 
         star_count (:class:`int`):
-            Number of bought stars
+            Number of bought Telegram Stars
 
     """
 
@@ -51687,7 +55971,7 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
         self.amount: int = int(amount)
         r"""Paid amount, in the smallest units of the currency"""
         self.star_count: int = int(star_count)
-        r"""Number of bought stars"""
+        r"""Number of bought Telegram Stars"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -51710,6 +55994,66 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
     def from_dict(cls, data: dict) -> Union["StorePaymentPurposeStars", None]:
         if data:
             data_class = cls()
+            data_class.currency = data.get("currency", "")
+            data_class.amount = int(data.get("amount", 0))
+            data_class.star_count = int(data.get("star_count", 0))
+
+        return data_class
+
+
+class StorePaymentPurposeGiftedStars(TlObject, StorePaymentPurpose):
+    r"""The user buying Telegram Stars for other users
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user to which Telegram Stars are gifted
+
+        currency (:class:`str`):
+            ISO 4217 currency code of the payment currency
+
+        amount (:class:`int`):
+            Paid amount, in the smallest units of the currency
+
+        star_count (:class:`int`):
+            Number of bought Telegram Stars
+
+    """
+
+    def __init__(
+        self, user_id: int = 0, currency: str = "", amount: int = 0, star_count: int = 0
+    ) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user to which Telegram Stars are gifted"""
+        self.currency: Union[str, None] = currency
+        r"""ISO 4217 currency code of the payment currency"""
+        self.amount: int = int(amount)
+        r"""Paid amount, in the smallest units of the currency"""
+        self.star_count: int = int(star_count)
+        r"""Number of bought Telegram Stars"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["storePaymentPurposeGiftedStars"]:
+        return "storePaymentPurposeGiftedStars"
+
+    def getClass(self) -> Literal["StorePaymentPurpose"]:
+        return "StorePaymentPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "currency": self.currency,
+            "amount": self.amount,
+            "star_count": self.star_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StorePaymentPurposeGiftedStars", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.currency = data.get("currency", "")
             data_class.amount = int(data.get("amount", 0))
             data_class.star_count = int(data.get("star_count", 0))
@@ -51795,7 +56139,7 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
     r"""The user creating a Telegram Premium giveaway
 
     Parameters:
-        parameters (:class:`"types.PremiumGiveawayParameters"`):
+        parameters (:class:`"types.GiveawayParameters"`):
             Giveaway parameters
 
         currency (:class:`str`):
@@ -51814,13 +56158,13 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
 
     def __init__(
         self,
-        parameters: PremiumGiveawayParameters = None,
+        parameters: GiveawayParameters = None,
         currency: str = "",
         amount: int = 0,
         winner_count: int = 0,
         month_count: int = 0,
     ) -> None:
-        self.parameters: Union[PremiumGiveawayParameters, None] = parameters
+        self.parameters: Union[GiveawayParameters, None] = parameters
         r"""Giveaway parameters"""
         self.currency: Union[str, None] = currency
         r"""ISO 4217 currency code of the payment currency"""
@@ -51866,7 +56210,7 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
 
 
 class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
-    r"""The user buying Telegram stars
+    r"""The user buying Telegram Stars
 
     Parameters:
         currency (:class:`str`):
@@ -51876,7 +56220,7 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
             Paid amount, in the smallest units of the currency
 
         star_count (:class:`int`):
-            Number of bought stars
+            Number of bought Telegram Stars
 
     """
 
@@ -51888,7 +56232,7 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
         self.amount: int = int(amount)
         r"""Paid amount, in the smallest units of the currency"""
         self.star_count: int = int(star_count)
-        r"""Number of bought stars"""
+        r"""Number of bought Telegram Stars"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -51914,6 +56258,172 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
             data_class.currency = data.get("currency", "")
             data_class.amount = int(data.get("amount", 0))
             data_class.star_count = int(data.get("star_count", 0))
+
+        return data_class
+
+
+class TelegramPaymentPurposeGiftedStars(TlObject, TelegramPaymentPurpose):
+    r"""The user buying Telegram Stars for other users
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user to which Telegram Stars are gifted
+
+        currency (:class:`str`):
+            ISO 4217 currency code of the payment currency
+
+        amount (:class:`int`):
+            Paid amount, in the smallest units of the currency
+
+        star_count (:class:`int`):
+            Number of bought Telegram Stars
+
+    """
+
+    def __init__(
+        self, user_id: int = 0, currency: str = "", amount: int = 0, star_count: int = 0
+    ) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user to which Telegram Stars are gifted"""
+        self.currency: Union[str, None] = currency
+        r"""ISO 4217 currency code of the payment currency"""
+        self.amount: int = int(amount)
+        r"""Paid amount, in the smallest units of the currency"""
+        self.star_count: int = int(star_count)
+        r"""Number of bought Telegram Stars"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["telegramPaymentPurposeGiftedStars"]:
+        return "telegramPaymentPurposeGiftedStars"
+
+    def getClass(self) -> Literal["TelegramPaymentPurpose"]:
+        return "TelegramPaymentPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "currency": self.currency,
+            "amount": self.amount,
+            "star_count": self.star_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TelegramPaymentPurposeGiftedStars", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.currency = data.get("currency", "")
+            data_class.amount = int(data.get("amount", 0))
+            data_class.star_count = int(data.get("star_count", 0))
+
+        return data_class
+
+
+class TelegramPaymentPurposeStarGiveaway(TlObject, TelegramPaymentPurpose):
+    r"""The user creating a Telegram Star giveaway
+
+    Parameters:
+        parameters (:class:`"types.GiveawayParameters"`):
+            Giveaway parameters
+
+        currency (:class:`str`):
+            ISO 4217 currency code of the payment currency
+
+        amount (:class:`int`):
+            Paid amount, in the smallest units of the currency
+
+        winner_count (:class:`int`):
+            The number of users to receive Telegram Stars
+
+        star_count (:class:`int`):
+            The number of Telegram Stars to be distributed through the giveaway
+
+    """
+
+    def __init__(
+        self,
+        parameters: GiveawayParameters = None,
+        currency: str = "",
+        amount: int = 0,
+        winner_count: int = 0,
+        star_count: int = 0,
+    ) -> None:
+        self.parameters: Union[GiveawayParameters, None] = parameters
+        r"""Giveaway parameters"""
+        self.currency: Union[str, None] = currency
+        r"""ISO 4217 currency code of the payment currency"""
+        self.amount: int = int(amount)
+        r"""Paid amount, in the smallest units of the currency"""
+        self.winner_count: int = int(winner_count)
+        r"""The number of users to receive Telegram Stars"""
+        self.star_count: int = int(star_count)
+        r"""The number of Telegram Stars to be distributed through the giveaway"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["telegramPaymentPurposeStarGiveaway"]:
+        return "telegramPaymentPurposeStarGiveaway"
+
+    def getClass(self) -> Literal["TelegramPaymentPurpose"]:
+        return "TelegramPaymentPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "parameters": self.parameters,
+            "currency": self.currency,
+            "amount": self.amount,
+            "winner_count": self.winner_count,
+            "star_count": self.star_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TelegramPaymentPurposeStarGiveaway", None]:
+        if data:
+            data_class = cls()
+            data_class.parameters = data.get("parameters", None)
+            data_class.currency = data.get("currency", "")
+            data_class.amount = int(data.get("amount", 0))
+            data_class.winner_count = int(data.get("winner_count", 0))
+            data_class.star_count = int(data.get("star_count", 0))
+
+        return data_class
+
+
+class TelegramPaymentPurposeJoinChat(TlObject, TelegramPaymentPurpose):
+    r"""The user joins a chat and subscribes to regular payments in Telegram Stars
+
+    Parameters:
+        invite_link (:class:`str`):
+            Invite link to use
+
+    """
+
+    def __init__(self, invite_link: str = "") -> None:
+        self.invite_link: Union[str, None] = invite_link
+        r"""Invite link to use"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["telegramPaymentPurposeJoinChat"]:
+        return "telegramPaymentPurposeJoinChat"
+
+    def getClass(self) -> Literal["TelegramPaymentPurpose"]:
+        return "TelegramPaymentPurpose"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "invite_link": self.invite_link}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TelegramPaymentPurposeJoinChat", None]:
+        if data:
+            data_class = cls()
+            data_class.invite_link = data.get("invite_link", "")
 
         return data_class
 
@@ -52596,7 +57106,7 @@ class BackgroundTypePattern(TlObject, BackgroundType):
             Fill of the background
 
         intensity (:class:`int`):
-            Intensity of the pattern when it is shown above the filled background; 0\-100\.
+            Intensity of the pattern when it is shown above the filled background; 0\-100
 
         is_inverted (:class:`bool`):
             True, if the background fill must be applied only to the pattern itself\. All other pixels are black in this case\. For dark themes only
@@ -52621,7 +57131,7 @@ class BackgroundTypePattern(TlObject, BackgroundType):
         ] = fill
         r"""Fill of the background"""
         self.intensity: int = int(intensity)
-        r"""Intensity of the pattern when it is shown above the filled background; 0\-100\."""
+        r"""Intensity of the pattern when it is shown above the filled background; 0\-100"""
         self.is_inverted: bool = bool(is_inverted)
         r"""True, if the background fill must be applied only to the pattern itself\. All other pixels are black in this case\. For dark themes only"""
         self.is_moving: bool = bool(is_moving)
@@ -52830,87 +57340,6 @@ class InputBackgroundPrevious(TlObject, InputBackground):
         if data:
             data_class = cls()
             data_class.message_id = int(data.get("message_id", 0))
-
-        return data_class
-
-
-class ThemeSettings(TlObject):
-    r"""Describes theme settings
-
-    Parameters:
-        accent_color (:class:`int`):
-            Theme accent color in ARGB format
-
-        background (:class:`"types.Background"`):
-            The background to be used in chats; may be null
-
-        outgoing_message_fill (:class:`"types.BackgroundFill"`):
-            The fill to be used as a background for outgoing messages
-
-        animate_outgoing_message_fill (:class:`bool`):
-            If true, the freeform gradient fill needs to be animated on every sent message
-
-        outgoing_message_accent_color (:class:`int`):
-            Accent color of outgoing messages in ARGB format
-
-    """
-
-    def __init__(
-        self,
-        accent_color: int = 0,
-        background: Background = None,
-        outgoing_message_fill: BackgroundFill = None,
-        animate_outgoing_message_fill: bool = False,
-        outgoing_message_accent_color: int = 0,
-    ) -> None:
-        self.accent_color: int = int(accent_color)
-        r"""Theme accent color in ARGB format"""
-        self.background: Union[Background, None] = background
-        r"""The background to be used in chats; may be null"""
-        self.outgoing_message_fill: Union[
-            BackgroundFillSolid,
-            BackgroundFillGradient,
-            BackgroundFillFreeformGradient,
-            None,
-        ] = outgoing_message_fill
-        r"""The fill to be used as a background for outgoing messages"""
-        self.animate_outgoing_message_fill: bool = bool(animate_outgoing_message_fill)
-        r"""If true, the freeform gradient fill needs to be animated on every sent message"""
-        self.outgoing_message_accent_color: int = int(outgoing_message_accent_color)
-        r"""Accent color of outgoing messages in ARGB format"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["themeSettings"]:
-        return "themeSettings"
-
-    def getClass(self) -> Literal["ThemeSettings"]:
-        return "ThemeSettings"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "accent_color": self.accent_color,
-            "background": self.background,
-            "outgoing_message_fill": self.outgoing_message_fill,
-            "animate_outgoing_message_fill": self.animate_outgoing_message_fill,
-            "outgoing_message_accent_color": self.outgoing_message_accent_color,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["ThemeSettings", None]:
-        if data:
-            data_class = cls()
-            data_class.accent_color = int(data.get("accent_color", 0))
-            data_class.background = data.get("background", None)
-            data_class.outgoing_message_fill = data.get("outgoing_message_fill", None)
-            data_class.animate_outgoing_message_fill = data.get(
-                "animate_outgoing_message_fill", False
-            )
-            data_class.outgoing_message_accent_color = int(
-                data.get("outgoing_message_accent_color", 0)
-            )
 
         return data_class
 
@@ -54258,6 +58687,50 @@ class PushMessageContentLocation(TlObject, PushMessageContent):
         return data_class
 
 
+class PushMessageContentPaidMedia(TlObject, PushMessageContent):
+    r"""A message with paid media
+
+    Parameters:
+        star_count (:class:`int`):
+            Number of Telegram Stars needed to buy access to the media in the message; 0 for pinned message
+
+        is_pinned (:class:`bool`):
+            True, if the message is a pinned message with the specified content
+
+    """
+
+    def __init__(self, star_count: int = 0, is_pinned: bool = False) -> None:
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars needed to buy access to the media in the message; 0 for pinned message"""
+        self.is_pinned: bool = bool(is_pinned)
+        r"""True, if the message is a pinned message with the specified content"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["pushMessageContentPaidMedia"]:
+        return "pushMessageContentPaidMedia"
+
+    def getClass(self) -> Literal["PushMessageContent"]:
+        return "PushMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "is_pinned": self.is_pinned,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PushMessageContentPaidMedia", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.is_pinned = data.get("is_pinned", False)
+
+        return data_class
+
+
 class PushMessageContentPhoto(TlObject, PushMessageContent):
     r"""A photo message
 
@@ -54409,15 +58882,15 @@ class PushMessageContentPremiumGiftCode(TlObject, PushMessageContent):
         return data_class
 
 
-class PushMessageContentPremiumGiveaway(TlObject, PushMessageContent):
-    r"""A message with a Telegram Premium giveaway
+class PushMessageContentGiveaway(TlObject, PushMessageContent):
+    r"""A message with a giveaway
 
     Parameters:
         winner_count (:class:`int`):
-            Number of users which will receive Telegram Premium subscription gift codes; 0 for pinned message
+            Number of users which will receive giveaway prizes; 0 for pinned message
 
-        month_count (:class:`int`):
-            Number of months the Telegram Premium subscription will be active after code activation; 0 for pinned message
+        prize (:class:`"types.GiveawayPrize"`):
+            Prize of the giveaway; may be null for pinned message
 
         is_pinned (:class:`bool`):
             True, if the message is a pinned message with the specified content
@@ -54425,20 +58898,23 @@ class PushMessageContentPremiumGiveaway(TlObject, PushMessageContent):
     """
 
     def __init__(
-        self, winner_count: int = 0, month_count: int = 0, is_pinned: bool = False
+        self,
+        winner_count: int = 0,
+        prize: GiveawayPrize = None,
+        is_pinned: bool = False,
     ) -> None:
         self.winner_count: int = int(winner_count)
-        r"""Number of users which will receive Telegram Premium subscription gift codes; 0 for pinned message"""
-        self.month_count: int = int(month_count)
-        r"""Number of months the Telegram Premium subscription will be active after code activation; 0 for pinned message"""
+        r"""Number of users which will receive giveaway prizes; 0 for pinned message"""
+        self.prize: Union[GiveawayPrizePremium, GiveawayPrizeStars, None] = prize
+        r"""Prize of the giveaway; may be null for pinned message"""
         self.is_pinned: bool = bool(is_pinned)
         r"""True, if the message is a pinned message with the specified content"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["pushMessageContentPremiumGiveaway"]:
-        return "pushMessageContentPremiumGiveaway"
+    def getType(self) -> Literal["pushMessageContentGiveaway"]:
+        return "pushMessageContentGiveaway"
 
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
@@ -54447,16 +58923,16 @@ class PushMessageContentPremiumGiveaway(TlObject, PushMessageContent):
         return {
             "@type": self.getType(),
             "winner_count": self.winner_count,
-            "month_count": self.month_count,
+            "prize": self.prize,
             "is_pinned": self.is_pinned,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["PushMessageContentPremiumGiveaway", None]:
+    def from_dict(cls, data: dict) -> Union["PushMessageContentGiveaway", None]:
         if data:
             data_class = cls()
             data_class.winner_count = int(data.get("winner_count", 0))
-            data_class.month_count = int(data.get("month_count", 0))
+            data_class.prize = data.get("prize", None)
             data_class.is_pinned = data.get("is_pinned", False)
 
         return data_class
@@ -55411,10 +59887,11 @@ class NotificationTypeNewPushMessage(TlObject, NotificationType):
             PushMessageContentGameScore,
             PushMessageContentInvoice,
             PushMessageContentLocation,
+            PushMessageContentPaidMedia,
             PushMessageContentPhoto,
             PushMessageContentPoll,
             PushMessageContentPremiumGiftCode,
-            PushMessageContentPremiumGiveaway,
+            PushMessageContentGiveaway,
             PushMessageContentScreenshotTaken,
             PushMessageContentSticker,
             PushMessageContentStory,
@@ -56955,13 +61432,13 @@ class ReadDatePrivacySettings(TlObject):
 
     Parameters:
         show_read_date (:class:`bool`):
-            True, if message read date is shown to other users in private chats\. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date\.
+            True, if message read date is shown to other users in private chats\. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date
 
     """
 
     def __init__(self, show_read_date: bool = False) -> None:
         self.show_read_date: bool = bool(show_read_date)
-        r"""True, if message read date is shown to other users in private chats\. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date\."""
+        r"""True, if message read date is shown to other users in private chats\. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -57114,13 +61591,13 @@ class AccountTtl(TlObject):
 
     Parameters:
         days (:class:`int`):
-            Number of days of inactivity before the account will be flagged for deletion; 30\-366 days
+            Number of days of inactivity before the account will be flagged for deletion; 30\-730 days
 
     """
 
     def __init__(self, days: int = 0) -> None:
         self.days: int = int(days)
-        r"""Number of days of inactivity before the account will be flagged for deletion; 30\-366 days"""
+        r"""Number of days of inactivity before the account will be flagged for deletion; 30\-730 days"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -58437,6 +62914,7 @@ class TargetChatInternalLink(TlObject, TargetChat):
             InternalLinkTypeBotStart,
             InternalLinkTypeBotStartInGroup,
             InternalLinkTypeBusinessChat,
+            InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
@@ -58449,6 +62927,7 @@ class TargetChatInternalLink(TlObject, TargetChat):
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
             InternalLinkTypeLanguageSettings,
+            InternalLinkTypeMainWebApp,
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypePassportDataRequest,
@@ -58462,7 +62941,6 @@ class TargetChatInternalLink(TlObject, TargetChat):
             InternalLinkTypeQrCodeAuthentication,
             InternalLinkTypeRestorePurchases,
             InternalLinkTypeSettings,
-            InternalLinkTypeSideMenuBot,
             InternalLinkTypeStickerSet,
             InternalLinkTypeStory,
             InternalLinkTypeTheme,
@@ -58525,7 +63003,7 @@ class InternalLinkTypeActiveSessions(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeAttachmentMenuBot(TlObject, InternalLinkType):
-    r"""The link is a link to an attachment menu bot to be opened in the specified or a chosen chat\. Process given target\_chat to open the chat\. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu\. Then, use getAttachmentMenuBot to receive information about the bot\. If the bot isn't added to attachment menu, then show a disclaimer about Mini Apps being a third\-party apps, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. If the attachment menu bot can't be used in the opened chat, show an error to the user\. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL
+    r"""The link is a link to an attachment menu bot to be opened in the specified or a chosen chat\. Process given target\_chat to open the chat\. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu\. Then, use getAttachmentMenuBot to receive information about the bot\. If the bot isn't added to attachment menu, then show a disclaimer about Mini Apps being third\-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. If the attachment menu bot can't be used in the opened chat, show an error to the user\. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL
 
     Parameters:
         target_chat (:class:`"types.TargetChat"`):
@@ -58614,7 +63092,7 @@ class InternalLinkTypeAuthenticationCode(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeBackground(TlObject, InternalLinkType):
-    r"""The link is a link to a background\. Call searchBackground with the given background name to process the link If background is found and the user wants to apply it, then call setDefaultBackground
+    r"""The link is a link to a background\. Call searchBackground with the given background name to process the link\. If background is found and the user wants to apply it, then call setDefaultBackground
 
     Parameters:
         background_name (:class:`str`):
@@ -58751,7 +63229,7 @@ class InternalLinkTypeBotStart(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeBotStartInGroup(TlObject, InternalLinkType):
-    r"""The link is a link to a Telegram bot, which is supposed to be added to a group chat\. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to groups, ask the current user to select a basic group or a supergroup chat to add the bot to, taking into account that bots can be added to a public supergroup only by administrators of the supergroup\. If administrator rights are provided by the link, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights, combine received rights with the requested administrator rights, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed administrator rights\. Before call to setChatMemberStatus it may be required to upgrade the chosen basic group chat to a supergroup chat\. Then, if start\_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat; otherwise, just send /start message with bot's username added to the chat\.
+    r"""The link is a link to a Telegram bot, which is supposed to be added to a group chat\. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to groups, ask the current user to select a basic group or a supergroup chat to add the bot to, taking into account that bots can be added to a public supergroup only by administrators of the supergroup\. If administrator rights are provided by the link, call getChatMember to receive the current bot rights in the chat and if the bot already is an administrator, check that the current user can edit its administrator rights, combine received rights with the requested administrator rights, show confirmation box to the user, and call setChatMemberStatus with the chosen chat and confirmed administrator rights\. Before call to setChatMemberStatus it may be required to upgrade the chosen basic group chat to a supergroup chat\. Then, if start\_parameter isn't empty, call sendBotStartMessage with the given start parameter and the chosen chat; otherwise, just send /start message with bot's username added to the chat
 
     Parameters:
         bot_username (:class:`str`):
@@ -58842,8 +63320,52 @@ class InternalLinkTypeBusinessChat(TlObject, InternalLinkType):
         return data_class
 
 
+class InternalLinkTypeBuyStars(TlObject, InternalLinkType):
+    r"""The link is a link to the Telegram Star purchase section of the application
+
+    Parameters:
+        star_count (:class:`int`):
+            The number of Telegram Stars that must be owned by the user
+
+        purpose (:class:`str`):
+            Purpose of Telegram Star purchase\. Arbitrary string specified by the server, for example, \"subs\" if the Telegram Stars are required to extend channel subscriptions
+
+    """
+
+    def __init__(self, star_count: int = 0, purpose: str = "") -> None:
+        self.star_count: int = int(star_count)
+        r"""The number of Telegram Stars that must be owned by the user"""
+        self.purpose: Union[str, None] = purpose
+        r"""Purpose of Telegram Star purchase\. Arbitrary string specified by the server, for example, \"subs\" if the Telegram Stars are required to extend channel subscriptions"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["internalLinkTypeBuyStars"]:
+        return "internalLinkTypeBuyStars"
+
+    def getClass(self) -> Literal["InternalLinkType"]:
+        return "InternalLinkType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "purpose": self.purpose,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InternalLinkTypeBuyStars", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.purpose = data.get("purpose", "")
+
+        return data_class
+
+
 class InternalLinkTypeChangePhoneNumber(TlObject, InternalLinkType):
-    r"""The link is a link to the change phone number section of the app"""
+    r"""The link is a link to the change phone number section of the application"""
 
     def __init__(self) -> None:
         pass
@@ -58937,7 +63459,7 @@ class InternalLinkTypeChatFolderInvite(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeChatFolderSettings(TlObject, InternalLinkType):
-    r"""The link is a link to the folder section of the app settings"""
+    r"""The link is a link to the folder section of the application settings"""
 
     def __init__(self) -> None:
         pass
@@ -58997,7 +63519,7 @@ class InternalLinkTypeChatInvite(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings(TlObject, InternalLinkType):
-    r"""The link is a link to the default message auto\-delete timer settings section of the app settings"""
+    r"""The link is a link to the default message auto\-delete timer settings section of the application settings"""
 
     def __init__(self) -> None:
         pass
@@ -59027,7 +63549,7 @@ class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings(TlObject, InternalLi
 
 
 class InternalLinkTypeEditProfileSettings(TlObject, InternalLinkType):
-    r"""The link is a link to the edit profile section of the app settings"""
+    r"""The link is a link to the edit profile section of the application settings"""
 
     def __init__(self) -> None:
         pass
@@ -59211,7 +63733,7 @@ class InternalLinkTypeLanguagePack(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeLanguageSettings(TlObject, InternalLinkType):
-    r"""The link is a link to the language section of the app settings"""
+    r"""The link is a link to the language section of the application settings"""
 
     def __init__(self) -> None:
         pass
@@ -59232,6 +63754,62 @@ class InternalLinkTypeLanguageSettings(TlObject, InternalLinkType):
     def from_dict(cls, data: dict) -> Union["InternalLinkTypeLanguageSettings", None]:
         if data:
             data_class = cls()
+
+        return data_class
+
+
+class InternalLinkTypeMainWebApp(TlObject, InternalLinkType):
+    r"""The link is a link to the main Web App of a bot\. Call searchPublicChat with the given bot username, check that the user is a bot and has the main Web App\. If the bot can be added to attachment menu, then use getAttachmentMenuBot to receive information about the bot, then if the bot isn't added to side menu, show a disclaimer about Mini Apps being third\-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu, then if the user accepts the terms and confirms adding, use toggleBotIsAddedToAttachmentMenu to add the bot\. Then, use getMainWebApp with the given start parameter and open the returned URL as a Web App
+
+    Parameters:
+        bot_username (:class:`str`):
+            Username of the bot
+
+        start_parameter (:class:`str`):
+            Start parameter to be passed to getMainWebApp
+
+        is_compact (:class:`bool`):
+            True, if the Web App must be opened in the compact mode instead of the full\-size mode
+
+    """
+
+    def __init__(
+        self,
+        bot_username: str = "",
+        start_parameter: str = "",
+        is_compact: bool = False,
+    ) -> None:
+        self.bot_username: Union[str, None] = bot_username
+        r"""Username of the bot"""
+        self.start_parameter: Union[str, None] = start_parameter
+        r"""Start parameter to be passed to getMainWebApp"""
+        self.is_compact: bool = bool(is_compact)
+        r"""True, if the Web App must be opened in the compact mode instead of the full\-size mode"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["internalLinkTypeMainWebApp"]:
+        return "internalLinkTypeMainWebApp"
+
+    def getClass(self) -> Literal["InternalLinkType"]:
+        return "InternalLinkType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "bot_username": self.bot_username,
+            "start_parameter": self.start_parameter,
+            "is_compact": self.is_compact,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InternalLinkTypeMainWebApp", None]:
+        if data:
+            data_class = cls()
+            data_class.bot_username = data.get("bot_username", "")
+            data_class.start_parameter = data.get("start_parameter", "")
+            data_class.is_compact = data.get("is_compact", False)
 
         return data_class
 
@@ -59537,7 +64115,7 @@ class InternalLinkTypePremiumGiftCode(TlObject, InternalLinkType):
 
 
 class InternalLinkTypePrivacyAndSecuritySettings(TlObject, InternalLinkType):
-    r"""The link is a link to the privacy and security section of the app settings"""
+    r"""The link is a link to the privacy and security section of the application settings"""
 
     def __init__(self) -> None:
         pass
@@ -59616,7 +64194,7 @@ class InternalLinkTypeProxy(TlObject, InternalLinkType):
 
 
 class InternalLinkTypePublicChat(TlObject, InternalLinkType):
-    r"""The link is a link to a chat by its username\. Call searchPublicChat with the given chat username to process the link If the chat is found, open its profile information screen or the chat itself\. If draft text isn't empty and the chat is a private chat with a regular user, then put the draft text in the input field
+    r"""The link is a link to a chat by its username\. Call searchPublicChat with the given chat username to process the link\. If the chat is found, open its profile information screen or the chat itself\. If draft text isn't empty and the chat is a private chat with a regular user, then put the draft text in the input field
 
     Parameters:
         chat_username (:class:`str`):
@@ -59625,13 +64203,20 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
         draft_text (:class:`str`):
             Draft text for message to send in the chat
 
+        open_profile (:class:`bool`):
+            True, if chat profile information screen must be opened; otherwise, the chat itself must be opened
+
     """
 
-    def __init__(self, chat_username: str = "", draft_text: str = "") -> None:
+    def __init__(
+        self, chat_username: str = "", draft_text: str = "", open_profile: bool = False
+    ) -> None:
         self.chat_username: Union[str, None] = chat_username
         r"""Username of the chat"""
         self.draft_text: Union[str, None] = draft_text
         r"""Draft text for message to send in the chat"""
+        self.open_profile: bool = bool(open_profile)
+        r"""True, if chat profile information screen must be opened; otherwise, the chat itself must be opened"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -59647,6 +64232,7 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
             "@type": self.getType(),
             "chat_username": self.chat_username,
             "draft_text": self.draft_text,
+            "open_profile": self.open_profile,
         }
 
     @classmethod
@@ -59655,6 +64241,7 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
             data_class = cls()
             data_class.chat_username = data.get("chat_username", "")
             data_class.draft_text = data.get("draft_text", "")
+            data_class.open_profile = data.get("open_profile", False)
 
         return data_class
 
@@ -59735,50 +64322,6 @@ class InternalLinkTypeSettings(TlObject, InternalLinkType):
     def from_dict(cls, data: dict) -> Union["InternalLinkTypeSettings", None]:
         if data:
             data_class = cls()
-
-        return data_class
-
-
-class InternalLinkTypeSideMenuBot(TlObject, InternalLinkType):
-    r"""The link is a link to a bot, which can be installed to the side menu\. Call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu\. Then, use getAttachmentMenuBot to receive information about the bot\. If the bot isn't added to side menu, then show a disclaimer about Mini Apps being a third\-party apps, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. If the bot is added to side menu, then use getWebAppUrl with the given URL and open the returned URL as a Web App
-
-    Parameters:
-        bot_username (:class:`str`):
-            Username of the bot
-
-        url (:class:`str`):
-            URL to be passed to getWebAppUrl
-
-    """
-
-    def __init__(self, bot_username: str = "", url: str = "") -> None:
-        self.bot_username: Union[str, None] = bot_username
-        r"""Username of the bot"""
-        self.url: Union[str, None] = url
-        r"""URL to be passed to getWebAppUrl"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["internalLinkTypeSideMenuBot"]:
-        return "internalLinkTypeSideMenuBot"
-
-    def getClass(self) -> Literal["InternalLinkType"]:
-        return "InternalLinkType"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "bot_username": self.bot_username,
-            "url": self.url,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["InternalLinkTypeSideMenuBot", None]:
-        if data:
-            data_class = cls()
-            data_class.bot_username = data.get("bot_username", "")
-            data_class.url = data.get("url", "")
 
         return data_class
 
@@ -59874,7 +64417,7 @@ class InternalLinkTypeStory(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeTheme(TlObject, InternalLinkType):
-    r"""The link is a link to a theme\. TDLib has no theme support yet
+    r"""The link is a link to a cloud theme\. TDLib has no theme support yet
 
     Parameters:
         theme_name (:class:`str`):
@@ -59908,7 +64451,7 @@ class InternalLinkTypeTheme(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeThemeSettings(TlObject, InternalLinkType):
-    r"""The link is a link to the theme section of the app settings"""
+    r"""The link is a link to the theme section of the application settings"""
 
     def __init__(self) -> None:
         pass
@@ -59994,7 +64537,7 @@ class InternalLinkTypeUnsupportedProxy(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
-    r"""The link is a link to a user by its phone number\. Call searchUserByPhoneNumber with the given phone number to process the link\. If the user is found, then call createPrivateChat and open the chat\. If draft text isn't empty, then put the draft text in the input field
+    r"""The link is a link to a user by its phone number\. Call searchUserByPhoneNumber with the given phone number to process the link\. If the user is found, then call createPrivateChat and open user's profile information screen or the chat itself\. If draft text isn't empty, then put the draft text in the input field
 
     Parameters:
         phone_number (:class:`str`):
@@ -60003,13 +64546,20 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
         draft_text (:class:`str`):
             Draft text for message to send in the chat
 
+        open_profile (:class:`bool`):
+            True, if user's profile information screen must be opened; otherwise, the chat itself must be opened
+
     """
 
-    def __init__(self, phone_number: str = "", draft_text: str = "") -> None:
+    def __init__(
+        self, phone_number: str = "", draft_text: str = "", open_profile: bool = False
+    ) -> None:
         self.phone_number: Union[str, None] = phone_number
         r"""Phone number of the user"""
         self.draft_text: Union[str, None] = draft_text
         r"""Draft text for message to send in the chat"""
+        self.open_profile: bool = bool(open_profile)
+        r"""True, if user's profile information screen must be opened; otherwise, the chat itself must be opened"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -60025,6 +64575,7 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
             "@type": self.getType(),
             "phone_number": self.phone_number,
             "draft_text": self.draft_text,
+            "open_profile": self.open_profile,
         }
 
     @classmethod
@@ -60033,6 +64584,7 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
             data_class = cls()
             data_class.phone_number = data.get("phone_number", "")
             data_class.draft_text = data.get("draft_text", "")
+            data_class.open_profile = data.get("open_profile", False)
 
         return data_class
 
@@ -60128,7 +64680,7 @@ class InternalLinkTypeVideoChat(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeWebApp(TlObject, InternalLinkType):
-    r"""The link is a link to a Web App\. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web\_app\_short\_name\. Process received foundWebApp by showing a confirmation dialog if needed\. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being a third\-party apps instead of the dialog and ask the user to accept their Terms of service\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. Then, call getWebAppLinkUrl and open the returned URL as a Web App
+    r"""The link is a link to a Web App\. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web\_app\_short\_name\. Process received foundWebApp by showing a confirmation dialog if needed\. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being third\-party applications instead of the dialog and ask the user to accept their Terms of service\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. Then, call getWebAppLinkUrl and open the returned URL as a Web App
 
     Parameters:
         bot_username (:class:`str`):
@@ -60140,6 +64692,9 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
         start_parameter (:class:`str`):
             Start parameter to be passed to getWebAppLinkUrl
 
+        is_compact (:class:`bool`):
+            True, if the Web App must be opened in the compact mode instead of the full\-size mode
+
     """
 
     def __init__(
@@ -60147,6 +64702,7 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
         bot_username: str = "",
         web_app_short_name: str = "",
         start_parameter: str = "",
+        is_compact: bool = False,
     ) -> None:
         self.bot_username: Union[str, None] = bot_username
         r"""Username of the bot that owns the Web App"""
@@ -60154,6 +64710,8 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
         r"""Short name of the Web App"""
         self.start_parameter: Union[str, None] = start_parameter
         r"""Start parameter to be passed to getWebAppLinkUrl"""
+        self.is_compact: bool = bool(is_compact)
+        r"""True, if the Web App must be opened in the compact mode instead of the full\-size mode"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -60170,6 +64728,7 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
             "bot_username": self.bot_username,
             "web_app_short_name": self.web_app_short_name,
             "start_parameter": self.start_parameter,
+            "is_compact": self.is_compact,
         }
 
     @classmethod
@@ -60179,6 +64738,7 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
             data_class.bot_username = data.get("bot_username", "")
             data_class.web_app_short_name = data.get("web_app_short_name", "")
             data_class.start_parameter = data.get("start_parameter", "")
+            data_class.is_compact = data.get("is_compact", False)
 
         return data_class
 
@@ -60240,7 +64800,7 @@ class MessageLinkInfo(TlObject):
             If found, the linked message; may be null
 
         media_timestamp (:class:`int`):
-            Timestamp from which the video/audio/video note/voice note/story playing must start, in seconds; 0 if not specified\. The media can be in the message content or in its web page preview
+            Timestamp from which the video/audio/video note/voice note/story playing must start, in seconds; 0 if not specified\. The media can be in the message content or in its link preview
 
         for_album (:class:`bool`):
             True, if the whole media album to which the message belongs is linked
@@ -60265,7 +64825,7 @@ class MessageLinkInfo(TlObject):
         self.message: Union[Message, None] = message
         r"""If found, the linked message; may be null"""
         self.media_timestamp: int = int(media_timestamp)
-        r"""Timestamp from which the video/audio/video note/voice note/story playing must start, in seconds; 0 if not specified\. The media can be in the message content or in its web page preview"""
+        r"""Timestamp from which the video/audio/video note/voice note/story playing must start, in seconds; 0 if not specified\. The media can be in the message content or in its link preview"""
         self.for_album: bool = bool(for_album)
         r"""True, if the whole media album to which the message belongs is linked"""
 
@@ -62312,6 +66872,32 @@ class TopChatCategoryInlineBots(TlObject, TopChatCategory):
         return data_class
 
 
+class TopChatCategoryWebAppBots(TlObject, TopChatCategory):
+    r"""A category containing frequently used chats with bots, which Web Apps were opened"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["topChatCategoryWebAppBots"]:
+        return "topChatCategoryWebAppBots"
+
+    def getClass(self) -> Literal["TopChatCategory"]:
+        return "TopChatCategory"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TopChatCategoryWebAppBots", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class TopChatCategoryCalls(TlObject, TopChatCategory):
     r"""A category containing frequently used chats used for calls"""
 
@@ -63008,6 +67594,34 @@ class SuggestedActionExtendPremium(TlObject, SuggestedAction):
             data_class.manage_premium_subscription_url = data.get(
                 "manage_premium_subscription_url", ""
             )
+
+        return data_class
+
+
+class SuggestedActionExtendStarSubscriptions(TlObject, SuggestedAction):
+    r"""Suggests the user to extend their expiring Telegram Star subscriptions\. Call getStarSubscriptions with only\_expiring \=\= true to get the number of expiring subscriptions and the number of required to buy Telegram Stars"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["suggestedActionExtendStarSubscriptions"]:
+        return "suggestedActionExtendStarSubscriptions"
+
+    def getClass(self) -> Literal["SuggestedAction"]:
+        return "SuggestedAction"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["SuggestedActionExtendStarSubscriptions", None]:
+        if data:
+            data_class = cls()
 
         return data_class
 
@@ -64553,6 +69167,9 @@ class ChatRevenueAmount(TlObject):
         available_amount (:class:`int`):
             Amount of the cryptocurrency available for withdrawal, in the smallest units of the cryptocurrency
 
+        withdrawal_enabled (:class:`bool`):
+            True, if Telegram Stars can be withdrawn now or later
+
     """
 
     def __init__(
@@ -64561,6 +69178,7 @@ class ChatRevenueAmount(TlObject):
         total_amount: int = 0,
         balance_amount: int = 0,
         available_amount: int = 0,
+        withdrawal_enabled: bool = False,
     ) -> None:
         self.cryptocurrency: Union[str, None] = cryptocurrency
         r"""Cryptocurrency in which revenue is calculated"""
@@ -64570,6 +69188,8 @@ class ChatRevenueAmount(TlObject):
         r"""Amount of the cryptocurrency that isn't withdrawn yet, in the smallest units of the cryptocurrency"""
         self.available_amount: int = int(available_amount)
         r"""Amount of the cryptocurrency available for withdrawal, in the smallest units of the cryptocurrency"""
+        self.withdrawal_enabled: bool = bool(withdrawal_enabled)
+        r"""True, if Telegram Stars can be withdrawn now or later"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -64587,6 +69207,7 @@ class ChatRevenueAmount(TlObject):
             "total_amount": self.total_amount,
             "balance_amount": self.balance_amount,
             "available_amount": self.available_amount,
+            "withdrawal_enabled": self.withdrawal_enabled,
         }
 
     @classmethod
@@ -64597,6 +69218,7 @@ class ChatRevenueAmount(TlObject):
             data_class.total_amount = int(data.get("total_amount", 0))
             data_class.balance_amount = int(data.get("balance_amount", 0))
             data_class.available_amount = int(data.get("available_amount", 0))
+            data_class.withdrawal_enabled = data.get("withdrawal_enabled", False)
 
         return data_class
 
@@ -64777,7 +69399,7 @@ class StoryStatistics(TlObject):
         return data_class
 
 
-class ChatRevenueWithdrawalStatePending(TlObject, ChatRevenueWithdrawalState):
+class RevenueWithdrawalStatePending(TlObject, RevenueWithdrawalState):
     r"""Withdrawal is pending"""
 
     def __init__(self) -> None:
@@ -64786,25 +69408,25 @@ class ChatRevenueWithdrawalStatePending(TlObject, ChatRevenueWithdrawalState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["chatRevenueWithdrawalStatePending"]:
-        return "chatRevenueWithdrawalStatePending"
+    def getType(self) -> Literal["revenueWithdrawalStatePending"]:
+        return "revenueWithdrawalStatePending"
 
-    def getClass(self) -> Literal["ChatRevenueWithdrawalState"]:
-        return "ChatRevenueWithdrawalState"
+    def getClass(self) -> Literal["RevenueWithdrawalState"]:
+        return "RevenueWithdrawalState"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatRevenueWithdrawalStatePending", None]:
+    def from_dict(cls, data: dict) -> Union["RevenueWithdrawalStatePending", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class ChatRevenueWithdrawalStateCompleted(TlObject, ChatRevenueWithdrawalState):
-    r"""Withdrawal was completed
+class RevenueWithdrawalStateSucceeded(TlObject, RevenueWithdrawalState):
+    r"""Withdrawal succeeded
 
     Parameters:
         date (:class:`int`):
@@ -64824,19 +69446,17 @@ class ChatRevenueWithdrawalStateCompleted(TlObject, ChatRevenueWithdrawalState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["chatRevenueWithdrawalStateCompleted"]:
-        return "chatRevenueWithdrawalStateCompleted"
+    def getType(self) -> Literal["revenueWithdrawalStateSucceeded"]:
+        return "revenueWithdrawalStateSucceeded"
 
-    def getClass(self) -> Literal["ChatRevenueWithdrawalState"]:
-        return "ChatRevenueWithdrawalState"
+    def getClass(self) -> Literal["RevenueWithdrawalState"]:
+        return "RevenueWithdrawalState"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "date": self.date, "url": self.url}
 
     @classmethod
-    def from_dict(
-        cls, data: dict
-    ) -> Union["ChatRevenueWithdrawalStateCompleted", None]:
+    def from_dict(cls, data: dict) -> Union["RevenueWithdrawalStateSucceeded", None]:
         if data:
             data_class = cls()
             data_class.date = int(data.get("date", 0))
@@ -64845,8 +69465,8 @@ class ChatRevenueWithdrawalStateCompleted(TlObject, ChatRevenueWithdrawalState):
         return data_class
 
 
-class ChatRevenueWithdrawalStateFailed(TlObject, ChatRevenueWithdrawalState):
-    r"""Withdrawal has\_failed"""
+class RevenueWithdrawalStateFailed(TlObject, RevenueWithdrawalState):
+    r"""Withdrawal failed"""
 
     def __init__(self) -> None:
         pass
@@ -64854,17 +69474,17 @@ class ChatRevenueWithdrawalStateFailed(TlObject, ChatRevenueWithdrawalState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["chatRevenueWithdrawalStateFailed"]:
-        return "chatRevenueWithdrawalStateFailed"
+    def getType(self) -> Literal["revenueWithdrawalStateFailed"]:
+        return "revenueWithdrawalStateFailed"
 
-    def getClass(self) -> Literal["ChatRevenueWithdrawalState"]:
-        return "ChatRevenueWithdrawalState"
+    def getClass(self) -> Literal["RevenueWithdrawalState"]:
+        return "RevenueWithdrawalState"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatRevenueWithdrawalStateFailed", None]:
+    def from_dict(cls, data: dict) -> Union["RevenueWithdrawalStateFailed", None]:
         if data:
             data_class = cls()
 
@@ -64925,7 +69545,7 @@ class ChatRevenueTransactionTypeWithdrawal(TlObject, ChatRevenueTransactionType)
         provider (:class:`str`):
             Name of the payment provider
 
-        state (:class:`"types.ChatRevenueWithdrawalState"`):
+        state (:class:`"types.RevenueWithdrawalState"`):
             State of the withdrawal
 
     """
@@ -64934,16 +69554,16 @@ class ChatRevenueTransactionTypeWithdrawal(TlObject, ChatRevenueTransactionType)
         self,
         withdrawal_date: int = 0,
         provider: str = "",
-        state: ChatRevenueWithdrawalState = None,
+        state: RevenueWithdrawalState = None,
     ) -> None:
         self.withdrawal_date: int = int(withdrawal_date)
         r"""Point in time \(Unix timestamp\) when the earnings withdrawal started"""
         self.provider: Union[str, None] = provider
         r"""Name of the payment provider"""
         self.state: Union[
-            ChatRevenueWithdrawalStatePending,
-            ChatRevenueWithdrawalStateCompleted,
-            ChatRevenueWithdrawalStateFailed,
+            RevenueWithdrawalStatePending,
+            RevenueWithdrawalStateSucceeded,
+            RevenueWithdrawalStateFailed,
             None,
         ] = state
         r"""State of the withdrawal"""
@@ -65125,6 +69745,136 @@ class ChatRevenueTransactions(TlObject):
             data_class = cls()
             data_class.total_count = int(data.get("total_count", 0))
             data_class.transactions = data.get("transactions", None)
+
+        return data_class
+
+
+class StarRevenueStatus(TlObject):
+    r"""Contains information about Telegram Stars earned by a bot or a chat
+
+    Parameters:
+        total_count (:class:`int`):
+            Total number of Telegram Stars earned
+
+        current_count (:class:`int`):
+            The number of Telegram Stars that aren't withdrawn yet
+
+        available_count (:class:`int`):
+            The number of Telegram Stars that are available for withdrawal
+
+        withdrawal_enabled (:class:`bool`):
+            True, if Telegram Stars can be withdrawn now or later
+
+        next_withdrawal_in (:class:`int`):
+            Time left before the next withdrawal can be started, in seconds; 0 if withdrawal can be started now
+
+    """
+
+    def __init__(
+        self,
+        total_count: int = 0,
+        current_count: int = 0,
+        available_count: int = 0,
+        withdrawal_enabled: bool = False,
+        next_withdrawal_in: int = 0,
+    ) -> None:
+        self.total_count: int = int(total_count)
+        r"""Total number of Telegram Stars earned"""
+        self.current_count: int = int(current_count)
+        r"""The number of Telegram Stars that aren't withdrawn yet"""
+        self.available_count: int = int(available_count)
+        r"""The number of Telegram Stars that are available for withdrawal"""
+        self.withdrawal_enabled: bool = bool(withdrawal_enabled)
+        r"""True, if Telegram Stars can be withdrawn now or later"""
+        self.next_withdrawal_in: int = int(next_withdrawal_in)
+        r"""Time left before the next withdrawal can be started, in seconds; 0 if withdrawal can be started now"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starRevenueStatus"]:
+        return "starRevenueStatus"
+
+    def getClass(self) -> Literal["StarRevenueStatus"]:
+        return "StarRevenueStatus"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "total_count": self.total_count,
+            "current_count": self.current_count,
+            "available_count": self.available_count,
+            "withdrawal_enabled": self.withdrawal_enabled,
+            "next_withdrawal_in": self.next_withdrawal_in,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarRevenueStatus", None]:
+        if data:
+            data_class = cls()
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.current_count = int(data.get("current_count", 0))
+            data_class.available_count = int(data.get("available_count", 0))
+            data_class.withdrawal_enabled = data.get("withdrawal_enabled", False)
+            data_class.next_withdrawal_in = int(data.get("next_withdrawal_in", 0))
+
+        return data_class
+
+
+class StarRevenueStatistics(TlObject):
+    r"""A detailed statistics about Telegram Stars earned by a bot or a chat
+
+    Parameters:
+        revenue_by_day_graph (:class:`"types.StatisticalGraph"`):
+            A graph containing amount of revenue in a given day
+
+        status (:class:`"types.StarRevenueStatus"`):
+            Telegram Star revenue status
+
+        usd_rate (:class:`float`):
+            Current conversion rate of a Telegram Star to USD
+
+    """
+
+    def __init__(
+        self,
+        revenue_by_day_graph: StatisticalGraph = None,
+        status: StarRevenueStatus = None,
+        usd_rate: float = 0.0,
+    ) -> None:
+        self.revenue_by_day_graph: Union[
+            StatisticalGraphData, StatisticalGraphAsync, StatisticalGraphError, None
+        ] = revenue_by_day_graph
+        r"""A graph containing amount of revenue in a given day"""
+        self.status: Union[StarRevenueStatus, None] = status
+        r"""Telegram Star revenue status"""
+        self.usd_rate: float = float(usd_rate)
+        r"""Current conversion rate of a Telegram Star to USD"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starRevenueStatistics"]:
+        return "starRevenueStatistics"
+
+    def getClass(self) -> Literal["StarRevenueStatistics"]:
+        return "StarRevenueStatistics"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "revenue_by_day_graph": self.revenue_by_day_graph,
+            "status": self.status,
+            "usd_rate": self.usd_rate,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarRevenueStatistics", None]:
+        if data:
+            data_class = cls()
+            data_class.revenue_by_day_graph = data.get("revenue_by_day_graph", None)
+            data_class.status = data.get("status", None)
+            data_class.usd_rate = data.get("usd_rate", 0.0)
 
         return data_class
 
@@ -66282,6 +71032,7 @@ class UpdateMessageContent(TlObject, Update):
             MessageAnimation,
             MessageAudio,
             MessageDocument,
+            MessagePaidMedia,
             MessagePhoto,
             MessageSticker,
             MessageVideo,
@@ -66331,12 +71082,15 @@ class UpdateMessageContent(TlObject, Update):
             MessageGameScore,
             MessagePaymentSuccessful,
             MessagePaymentSuccessfulBot,
+            MessagePaymentRefunded,
             MessageGiftedPremium,
             MessagePremiumGiftCode,
-            MessagePremiumGiveawayCreated,
-            MessagePremiumGiveaway,
-            MessagePremiumGiveawayCompleted,
-            MessagePremiumGiveawayWinners,
+            MessageGiveawayCreated,
+            MessageGiveaway,
+            MessageGiveawayCompleted,
+            MessageGiveawayWinners,
+            MessageGiftedStars,
+            MessageGiveawayPrizeStars,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -69554,6 +74308,7 @@ class UpdateServiceNotification(TlObject, Update):
             MessageAnimation,
             MessageAudio,
             MessageDocument,
+            MessagePaidMedia,
             MessagePhoto,
             MessageSticker,
             MessageVideo,
@@ -69603,12 +74358,15 @@ class UpdateServiceNotification(TlObject, Update):
             MessageGameScore,
             MessagePaymentSuccessful,
             MessagePaymentSuccessfulBot,
+            MessagePaymentRefunded,
             MessageGiftedPremium,
             MessagePremiumGiftCode,
-            MessagePremiumGiveawayCreated,
-            MessagePremiumGiveaway,
-            MessagePremiumGiveawayCompleted,
-            MessagePremiumGiveawayWinners,
+            MessageGiveawayCreated,
+            MessageGiveaway,
+            MessageGiveawayCompleted,
+            MessageGiveawayWinners,
+            MessageGiftedStars,
+            MessageGiveawayPrizeStars,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -69988,15 +74746,22 @@ class UpdateApplicationVerificationRequired(TlObject, Update):
             Unique identifier for the verification process
 
         nonce (:class:`str`):
-            Unique nonce for the classic Play Integrity verification \(https://developer\.android\.com/google/play/integrity/classic\) for Android, or a unique string to compare with verify\_nonce field from a push notification for iOS
+            Unique base64url\-encoded nonce for the classic Play Integrity verification \(https://developer\.android\.com/google/play/integrity/classic\) for Android, or a unique string to compare with verify\_nonce field from a push notification for iOS
+
+        cloud_project_number (:class:`int`):
+            Cloud project number to pass to the Play Integrity API on Android
 
     """
 
-    def __init__(self, verification_id: int = 0, nonce: str = "") -> None:
+    def __init__(
+        self, verification_id: int = 0, nonce: str = "", cloud_project_number: int = 0
+    ) -> None:
         self.verification_id: int = int(verification_id)
         r"""Unique identifier for the verification process"""
         self.nonce: Union[str, None] = nonce
-        r"""Unique nonce for the classic Play Integrity verification \(https://developer\.android\.com/google/play/integrity/classic\) for Android, or a unique string to compare with verify\_nonce field from a push notification for iOS"""
+        r"""Unique base64url\-encoded nonce for the classic Play Integrity verification \(https://developer\.android\.com/google/play/integrity/classic\) for Android, or a unique string to compare with verify\_nonce field from a push notification for iOS"""
+        self.cloud_project_number: int = int(cloud_project_number)
+        r"""Cloud project number to pass to the Play Integrity API on Android"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -70012,6 +74777,7 @@ class UpdateApplicationVerificationRequired(TlObject, Update):
             "@type": self.getType(),
             "verification_id": self.verification_id,
             "nonce": self.nonce,
+            "cloud_project_number": self.cloud_project_number,
         }
 
     @classmethod
@@ -70022,6 +74788,7 @@ class UpdateApplicationVerificationRequired(TlObject, Update):
             data_class = cls()
             data_class.verification_id = int(data.get("verification_id", 0))
             data_class.nonce = data.get("nonce", "")
+            data_class.cloud_project_number = int(data.get("cloud_project_number", 0))
 
         return data_class
 
@@ -71567,9 +76334,9 @@ class UpdateDefaultReactionType(TlObject, Update):
     """
 
     def __init__(self, reaction_type: ReactionType = None) -> None:
-        self.reaction_type: Union[ReactionTypeEmoji, ReactionTypeCustomEmoji, None] = (
-            reaction_type
-        )
+        self.reaction_type: Union[
+            ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
+        ] = reaction_type
         r"""The new type of the default reaction"""
 
     def __str__(self):
@@ -71641,18 +76408,52 @@ class UpdateSavedMessagesTags(TlObject, Update):
         return data_class
 
 
+class UpdateActiveLiveLocationMessages(TlObject, Update):
+    r"""The list of messages with active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
+
+    Parameters:
+        messages (:class:`List["types.Message"]`):
+            The list of messages with active live locations
+
+    """
+
+    def __init__(self, messages: List[Message] = None) -> None:
+        self.messages: List[Message] = messages or []
+        r"""The list of messages with active live locations"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateActiveLiveLocationMessages"]:
+        return "updateActiveLiveLocationMessages"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "messages": self.messages}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateActiveLiveLocationMessages", None]:
+        if data:
+            data_class = cls()
+            data_class.messages = data.get("messages", None)
+
+        return data_class
+
+
 class UpdateOwnedStarCount(TlObject, Update):
-    r"""The number of Telegram stars owned by the current user has changed
+    r"""The number of Telegram Stars owned by the current user has changed
 
     Parameters:
         star_count (:class:`int`):
-            The new number of Telegram stars owned
+            The new number of Telegram Stars owned
 
     """
 
     def __init__(self, star_count: int = 0) -> None:
         self.star_count: int = int(star_count)
-        r"""The new number of Telegram stars owned"""
+        r"""The new number of Telegram Stars owned"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -71717,6 +76518,52 @@ class UpdateChatRevenueAmount(TlObject, Update):
             data_class = cls()
             data_class.chat_id = int(data.get("chat_id", 0))
             data_class.revenue_amount = data.get("revenue_amount", None)
+
+        return data_class
+
+
+class UpdateStarRevenueStatus(TlObject, Update):
+    r"""The Telegram Star revenue earned by a bot or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
+
+    Parameters:
+        owner_id (:class:`"types.MessageSender"`):
+            Identifier of the owner of the Telegram Stars
+
+        status (:class:`"types.StarRevenueStatus"`):
+            New Telegram Star revenue status
+
+    """
+
+    def __init__(
+        self, owner_id: MessageSender = None, status: StarRevenueStatus = None
+    ) -> None:
+        self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
+        r"""Identifier of the owner of the Telegram Stars"""
+        self.status: Union[StarRevenueStatus, None] = status
+        r"""New Telegram Star revenue status"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateStarRevenueStatus"]:
+        return "updateStarRevenueStatus"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "owner_id": self.owner_id,
+            "status": self.status,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateStarRevenueStatus", None]:
+        if data:
+            data_class = cls()
+            data_class.owner_id = data.get("owner_id", None)
+            data_class.status = data.get("status", None)
 
         return data_class
 
@@ -71965,7 +76812,7 @@ class UpdateSuggestedActions(TlObject, Update):
 
 
 class UpdateSpeedLimitNotification(TlObject, Update):
-    r"""Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user Use getOption\(\"premium\_download\_speedup\"\) or getOption\(\"premium\_upload\_speedup\"\) to get expected speedup after subscription to Telegram Premium
+    r"""Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user\. Use getOption\(\"premium\_download\_speedup\"\) or getOption\(\"premium\_upload\_speedup\"\) to get expected speedup after subscription to Telegram Premium
 
     Parameters:
         is_upload (:class:`bool`):
@@ -72578,6 +77425,91 @@ class UpdateNewInlineCallbackQuery(TlObject, Update):
             data_class.id = int(data.get("id", 0))
             data_class.sender_user_id = int(data.get("sender_user_id", 0))
             data_class.inline_message_id = data.get("inline_message_id", "")
+            data_class.chat_instance = int(data.get("chat_instance", 0))
+            data_class.payload = data.get("payload", None)
+
+        return data_class
+
+
+class UpdateNewBusinessCallbackQuery(TlObject, Update):
+    r"""A new incoming callback query from a business message; for bots only
+
+    Parameters:
+        id (:class:`int`):
+            Unique query identifier
+
+        sender_user_id (:class:`int`):
+            Identifier of the user who sent the query
+
+        connection_id (:class:`str`):
+            Unique identifier of the business connection
+
+        message (:class:`"types.BusinessMessage"`):
+            The message from the business account from which the query originated
+
+        chat_instance (:class:`int`):
+            An identifier uniquely corresponding to the chat a message was sent to
+
+        payload (:class:`"types.CallbackQueryPayload"`):
+            Query payload
+
+    """
+
+    def __init__(
+        self,
+        id: int = 0,
+        sender_user_id: int = 0,
+        connection_id: str = "",
+        message: BusinessMessage = None,
+        chat_instance: int = 0,
+        payload: CallbackQueryPayload = None,
+    ) -> None:
+        self.id: int = int(id)
+        r"""Unique query identifier"""
+        self.sender_user_id: int = int(sender_user_id)
+        r"""Identifier of the user who sent the query"""
+        self.connection_id: Union[str, None] = connection_id
+        r"""Unique identifier of the business connection"""
+        self.message: Union[BusinessMessage, None] = message
+        r"""The message from the business account from which the query originated"""
+        self.chat_instance: int = int(chat_instance)
+        r"""An identifier uniquely corresponding to the chat a message was sent to"""
+        self.payload: Union[
+            CallbackQueryPayloadData,
+            CallbackQueryPayloadDataWithPassword,
+            CallbackQueryPayloadGame,
+            None,
+        ] = payload
+        r"""Query payload"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateNewBusinessCallbackQuery"]:
+        return "updateNewBusinessCallbackQuery"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "sender_user_id": self.sender_user_id,
+            "connection_id": self.connection_id,
+            "message": self.message,
+            "chat_instance": self.chat_instance,
+            "payload": self.payload,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateNewBusinessCallbackQuery", None]:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_user_id = int(data.get("sender_user_id", 0))
+            data_class.connection_id = data.get("connection_id", "")
+            data_class.message = data.get("message", None)
             data_class.chat_instance = int(data.get("chat_instance", 0))
             data_class.payload = data.get("payload", None)
 
@@ -73253,6 +78185,50 @@ class UpdateMessageReactions(TlObject, Update):
             data_class.message_id = int(data.get("message_id", 0))
             data_class.date = int(data.get("date", 0))
             data_class.reactions = data.get("reactions", None)
+
+        return data_class
+
+
+class UpdatePaidMediaPurchased(TlObject, Update):
+    r"""Paid media were purchased by a user; for bots only
+
+    Parameters:
+        user_id (:class:`int`):
+            User identifier
+
+        payload (:class:`str`):
+            Bot\-specified payload for the paid media
+
+    """
+
+    def __init__(self, user_id: int = 0, payload: str = "") -> None:
+        self.user_id: int = int(user_id)
+        r"""User identifier"""
+        self.payload: Union[str, None] = payload
+        r"""Bot\-specified payload for the paid media"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updatePaidMediaPurchased"]:
+        return "updatePaidMediaPurchased"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "payload": self.payload,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdatePaidMediaPurchased", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.payload = data.get("payload", "")
 
         return data_class
 
