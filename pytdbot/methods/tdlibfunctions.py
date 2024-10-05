@@ -995,7 +995,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getMessage(self, chat_id: int, message_id: int) -> Result:
-        """Returns information about a message
+        """Returns information about a message\. Returns a 404 error if the message doesn't exist
 
         Args:
             chat_id (``int``):
@@ -1018,7 +1018,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getMessageLocally(self, chat_id: int, message_id: int) -> Result:
-        """Returns information about a message, if it is available without sending network request\. This is an offline request
+        """Returns information about a message, if it is available without sending network request\. Returns a 404 error if message isn't available locally\. This is an offline request
 
         Args:
             chat_id (``int``):
@@ -1041,7 +1041,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getRepliedMessage(self, chat_id: int, message_id: int) -> Result:
-        """Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non\-bundled replied message respectively
+        """Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non\-bundled replied message respectively\. Returns a 404 error if the message doesn't exist
 
         Args:
             chat_id (``int``):
@@ -1064,7 +1064,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatPinnedMessage(self, chat_id: int) -> Result:
-        """Returns information about a newest pinned message in the chat
+        """Returns information about a newest pinned message in the chat\. Returns a 404 error if the message doesn't exist
 
         Args:
             chat_id (``int``):
@@ -1401,7 +1401,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def searchChatsNearby(self, location: dict) -> Result:
-        """Returns a list of users and location\-based supergroups nearby\. The list of users nearby will be updated for 60 seconds after the request by the updates updateUsersNearby\. The request must be sent again every 25 seconds with adjusted location to not miss new chats
+        """Returns a list of users and location\-based supergroups nearby\. The method was disabled and returns an empty list of chats now
 
         Args:
             location (``location``):
@@ -2244,7 +2244,7 @@ class TDLibFunctions:
         limit: int,
         tag: dict = None,
     ) -> Result:
-        """Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        """Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Args:
             saved_messages_topic_id (``int``):
@@ -2560,7 +2560,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def getChatMessageByDate(self, chat_id: int, date: int) -> Result:
-        """Returns the last message sent in a chat no later than the specified date
+        """Returns the last message sent in a chat no later than the specified date\. Returns a 404 error if such message doesn't exist
 
         Args:
             chat_id (``int``):
@@ -2778,8 +2778,10 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
-    async def clickChatSponsoredMessage(self, chat_id: int, message_id: int) -> Result:
-        """Informs TDLib that the user opened the sponsored chat via the button, the name, the photo, or a mention in the sponsored message
+    async def clickChatSponsoredMessage(
+        self, chat_id: int, message_id: int, is_media_click: bool, from_fullscreen: bool
+    ) -> Result:
+        """Informs TDLib that the user opened the sponsored chat via the button, the name, the chat photo, a mention in the sponsored message text, or the media in the sponsored message
 
         Args:
             chat_id (``int``):
@@ -2787,6 +2789,12 @@ class TDLibFunctions:
 
             message_id (``int``):
                 Identifier of the sponsored message
+
+            is_media_click (``bool``):
+                Pass true if the media was clicked in the sponsored message
+
+            from_fullscreen (``bool``):
+                Pass true if the user expanded the video from the sponsored message fullscreen before the click
 
 
         Returns:
@@ -2797,6 +2805,8 @@ class TDLibFunctions:
             "@type": "clickChatSponsoredMessage",
             "chat_id": chat_id,
             "message_id": message_id,
+            "is_media_click": is_media_click,
+            "from_fullscreen": from_fullscreen,
         }
 
         return await self.invoke(data)
@@ -3669,7 +3679,7 @@ class TDLibFunctions:
                 Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
 
             show_caption_above_media (``bool``):
-                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. May be true only for animation, photo, and video messages
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none; for bots only
@@ -3847,7 +3857,7 @@ class TDLibFunctions:
                 Inline message identifier
 
             show_caption_above_media (``bool``):
-                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. May be true only for animation, photo, and video messages
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none
@@ -4225,7 +4235,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             show_caption_above_media (``bool``):
-                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. May be true only for animation, photo, and video messages
 
             reply_markup (``ReplyMarkup``, *optional*):
                 The new message reply markup; pass null if none
@@ -5577,7 +5587,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def cleanFileName(self, file_name: str) -> Result:
-        """Removes potentially dangerous characters from the name of a file\. The encoding of the file name is supposed to be UTF\-8\. Returns an empty string on failure\. Can be called synchronously
+        """Removes potentially dangerous characters from the name of a file\. Returns an empty string on failure\. Can be called synchronously
 
         Args:
             file_name (``str``):
@@ -7790,7 +7800,7 @@ class TDLibFunctions:
     async def setChatMessageAutoDeleteTime(
         self, chat_id: int, message_auto_delete_time: int
     ) -> Result:
-        """Changes the message auto\-delete or self\-destruct \(for secret chats\) time in a chat\. Requires change\_info administrator right in basic groups, supergroups and channels Message auto\-delete time can't be changed in a chat with the current user \(Saved Messages\) and the chat 777000 \(Telegram\)\.
+        """Changes the message auto\-delete or self\-destruct \(for secret chats\) time in a chat\. Requires change\_info administrator right in basic groups, supergroups and channels\. Message auto\-delete time can't be changed in a chat with the current user \(Saved Messages\) and the chat 777000 \(Telegram\)\.
 
         Args:
             chat_id (``int``):
@@ -9293,7 +9303,7 @@ class TDLibFunctions:
                 Identifier of the story starting from which stories must be returned; use 0 to get results from pinned and the newest story
 
             limit (``int``):
-                The maximum number of stories to be returned For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of stories to be returned\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
 
         Returns:
@@ -9322,7 +9332,7 @@ class TDLibFunctions:
                 Identifier of the story starting from which stories must be returned; use 0 to get results from the last story
 
             limit (``int``):
-                The maximum number of stories to be returned For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of stories to be returned\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
 
         Returns:
@@ -9563,7 +9573,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def reportStory(
-        self, story_sender_chat_id: int, story_id: int, reason: dict, text: str
+        self, story_sender_chat_id: int, story_id: int, option_id: bytes, text: str
     ) -> Result:
         """Reports a story to the Telegram moderators
 
@@ -9574,22 +9584,22 @@ class TDLibFunctions:
             story_id (``int``):
                 The identifier of the story to report
 
-            reason (``ReportReason``):
-                The reason for reporting the story
+            option_id (``bytes``):
+                Option identifier chosen by the user; leave empty for the initial request
 
             text (``str``):
-                Additional report details; 0\-1024 characters
+                Additional report details; 0\-1024 characters; leave empty for the initial request
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``Ok``)
+            :class:`~pytdbot.types.Result` (``ReportStoryResult``)
         """
 
         data = {
             "@type": "reportStory",
             "story_sender_chat_id": story_sender_chat_id,
             "story_id": story_id,
-            "reason": reason,
+            "option_id": option_id,
             "text": text,
         }
 
@@ -10071,7 +10081,7 @@ class TDLibFunctions:
                 Identifier of the file
 
             directory (``str``):
-                Directory in which the file is supposed to be saved
+                Directory in which the file is expected to be saved
 
 
         Returns:
@@ -10116,7 +10126,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def cancelPreliminaryUploadFile(self, file_id: int) -> Result:
-        """Stops the preliminary uploading of a file\. Supported only for files uploaded by using preliminaryUploadFile\. For other files the behavior is undefined
+        """Stops the preliminary uploading of a file\. Supported only for files uploaded by using preliminaryUploadFile
 
         Args:
             file_id (``int``):
@@ -10625,7 +10635,7 @@ class TDLibFunctions:
         member_limit: int,
         creates_join_request: bool,
     ) -> Result:
-        """Edits a non\-primary invite link for a chat\. Available for basic groups, supergroups, and channels\. If the link creates a subscription, then expiration\_date, member\_limit and creates\_join\_request must not be used Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
+        """Edits a non\-primary invite link for a chat\. Available for basic groups, supergroups, and channels\. If the link creates a subscription, then expiration\_date, member\_limit and creates\_join\_request must not be used\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Args:
             chat_id (``int``):
@@ -11287,7 +11297,7 @@ class TDLibFunctions:
                 Group call title; if empty, chat title will be used
 
             start_date (``int``):
-                Point in time \(Unix timestamp\) when the group call is supposed to be started by an administrator; 0 to start the video chat immediately\. The date must be at least 10 seconds and at most 8 days in the future
+                Point in time \(Unix timestamp\) when the group call is expected to be started by an administrator; 0 to start the video chat immediately\. The date must be at least 10 seconds and at most 8 days in the future
 
             is_rtmp_stream (``bool``):
                 Pass true to create an RTMP stream instead of an ordinary video chat; requires owner privileges
@@ -15201,7 +15211,7 @@ class TDLibFunctions:
                 Supergroup identifier
 
             message_ids (``list``):
-                Identifiers of messages to report\. Use messageProperties\.can\_be\_reported to check whether the message can be reported
+                Identifiers of messages to report\. Use messageProperties\.can\_report\_supergroup\_spam to check whether the message can be reported
 
 
         Returns:
@@ -15518,6 +15528,132 @@ class TDLibFunctions:
 
         return await self.invoke(data)
 
+    async def getAvailableGifts(self) -> Result:
+        """Returns gifts that can be sent to other users
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Gifts``)
+        """
+
+        data = {
+            "@type": "getAvailableGifts",
+        }
+
+        return await self.invoke(data)
+
+    async def sendGift(
+        self, gift_id: int, user_id: int, text: dict, is_private: bool
+    ) -> Result:
+        """Send a gift to another user
+
+        Args:
+            gift_id (``int``):
+                Identifier of the gift to send
+
+            user_id (``int``):
+                Identifier of the user that will receive the gift
+
+            text (``formattedText``):
+                Text to show along with the gift; 0\-getOption\("gift\_text\_length\_max"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
+
+            is_private (``bool``):
+                Pass true to show the current user as sender and gift text only to the gift receiver; otherwise, everyone will be able to see them
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "sendGift",
+            "gift_id": gift_id,
+            "user_id": user_id,
+            "text": text,
+            "is_private": is_private,
+        }
+
+        return await self.invoke(data)
+
+    async def sellGift(self, sender_user_id: int, message_id: int) -> Result:
+        """Sells a gift received by the current user for Telegram Stars
+
+        Args:
+            sender_user_id (``int``):
+                Identifier of the user that sent the gift
+
+            message_id (``int``):
+                Identifier of the message with the gift in the chat with the user
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "sellGift",
+            "sender_user_id": sender_user_id,
+            "message_id": message_id,
+        }
+
+        return await self.invoke(data)
+
+    async def toggleGiftIsSaved(
+        self, sender_user_id: int, message_id: int, is_saved: bool
+    ) -> Result:
+        """Toggles whether a gift is shown on the current user's profile page
+
+        Args:
+            sender_user_id (``int``):
+                Identifier of the user that sent the gift
+
+            message_id (``int``):
+                Identifier of the message with the gift in the chat with the user
+
+            is_saved (``bool``):
+                Pass true to display the gift on the user's profile page; pass false to remove it from the profile page
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Ok``)
+        """
+
+        data = {
+            "@type": "toggleGiftIsSaved",
+            "sender_user_id": sender_user_id,
+            "message_id": message_id,
+            "is_saved": is_saved,
+        }
+
+        return await self.invoke(data)
+
+    async def getUserGifts(self, user_id: int, offset: str, limit: int) -> Result:
+        """Returns gifts saved to profile by the given user
+
+        Args:
+            user_id (``int``):
+                Identifier of the user
+
+            offset (``str``):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (``int``):
+                The maximum number of gifts to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``UserGifts``)
+        """
+
+        data = {
+            "@type": "getUserGifts",
+            "user_id": user_id,
+            "offset": offset,
+            "limit": limit,
+        }
+
+        return await self.invoke(data)
+
     async def createInvoiceLink(self, invoice: dict) -> Result:
         """Creates a link for the given invoice; for bots only
 
@@ -15540,7 +15676,7 @@ class TDLibFunctions:
     async def refundStarPayment(
         self, user_id: int, telegram_payment_charge_id: str
     ) -> Result:
-        """Refunds a previously done payment in Telegram Stars
+        """Refunds a previously done payment in Telegram Stars; for bots only
 
         Args:
             user_id (``int``):
@@ -16267,7 +16403,7 @@ class TDLibFunctions:
         return await self.invoke(data)
 
     async def reportChat(
-        self, chat_id: int, reason: dict, text: str, message_ids: list = None
+        self, chat_id: int, option_id: bytes, message_ids: list, text: str
     ) -> Result:
         """Reports a chat to the Telegram moderators\. A chat can be reported only from the chat action bar, or if chat\.can\_be\_reported
 
@@ -16275,25 +16411,25 @@ class TDLibFunctions:
             chat_id (``int``):
                 Chat identifier
 
-            reason (``ReportReason``):
-                The reason for reporting the chat
+            option_id (``bytes``):
+                Option identifier chosen by the user; leave empty for the initial request
+
+            message_ids (``list``):
+                Identifiers of reported messages\. Use messageProperties\.can\_report\_chat to check whether the message can be reported
 
             text (``str``):
-                Additional report details; 0\-1024 characters
-
-            message_ids (``list``, *optional*):
-                Identifiers of reported messages; may be empty to report the whole chat\. Use messageProperties\.can\_be\_reported to check whether the message can be reported
+                Additional report details if asked by the server; 0\-1024 characters; leave empty for the initial request
 
 
         Returns:
-            :class:`~pytdbot.types.Result` (``Ok``)
+            :class:`~pytdbot.types.Result` (``ReportChatResult``)
         """
 
         data = {
             "@type": "reportChat",
             "chat_id": chat_id,
+            "option_id": option_id,
             "message_ids": message_ids,
-            "reason": reason,
             "text": text,
         }
 
@@ -17733,6 +17869,25 @@ class TDLibFunctions:
 
         data = {
             "@type": "getPremiumStickerExamples",
+        }
+
+        return await self.invoke(data)
+
+    async def getPremiumInfoSticker(self, month_count: int) -> Result:
+        """Returns the sticker to be used as representation of the Telegram Premium subscription
+
+        Args:
+            month_count (``int``):
+                Number of months the Telegram Premium subscription will be active
+
+
+        Returns:
+            :class:`~pytdbot.types.Result` (``Sticker``)
+        """
+
+        data = {
+            "@type": "getPremiumInfoSticker",
+            "month_count": month_count,
         }
 
         return await self.invoke(data)

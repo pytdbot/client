@@ -506,7 +506,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message with a live location was viewed\. When the update is received, the application is supposed to update the live location
+        """A message with a live location was viewed\. When the update is received, the application is expected to update the live location
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2768,7 +2768,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The file generation process needs to be started by the application
+        """The file generation process needs to be started by the application\. Use setFileGenerationProgress and finishFileGeneration to generate the file
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4746,7 +4746,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user Use getOption\("premium\_download\_speedup"\) or getOption\("premium\_upload\_speedup"\) to get expected speedup after subscription to Telegram Premium
+        """Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user\. Use getOption\("premium\_download\_speedup"\) or getOption\("premium\_upload\_speedup"\) to get expected speedup after subscription to Telegram Premium
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
