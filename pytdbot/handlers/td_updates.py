@@ -506,7 +506,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        r"""A message with a live location was viewed\. When the update is received, the application is supposed to update the live location
+        r"""A message with a live location was viewed\. When the update is received, the application is expected to update the live location
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2768,7 +2768,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        r"""The file generation process needs to be started by the application
+        r"""The file generation process needs to be started by the application\. Use setFileGenerationProgress and finishFileGeneration to generate the file
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):

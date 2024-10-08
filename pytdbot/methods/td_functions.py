@@ -989,7 +989,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Returns information about a message
+        Returns information about a message\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -1010,7 +1010,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Returns information about a message, if it is available without sending network request\. This is an offline request
+        Returns information about a message, if it is available without sending network request\. Returns a 404 error if message isn't available locally\. This is an offline request
 
         Parameters:
             chat_id (:class:`int`):
@@ -1031,7 +1031,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non\-bundled replied message respectively
+        Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non\-bundled replied message respectively\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -1052,7 +1052,7 @@ class TDLibFunctions:
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Returns information about a newest pinned message in the chat
+        Returns information about a newest pinned message in the chat\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -1365,7 +1365,7 @@ class TDLibFunctions:
         self, location: "types.Location" = None
     ) -> Union["types.Error", "types.ChatsNearby"]:
         r"""
-        Returns a list of users and location\-based supergroups nearby\. The list of users nearby will be updated for 60 seconds after the request by the updates updateUsersNearby\. The request must be sent again every 25 seconds with adjusted location to not miss new chats
+        Returns a list of users and location\-based supergroups nearby\. The method was disabled and returns an empty list of chats now
 
         Parameters:
             location (:class:`"types.Location"`):
@@ -2496,7 +2496,7 @@ class TDLibFunctions:
         self, chat_id: int = 0, date: int = 0
     ) -> Union["types.Error", "types.Message"]:
         r"""
-        Returns the last message sent in a chat no later than the specified date
+        Returns the last message sent in a chat no later than the specified date\. Returns a 404 error if such message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -2708,10 +2708,14 @@ class TDLibFunctions:
         )
 
     async def clickChatSponsoredMessage(
-        self, chat_id: int = 0, message_id: int = 0
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        is_media_click: bool = False,
+        from_fullscreen: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Informs TDLib that the user opened the sponsored chat via the button, the name, the photo, or a mention in the sponsored message
+        Informs TDLib that the user opened the sponsored chat via the button, the name, the chat photo, a mention in the sponsored message text, or the media in the sponsored message
 
         Parameters:
             chat_id (:class:`int`):
@@ -2719,6 +2723,12 @@ class TDLibFunctions:
 
             message_id (:class:`int`):
                 Identifier of the sponsored message
+
+            is_media_click (:class:`bool`):
+                Pass true if the media was clicked in the sponsored message
+
+            from_fullscreen (:class:`bool`):
+                Pass true if the user expanded the video from the sponsored message fullscreen before the click
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -2729,6 +2739,8 @@ class TDLibFunctions:
                 "@type": "clickChatSponsoredMessage",
                 "chat_id": chat_id,
                 "message_id": message_id,
+                "is_media_click": is_media_click,
+                "from_fullscreen": from_fullscreen,
             }
         )
 
@@ -3612,7 +3624,7 @@ class TDLibFunctions:
                 New message content caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters; pass null to remove caption
 
             show_caption_above_media (:class:`bool`):
-                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. May be true only for animation, photo, and video messages
 
         Returns:
             :class:`~pytdbot.types.Message`
@@ -3793,7 +3805,7 @@ class TDLibFunctions:
                 New message content caption; pass null to remove caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
             show_caption_above_media (:class:`bool`):
-                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. May be true only for animation, photo, and video messages
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -4174,7 +4186,7 @@ class TDLibFunctions:
                 New message content caption; pass null to remove caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
             show_caption_above_media (:class:`bool`):
-                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. Can be true only for animation, photo, and video messages
+                Pass true to show the caption above the media; otherwise, the caption will be shown below the media\. May be true only for animation, photo, and video messages
 
         Returns:
             :class:`~pytdbot.types.BusinessMessage`
@@ -5527,7 +5539,7 @@ class TDLibFunctions:
         self, file_name: str = ""
     ) -> Union["types.Error", "types.Text"]:
         r"""
-        Removes potentially dangerous characters from the name of a file\. The encoding of the file name is supposed to be UTF\-8\. Returns an empty string on failure\. Can be called synchronously
+        Removes potentially dangerous characters from the name of a file\. Returns an empty string on failure\. Can be called synchronously
 
         Parameters:
             file_name (:class:`str`):
@@ -9513,9 +9525,9 @@ class TDLibFunctions:
         self,
         story_sender_chat_id: int = 0,
         story_id: int = 0,
-        reason: "types.ReportReason" = None,
+        option_id: bytes = b"",
         text: str = "",
-    ) -> Union["types.Error", "types.Ok"]:
+    ) -> Union["types.Error", "types.ReportStoryResult"]:
         r"""
         Reports a story to the Telegram moderators
 
@@ -9526,14 +9538,14 @@ class TDLibFunctions:
             story_id (:class:`int`):
                 The identifier of the story to report
 
-            reason (:class:`"types.ReportReason"`):
-                The reason for reporting the story
+            option_id (:class:`bytes`):
+                Option identifier chosen by the user; leave empty for the initial request
 
             text (:class:`str`):
-                Additional report details; 0\-1024 characters
+                Additional report details; 0\-1024 characters; leave empty for the initial request
 
         Returns:
-            :class:`~pytdbot.types.Ok`
+            :class:`~pytdbot.types.ReportStoryResult`
         """
 
         return await self.invoke(
@@ -9541,7 +9553,7 @@ class TDLibFunctions:
                 "@type": "reportStory",
                 "story_sender_chat_id": story_sender_chat_id,
                 "story_id": story_id,
-                "reason": reason,
+                "option_id": option_id,
                 "text": text,
             }
         )
@@ -10046,7 +10058,7 @@ class TDLibFunctions:
                 Identifier of the file
 
             directory (:class:`str`):
-                Directory in which the file is supposed to be saved
+                Directory in which the file is expected to be saved
 
         Returns:
             :class:`~pytdbot.types.Text`
@@ -10096,7 +10108,7 @@ class TDLibFunctions:
         self, file_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Stops the preliminary uploading of a file\. Supported only for files uploaded by using preliminaryUploadFile\. For other files the behavior is undefined
+        Stops the preliminary uploading of a file\. Supported only for files uploaded by using preliminaryUploadFile
 
         Parameters:
             file_id (:class:`int`):
@@ -11275,7 +11287,7 @@ class TDLibFunctions:
                 Group call title; if empty, chat title will be used
 
             start_date (:class:`int`):
-                Point in time \(Unix timestamp\) when the group call is supposed to be started by an administrator; 0 to start the video chat immediately\. The date must be at least 10 seconds and at most 8 days in the future
+                Point in time \(Unix timestamp\) when the group call is expected to be started by an administrator; 0 to start the video chat immediately\. The date must be at least 10 seconds and at most 8 days in the future
 
             is_rtmp_stream (:class:`bool`):
                 Pass true to create an RTMP stream instead of an ordinary video chat; requires owner privileges
@@ -15115,7 +15127,7 @@ class TDLibFunctions:
                 Supergroup identifier
 
             message_ids (:class:`List[int]`):
-                Identifiers of messages to report\. Use messageProperties\.can\_be\_reported to check whether the message can be reported
+                Identifiers of messages to report\. Use messageProperties\.can\_report\_supergroup\_spam to check whether the message can be reported
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -15435,6 +15447,140 @@ class TDLibFunctions:
             }
         )
 
+    async def getAvailableGifts(self) -> Union["types.Error", "types.Gifts"]:
+        r"""
+        Returns gifts that can be sent to other users
+
+        Returns:
+            :class:`~pytdbot.types.Gifts`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getAvailableGifts",
+            }
+        )
+
+    async def sendGift(
+        self,
+        gift_id: int = 0,
+        user_id: int = 0,
+        text: "types.FormattedText" = None,
+        is_private: bool = False,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Sends a gift to another user\. May return an error with a message \"STARGIFT\_USAGE\_LIMITED\" if the gift was sold out
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the gift to send
+
+            user_id (:class:`int`):
+                Identifier of the user that will receive the gift
+
+            text (:class:`"types.FormattedText"`):
+                Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
+
+            is_private (:class:`bool`):
+                Pass true to show the current user as sender and gift text only to the gift receiver; otherwise, everyone will be able to see them
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sendGift",
+                "gift_id": gift_id,
+                "user_id": user_id,
+                "text": text,
+                "is_private": is_private,
+            }
+        )
+
+    async def sellGift(
+        self, sender_user_id: int = 0, message_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Sells a gift received by the current user for Telegram Stars
+
+        Parameters:
+            sender_user_id (:class:`int`):
+                Identifier of the user that sent the gift
+
+            message_id (:class:`int`):
+                Identifier of the message with the gift in the chat with the user
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sellGift",
+                "sender_user_id": sender_user_id,
+                "message_id": message_id,
+            }
+        )
+
+    async def toggleGiftIsSaved(
+        self, sender_user_id: int = 0, message_id: int = 0, is_saved: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""
+        Toggles whether a gift is shown on the current user's profile page
+
+        Parameters:
+            sender_user_id (:class:`int`):
+                Identifier of the user that sent the gift
+
+            message_id (:class:`int`):
+                Identifier of the message with the gift in the chat with the user
+
+            is_saved (:class:`bool`):
+                Pass true to display the gift on the user's profile page; pass false to remove it from the profile page
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "toggleGiftIsSaved",
+                "sender_user_id": sender_user_id,
+                "message_id": message_id,
+                "is_saved": is_saved,
+            }
+        )
+
+    async def getUserGifts(
+        self, user_id: int = 0, offset: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.UserGifts"]:
+        r"""
+        Returns gifts saved to profile by the given user
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user
+
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of gifts to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit
+
+        Returns:
+            :class:`~pytdbot.types.UserGifts`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getUserGifts",
+                "user_id": user_id,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
     async def createInvoiceLink(
         self, invoice: "types.InputMessageContent" = None
     ) -> Union["types.Error", "types.HttpUrl"]:
@@ -15455,7 +15601,7 @@ class TDLibFunctions:
         self, user_id: int = 0, telegram_payment_charge_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
         r"""
-        Refunds a previously done payment in Telegram Stars
+        Refunds a previously done payment in Telegram Stars; for bots only
 
         Parameters:
             user_id (:class:`int`):
@@ -16162,10 +16308,10 @@ class TDLibFunctions:
     async def reportChat(
         self,
         chat_id: int = 0,
+        option_id: bytes = b"",
         message_ids: List[int] = None,
-        reason: "types.ReportReason" = None,
         text: str = "",
-    ) -> Union["types.Error", "types.Ok"]:
+    ) -> Union["types.Error", "types.ReportChatResult"]:
         r"""
         Reports a chat to the Telegram moderators\. A chat can be reported only from the chat action bar, or if chat\.can\_be\_reported
 
@@ -16173,25 +16319,25 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Chat identifier
 
-            message_ids (:class:`List[int]`):
-                Identifiers of reported messages; may be empty to report the whole chat\. Use messageProperties\.can\_be\_reported to check whether the message can be reported
+            option_id (:class:`bytes`):
+                Option identifier chosen by the user; leave empty for the initial request
 
-            reason (:class:`"types.ReportReason"`):
-                The reason for reporting the chat
+            message_ids (:class:`List[int]`):
+                Identifiers of reported messages\. Use messageProperties\.can\_report\_chat to check whether the message can be reported
 
             text (:class:`str`):
-                Additional report details; 0\-1024 characters
+                Additional report details if asked by the server; 0\-1024 characters; leave empty for the initial request
 
         Returns:
-            :class:`~pytdbot.types.Ok`
+            :class:`~pytdbot.types.ReportChatResult`
         """
 
         return await self.invoke(
             {
                 "@type": "reportChat",
                 "chat_id": chat_id,
+                "option_id": option_id,
                 "message_ids": message_ids,
-                "reason": reason,
                 "text": text,
             }
         )
@@ -17632,6 +17778,24 @@ class TDLibFunctions:
             {
                 "@type": "getPremiumStickerExamples",
             }
+        )
+
+    async def getPremiumInfoSticker(
+        self, month_count: int = 0
+    ) -> Union["types.Error", "types.Sticker"]:
+        r"""
+        Returns the sticker to be used as representation of the Telegram Premium subscription
+
+        Parameters:
+            month_count (:class:`int`):
+                Number of months the Telegram Premium subscription will be active
+
+        Returns:
+            :class:`~pytdbot.types.Sticker`
+        """
+
+        return await self.invoke(
+            {"@type": "getPremiumInfoSticker", "month_count": month_count}
         )
 
     async def viewPremiumFeature(
