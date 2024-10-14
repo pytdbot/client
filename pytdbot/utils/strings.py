@@ -25,3 +25,9 @@ def to_camel_case(input_str: str, delimiter: str = ".", is_class: bool = True) -
 
 def create_extra_id(bytes_size: int = 9):
     return binascii.hexlify(os.urandom(bytes_size)).decode()
+
+
+def get_bot_id_from_token(token: str) -> str:
+    if len(token) > 80:
+        return ""
+    return token.split(":")[0] if ":" in token else ""
