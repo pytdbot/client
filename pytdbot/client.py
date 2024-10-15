@@ -265,6 +265,20 @@ class Client(Decorators, Methods):
         if login:
             await self.login()
 
+    async def __get_updates_queue(self, retries=10, delay=2):
+        for attempt in range(retries):
+            try:
+                return await self.__rchannel.get_queue(self.my_id + "_updates")
+            except aio_pika.exceptions.ChannelNotFoundEntity:
+                logger.warning(
+                    f"Attempt {attempt + 1}: TDLib Server is not running. Retrying in {delay} seconds..."
+                )
+                await asyncio.sleep(delay)
+        logger.error(f"Could not connect to TDLib Server after {retries} attempts.")
+        raise AuthorizationError(
+            f"Could not connect to TDLib Server after {delay * retries} seconds timeout"
+        )
+
     async def __startRabbitMQ(self):
         self.__rconnection = await aio_pika.connect_robust(
             self.__rabbitmq_url,
@@ -273,6 +287,8 @@ class Client(Decorators, Methods):
             },
         )
         self.__rchannel = await self.__rconnection.channel()
+
+        updates_queue = await self.__get_updates_queue()
 
         notify_queue = await self.__rchannel.declare_queue(
             f"notify_{self._rabbitmq_instance_id}", exclusive=True
@@ -284,7 +300,7 @@ class Client(Decorators, Methods):
         )
 
         self.__rqueues = {
-            "updates": await self.__rchannel.get_queue(self.my_id + "_updates"),
+            "updates": updates_queue,
             "requests": await self.__rchannel.get_queue(self.my_id + "_requests"),
             "notify": notify_queue,
             "responses": responses_queue,
