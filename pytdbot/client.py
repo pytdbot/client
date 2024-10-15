@@ -840,7 +840,7 @@ class Client(Decorators, Methods):
                     elif not filter_function(self, update):
                         continue
 
-                    await handler(self, update)
+                await handler(self, update)
             except StopHandlers as e:
                 raise e
             except Exception:
