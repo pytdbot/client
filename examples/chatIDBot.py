@@ -6,7 +6,7 @@ logging.basicConfig(
     # level=logging.DEBUG,
     format="[%(levelname)s][p %(process)d %(threadName)s][%(created)f][%(filename)s:%(lineno)d][%(funcName)s]  %(message)s",
 )
-is_private_filter = filters.create(lambda _, message: message.is_private == True)
+is_private_filter = filters.create(lambda _, message: message.chat_id > 0)
 lock = asyncio.Lock()
 
 client = Client(
@@ -30,46 +30,56 @@ client = Client(
     default_parse_mode="markdownv2",
 )
 
-request_buttons = types.ShowKeyboardMarkup(
+request_buttons = types.ReplyMarkupShowKeyboard(
     [
         [
-            types.ShowKeyboardButton.request_chat(
-                "Channel",
-                id=1,
-                chat_is_channel=True,
-                restrict_chat_is_forum=False,
-                chat_is_forum=False,
-                restrict_chat_has_username=False,
-                chat_has_username=False,
-                chat_is_created=False,
+            types.KeyboardButton(
+                text="Channel",
+                type=types.KeyboardButtonTypeRequestChat(
+                    id=1,
+                    chat_is_channel=True,
+                    restrict_chat_is_forum=False,
+                    chat_is_forum=False,
+                    restrict_chat_has_username=False,
+                    chat_has_username=False,
+                    chat_is_created=False,
+                ),
             ),
-            types.ShowKeyboardButton.request_chat(
-                "Group",
-                id=2,
-                chat_is_channel=False,
-                restrict_chat_is_forum=False,
-                chat_is_forum=False,
-                restrict_chat_has_username=False,
-                chat_has_username=False,
-                chat_is_created=False,
+            types.KeyboardButton(
+                text="Group",
+                type=types.KeyboardButtonTypeRequestChat(
+                    id=2,
+                    chat_is_channel=False,
+                    restrict_chat_is_forum=False,
+                    chat_is_forum=False,
+                    restrict_chat_has_username=False,
+                    chat_has_username=False,
+                    chat_is_created=False,
+                ),
             ),
         ],
         [
-            types.ShowKeyboardButton.request_user(
-                "User",
-                id=3,
-                restrict_user_is_bot=True,
-                user_is_bot=False,
-                restrict_user_is_premium=False,
-                user_is_premium=False,
+            types.KeyboardButton(
+                text="User",
+                type=types.KeyboardButtonTypeRequestUsers(
+                    id=3,
+                    max_quantity=1,
+                    restrict_user_is_bot=True,
+                    user_is_bot=False,
+                    restrict_user_is_premium=False,
+                    user_is_premium=False,
+                ),
             ),
-            types.ShowKeyboardButton.request_user(
-                "Bot",
-                id=4,
-                restrict_user_is_bot=True,
-                user_is_bot=True,
-                restrict_user_is_premium=False,
-                user_is_premium=False,
+            types.KeyboardButton(
+                text="Bot",
+                type=types.KeyboardButtonTypeRequestUsers(
+                    id=4,
+                    max_quantity=1,
+                    restrict_user_is_bot=True,
+                    user_is_bot=True,
+                    restrict_user_is_premium=False,
+                    user_is_premium=False,
+                ),
             ),
         ],
     ],
@@ -97,15 +107,14 @@ async def increase_usage(by: int = 1):
             )
 
 
-@client.on_updateNewMessage(is_private_filter)
-async def start(client: Client, message: types.Update):
+@client.on_message(is_private_filter)
+async def start(client: Client, message: types.Message):
     if message.text == "/start":
         await message.reply_text(
             "*Your ID*: {}".format(
                 utils.code(str(message.from_id)),
             ),
             reply_markup=request_buttons,
-            quote=True,
         )
         await increase_usage()
     elif message.text == "/usage":
@@ -114,46 +123,44 @@ async def start(client: Client, message: types.Update):
         )
 
 
-@client.on_updateNewMessage(is_private_filter)
-async def handle_shared_chat(client: Client, message: types.Update):
-    if message.content_type == "messageUserShared":
-        if message["message"]["content"]["button_id"] == 3:
+@client.on_message(is_private_filter)
+async def handle_shared_chat(client: Client, message: types.Message):
+    if isinstance(message.content, types.MessageUsersShared):
+        if message.content.button_id == 3:
             user_type_text = "*User ID*"
-        elif message["message"]["content"]["button_id"] == 4:
+        elif message.content.button_id == 4:
             user_type_text = "*Bot ID*"
 
         await message.reply_text(
             "{}: {}".format(
                 user_type_text,
-                utils.code(str(message["message"]["content"]["user_id"])),
+                utils.code(str(message.content.users[0].user_id)),
             ),
-            quote=True,
         )
         await increase_usage()
-    elif message.content_type == "messageChatShared":
+    elif isinstance(message.content, types.MessageChatShared):
         await message.reply_text(
             "*Chat ID*: {}".format(
-                utils.code(str(message["message"]["content"]["chat_id"])),
+                utils.code(str(message.content.chat.chat_id)),
             ),
-            quote=True,
         )
         await increase_usage()
 
 
 @client.on_updateChatMember()
-async def chat_member(client: Client, update: types.Update):
+async def chat_member(client: Client, update: types.UpdateChatMember):
     if (
-        update["new_chat_member"]["member_id"].get("user_id", 0)
-        == client.options["my_id"]
+        isinstance(update.new_chat_member.member_id, types.MessageSenderUser)
+        and update.new_chat_member.member_id.user_id == client.options["my_id"]
     ):
-        if update["new_chat_member"]["status"]["@type"] == "chatMemberStatusMember":
+        if isinstance(update.new_chat_member.status, types.ChatMemberStatusMember):
             await client.sendTextMessage(
                 update.chat_id,
                 "*Chat ID*: {}".format(
                     utils.code(str(update.chat_id)),
                 ),
             )
-            await update.leaveChat()
+            await client.leaveChat(update.chat_id)
             await increase_usage()
 
 

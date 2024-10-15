@@ -16,7 +16,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The user authorization state has changed
+        r"""The user authorization state has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -56,7 +56,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new message was received; can also be an outgoing message
+        r"""A new message was received; can also be an outgoing message
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -90,7 +90,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A request to send a message has reached the Telegram server\. This doesn't mean that the message will be sent successfully\. This update is sent only if the option "use\_quick\_ack" is set to true\. This update may be sent multiple times for the same message
+        r"""A request to send a message has reached the Telegram server\. This doesn't mean that the message will be sent successfully\. This update is sent only if the option \"use\_quick\_ack\" is set to true\. This update may be sent multiple times for the same message
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -130,7 +130,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message has been successfully sent
+        r"""A message has been successfully sent
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -170,7 +170,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message failed to send\. Be aware that some messages being sent can be irrecoverably deleted, in which case updateDeleteMessages will be received instead of this update
+        r"""A message failed to send\. Be aware that some messages being sent can be irrecoverably deleted, in which case updateDeleteMessages will be received instead of this update
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -206,7 +206,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The message content has changed
+        r"""The message content has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -240,7 +240,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message was edited\. Changes in the message content will come in a separate updateMessageContent
+        r"""A message was edited\. Changes in the message content will come in a separate updateMessageContent
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -274,7 +274,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The message pinned state was changed
+        r"""The message pinned state was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -310,7 +310,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The information about interactions with a message has changed
+        r"""The information about interactions with a message has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -350,7 +350,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The message content was opened\. Updates voice note messages to "listened", video note messages to "viewed" and starts the self\-destruct timer
+        r"""The message content was opened\. Updates voice note messages to \"listened\", video note messages to \"viewed\" and starts the self\-destruct timer
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -390,7 +390,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message with an unread mention was read
+        r"""A message with an unread mention was read
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -430,7 +430,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of unread reactions added to a message was changed
+        r"""The list of unread reactions added to a message was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -470,7 +470,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A fact\-check added to a message was changed
+        r"""A fact\-check added to a message was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -506,7 +506,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message with a live location was viewed\. When the update is received, the application is expected to update the live location
+        r"""A message with a live location was viewed\. When the update is received, the application is expected to update the live location
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -546,7 +546,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new chat has been loaded/created\. This update is guaranteed to come before the chat identifier is returned to the application\. The chat field changes will be reported through separate updates
+        r"""A new chat has been loaded/created\. This update is guaranteed to come before the chat identifier is returned to the application\. The chat field changes will be reported through separate updates
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -580,7 +580,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The title of a chat was changed
+        r"""The title of a chat was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -614,7 +614,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat photo was changed
+        r"""A chat photo was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -648,7 +648,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Chat accent colors have changed
+        r"""Chat accent colors have changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -684,7 +684,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Chat permissions were changed
+        r"""Chat permissions were changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -720,7 +720,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The last message of a chat was changed
+        r"""The last message of a chat was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -756,7 +756,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The position of a chat in a chat list has changed\. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update
+        r"""The position of a chat in a chat list has changed\. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -790,7 +790,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat was added to a chat list
+        r"""A chat was added to a chat list
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -826,7 +826,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat was removed from a chat list
+        r"""A chat was removed from a chat list
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -866,7 +866,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Incoming messages were read or the number of unread messages has been changed
+        r"""Incoming messages were read or the number of unread messages has been changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -900,7 +900,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Outgoing messages were read
+        r"""Outgoing messages were read
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -934,7 +934,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The chat action bar was changed
+        r"""The chat action bar was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -968,7 +968,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The bar for managing business bot was changed in a chat
+        r"""The bar for managing business bot was changed in a chat
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1008,7 +1008,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The chat available reactions were changed
+        r"""The chat available reactions were changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1048,7 +1048,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat draft has changed\. Be aware that the update may come in the currently opened chat but with old content of the draft\. If the user has changed the content of the draft, this update mustn't be applied
+        r"""A chat draft has changed\. Be aware that the update may come in the currently opened chat but with old content of the draft\. If the user has changed the content of the draft, this update mustn't be applied
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1084,7 +1084,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Chat emoji status has changed
+        r"""Chat emoji status has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1120,7 +1120,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The message sender that is selected to send messages in a chat has changed
+        r"""The message sender that is selected to send messages in a chat has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1156,7 +1156,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The message auto\-delete or self\-destruct timer setting for a chat was changed
+        r"""The message auto\-delete or self\-destruct timer setting for a chat was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1196,7 +1196,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Notification settings for a chat were changed
+        r"""Notification settings for a chat were changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1236,7 +1236,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The chat pending join requests were changed
+        r"""The chat pending join requests were changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1276,7 +1276,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The default chat reply markup was changed\. Can occur because new messages with reply markup were received or because an old reply markup was hidden by the user
+        r"""The default chat reply markup was changed\. Can occur because new messages with reply markup were received or because an old reply markup was hidden by the user
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1312,7 +1312,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The chat background was changed
+        r"""The chat background was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1346,7 +1346,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The chat theme was changed
+        r"""The chat theme was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1380,7 +1380,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The chat unread\_mention\_count has changed
+        r"""The chat unread\_mention\_count has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1420,7 +1420,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The chat unread\_reaction\_count has changed
+        r"""The chat unread\_reaction\_count has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1460,7 +1460,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat video chat state has changed
+        r"""A chat video chat state has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1494,7 +1494,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The value of the default disable\_notification parameter, used when a message is sent to the chat, was changed
+        r"""The value of the default disable\_notification parameter, used when a message is sent to the chat, was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1534,7 +1534,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat content was allowed or restricted for saving
+        r"""A chat content was allowed or restricted for saving
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1574,7 +1574,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Translation of chat messages was enabled or disabled
+        r"""Translation of chat messages was enabled or disabled
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1614,7 +1614,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat was marked as unread or was read
+        r"""A chat was marked as unread or was read
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1654,7 +1654,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat default appearance has changed
+        r"""A chat default appearance has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1690,7 +1690,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat was blocked or unblocked
+        r"""A chat was blocked or unblocked
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1724,7 +1724,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat's has\_scheduled\_messages field has changed
+        r"""A chat's has\_scheduled\_messages field has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1764,7 +1764,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of chat folders or a chat folder has changed
+        r"""The list of chat folders or a chat folder has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1798,7 +1798,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The number of online group members has changed\. This update with non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it is sent just after the number of online users has changed
+        r"""The number of online group members has changed\. This update with non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it is sent just after the number of online users has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1838,7 +1838,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Basic information about a Saved Messages topic has changed\. This update is guaranteed to come before the topic identifier is returned to the application
+        r"""Basic information about a Saved Messages topic has changed\. This update is guaranteed to come before the topic identifier is returned to the application
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1878,7 +1878,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Number of Saved Messages topics has changed
+        r"""Number of Saved Messages topics has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1918,7 +1918,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Basic information about a quick reply shortcut has changed\. This update is guaranteed to come before the quick shortcut name is returned to the application
+        r"""Basic information about a quick reply shortcut has changed\. This update is guaranteed to come before the quick shortcut name is returned to the application
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1958,7 +1958,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A quick reply shortcut and all its messages were deleted
+        r"""A quick reply shortcut and all its messages were deleted
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -1998,7 +1998,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of quick reply shortcuts has changed
+        r"""The list of quick reply shortcuts has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2038,7 +2038,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of quick reply shortcut messages has changed
+        r"""The list of quick reply shortcut messages has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2078,7 +2078,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Basic information about a topic in a forum chat was changed
+        r"""Basic information about a topic in a forum chat was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2112,7 +2112,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Notification settings for some type of chats were updated
+        r"""Notification settings for some type of chats were updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2152,7 +2152,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Notification settings for reactions were updated
+        r"""Notification settings for reactions were updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2192,7 +2192,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A notification was changed
+        r"""A notification was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2226,7 +2226,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A list of active notifications in a notification group has changed
+        r"""A list of active notifications in a notification group has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2262,7 +2262,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Contains active notifications that were shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
+        r"""Contains active notifications that were shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2302,7 +2302,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Describes whether there are some pending notification updates\. Can be used to prevent application from killing, while there are some pending notifications
+        r"""Describes whether there are some pending notification updates\. Can be used to prevent application from killing, while there are some pending notifications
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2342,7 +2342,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some messages were deleted
+        r"""Some messages were deleted
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2376,7 +2376,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message sender activity in the chat has changed
+        r"""A message sender activity in the chat has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2410,7 +2410,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The user went online or offline
+        r"""The user went online or offline
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2444,7 +2444,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data of a user has changed\. This update is guaranteed to come before the user identifier is returned to the application
+        r"""Some data of a user has changed\. This update is guaranteed to come before the user identifier is returned to the application
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2478,7 +2478,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data of a basic group has changed\. This update is guaranteed to come before the basic group identifier is returned to the application
+        r"""Some data of a basic group has changed\. This update is guaranteed to come before the basic group identifier is returned to the application
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2512,7 +2512,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data of a supergroup or a channel has changed\. This update is guaranteed to come before the supergroup identifier is returned to the application
+        r"""Some data of a supergroup or a channel has changed\. This update is guaranteed to come before the supergroup identifier is returned to the application
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2546,7 +2546,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data of a secret chat has changed\. This update is guaranteed to come before the secret chat identifier is returned to the application
+        r"""Some data of a secret chat has changed\. This update is guaranteed to come before the secret chat identifier is returned to the application
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2580,7 +2580,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data in userFullInfo has been changed
+        r"""Some data in userFullInfo has been changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2614,7 +2614,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data in basicGroupFullInfo has been changed
+        r"""Some data in basicGroupFullInfo has been changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2654,7 +2654,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some data in supergroupFullInfo has been changed
+        r"""Some data in supergroupFullInfo has been changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2694,7 +2694,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A service notification from the server was received\. Upon receiving this the application must show a popup with the content of the notification
+        r"""A service notification from the server was received\. Upon receiving this the application must show a popup with the content of the notification
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2734,7 +2734,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Information about a file was updated
+        r"""Information about a file was updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2768,7 +2768,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The file generation process needs to be started by the application\. Use setFileGenerationProgress and finishFileGeneration to generate the file
+        r"""The file generation process needs to be started by the application\. Use setFileGenerationProgress and finishFileGeneration to generate the file
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2808,7 +2808,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """File generation is no longer needed
+        r"""File generation is no longer needed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2848,7 +2848,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The state of the file download list has changed
+        r"""The state of the file download list has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2882,7 +2882,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A file was added to the file download list\. This update is sent only after file download list is loaded for the first time
+        r"""A file was added to the file download list\. This update is sent only after file download list is loaded for the first time
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2922,7 +2922,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A file download was changed\. This update is sent only after file download list is loaded for the first time
+        r"""A file download was changed\. This update is sent only after file download list is loaded for the first time
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2956,7 +2956,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A file was removed from the file download list\. This update is sent only after file download list is loaded for the first time
+        r"""A file was removed from the file download list\. This update is sent only after file download list is loaded for the first time
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -2996,7 +2996,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A request can't be completed unless application verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
+        r"""A request can't be completed unless application verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3036,7 +3036,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """New call was created or information about a call was updated
+        r"""New call was created or information about a call was updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3070,7 +3070,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Information about a group call was updated
+        r"""Information about a group call was updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3104,7 +3104,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Information about a group call participant was changed\. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined
+        r"""Information about a group call participant was changed\. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3144,7 +3144,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """New call signaling data arrived
+        r"""New call signaling data arrived
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3184,7 +3184,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some privacy setting rules have been changed
+        r"""Some privacy setting rules have been changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3224,7 +3224,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Number of unread messages in a chat list has changed\. This update is sent only if the message database is used
+        r"""Number of unread messages in a chat list has changed\. This update is sent only if the message database is used
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3264,7 +3264,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Number of unread chats, i\.e\. with unread messages or marked as unread, has changed\. This update is sent only if the message database is used
+        r"""Number of unread chats, i\.e\. with unread messages or marked as unread, has changed\. This update is sent only if the message database is used
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3300,7 +3300,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A story was changed
+        r"""A story was changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3334,7 +3334,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A story became inaccessible
+        r"""A story became inaccessible
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3368,7 +3368,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A story has been successfully sent
+        r"""A story has been successfully sent
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3408,7 +3408,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A story failed to send\. If the story sending is canceled, then updateStoryDeleted will be received instead of this update
+        r"""A story failed to send\. If the story sending is canceled, then updateStoryDeleted will be received instead of this update
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3444,7 +3444,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of active stories posted by a specific chat has changed
+        r"""The list of active stories posted by a specific chat has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3480,7 +3480,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Number of chats in a story list has changed
+        r"""Number of chats in a story list has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3520,7 +3520,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Story stealth mode settings have changed
+        r"""Story stealth mode settings have changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3556,7 +3556,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """An option changed its value
+        r"""An option changed its value
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3590,7 +3590,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A sticker set has changed
+        r"""A sticker set has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3624,7 +3624,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of installed sticker sets was updated
+        r"""The list of installed sticker sets was updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3664,7 +3664,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of trending sticker sets was updated or some of them were viewed
+        r"""The list of trending sticker sets was updated or some of them were viewed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3704,7 +3704,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of recently used stickers was updated
+        r"""The list of recently used stickers was updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3738,7 +3738,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of favorite stickers was updated
+        r"""The list of favorite stickers was updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3774,7 +3774,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of saved animations was updated
+        r"""The list of saved animations was updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3810,7 +3810,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of saved notification sounds was updated\. This update may not be sent until information about a notification sound was requested for the first time
+        r"""The list of saved notification sounds was updated\. This update may not be sent until information about a notification sound was requested for the first time
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3850,7 +3850,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The default background has changed
+        r"""The default background has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3886,7 +3886,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of available chat themes has changed
+        r"""The list of available chat themes has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3920,7 +3920,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of supported accent colors has changed
+        r"""The list of supported accent colors has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3954,7 +3954,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of supported accent colors for user profiles has changed
+        r"""The list of supported accent colors for user profiles has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3994,7 +3994,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some language pack strings have been updated
+        r"""Some language pack strings have been updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4034,7 +4034,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The connection state has changed\. This update must be used only to show a human\-readable description of the connection state
+        r"""The connection state has changed\. This update must be used only to show a human\-readable description of the connection state
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4070,7 +4070,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """New terms of service must be accepted by the user\. If the terms of service are declined, then the deleteAccount method must be called with the reason "Decline ToS update"
+        r"""New terms of service must be accepted by the user\. If the terms of service are declined, then the deleteAccount method must be called with the reason \"Decline ToS update\"
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4104,7 +4104,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of users nearby has changed\. The update is guaranteed to be sent only 60 seconds after a successful searchChatsNearby request
+        r"""The list of users nearby has changed\. The update is guaranteed to be sent only 60 seconds after a successful searchChatsNearby request
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4138,7 +4138,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The first unconfirmed session has changed
+        r"""The first unconfirmed session has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4178,7 +4178,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of bots added to attachment or side menu has changed
+        r"""The list of bots added to attachment or side menu has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4218,7 +4218,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message was sent by an opened Web App, so the Web App needs to be closed
+        r"""A message was sent by an opened Web App, so the Web App needs to be closed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4254,7 +4254,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of active emoji reactions has changed
+        r"""The list of active emoji reactions has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4294,7 +4294,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of available message effects has changed
+        r"""The list of available message effects has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4334,7 +4334,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The type of default reaction has changed
+        r"""The type of default reaction has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4374,7 +4374,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Tags used in Saved Messages or a Saved Messages topic have changed
+        r"""Tags used in Saved Messages or a Saved Messages topic have changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4410,7 +4410,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of messages with active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
+        r"""The list of messages with active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4450,7 +4450,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The number of Telegram Stars owned by the current user has changed
+        r"""The number of Telegram Stars owned by the current user has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4484,7 +4484,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The revenue earned from sponsored messages in a chat has changed\. If chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions
+        r"""The revenue earned from sponsored messages in a chat has changed\. If chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4520,7 +4520,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The Telegram Star revenue earned by a bot or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
+        r"""The Telegram Star revenue earned by a bot or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4556,7 +4556,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The parameters of speech recognition without Telegram Premium subscription has changed
+        r"""The parameters of speech recognition without Telegram Premium subscription has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4596,7 +4596,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of supported dice emojis has changed
+        r"""The list of supported dice emojis has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4630,7 +4630,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen\. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played
+        r"""Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen\. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4670,7 +4670,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The parameters of animation search through getOption\("animation\_search\_bot\_username"\) bot has changed
+        r"""The parameters of animation search through getOption\(\"animation\_search\_bot\_username\"\) bot has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4710,7 +4710,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of suggested to the user actions has changed
+        r"""The list of suggested to the user actions has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4746,7 +4746,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user\. Use getOption\("premium\_download\_speedup"\) or getOption\("premium\_upload\_speedup"\) to get expected speedup after subscription to Telegram Premium
+        r"""Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user\. Use getOption\(\"premium\_download\_speedup\"\) or getOption\(\"premium\_upload\_speedup\"\) to get expected speedup after subscription to Telegram Premium
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4786,7 +4786,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The list of contacts that had birthdays recently or will have birthday soon has changed
+        r"""The list of contacts that had birthdays recently or will have birthday soon has changed
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4826,7 +4826,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Autosave settings for some type of chats were updated
+        r"""Autosave settings for some type of chats were updated
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4862,7 +4862,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A business connection has changed; for bots only
+        r"""A business connection has changed; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4902,7 +4902,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new message was added to a business account; for bots only
+        r"""A new message was added to a business account; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4942,7 +4942,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A message in a business account was edited; for bots only
+        r"""A message in a business account was edited; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -4982,7 +4982,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Messages in a business account were deleted; for bots only
+        r"""Messages in a business account were deleted; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5022,7 +5022,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming inline query; for bots only
+        r"""A new incoming inline query; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5056,7 +5056,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """The user has chosen a result of an inline query; for bots only
+        r"""The user has chosen a result of an inline query; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5096,7 +5096,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming callback query; for bots only
+        r"""A new incoming callback query; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5132,7 +5132,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming callback query from a message sent via a bot; for bots only
+        r"""A new incoming callback query from a message sent via a bot; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5172,7 +5172,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming callback query from a business message; for bots only
+        r"""A new incoming callback query from a business message; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5212,7 +5212,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming shipping query; for bots only\. Only for invoices with flexible price
+        r"""A new incoming shipping query; for bots only\. Only for invoices with flexible price
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5248,7 +5248,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming pre\-checkout query; for bots only\. Contains full information about a checkout
+        r"""A new incoming pre\-checkout query; for bots only\. Contains full information about a checkout
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5288,7 +5288,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming event; for bots only
+        r"""A new incoming event; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5322,7 +5322,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A new incoming query; for bots only
+        r"""A new incoming query; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5356,7 +5356,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A poll was updated; for bots only
+        r"""A poll was updated; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5390,7 +5390,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A user changed the answer to a poll; for bots only
+        r"""A user changed the answer to a poll; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5424,7 +5424,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """User rights changed in a chat; for bots only
+        r"""User rights changed in a chat; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5458,7 +5458,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A user sent a join request to a chat; for bots only
+        r"""A user sent a join request to a chat; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5498,7 +5498,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """A chat boost has changed; for bots only
+        r"""A chat boost has changed; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5532,7 +5532,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """User changed its reactions on a message with public reactions; for bots only
+        r"""User changed its reactions on a message with public reactions; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5568,7 +5568,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Reactions added to a message with anonymous reactions have changed; for bots only
+        r"""Reactions added to a message with anonymous reactions have changed; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5604,7 +5604,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Paid media were purchased by a user; for bots only
+        r"""Paid media were purchased by a user; for bots only
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5644,7 +5644,7 @@ class Updates:
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        """Contains a list of updates
+        r"""Contains a list of updates
 
         Args:
             filters (:class:`pytdbot.filters.Filter`, *optional*):

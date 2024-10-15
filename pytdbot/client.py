@@ -1,6 +1,7 @@
 import signal
 import pytdbot
 import asyncio
+import aio_pika
 
 from platform import python_implementation, python_version
 from os.path import join as join_path
@@ -8,9 +9,9 @@ from pathlib import Path
 from getpass import getpass
 from importlib import import_module
 
-from typing import Callable, Union
+from typing import Callable, Union, Dict
 from logging import getLogger, DEBUG
-from base64 import b64encode
+
 from deepdiff import DeepDiff
 from concurrent.futures import ThreadPoolExecutor
 from threading import current_thread, main_thread
@@ -19,9 +20,18 @@ from json import dumps
 from .tdjson import TdJson
 from .handlers import Decorators, Handler
 from .methods import Methods
-from .types import Plugins, Result, LogStream, Update
+from .types import Plugins, LogStream
+from . import types
 from .filters import Filter
 from .exception import StopHandlers, AuthorizationError
+from .utils import (
+    create_extra_id,
+    json_loads,
+    json_dumps,
+    get_bot_id_from_token,
+    obj_to_dict,
+    dict_to_obj,
+)
 
 
 logger = getLogger(__name__)
@@ -31,29 +41,26 @@ class Client(Decorators, Methods):
     """Pytdbot, a TDLib client
 
     Args:
+        token (``str``):
+            Bot token or phone number
+
         api_id (``int``):
             Identifier for Telegram API access, which can be obtained at https://my.telegram.org
 
         api_hash (``str``):
             Identifier hash for Telegram API access, which can be obtained at https://my.telegram.org
 
-        database_encryption_key (``str`` | ``bytes``):
-            Encryption key for database encryption
+        rabbitmq_url (``str``, *optional*):
+            URL for RabbitMQ server connection
 
-        files_directory (``str``):
-            Directory for storing files and database
-
-        token (``str``, *optional*):
-            Bot token or phone number
+        instance_id (``str``, *optional*):
+            Instance ID for RabbitMQ connections and queues. Default is ``None`` (random)
 
         lib_path (``str``, *optional*):
             Path to TDLib library. Default is ``None`` (auto-detect)
 
         plugins (:class:`~pytdbot.types.Plugins`, *optional*):
             Plugins to load
-
-        update_class (:class:`~pytdbot.types.Update`, *optional*):
-            Update class to use. Default is :class:`~pytdbot.types.Update`
 
         default_parse_mode (``str``, *optional*):
             The default ``parse_mode`` for methods: :meth:`~pytdbot.Client.sendTextMessage`, :meth:`~pytdbot.Client.sendPhoto`, :meth:`~pytdbot.Client.sendAudio`, :meth:`~pytdbot.Client.sendVideo`, :meth:`~pytdbot.Client.sendDocument`, :meth:`~pytdbot.Client.sendAnimation`, :meth:`~pytdbot.Client.sendVoice`, :meth:`~pytdbot.Client.sendCopy`, :meth:`~pytdbot.Client.editTextMessage`; Default is ``None`` (Don\'t parse)
@@ -64,6 +71,12 @@ class Client(Decorators, Methods):
 
         device_model (``str``, *optional*):
             Device model. Default is ``None`` (auto-detect)
+
+        files_directory (``str``, *optional*):
+            Directory for storing files and database
+
+        database_encryption_key (``str`` | ``bytes``):
+            Encryption key for database encryption
 
         use_test_dc (``bool``, *optional*):
             If set to true, the Telegram test environment will be used instead of the production environment. Default is ``False``
@@ -99,17 +112,18 @@ class Client(Decorators, Methods):
 
     def __init__(
         self,
-        api_id: int,
-        api_hash: str,
-        database_encryption_key: Union[str, bytes],
-        files_directory: str,
-        token: str = None,
+        token: str,
+        api_id: int = None,
+        api_hash: str = None,
+        rabbitmq_url: str = None,
+        instance_id: str = None,
         lib_path: str = None,
         plugins: Plugins = None,
-        update_class: Update = Update,
         default_parse_mode: str = None,
         system_language_code: str = "en",
         device_model: str = None,
+        files_directory: str = None,
+        database_encryption_key: Union[str, bytes] = None,
         use_test_dc: bool = False,
         use_file_database: bool = True,
         use_chat_info_database: bool = True,
@@ -123,12 +137,15 @@ class Client(Decorators, Methods):
     ) -> None:
         self.__api_id = api_id
         self.__api_hash = api_hash
+        self.__rabbitmq_url = rabbitmq_url
+        self._rabbitmq_instance_id = (
+            instance_id if isinstance(instance_id, str) else create_extra_id(4)
+        )
         self.__token = token
         self.__database_encryption_key = database_encryption_key
         self.files_directory = files_directory
         self.lib_path = lib_path
         self.plugins = plugins
-        self.update_class = update_class
         self.default_parse_mode = (
             default_parse_mode
             if isinstance(default_parse_mode, str)
@@ -147,18 +164,20 @@ class Client(Decorators, Methods):
         )
         self.workers = workers
         self.queue = asyncio.Queue()
+        self.my_id = get_bot_id_from_token(self.__token)
         self.td_verbosity = td_verbosity
         self.connection_state: str = None
         self.is_running = None
-        self.me = None
+        self.me: types.User = None
         self.is_authenticated = False
+        self.is_rabbitmq = True if rabbitmq_url else False
         self.options = {}
 
         self._check_init_args()
 
         self._handlers = {"initializer": [], "finalizer": []}
-        self._results = {}
-        self._tdjson = TdJson(lib_path, td_verbosity)
+        self._results: Dict[str, asyncio.Future] = {}
+        self._tdjson = None if self.is_rabbitmq else TdJson(lib_path, td_verbosity)
         self._retry_after_prefex = "Too Many Requests: retry after "
         self._workers_tasks = None
         self.__authorization_state = None
@@ -184,9 +203,9 @@ class Client(Decorators, Methods):
         if plugins is not None:
             self._load_plugins()
 
-        if isinstance(td_log, LogStream):
+        if isinstance(td_log, LogStream) and not self.is_rabbitmq:
             self._tdjson.execute(
-                {"@type": "setLogStream", "log_stream": td_log.to_dict()}
+                {"@type": "setLogStream", "log_stream": obj_to_dict(td_log)}
             )
 
     async def __aenter__(self):
@@ -212,6 +231,7 @@ class Client(Decorators, Methods):
             login (``bool``, *optional*):
                 Login after start. Default is ``True``
         """
+
         if not self.is_running:
             logger.info("Starting pytdbot client...")
 
@@ -227,15 +247,91 @@ class Client(Decorators, Methods):
                 self.__is_queue_worker = False
                 logger.info("Started with unlimited updates processes")
 
-            self.loop.create_task(self.__listen_loop())
+            if self.is_rabbitmq:
+                await self.__startRabbitMQ()
+            else:
+                self.loop.create_task(self.__listen_loop())
 
         if login:
             await self.login()
 
+    async def __get_updates_queue(self, retries=10, delay=2):
+        for attempt in range(retries):
+            try:
+                return await self.__rchannel.get_queue(self.my_id + "_updates")
+            except aio_pika.exceptions.ChannelNotFoundEntity:
+                logger.warning(
+                    f"Attempt {attempt + 1}: TDLib Server is not running. Retrying in {delay} seconds..."
+                )
+                await asyncio.sleep(delay)
+        logger.error(f"Could not connect to TDLib Server after {retries} attempts.")
+        raise AuthorizationError(
+            f"Could not connect to TDLib Server after {delay * retries} seconds timeout"
+        )
+
+    async def __startRabbitMQ(self):
+        self.__rconnection = await aio_pika.connect_robust(
+            self.__rabbitmq_url,
+            client_properties={
+                "connection_name": f"Pytdbot instance {self._rabbitmq_instance_id}"
+            },
+        )
+        self.__rchannel = await self.__rconnection.channel()
+
+        updates_queue = await self.__get_updates_queue()
+
+        notify_queue = await self.__rchannel.declare_queue(
+            f"notify_{self._rabbitmq_instance_id}", exclusive=True
+        )
+        await notify_queue.bind(await self.__rchannel.get_exchange("broadcast"))
+
+        responses_queue = await self.__rchannel.declare_queue(
+            f"res_{self._rabbitmq_instance_id}", exclusive=True
+        )
+
+        self.__rqueues = {
+            "updates": updates_queue,
+            "requests": await self.__rchannel.get_queue(self.my_id + "_requests"),
+            "notify": notify_queue,
+            "responses": responses_queue,
+        }
+
+        self.is_running = True
+
+        await self.__rqueues["responses"].consume(self.__on_update, no_ack=True)
+
+        await self._set_options()
+
+        res = await self.getCurrentState()
+        for update in res.updates:
+            # when using obj_to_dict the key "@client_id" won't exists
+            # since it's not part of the object
+            await self._process_update(obj_to_dict(update))
+
+        self.me = await self.getMe()
+        self.is_authenticated = True
+
+        logger.info(
+            "Logged in as {} {}".format(
+                self.me.first_name,
+                str(self.me.id)
+                if not self.me.usernames
+                else "@" + self.me.usernames.editable_username,
+            )
+        )
+        await self.__rqueues["updates"].consume(self.__on_update, no_ack=True)
+        await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
+
+    async def __handle_rabbitmq_message(self, message: aio_pika.IncomingMessage):
+        await self._process_update(json_loads(message.body))
+
+    async def __on_update(self, update):
+        self.loop.create_task(self.__handle_rabbitmq_message(update))
+
     async def login(self) -> None:
         """Login to Telegram."""
 
-        if self.is_authenticated:
+        if self.is_authenticated or self.is_rabbitmq:
             return
 
         self.__login = True
@@ -251,17 +347,17 @@ class Client(Decorators, Methods):
             return
 
         self.me = await self.getMe()
-        if self.me.is_error:
-            logger.error(f"Get me error: {self.me['message']}")
+        if isinstance(self.me, types.Error):
+            logger.error(f"Get me error: {self.me.message}")
 
-        self.me = self.me.result
         self.is_authenticated = True
+
         logger.info(
             "Logged in as {} {}".format(
-                self.me["first_name"],
-                str(self.me["id"])
-                if "usernames" not in self.me
-                else "@" + self.me["usernames"]["editable_username"],
+                self.me.first_name,
+                str(self.me.id)
+                if not self.me.usernames
+                else "@" + self.me.usernames.editable_username,
             )
         )
 
@@ -271,6 +367,7 @@ class Client(Decorators, Methods):
         func: Callable,
         filters: pytdbot.filters.Filter = None,
         position: int = None,
+        inner_object: bool = False,
     ) -> None:
         """Add an update handler
 
@@ -287,6 +384,9 @@ class Client(Decorators, Methods):
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            inner_object (``bool``, *optional*):
+                Wether to pass an inner object of update or not; for example ``UpdateNewMessage.message``. Default is ``False``
+
         Raises:
             TypeError
         """
@@ -297,7 +397,7 @@ class Client(Decorators, Methods):
         elif filters is not None and not isinstance(filters, Filter):
             raise TypeError("filters must be instance of pytdbot.filters.Filter")
         else:
-            func = Handler(func, update_type, filters, position)
+            func = Handler(func, update_type, filters, position, inner_object)
             if update_type not in self._handlers:
                 self._handlers[update_type] = []
             if isinstance(position, int):
@@ -334,7 +434,7 @@ class Client(Decorators, Methods):
     async def invoke(
         self,
         request: dict,
-    ) -> Result:
+    ) -> types.TlObject:
         """Invoke a new TDLib request
 
         Example:
@@ -344,7 +444,7 @@ class Client(Decorators, Methods):
 
                 async with Client(...) as client:
                     res = await client.invoke({"@type": "getOption", "name": "version"})
-                    if not res.is_error:
+                    if not isinstance(res, types.Error):
                         print(res)
 
         Args:
@@ -355,48 +455,51 @@ class Client(Decorators, Methods):
             :class:`~pytdbot.types.Result`
         """
 
-        result = Result(request)
-        self._results[result.id] = result
+        request = obj_to_dict(request)
+
+        request["@extra"] = {"id": create_extra_id()}
+
+        result = self._create_request_future(request)
 
         if (
             logger.root.level >= DEBUG
         ):  # dumping all requests may create performance issues
-            logger.debug(f"Sending: {dumps(result.request, indent=4)}")
+            logger.debug(f"Sending: {dumps(request, indent=4)}")
 
-        self.__send(result.request)
+        await self.__send(request)
         await result
 
-        if result.is_error:
-            if result["code"] == 429:
-                retry_after = self.get_retry_after_time(result["message"])
+        if isinstance(result, types.Error):
+            if result.code == 429:
+                retry_after = self.get_retry_after_time(result.message)
 
                 if retry_after <= self.sleep_threshold:
-                    result.reset()
-
                     logger.error(
-                        f"Sleeping for {retry_after}s (Caused by {result.request['@type']})"
+                        f"Sleeping for {retry_after}s (Caused by {request['@type']})"
                     )
 
                     await asyncio.sleep(retry_after)
-                    self._results[result.id] = result
-                    self.__send(result.request)
+
+                    result = self._create_request_future(request)
+
+                    await self.__send(request)
                     await result
             elif not self.use_message_database and (
-                result["code"] == 400
-                and result["message"] == "Chat not found"
-                and "chat_id" in result.request
+                result.code == 400
+                and result.message == "Chat not found"
+                and "chat_id" in request
             ):
-                chat_id = result.request["chat_id"]
+                chat_id = request["chat_id"]
 
                 logger.debug(f"Attempt to load chat {chat_id}")
 
                 load_chat = await self.getChat(chat_id)
 
-                if not load_chat.is_error:
+                if not isinstance(load_chat, types.Error):
                     logger.debug(f"Chat {chat_id} is loaded")
 
-                    message_id = result.request.get("reply_to", {}).get(
-                        "message_id", result.request.get("message_id", 0)
+                    message_id = request.get("reply_to", {}).get(
+                        "message_id", request.get("message_id", 0)
                     )
 
                     # If there is a message_id then
@@ -405,16 +508,16 @@ class Client(Decorators, Methods):
                         await self.getMessage(chat_id, message_id)
 
                     # repeat the first request
-                    result.reset()
-                    self._results[result.id] = result
-                    self.__send(result.request)
+                    result = self._create_request_future(request)
+
+                    await self.__send(request)
                     await result
                 else:
                     logger.error(f"Couldn't load chat {chat_id}")
 
-        return result
+        return await result
 
-    async def call_method(self, method: str, **kwargs) -> Result:
+    async def call_method(self, method: str, **kwargs) -> types.TlObject:
         """Call a method. with keyword arguments (``kwargs``) support
 
         Example:
@@ -424,7 +527,7 @@ class Client(Decorators, Methods):
 
                 async with Client(...) as client:
                     res = await client.call_method("getOption", name="version"})
-                    if not res.is_error:
+                    if not isinstance(res, types.Error):
                         print(res)
 
         Args:
@@ -432,7 +535,7 @@ class Client(Decorators, Methods):
                 TDLib method name
 
         Returns:
-            :class:`~pytdbot.types.Result`
+            Any :class:`~pytdbot.types.TlObject`
         """
 
         kwargs["@type"] = method
@@ -491,39 +594,66 @@ class Client(Decorators, Methods):
 
         self.__is_closing = True
 
-        await self.close()
+        if self.authorization_state not in {
+            "authorizationStateClosing",
+            "authorizationStateClosed",
+        }:
+            await self.close()
 
         while self.authorization_state != "authorizationStateClosed":
             await asyncio.sleep(0.1)
+
+        if self.is_rabbitmq:
+            await self.__rchannel.close()
+            await self.__rconnection.close()
+
+        self.__stop_client()
+
+        logger.info("Instance closed")
+
+        return True
+
+    def _create_request_future(
+        self, request: dict, result_id: str = None, handle_result: bool = True
+    ) -> asyncio.Future:
+        result = asyncio.Future()
+
+        result.request = request
+
+        if handle_result:
+            self._results[
+                result_id if result_id is not None else request["@extra"]["id"]
+            ] = result
+        return result
+
+    async def __send(self, request: dict) -> None:
+        if not self.is_rabbitmq:
+            self._tdjson.send(
+                request
+            )  # tdjson.send is non-blocking method, So we don't need run_in_executor. This improves performance
         else:
-            self.__stop_client()
-
-            logger.info("Instance closed")
-
-            return True
-
-    def __send(self, request: dict) -> None:
-        return self._tdjson.send(
-            request
-        )  # tdjson.send is non-blocking method, So we don't need run_in_executor. This improves performance
+            await self.__rchannel.default_exchange.publish(
+                aio_pika.Message(
+                    json_dumps(request), reply_to=self.__rqueues["responses"].name
+                ),
+                routing_key=self.__rqueues["requests"].name,
+            )
 
     def _check_init_args(self):
-        if not isinstance(self.__api_id, int):
-            raise TypeError("api_id must be int")
-        elif not isinstance(self.__api_hash, str):
-            raise TypeError("api_hash must be str")
-        elif not isinstance(self.__database_encryption_key, str) and not isinstance(
-            self.__database_encryption_key, bytes
-        ):
-            raise TypeError("database_encryption_key must be str or bytes")
-        elif not isinstance(self.files_directory, str):
-            raise TypeError("files_directory must be str")
-        elif not isinstance(self.td_verbosity, int):
-            raise TypeError("td_verbosity must be int")
-        elif type(Update) is not type(self.update_class):
-            raise TypeError(
-                "update_class must be instance of class pytdbot.types.Update"
-            )
+        if not self.is_rabbitmq:
+            if not isinstance(self.__api_id, int):
+                raise TypeError("api_id must be an int")
+            if not isinstance(self.__api_hash, str):
+                raise TypeError("api_hash must be a str")
+            if not isinstance(self.__database_encryption_key, (str, bytes)):
+                raise TypeError("database_encryption_key must be str or bytes")
+            if not isinstance(self.files_directory, str):
+                raise TypeError("files_directory must be a str")
+            if not isinstance(self.td_verbosity, int):
+                raise TypeError("td_verbosity must be an int")
+
+        if not self.my_id:
+            raise ValueError("Invalid bot token")
 
         if isinstance(self.workers, int) and self.workers < 1:
             raise ValueError("workers must be greater than 0")
@@ -615,6 +745,9 @@ class Client(Decorators, Methods):
             return is_coro
 
     async def __listen_loop(self):
+        if self.is_rabbitmq:
+            return
+
         with ThreadPoolExecutor(1, "pytdbot_listener") as thread:
             try:
                 self.is_running = True
@@ -636,20 +769,27 @@ class Client(Decorators, Methods):
                 self.is_running = False
 
     async def _process_update(self, update):
-        del update["@client_id"]
+        if not update:
+            logger.warning("Received None update")
+            return
+
+        if (
+            logger.root.level >= DEBUG
+        ):  # dumping all results may create performance issues
+            logger.debug(f"Received: {dumps(update, indent=4)}")
 
         if "@extra" in update:
-            if (
-                logger.root.level >= DEBUG
-            ):  # dumping all results may create performance issues
-                logger.debug(f"Received: {dumps(update, indent=4)}")
-            if update["@extra"]["id"] in self._results:
-                result: Result = self._results.pop(update["@extra"]["id"])
-                result.set_result(update)
+            if result := self._results.pop(update["@extra"]["id"], None):
+                obj = dict_to_obj(update, self)
+
+                result.set_result(obj)
             elif update["@type"] == "error" and "option" in update["@extra"]:
                 logger.error(f"{update['@extra']['option']}: {update['message']}")
+
         else:
             update_handler = self.__local_handlers.get(update["@type"])
+            update = dict_to_obj(update, self)
+
             if update_handler:
                 self.loop.create_task(update_handler(update))
 
@@ -677,9 +817,11 @@ class Client(Decorators, Methods):
                 logger.exception(f"Initializer {initializer} failed")
 
     async def __run_handlers(self, update):
-        update_type = update["@type"]
-        for handler in self._handlers[update_type]:
+        for handler in self._handlers[update.getType()]:
             try:
+                if handler.inner_object and isinstance(update, types.UpdateNewMessage):
+                    update = update.message
+
                 if handler.filter is not None:
                     filter_function = handler.filter.func
                     if self.is_coro_filter(filter_function):
@@ -713,19 +855,10 @@ class Client(Decorators, Methods):
                 logger.exception(f"Finalizer {finalizer} failed")
 
     async def _handle_update(self, update):
-        if (
-            logger.root.level >= DEBUG
-        ):  # dumping all updates can create performance issues
-            logger.debug(
-                f"Received: {dumps(update, indent=4)}",
-            )
-
-        if update["@type"] in self._handlers:
-            update = self.update_class(self, update)
+        if update.getType() in self._handlers:
             if (
-                update["@type"] == "updateNewMessage"
-                and update["message"]["is_outgoing"]
-                and "sending_state" in update["message"]
+                isinstance(update, types.UpdateNewMessage)
+                and update.message.is_outgoing
             ):
                 return
 
@@ -768,19 +901,17 @@ class Client(Decorators, Methods):
             use_secret_chats=False,
             system_version=None,
             files_directory=self.files_directory,
-            database_encryption_key=b64encode(self.__database_encryption_key).decode(
-                "utf-8"
-            ),
+            database_encryption_key=self.__database_encryption_key,
             database_directory=join_path(self.files_directory, "database"),
             application_version=f"Pytdbot {pytdbot.__version__}",
         )
-        if res.is_error:
-            raise AuthorizationError(res.result["message"])
+        if isinstance(res, types.Error):
+            raise AuthorizationError(res.message)
 
     async def _set_bot_token(self):
         res = await self.checkAuthenticationBotToken(self.__token)
-        if res.is_error:
-            raise AuthorizationError(res.result["message"])
+        if isinstance(res, types.Error):
+            raise AuthorizationError(res.message)
 
     async def _set_options(self):
         if not isinstance(self.td_options, dict):
@@ -798,7 +929,7 @@ class Client(Decorators, Methods):
             else:
                 raise ValueError(f"Option {k} has unsupported type {v_type}")
 
-            self.__send(
+            await self.__send(
                 {
                     "@type": "setOption",
                     "name": k,
@@ -808,66 +939,68 @@ class Client(Decorators, Methods):
             )
             logger.debug(f"Option {k} sent with value {v}")
 
-    async def __handle_authorization_state(self, update):
-        if update["@type"] == "updateAuthorizationState":
-            old_authorization_state = self.authorization_state
-            self.__authorization_state = update["authorization_state"]["@type"]
-            self.__authorization = update["authorization_state"]
+    async def __handle_authorization_state(
+        self, update: types.UpdateAuthorizationState
+    ):
+        old_authorization_state = self.authorization_state
+        self.__authorization_state = update.authorization_state.getType()
+        self.__authorization = update.authorization_state
 
-            logger.info(
-                f"Authorization state changed to {self.authorization_state.removeprefix('authorizationState')}"
-            )
+        logger.info(
+            f"Authorization state changed to {self.authorization_state.removeprefix('authorizationState')}"
+        )
 
-            if self.__login:
-                if self.authorization_state == "authorizationStateWaitTdlibParameters":
-                    await self._set_options()
-                    await self.set_td_parameters()
-                elif self.authorization_state == "authorizationStateWaitPhoneNumber":
-                    self._print_welcome()
-                    await self.__handle_authorization_state_wait_phone_number()
-                elif self.authorization_state == "authorizationStateWaitEmailAddress":
-                    await self.__handle_authorization_state_wait_email_address()
-                elif self.authorization_state == "authorizationStateWaitEmailCode":
-                    await self.__handle_authorization_state_wait_email_code()
-                elif self.authorization_state == "authorizationStateWaitCode":
-                    await self.__handle_authorization_state_wait_code()
-                elif self.authorization_state == "authorizationStateWaitRegistration":
-                    await self.__handle_authorization_state_wait_registration()
-                elif (
-                    old_authorization_state != "authorizationStateWaitPassword"
-                    and self.authorization_state == "authorizationStateWaitPassword"
-                ):
-                    await self.__handle_authorization_state_wait_password()
-                elif (
-                    self.authorization_state == "authorizationStateClosed"
-                    and self.__is_closing is False
-                ):
-                    self.__stop_client()
+        if self.__login:
+            if self.authorization_state == "authorizationStateWaitTdlibParameters":
+                await self._set_options()
+                await self.set_td_parameters()
+            elif self.authorization_state == "authorizationStateWaitPhoneNumber":
+                self._print_welcome()
+                await self.__handle_authorization_state_wait_phone_number()
+            elif self.authorization_state == "authorizationStateWaitEmailAddress":
+                await self.__handle_authorization_state_wait_email_address()
+            elif self.authorization_state == "authorizationStateWaitEmailCode":
+                await self.__handle_authorization_state_wait_email_code()
+            elif self.authorization_state == "authorizationStateWaitCode":
+                await self.__handle_authorization_state_wait_code()
+            elif self.authorization_state == "authorizationStateWaitRegistration":
+                await self.__handle_authorization_state_wait_registration()
+            elif (
+                old_authorization_state != "authorizationStateWaitPassword"
+                and self.authorization_state == "authorizationStateWaitPassword"
+            ):
+                await self.__handle_authorization_state_wait_password()
 
-    async def __handle_connection_state(self, update):
-        if update["@type"] == "updateConnectionState":
-            self.connection_state: str = update["state"]["@type"]
-            logger.info(
-                f"Connection state changed to {self.connection_state.removeprefix('connectionState')}"
-            )
+        if (
+            self.authorization_state == "authorizationStateClosed"
+            and self.__is_closing is False
+        ):
+            await self.stop()
 
-    async def __handle_update_message_succeeded(self, update):
-        m_id = f'{update["old_message_id"]}{update["message"]["chat_id"]}'
+    async def __handle_connection_state(self, update: types.UpdateConnectionState):
+        self.connection_state: str = update.state.getType()
+        logger.info(
+            f"Connection state changed to {self.connection_state.removeprefix('connectionState')}"
+        )
 
-        if m_id in self._results:
-            result: Result = self._results.pop(m_id)
-            result.set_result(update["message"])
+    async def __handle_update_message_succeeded(
+        self, update: types.UpdateMessageSendSucceeded
+    ):
+        m_id = f"{update.old_message_id}{update.message.chat_id}"
 
-    async def __handle_update_message_failed(self, update):
-        m_id = f'{update["old_message_id"]}{update["message"]["chat_id"]}'
+        if result := self._results.pop(m_id, None):
+            result.set_result(update.message)
 
-        if m_id in self._results:
-            if update["error"]["code"] == 429:
-                retry_after = update["message"]["sending_state"]["retry_after"]
+    async def __handle_update_message_failed(
+        self, update: types.UpdateMessageSendFailed
+    ):
+        m_id = f"{update.old_message_id}{update.message.chat_id}"
+
+        if result := self._results.pop(m_id, None):
+            if update.error.code == 429:
+                retry_after = update.message.sending_state.retry_after
 
                 if retry_after <= self.sleep_threshold:
-                    result: Result = self._results.pop(m_id)
-
                     logger.error(
                         f"Sleeping for {retry_after}s (Caused by {result.request['@type']})"
                     )
@@ -875,43 +1008,39 @@ class Client(Decorators, Methods):
                     await asyncio.sleep(retry_after)
                     res = await self.invoke(result.request)
 
-                    self._results[
-                        f'{res.result["id"]}{update["message"]["chat_id"]}'
-                    ] = result
+                    self._results[f"{res.id}{update.message.chat_id}"] = result
             else:
-                result: Result = self._results.pop(m_id)
-                result.set_result(update["error"])
+                result.set_result(update.error)
 
-    async def __handle_update_option(self, update):
-        if update["value"]["@type"] == "optionValueBoolean":
-            self.options[update["name"]] = bool(update["value"]["value"])
-        elif update["value"]["@type"] == "optionValueEmpty":
-            self.options[update["name"]] = None
-        elif update["value"]["@type"] == "optionValueInteger":
-            self.options[update["name"]] = int(update["value"]["value"])
+    async def __handle_update_option(self, update: types.UpdateOption):
+        if isinstance(update.value, types.OptionValueBoolean):
+            self.options[update.name] = bool(update.value.value)
+        elif isinstance(update.value, types.OptionValueEmpty):
+            self.options[update.name] = None
+        elif isinstance(update.value, types.OptionValueInteger):
+            self.options[update.name] = int(update.value.value)
         else:
-            self.options[update["name"]] = update["value"]["value"]
+            self.options[update.name] = update.value.value
 
         if self.is_authenticated:
-            logger.info(
-                f"Option {update['name']} changed to {self.options[update['name']]}"
-            )
+            logger.info(f"Option {update.name} changed to {self.options[update.name]}")
 
-    async def __handle_update_user(self, update):
-        if self.is_authenticated and update["user"]["id"] == self.me["id"]:
+    async def __handle_update_user(self, update: types.UpdateUser):
+        if self.is_authenticated and update.user.id == self.me.id:
             logger.info(
                 "Updating {} ({}) info".format(
-                    self.me["first_name"],
-                    str(self.me["id"])
-                    if "usernames" not in self.me
-                    else "@" + self.me["usernames"]["editable_username"],
+                    self.me.first_name,
+                    str(self.me.id)
+                    if not self.me.usernames
+                    else "@" + self.me.usernames.editable_username,
                 )
             )
+
             try:
-                deepdiff(self.me, update["user"])
+                deepdiff(obj_to_dict(self.me), obj_to_dict(update.user))
             except Exception:
                 logger.exception("deepdiff failed")
-            self.me = update["user"]
+            self.me = update.user
 
     async def __handle_authorization_state_wait_phone_number(self):
         if self.authorization_state != "authorizationStateWaitPhoneNumber":
@@ -930,8 +1059,8 @@ class Client(Decorators, Methods):
                         else:
                             res = await self.setAuthenticationPhoneNumber(user_input)
 
-                        if res.is_error:
-                            print(res["message"])
+                        if isinstance(res, types.Error):
+                            print(res.message)
                         else:
                             break
         else:
@@ -940,8 +1069,8 @@ class Client(Decorators, Methods):
             else:
                 res = await self.setAuthenticationPhoneNumber(self.__token)
 
-            if res.is_error:
-                raise AuthorizationError(res["message"])
+            if isinstance(res, types.Error):
+                raise AuthorizationError(res.message)
 
     async def __handle_authorization_state_wait_email_address(self):
         if self.authorization_state == "authorizationStateWaitEmailAddress":
@@ -951,8 +1080,8 @@ class Client(Decorators, Methods):
             email_address = await self.__ainput("Enter your email address: ")
 
             res = await self.setAuthenticationEmailAddress(email_address)
-            if res.is_error:
-                print(res["message"])
+            if isinstance(res, types.Error):
+                print(res.message)
             else:
                 break
 
@@ -966,10 +1095,11 @@ class Client(Decorators, Methods):
             )
 
             res = await self.checkAuthenticationEmailCode(
-                code={"@type": "emailAddressAuthenticationCode", "code": code}
+                code=types.EmailAddressAuthenticationCode(code=code)
             )
-            if res.is_error:
-                print(res["message"])
+
+            if isinstance(res, types.Error):
+                print(res.message)
             else:
                 break
 
@@ -977,19 +1107,19 @@ class Client(Decorators, Methods):
         if self.authorization_state != "authorizationStateWaitCode":
             return
 
-        code_type = self.__authorization["code_info"]["type"]["@type"]
+        code_type = self.__authorization.code_info.type
 
-        if code_type == "authenticationCodeTypeTelegramMessage":
+        if isinstance(code_type, types.AuthenticationCodeTypeTelegramMessage):
             code_type = "Telegram app"
-        elif code_type == "authenticationCodeTypeSms":
+        elif isinstance(code_type, types.AuthenticationCodeTypeSms):
             code_type = "SMS"
-        elif code_type == "authenticationCodeTypeCall":
+        elif isinstance(code_type, types.AuthenticationCodeTypeCall):
             code_type = "phone call"
-        elif code_type == "authenticationCodeTypeFlashCall":
+        elif isinstance(code_type, types.AuthenticationCodeTypeFlashCall):
             code_type = "phone flush call"
-        elif code_type == "authenticationCodeTypeMissedCall":
+        elif isinstance(code_type, types.AuthenticationCodeTypeMissedCall):
             code_type = "phone missed call"
-        elif code_type == "authenticationCodeTypeFragment":
+        elif isinstance(code_type, types.AuthenticationCodeTypeFragment):
             code_type = "fragment.com SMS"
 
         while self.is_running:
@@ -998,8 +1128,8 @@ class Client(Decorators, Methods):
             )
 
             res = await self.checkAuthenticationCode(code=code)
-            if res.is_error:
-                print(res["message"])
+            if isinstance(res, types.Error):
+                print(res.message)
             else:
                 break
 
@@ -1012,8 +1142,8 @@ class Client(Decorators, Methods):
             last_name = await self.__ainput("Enter your last name: ")
 
             res = await self.registerUser(first_name=first_name, last_name=last_name)
-            if res.is_error:
-                print(res["message"])
+            if isinstance(res, types.Error):
+                print(res.message)
             else:
                 break
 
@@ -1021,21 +1151,21 @@ class Client(Decorators, Methods):
         if self.authorization_state != "authorizationStateWaitPassword":
             return
 
-        if self.__authorization["password_hint"]:
-            print(f"Your 2FA password hint is: {self.__authorization['password_hint']}")
+        if self.__authorization.password_hint:
+            print(f"Your 2FA password hint is: {self.__authorization.password_hint}")
 
         while self.is_running:
             password = await asyncio.to_thread(
                 getpass,
                 "Enter your 2FA password {}: ".format(
                     "(empty to recover)"
-                    if self.__authorization["has_recovery_email_address"]
+                    if self.__authorization.has_recovery_email_address
                     else ""
                 ),
             )
 
             if password == "":
-                if self.__authorization["has_recovery_email_address"]:
+                if self.__authorization.has_recovery_email_address:
                     y_n = await self.__ainput(
                         "Are you sure you want to recover your 2FA password? (y/n): ",
                     )
@@ -1043,12 +1173,12 @@ class Client(Decorators, Methods):
                     if y_n.lower() in {"y", "yes"}:
                         res = await self.requestAuthenticationPasswordRecovery()
 
-                        if res.is_error:
-                            raise AuthorizationError(res["message"])
+                        if isinstance(res, types.Error):
+                            raise AuthorizationError(res.message)
                         else:
                             while True:
                                 recovery_code = await self.__ainput(
-                                    f"Enter your recovery code sent to {self.__authorization['recovery_email_address_pattern']}: "
+                                    f"Enter your recovery code sent to {self.__authorization.recovery_email_address_pattern}: "
                                 )
 
                                 res = (
@@ -1057,16 +1187,16 @@ class Client(Decorators, Methods):
                                     )
                                 )
 
-                                if res.is_error:
-                                    print(res["message"])
+                                if isinstance(res, types.Error):
+                                    print(res.message)
                                 else:
                                     recover_res = (
                                         await self.recoverAuthenticationPassword(
                                             recovery_code
                                         )
                                     )
-                                    if recover_res.is_error:
-                                        raise AuthorizationError(recover_res["message"])
+                                    if isinstance(recover_res, types.Error):
+                                        raise AuthorizationError(recover_res.message)
 
                                     return
                 else:
@@ -1075,8 +1205,8 @@ class Client(Decorators, Methods):
                     )
             else:
                 res = await self.checkAuthenticationPassword(password)
-                if res.is_error:
-                    print(res["message"])
+                if isinstance(res, types.Error):
+                    print(res.message)
                 else:
                     break
 
@@ -1122,6 +1252,7 @@ class Client(Decorators, Methods):
 
 
 def deepdiff(d1, d2):
+    d1 = obj_to_dict(d1)
     if not isinstance(d1, dict) or not isinstance(d2, dict):
         return d1 == d2
 

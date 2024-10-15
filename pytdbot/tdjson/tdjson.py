@@ -1,25 +1,10 @@
 from ctypes.util import find_library
-from ctypes import c_int, c_double, c_void_p, c_char_p, CDLL
+from ctypes import c_int, c_double, c_char_p, CDLL
 from logging import getLogger
 from typing import Union
-
-try:
-    import orjson as json
-except ImportError:
-    try:
-        import ujson as json
-    except ImportError:
-        import json
+from ..utils import JSON_ENCODER, json_dumps, json_loads
 
 logger = getLogger(__name__)
-
-
-def dumps(obj) -> bytes:
-    if json.__name__ == "orjson":
-        # Null-terminated string is needed for orjson with c_char_p
-        return json.dumps(obj) + b"\0"
-    else:
-        return json.dumps(obj).encode("utf-8")
 
 
 class TdJson:
@@ -83,12 +68,13 @@ class TdJson:
 
         self.client_id = self._td_create_client_id()
 
-        td_version, td_commit_hash = self.execute(
-            {"@type": "getOption", "name": "version"}
-        ), self.execute({"@type": "getOption", "name": "commit_hash"})
+        td_version, td_commit_hash = (
+            self.execute({"@type": "getOption", "name": "version"}),
+            self.execute({"@type": "getOption", "name": "commit_hash"}),
+        )
 
         logger.info(
-            f"Using TDLib {td_version['value']} ({td_commit_hash['value'][:9]}) with {json.__name__} encoder"
+            f"Using TDLib {td_version['value']} ({td_commit_hash['value'][:9]}) with {JSON_ENCODER} encoder"
         )
 
         if isinstance(verbosity, int):
@@ -110,7 +96,7 @@ class TdJson:
             :py:class:``dict``: An incoming update or result to a request. If no data is received, ``None`` is returned
         """
         if res := self._td_receive(self.client_id, c_double(timeout)):
-            return json.loads(res)
+            return json_loads(res)
 
     def send(self, data: dict) -> None:
         """Sends a request to TDLib
@@ -120,7 +106,7 @@ class TdJson:
                 The request to be sent
         """
         try:
-            self._td_send(self.client_id, dumps(data))
+            self._td_send(self.client_id, json_dumps(data))
         except Exception:
             logger.exception(f"Exception while sending: {data}")
             raise
@@ -135,8 +121,8 @@ class TdJson:
             :py:class:``dict``: The result of the request
         """
         try:
-            if res := self._td_execute(dumps(data)):
-                return json.loads(res)
+            if res := self._td_execute(json_dumps(data)):
+                return json_loads(res)
         except Exception:
             logger.exception("Exception while executing")
             raise

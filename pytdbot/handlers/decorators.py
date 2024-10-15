@@ -4,7 +4,7 @@ import pytdbot
 from typing import Callable
 from asyncio import iscoroutinefunction
 from .handler import Handler
-from .updates import Updates
+from .td_updates import Updates
 
 logger = logging.getLogger(__name__)
 
@@ -77,6 +77,43 @@ class Decorators(Updates):
                 func._handler = Handler(func, "finalizer", self, position)
             else:
                 func._handler = Handler(func, "finalizer", filters, position)
+            return func
+
+        return decorator
+
+    def on_message(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> None:
+        """A decorator to handle ``updateNewMessage`` but with ``Message`` object.
+
+        Args:
+            filters (:class:`~pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateNewMessage", func, filters, position, True)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateNewMessage", self, position, True)
+            else:
+                func._handler = Handler(
+                    func, "updateNewMessage", filters, position, True
+                )
+
             return func
 
         return decorator
