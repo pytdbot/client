@@ -1,17 +1,5 @@
-from pytdbot import Client
-from pytdbot.exception import StopHandlers
-from pytdbot.types import (
-    LogStreamFile,
-    Update,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    ShowKeyboardButton,
-    ShowKeyboardMarkup,
-    ForceReply,
-    RemoveKeyboard,
-)
+from pytdbot import Client, types
 import logging
-
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,14 +14,14 @@ client = Client(
     files_directory="BotDB",  # Path where to store TDLib files
     workers=2,  # Number of workers
     td_verbosity=2,  # TDLib verbosity level
-    td_log=LogStreamFile("tdlib.log"),  # Set TDLib log file path
+    td_log=types.LogStreamFile("tdlib.log"),  # Set TDLib log file path
 )
 
 
-@client.on_updateNewMessage()
-async def start(c: Client, message: Update):
+@client.on_message()
+async def start(c: Client, message: types.Message):
     if message.text == "/start":
-        text = "Hello {}!\n".format(await message.mention("markdown"))
+        text = "Hello {}!\n".format(await message.mention("html"))
         text += "Here is some bot commands:\n\n"
         text += "- /keyboard - show keyboard\n"
         text += "- /inline - show inline keyboard\n"
@@ -42,12 +30,14 @@ async def start(c: Client, message: Update):
 
         await message.reply_text(
             text,
-            parse_mode="markdown",
-            reply_markup=InlineKeyboardMarkup(
+            reply_markup=types.ReplyMarkupInlineKeyboard(
                 [
                     [
-                        InlineKeyboardButton.url(
-                            "GitHub", "https://github.com/pytdbot/client"
+                        types.InlineKeyboardButton(
+                            text="GitHub",
+                            type=types.InlineKeyboardButton(
+                                "https://github.com/pytdbot/client"
+                            ),
                         )
                     ]
                 ]
@@ -55,16 +45,22 @@ async def start(c: Client, message: Update):
         )
 
 
-@client.on_updateNewMessage()
-async def commands(c: Client, message: Update):
+@client.on_message()
+async def commands(c: Client, message: types.Message):
     if message.text == "/inline":
         await message.reply_text(
             "This is a Inline keyboard",
-            reply_markup=InlineKeyboardMarkup(
+            reply_markup=types.ReplyMarkupInlineKeyboard(
                 [
                     [
-                        InlineKeyboardButton.callback("OwO", "OwO"),
-                        InlineKeyboardButton.callback("UwU", "UwU"),
+                        types.InlineKeyboardButton(
+                            text="OwO",
+                            type=types.InlineKeyboardButtonTypeCallback(b"OwO"),
+                        ),
+                        types.InlineKeyboardButton(
+                            text="UwU",
+                            type=types.InlineKeyboardButtonTypeCallback(b"UwU"),
+                        ),
                     ],
                 ]
             ),
@@ -72,9 +68,16 @@ async def commands(c: Client, message: Update):
     elif message.text == "/keyboard":
         await message.reply_text(
             "This is a keyboard",
-            reply_markup=ShowKeyboardMarkup(
+            reply_markup=types.ReplyMarkupShowKeyboard(
                 [
-                    [ShowKeyboardButton.text("OwO"), ShowKeyboardButton.text("UwU")],
+                    [
+                        types.KeyboardButton(
+                            "OwO", type=types.KeyboardButtonTypeText()
+                        ),
+                        types.KeyboardButton(
+                            "UwU", type=types.KeyboardButtonTypeText()
+                        ),
+                    ],
                 ],
                 one_time=True,
                 resize_keyboard=True,
@@ -83,12 +86,12 @@ async def commands(c: Client, message: Update):
     elif message.text == "/remove":
         await message.reply_text(
             "Keyboards removed",
-            reply_markup=RemoveKeyboard(),
+            reply_markup=types.ReplyMarkupRemoveKeyboard(),
         )
     elif message.text == "/force":
         await message.reply_text(
             "This is a force reply",
-            reply_markup=ForceReply(),
+            reply_markup=types.ReplyMarkupForceReply(),
         )
     elif message.text:
         if "/start" not in message.text:
@@ -96,17 +99,20 @@ async def commands(c: Client, message: Update):
 
 
 @client.on_updateNewCallbackQuery()
-async def callback_query(c: Client, message: Update):
-    if message.data:
+async def callback_query(c: Client, message: types.UpdateNewCallbackQuery):
+    if message.payload.data:
         await c.editTextMessage(
             message.chat_id,
             message.message_id,
-            "You pressed {}".format(message.data),
-            reply_markup=InlineKeyboardMarkup(
+            "You pressed {}".format(message.payload.data.decode()),
+            reply_markup=types.ReplyMarkupInlineKeyboard(
                 [
                     [
-                        InlineKeyboardButton.url(
-                            "GitHub", "https://github.com/pytdbot/client"
+                        types.InlineKeyboardButton(
+                            text="GitHub",
+                            type=types.InlineKeyboardButton(
+                                "https://github.com/pytdbot/client"
+                            ),
                         )
                     ]
                 ]
