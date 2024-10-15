@@ -361,6 +361,7 @@ class Client(Decorators, Methods):
         func: Callable,
         filters: pytdbot.filters.Filter = None,
         position: int = None,
+        inner_object: bool = False,
     ) -> None:
         """Add an update handler
 
@@ -377,6 +378,9 @@ class Client(Decorators, Methods):
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            inner_object (``bool``, *optional*):
+                Wether to pass an inner object of update or not; for example ``UpdateNewMessage.message``. Default is ``False``
+
         Raises:
             TypeError
         """
@@ -387,7 +391,7 @@ class Client(Decorators, Methods):
         elif filters is not None and not isinstance(filters, Filter):
             raise TypeError("filters must be instance of pytdbot.filters.Filter")
         else:
-            func = Handler(func, update_type, filters, position)
+            func = Handler(func, update_type, filters, position, inner_object)
             if update_type not in self._handlers:
                 self._handlers[update_type] = []
             if isinstance(position, int):
@@ -770,13 +774,15 @@ class Client(Decorators, Methods):
 
         if "@extra" in update:
             if result := self._results.pop(update["@extra"]["id"], None):
-                result.set_result(dict_to_obj(update))
+                obj = dict_to_obj(update, self)
+
+                result.set_result(obj)
             elif update["@type"] == "error" and "option" in update["@extra"]:
                 logger.error(f"{update['@extra']['option']}: {update['message']}")
 
         else:
             update_handler = self.__local_handlers.get(update["@type"])
-            update = dict_to_obj(update)
+            update = dict_to_obj(update, self)
 
             if update_handler:
                 self.loop.create_task(update_handler(update))
@@ -815,7 +821,10 @@ class Client(Decorators, Methods):
                     elif not filter_function(self, update):
                         continue
 
-                await handler(self, update)
+                if handler.inner_object and isinstance(update, types.UpdateNewMessage):
+                    await handler(self, update.message)
+                else:
+                    await handler(self, update)
             except StopHandlers as e:
                 raise e
             except Exception:

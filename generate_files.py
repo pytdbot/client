@@ -2,6 +2,11 @@ import json
 import keyword
 
 indent = "    "
+bound_methods_class = {
+    "Message": "MessageBoundMethods",
+    "File": "FileBoundMethods",
+    "RemoteFile": "FileBoundMethods",
+}
 
 
 def escape_quotes(text: str):
@@ -202,6 +207,16 @@ def generate_function_docstring_args(function_data):
     return f"\n{indent * 2}Parameters:\n" + "\n\n".join(args_list) + "\n"
 
 
+def generate_inherited_class(class_name, type_data, classes):
+    inherited = ["TlObject"]
+    if type_data["type"] in classes:
+        inherited.append(to_camel_case(type_data["type"], is_class=True))
+
+    if class_name in bound_methods_class:
+        inherited.append(bound_methods_class[class_name])
+    return ", ".join(inherited)
+
+
 class_template = """class {class_name}:
     r\"\"\"{docstring}\"\"\"
 
@@ -219,7 +234,7 @@ def generate_classes(f, classes):
         )
 
 
-types_template = """class {class_name}(TlObject{inherited_class}):
+types_template = """class {class_name}({inherited_class}):
     r\"\"\"{docstring}
 {docstring_args}
     \"\"\"
@@ -255,14 +270,13 @@ def generate_types(f, types, updates, classes):
             self_args = generate_self_args(type_data["args"], classes)
             to_return_dict = generate_to_dict_return(type_data["args"])
             from_dict_kwargs = generate_from_dict_kwargs(type_data["args"])
+            class_name = to_camel_case(type_name, is_class=True)
 
             f.write(
                 types_template.format(
-                    class_name=to_camel_case(type_name, is_class=True),
-                    inherited_class=(
-                        ""
-                        if type_data["type"] not in classes
-                        else f", {to_camel_case(type_data['type'], is_class=True)}"
+                    class_name=class_name,
+                    inherited_class=generate_inherited_class(
+                        class_name, type_data, classes
                     ),
                     class_type_name=type_data["type"],
                     docstring=escape_quotes(type_data["description"]),
@@ -365,6 +379,9 @@ if __name__ == "__main__":
     with open("pytdbot/types/td_types/types.py", "w") as types_file:
         types_file.write("from typing import Union, Literal, List\n")
         types_file.write("from base64 import b64decode\n")
+        types_file.write(
+            f"from .bound_methods import {', '.join(set(bound_methods_class.values()))}\n"
+        )
         types_file.write("import pytdbot\n\n")
         types_file.write(
             """class TlObject:

@@ -21,15 +21,18 @@ def obj_to_dict(obj):
         return obj
 
 
-def dict_to_obj(dict_obj):
+def dict_to_obj(dict_obj, client=None):
     if isinstance(dict_obj, dict):
         if "@type" in dict_obj:
-            return getattr(types, utils.to_camel_case(dict_obj["@type"])).from_dict(
-                {key: dict_to_obj(value) for key, value in dict_obj.items()}
+            obj = getattr(types, utils.to_camel_case(dict_obj["@type"])).from_dict(
+                {key: dict_to_obj(value, client) for key, value in dict_obj.items()}
             )
+            if client:
+                obj._client = client
+            return obj
         else:
-            return {key: dict_to_obj(value) for key, value in dict_obj.items()}
+            return {key: dict_to_obj(value, client) for key, value in dict_obj.items()}
     elif isinstance(dict_obj, list):
-        return [dict_to_obj(item) for item in dict_obj]
+        return [dict_to_obj(item, client) for item in dict_obj]
     else:
         return dict_obj

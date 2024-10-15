@@ -1,5 +1,6 @@
 from typing import Union, Literal, List
 from base64 import b64decode
+from .bound_methods import MessageBoundMethods, FileBoundMethods
 import pytdbot
 
 
@@ -2766,7 +2767,7 @@ class LocalFile(TlObject):
         return data_class
 
 
-class RemoteFile(TlObject):
+class RemoteFile(TlObject, FileBoundMethods):
     r"""Represents a remote file
 
     Parameters:
@@ -2840,7 +2841,7 @@ class RemoteFile(TlObject):
         return data_class
 
 
-class File(TlObject):
+class File(TlObject, FileBoundMethods):
     r"""Represents a file
 
     Parameters:
@@ -16323,7 +16324,7 @@ class FactCheck(TlObject):
         return data_class
 
 
-class Message(TlObject):
+class Message(TlObject, MessageBoundMethods):
     r"""Describes a message
 
     Parameters:
