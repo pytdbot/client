@@ -829,6 +829,9 @@ class Client(Decorators, Methods):
     async def __run_handlers(self, update):
         for handler in self._handlers[update.getType()]:
             try:
+                if handler.inner_object and isinstance(update, types.UpdateNewMessage):
+                    update = update.message
+
                 if handler.filter is not None:
                     filter_function = handler.filter.func
                     if self.is_coro_filter(filter_function):
@@ -837,9 +840,6 @@ class Client(Decorators, Methods):
                     elif not filter_function(self, update):
                         continue
 
-                if handler.inner_object and isinstance(update, types.UpdateNewMessage):
-                    await handler(self, update.message)
-                else:
                     await handler(self, update)
             except StopHandlers as e:
                 raise e
