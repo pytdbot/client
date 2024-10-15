@@ -96,25 +96,25 @@ class MessageBoundMethods:
     def remote_unique_file_id(self) -> Union[str, None]:
         """Remote unique file id"""
 
-        file_id = None
+        unique_file_id = None
         if isinstance(self.content, pytdbot.types.MessagePhoto):
-            file_id = self.content.photo.sizes[-1].photo.remote.unique_id
+            unique_file_id = self.content.photo.sizes[-1].photo.remote.unique_id
         elif isinstance(self.content, pytdbot.types.MessageVideo):
-            file_id = self.content.video.video.remote.unique_id
+            unique_file_id = self.content.video.video.remote.unique_id
         elif isinstance(self.content, pytdbot.types.MessageSticker):
-            file_id = self.content.sticker.sticker.remote.unique_id
+            unique_file_id = self.content.sticker.sticker.remote.unique_id
         elif isinstance(self.content, pytdbot.types.MessageAnimation):
-            file_id = self.content.animation.animation.remote.unique_id
+            unique_file_id = self.content.animation.animation.remote.unique_id
         elif isinstance(self.content, pytdbot.types.MessageAudio):
-            file_id = self.content.audio.audio.remote.unique_id
+            unique_file_id = self.content.audio.audio.remote.unique_id
         elif isinstance(self.content, pytdbot.types.MessageDocument):
-            file_id = self.content.document.document.remote.unique_id
+            unique_file_id = self.content.document.document.remote.unique_id
         elif isinstance(self.content, pytdbot.types.MessageVoiceNote):
-            file_id = self.content.voice_note.voice.remote.unique_id
+            unique_file_id = self.content.voice_note.voice.remote.unique_id
         elif isinstance(self.content, pytdbot.types.MessageVideoNote):
-            file_id = self.content.video_note.video.remote.unique_id
+            unique_file_id = self.content.video_note.video.remote.unique_id
 
-        return file_id
+        return unique_file_id
 
     async def mention(self, parse_mode: str = "markdownv2") -> str:
         """Get the text_mention of the message sender

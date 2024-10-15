@@ -31,45 +31,45 @@ async def echo(c: Client, message: types.Message):
 
     elif isinstance(message.content, types.MessageAnimation):
         await message.reply_animation(
-            message.content.animation.animation.remote.id,
+            message.remote_file_id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
     elif isinstance(message.content, types.MessageAudio):
         await message.reply_audio(
-            message.content.audio.audio.remote.id,
+            message.remote_file_id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
     elif isinstance(message.content, types.MessageDocument):
         await message.reply_document(
-            message.content.document.document.remote.id,
+            message.remote_file_id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
     elif isinstance(message.content, types.MessagePhoto):
         await message.reply_photo(
-            message.content.photo.sizes[-1].photo.remote.id,
+            message.remote_file_id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
     elif isinstance(message.content, types.MessageSticker):
-        await message.reply_sticker(message.content.sticker.sticker.remote.id)
+        await message.reply_sticker(message.remote_file_id)
 
     elif isinstance(message.content, types.MessageVideo):
         await message.reply_video(
-            message.content.video.video.remote.id,
+            message.remote_file_id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
     elif isinstance(message.content, types.MessageVoiceNote):
         await message.reply_voice(
-            message.content.voice_note.voice.remote.id,
+            message.remote_file_id,
             caption=message.caption,
             caption_entities=message.entities,
         )
