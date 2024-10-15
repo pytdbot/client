@@ -44,7 +44,6 @@ Basic example:
 import asyncio
 
 from pytdbot import Client, types
-from pytdbot.types import LogStreamFile, Message
 
 client = Client(
     token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token or phone number if you want to login as user
@@ -54,7 +53,7 @@ client = Client(
     files_directory="BotDB",  # Path where to store TDLib files
     database_encryption_key="1234echobot$",
     td_verbosity=2,  # TDLib verbosity level
-    td_log=LogStreamFile("tdlib.log"),  # Set TDLib log file path
+    td_log=types.LogStreamFile("tdlib.log", 104857600),  # Set TDLib log file path
 )
 
 
@@ -64,7 +63,7 @@ async def print_message(c: Client, message: types.UpdateNewMessage):
 
 
 @client.on_message()
-async def say_hello(c: Client, message: Message):
+async def say_hello(c: Client, message: types.Message):
     msg = await message.reply_text(f"Hey {await message.mention(parse_mode='html')}! I'm cooking up a surprise... 🍳👨‍🍳", parse_mode="html")
 
     async with message.action("choose_sticker"):

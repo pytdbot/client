@@ -15,7 +15,7 @@ client = Client(
     files_directory="BotDB",  # Path where to store TDLib files
     database_encryption_key="1234echobot$",
     td_verbosity=2,  # TDLib verbosity level
-    td_log=types.LogStreamFile("tdlib.log"),  # Set TDLib log file path
+    td_log=types.LogStreamFile("tdlib.log", 104857600),  # Set TDLib log file path
 )
 
 
