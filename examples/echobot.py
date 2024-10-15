@@ -1,5 +1,4 @@
-from pytdbot import Client
-from pytdbot.types import LogStreamFile, Update
+from pytdbot import Client, types
 import logging
 
 logging.basicConfig(
@@ -7,69 +6,70 @@ logging.basicConfig(
     format="[%(levelname)s][p %(process)d %(threadName)s][%(created)f][%(filename)s:%(lineno)d][%(funcName)s]  %(message)s",
 )
 
+
 client = Client(
-    api_id=0,  # Your api_id. You can get it from https://my.telegram.org/
-    api_hash="API_HASH",  # Your api_hash. You can get it from https://my.telegram.org/
-    database_encryption_key="1234echobot$",  # Your database encryption key
-    token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token. You can get it from https://t.me/botfather
+    token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token or phone number if you want to login as user
+    api_id=0,
+    api_hash="API_HASH",
+    lib_path="/path/to/libtdjson.so",  # Path to TDjson shared library
     files_directory="BotDB",  # Path where to store TDLib files
-    workers=2,  # Number of workers
+    database_encryption_key="1234echobot$",
     td_verbosity=2,  # TDLib verbosity level
-    td_log=LogStreamFile("tdlib.log"),  # Set TDLib log file path
+    td_log=types.LogStreamFile("tdlib.log"),  # Set TDLib log file path
 )
 
 
 @client.on_updateNewMessage()
-async def print_message(c: Client, message: Update):
+async def print_message(c: Client, message: types.Message):
     print(message)
 
 
-@client.on_updateNewMessage()
-async def echo(c: Client, message: Update):
-    if message.content_type == "messageText":
+@client.on_message()
+async def echo(c: Client, message: types.Message):
+    if isinstance(message.content, types.MessageText):
         await message.reply_text(message.text, entities=message.entities)
 
-    elif message.content_type == "messageAnimation":
+    elif isinstance(message.content, types.MessageAnimation):
         await message.reply_animation(
-            message.remote_file_id,
+            message.content.animation.animation.remote.id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
-    elif message.content_type == "messageAudio":
+    elif isinstance(message.content, types.MessageAudio):
         await message.reply_audio(
-            message.remote_file_id,
+            message.content.audio.audio.remote.id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
-    elif message.content_type == "messageDocument":
+    elif isinstance(message.content, types.MessageDocument):
         await message.reply_document(
-            message.remote_file_id,
+            message.content.document.document.remote.id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
-    elif message.content_type == "messagePhoto":
+    elif isinstance(message.content, types.MessagePhoto):
         await message.reply_photo(
-            message.remote_file_id,
+            message.content.photo.sizes[-1].photo.remote.id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
-    elif message.content_type == "messageSticker":
-        await message.reply_sticker(message.remote_file_id)
+    elif isinstance(message.content, types.MessageSticker):
+        await message.reply_sticker(message.content.sticker.sticker.remote.id)
 
-    elif message.content_type == "messageVideo":
+    elif isinstance(message.content, types.MessageVideo):
         await message.reply_video(
-            message.remote_file_id,
+            message.content.video.video.remote.id,
             caption=message.caption,
             caption_entities=message.entities,
         )
 
-    elif message.content_type == "messageVoiceNote":
+    elif isinstance(message.content, types.MessageVoiceNote):
         await message.reply_voice(
-            message.remote_file_id,
+            message.content.voice_note.voice.remote.id,
             caption=message.caption,
             caption_entities=message.entities,
         )
