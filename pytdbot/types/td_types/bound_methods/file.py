@@ -12,6 +12,7 @@ class FileBoundMethods:
     ) -> Union["pytdbot.types.Error", "pytdbot.types.File"]:
         """Downloads a file. Shortcut for :meth:`~pytdbot.Client.downloadFile`"""
 
+        file_id = None
         if isinstance(self, pytdbot.types.RemoteFile):
             file_info = await self._client.getRemoteFile(self.id)
             if not file_info:
