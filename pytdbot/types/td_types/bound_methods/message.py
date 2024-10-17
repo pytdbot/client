@@ -18,7 +18,6 @@ class MessageBoundMethods:
     @lru_cache(1)
     def text(self) -> str:
         """Text of the message"""
-
         if isinstance(self.content, pytdbot.types.MessageText):
             return self.content.text.text
 
@@ -183,6 +182,28 @@ class MessageBoundMethods:
 
         return await self._client.deleteMessages(
             chat_id=self.chat_id, message_ids=[self.id], revoke=revoke
+        )
+
+    async def react(
+        self, emoji: str = "👍", is_big: bool = False
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        """React to the current message
+
+        Args:
+            emoji (``str``, *optional*):
+                Text representation of the reaction; pass ``None`` to remove the current reaction. Default is ``👍``
+
+            is_big (``bool``, *optional*):
+                Pass true if the reactions are added with a big animation. Default is ``False``
+        """
+
+        return await self._client.setMessageReactions(
+            chat_id=self.chat_id,
+            message_id=self.id,
+            reaction_types=None
+            if not emoji
+            else [pytdbot.types.ReactionTypeEmoji(emoji=emoji)],
+            is_big=is_big,
         )
 
     async def pin(
