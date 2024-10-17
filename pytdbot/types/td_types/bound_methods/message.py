@@ -168,7 +168,7 @@ class MessageBoundMethods:
     async def leaveChat(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         """Leave the current chat"""
 
-        return await self.client.leaveChat(self.chat_id)
+        return await self._client.leaveChat(self.chat_id)
 
     async def delete(
         self,
