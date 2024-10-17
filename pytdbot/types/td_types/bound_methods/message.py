@@ -5,10 +5,14 @@ import pytdbot
 
 
 class MessageBoundMethods:
+    def __init__(self):
+        self._client: pytdbot.Client
+
     @property
     @lru_cache(1)
     def from_id(self) -> Union[int, None]:
         """Message Sender ID"""
+
         if isinstance(self.sender_id, pytdbot.types.MessageSenderChat):
             return self.sender_id.chat_id
         elif isinstance(self.sender_id, pytdbot.types.MessageSenderUser):
@@ -18,6 +22,7 @@ class MessageBoundMethods:
     @lru_cache(1)
     def text(self) -> str:
         """Text of the message"""
+
         if isinstance(self.content, pytdbot.types.MessageText):
             return self.content.text.text
 

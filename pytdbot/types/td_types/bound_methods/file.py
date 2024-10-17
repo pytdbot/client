@@ -3,6 +3,9 @@ import pytdbot
 
 
 class FileBoundMethods:
+    def __init__(self):
+        self._client: pytdbot.Client
+
     async def download(
         self,
         priority: int = 1,
