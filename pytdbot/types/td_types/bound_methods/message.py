@@ -11,7 +11,7 @@ class MessageBoundMethods:
     @property
     @lru_cache(1)
     def from_id(self) -> Union[int, None]:
-        """Message Sender ID"""
+        r"""Message Sender ID"""
 
         if isinstance(self.sender_id, pytdbot.types.MessageSenderChat):
             return self.sender_id.chat_id
@@ -21,7 +21,7 @@ class MessageBoundMethods:
     @property
     @lru_cache(1)
     def text(self) -> str:
-        """Text of the message"""
+        r"""Text of the message"""
 
         if isinstance(self.content, pytdbot.types.MessageText):
             return self.content.text.text
@@ -29,7 +29,7 @@ class MessageBoundMethods:
     @property
     @lru_cache(1)
     def entities(self) -> Union[List["pytdbot.types.TextEntity"], None]:
-        """Entities of the message"""
+        r"""Entities of the message"""
 
         if isinstance(self.content, pytdbot.types.MessageText):
             return self.content.text.entities
@@ -37,7 +37,7 @@ class MessageBoundMethods:
     @property
     @lru_cache(1)
     def caption(self) -> Union[str, None]:
-        """Caption of the received media"""
+        r"""Caption of the received media"""
 
         if isinstance(
             self.content,
@@ -55,7 +55,7 @@ class MessageBoundMethods:
     @property
     @lru_cache(1)
     def caption_entities(self) -> Union[str, None]:
-        """Caption entities of the received media"""
+        r"""Caption entities of the received media"""
 
         if isinstance(
             self.content,
@@ -73,7 +73,7 @@ class MessageBoundMethods:
     @property
     @lru_cache(1)
     def remote_file_id(self) -> Union[str, None]:
-        """Remote file id"""
+        r"""Remote file id"""
 
         file_id = None
         if isinstance(self.content, pytdbot.types.MessagePhoto):
@@ -98,7 +98,7 @@ class MessageBoundMethods:
     @property
     @lru_cache(1)
     def remote_unique_file_id(self) -> Union[str, None]:
-        """Remote unique file id"""
+        r"""Remote unique file id"""
 
         unique_file_id = None
         if isinstance(self.content, pytdbot.types.MessagePhoto):
@@ -121,7 +121,7 @@ class MessageBoundMethods:
         return unique_file_id
 
     async def mention(self, parse_mode: str = "markdownv2") -> str:
-        """Get the text_mention of the message sender
+        r"""Get the text_mention of the message sender
 
         Args:
             parse_mode (``str``, *optional*):
@@ -139,7 +139,7 @@ class MessageBoundMethods:
     async def getRepliedMessage(
         self,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Get the replied message"""
+        r"""Get the replied message"""
 
         return await self._client.getRepliedMessage(
             chat_id=self.chat_id,
@@ -149,14 +149,14 @@ class MessageBoundMethods:
     async def getChat(
         self,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Chat"]:
-        """Get chat info"""
+        r"""Get chat info"""
 
         return await self._client.getChat(self.chat_id)
 
     async def getChatMember(
         self,
     ) -> Union["pytdbot.types.Error", "pytdbot.Clienttypes.ChatMember"]:
-        """Get member info in the current chat"""
+        r"""Get member info in the current chat"""
 
         return await self._client.getChatMember(
             chat_id=self.chat_id, member_id=self.sender_id
@@ -165,12 +165,12 @@ class MessageBoundMethods:
     async def getUser(
         self,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.User"]:
-        """Get user info"""
+        r"""Get user info"""
 
         return await self._client.getUser(self.from_id)
 
     async def leaveChat(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        """Leave the current chat"""
+        r"""Leave the current chat"""
 
         return await self._client.leaveChat(self.chat_id)
 
@@ -178,7 +178,7 @@ class MessageBoundMethods:
         self,
         revoke: bool = True,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        """Delete the received message
+        r"""Delete the received message
 
         Args:
             revoke (``bool``, *optional*):
@@ -192,7 +192,7 @@ class MessageBoundMethods:
     async def react(
         self, emoji: str = "👍", is_big: bool = False
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        """React to the current message
+        r"""React to the current message
 
         Args:
             emoji (``str``, *optional*):
@@ -216,7 +216,7 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         only_for_self: bool = False,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        """Pin the message
+        r"""Pin the message
 
         Args:
             disable_notification (``bool``, *optional*):
@@ -240,7 +240,7 @@ class MessageBoundMethods:
         limit: int = 0,
         synchronous: bool = True,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.LocalFile"]:
-        """Download the media file and returns ``LocalFile`` object. Shortcut for :meth:`~pytdbot.Client.downloadFile`."""
+        r"""Download the media file and returns ``LocalFile`` object. Shortcut for :meth:`~pytdbot.Client.downloadFile`."""
 
         res = None
         if isinstance(self.content, pytdbot.types.MessagePhoto):
@@ -299,7 +299,7 @@ class MessageBoundMethods:
         ],
         message_thread_id: int = None,
     ) -> ChatActions:
-        """Sends a chat action to a specific chat. Supporting context manager (``with`` statement)
+        r"""Sends a chat action to a specific chat. Supporting context manager (``with`` statement)
 
         \Example:
 
@@ -359,7 +359,7 @@ class MessageBoundMethods:
             "pytdbot.types.ReplyMarkupRemoveKeyboard",
         ] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Reply to the message with text. Shortcut for :meth:`~pytdbot.Client.sendTextMessage`."""
+        r"""Reply to the message with text. Shortcut for :meth:`~pytdbot.Client.sendTextMessage`."""
 
         return await self._client.sendTextMessage(
             chat_id=self.chat_id,
@@ -405,7 +405,7 @@ class MessageBoundMethods:
             "pytdbot.types.ReplyMarkupRemoveKeyboard",
         ] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Reply to the message with animation. Shortcut for :meth:`~pytdbot.Client.sendAnimation`."""
+        r"""Reply to the message with animation. Shortcut for :meth:`~pytdbot.Client.sendAnimation`."""
 
         return await self._client.sendAnimation(
             chat_id=self.chat_id,
@@ -450,7 +450,7 @@ class MessageBoundMethods:
             "pytdbot.types.ReplyMarkupRemoveKeyboard",
         ] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Reply to the message with audio. Shortcut for :meth:`~pytdbot.Client.sendAudio`."""
+        r"""Reply to the message with audio. Shortcut for :meth:`~pytdbot.Client.sendAudio`."""
 
         return await self._client.sendAudio(
             chat_id=self.chat_id,
@@ -491,7 +491,7 @@ class MessageBoundMethods:
             "pytdbot.types.ReplyMarkupRemoveKeyboard",
         ] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Reply to the message with a document. Shortcut for :meth:`~pytdbot.Client.sendDocument`."""
+        r"""Reply to the message with a document. Shortcut for :meth:`~pytdbot.Client.sendDocument`."""
 
         return await self._client.sendDocument(
             chat_id=self.chat_id,
@@ -534,7 +534,7 @@ class MessageBoundMethods:
             "pytdbot.types.ReplyMarkupRemoveKeyboard",
         ] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Reply to the message with a photo. Shortcut for :meth:`~pytdbot.Client.sendPhoto`."""
+        r"""Reply to the message with a photo. Shortcut for :meth:`~pytdbot.Client.sendPhoto`."""
 
         return await self._client.sendPhoto(
             chat_id=self.chat_id,
@@ -583,7 +583,7 @@ class MessageBoundMethods:
             "pytdbot.types.ReplyMarkupRemoveKeyboard",
         ] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Reply to the message with a video. Shortcut for :meth:`~pytdbot.Client.sendVideo`."""
+        r"""Reply to the message with a video. Shortcut for :meth:`~pytdbot.Client.sendVideo`."""
 
         return await self._client.sendVideo(
             chat_id=self.chat_id,
@@ -626,7 +626,7 @@ class MessageBoundMethods:
             "pytdbot.types.ReplyMarkupRemoveKeyboard",
         ] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Reply to the message with a video note. Shortcut for :meth:`~pytdbot.Client.sendVideoNote`."""
+        r"""Reply to the message with a video note. Shortcut for :meth:`~pytdbot.Client.sendVideoNote`."""
 
         return await self._client.sendVideoNote(
             chat_id=self.chat_id,
@@ -663,7 +663,7 @@ class MessageBoundMethods:
             "pytdbot.types.ReplyMarkupRemoveKeyboard",
         ] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Reply to the message with a voice note. Shortcut for :meth:`~pytdbot.Client.sendVoice`."""
+        r"""Reply to the message with a voice note. Shortcut for :meth:`~pytdbot.Client.sendVoice`."""
 
         return await self._client.sendVoice(
             chat_id=self.chat_id,
@@ -701,7 +701,7 @@ class MessageBoundMethods:
             "pytdbot.types.ReplyMarkupRemoveKeyboard",
         ] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Reply to the message with a sticker. Shortcut for :meth:`~pytdbot.Client.sendSticker`."""
+        r"""Reply to the message with a sticker. Shortcut for :meth:`~pytdbot.Client.sendSticker`."""
 
         return await self._client.sendSticker(
             chat_id=self.chat_id,
@@ -734,7 +734,7 @@ class MessageBoundMethods:
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Copy message to chat. Shortcut for :meth:`~pytdbot.Client.sendCopy`."""
+        r"""Copy message to chat. Shortcut for :meth:`~pytdbot.Client.sendCopy`."""
 
         return await self._client.sendCopy(
             chat_id=chat_id,
@@ -759,7 +759,7 @@ class MessageBoundMethods:
         in_game_share: bool = False,
         disable_notification: bool = False,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Forward message to chat. Shortcut for :meth:`~pytdbot.Client.forwardMessage`."""
+        r"""Forward message to chat. Shortcut for :meth:`~pytdbot.Client.forwardMessage`."""
 
         return await self._client.forwardMessage(
             chat_id=chat_id,
@@ -781,7 +781,7 @@ class MessageBoundMethods:
         show_above_text: bool = None,
         reply_markup: "pytdbot.types.ReplyMarkup" = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        """Edit text message. Shortcut for :meth:`~pytdbot.Client.editTextMessage`."""
+        r"""Edit text message. Shortcut for :meth:`~pytdbot.Client.editTextMessage`."""
 
         return await self._client.editTextMessage(
             chat_id=self.chat_id,

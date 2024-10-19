@@ -41,7 +41,7 @@ from .td_functions import TDLibFunctions
 
 
 class Methods(TDLibFunctions):
-    """TDLib API functions class"""
+    r"""TDLib API functions class"""
 
     async def sendMessageWithContent(
         self,
@@ -124,7 +124,7 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ) -> Union[Error, Message]:
-        """Send text message to chat
+        r"""Send text message to chat
 
         Args:
             chat_id (``int``):
@@ -246,7 +246,7 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ) -> Union[Error, Message]:
-        """Send animation to chat
+        r"""Send animation to chat
 
         Args:
             chat_id (``int``):
@@ -372,7 +372,7 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ) -> Union[Error, Message]:
-        """Send audio to chat
+        r"""Send audio to chat
 
         Args:
             chat_id (``int``):
@@ -489,7 +489,7 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ) -> Union[Error, Message]:
-        """Send document to chat
+        r"""Send document to chat
 
         Args:
             chat_id (``int``):
@@ -601,7 +601,7 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ) -> Union[Error, Message]:
-        """Send photo to chat
+        r"""Send photo to chat
 
         Args:
             chat_id (``int``):
@@ -731,7 +731,7 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ) -> Union[Error, Message]:
-        """Send video to chat
+        r"""Send video to chat
 
         Args:
             chat_id (``int``):
@@ -861,7 +861,7 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ) -> Union[Error, Message]:
-        """Send video note to chat
+        r"""Send video note to chat
 
         Args:
             chat_id (``int``):
@@ -953,7 +953,7 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ) -> Union[Error, Message]:
-        """Send voice to chat
+        r"""Send voice to chat
 
         Args:
             chat_id (``int``):
@@ -1060,7 +1060,7 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ) -> Union[Error, Message]:
-        """Send sticker to chat
+        r"""Send sticker to chat
 
         Args:
             chat_id (``int``):
@@ -1150,7 +1150,7 @@ class Methods(TDLibFunctions):
         reply_to_message_id: int = 0,
         load_replied_message: bool = None,
     ) -> Union[Error, Message]:
-        """Copy message to chat
+        r"""Copy message to chat
 
         Args:
             chat_id (``int``):
@@ -1241,7 +1241,7 @@ class Methods(TDLibFunctions):
         in_game_share: bool = False,
         disable_notification: bool = False,
     ):
-        """Forward message to chat
+        r"""Forward message to chat
 
         Args:
             chat_id (``int``):
@@ -1287,7 +1287,7 @@ class Methods(TDLibFunctions):
         show_above_text: bool = None,
         reply_markup: ReplyMarkup = None,
     ) -> Union[Error, Message]:
-        """Edit text message
+        r"""Edit text message
 
         Args:
             chat_id (``int``):
@@ -1367,7 +1367,7 @@ class Methods(TDLibFunctions):
         text: str,
         parse_mode: str = "markdownv2",
     ) -> Union[Error, FormattedText]:
-        """Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text
+        r"""Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text
 
         Args:
             text (``str``):
@@ -1379,6 +1379,7 @@ class Methods(TDLibFunctions):
         Returns:
             :class:`~pytdbot.types.FormattedText`
         """
+
         if not text or not parse_mode:
             return
 

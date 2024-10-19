@@ -38,7 +38,7 @@ logger = getLogger(__name__)
 
 
 class Client(Decorators, Methods):
-    """Pytdbot, a TDLib client
+    r"""Pytdbot, a TDLib client
 
     Args:
         token (``str``):
@@ -90,6 +90,12 @@ class Client(Decorators, Methods):
         use_message_database (``bool``, *optional*):
             If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database. Default is ``True``
 
+        enable_storage_optimizer (``bool``, *optional*):
+            If set to true, old files will automatically be deleted. Default is ``True``
+
+        ignore_file_names (``bool``, *optional*):
+            If set to true, original file names will be ignored. Otherwise, downloaded files will be saved under names as close as possible to the original name. Default is ``False``
+
         loop (:py:class:`asyncio.AbstractEventLoop`, *optional*):
             Event loop. Default is ``None`` (auto-detect)
 
@@ -128,6 +134,8 @@ class Client(Decorators, Methods):
         use_file_database: bool = True,
         use_chat_info_database: bool = True,
         use_message_database: bool = True,
+        enable_storage_optimizer: bool = True,
+        ignore_file_names: bool = False,
         loop: asyncio.AbstractEventLoop = None,
         options: dict = None,
         sleep_threshold: int = None,
@@ -158,6 +166,8 @@ class Client(Decorators, Methods):
         self.use_file_database = use_file_database
         self.use_chat_info_database = use_chat_info_database
         self.use_message_database = use_message_database
+        self.enable_storage_optimizer = enable_storage_optimizer
+        self.ignore_file_names = ignore_file_names
         self.td_options = options
         self.sleep_threshold = (
             sleep_threshold if isinstance(sleep_threshold, int) else 0
@@ -221,11 +231,12 @@ class Client(Decorators, Methods):
 
     @property
     def authorization_state(self) -> str:
-        """Current authorization state"""
+        r"""Current authorization state"""
+
         return self.__authorization_state
 
     async def start(self, login: bool = True) -> None:
-        """Start pytdbot client
+        r"""Start pytdbot client
 
         Args:
             login (``bool``, *optional*):
@@ -255,81 +266,8 @@ class Client(Decorators, Methods):
         if login:
             await self.login()
 
-    async def __get_updates_queue(self, retries=10, delay=2):
-        for attempt in range(retries):
-            try:
-                return await self.__rchannel.get_queue(self.my_id + "_updates")
-            except aio_pika.exceptions.ChannelNotFoundEntity:
-                logger.warning(
-                    f"Attempt {attempt + 1}: TDLib Server is not running. Retrying in {delay} seconds..."
-                )
-                await asyncio.sleep(delay)
-        logger.error(f"Could not connect to TDLib Server after {retries} attempts.")
-        raise AuthorizationError(
-            f"Could not connect to TDLib Server after {delay * retries} seconds timeout"
-        )
-
-    async def __startRabbitMQ(self):
-        self.__rconnection = await aio_pika.connect_robust(
-            self.__rabbitmq_url,
-            client_properties={
-                "connection_name": f"Pytdbot instance {self._rabbitmq_instance_id}"
-            },
-        )
-        self.__rchannel = await self.__rconnection.channel()
-
-        updates_queue = await self.__get_updates_queue()
-
-        notify_queue = await self.__rchannel.declare_queue(
-            f"notify_{self._rabbitmq_instance_id}", exclusive=True
-        )
-        await notify_queue.bind(await self.__rchannel.get_exchange("broadcast"))
-
-        responses_queue = await self.__rchannel.declare_queue(
-            f"res_{self._rabbitmq_instance_id}", exclusive=True
-        )
-
-        self.__rqueues = {
-            "updates": updates_queue,
-            "requests": await self.__rchannel.get_queue(self.my_id + "_requests"),
-            "notify": notify_queue,
-            "responses": responses_queue,
-        }
-
-        self.is_running = True
-
-        await self.__rqueues["responses"].consume(self.__on_update, no_ack=True)
-
-        await self._set_options()
-
-        res = await self.getCurrentState()
-        for update in res.updates:
-            # when using obj_to_dict the key "@client_id" won't exists
-            # since it's not part of the object
-            await self._process_update(obj_to_dict(update))
-
-        self.me = await self.getMe()
-        self.is_authenticated = True
-
-        logger.info(
-            "Logged in as {} {}".format(
-                self.me.first_name,
-                str(self.me.id)
-                if not self.me.usernames
-                else "@" + self.me.usernames.editable_username,
-            )
-        )
-        await self.__rqueues["updates"].consume(self.__on_update, no_ack=True)
-        await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
-
-    async def __handle_rabbitmq_message(self, message: aio_pika.IncomingMessage):
-        await self._process_update(json_loads(message.body))
-
-    async def __on_update(self, update):
-        self.loop.create_task(self.__handle_rabbitmq_message(update))
-
     async def login(self) -> None:
-        """Login to Telegram."""
+        r"""Login to Telegram."""
 
         if self.is_authenticated or self.is_rabbitmq:
             return
@@ -369,7 +307,7 @@ class Client(Decorators, Methods):
         position: int = None,
         inner_object: bool = False,
     ) -> None:
-        """Add an update handler
+        r"""Add an update handler
 
         Args:
             update_type (``str``):
@@ -390,6 +328,7 @@ class Client(Decorators, Methods):
         Raises:
             TypeError
         """
+
         if not isinstance(update_type, str):
             raise TypeError("update_type must be str")
         elif not isinstance(func, Callable):
@@ -407,7 +346,7 @@ class Client(Decorators, Methods):
         self._handlers[update_type].sort(key=lambda x: (x.position is None, x.position))
 
     def remove_handler(self, func: Callable) -> bool:
-        """Remove an update handler
+        r"""Remove an update handler
 
         Args:
             func (``Callable``):
@@ -419,6 +358,7 @@ class Client(Decorators, Methods):
         Returns:
             :py:class:`bool`: True if handler was removed, False otherwise
         """
+
         if not isinstance(func, Callable):
             raise TypeError("func must be callable")
         for update_type in self._handlers:
@@ -435,7 +375,7 @@ class Client(Decorators, Methods):
         self,
         request: dict,
     ) -> types.TlObject:
-        """Invoke a new TDLib request
+        r"""Invoke a new TDLib request
 
         Example:
             .. code-block:: python
@@ -518,7 +458,7 @@ class Client(Decorators, Methods):
         return await result
 
     async def call_method(self, method: str, **kwargs) -> types.TlObject:
-        """Call a method. with keyword arguments (``kwargs``) support
+        r"""Call a method. with keyword arguments (``kwargs``) support
 
         Example:
             .. code-block:: python
@@ -543,7 +483,7 @@ class Client(Decorators, Methods):
         return await self.invoke(kwargs)
 
     def run(self, login: bool = True) -> None:
-        """Start the client and block until the client is stopped
+        r"""Start the client and block until the client is stopped
 
         Example:
             .. code-block:: python
@@ -569,13 +509,13 @@ class Client(Decorators, Methods):
         self.loop.run_until_complete(self.idle())
 
     async def idle(self):
-        """Idle and wait until the client is stopped."""
+        r"""Idle and wait until the client is stopped."""
 
         while self.is_running:
             await asyncio.sleep(1)
 
     async def stop(self) -> bool:
-        """Stop the client
+        r"""Stop the client
 
         Raises:
             `RuntimeError`:
@@ -584,6 +524,7 @@ class Client(Decorators, Methods):
         Returns:
             :py:class:`bool`: ``True`` on success
         """
+
         if (
             self.is_running is False
             and self.authorization_state == "authorizationStateClosed"
@@ -659,7 +600,7 @@ class Client(Decorators, Methods):
             raise ValueError("workers must be greater than 0")
 
     def get_retry_after_time(self, error_message: str) -> int:
-        """Get the retry after time from flood wait error message
+        r"""Get the retry after time from flood wait error message
 
         Args:
             error_message (``str``):
@@ -879,11 +820,12 @@ class Client(Decorators, Methods):
                 logger.exception("Got worker exception")
 
     async def set_td_parameters(self):
-        """Make a call to :meth:`~pytdbot.Client.setTdlibParameters` with the current client init parameters
+        r"""Make a call to :meth:`~pytdbot.Client.setTdlibParameters` with the current client init parameters
 
         Raises:
             `AuthorizationError`
         """
+
         if isinstance(self.__database_encryption_key, str):
             self.__database_encryption_key = self.__database_encryption_key.encode(
                 "utf-8"
@@ -1024,6 +966,79 @@ class Client(Decorators, Methods):
 
         if self.is_authenticated:
             logger.info(f"Option {update.name} changed to {self.options[update.name]}")
+
+    async def __get_updates_queue(self, retries=10, delay=2):
+        for attempt in range(retries):
+            try:
+                return await self.__rchannel.get_queue(self.my_id + "_updates")
+            except aio_pika.exceptions.ChannelNotFoundEntity:
+                logger.warning(
+                    f"Attempt {attempt + 1}: TDLib Server is not running. Retrying in {delay} seconds..."
+                )
+                await asyncio.sleep(delay)
+        logger.error(f"Could not connect to TDLib Server after {retries} attempts.")
+        raise AuthorizationError(
+            f"Could not connect to TDLib Server after {delay * retries} seconds timeout"
+        )
+
+    async def __startRabbitMQ(self):
+        self.__rconnection = await aio_pika.connect_robust(
+            self.__rabbitmq_url,
+            client_properties={
+                "connection_name": f"Pytdbot instance {self._rabbitmq_instance_id}"
+            },
+        )
+        self.__rchannel = await self.__rconnection.channel()
+
+        updates_queue = await self.__get_updates_queue()
+
+        notify_queue = await self.__rchannel.declare_queue(
+            f"notify_{self._rabbitmq_instance_id}", exclusive=True
+        )
+        await notify_queue.bind(await self.__rchannel.get_exchange("broadcast"))
+
+        responses_queue = await self.__rchannel.declare_queue(
+            f"res_{self._rabbitmq_instance_id}", exclusive=True
+        )
+
+        self.__rqueues = {
+            "updates": updates_queue,
+            "requests": await self.__rchannel.get_queue(self.my_id + "_requests"),
+            "notify": notify_queue,
+            "responses": responses_queue,
+        }
+
+        self.is_running = True
+
+        await self.__rqueues["responses"].consume(self.__on_update, no_ack=True)
+
+        await self._set_options()
+
+        res = await self.getCurrentState()
+        for update in res.updates:
+            # when using obj_to_dict the key "@client_id" won't exists
+            # since it's not part of the object
+            await self._process_update(obj_to_dict(update))
+
+        self.me = await self.getMe()
+        self.is_authenticated = True
+
+        logger.info(
+            "Logged in as {} {}".format(
+                self.me.first_name,
+                str(self.me.id)
+                if not self.me.usernames
+                else "@" + self.me.usernames.editable_username,
+            )
+        )
+        await self.__rqueues["updates"].consume(self.__on_update, no_ack=True)
+        await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
+
+    async def __handle_rabbitmq_message(self, message: aio_pika.IncomingMessage):
+        await self._process_update(json_loads(message.body))
+
+    async def __on_update(self, update):
+        self.loop.create_task(self.__handle_rabbitmq_message(update))
 
     async def __handle_update_user(self, update: types.UpdateUser):
         if self.is_authenticated and update.user.id == self.me.id:

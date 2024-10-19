@@ -13,7 +13,7 @@ class FileBoundMethods:
         limit: int = 0,
         synchronous: bool = True,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.File"]:
-        """Downloads a file. Shortcut for :meth:`~pytdbot.Client.downloadFile`"""
+        r"""Downloads a file. Shortcut for :meth:`~pytdbot.Client.downloadFile`"""
 
         file_id = None
         if isinstance(self, pytdbot.types.RemoteFile):

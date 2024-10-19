@@ -2,7 +2,7 @@ from html import escape as _html_escape
 
 
 def escape_html(text: str, quote: bool = True) -> str:
-    """Escape HTML characters in the given text
+    r"""Escape HTML characters in the given text
 
     Args:
         text (``str``):
@@ -23,7 +23,7 @@ special_chars_v2 = r"\_*[]()~`>#+-=|{}.!"
 
 
 def escape_markdown(text: str, version: int = 2) -> str:
-    """Escape Markdown characters in the given text
+    r"""Escape Markdown characters in the given text
 
     Args:
         text (``str``):
@@ -38,6 +38,7 @@ def escape_markdown(text: str, version: int = 2) -> str:
     Raises:
         :py:class:`ValueError`: If the given markdown version is not supported
     """
+
     if version == 1:
         chars = special_chars_v1
     elif version == 2:

@@ -4,7 +4,7 @@ import pytdbot
 
 
 class Handler:
-    """A handler class."""
+    r"""A handler class."""
 
     def __init__(
         self,

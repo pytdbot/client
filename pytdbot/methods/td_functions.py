@@ -8,8 +8,7 @@ class TDLibFunctions:
     async def getAuthorizationState(
         self,
     ) -> Union["types.Error", "types.AuthorizationState"]:
-        r"""
-        Returns the current authorization state; this is an offline request\. For informational purposes only\. Use updateAuthorizationState instead to maintain the current authorization state\. Can be called before initialization
+        r"""Returns the current authorization state; this is an offline request\. For informational purposes only\. Use updateAuthorizationState instead to maintain the current authorization state\. Can be called before initialization
 
         Returns:
             :class:`~pytdbot.types.AuthorizationState`
@@ -38,8 +37,7 @@ class TDLibFunctions:
         system_version: str = "",
         application_version: str = "",
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the parameters for TDLib initialization\. Works only when the current authorization state is authorizationStateWaitTdlibParameters
+        r"""Sets the parameters for TDLib initialization\. Works only when the current authorization state is authorizationStateWaitTdlibParameters
 
         Parameters:
             use_test_dc (:class:`bool`):
@@ -113,8 +111,7 @@ class TDLibFunctions:
         phone_number: str = "",
         settings: "types.PhoneNumberAuthenticationSettings" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the phone number of the user and sends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
+        r"""Sets the phone number of the user and sends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
 
         Parameters:
             phone_number (:class:`str`):
@@ -138,8 +135,7 @@ class TDLibFunctions:
     async def setAuthenticationEmailAddress(
         self, email_address: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the email address of the user and sends an authentication code to the email address\. Works only when the current authorization state is authorizationStateWaitEmailAddress
+        r"""Sets the email address of the user and sends an authentication code to the email address\. Works only when the current authorization state is authorizationStateWaitEmailAddress
 
         Parameters:
             email_address (:class:`str`):
@@ -156,8 +152,7 @@ class TDLibFunctions:
     async def resendAuthenticationCode(
         self, reason: "types.ResendCodeReason" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Resends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitCode, the next\_code\_type of the result is not null and the server\-specified timeout has passed, or when the current authorization state is authorizationStateWaitEmailCode
+        r"""Resends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitCode, the next\_code\_type of the result is not null and the server\-specified timeout has passed, or when the current authorization state is authorizationStateWaitEmailCode
 
         Parameters:
             reason (:class:`"types.ResendCodeReason"`):
@@ -174,8 +169,7 @@ class TDLibFunctions:
     async def checkAuthenticationEmailCode(
         self, code: "types.EmailAddressAuthentication" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks the authentication of an email address\. Works only when the current authorization state is authorizationStateWaitEmailCode
+        r"""Checks the authentication of an email address\. Works only when the current authorization state is authorizationStateWaitEmailCode
 
         Parameters:
             code (:class:`"types.EmailAddressAuthentication"`):
@@ -192,8 +186,7 @@ class TDLibFunctions:
     async def checkAuthenticationCode(
         self, code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks the authentication code\. Works only when the current authorization state is authorizationStateWaitCode
+        r"""Checks the authentication code\. Works only when the current authorization state is authorizationStateWaitCode
 
         Parameters:
             code (:class:`str`):
@@ -208,8 +201,7 @@ class TDLibFunctions:
     async def requestQrCodeAuthentication(
         self, other_user_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Requests QR code authentication by scanning a QR code on another logged in device\. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
+        r"""Requests QR code authentication by scanning a QR code on another logged in device\. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
 
         Parameters:
             other_user_ids (:class:`List[int]`):
@@ -229,8 +221,7 @@ class TDLibFunctions:
         last_name: str = "",
         disable_notification: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Finishes user registration\. Works only when the current authorization state is authorizationStateWaitRegistration
+        r"""Finishes user registration\. Works only when the current authorization state is authorizationStateWaitRegistration
 
         Parameters:
             first_name (:class:`str`):
@@ -256,8 +247,7 @@ class TDLibFunctions:
         )
 
     async def resetAuthenticationEmailAddress(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Resets the login email address\. May return an error with a message \"TASK\_ALREADY\_EXISTS\" if reset is still pending\. Works only when the current authorization state is authorizationStateWaitEmailCode and authorization\_state\.can\_reset\_email\_address \=\= true
+        r"""Resets the login email address\. May return an error with a message \"TASK\_ALREADY\_EXISTS\" if reset is still pending\. Works only when the current authorization state is authorizationStateWaitEmailCode and authorization\_state\.can\_reset\_email\_address \=\= true
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -272,8 +262,7 @@ class TDLibFunctions:
     async def checkAuthenticationPassword(
         self, password: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks the 2\-step verification password for correctness\. Works only when the current authorization state is authorizationStateWaitPassword
+        r"""Checks the 2\-step verification password for correctness\. Works only when the current authorization state is authorizationStateWaitPassword
 
         Parameters:
             password (:class:`str`):
@@ -290,8 +279,7 @@ class TDLibFunctions:
     async def requestAuthenticationPasswordRecovery(
         self,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Requests to send a 2\-step verification password recovery code to an email address that was previously set up\. Works only when the current authorization state is authorizationStateWaitPassword
+        r"""Requests to send a 2\-step verification password recovery code to an email address that was previously set up\. Works only when the current authorization state is authorizationStateWaitPassword
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -306,8 +294,7 @@ class TDLibFunctions:
     async def checkAuthenticationPasswordRecoveryCode(
         self, recovery_code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks whether a 2\-step verification password recovery code sent to an email address is valid\. Works only when the current authorization state is authorizationStateWaitPassword
+        r"""Checks whether a 2\-step verification password recovery code sent to an email address is valid\. Works only when the current authorization state is authorizationStateWaitPassword
 
         Parameters:
             recovery_code (:class:`str`):
@@ -327,8 +314,7 @@ class TDLibFunctions:
     async def recoverAuthenticationPassword(
         self, recovery_code: str = "", new_password: str = "", new_hint: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Recovers the 2\-step verification password with a password recovery code sent to an email address that was previously set up\. Works only when the current authorization state is authorizationStateWaitPassword
+        r"""Recovers the 2\-step verification password with a password recovery code sent to an email address that was previously set up\. Works only when the current authorization state is authorizationStateWaitPassword
 
         Parameters:
             recovery_code (:class:`str`):
@@ -356,8 +342,7 @@ class TDLibFunctions:
     async def sendAuthenticationFirebaseSms(
         self, token: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends Firebase Authentication SMS to the phone number of the user\. Works only when the current authorization state is authorizationStateWaitCode and the server returned code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos
+        r"""Sends Firebase Authentication SMS to the phone number of the user\. Works only when the current authorization state is authorizationStateWaitCode and the server returned code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos
 
         Parameters:
             token (:class:`str`):
@@ -374,8 +359,7 @@ class TDLibFunctions:
     async def reportAuthenticationCodeMissing(
         self, mobile_network_code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Reports that authentication code wasn't delivered via SMS; for official mobile applications only\. Works only when the current authorization state is authorizationStateWaitCode
+        r"""Reports that authentication code wasn't delivered via SMS; for official mobile applications only\. Works only when the current authorization state is authorizationStateWaitCode
 
         Parameters:
             mobile_network_code (:class:`str`):
@@ -395,8 +379,7 @@ class TDLibFunctions:
     async def checkAuthenticationBotToken(
         self, token: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks the authentication token of a bot; to log in as a bot\. Works only when the current authorization state is authorizationStateWaitPhoneNumber\. Can be used instead of setAuthenticationPhoneNumber and checkAuthenticationCode to log in
+        r"""Checks the authentication token of a bot; to log in as a bot\. Works only when the current authorization state is authorizationStateWaitPhoneNumber\. Can be used instead of setAuthenticationPhoneNumber and checkAuthenticationCode to log in
 
         Parameters:
             token (:class:`str`):
@@ -411,8 +394,7 @@ class TDLibFunctions:
         )
 
     async def logOut(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Closes the TDLib instance after a proper logout\. Requires an available network connection\. All local data will be destroyed\. After the logout completes, updateAuthorizationState with authorizationStateClosed will be sent
+        r"""Closes the TDLib instance after a proper logout\. Requires an available network connection\. All local data will be destroyed\. After the logout completes, updateAuthorizationState with authorizationStateClosed will be sent
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -425,8 +407,7 @@ class TDLibFunctions:
         )
 
     async def close(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Closes the TDLib instance\. All databases will be flushed to disk and properly closed\. After the close completes, updateAuthorizationState with authorizationStateClosed will be sent\. Can be called before initialization
+        r"""Closes the TDLib instance\. All databases will be flushed to disk and properly closed\. After the close completes, updateAuthorizationState with authorizationStateClosed will be sent\. Can be called before initialization
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -439,8 +420,7 @@ class TDLibFunctions:
         )
 
     async def destroy(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Closes the TDLib instance, destroying all local data without a proper logout\. The current user session will remain in the list of all active sessions\. All local data will be destroyed\. After the destruction completes updateAuthorizationState with authorizationStateClosed will be sent\. Can be called before authorization
+        r"""Closes the TDLib instance, destroying all local data without a proper logout\. The current user session will remain in the list of all active sessions\. All local data will be destroyed\. After the destruction completes updateAuthorizationState with authorizationStateClosed will be sent\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -455,8 +435,7 @@ class TDLibFunctions:
     async def confirmQrCodeAuthentication(
         self, link: str = ""
     ) -> Union["types.Error", "types.Session"]:
-        r"""
-        Confirms QR code authentication on another device\. Returns created session on success
+        r"""Confirms QR code authentication on another device\. Returns created session on success
 
         Parameters:
             link (:class:`str`):
@@ -469,8 +448,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "confirmQrCodeAuthentication", "link": link})
 
     async def getCurrentState(self) -> Union["types.Error", "types.Updates"]:
-        r"""
-        Returns all updates needed to restore current TDLib state, i\.e\. all actual updateAuthorizationState/updateUser/updateNewChat and others\. This is especially useful if TDLib is run in a separate process\. Can be called before initialization
+        r"""Returns all updates needed to restore current TDLib state, i\.e\. all actual updateAuthorizationState/updateUser/updateNewChat and others\. This is especially useful if TDLib is run in a separate process\. Can be called before initialization
 
         Returns:
             :class:`~pytdbot.types.Updates`
@@ -485,8 +463,7 @@ class TDLibFunctions:
     async def setDatabaseEncryptionKey(
         self, new_encryption_key: bytes = b""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the database encryption key\. Usually the encryption key is never changed and is stored in some OS keychain
+        r"""Changes the database encryption key\. Usually the encryption key is never changed and is stored in some OS keychain
 
         Parameters:
             new_encryption_key (:class:`bytes`):
@@ -504,8 +481,7 @@ class TDLibFunctions:
         )
 
     async def getPasswordState(self) -> Union["types.Error", "types.PasswordState"]:
-        r"""
-        Returns the current state of 2\-step verification
+        r"""Returns the current state of 2\-step verification
 
         Returns:
             :class:`~pytdbot.types.PasswordState`
@@ -525,8 +501,7 @@ class TDLibFunctions:
         set_recovery_email_address: bool = False,
         new_recovery_email_address: str = "",
     ) -> Union["types.Error", "types.PasswordState"]:
-        r"""
-        Changes the 2\-step verification password for the current user\. If a new recovery email address is specified, then the change will not be applied until the new recovery email address is confirmed
+        r"""Changes the 2\-step verification password for the current user\. If a new recovery email address is specified, then the change will not be applied until the new recovery email address is confirmed
 
         Parameters:
             old_password (:class:`str`):
@@ -562,8 +537,7 @@ class TDLibFunctions:
     async def setLoginEmailAddress(
         self, new_login_email_address: str = ""
     ) -> Union["types.Error", "types.EmailAddressAuthenticationCodeInfo"]:
-        r"""
-        Changes the login email address of the user\. The email address can be changed only if the current user already has login email and passwordState\.login\_email\_address\_pattern is non\-empty\. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode\. To use Apple ID/Google ID instead of an email address, call checkLoginEmailAddressCode directly
+        r"""Changes the login email address of the user\. The email address can be changed only if the current user already has login email and passwordState\.login\_email\_address\_pattern is non\-empty\. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode\. To use Apple ID/Google ID instead of an email address, call checkLoginEmailAddressCode directly
 
         Parameters:
             new_login_email_address (:class:`str`):
@@ -583,8 +557,7 @@ class TDLibFunctions:
     async def resendLoginEmailAddressCode(
         self,
     ) -> Union["types.Error", "types.EmailAddressAuthenticationCodeInfo"]:
-        r"""
-        Resends the login email address verification code
+        r"""Resends the login email address verification code
 
         Returns:
             :class:`~pytdbot.types.EmailAddressAuthenticationCodeInfo`
@@ -599,8 +572,7 @@ class TDLibFunctions:
     async def checkLoginEmailAddressCode(
         self, code: "types.EmailAddressAuthentication" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks the login email address authentication
+        r"""Checks the login email address authentication
 
         Parameters:
             code (:class:`"types.EmailAddressAuthentication"`):
@@ -615,8 +587,7 @@ class TDLibFunctions:
     async def getRecoveryEmailAddress(
         self, password: str = ""
     ) -> Union["types.Error", "types.RecoveryEmailAddress"]:
-        r"""
-        Returns a 2\-step verification recovery email address that was previously set up\. This method can be used to verify a password provided by the user
+        r"""Returns a 2\-step verification recovery email address that was previously set up\. This method can be used to verify a password provided by the user
 
         Parameters:
             password (:class:`str`):
@@ -633,8 +604,7 @@ class TDLibFunctions:
     async def setRecoveryEmailAddress(
         self, password: str = "", new_recovery_email_address: str = ""
     ) -> Union["types.Error", "types.PasswordState"]:
-        r"""
-        Changes the 2\-step verification recovery email address of the user\. If a new recovery email address is specified, then the change will not be applied until the new recovery email address is confirmed\. If new\_recovery\_email\_address is the same as the email address that is currently set up, this call succeeds immediately and aborts all other requests waiting for an email confirmation
+        r"""Changes the 2\-step verification recovery email address of the user\. If a new recovery email address is specified, then the change will not be applied until the new recovery email address is confirmed\. If new\_recovery\_email\_address is the same as the email address that is currently set up, this call succeeds immediately and aborts all other requests waiting for an email confirmation
 
         Parameters:
             password (:class:`str`):
@@ -658,8 +628,7 @@ class TDLibFunctions:
     async def checkRecoveryEmailAddressCode(
         self, code: str = ""
     ) -> Union["types.Error", "types.PasswordState"]:
-        r"""
-        Checks the 2\-step verification recovery email address verification code
+        r"""Checks the 2\-step verification recovery email address verification code
 
         Parameters:
             code (:class:`str`):
@@ -676,8 +645,7 @@ class TDLibFunctions:
     async def resendRecoveryEmailAddressCode(
         self,
     ) -> Union["types.Error", "types.PasswordState"]:
-        r"""
-        Resends the 2\-step verification recovery email address verification code
+        r"""Resends the 2\-step verification recovery email address verification code
 
         Returns:
             :class:`~pytdbot.types.PasswordState`
@@ -692,8 +660,7 @@ class TDLibFunctions:
     async def cancelRecoveryEmailAddressVerification(
         self,
     ) -> Union["types.Error", "types.PasswordState"]:
-        r"""
-        Cancels verification of the 2\-step verification recovery email address
+        r"""Cancels verification of the 2\-step verification recovery email address
 
         Returns:
             :class:`~pytdbot.types.PasswordState`
@@ -708,8 +675,7 @@ class TDLibFunctions:
     async def requestPasswordRecovery(
         self,
     ) -> Union["types.Error", "types.EmailAddressAuthenticationCodeInfo"]:
-        r"""
-        Requests to send a 2\-step verification password recovery code to an email address that was previously set up
+        r"""Requests to send a 2\-step verification password recovery code to an email address that was previously set up
 
         Returns:
             :class:`~pytdbot.types.EmailAddressAuthenticationCodeInfo`
@@ -724,8 +690,7 @@ class TDLibFunctions:
     async def checkPasswordRecoveryCode(
         self, recovery_code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks whether a 2\-step verification password recovery code sent to an email address is valid
+        r"""Checks whether a 2\-step verification password recovery code sent to an email address is valid
 
         Parameters:
             recovery_code (:class:`str`):
@@ -742,8 +707,7 @@ class TDLibFunctions:
     async def recoverPassword(
         self, recovery_code: str = "", new_password: str = "", new_hint: str = ""
     ) -> Union["types.Error", "types.PasswordState"]:
-        r"""
-        Recovers the 2\-step verification password using a recovery code sent to an email address that was previously set up
+        r"""Recovers the 2\-step verification password using a recovery code sent to an email address that was previously set up
 
         Parameters:
             recovery_code (:class:`str`):
@@ -769,8 +733,7 @@ class TDLibFunctions:
         )
 
     async def resetPassword(self) -> Union["types.Error", "types.ResetPasswordResult"]:
-        r"""
-        Removes 2\-step verification password without previous password and access to recovery email address\. The password can't be reset immediately and the request needs to be repeated after the specified time
+        r"""Removes 2\-step verification password without previous password and access to recovery email address\. The password can't be reset immediately and the request needs to be repeated after the specified time
 
         Returns:
             :class:`~pytdbot.types.ResetPasswordResult`
@@ -783,8 +746,7 @@ class TDLibFunctions:
         )
 
     async def cancelPasswordReset(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Cancels reset of 2\-step verification password\. The method can be called if passwordState\.pending\_reset\_date \> 0
+        r"""Cancels reset of 2\-step verification password\. The method can be called if passwordState\.pending\_reset\_date \> 0
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -799,8 +761,7 @@ class TDLibFunctions:
     async def createTemporaryPassword(
         self, password: str = "", valid_for: int = 0
     ) -> Union["types.Error", "types.TemporaryPasswordState"]:
-        r"""
-        Creates a new temporary password for processing payments
+        r"""Creates a new temporary password for processing payments
 
         Parameters:
             password (:class:`str`):
@@ -824,8 +785,7 @@ class TDLibFunctions:
     async def getTemporaryPasswordState(
         self,
     ) -> Union["types.Error", "types.TemporaryPasswordState"]:
-        r"""
-        Returns information about the current temporary password
+        r"""Returns information about the current temporary password
 
         Returns:
             :class:`~pytdbot.types.TemporaryPasswordState`
@@ -838,8 +798,7 @@ class TDLibFunctions:
         )
 
     async def getMe(self) -> Union["types.Error", "types.User"]:
-        r"""
-        Returns the current user
+        r"""Returns the current user
 
         Returns:
             :class:`~pytdbot.types.User`
@@ -852,8 +811,7 @@ class TDLibFunctions:
         )
 
     async def getUser(self, user_id: int = 0) -> Union["types.Error", "types.User"]:
-        r"""
-        Returns information about a user by their identifier\. This is an offline request if the current user is not a bot
+        r"""Returns information about a user by their identifier\. This is an offline request if the current user is not a bot
 
         Parameters:
             user_id (:class:`int`):
@@ -868,8 +826,7 @@ class TDLibFunctions:
     async def getUserFullInfo(
         self, user_id: int = 0
     ) -> Union["types.Error", "types.UserFullInfo"]:
-        r"""
-        Returns full information about a user by their identifier
+        r"""Returns full information about a user by their identifier
 
         Parameters:
             user_id (:class:`int`):
@@ -884,8 +841,7 @@ class TDLibFunctions:
     async def getBasicGroup(
         self, basic_group_id: int = 0
     ) -> Union["types.Error", "types.BasicGroup"]:
-        r"""
-        Returns information about a basic group by its identifier\. This is an offline request if the current user is not a bot
+        r"""Returns information about a basic group by its identifier\. This is an offline request if the current user is not a bot
 
         Parameters:
             basic_group_id (:class:`int`):
@@ -902,8 +858,7 @@ class TDLibFunctions:
     async def getBasicGroupFullInfo(
         self, basic_group_id: int = 0
     ) -> Union["types.Error", "types.BasicGroupFullInfo"]:
-        r"""
-        Returns full information about a basic group by its identifier
+        r"""Returns full information about a basic group by its identifier
 
         Parameters:
             basic_group_id (:class:`int`):
@@ -920,8 +875,7 @@ class TDLibFunctions:
     async def getSupergroup(
         self, supergroup_id: int = 0
     ) -> Union["types.Error", "types.Supergroup"]:
-        r"""
-        Returns information about a supergroup or a channel by its identifier\. This is an offline request if the current user is not a bot
+        r"""Returns information about a supergroup or a channel by its identifier\. This is an offline request if the current user is not a bot
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -938,8 +892,7 @@ class TDLibFunctions:
     async def getSupergroupFullInfo(
         self, supergroup_id: int = 0
     ) -> Union["types.Error", "types.SupergroupFullInfo"]:
-        r"""
-        Returns full information about a supergroup or a channel by its identifier, cached for up to 1 minute
+        r"""Returns full information about a supergroup or a channel by its identifier, cached for up to 1 minute
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -956,8 +909,7 @@ class TDLibFunctions:
     async def getSecretChat(
         self, secret_chat_id: int = 0
     ) -> Union["types.Error", "types.SecretChat"]:
-        r"""
-        Returns information about a secret chat by its identifier\. This is an offline request
+        r"""Returns information about a secret chat by its identifier\. This is an offline request
 
         Parameters:
             secret_chat_id (:class:`int`):
@@ -972,8 +924,7 @@ class TDLibFunctions:
         )
 
     async def getChat(self, chat_id: int = 0) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Returns information about a chat by its identifier; this is an offline request if the current user is not a bot
+        r"""Returns information about a chat by its identifier; this is an offline request if the current user is not a bot
 
         Parameters:
             chat_id (:class:`int`):
@@ -988,8 +939,7 @@ class TDLibFunctions:
     async def getMessage(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Returns information about a message\. Returns a 404 error if the message doesn't exist
+        r"""Returns information about a message\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -1009,8 +959,7 @@ class TDLibFunctions:
     async def getMessageLocally(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Returns information about a message, if it is available without sending network request\. Returns a 404 error if message isn't available locally\. This is an offline request
+        r"""Returns information about a message, if it is available without sending network request\. Returns a 404 error if message isn't available locally\. This is an offline request
 
         Parameters:
             chat_id (:class:`int`):
@@ -1030,8 +979,7 @@ class TDLibFunctions:
     async def getRepliedMessage(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non\-bundled replied message respectively\. Returns a 404 error if the message doesn't exist
+        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non\-bundled replied message respectively\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -1051,8 +999,7 @@ class TDLibFunctions:
     async def getChatPinnedMessage(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Returns information about a newest pinned message in the chat\. Returns a 404 error if the message doesn't exist
+        r"""Returns information about a newest pinned message in the chat\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -1067,8 +1014,7 @@ class TDLibFunctions:
     async def getCallbackQueryMessage(
         self, chat_id: int = 0, message_id: int = 0, callback_query_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Returns information about a message with the callback button that originated a callback query; for bots only
+        r"""Returns information about a message with the callback button that originated a callback query; for bots only
 
         Parameters:
             chat_id (:class:`int`):
@@ -1096,8 +1042,7 @@ class TDLibFunctions:
     async def getMessages(
         self, chat_id: int = 0, message_ids: List[int] = None
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Returns information about messages\. If a message is not found, returns null on the corresponding position of the result
+        r"""Returns information about messages\. If a message is not found, returns null on the corresponding position of the result
 
         Parameters:
             chat_id (:class:`int`):
@@ -1117,8 +1062,7 @@ class TDLibFunctions:
     async def getMessageProperties(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.MessageProperties"]:
-        r"""
-        Returns properties of a message; this is an offline request
+        r"""Returns properties of a message; this is an offline request
 
         Parameters:
             chat_id (:class:`int`):
@@ -1142,8 +1086,7 @@ class TDLibFunctions:
     async def getMessageThread(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.MessageThreadInfo"]:
-        r"""
-        Returns information about a message thread\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true
+        r"""Returns information about a message thread\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -1163,8 +1106,7 @@ class TDLibFunctions:
     async def getMessageReadDate(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.MessageReadDate"]:
-        r"""
-        Returns read date of a recent outgoing message in a private chat\. The method can be called if messageProperties\.can\_get\_read\_date \=\= true
+        r"""Returns read date of a recent outgoing message in a private chat\. The method can be called if messageProperties\.can\_get\_read\_date \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -1188,8 +1130,7 @@ class TDLibFunctions:
     async def getMessageViewers(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.MessageViewers"]:
-        r"""
-        Returns viewers of a recent outgoing message in a basic group or a supergroup chat\. For video notes and voice notes only users, opened content of the message, are returned\. The method can be called if messageProperties\.can\_get\_viewers \=\= true
+        r"""Returns viewers of a recent outgoing message in a basic group or a supergroup chat\. For video notes and voice notes only users, opened content of the message, are returned\. The method can be called if messageProperties\.can\_get\_viewers \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -1207,8 +1148,7 @@ class TDLibFunctions:
         )
 
     async def getFile(self, file_id: int = 0) -> Union["types.Error", "types.File"]:
-        r"""
-        Returns information about a file; this is an offline request
+        r"""Returns information about a file; this is an offline request
 
         Parameters:
             file_id (:class:`int`):
@@ -1223,8 +1163,7 @@ class TDLibFunctions:
     async def getRemoteFile(
         self, remote_file_id: str = "", file_type: "types.FileType" = None
     ) -> Union["types.Error", "types.File"]:
-        r"""
-        Returns information about a file by its remote identifier; this is an offline request\. Can be used to register a URL as a file for further uploading, or sending as a message\. Even the request succeeds, the file can be used only if it is still accessible to the user\. For example, if the file is from a message, then the message must be not deleted and accessible to the user\. If the file database is disabled, then the corresponding object with the file must be preloaded by the application
+        r"""Returns information about a file by its remote identifier; this is an offline request\. Can be used to register a URL as a file for further uploading, or sending as a message\. Even the request succeeds, the file can be used only if it is still accessible to the user\. For example, if the file is from a message, then the message must be not deleted and accessible to the user\. If the file database is disabled, then the corresponding object with the file must be preloaded by the application
 
         Parameters:
             remote_file_id (:class:`str`):
@@ -1248,8 +1187,7 @@ class TDLibFunctions:
     async def loadChats(
         self, chat_list: "types.ChatList" = None, limit: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Loads more chats from a chat list\. The loaded chats and their positions in the chat list will be sent through updates\. Chats are sorted by the pair \(chat\.position\.order, chat\.id\) in descending order\. Returns a 404 error if all chats have been loaded
+        r"""Loads more chats from a chat list\. The loaded chats and their positions in the chat list will be sent through updates\. Chats are sorted by the pair \(chat\.position\.order, chat\.id\) in descending order\. Returns a 404 error if all chats have been loaded
 
         Parameters:
             chat_list (:class:`"types.ChatList"`):
@@ -1269,8 +1207,7 @@ class TDLibFunctions:
     async def getChats(
         self, chat_list: "types.ChatList" = None, limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns an ordered list of chats from the beginning of a chat list\. For informational purposes only\. Use loadChats and updates processing instead to maintain chat lists in a consistent state
+        r"""Returns an ordered list of chats from the beginning of a chat list\. For informational purposes only\. Use loadChats and updates processing instead to maintain chat lists in a consistent state
 
         Parameters:
             chat_list (:class:`"types.ChatList"`):
@@ -1290,8 +1227,7 @@ class TDLibFunctions:
     async def searchPublicChat(
         self, username: str = ""
     ) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Searches a public chat by its username\. Currently, only private chats, supergroups and channels can be public\. Returns the chat if found; otherwise, an error is returned
+        r"""Searches a public chat by its username\. Currently, only private chats, supergroups and channels can be public\. Returns the chat if found; otherwise, an error is returned
 
         Parameters:
             username (:class:`str`):
@@ -1306,8 +1242,7 @@ class TDLibFunctions:
     async def searchPublicChats(
         self, query: str = ""
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Searches public chats by looking for specified query in their username and title\. Currently, only private chats, supergroups and channels can be public\. Returns a meaningful number of results\. Excludes private chats with contacts and chats from the chat list from the results
+        r"""Searches public chats by looking for specified query in their username and title\. Currently, only private chats, supergroups and channels can be public\. Returns a meaningful number of results\. Excludes private chats with contacts and chats from the chat list from the results
 
         Parameters:
             query (:class:`str`):
@@ -1322,8 +1257,7 @@ class TDLibFunctions:
     async def searchChats(
         self, query: str = "", limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Searches for the specified query in the title and username of already known chats; this is an offline request\. Returns chats in the order seen in the main chat list
+        r"""Searches for the specified query in the title and username of already known chats; this is an offline request\. Returns chats in the order seen in the main chat list
 
         Parameters:
             query (:class:`str`):
@@ -1343,8 +1277,7 @@ class TDLibFunctions:
     async def searchChatsOnServer(
         self, query: str = "", limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Searches for the specified query in the title and username of already known chats via request to the server\. Returns chats in the order seen in the main chat list
+        r"""Searches for the specified query in the title and username of already known chats via request to the server\. Returns chats in the order seen in the main chat list
 
         Parameters:
             query (:class:`str`):
@@ -1364,8 +1297,7 @@ class TDLibFunctions:
     async def searchChatsNearby(
         self, location: "types.Location" = None
     ) -> Union["types.Error", "types.ChatsNearby"]:
-        r"""
-        Returns a list of users and location\-based supergroups nearby\. The method was disabled and returns an empty list of chats now
+        r"""Returns a list of users and location\-based supergroups nearby\. The method was disabled and returns an empty list of chats now
 
         Parameters:
             location (:class:`"types.Location"`):
@@ -1378,8 +1310,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "searchChatsNearby", "location": location})
 
     async def getRecommendedChats(self) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns a list of channel chats recommended to the current user
+        r"""Returns a list of channel chats recommended to the current user
 
         Returns:
             :class:`~pytdbot.types.Chats`
@@ -1394,8 +1325,7 @@ class TDLibFunctions:
     async def getChatSimilarChats(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns a list of chats similar to the given chat
+        r"""Returns a list of chats similar to the given chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -1410,8 +1340,7 @@ class TDLibFunctions:
     async def getChatSimilarChatCount(
         self, chat_id: int = 0, return_local: bool = False
     ) -> Union["types.Error", "types.Count"]:
-        r"""
-        Returns approximate number of chats similar to the given chat
+        r"""Returns approximate number of chats similar to the given chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -1435,8 +1364,7 @@ class TDLibFunctions:
     async def openChatSimilarChat(
         self, chat_id: int = 0, opened_chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that a chat was opened from the list of similar chats\. The method is independent of openChat and closeChat methods
+        r"""Informs TDLib that a chat was opened from the list of similar chats\. The method is independent of openChat and closeChat methods
 
         Parameters:
             chat_id (:class:`int`):
@@ -1460,8 +1388,7 @@ class TDLibFunctions:
     async def getTopChats(
         self, category: "types.TopChatCategory" = None, limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns a list of frequently used chats
+        r"""Returns a list of frequently used chats
 
         Parameters:
             category (:class:`"types.TopChatCategory"`):
@@ -1481,8 +1408,7 @@ class TDLibFunctions:
     async def removeTopChat(
         self, category: "types.TopChatCategory" = None, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a chat from the list of frequently used chats\. Supported only if the chat info database is enabled
+        r"""Removes a chat from the list of frequently used chats\. Supported only if the chat info database is enabled
 
         Parameters:
             category (:class:`"types.TopChatCategory"`):
@@ -1502,8 +1428,7 @@ class TDLibFunctions:
     async def searchRecentlyFoundChats(
         self, query: str = "", limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Searches for the specified query in the title and username of up to 50 recently found chats; this is an offline request
+        r"""Searches for the specified query in the title and username of up to 50 recently found chats; this is an offline request
 
         Parameters:
             query (:class:`str`):
@@ -1523,8 +1448,7 @@ class TDLibFunctions:
     async def addRecentlyFoundChat(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds a chat to the list of recently found chats\. The chat is added to the beginning of the list\. If the chat is already in the list, it will be removed from the list first
+        r"""Adds a chat to the list of recently found chats\. The chat is added to the beginning of the list\. If the chat is already in the list, it will be removed from the list first
 
         Parameters:
             chat_id (:class:`int`):
@@ -1539,8 +1463,7 @@ class TDLibFunctions:
     async def removeRecentlyFoundChat(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a chat from the list of recently found chats
+        r"""Removes a chat from the list of recently found chats
 
         Parameters:
             chat_id (:class:`int`):
@@ -1555,8 +1478,7 @@ class TDLibFunctions:
         )
 
     async def clearRecentlyFoundChats(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Clears the list of recently found chats
+        r"""Clears the list of recently found chats
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -1571,8 +1493,7 @@ class TDLibFunctions:
     async def getRecentlyOpenedChats(
         self, limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns recently opened chats; this is an offline request\. Returns chats in the order of last opening
+        r"""Returns recently opened chats; this is an offline request\. Returns chats in the order of last opening
 
         Parameters:
             limit (:class:`int`):
@@ -1587,8 +1508,7 @@ class TDLibFunctions:
     async def checkChatUsername(
         self, chat_id: int = 0, username: str = ""
     ) -> Union["types.Error", "types.CheckChatUsernameResult"]:
-        r"""
-        Checks whether a username can be set for a chat
+        r"""Checks whether a username can be set for a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -1608,8 +1528,7 @@ class TDLibFunctions:
     async def getCreatedPublicChats(
         self, type: "types.PublicChatType" = None
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns a list of public chats of the specified type, owned by the user
+        r"""Returns a list of public chats of the specified type, owned by the user
 
         Parameters:
             type (:class:`"types.PublicChatType"`):
@@ -1624,8 +1543,7 @@ class TDLibFunctions:
     async def checkCreatedPublicChatsLimit(
         self, type: "types.PublicChatType" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks whether the maximum number of owned public chats has been reached\. Returns corresponding error if the limit was reached\. The limit can be increased with Telegram Premium
+        r"""Checks whether the maximum number of owned public chats has been reached\. Returns corresponding error if the limit was reached\. The limit can be increased with Telegram Premium
 
         Parameters:
             type (:class:`"types.PublicChatType"`):
@@ -1640,8 +1558,7 @@ class TDLibFunctions:
         )
 
     async def getSuitableDiscussionChats(self) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns a list of basic group and supergroup chats, which can be used as a discussion group for a channel\. Returned basic group chats must be first upgraded to supergroups before they can be set as a discussion group\. To set a returned supergroup as a discussion group, access to its old messages must be enabled using toggleSupergroupIsAllHistoryAvailable first
+        r"""Returns a list of basic group and supergroup chats, which can be used as a discussion group for a channel\. Returned basic group chats must be first upgraded to supergroups before they can be set as a discussion group\. To set a returned supergroup as a discussion group, access to its old messages must be enabled using toggleSupergroupIsAllHistoryAvailable first
 
         Returns:
             :class:`~pytdbot.types.Chats`
@@ -1654,8 +1571,7 @@ class TDLibFunctions:
         )
 
     async def getInactiveSupergroupChats(self) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns a list of recently inactive supergroups and channels\. Can be used when user reaches limit on the number of joined supergroups and channels and receives CHANNELS\_TOO\_MUCH error\. Also, the limit can be increased with Telegram Premium
+        r"""Returns a list of recently inactive supergroups and channels\. Can be used when user reaches limit on the number of joined supergroups and channels and receives CHANNELS\_TOO\_MUCH error\. Also, the limit can be increased with Telegram Premium
 
         Returns:
             :class:`~pytdbot.types.Chats`
@@ -1668,8 +1584,7 @@ class TDLibFunctions:
         )
 
     async def getSuitablePersonalChats(self) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns a list of channel chats, which can be used as a personal chat
+        r"""Returns a list of channel chats, which can be used as a personal chat
 
         Returns:
             :class:`~pytdbot.types.Chats`
@@ -1684,8 +1599,7 @@ class TDLibFunctions:
     async def loadSavedMessagesTopics(
         self, limit: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Loads more Saved Messages topics\. The loaded topics will be sent through updateSavedMessagesTopic\. Topics are sorted by their topic\.order in descending order\. Returns a 404 error if all topics have been loaded
+        r"""Loads more Saved Messages topics\. The loaded topics will be sent through updateSavedMessagesTopic\. Topics are sorted by their topic\.order in descending order\. Returns a 404 error if all topics have been loaded
 
         Parameters:
             limit (:class:`int`):
@@ -1704,8 +1618,7 @@ class TDLibFunctions:
         offset: int = 0,
         limit: int = 0,
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Returns messages in a Saved Messages topic\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+        r"""Returns messages in a Saved Messages topic\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -1737,8 +1650,7 @@ class TDLibFunctions:
     async def getSavedMessagesTopicMessageByDate(
         self, saved_messages_topic_id: int = 0, date: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Returns the last message sent in a Saved Messages topic no later than the specified date
+        r"""Returns the last message sent in a Saved Messages topic no later than the specified date
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -1762,8 +1674,7 @@ class TDLibFunctions:
     async def deleteSavedMessagesTopicHistory(
         self, saved_messages_topic_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes all messages in a Saved Messages topic
+        r"""Deletes all messages in a Saved Messages topic
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -1783,8 +1694,7 @@ class TDLibFunctions:
     async def deleteSavedMessagesTopicMessagesByDate(
         self, saved_messages_topic_id: int = 0, min_date: int = 0, max_date: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes all messages between the specified dates in a Saved Messages topic\. Messages sent in the last 30 seconds will not be deleted
+        r"""Deletes all messages between the specified dates in a Saved Messages topic\. Messages sent in the last 30 seconds will not be deleted
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -1812,8 +1722,7 @@ class TDLibFunctions:
     async def toggleSavedMessagesTopicIsPinned(
         self, saved_messages_topic_id: int = 0, is_pinned: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the pinned state of a Saved Messages topic\. There can be up to getOption\(\"pinned\_saved\_messages\_topic\_count\_max\"\) pinned topics\. The limit can be increased with Telegram Premium
+        r"""Changes the pinned state of a Saved Messages topic\. There can be up to getOption\(\"pinned\_saved\_messages\_topic\_count\_max\"\) pinned topics\. The limit can be increased with Telegram Premium
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -1837,8 +1746,7 @@ class TDLibFunctions:
     async def setPinnedSavedMessagesTopics(
         self, saved_messages_topic_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the order of pinned Saved Messages topics
+        r"""Changes the order of pinned Saved Messages topics
 
         Parameters:
             saved_messages_topic_ids (:class:`List[int]`):
@@ -1858,8 +1766,7 @@ class TDLibFunctions:
     async def getGroupsInCommon(
         self, user_id: int = 0, offset_chat_id: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns a list of common group chats with a given user\. Chats are sorted by their type and creation date
+        r"""Returns a list of common group chats with a given user\. Chats are sorted by their type and creation date
 
         Parameters:
             user_id (:class:`int`):
@@ -1892,8 +1799,7 @@ class TDLibFunctions:
         limit: int = 0,
         only_local: bool = False,
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Returns messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline request if only\_local is true
+        r"""Returns messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline request if only\_local is true
 
         Parameters:
             chat_id (:class:`int`):
@@ -1934,8 +1840,7 @@ class TDLibFunctions:
         offset: int = 0,
         limit: int = 0,
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Returns messages in a message thread of a message\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true\. Message thread of a channel message is in the channel's linked supergroup\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
+        r"""Returns messages in a message thread of a message\. Can be used only if messageProperties\.can\_get\_message\_thread \=\= true\. Message thread of a channel message is in the channel's linked supergroup\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -1974,8 +1879,7 @@ class TDLibFunctions:
         remove_from_chat_list: bool = False,
         revoke: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes all messages in the chat\. Use chat\.can\_be\_deleted\_only\_for\_self and chat\.can\_be\_deleted\_for\_all\_users fields to find whether and how the method can be applied to the chat
+        r"""Deletes all messages in the chat\. Use chat\.can\_be\_deleted\_only\_for\_self and chat\.can\_be\_deleted\_for\_all\_users fields to find whether and how the method can be applied to the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -2001,8 +1905,7 @@ class TDLibFunctions:
         )
 
     async def deleteChat(self, chat_id: int = 0) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes a chat along with all messages in the corresponding chat for all chat members\. For group chats this will release the usernames and remove all members\. Use the field chat\.can\_be\_deleted\_for\_all\_users to find whether the method can be applied to the chat
+        r"""Deletes a chat along with all messages in the corresponding chat for all chat members\. For group chats this will release the usernames and remove all members\. Use the field chat\.can\_be\_deleted\_for\_all\_users to find whether the method can be applied to the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -2026,8 +1929,7 @@ class TDLibFunctions:
         message_thread_id: int = 0,
         saved_messages_topic_id: int = 0,
     ) -> Union["types.Error", "types.FoundChatMessages"]:
-        r"""
-        Searches for messages with given words in the chat\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. Cannot be used in secret chats with a non\-empty query \(searchSecretMessages must be used instead\), or without an enabled message database\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit\. A combination of query, sender\_id, filter and message\_thread\_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
+        r"""Searches for messages with given words in the chat\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. Cannot be used in secret chats with a non\-empty query \(searchSecretMessages must be used instead\), or without an enabled message database\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit\. A combination of query, sender\_id, filter and message\_thread\_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
 
         Parameters:
             chat_id (:class:`int`):
@@ -2087,8 +1989,7 @@ class TDLibFunctions:
         min_date: int = 0,
         max_date: int = 0,
     ) -> Union["types.Error", "types.FoundMessages"]:
-        r"""
-        Searches for messages in all chats except secret chats\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing \(date, chat\_id, message\_id\)\)\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        r"""Searches for messages in all chats except secret chats\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing \(date, chat\_id, message\_id\)\)\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
             chat_list (:class:`"types.ChatList"`):
@@ -2141,8 +2042,7 @@ class TDLibFunctions:
         limit: int = 0,
         filter: "types.SearchMessagesFilter" = None,
     ) -> Union["types.Error", "types.FoundMessages"]:
-        r"""
-        Searches for messages in secret chats\. Returns the results in reverse chronological order\. For optimal performance, the number of returned messages is chosen by TDLib
+        r"""Searches for messages in secret chats\. Returns the results in reverse chronological order\. For optimal performance, the number of returned messages is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -2184,8 +2084,7 @@ class TDLibFunctions:
         offset: int = 0,
         limit: int = 0,
     ) -> Union["types.Error", "types.FoundChatMessages"]:
-        r"""
-        Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        r"""Searches for messages tagged by the given reaction and with the given words in the Saved Messages chat; for Telegram Premium users only\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -2225,8 +2124,7 @@ class TDLibFunctions:
     async def searchCallMessages(
         self, offset: str = "", limit: int = 0, only_missed: bool = False
     ) -> Union["types.Error", "types.FoundMessages"]:
-        r"""
-        Searches for call messages\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
+        r"""Searches for call messages\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
 
         Parameters:
             offset (:class:`str`):
@@ -2254,8 +2152,7 @@ class TDLibFunctions:
     async def searchOutgoingDocumentMessages(
         self, query: str = "", limit: int = 0
     ) -> Union["types.Error", "types.FoundMessages"]:
-        r"""
-        Searches for outgoing messages with content of the type messageDocument in all chats except secret chats\. Returns the results in reverse chronological order
+        r"""Searches for outgoing messages with content of the type messageDocument in all chats except secret chats\. Returns the results in reverse chronological order
 
         Parameters:
             query (:class:`str`):
@@ -2275,8 +2172,7 @@ class TDLibFunctions:
     async def searchPublicMessagesByTag(
         self, tag: str = "", offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.FoundMessages"]:
-        r"""
-        Searches for public channel posts containing the given hashtag or cashtag\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+        r"""Searches for public channel posts containing the given hashtag or cashtag\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
             tag (:class:`str`):
@@ -2304,8 +2200,7 @@ class TDLibFunctions:
     async def searchPublicStoriesByTag(
         self, tag: str = "", offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.FoundStories"]:
-        r"""
-        Searches for public stories containing the given hashtag or cashtag\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+        r"""Searches for public stories containing the given hashtag or cashtag\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
             tag (:class:`str`):
@@ -2333,8 +2228,7 @@ class TDLibFunctions:
     async def searchPublicStoriesByLocation(
         self, address: "types.LocationAddress" = None, offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.FoundStories"]:
-        r"""
-        Searches for public stories by the given address location\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+        r"""Searches for public stories by the given address location\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
             address (:class:`"types.LocationAddress"`):
@@ -2366,8 +2260,7 @@ class TDLibFunctions:
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.FoundStories"]:
-        r"""
-        Searches for public stories from the given venue\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+        r"""Searches for public stories from the given venue\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
             venue_provider (:class:`str`):
@@ -2399,8 +2292,7 @@ class TDLibFunctions:
     async def getSearchedForTags(
         self, tag_prefix: str = "", limit: int = 0
     ) -> Union["types.Error", "types.Hashtags"]:
-        r"""
-        Returns recently searched for hashtags or cashtags by their prefix
+        r"""Returns recently searched for hashtags or cashtags by their prefix
 
         Parameters:
             tag_prefix (:class:`str`):
@@ -2420,8 +2312,7 @@ class TDLibFunctions:
     async def removeSearchedForTag(
         self, tag: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a hashtag or a cashtag from the list of recently searched for hashtags or cashtags
+        r"""Removes a hashtag or a cashtag from the list of recently searched for hashtags or cashtags
 
         Parameters:
             tag (:class:`str`):
@@ -2436,8 +2327,7 @@ class TDLibFunctions:
     async def clearSearchedForTags(
         self, clear_cashtags: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Clears the list of recently searched for hashtags or cashtags
+        r"""Clears the list of recently searched for hashtags or cashtags
 
         Parameters:
             clear_cashtags (:class:`bool`):
@@ -2454,8 +2344,7 @@ class TDLibFunctions:
     async def deleteAllCallMessages(
         self, revoke: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes all call messages
+        r"""Deletes all call messages
 
         Parameters:
             revoke (:class:`bool`):
@@ -2470,8 +2359,7 @@ class TDLibFunctions:
     async def searchChatRecentLocationMessages(
         self, chat_id: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Returns information about the recent locations of chat members that were sent to the chat\. Returns up to 1 location message per user
+        r"""Returns information about the recent locations of chat members that were sent to the chat\. Returns up to 1 location message per user
 
         Parameters:
             chat_id (:class:`int`):
@@ -2495,8 +2383,7 @@ class TDLibFunctions:
     async def getChatMessageByDate(
         self, chat_id: int = 0, date: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Returns the last message sent in a chat no later than the specified date\. Returns a 404 error if such message doesn't exist
+        r"""Returns the last message sent in a chat no later than the specified date\. Returns a 404 error if such message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -2521,8 +2408,7 @@ class TDLibFunctions:
         limit: int = 0,
         saved_messages_topic_id: int = 0,
     ) -> Union["types.Error", "types.MessagePositions"]:
-        r"""
-        Returns sparse positions of messages of the specified type in the chat to be used for shared media scroll implementation\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. Cannot be used in secret chats or with searchMessagesFilterFailedToSend filter without an enabled message database
+        r"""Returns sparse positions of messages of the specified type in the chat to be used for shared media scroll implementation\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. Cannot be used in secret chats or with searchMessagesFilterFailedToSend filter without an enabled message database
 
         Parameters:
             chat_id (:class:`int`):
@@ -2562,8 +2448,7 @@ class TDLibFunctions:
         from_message_id: int = 0,
         saved_messages_topic_id: int = 0,
     ) -> Union["types.Error", "types.MessageCalendar"]:
-        r"""
-        Returns information about the next messages of the specified type in the chat split by days\. Returns the results in reverse chronological order\. Can return partial result for the last returned day\. Behavior of this method depends on the value of the option \"utc\_time\_offset\"
+        r"""Returns information about the next messages of the specified type in the chat split by days\. Returns the results in reverse chronological order\. Can return partial result for the last returned day\. Behavior of this method depends on the value of the option \"utc\_time\_offset\"
 
         Parameters:
             chat_id (:class:`int`):
@@ -2599,8 +2484,7 @@ class TDLibFunctions:
         saved_messages_topic_id: int = 0,
         return_local: bool = False,
     ) -> Union["types.Error", "types.Count"]:
-        r"""
-        Returns approximate number of messages of the specified type in the chat
+        r"""Returns approximate number of messages of the specified type in the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -2637,8 +2521,7 @@ class TDLibFunctions:
         message_thread_id: int = 0,
         saved_messages_topic_id: int = 0,
     ) -> Union["types.Error", "types.Count"]:
-        r"""
-        Returns approximate 1\-based position of a message among messages, which can be found by the specified filter in the chat\. Cannot be used in secret chats
+        r"""Returns approximate 1\-based position of a message among messages, which can be found by the specified filter in the chat\. Cannot be used in secret chats
 
         Parameters:
             chat_id (:class:`int`):
@@ -2674,8 +2557,7 @@ class TDLibFunctions:
     async def getChatScheduledMessages(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Returns all scheduled messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+        r"""Returns all scheduled messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -2692,8 +2574,7 @@ class TDLibFunctions:
     async def getChatSponsoredMessages(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.SponsoredMessages"]:
-        r"""
-        Returns sponsored messages to be shown in a chat; for channel chats only
+        r"""Returns sponsored messages to be shown in a chat; for channel chats only
 
         Parameters:
             chat_id (:class:`int`):
@@ -2714,8 +2595,7 @@ class TDLibFunctions:
         is_media_click: bool = False,
         from_fullscreen: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that the user opened the sponsored chat via the button, the name, the chat photo, a mention in the sponsored message text, or the media in the sponsored message
+        r"""Informs TDLib that the user opened the sponsored chat via the button, the name, the chat photo, a mention in the sponsored message text, or the media in the sponsored message
 
         Parameters:
             chat_id (:class:`int`):
@@ -2747,8 +2627,7 @@ class TDLibFunctions:
     async def reportChatSponsoredMessage(
         self, chat_id: int = 0, message_id: int = 0, option_id: bytes = b""
     ) -> Union["types.Error", "types.ReportChatSponsoredMessageResult"]:
-        r"""
-        Reports a sponsored message to Telegram moderators
+        r"""Reports a sponsored message to Telegram moderators
 
         Parameters:
             chat_id (:class:`int`):
@@ -2776,8 +2655,7 @@ class TDLibFunctions:
     async def removeNotification(
         self, notification_group_id: int = 0, notification_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes an active notification from notification list\. Needs to be called only if the notification is removed by the current user
+        r"""Removes an active notification from notification list\. Needs to be called only if the notification is removed by the current user
 
         Parameters:
             notification_group_id (:class:`int`):
@@ -2801,8 +2679,7 @@ class TDLibFunctions:
     async def removeNotificationGroup(
         self, notification_group_id: int = 0, max_notification_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a group of active notifications\. Needs to be called only if the notification group is removed by the current user
+        r"""Removes a group of active notifications\. Needs to be called only if the notification group is removed by the current user
 
         Parameters:
             notification_group_id (:class:`int`):
@@ -2831,8 +2708,7 @@ class TDLibFunctions:
         for_album: bool = False,
         in_message_thread: bool = False,
     ) -> Union["types.Error", "types.MessageLink"]:
-        r"""
-        Returns an HTTPS link to a message in a chat\. Available only if messageProperties\.can\_get\_link, or if messageProperties\.can\_get\_media\_timestamp\_links and a media timestamp link is generated\. This is an offline request
+        r"""Returns an HTTPS link to a message in a chat\. Available only if messageProperties\.can\_get\_link, or if messageProperties\.can\_get\_media\_timestamp\_links and a media timestamp link is generated\. This is an offline request
 
         Parameters:
             chat_id (:class:`int`):
@@ -2868,8 +2744,7 @@ class TDLibFunctions:
     async def getMessageEmbeddingCode(
         self, chat_id: int = 0, message_id: int = 0, for_album: bool = False
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns an HTML code for embedding the message\. Available only if messageProperties\.can\_get\_embedding\_code
+        r"""Returns an HTML code for embedding the message\. Available only if messageProperties\.can\_get\_embedding\_code
 
         Parameters:
             chat_id (:class:`int`):
@@ -2897,8 +2772,7 @@ class TDLibFunctions:
     async def getMessageLinkInfo(
         self, url: str = ""
     ) -> Union["types.Error", "types.MessageLinkInfo"]:
-        r"""
-        Returns information about a public or private message link\. Can be called for any internal link of the type internalLinkTypeMessage
+        r"""Returns information about a public or private message link\. Can be called for any internal link of the type internalLinkTypeMessage
 
         Parameters:
             url (:class:`str`):
@@ -2913,8 +2787,7 @@ class TDLibFunctions:
     async def translateText(
         self, text: "types.FormattedText" = None, to_language_code: str = ""
     ) -> Union["types.Error", "types.FormattedText"]:
-        r"""
-        Translates a text to the given language\. If the current user is a Telegram Premium user, then text formatting is preserved
+        r"""Translates a text to the given language\. If the current user is a Telegram Premium user, then text formatting is preserved
 
         Parameters:
             text (:class:`"types.FormattedText"`):
@@ -2938,8 +2811,7 @@ class TDLibFunctions:
     async def translateMessageText(
         self, chat_id: int = 0, message_id: int = 0, to_language_code: str = ""
     ) -> Union["types.Error", "types.FormattedText"]:
-        r"""
-        Extracts text or caption of the given message and translates it to the given language\. If the current user is a Telegram Premium user, then text formatting is preserved
+        r"""Extracts text or caption of the given message and translates it to the given language\. If the current user is a Telegram Premium user, then text formatting is preserved
 
         Parameters:
             chat_id (:class:`int`):
@@ -2967,8 +2839,7 @@ class TDLibFunctions:
     async def recognizeSpeech(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Recognizes speech in a video note or a voice note message
+        r"""Recognizes speech in a video note or a voice note message
 
         Parameters:
             chat_id (:class:`int`):
@@ -2988,8 +2859,7 @@ class TDLibFunctions:
     async def rateSpeechRecognition(
         self, chat_id: int = 0, message_id: int = 0, is_good: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Rates recognized speech in a video note or a voice note message
+        r"""Rates recognized speech in a video note or a voice note message
 
         Parameters:
             chat_id (:class:`int`):
@@ -3017,8 +2887,7 @@ class TDLibFunctions:
     async def getChatAvailableMessageSenders(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.ChatMessageSenders"]:
-        r"""
-        Returns the list of message sender identifiers, which can be used to send messages in a chat
+        r"""Returns the list of message sender identifiers, which can be used to send messages in a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -3035,8 +2904,7 @@ class TDLibFunctions:
     async def setChatMessageSender(
         self, chat_id: int = 0, message_sender_id: "types.MessageSender" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Selects a message sender to send messages in a chat
+        r"""Selects a message sender to send messages in a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -3066,8 +2934,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Sends a message\. Returns the sent message
+        r"""Sends a message\. Returns the sent message
 
         Parameters:
             chat_id (:class:`int`):
@@ -3112,8 +2979,7 @@ class TDLibFunctions:
         options: "types.MessageSendOptions" = None,
         input_message_contents: List["types.InputMessageContent"] = None,
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Sends 2\-10 messages grouped together into an album\. Currently, only audio, document, photo and video messages can be grouped into an album\. Documents and audio files can be only grouped in an album with messages of the same type\. Returns sent messages
+        r"""Sends 2\-10 messages grouped together into an album\. Currently, only audio, document, photo and video messages can be grouped into an album\. Documents and audio files can be only grouped in an album with messages of the same type\. Returns sent messages
 
         Parameters:
             chat_id (:class:`int`):
@@ -3149,8 +3015,7 @@ class TDLibFunctions:
     async def sendBotStartMessage(
         self, bot_user_id: int = 0, chat_id: int = 0, parameter: str = ""
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Invites a bot to a chat \(if it is not yet a member\) and sends it the /start command; requires can\_invite\_users member right\. Bots can't be invited to a private chat other than the chat with the bot\. Bots can't be invited to channels \(although they can be added as admins\) and secret chats\. Returns the sent message
+        r"""Invites a bot to a chat \(if it is not yet a member\) and sends it the /start command; requires can\_invite\_users member right\. Bots can't be invited to a private chat other than the chat with the bot\. Bots can't be invited to channels \(although they can be added as admins\) and secret chats\. Returns the sent message
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -3185,8 +3050,7 @@ class TDLibFunctions:
         result_id: str = "",
         hide_via_bot: bool = False,
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Sends the result of an inline query as a message\. Returns the sent message\. Always clears a chat draft message
+        r"""Sends the result of an inline query as a message\. Returns the sent message\. Always clears a chat draft message
 
         Parameters:
             chat_id (:class:`int`):
@@ -3237,8 +3101,7 @@ class TDLibFunctions:
         send_copy: bool = False,
         remove_caption: bool = False,
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Forwards previously sent messages\. Returns the forwarded messages in the same order as the message identifiers passed in message\_ids\. If a message can't be forwarded, null will be returned instead of the message
+        r"""Forwards previously sent messages\. Returns the forwarded messages in the same order as the message identifiers passed in message\_ids\. If a message can't be forwarded, null will be returned instead of the message
 
         Parameters:
             chat_id (:class:`int`):
@@ -3282,8 +3145,7 @@ class TDLibFunctions:
     async def sendQuickReplyShortcutMessages(
         self, chat_id: int = 0, shortcut_id: int = 0, sending_id: int = 0
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Sends messages from a quick reply shortcut\. Requires Telegram Business subscription
+        r"""Sends messages from a quick reply shortcut\. Requires Telegram Business subscription
 
         Parameters:
             chat_id (:class:`int`):
@@ -3314,8 +3176,7 @@ class TDLibFunctions:
         message_ids: List[int] = None,
         quote: "types.InputTextQuote" = None,
     ) -> Union["types.Error", "types.Messages"]:
-        r"""
-        Resends messages which failed to send\. Can be called only for messages for which messageSendingStateFailed\.can\_retry is true and after specified in messageSendingStateFailed\.retry\_after time passed\. If a message is re\-sent, the corresponding failed to send message is deleted\. Returns the sent messages in the same order as the message identifiers passed in message\_ids\. If a message can't be re\-sent, null will be returned instead of the message
+        r"""Resends messages which failed to send\. Can be called only for messages for which messageSendingStateFailed\.can\_retry is true and after specified in messageSendingStateFailed\.retry\_after time passed\. If a message is re\-sent, the corresponding failed to send message is deleted\. Returns the sent messages in the same order as the message identifiers passed in message\_ids\. If a message can't be re\-sent, null will be returned instead of the message
 
         Parameters:
             chat_id (:class:`int`):
@@ -3348,8 +3209,7 @@ class TDLibFunctions:
         disable_notification: bool = False,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Adds a local message to a chat\. The message is persistent across application restarts only if the message database is used\. Returns the added message
+        r"""Adds a local message to a chat\. The message is persistent across application restarts only if the message database is used\. Returns the added message
 
         Parameters:
             chat_id (:class:`int`):
@@ -3385,8 +3245,7 @@ class TDLibFunctions:
     async def deleteMessages(
         self, chat_id: int = 0, message_ids: List[int] = None, revoke: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes messages
+        r"""Deletes messages
 
         Parameters:
             chat_id (:class:`int`):
@@ -3414,8 +3273,7 @@ class TDLibFunctions:
     async def deleteChatMessagesBySender(
         self, chat_id: int = 0, sender_id: "types.MessageSender" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes all messages sent by the specified message sender in a chat\. Supported only for supergroups; requires can\_delete\_messages administrator privileges
+        r"""Deletes all messages sent by the specified message sender in a chat\. Supported only for supergroups; requires can\_delete\_messages administrator privileges
 
         Parameters:
             chat_id (:class:`int`):
@@ -3443,8 +3301,7 @@ class TDLibFunctions:
         max_date: int = 0,
         revoke: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes all messages between the specified dates in a chat\. Supported only for private chats and basic groups\. Messages sent in the last 30 seconds will not be deleted
+        r"""Deletes all messages between the specified dates in a chat\. Supported only for private chats and basic groups\. Messages sent in the last 30 seconds will not be deleted
 
         Parameters:
             chat_id (:class:`int`):
@@ -3480,8 +3337,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side
+        r"""Edits the text of a message \(or a text of a game message\)\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
@@ -3520,8 +3376,7 @@ class TDLibFunctions:
         heading: int = 0,
         proximity_alert_radius: int = 0,
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side
+        r"""Edits the message content of a live location\. Messages can be edited for a limited period of time specified in the live location\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
@@ -3569,8 +3424,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side
+        r"""Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
@@ -3607,8 +3461,7 @@ class TDLibFunctions:
         caption: "types.FormattedText" = None,
         show_caption_above_media: bool = False,
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Edits the message content caption\. Returns the edited message after the edit is completed on the server side
+        r"""Edits the message content caption\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
@@ -3647,8 +3500,7 @@ class TDLibFunctions:
         message_id: int = 0,
         reply_markup: "types.ReplyMarkup" = None,
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side
+        r"""Edits the message reply markup; for bots only\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
@@ -3679,8 +3531,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Edits the text of an inline text or game message sent via a bot; for bots only
+        r"""Edits the text of an inline text or game message sent via a bot; for bots only
 
         Parameters:
             inline_message_id (:class:`str`):
@@ -3714,8 +3565,7 @@ class TDLibFunctions:
         heading: int = 0,
         proximity_alert_radius: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Edits the content of a live location in an inline message sent via a bot; for bots only
+        r"""Edits the content of a live location in an inline message sent via a bot; for bots only
 
         Parameters:
             inline_message_id (:class:`str`):
@@ -3758,8 +3608,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Edits the content of a message with an animation, an audio, a document, a photo or a video in an inline message sent via a bot; for bots only
+        r"""Edits the content of a message with an animation, an audio, a document, a photo or a video in an inline message sent via a bot; for bots only
 
         Parameters:
             inline_message_id (:class:`str`):
@@ -3791,8 +3640,7 @@ class TDLibFunctions:
         caption: "types.FormattedText" = None,
         show_caption_above_media: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Edits the caption of an inline message sent via a bot; for bots only
+        r"""Edits the caption of an inline message sent via a bot; for bots only
 
         Parameters:
             inline_message_id (:class:`str`):
@@ -3824,8 +3672,7 @@ class TDLibFunctions:
     async def editInlineMessageReplyMarkup(
         self, inline_message_id: str = "", reply_markup: "types.ReplyMarkup" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Edits the reply markup of an inline message sent via a bot; for bots only
+        r"""Edits the reply markup of an inline message sent via a bot; for bots only
 
         Parameters:
             inline_message_id (:class:`str`):
@@ -3852,8 +3699,7 @@ class TDLibFunctions:
         message_id: int = 0,
         scheduling_state: "types.MessageSchedulingState" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Edits the time when a scheduled message will be sent\. Scheduling state of all messages in the same album or forwarded together with the message will be also changed
+        r"""Edits the time when a scheduled message will be sent\. Scheduling state of all messages in the same album or forwarded together with the message will be also changed
 
         Parameters:
             chat_id (:class:`int`):
@@ -3881,8 +3727,7 @@ class TDLibFunctions:
     async def setMessageFactCheck(
         self, chat_id: int = 0, message_id: int = 0, text: "types.FormattedText" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the fact\-check of a message\. Can be only used if messageProperties\.can\_set\_fact\_check \=\= true
+        r"""Changes the fact\-check of a message\. Can be only used if messageProperties\.can\_set\_fact\_check \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -3918,8 +3763,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.BusinessMessage"]:
-        r"""
-        Sends a message on behalf of a business account; for bots only\. Returns the message after it was sent
+        r"""Sends a message on behalf of a business account; for bots only\. Returns the message after it was sent
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -3974,8 +3818,7 @@ class TDLibFunctions:
         effect_id: int = 0,
         input_message_contents: List["types.InputMessageContent"] = None,
     ) -> Union["types.Error", "types.BusinessMessages"]:
-        r"""
-        Sends 2\-10 messages grouped together into an album on behalf of a business account; for bots only\. Currently, only audio, document, photo and video messages can be grouped into an album\. Documents and audio files can be only grouped in an album with messages of the same type\. Returns sent messages
+        r"""Sends 2\-10 messages grouped together into an album on behalf of a business account; for bots only\. Currently, only audio, document, photo and video messages can be grouped into an album\. Documents and audio files can be only grouped in an album with messages of the same type\. Returns sent messages
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -4024,8 +3867,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.BusinessMessage"]:
-        r"""
-        Edits the text of a text or game message sent on behalf of a business account; for bots only
+        r"""Edits the text of a text or game message sent on behalf of a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -4069,8 +3911,7 @@ class TDLibFunctions:
         heading: int = 0,
         proximity_alert_radius: int = 0,
     ) -> Union["types.Error", "types.BusinessMessage"]:
-        r"""
-        Edits the content of a live location in a message sent on behalf of a business account; for bots only
+        r"""Edits the content of a live location in a message sent on behalf of a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -4123,8 +3964,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.BusinessMessage"]:
-        r"""
-        Edits the content of a message with an animation, an audio, a document, a photo or a video in a message sent on behalf of a business account; for bots only
+        r"""Edits the content of a message with an animation, an audio, a document, a photo or a video in a message sent on behalf of a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -4166,8 +4006,7 @@ class TDLibFunctions:
         caption: "types.FormattedText" = None,
         show_caption_above_media: bool = False,
     ) -> Union["types.Error", "types.BusinessMessage"]:
-        r"""
-        Edits the caption of a message sent on behalf of a business account; for bots only
+        r"""Edits the caption of a message sent on behalf of a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -4211,8 +4050,7 @@ class TDLibFunctions:
         message_id: int = 0,
         reply_markup: "types.ReplyMarkup" = None,
     ) -> Union["types.Error", "types.BusinessMessage"]:
-        r"""
-        Edits the reply markup of a message sent on behalf of a business account; for bots only
+        r"""Edits the reply markup of a message sent on behalf of a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -4248,8 +4086,7 @@ class TDLibFunctions:
         message_id: int = 0,
         reply_markup: "types.ReplyMarkup" = None,
     ) -> Union["types.Error", "types.BusinessMessage"]:
-        r"""
-        Stops a poll sent on behalf of a business account; for bots only
+        r"""Stops a poll sent on behalf of a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -4285,8 +4122,7 @@ class TDLibFunctions:
         message_id: int = 0,
         is_pinned: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Pins or unpins a message sent on behalf of a business account; for bots only
+        r"""Pins or unpins a message sent on behalf of a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -4318,8 +4154,7 @@ class TDLibFunctions:
     async def checkQuickReplyShortcutName(
         self, name: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks validness of a name for a quick reply shortcut\. Can be called synchronously
+        r"""Checks validness of a name for a quick reply shortcut\. Can be called synchronously
 
         Parameters:
             name (:class:`str`):
@@ -4332,8 +4167,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "checkQuickReplyShortcutName", "name": name})
 
     async def loadQuickReplyShortcuts(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Loads quick reply shortcuts created by the current user\. The loaded data will be sent through updateQuickReplyShortcut and updateQuickReplyShortcuts
+        r"""Loads quick reply shortcuts created by the current user\. The loaded data will be sent through updateQuickReplyShortcut and updateQuickReplyShortcuts
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -4348,8 +4182,7 @@ class TDLibFunctions:
     async def setQuickReplyShortcutName(
         self, shortcut_id: int = 0, name: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes name of a quick reply shortcut
+        r"""Changes name of a quick reply shortcut
 
         Parameters:
             shortcut_id (:class:`int`):
@@ -4373,8 +4206,7 @@ class TDLibFunctions:
     async def deleteQuickReplyShortcut(
         self, shortcut_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes a quick reply shortcut
+        r"""Deletes a quick reply shortcut
 
         Parameters:
             shortcut_id (:class:`int`):
@@ -4391,8 +4223,7 @@ class TDLibFunctions:
     async def reorderQuickReplyShortcuts(
         self, shortcut_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the order of quick reply shortcuts
+        r"""Changes the order of quick reply shortcuts
 
         Parameters:
             shortcut_ids (:class:`List[int]`):
@@ -4409,8 +4240,7 @@ class TDLibFunctions:
     async def loadQuickReplyShortcutMessages(
         self, shortcut_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Loads quick reply messages that can be sent by a given quick reply shortcut\. The loaded messages will be sent through updateQuickReplyShortcutMessages
+        r"""Loads quick reply messages that can be sent by a given quick reply shortcut\. The loaded messages will be sent through updateQuickReplyShortcutMessages
 
         Parameters:
             shortcut_id (:class:`int`):
@@ -4427,8 +4257,7 @@ class TDLibFunctions:
     async def deleteQuickReplyShortcutMessages(
         self, shortcut_id: int = 0, message_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes specified quick reply messages
+        r"""Deletes specified quick reply messages
 
         Parameters:
             shortcut_id (:class:`int`):
@@ -4455,8 +4284,7 @@ class TDLibFunctions:
         reply_to_message_id: int = 0,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.QuickReplyMessage"]:
-        r"""
-        Adds a message to a quick reply shortcut\. If shortcut doesn't exist and there are less than getOption\(\"quick\_reply\_shortcut\_count\_max\"\) shortcuts, then a new shortcut is created\. The shortcut must not contain more than getOption\(\"quick\_reply\_shortcut\_message\_count\_max\"\) messages after adding the new message\. Returns the added message
+        r"""Adds a message to a quick reply shortcut\. If shortcut doesn't exist and there are less than getOption\(\"quick\_reply\_shortcut\_count\_max\"\) shortcuts, then a new shortcut is created\. The shortcut must not contain more than getOption\(\"quick\_reply\_shortcut\_message\_count\_max\"\) messages after adding the new message\. Returns the added message
 
         Parameters:
             shortcut_name (:class:`str`):
@@ -4489,8 +4317,7 @@ class TDLibFunctions:
         result_id: str = "",
         hide_via_bot: bool = False,
     ) -> Union["types.Error", "types.QuickReplyMessage"]:
-        r"""
-        Adds a message to a quick reply shortcut via inline bot\. If shortcut doesn't exist and there are less than getOption\(\"quick\_reply\_shortcut\_count\_max\"\) shortcuts, then a new shortcut is created\. The shortcut must not contain more than getOption\(\"quick\_reply\_shortcut\_message\_count\_max\"\) messages after adding the new message\. Returns the added message
+        r"""Adds a message to a quick reply shortcut via inline bot\. If shortcut doesn't exist and there are less than getOption\(\"quick\_reply\_shortcut\_count\_max\"\) shortcuts, then a new shortcut is created\. The shortcut must not contain more than getOption\(\"quick\_reply\_shortcut\_message\_count\_max\"\) messages after adding the new message\. Returns the added message
 
         Parameters:
             shortcut_name (:class:`str`):
@@ -4529,8 +4356,7 @@ class TDLibFunctions:
         reply_to_message_id: int = 0,
         input_message_contents: List["types.InputMessageContent"] = None,
     ) -> Union["types.Error", "types.QuickReplyMessages"]:
-        r"""
-        Adds 2\-10 messages grouped together into an album to a quick reply shortcut\. Currently, only audio, document, photo and video messages can be grouped into an album\. Documents and audio files can be only grouped in an album with messages of the same type\. Returns sent messages
+        r"""Adds 2\-10 messages grouped together into an album to a quick reply shortcut\. Currently, only audio, document, photo and video messages can be grouped into an album\. Documents and audio files can be only grouped in an album with messages of the same type\. Returns sent messages
 
         Parameters:
             shortcut_name (:class:`str`):
@@ -4558,8 +4384,7 @@ class TDLibFunctions:
     async def readdQuickReplyShortcutMessages(
         self, shortcut_name: str = "", message_ids: List[int] = None
     ) -> Union["types.Error", "types.QuickReplyMessages"]:
-        r"""
-        Readds quick reply messages which failed to add\. Can be called only for messages for which messageSendingStateFailed\.can\_retry is true and after specified in messageSendingStateFailed\.retry\_after time passed\. If a message is readded, the corresponding failed to send message is deleted\. Returns the sent messages in the same order as the message identifiers passed in message\_ids\. If a message can't be readded, null will be returned instead of the message
+        r"""Readds quick reply messages which failed to add\. Can be called only for messages for which messageSendingStateFailed\.can\_retry is true and after specified in messageSendingStateFailed\.retry\_after time passed\. If a message is readded, the corresponding failed to send message is deleted\. Returns the sent messages in the same order as the message identifiers passed in message\_ids\. If a message can't be readded, null will be returned instead of the message
 
         Parameters:
             shortcut_name (:class:`str`):
@@ -4586,8 +4411,7 @@ class TDLibFunctions:
         message_id: int = 0,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Asynchronously edits the text, media or caption of a quick reply message\. Use quickReplyMessage\.can\_be\_edited to check whether a message can be edited\. Text message can be edited only to a text message\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa
+        r"""Asynchronously edits the text, media or caption of a quick reply message\. Use quickReplyMessage\.can\_be\_edited to check whether a message can be edited\. Text message can be edited only to a text message\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa
 
         Parameters:
             shortcut_id (:class:`int`):
@@ -4613,8 +4437,7 @@ class TDLibFunctions:
         )
 
     async def getForumTopicDefaultIcons(self) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns the list of custom emoji, which can be used as forum topic icon by all users
+        r"""Returns the list of custom emoji, which can be used as forum topic icon by all users
 
         Returns:
             :class:`~pytdbot.types.Stickers`
@@ -4629,8 +4452,7 @@ class TDLibFunctions:
     async def createForumTopic(
         self, chat_id: int = 0, name: str = "", icon: "types.ForumTopicIcon" = None
     ) -> Union["types.Error", "types.ForumTopicInfo"]:
-        r"""
-        Creates a topic in a forum supergroup chat; requires can\_manage\_topics administrator or can\_create\_topics member right in the supergroup
+        r"""Creates a topic in a forum supergroup chat; requires can\_manage\_topics administrator or can\_create\_topics member right in the supergroup
 
         Parameters:
             chat_id (:class:`int`):
@@ -4663,8 +4485,7 @@ class TDLibFunctions:
         edit_icon_custom_emoji: bool = False,
         icon_custom_emoji_id: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Edits title and icon of a topic in a forum supergroup chat; requires can\_manage\_topics right in the supergroup unless the user is creator of the topic
+        r"""Edits title and icon of a topic in a forum supergroup chat; requires can\_manage\_topics right in the supergroup unless the user is creator of the topic
 
         Parameters:
             chat_id (:class:`int`):
@@ -4700,8 +4521,7 @@ class TDLibFunctions:
     async def getForumTopic(
         self, chat_id: int = 0, message_thread_id: int = 0
     ) -> Union["types.Error", "types.ForumTopic"]:
-        r"""
-        Returns information about a forum topic
+        r"""Returns information about a forum topic
 
         Parameters:
             chat_id (:class:`int`):
@@ -4725,8 +4545,7 @@ class TDLibFunctions:
     async def getForumTopicLink(
         self, chat_id: int = 0, message_thread_id: int = 0
     ) -> Union["types.Error", "types.MessageLink"]:
-        r"""
-        Returns an HTTPS link to a topic in a forum chat\. This is an offline request
+        r"""Returns an HTTPS link to a topic in a forum chat\. This is an offline request
 
         Parameters:
             chat_id (:class:`int`):
@@ -4756,8 +4575,7 @@ class TDLibFunctions:
         offset_message_thread_id: int = 0,
         limit: int = 0,
     ) -> Union["types.Error", "types.ForumTopics"]:
-        r"""
-        Returns found forum topics in a forum chat\. This is a temporary method for getting information about topic list from the server
+        r"""Returns found forum topics in a forum chat\. This is a temporary method for getting information about topic list from the server
 
         Parameters:
             chat_id (:class:`int`):
@@ -4800,8 +4618,7 @@ class TDLibFunctions:
         message_thread_id: int = 0,
         notification_settings: "types.ChatNotificationSettings" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the notification settings of a forum topic
+        r"""Changes the notification settings of a forum topic
 
         Parameters:
             chat_id (:class:`int`):
@@ -4829,8 +4646,7 @@ class TDLibFunctions:
     async def toggleForumTopicIsClosed(
         self, chat_id: int = 0, message_thread_id: int = 0, is_closed: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether a topic is closed in a forum supergroup chat; requires can\_manage\_topics right in the supergroup unless the user is creator of the topic
+        r"""Toggles whether a topic is closed in a forum supergroup chat; requires can\_manage\_topics right in the supergroup unless the user is creator of the topic
 
         Parameters:
             chat_id (:class:`int`):
@@ -4858,8 +4674,7 @@ class TDLibFunctions:
     async def toggleGeneralForumTopicIsHidden(
         self, chat_id: int = 0, is_hidden: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether a General topic is hidden in a forum supergroup chat; requires can\_manage\_topics right in the supergroup
+        r"""Toggles whether a General topic is hidden in a forum supergroup chat; requires can\_manage\_topics right in the supergroup
 
         Parameters:
             chat_id (:class:`int`):
@@ -4883,8 +4698,7 @@ class TDLibFunctions:
     async def toggleForumTopicIsPinned(
         self, chat_id: int = 0, message_thread_id: int = 0, is_pinned: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the pinned state of a forum topic; requires can\_manage\_topics right in the supergroup\. There can be up to getOption\(\"pinned\_forum\_topic\_count\_max\"\) pinned forum topics
+        r"""Changes the pinned state of a forum topic; requires can\_manage\_topics right in the supergroup\. There can be up to getOption\(\"pinned\_forum\_topic\_count\_max\"\) pinned forum topics
 
         Parameters:
             chat_id (:class:`int`):
@@ -4912,8 +4726,7 @@ class TDLibFunctions:
     async def setPinnedForumTopics(
         self, chat_id: int = 0, message_thread_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the order of pinned forum topics; requires can\_manage\_topics right in the supergroup
+        r"""Changes the order of pinned forum topics; requires can\_manage\_topics right in the supergroup
 
         Parameters:
             chat_id (:class:`int`):
@@ -4937,8 +4750,7 @@ class TDLibFunctions:
     async def deleteForumTopic(
         self, chat_id: int = 0, message_thread_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes all messages in a forum topic; requires can\_delete\_messages administrator right in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages
+        r"""Deletes all messages in a forum topic; requires can\_delete\_messages administrator right in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages
 
         Parameters:
             chat_id (:class:`int`):
@@ -4962,8 +4774,7 @@ class TDLibFunctions:
     async def getEmojiReaction(
         self, emoji: str = ""
     ) -> Union["types.Error", "types.EmojiReaction"]:
-        r"""
-        Returns information about an emoji reaction\. Returns a 404 error if the reaction is not found
+        r"""Returns information about an emoji reaction\. Returns a 404 error if the reaction is not found
 
         Parameters:
             emoji (:class:`str`):
@@ -4978,8 +4789,7 @@ class TDLibFunctions:
     async def getCustomEmojiReactionAnimations(
         self,
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns TGS stickers with generic animations for custom emoji reactions
+        r"""Returns TGS stickers with generic animations for custom emoji reactions
 
         Returns:
             :class:`~pytdbot.types.Stickers`
@@ -4994,8 +4804,7 @@ class TDLibFunctions:
     async def getMessageAvailableReactions(
         self, chat_id: int = 0, message_id: int = 0, row_size: int = 0
     ) -> Union["types.Error", "types.AvailableReactions"]:
-        r"""
-        Returns reactions, which can be added to a message\. The list can change after updateActiveEmojiReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message
+        r"""Returns reactions, which can be added to a message\. The list can change after updateActiveEmojiReactions, updateChatAvailableReactions for the chat, or updateMessageInteractionInfo for the message
 
         Parameters:
             chat_id (:class:`int`):
@@ -5021,8 +4830,7 @@ class TDLibFunctions:
         )
 
     async def clearRecentReactions(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Clears the list of recently used reactions
+        r"""Clears the list of recently used reactions
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5042,8 +4850,7 @@ class TDLibFunctions:
         is_big: bool = False,
         update_recent_reactions: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds a reaction or a tag to a message\. Use getMessageAvailableReactions to receive the list of available reactions for the message
+        r"""Adds a reaction or a tag to a message\. Use getMessageAvailableReactions to receive the list of available reactions for the message
 
         Parameters:
             chat_id (:class:`int`):
@@ -5082,8 +4889,7 @@ class TDLibFunctions:
         message_id: int = 0,
         reaction_type: "types.ReactionType" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a reaction from a message\. A chosen reaction can always be removed
+        r"""Removes a reaction from a message\. A chosen reaction can always be removed
 
         Parameters:
             chat_id (:class:`int`):
@@ -5116,8 +4922,7 @@ class TDLibFunctions:
         use_default_is_anonymous: bool = False,
         is_anonymous: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds the paid message reaction to a message\. Use getMessageAvailableReactions to check whether the reaction is available for the message
+        r"""Adds the paid message reaction to a message\. Use getMessageAvailableReactions to check whether the reaction is available for the message
 
         Parameters:
             chat_id (:class:`int`):
@@ -5153,8 +4958,7 @@ class TDLibFunctions:
     async def commitPendingPaidMessageReactions(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Applies all pending paid reactions on a message
+        r"""Applies all pending paid reactions on a message
 
         Parameters:
             chat_id (:class:`int`):
@@ -5178,8 +4982,7 @@ class TDLibFunctions:
     async def removePendingPaidMessageReactions(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes all pending paid reactions on a message
+        r"""Removes all pending paid reactions on a message
 
         Parameters:
             chat_id (:class:`int`):
@@ -5203,8 +5006,7 @@ class TDLibFunctions:
     async def togglePaidMessageReactionIsAnonymous(
         self, chat_id: int = 0, message_id: int = 0, is_anonymous: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes whether the paid message reaction of the user to a message is anonymous\. The message must have paid reaction added by the user
+        r"""Changes whether the paid message reaction of the user to a message is anonymous\. The message must have paid reaction added by the user
 
         Parameters:
             chat_id (:class:`int`):
@@ -5236,8 +5038,7 @@ class TDLibFunctions:
         reaction_types: List["types.ReactionType"] = None,
         is_big: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets reactions on a message; for bots only
+        r"""Sets reactions on a message; for bots only
 
         Parameters:
             chat_id (:class:`int`):
@@ -5274,8 +5075,7 @@ class TDLibFunctions:
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.AddedReactions"]:
-        r"""
-        Returns reactions added for a message, along with their sender
+        r"""Returns reactions added for a message, along with their sender
 
         Parameters:
             chat_id (:class:`int`):
@@ -5311,8 +5111,7 @@ class TDLibFunctions:
     async def setDefaultReactionType(
         self, reaction_type: "types.ReactionType" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes type of default reaction for the current user
+        r"""Changes type of default reaction for the current user
 
         Parameters:
             reaction_type (:class:`"types.ReactionType"`):
@@ -5329,8 +5128,7 @@ class TDLibFunctions:
     async def getSavedMessagesTags(
         self, saved_messages_topic_id: int = 0
     ) -> Union["types.Error", "types.SavedMessagesTags"]:
-        r"""
-        Returns tags used in Saved Messages or a Saved Messages topic
+        r"""Returns tags used in Saved Messages or a Saved Messages topic
 
         Parameters:
             saved_messages_topic_id (:class:`int`):
@@ -5350,8 +5148,7 @@ class TDLibFunctions:
     async def setSavedMessagesTagLabel(
         self, tag: "types.ReactionType" = None, label: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes label of a Saved Messages tag; for Telegram Premium users only
+        r"""Changes label of a Saved Messages tag; for Telegram Premium users only
 
         Parameters:
             tag (:class:`"types.ReactionType"`):
@@ -5371,8 +5168,7 @@ class TDLibFunctions:
     async def getMessageEffect(
         self, effect_id: int = 0
     ) -> Union["types.Error", "types.MessageEffect"]:
-        r"""
-        Returns information about a message effect\. Returns a 404 error if the effect is not found
+        r"""Returns information about a message effect\. Returns a 404 error if the effect is not found
 
         Parameters:
             effect_id (:class:`int`):
@@ -5390,8 +5186,7 @@ class TDLibFunctions:
         quote: "types.FormattedText" = None,
         quote_position: int = 0,
     ) -> Union["types.Error", "types.FoundPosition"]:
-        r"""
-        Searches for a given quote in a text\. Returns found quote start position in UTF\-16 code units\. Returns a 404 error if the quote is not found\. Can be called synchronously
+        r"""Searches for a given quote in a text\. Returns found quote start position in UTF\-16 code units\. Returns a 404 error if the quote is not found\. Can be called synchronously
 
         Parameters:
             text (:class:`"types.FormattedText"`):
@@ -5419,8 +5214,7 @@ class TDLibFunctions:
     async def getTextEntities(
         self, text: str = ""
     ) -> Union["types.Error", "types.TextEntities"]:
-        r"""
-        Returns all entities \(mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses\) found in the text\. Can be called synchronously
+        r"""Returns all entities \(mentions, hashtags, cashtags, bot commands, bank card numbers, URLs, and email addresses\) found in the text\. Can be called synchronously
 
         Parameters:
             text (:class:`str`):
@@ -5435,8 +5229,7 @@ class TDLibFunctions:
     async def parseTextEntities(
         self, text: str = "", parse_mode: "types.TextParseMode" = None
     ) -> Union["types.Error", "types.FormattedText"]:
-        r"""
-        Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked\-up text\. Can be called synchronously
+        r"""Parses Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities from a marked\-up text\. Can be called synchronously
 
         Parameters:
             text (:class:`str`):
@@ -5456,8 +5249,7 @@ class TDLibFunctions:
     async def parseMarkdown(
         self, text: "types.FormattedText" = None
     ) -> Union["types.Error", "types.FormattedText"]:
-        r"""
-        Parses Markdown entities in a human\-friendly format, ignoring markup errors\. Can be called synchronously
+        r"""Parses Markdown entities in a human\-friendly format, ignoring markup errors\. Can be called synchronously
 
         Parameters:
             text (:class:`"types.FormattedText"`):
@@ -5472,8 +5264,7 @@ class TDLibFunctions:
     async def getMarkdownText(
         self, text: "types.FormattedText" = None
     ) -> Union["types.Error", "types.FormattedText"]:
-        r"""
-        Replaces text entities with Markdown formatting in a human\-friendly format\. Entities that can't be represented in Markdown unambiguously are kept as is\. Can be called synchronously
+        r"""Replaces text entities with Markdown formatting in a human\-friendly format\. Entities that can't be represented in Markdown unambiguously are kept as is\. Can be called synchronously
 
         Parameters:
             text (:class:`"types.FormattedText"`):
@@ -5488,8 +5279,7 @@ class TDLibFunctions:
     async def getCountryFlagEmoji(
         self, country_code: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns an emoji for the given country\. Returns an empty string on failure\. Can be called synchronously
+        r"""Returns an emoji for the given country\. Returns an empty string on failure\. Can be called synchronously
 
         Parameters:
             country_code (:class:`str`):
@@ -5506,8 +5296,7 @@ class TDLibFunctions:
     async def getFileMimeType(
         self, file_name: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns the MIME type of a file, guessed by its extension\. Returns an empty string on failure\. Can be called synchronously
+        r"""Returns the MIME type of a file, guessed by its extension\. Returns an empty string on failure\. Can be called synchronously
 
         Parameters:
             file_name (:class:`str`):
@@ -5522,8 +5311,7 @@ class TDLibFunctions:
     async def getFileExtension(
         self, mime_type: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns the extension of a file, guessed by its MIME type\. Returns an empty string on failure\. Can be called synchronously
+        r"""Returns the extension of a file, guessed by its MIME type\. Returns an empty string on failure\. Can be called synchronously
 
         Parameters:
             mime_type (:class:`str`):
@@ -5538,8 +5326,7 @@ class TDLibFunctions:
     async def cleanFileName(
         self, file_name: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Removes potentially dangerous characters from the name of a file\. Returns an empty string on failure\. Can be called synchronously
+        r"""Removes potentially dangerous characters from the name of a file\. Returns an empty string on failure\. Can be called synchronously
 
         Parameters:
             file_name (:class:`str`):
@@ -5558,8 +5345,7 @@ class TDLibFunctions:
         language_pack_id: str = "",
         key: str = "",
     ) -> Union["types.Error", "types.LanguagePackStringValue"]:
-        r"""
-        Returns a string stored in the local database from the specified localization target and language pack by its key\. Returns a 404 error if the string is not found\. Can be called synchronously
+        r"""Returns a string stored in the local database from the specified localization target and language pack by its key\. Returns a 404 error if the string is not found\. Can be called synchronously
 
         Parameters:
             language_pack_database_path (:class:`str`):
@@ -5591,8 +5377,7 @@ class TDLibFunctions:
     async def getJsonValue(
         self, json: str = ""
     ) -> Union["types.Error", "types.JsonValue"]:
-        r"""
-        Converts a JSON\-serialized string to corresponding JsonValue object\. Can be called synchronously
+        r"""Converts a JSON\-serialized string to corresponding JsonValue object\. Can be called synchronously
 
         Parameters:
             json (:class:`str`):
@@ -5607,8 +5392,7 @@ class TDLibFunctions:
     async def getJsonString(
         self, json_value: "types.JsonValue" = None
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Converts a JsonValue object to corresponding JSON\-serialized string\. Can be called synchronously
+        r"""Converts a JsonValue object to corresponding JSON\-serialized string\. Can be called synchronously
 
         Parameters:
             json_value (:class:`"types.JsonValue"`):
@@ -5623,8 +5407,7 @@ class TDLibFunctions:
     async def getThemeParametersJsonString(
         self, theme: "types.ThemeParameters" = None
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Converts a themeParameters object to corresponding JSON\-serialized string\. Can be called synchronously
+        r"""Converts a themeParameters object to corresponding JSON\-serialized string\. Can be called synchronously
 
         Parameters:
             theme (:class:`"types.ThemeParameters"`):
@@ -5641,8 +5424,7 @@ class TDLibFunctions:
     async def setPollAnswer(
         self, chat_id: int = 0, message_id: int = 0, option_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the user answer to a poll\. A poll in quiz mode can be answered only once
+        r"""Changes the user answer to a poll\. A poll in quiz mode can be answered only once
 
         Parameters:
             chat_id (:class:`int`):
@@ -5675,8 +5457,7 @@ class TDLibFunctions:
         offset: int = 0,
         limit: int = 0,
     ) -> Union["types.Error", "types.MessageSenders"]:
-        r"""
-        Returns message senders voted for the specified option in a non\-anonymous polls\. For optimal performance, the number of returned users is chosen by TDLib
+        r"""Returns message senders voted for the specified option in a non\-anonymous polls\. For optimal performance, the number of returned users is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -5715,8 +5496,7 @@ class TDLibFunctions:
         message_id: int = 0,
         reply_markup: "types.ReplyMarkup" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Stops a poll
+        r"""Stops a poll
 
         Parameters:
             chat_id (:class:`int`):
@@ -5744,8 +5524,7 @@ class TDLibFunctions:
     async def hideSuggestedAction(
         self, action: "types.SuggestedAction" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Hides a suggested action
+        r"""Hides a suggested action
 
         Parameters:
             action (:class:`"types.SuggestedAction"`):
@@ -5758,8 +5537,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "hideSuggestedAction", "action": action})
 
     async def hideContactCloseBirthdays(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Hides the list of contacts that have close birthdays for 24 hours
+        r"""Hides the list of contacts that have close birthdays for 24 hours
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5774,8 +5552,7 @@ class TDLibFunctions:
     async def getBusinessConnection(
         self, connection_id: str = ""
     ) -> Union["types.Error", "types.BusinessConnection"]:
-        r"""
-        Returns information about a business connection by its identifier; for bots only
+        r"""Returns information about a business connection by its identifier; for bots only
 
         Parameters:
             connection_id (:class:`str`):
@@ -5792,8 +5569,7 @@ class TDLibFunctions:
     async def getLoginUrlInfo(
         self, chat_id: int = 0, message_id: int = 0, button_id: int = 0
     ) -> Union["types.Error", "types.LoginUrlInfo"]:
-        r"""
-        Returns information about a button of type inlineKeyboardButtonTypeLoginUrl\. The method needs to be called when the user presses the button
+        r"""Returns information about a button of type inlineKeyboardButtonTypeLoginUrl\. The method needs to be called when the user presses the button
 
         Parameters:
             chat_id (:class:`int`):
@@ -5825,8 +5601,7 @@ class TDLibFunctions:
         button_id: int = 0,
         allow_write_access: bool = False,
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns an HTTP URL which can be used to automatically authorize the user on a website after clicking an inline button of type inlineKeyboardButtonTypeLoginUrl\. Use the method getLoginUrlInfo to find whether a prior user confirmation is needed\. If an error is returned, then the button must be handled as an ordinary URL button
+        r"""Returns an HTTP URL which can be used to automatically authorize the user on a website after clicking an inline button of type inlineKeyboardButtonTypeLoginUrl\. Use the method getLoginUrlInfo to find whether a prior user confirmation is needed\. If an error is returned, then the button must be handled as an ordinary URL button
 
         Parameters:
             chat_id (:class:`int`):
@@ -5863,8 +5638,7 @@ class TDLibFunctions:
         shared_user_ids: List[int] = None,
         only_check: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Shares users after pressing a keyboardButtonTypeRequestUsers button with the bot
+        r"""Shares users after pressing a keyboardButtonTypeRequestUsers button with the bot
 
         Parameters:
             chat_id (:class:`int`):
@@ -5905,8 +5679,7 @@ class TDLibFunctions:
         shared_chat_id: int = 0,
         only_check: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Shares a chat after pressing a keyboardButtonTypeRequestChat button with the bot
+        r"""Shares a chat after pressing a keyboardButtonTypeRequestChat button with the bot
 
         Parameters:
             chat_id (:class:`int`):
@@ -5947,8 +5720,7 @@ class TDLibFunctions:
         query: str = "",
         offset: str = "",
     ) -> Union["types.Error", "types.InlineQueryResults"]:
-        r"""
-        Sends an inline query to a bot and returns its results\. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires
+        r"""Sends an inline query to a bot and returns its results\. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -5990,8 +5762,7 @@ class TDLibFunctions:
         cache_time: int = 0,
         next_offset: str = "",
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the result of an inline query; for bots only
+        r"""Sets the result of an inline query; for bots only
 
         Parameters:
             inline_query_id (:class:`int`):
@@ -6031,8 +5802,7 @@ class TDLibFunctions:
     async def getGrossingWebAppBots(
         self, offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.FoundUsers"]:
-        r"""
-        Returns the most grossing Web App bots
+        r"""Returns the most grossing Web App bots
 
         Parameters:
             offset (:class:`str`):
@@ -6052,8 +5822,7 @@ class TDLibFunctions:
     async def searchWebApp(
         self, bot_user_id: int = 0, web_app_short_name: str = ""
     ) -> Union["types.Error", "types.FoundWebApp"]:
-        r"""
-        Returns information about a Web App by its short name\. Returns a 404 error if the Web App is not found
+        r"""Returns information about a Web App by its short name\. Returns a 404 error if the Web App is not found
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -6084,8 +5853,7 @@ class TDLibFunctions:
         application_name: str = "",
         allow_write_access: bool = False,
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns an HTTPS URL of a Web App to open after a link of the type internalLinkTypeWebApp is clicked
+        r"""Returns an HTTPS URL of a Web App to open after a link of the type internalLinkTypeWebApp is clicked
 
         Parameters:
             chat_id (:class:`int`):
@@ -6134,8 +5902,7 @@ class TDLibFunctions:
         theme: "types.ThemeParameters" = None,
         application_name: str = "",
     ) -> Union["types.Error", "types.MainWebApp"]:
-        r"""
-        Returns information needed to open the main Web App of a bot
+        r"""Returns information needed to open the main Web App of a bot
 
         Parameters:
             chat_id (:class:`int`):
@@ -6175,8 +5942,7 @@ class TDLibFunctions:
         theme: "types.ThemeParameters" = None,
         application_name: str = "",
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, or an inlineQueryResultsButtonTypeWebApp button
+        r"""Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, or an inlineQueryResultsButtonTypeWebApp button
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -6208,8 +5974,7 @@ class TDLibFunctions:
     async def sendWebAppData(
         self, bot_user_id: int = 0, button_text: str = "", data: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends data received from a keyboardButtonTypeWebApp Web App to a bot
+        r"""Sends data received from a keyboardButtonTypeWebApp Web App to a bot
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -6244,8 +6009,7 @@ class TDLibFunctions:
         message_thread_id: int = 0,
         reply_to: "types.InputMessageReplyTo" = None,
     ) -> Union["types.Error", "types.WebAppInfo"]:
-        r"""
-        Informs TDLib that a Web App is being opened from the attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button\. For each bot, a confirmation alert about data sent to the bot must be shown once
+        r"""Informs TDLib that a Web App is being opened from the attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button\. For each bot, a confirmation alert about data sent to the bot must be shown once
 
         Parameters:
             chat_id (:class:`int`):
@@ -6289,8 +6053,7 @@ class TDLibFunctions:
     async def closeWebApp(
         self, web_app_launch_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that a previously opened Web App was closed
+        r"""Informs TDLib that a previously opened Web App was closed
 
         Parameters:
             web_app_launch_id (:class:`int`):
@@ -6307,8 +6070,7 @@ class TDLibFunctions:
     async def answerWebAppQuery(
         self, web_app_query_id: str = "", result: "types.InputInlineQueryResult" = None
     ) -> Union["types.Error", "types.SentWebAppMessage"]:
-        r"""
-        Sets the result of interaction with a Web App and sends corresponding message on behalf of the user to the chat from which the query originated; for bots only
+        r"""Sets the result of interaction with a Web App and sends corresponding message on behalf of the user to the chat from which the query originated; for bots only
 
         Parameters:
             web_app_query_id (:class:`str`):
@@ -6335,8 +6097,7 @@ class TDLibFunctions:
         message_id: int = 0,
         payload: "types.CallbackQueryPayload" = None,
     ) -> Union["types.Error", "types.CallbackQueryAnswer"]:
-        r"""
-        Sends a callback query to a bot and returns an answer\. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires
+        r"""Sends a callback query to a bot and returns an answer\. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires
 
         Parameters:
             chat_id (:class:`int`):
@@ -6369,8 +6130,7 @@ class TDLibFunctions:
         url: str = "",
         cache_time: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the result of a callback query; for bots only
+        r"""Sets the result of a callback query; for bots only
 
         Parameters:
             callback_query_id (:class:`int`):
@@ -6409,8 +6169,7 @@ class TDLibFunctions:
         shipping_options: List["types.ShippingOption"] = None,
         error_message: str = "",
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the result of a shipping query; for bots only
+        r"""Sets the result of a shipping query; for bots only
 
         Parameters:
             shipping_query_id (:class:`int`):
@@ -6438,8 +6197,7 @@ class TDLibFunctions:
     async def answerPreCheckoutQuery(
         self, pre_checkout_query_id: int = 0, error_message: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the result of a pre\-checkout query; for bots only
+        r"""Sets the result of a pre\-checkout query; for bots only
 
         Parameters:
             pre_checkout_query_id (:class:`int`):
@@ -6469,8 +6227,7 @@ class TDLibFunctions:
         score: int = 0,
         force: bool = False,
     ) -> Union["types.Error", "types.Message"]:
-        r"""
-        Updates the game score of the specified user in the game; for bots only
+        r"""Updates the game score of the specified user in the game; for bots only
 
         Parameters:
             chat_id (:class:`int`):
@@ -6515,8 +6272,7 @@ class TDLibFunctions:
         score: int = 0,
         force: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Updates the game score of the specified user in a game; for bots only
+        r"""Updates the game score of the specified user in a game; for bots only
 
         Parameters:
             inline_message_id (:class:`str`):
@@ -6552,8 +6308,7 @@ class TDLibFunctions:
     async def getGameHighScores(
         self, chat_id: int = 0, message_id: int = 0, user_id: int = 0
     ) -> Union["types.Error", "types.GameHighScores"]:
-        r"""
-        Returns the high scores for a game and some part of the high score table in the range of the specified user; for bots only
+        r"""Returns the high scores for a game and some part of the high score table in the range of the specified user; for bots only
 
         Parameters:
             chat_id (:class:`int`):
@@ -6581,8 +6336,7 @@ class TDLibFunctions:
     async def getInlineGameHighScores(
         self, inline_message_id: str = "", user_id: int = 0
     ) -> Union["types.Error", "types.GameHighScores"]:
-        r"""
-        Returns game high scores and some part of the high score table in the range of the specified user; for bots only
+        r"""Returns game high scores and some part of the high score table in the range of the specified user; for bots only
 
         Parameters:
             inline_message_id (:class:`str`):
@@ -6606,8 +6360,7 @@ class TDLibFunctions:
     async def deleteChatReplyMarkup(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes the default reply markup from a chat\. Must be called after a one\-time keyboard or a replyMarkupForceReply reply markup has been used\. An updateChatReplyMarkup update will be sent if the reply markup is changed
+        r"""Deletes the default reply markup from a chat\. Must be called after a one\-time keyboard or a replyMarkupForceReply reply markup has been used\. An updateChatReplyMarkup update will be sent if the reply markup is changed
 
         Parameters:
             chat_id (:class:`int`):
@@ -6635,8 +6388,7 @@ class TDLibFunctions:
         business_connection_id: str = "",
         action: "types.ChatAction" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends a notification about user activity in a chat
+        r"""Sends a notification about user activity in a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -6666,8 +6418,7 @@ class TDLibFunctions:
         )
 
     async def openChat(self, chat_id: int = 0) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that the chat is opened by the user\. Many useful activities depend on the chat being opened or closed \(e\.g\., in supergroups and channels all updates are received only for opened chats\)
+        r"""Informs TDLib that the chat is opened by the user\. Many useful activities depend on the chat being opened or closed \(e\.g\., in supergroups and channels all updates are received only for opened chats\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -6680,8 +6431,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "openChat", "chat_id": chat_id})
 
     async def closeChat(self, chat_id: int = 0) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that the chat is closed by the user\. Many useful activities depend on the chat being opened or closed
+        r"""Informs TDLib that the chat is closed by the user\. Many useful activities depend on the chat being opened or closed
 
         Parameters:
             chat_id (:class:`int`):
@@ -6700,8 +6450,7 @@ class TDLibFunctions:
         source: "types.MessageSource" = None,
         force_read: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that messages are being viewed by the user\. Sponsored messages must be marked as viewed only when the entire text of the message is shown on the screen \(excluding the button\)\. Many useful activities depend on whether the messages are currently being viewed or not \(e\.g\., marking messages as read, incrementing a view counter, updating a view counter, removing deleted messages in supergroups and channels\)
+        r"""Informs TDLib that messages are being viewed by the user\. Sponsored messages must be marked as viewed only when the entire text of the message is shown on the screen \(excluding the button\)\. Many useful activities depend on whether the messages are currently being viewed or not \(e\.g\., marking messages as read, incrementing a view counter, updating a view counter, removing deleted messages in supergroups and channels\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -6733,8 +6482,7 @@ class TDLibFunctions:
     async def openMessageContent(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that the message content has been opened \(e\.g\., the user has opened a photo, video, document, location or venue, or has listened to an audio file or voice note message\)\. An updateMessageContentOpened update will be generated if something has changed
+        r"""Informs TDLib that the message content has been opened \(e\.g\., the user has opened a photo, video, document, location or venue, or has listened to an audio file or voice note message\)\. An updateMessageContentOpened update will be generated if something has changed
 
         Parameters:
             chat_id (:class:`int`):
@@ -6758,8 +6506,7 @@ class TDLibFunctions:
     async def clickAnimatedEmojiMessage(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Sticker"]:
-        r"""
-        Informs TDLib that a message with an animated emoji was clicked by the user\. Returns a big animated sticker to be played or a 404 error if usual animation needs to be played
+        r"""Informs TDLib that a message with an animated emoji was clicked by the user\. Returns a big animated sticker to be played or a 404 error if usual animation needs to be played
 
         Parameters:
             chat_id (:class:`int`):
@@ -6783,8 +6530,7 @@ class TDLibFunctions:
     async def getInternalLink(
         self, type: "types.InternalLinkType" = None, is_http: bool = False
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns an HTTPS or a tg: link with the given type\. Can be called before authorization
+        r"""Returns an HTTPS or a tg: link with the given type\. Can be called before authorization
 
         Parameters:
             type (:class:`"types.InternalLinkType"`):
@@ -6804,8 +6550,7 @@ class TDLibFunctions:
     async def getInternalLinkType(
         self, link: str = ""
     ) -> Union["types.Error", "types.InternalLinkType"]:
-        r"""
-        Returns information about the type of internal link\. Returns a 404 error if the link is not internal\. Can be called before authorization
+        r"""Returns information about the type of internal link\. Returns a 404 error if the link is not internal\. Can be called before authorization
 
         Parameters:
             link (:class:`str`):
@@ -6820,8 +6565,7 @@ class TDLibFunctions:
     async def getExternalLinkInfo(
         self, link: str = ""
     ) -> Union["types.Error", "types.LoginUrlInfo"]:
-        r"""
-        Returns information about an action to be done when the current user clicks an external link\. Don't use this method for links from secret chats if link preview is disabled in secret chats
+        r"""Returns information about an action to be done when the current user clicks an external link\. Don't use this method for links from secret chats if link preview is disabled in secret chats
 
         Parameters:
             link (:class:`str`):
@@ -6836,8 +6580,7 @@ class TDLibFunctions:
     async def getExternalLink(
         self, link: str = "", allow_write_access: bool = False
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns an HTTP URL which can be used to automatically authorize the current user on a website after clicking an HTTP link\. Use the method getExternalLinkInfo to find whether a prior user confirmation is needed
+        r"""Returns an HTTP URL which can be used to automatically authorize the current user on a website after clicking an HTTP link\. Use the method getExternalLinkInfo to find whether a prior user confirmation is needed
 
         Parameters:
             link (:class:`str`):
@@ -6861,8 +6604,7 @@ class TDLibFunctions:
     async def readAllChatMentions(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Marks all mentions in a chat as read
+        r"""Marks all mentions in a chat as read
 
         Parameters:
             chat_id (:class:`int`):
@@ -6877,8 +6619,7 @@ class TDLibFunctions:
     async def readAllMessageThreadMentions(
         self, chat_id: int = 0, message_thread_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Marks all mentions in a forum topic as read
+        r"""Marks all mentions in a forum topic as read
 
         Parameters:
             chat_id (:class:`int`):
@@ -6902,8 +6643,7 @@ class TDLibFunctions:
     async def readAllChatReactions(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Marks all reactions in a chat or a forum topic as read
+        r"""Marks all reactions in a chat or a forum topic as read
 
         Parameters:
             chat_id (:class:`int`):
@@ -6918,8 +6658,7 @@ class TDLibFunctions:
     async def readAllMessageThreadReactions(
         self, chat_id: int = 0, message_thread_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Marks all reactions in a forum topic as read
+        r"""Marks all reactions in a forum topic as read
 
         Parameters:
             chat_id (:class:`int`):
@@ -6943,8 +6682,7 @@ class TDLibFunctions:
     async def createPrivateChat(
         self, user_id: int = 0, force: bool = False
     ) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Returns an existing chat corresponding to a given user
+        r"""Returns an existing chat corresponding to a given user
 
         Parameters:
             user_id (:class:`int`):
@@ -6964,8 +6702,7 @@ class TDLibFunctions:
     async def createBasicGroupChat(
         self, basic_group_id: int = 0, force: bool = False
     ) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Returns an existing chat corresponding to a known basic group
+        r"""Returns an existing chat corresponding to a known basic group
 
         Parameters:
             basic_group_id (:class:`int`):
@@ -6989,8 +6726,7 @@ class TDLibFunctions:
     async def createSupergroupChat(
         self, supergroup_id: int = 0, force: bool = False
     ) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Returns an existing chat corresponding to a known supergroup or channel
+        r"""Returns an existing chat corresponding to a known supergroup or channel
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -7014,8 +6750,7 @@ class TDLibFunctions:
     async def createSecretChat(
         self, secret_chat_id: int = 0
     ) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Returns an existing chat corresponding to a known secret chat
+        r"""Returns an existing chat corresponding to a known secret chat
 
         Parameters:
             secret_chat_id (:class:`int`):
@@ -7035,8 +6770,7 @@ class TDLibFunctions:
         title: str = "",
         message_auto_delete_time: int = 0,
     ) -> Union["types.Error", "types.CreatedBasicGroupChat"]:
-        r"""
-        Creates a new basic group and sends a corresponding messageBasicGroupChatCreate\. Returns information about the newly created chat
+        r"""Creates a new basic group and sends a corresponding messageBasicGroupChatCreate\. Returns information about the newly created chat
 
         Parameters:
             user_ids (:class:`List[int]`):
@@ -7071,8 +6805,7 @@ class TDLibFunctions:
         message_auto_delete_time: int = 0,
         for_import: bool = False,
     ) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Creates a new supergroup or channel and sends a corresponding messageSupergroupChatCreate\. Returns the newly created chat
+        r"""Creates a new supergroup or channel and sends a corresponding messageSupergroupChatCreate\. Returns the newly created chat
 
         Parameters:
             title (:class:`str`):
@@ -7116,8 +6849,7 @@ class TDLibFunctions:
     async def createNewSecretChat(
         self, user_id: int = 0
     ) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Creates a new secret chat\. Returns the newly created chat
+        r"""Creates a new secret chat\. Returns the newly created chat
 
         Parameters:
             user_id (:class:`int`):
@@ -7132,8 +6864,7 @@ class TDLibFunctions:
     async def upgradeBasicGroupChatToSupergroupChat(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Creates a new supergroup from an existing basic group and sends a corresponding messageChatUpgradeTo and messageChatUpgradeFrom; requires owner privileges\. Deactivates the original basic group
+        r"""Creates a new supergroup from an existing basic group and sends a corresponding messageChatUpgradeTo and messageChatUpgradeFrom; requires owner privileges\. Deactivates the original basic group
 
         Parameters:
             chat_id (:class:`int`):
@@ -7150,8 +6881,7 @@ class TDLibFunctions:
     async def getChatListsToAddChat(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.ChatLists"]:
-        r"""
-        Returns chat lists to which the chat can be added\. This is an offline request
+        r"""Returns chat lists to which the chat can be added\. This is an offline request
 
         Parameters:
             chat_id (:class:`int`):
@@ -7166,8 +6896,7 @@ class TDLibFunctions:
     async def addChatToList(
         self, chat_id: int = 0, chat_list: "types.ChatList" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds a chat to a chat list\. A chat can't be simultaneously in Main and Archive chat lists, so it is automatically removed from another one if needed
+        r"""Adds a chat to a chat list\. A chat can't be simultaneously in Main and Archive chat lists, so it is automatically removed from another one if needed
 
         Parameters:
             chat_id (:class:`int`):
@@ -7187,8 +6916,7 @@ class TDLibFunctions:
     async def getChatFolder(
         self, chat_folder_id: int = 0
     ) -> Union["types.Error", "types.ChatFolder"]:
-        r"""
-        Returns information about a chat folder by its identifier
+        r"""Returns information about a chat folder by its identifier
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7205,8 +6933,7 @@ class TDLibFunctions:
     async def createChatFolder(
         self, folder: "types.ChatFolder" = None
     ) -> Union["types.Error", "types.ChatFolderInfo"]:
-        r"""
-        Creates new chat folder\. Returns information about the created chat folder\. There can be up to getOption\(\"chat\_folder\_count\_max\"\) chat folders, but the limit can be increased with Telegram Premium
+        r"""Creates new chat folder\. Returns information about the created chat folder\. There can be up to getOption\(\"chat\_folder\_count\_max\"\) chat folders, but the limit can be increased with Telegram Premium
 
         Parameters:
             folder (:class:`"types.ChatFolder"`):
@@ -7221,8 +6948,7 @@ class TDLibFunctions:
     async def editChatFolder(
         self, chat_folder_id: int = 0, folder: "types.ChatFolder" = None
     ) -> Union["types.Error", "types.ChatFolderInfo"]:
-        r"""
-        Edits existing chat folder\. Returns information about the edited chat folder
+        r"""Edits existing chat folder\. Returns information about the edited chat folder
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7246,8 +6972,7 @@ class TDLibFunctions:
     async def deleteChatFolder(
         self, chat_folder_id: int = 0, leave_chat_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes existing chat folder
+        r"""Deletes existing chat folder
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7271,8 +6996,7 @@ class TDLibFunctions:
     async def getChatFolderChatsToLeave(
         self, chat_folder_id: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns identifiers of pinned or always included chats from a chat folder, which are suggested to be left when the chat folder is deleted
+        r"""Returns identifiers of pinned or always included chats from a chat folder, which are suggested to be left when the chat folder is deleted
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7289,8 +7013,7 @@ class TDLibFunctions:
     async def getChatFolderChatCount(
         self, folder: "types.ChatFolder" = None
     ) -> Union["types.Error", "types.Count"]:
-        r"""
-        Returns approximate number of chats in a being created chat folder\. Main and archive chat lists must be fully preloaded for this function to work correctly
+        r"""Returns approximate number of chats in a being created chat folder\. Main and archive chat lists must be fully preloaded for this function to work correctly
 
         Parameters:
             folder (:class:`"types.ChatFolder"`):
@@ -7305,8 +7028,7 @@ class TDLibFunctions:
     async def reorderChatFolders(
         self, chat_folder_ids: List[int] = None, main_chat_list_position: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the order of chat folders
+        r"""Changes the order of chat folders
 
         Parameters:
             chat_folder_ids (:class:`List[int]`):
@@ -7330,8 +7052,7 @@ class TDLibFunctions:
     async def toggleChatFolderTags(
         self, are_tags_enabled: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether chat folder tags are enabled
+        r"""Toggles whether chat folder tags are enabled
 
         Parameters:
             are_tags_enabled (:class:`bool`):
@@ -7348,8 +7069,7 @@ class TDLibFunctions:
     async def getRecommendedChatFolders(
         self,
     ) -> Union["types.Error", "types.RecommendedChatFolders"]:
-        r"""
-        Returns recommended chat folders for the current user
+        r"""Returns recommended chat folders for the current user
 
         Returns:
             :class:`~pytdbot.types.RecommendedChatFolders`
@@ -7364,8 +7084,7 @@ class TDLibFunctions:
     async def getChatFolderDefaultIconName(
         self, folder: "types.ChatFolder" = None
     ) -> Union["types.Error", "types.ChatFolderIcon"]:
-        r"""
-        Returns default icon name for a folder\. Can be called synchronously
+        r"""Returns default icon name for a folder\. Can be called synchronously
 
         Parameters:
             folder (:class:`"types.ChatFolder"`):
@@ -7382,8 +7101,7 @@ class TDLibFunctions:
     async def getChatsForChatFolderInviteLink(
         self, chat_folder_id: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns identifiers of chats from a chat folder, suitable for adding to a chat folder invite link
+        r"""Returns identifiers of chats from a chat folder, suitable for adding to a chat folder invite link
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7403,8 +7121,7 @@ class TDLibFunctions:
     async def createChatFolderInviteLink(
         self, chat_folder_id: int = 0, name: str = "", chat_ids: List[int] = None
     ) -> Union["types.Error", "types.ChatFolderInviteLink"]:
-        r"""
-        Creates a new invite link for a chat folder\. A link can be created for a chat folder if it has only pinned and included chats
+        r"""Creates a new invite link for a chat folder\. A link can be created for a chat folder if it has only pinned and included chats
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7432,8 +7149,7 @@ class TDLibFunctions:
     async def getChatFolderInviteLinks(
         self, chat_folder_id: int = 0
     ) -> Union["types.Error", "types.ChatFolderInviteLinks"]:
-        r"""
-        Returns invite links created by the current user for a shareable chat folder
+        r"""Returns invite links created by the current user for a shareable chat folder
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7454,8 +7170,7 @@ class TDLibFunctions:
         name: str = "",
         chat_ids: List[int] = None,
     ) -> Union["types.Error", "types.ChatFolderInviteLink"]:
-        r"""
-        Edits an invite link for a chat folder
+        r"""Edits an invite link for a chat folder
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7487,8 +7202,7 @@ class TDLibFunctions:
     async def deleteChatFolderInviteLink(
         self, chat_folder_id: int = 0, invite_link: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes an invite link for a chat folder
+        r"""Deletes an invite link for a chat folder
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7512,8 +7226,7 @@ class TDLibFunctions:
     async def checkChatFolderInviteLink(
         self, invite_link: str = ""
     ) -> Union["types.Error", "types.ChatFolderInviteLinkInfo"]:
-        r"""
-        Checks the validity of an invite link for a chat folder and returns information about the corresponding chat folder
+        r"""Checks the validity of an invite link for a chat folder and returns information about the corresponding chat folder
 
         Parameters:
             invite_link (:class:`str`):
@@ -7530,8 +7243,7 @@ class TDLibFunctions:
     async def addChatFolderByInviteLink(
         self, invite_link: str = "", chat_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds a chat folder by an invite link
+        r"""Adds a chat folder by an invite link
 
         Parameters:
             invite_link (:class:`str`):
@@ -7555,8 +7267,7 @@ class TDLibFunctions:
     async def getChatFolderNewChats(
         self, chat_folder_id: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns new chats added to a shareable chat folder by its owner\. The method must be called at most once in getOption\(\"chat\_folder\_new\_chats\_update\_period\"\) for the given chat folder
+        r"""Returns new chats added to a shareable chat folder by its owner\. The method must be called at most once in getOption\(\"chat\_folder\_new\_chats\_update\_period\"\) for the given chat folder
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7573,8 +7284,7 @@ class TDLibFunctions:
     async def processChatFolderNewChats(
         self, chat_folder_id: int = 0, added_chat_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Process new chats added to a shareable chat folder by its owner
+        r"""Process new chats added to a shareable chat folder by its owner
 
         Parameters:
             chat_folder_id (:class:`int`):
@@ -7598,8 +7308,7 @@ class TDLibFunctions:
     async def getArchiveChatListSettings(
         self,
     ) -> Union["types.Error", "types.ArchiveChatListSettings"]:
-        r"""
-        Returns settings for automatic moving of chats to and from the Archive chat lists
+        r"""Returns settings for automatic moving of chats to and from the Archive chat lists
 
         Returns:
             :class:`~pytdbot.types.ArchiveChatListSettings`
@@ -7614,8 +7323,7 @@ class TDLibFunctions:
     async def setArchiveChatListSettings(
         self, settings: "types.ArchiveChatListSettings" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes settings for automatic moving of chats to and from the Archive chat lists
+        r"""Changes settings for automatic moving of chats to and from the Archive chat lists
 
         Parameters:
             settings (:class:`"types.ArchiveChatListSettings"`):
@@ -7632,8 +7340,7 @@ class TDLibFunctions:
     async def setChatTitle(
         self, chat_id: int = 0, title: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the chat title\. Supported only for basic groups, supergroups and channels\. Requires can\_change\_info member right
+        r"""Changes the chat title\. Supported only for basic groups, supergroups and channels\. Requires can\_change\_info member right
 
         Parameters:
             chat_id (:class:`int`):
@@ -7653,8 +7360,7 @@ class TDLibFunctions:
     async def setChatPhoto(
         self, chat_id: int = 0, photo: "types.InputChatPhoto" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the photo of a chat\. Supported only for basic groups, supergroups and channels\. Requires can\_change\_info member right
+        r"""Changes the photo of a chat\. Supported only for basic groups, supergroups and channels\. Requires can\_change\_info member right
 
         Parameters:
             chat_id (:class:`int`):
@@ -7677,8 +7383,7 @@ class TDLibFunctions:
         accent_color_id: int = 0,
         background_custom_emoji_id: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes accent color and background custom emoji of a channel chat\. Requires can\_change\_info administrator right
+        r"""Changes accent color and background custom emoji of a channel chat\. Requires can\_change\_info administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -7709,8 +7414,7 @@ class TDLibFunctions:
         profile_accent_color_id: int = 0,
         profile_background_custom_emoji_id: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes accent color and background custom emoji for profile of a supergroup or channel chat\. Requires can\_change\_info administrator right
+        r"""Changes accent color and background custom emoji for profile of a supergroup or channel chat\. Requires can\_change\_info administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -7738,8 +7442,7 @@ class TDLibFunctions:
     async def setChatMessageAutoDeleteTime(
         self, chat_id: int = 0, message_auto_delete_time: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the message auto\-delete or self\-destruct \(for secret chats\) time in a chat\. Requires change\_info administrator right in basic groups, supergroups and channels\. Message auto\-delete time can't be changed in a chat with the current user \(Saved Messages\) and the chat 777000 \(Telegram\)\.
+        r"""Changes the message auto\-delete or self\-destruct \(for secret chats\) time in a chat\. Requires change\_info administrator right in basic groups, supergroups and channels\. Message auto\-delete time can't be changed in a chat with the current user \(Saved Messages\) and the chat 777000 \(Telegram\)\.
 
         Parameters:
             chat_id (:class:`int`):
@@ -7763,8 +7466,7 @@ class TDLibFunctions:
     async def setChatEmojiStatus(
         self, chat_id: int = 0, emoji_status: "types.EmojiStatus" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the emoji status of a chat\. Use chatBoostLevelFeatures\.can\_set\_emoji\_status to check whether an emoji status can be set\. Requires can\_change\_info administrator right
+        r"""Changes the emoji status of a chat\. Use chatBoostLevelFeatures\.can\_set\_emoji\_status to check whether an emoji status can be set\. Requires can\_change\_info administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -7788,8 +7490,7 @@ class TDLibFunctions:
     async def setChatPermissions(
         self, chat_id: int = 0, permissions: "types.ChatPermissions" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the chat members permissions\. Supported only for basic groups and supergroups\. Requires can\_restrict\_members administrator right
+        r"""Changes the chat members permissions\. Supported only for basic groups and supergroups\. Requires can\_restrict\_members administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -7818,8 +7519,7 @@ class TDLibFunctions:
         dark_theme_dimming: int = 0,
         only_for_self: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the background in a specific chat\. Supported only in private and secret chats with non\-deleted users, and in chats with sufficient boost level and can\_change\_info administrator right
+        r"""Sets the background in a specific chat\. Supported only in private and secret chats with non\-deleted users, and in chats with sufficient boost level and can\_change\_info administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -7855,8 +7555,7 @@ class TDLibFunctions:
     async def deleteChatBackground(
         self, chat_id: int = 0, restore_previous: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes background in a specific chat
+        r"""Deletes background in a specific chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -7880,8 +7579,7 @@ class TDLibFunctions:
     async def setChatTheme(
         self, chat_id: int = 0, theme_name: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the chat theme\. Supported only in private and secret chats
+        r"""Changes the chat theme\. Supported only in private and secret chats
 
         Parameters:
             chat_id (:class:`int`):
@@ -7904,8 +7602,7 @@ class TDLibFunctions:
         message_thread_id: int = 0,
         draft_message: "types.DraftMessage" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the draft message in a chat
+        r"""Changes the draft message in a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -7935,8 +7632,7 @@ class TDLibFunctions:
         chat_id: int = 0,
         notification_settings: "types.ChatNotificationSettings" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the notification settings of a chat\. Notification settings of a chat with the current user \(Saved Messages\) can't be changed
+        r"""Changes the notification settings of a chat\. Notification settings of a chat with the current user \(Saved Messages\) can't be changed
 
         Parameters:
             chat_id (:class:`int`):
@@ -7960,8 +7656,7 @@ class TDLibFunctions:
     async def toggleChatHasProtectedContent(
         self, chat_id: int = 0, has_protected_content: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the ability of users to save, forward, or copy chat content\. Supported only for basic groups, supergroups and channels\. Requires owner privileges
+        r"""Changes the ability of users to save, forward, or copy chat content\. Supported only for basic groups, supergroups and channels\. Requires owner privileges
 
         Parameters:
             chat_id (:class:`int`):
@@ -7985,8 +7680,7 @@ class TDLibFunctions:
     async def toggleChatViewAsTopics(
         self, chat_id: int = 0, view_as_topics: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the view\_as\_topics setting of a forum chat or Saved Messages
+        r"""Changes the view\_as\_topics setting of a forum chat or Saved Messages
 
         Parameters:
             chat_id (:class:`int`):
@@ -8010,8 +7704,7 @@ class TDLibFunctions:
     async def toggleChatIsTranslatable(
         self, chat_id: int = 0, is_translatable: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the translatable state of a chat
+        r"""Changes the translatable state of a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -8035,8 +7728,7 @@ class TDLibFunctions:
     async def toggleChatIsMarkedAsUnread(
         self, chat_id: int = 0, is_marked_as_unread: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the marked as unread state of a chat
+        r"""Changes the marked as unread state of a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -8060,8 +7752,7 @@ class TDLibFunctions:
     async def toggleChatDefaultDisableNotification(
         self, chat_id: int = 0, default_disable_notification: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the value of the default disable\_notification parameter, used when a message is sent to a chat
+        r"""Changes the value of the default disable\_notification parameter, used when a message is sent to a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -8087,8 +7778,7 @@ class TDLibFunctions:
         chat_id: int = 0,
         available_reactions: "types.ChatAvailableReactions" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes reactions, available in a chat\. Available for basic groups, supergroups, and channels\. Requires can\_change\_info member right
+        r"""Changes reactions, available in a chat\. Available for basic groups, supergroups, and channels\. Requires can\_change\_info member right
 
         Parameters:
             chat_id (:class:`int`):
@@ -8112,8 +7802,7 @@ class TDLibFunctions:
     async def setChatClientData(
         self, chat_id: int = 0, client_data: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes application\-specific data associated with a chat
+        r"""Changes application\-specific data associated with a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -8137,8 +7826,7 @@ class TDLibFunctions:
     async def setChatDescription(
         self, chat_id: int = 0, description: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes information about a chat\. Available for basic groups, supergroups, and channels\. Requires can\_change\_info member right
+        r"""Changes information about a chat\. Available for basic groups, supergroups, and channels\. Requires can\_change\_info member right
 
         Parameters:
             chat_id (:class:`int`):
@@ -8162,8 +7850,7 @@ class TDLibFunctions:
     async def setChatDiscussionGroup(
         self, chat_id: int = 0, discussion_chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the discussion group of a channel chat; requires can\_change\_info administrator right in the channel if it is specified
+        r"""Changes the discussion group of a channel chat; requires can\_change\_info administrator right in the channel if it is specified
 
         Parameters:
             chat_id (:class:`int`):
@@ -8187,8 +7874,7 @@ class TDLibFunctions:
     async def setChatLocation(
         self, chat_id: int = 0, location: "types.ChatLocation" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the location of a chat\. Available only for some location\-based supergroups, use supergroupFullInfo\.can\_set\_location to check whether the method is allowed to use
+        r"""Changes the location of a chat\. Available only for some location\-based supergroups, use supergroupFullInfo\.can\_set\_location to check whether the method is allowed to use
 
         Parameters:
             chat_id (:class:`int`):
@@ -8208,8 +7894,7 @@ class TDLibFunctions:
     async def setChatSlowModeDelay(
         self, chat_id: int = 0, slow_mode_delay: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the slow mode delay of a chat\. Available only for supergroups; requires can\_restrict\_members right
+        r"""Changes the slow mode delay of a chat\. Available only for supergroups; requires can\_restrict\_members right
 
         Parameters:
             chat_id (:class:`int`):
@@ -8237,8 +7922,7 @@ class TDLibFunctions:
         disable_notification: bool = False,
         only_for_self: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Pins a message in a chat\. A message can be pinned only if messageProperties\.can\_be\_pinned
+        r"""Pins a message in a chat\. A message can be pinned only if messageProperties\.can\_be\_pinned
 
         Parameters:
             chat_id (:class:`int`):
@@ -8270,8 +7954,7 @@ class TDLibFunctions:
     async def unpinChatMessage(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a pinned message from a chat; requires can\_pin\_messages member right if the chat is a basic group or supergroup, or can\_edit\_messages administrator right if the chat is a channel
+        r"""Removes a pinned message from a chat; requires can\_pin\_messages member right if the chat is a basic group or supergroup, or can\_edit\_messages administrator right if the chat is a channel
 
         Parameters:
             chat_id (:class:`int`):
@@ -8291,8 +7974,7 @@ class TDLibFunctions:
     async def unpinAllChatMessages(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes all pinned messages from a chat; requires can\_pin\_messages member right if the chat is a basic group or supergroup, or can\_edit\_messages administrator right if the chat is a channel
+        r"""Removes all pinned messages from a chat; requires can\_pin\_messages member right if the chat is a basic group or supergroup, or can\_edit\_messages administrator right if the chat is a channel
 
         Parameters:
             chat_id (:class:`int`):
@@ -8307,8 +7989,7 @@ class TDLibFunctions:
     async def unpinAllMessageThreadMessages(
         self, chat_id: int = 0, message_thread_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes all pinned messages from a forum topic; requires can\_pin\_messages member right in the supergroup
+        r"""Removes all pinned messages from a forum topic; requires can\_pin\_messages member right in the supergroup
 
         Parameters:
             chat_id (:class:`int`):
@@ -8330,8 +8011,7 @@ class TDLibFunctions:
         )
 
     async def joinChat(self, chat_id: int = 0) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds the current user as a new member to a chat\. Private and secret chats can't be joined using this method\. May return an error with a message \"INVITE\_REQUEST\_SENT\" if only a join request was created
+        r"""Adds the current user as a new member to a chat\. Private and secret chats can't be joined using this method\. May return an error with a message \"INVITE\_REQUEST\_SENT\" if only a join request was created
 
         Parameters:
             chat_id (:class:`int`):
@@ -8344,8 +8024,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "joinChat", "chat_id": chat_id})
 
     async def leaveChat(self, chat_id: int = 0) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes the current user from chat members\. Private and secret chats can't be left using this method
+        r"""Removes the current user from chat members\. Private and secret chats can't be left using this method
 
         Parameters:
             chat_id (:class:`int`):
@@ -8360,8 +8039,7 @@ class TDLibFunctions:
     async def addChatMember(
         self, chat_id: int = 0, user_id: int = 0, forward_limit: int = 0
     ) -> Union["types.Error", "types.FailedToAddMembers"]:
-        r"""
-        Adds a new member to a chat; requires can\_invite\_users member right\. Members can't be added to private or secret chats\. Returns information about members that weren't added
+        r"""Adds a new member to a chat; requires can\_invite\_users member right\. Members can't be added to private or secret chats\. Returns information about members that weren't added
 
         Parameters:
             chat_id (:class:`int`):
@@ -8389,8 +8067,7 @@ class TDLibFunctions:
     async def addChatMembers(
         self, chat_id: int = 0, user_ids: List[int] = None
     ) -> Union["types.Error", "types.FailedToAddMembers"]:
-        r"""
-        Adds multiple new members to a chat; requires can\_invite\_users member right\. Currently, this method is only available for supergroups and channels\. This method can't be used to join a chat\. Members can't be added to a channel if it has more than 200 members\. Returns information about members that weren't added
+        r"""Adds multiple new members to a chat; requires can\_invite\_users member right\. Currently, this method is only available for supergroups and channels\. This method can't be used to join a chat\. Members can't be added to a channel if it has more than 200 members\. Returns information about members that weren't added
 
         Parameters:
             chat_id (:class:`int`):
@@ -8413,8 +8090,7 @@ class TDLibFunctions:
         member_id: "types.MessageSender" = None,
         status: "types.ChatMemberStatus" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the status of a chat member; requires can\_invite\_users member right to add a chat member, can\_promote\_members administrator right to change administrator rights of the member, and can\_restrict\_members administrator right to change restrictions of a user\. This function is currently not suitable for transferring chat ownership; use transferChatOwnership instead\. Use addChatMember or banChatMember if some additional parameters needs to be passed
+        r"""Changes the status of a chat member; requires can\_invite\_users member right to add a chat member, can\_promote\_members administrator right to change administrator rights of the member, and can\_restrict\_members administrator right to change restrictions of a user\. This function is currently not suitable for transferring chat ownership; use transferChatOwnership instead\. Use addChatMember or banChatMember if some additional parameters needs to be passed
 
         Parameters:
             chat_id (:class:`int`):
@@ -8446,8 +8122,7 @@ class TDLibFunctions:
         banned_until_date: int = 0,
         revoke_messages: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Bans a member in a chat; requires can\_restrict\_members administrator right\. Members can't be banned in private or secret chats\. In supergroups and channels, the user will not be able to return to the group on their own using invite links, etc\., unless unbanned first
+        r"""Bans a member in a chat; requires can\_restrict\_members administrator right\. Members can't be banned in private or secret chats\. In supergroups and channels, the user will not be able to return to the group on their own using invite links, etc\., unless unbanned first
 
         Parameters:
             chat_id (:class:`int`):
@@ -8479,8 +8154,7 @@ class TDLibFunctions:
     async def canTransferOwnership(
         self,
     ) -> Union["types.Error", "types.CanTransferOwnershipResult"]:
-        r"""
-        Checks whether the current session can be used to transfer a chat ownership to another user
+        r"""Checks whether the current session can be used to transfer a chat ownership to another user
 
         Returns:
             :class:`~pytdbot.types.CanTransferOwnershipResult`
@@ -8495,8 +8169,7 @@ class TDLibFunctions:
     async def transferChatOwnership(
         self, chat_id: int = 0, user_id: int = 0, password: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the owner of a chat; requires owner privileges in the chat\. Use the method canTransferOwnership to check whether the ownership can be transferred from the current session\. Available only for supergroups and channel chats
+        r"""Changes the owner of a chat; requires owner privileges in the chat\. Use the method canTransferOwnership to check whether the ownership can be transferred from the current session\. Available only for supergroups and channel chats
 
         Parameters:
             chat_id (:class:`int`):
@@ -8524,8 +8197,7 @@ class TDLibFunctions:
     async def getChatMember(
         self, chat_id: int = 0, member_id: "types.MessageSender" = None
     ) -> Union["types.Error", "types.ChatMember"]:
-        r"""
-        Returns information about a single member of a chat
+        r"""Returns information about a single member of a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -8549,8 +8221,7 @@ class TDLibFunctions:
         limit: int = 0,
         filter: "types.ChatMembersFilter" = None,
     ) -> Union["types.Error", "types.ChatMembers"]:
-        r"""
-        Searches for a specified query in the first name, last name and usernames of the members of a specified chat\. Requires administrator rights if the chat is a channel
+        r"""Searches for a specified query in the first name, last name and usernames of the members of a specified chat\. Requires administrator rights if the chat is a channel
 
         Parameters:
             chat_id (:class:`int`):
@@ -8582,8 +8253,7 @@ class TDLibFunctions:
     async def getChatAdministrators(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.ChatAdministrators"]:
-        r"""
-        Returns a list of administrators of the chat with their custom titles
+        r"""Returns a list of administrators of the chat with their custom titles
 
         Parameters:
             chat_id (:class:`int`):
@@ -8598,8 +8268,7 @@ class TDLibFunctions:
     async def clearAllDraftMessages(
         self, exclude_secret_chats: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Clears message drafts in all chats
+        r"""Clears message drafts in all chats
 
         Parameters:
             exclude_secret_chats (:class:`bool`):
@@ -8619,8 +8288,7 @@ class TDLibFunctions:
     async def getSavedNotificationSound(
         self, notification_sound_id: int = 0
     ) -> Union["types.Error", "types.NotificationSounds"]:
-        r"""
-        Returns saved notification sound by its identifier\. Returns a 404 error if there is no saved notification sound with the specified identifier
+        r"""Returns saved notification sound by its identifier\. Returns a 404 error if there is no saved notification sound with the specified identifier
 
         Parameters:
             notification_sound_id (:class:`int`):
@@ -8640,8 +8308,7 @@ class TDLibFunctions:
     async def getSavedNotificationSounds(
         self,
     ) -> Union["types.Error", "types.NotificationSounds"]:
-        r"""
-        Returns the list of saved notification sounds\. If a sound isn't in the list, then default sound needs to be used
+        r"""Returns the list of saved notification sounds\. If a sound isn't in the list, then default sound needs to be used
 
         Returns:
             :class:`~pytdbot.types.NotificationSounds`
@@ -8656,8 +8323,7 @@ class TDLibFunctions:
     async def addSavedNotificationSound(
         self, sound: "types.InputFile" = None
     ) -> Union["types.Error", "types.NotificationSound"]:
-        r"""
-        Adds a new notification sound to the list of saved notification sounds\. The new notification sound is added to the top of the list\. If it is already in the list, its position isn't changed
+        r"""Adds a new notification sound to the list of saved notification sounds\. The new notification sound is added to the top of the list\. If it is already in the list, its position isn't changed
 
         Parameters:
             sound (:class:`"types.InputFile"`):
@@ -8672,8 +8338,7 @@ class TDLibFunctions:
     async def removeSavedNotificationSound(
         self, notification_sound_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a notification sound from the list of saved notification sounds
+        r"""Removes a notification sound from the list of saved notification sounds
 
         Parameters:
             notification_sound_id (:class:`int`):
@@ -8695,8 +8360,7 @@ class TDLibFunctions:
         scope: "types.NotificationSettingsScope" = None,
         compare_sound: bool = False,
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns the list of chats with non\-default notification settings for new messages
+        r"""Returns the list of chats with non\-default notification settings for new messages
 
         Parameters:
             scope (:class:`"types.NotificationSettingsScope"`):
@@ -8720,8 +8384,7 @@ class TDLibFunctions:
     async def getScopeNotificationSettings(
         self, scope: "types.NotificationSettingsScope" = None
     ) -> Union["types.Error", "types.ScopeNotificationSettings"]:
-        r"""
-        Returns the notification settings for chats of a given type
+        r"""Returns the notification settings for chats of a given type
 
         Parameters:
             scope (:class:`"types.NotificationSettingsScope"`):
@@ -8740,8 +8403,7 @@ class TDLibFunctions:
         scope: "types.NotificationSettingsScope" = None,
         notification_settings: "types.ScopeNotificationSettings" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes notification settings for chats of a given type
+        r"""Changes notification settings for chats of a given type
 
         Parameters:
             scope (:class:`"types.NotificationSettingsScope"`):
@@ -8765,8 +8427,7 @@ class TDLibFunctions:
     async def setReactionNotificationSettings(
         self, notification_settings: "types.ReactionNotificationSettings" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes notification settings for reactions
+        r"""Changes notification settings for reactions
 
         Parameters:
             notification_settings (:class:`"types.ReactionNotificationSettings"`):
@@ -8784,8 +8445,7 @@ class TDLibFunctions:
         )
 
     async def resetAllNotificationSettings(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Resets all chat and scope notification settings to their default values\. By default, all chats are unmuted and message previews are shown
+        r"""Resets all chat and scope notification settings to their default values\. By default, all chats are unmuted and message previews are shown
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -8803,8 +8463,7 @@ class TDLibFunctions:
         chat_id: int = 0,
         is_pinned: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the pinned state of a chat\. There can be up to getOption\(\"pinned\_chat\_count\_max\"\)/getOption\(\"pinned\_archived\_chat\_count\_max\"\) pinned non\-secret chats and the same number of secret chats in the main/archive chat list\. The limit can be increased with Telegram Premium
+        r"""Changes the pinned state of a chat\. There can be up to getOption\(\"pinned\_chat\_count\_max\"\)/getOption\(\"pinned\_archived\_chat\_count\_max\"\) pinned non\-secret chats and the same number of secret chats in the main/archive chat list\. The limit can be increased with Telegram Premium
 
         Parameters:
             chat_list (:class:`"types.ChatList"`):
@@ -8832,8 +8491,7 @@ class TDLibFunctions:
     async def setPinnedChats(
         self, chat_list: "types.ChatList" = None, chat_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the order of pinned chats
+        r"""Changes the order of pinned chats
 
         Parameters:
             chat_list (:class:`"types.ChatList"`):
@@ -8853,8 +8511,7 @@ class TDLibFunctions:
     async def readChatList(
         self, chat_list: "types.ChatList" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Traverse all chats in a chat list and marks all messages in the chats as read
+        r"""Traverse all chats in a chat list and marks all messages in the chats as read
 
         Parameters:
             chat_list (:class:`"types.ChatList"`):
@@ -8869,8 +8526,7 @@ class TDLibFunctions:
     async def getCurrentWeather(
         self, location: "types.Location" = None
     ) -> Union["types.Error", "types.CurrentWeather"]:
-        r"""
-        Returns the current weather in the given location
+        r"""Returns the current weather in the given location
 
         Parameters:
             location (:class:`"types.Location"`):
@@ -8885,8 +8541,7 @@ class TDLibFunctions:
     async def getStory(
         self, story_sender_chat_id: int = 0, story_id: int = 0, only_local: bool = False
     ) -> Union["types.Error", "types.Story"]:
-        r"""
-        Returns a story
+        r"""Returns a story
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -8912,8 +8567,7 @@ class TDLibFunctions:
         )
 
     async def getChatsToSendStories(self) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns supergroup and channel chats in which the current user has the right to post stories\. The chats must be rechecked with canSendStory before actually trying to post a story there
+        r"""Returns supergroup and channel chats in which the current user has the right to post stories\. The chats must be rechecked with canSendStory before actually trying to post a story there
 
         Returns:
             :class:`~pytdbot.types.Chats`
@@ -8928,8 +8582,7 @@ class TDLibFunctions:
     async def canSendStory(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.CanSendStoryResult"]:
-        r"""
-        Checks whether the current user can send a story on behalf of a chat; requires can\_post\_stories right for supergroup and channel chats
+        r"""Checks whether the current user can send a story on behalf of a chat; requires can\_post\_stories right for supergroup and channel chats
 
         Parameters:
             chat_id (:class:`int`):
@@ -8953,8 +8606,7 @@ class TDLibFunctions:
         is_posted_to_chat_page: bool = False,
         protect_content: bool = False,
     ) -> Union["types.Error", "types.Story"]:
-        r"""
-        Sends a new story to a chat; requires can\_post\_stories right for supergroup and channel chats\. Returns a temporary story
+        r"""Sends a new story to a chat; requires can\_post\_stories right for supergroup and channel chats\. Returns a temporary story
 
         Parameters:
             chat_id (:class:`int`):
@@ -9011,8 +8663,7 @@ class TDLibFunctions:
         areas: "types.InputStoryAreas" = None,
         caption: "types.FormattedText" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes content and caption of a story\. Can be called only if story\.can\_be\_edited \=\= true
+        r"""Changes content and caption of a story\. Can be called only if story\.can\_be\_edited \=\= true
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9051,8 +8702,7 @@ class TDLibFunctions:
         story_id: int = 0,
         cover_frame_timestamp: float = 0.0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes cover of a video story\. Can be called only if story\.can\_be\_edited \=\= true and the story isn't being edited now
+        r"""Changes cover of a video story\. Can be called only if story\.can\_be\_edited \=\= true and the story isn't being edited now
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9080,8 +8730,7 @@ class TDLibFunctions:
     async def setStoryPrivacySettings(
         self, story_id: int = 0, privacy_settings: "types.StoryPrivacySettings" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes privacy settings of a story\. The method can be called only for stories posted on behalf of the current user and if story\.can\_be\_edited \=\= true
+        r"""Changes privacy settings of a story\. The method can be called only for stories posted on behalf of the current user and if story\.can\_be\_edited \=\= true
 
         Parameters:
             story_id (:class:`int`):
@@ -9108,8 +8757,7 @@ class TDLibFunctions:
         story_id: int = 0,
         is_posted_to_chat_page: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether a story is accessible after expiration\. Can be called only if story\.can\_toggle\_is\_posted\_to\_chat\_page \=\= true
+        r"""Toggles whether a story is accessible after expiration\. Can be called only if story\.can\_toggle\_is\_posted\_to\_chat\_page \=\= true
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9137,8 +8785,7 @@ class TDLibFunctions:
     async def deleteStory(
         self, story_sender_chat_id: int = 0, story_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes a previously sent story\. Can be called only if story\.can\_be\_deleted \=\= true
+        r"""Deletes a previously sent story\. Can be called only if story\.can\_be\_deleted \=\= true
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9162,8 +8809,7 @@ class TDLibFunctions:
     async def getStoryNotificationSettingsExceptions(
         self,
     ) -> Union["types.Error", "types.Chats"]:
-        r"""
-        Returns the list of chats with non\-default notification settings for stories
+        r"""Returns the list of chats with non\-default notification settings for stories
 
         Returns:
             :class:`~pytdbot.types.Chats`
@@ -9178,8 +8824,7 @@ class TDLibFunctions:
     async def loadActiveStories(
         self, story_list: "types.StoryList" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Loads more active stories from a story list\. The loaded stories will be sent through updates\. Active stories are sorted by the pair \(active\_stories\.order, active\_stories\.story\_sender\_chat\_id\) in descending order\. Returns a 404 error if all active stories have been loaded
+        r"""Loads more active stories from a story list\. The loaded stories will be sent through updates\. Active stories are sorted by the pair \(active\_stories\.order, active\_stories\.story\_sender\_chat\_id\) in descending order\. Returns a 404 error if all active stories have been loaded
 
         Parameters:
             story_list (:class:`"types.StoryList"`):
@@ -9196,8 +8841,7 @@ class TDLibFunctions:
     async def setChatActiveStoriesList(
         self, chat_id: int = 0, story_list: "types.StoryList" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes story list in which stories from the chat are shown
+        r"""Changes story list in which stories from the chat are shown
 
         Parameters:
             chat_id (:class:`int`):
@@ -9221,8 +8865,7 @@ class TDLibFunctions:
     async def getChatActiveStories(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.ChatActiveStories"]:
-        r"""
-        Returns the list of active stories posted by the given chat
+        r"""Returns the list of active stories posted by the given chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -9237,8 +8880,7 @@ class TDLibFunctions:
     async def getChatPostedToChatPageStories(
         self, chat_id: int = 0, from_story_id: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.Stories"]:
-        r"""
-        Returns the list of stories that posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        r"""Returns the list of stories that posted by the given chat to its chat page\. If from\_story\_id \=\= 0, then pinned stories are returned first\. Then, stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -9266,8 +8908,7 @@ class TDLibFunctions:
     async def getChatArchivedStories(
         self, chat_id: int = 0, from_story_id: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.Stories"]:
-        r"""
-        Returns the list of all stories posted by the given chat; requires can\_edit\_stories right in the chat\. The stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        r"""Returns the list of all stories posted by the given chat; requires can\_edit\_stories right in the chat\. The stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -9295,8 +8936,7 @@ class TDLibFunctions:
     async def setChatPinnedStories(
         self, chat_id: int = 0, story_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the list of pinned stories on a chat page; requires can\_edit\_stories right in the chat
+        r"""Changes the list of pinned stories on a chat page; requires can\_edit\_stories right in the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -9320,8 +8960,7 @@ class TDLibFunctions:
     async def openStory(
         self, story_sender_chat_id: int = 0, story_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that a story is opened and is being viewed by the user
+        r"""Informs TDLib that a story is opened and is being viewed by the user
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9345,8 +8984,7 @@ class TDLibFunctions:
     async def closeStory(
         self, story_sender_chat_id: int = 0, story_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that a story is closed by the user
+        r"""Informs TDLib that a story is closed by the user
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9370,8 +9008,7 @@ class TDLibFunctions:
     async def getStoryAvailableReactions(
         self, row_size: int = 0
     ) -> Union["types.Error", "types.AvailableReactions"]:
-        r"""
-        Returns reactions, which can be chosen for a story
+        r"""Returns reactions, which can be chosen for a story
 
         Parameters:
             row_size (:class:`int`):
@@ -9392,8 +9029,7 @@ class TDLibFunctions:
         reaction_type: "types.ReactionType" = None,
         update_recent_reactions: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes chosen reaction on a story that has already been sent
+        r"""Changes chosen reaction on a story that has already been sent
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9432,8 +9068,7 @@ class TDLibFunctions:
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.StoryInteractions"]:
-        r"""
-        Returns interactions with a story\. The method can be called only for stories posted on behalf of the current user
+        r"""Returns interactions with a story\. The method can be called only for stories posted on behalf of the current user
 
         Parameters:
             story_id (:class:`int`):
@@ -9483,8 +9118,7 @@ class TDLibFunctions:
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.StoryInteractions"]:
-        r"""
-        Returns interactions with a story posted in a chat\. Can be used only if story is posted on behalf of a chat and the user is an administrator in the chat
+        r"""Returns interactions with a story posted in a chat\. Can be used only if story is posted on behalf of a chat and the user is an administrator in the chat
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9528,8 +9162,7 @@ class TDLibFunctions:
         option_id: bytes = b"",
         text: str = "",
     ) -> Union["types.Error", "types.ReportStoryResult"]:
-        r"""
-        Reports a story to the Telegram moderators
+        r"""Reports a story to the Telegram moderators
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9559,8 +9192,7 @@ class TDLibFunctions:
         )
 
     async def activateStoryStealthMode(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Activates stealth mode for stories, which hides all views of stories from the current user in the last \"story\_stealth\_mode\_past\_period\" seconds and for the next \"story\_stealth\_mode\_future\_period\" seconds; for Telegram Premium users only
+        r"""Activates stealth mode for stories, which hides all views of stories from the current user in the last \"story\_stealth\_mode\_past\_period\" seconds and for the next \"story\_stealth\_mode\_future\_period\" seconds; for Telegram Premium users only
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -9579,8 +9211,7 @@ class TDLibFunctions:
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.PublicForwards"]:
-        r"""
-        Returns forwards of a story as a message to public chats and reposts by public channels\. Can be used only if the story is posted on behalf of the current user or story\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
+        r"""Returns forwards of a story as a message to public chats and reposts by public channels\. Can be used only if the story is posted on behalf of the current user or story\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
 
         Parameters:
             story_sender_chat_id (:class:`int`):
@@ -9612,8 +9243,7 @@ class TDLibFunctions:
     async def getChatBoostLevelFeatures(
         self, is_channel: bool = False, level: int = 0
     ) -> Union["types.Error", "types.ChatBoostLevelFeatures"]:
-        r"""
-        Returns the list of features available on the specific chat boost level; this is an offline request
+        r"""Returns the list of features available on the specific chat boost level; this is an offline request
 
         Parameters:
             is_channel (:class:`bool`):
@@ -9637,8 +9267,7 @@ class TDLibFunctions:
     async def getChatBoostFeatures(
         self, is_channel: bool = False
     ) -> Union["types.Error", "types.ChatBoostFeatures"]:
-        r"""
-        Returns the list of features available for different chat boost levels; this is an offline request
+        r"""Returns the list of features available for different chat boost levels; this is an offline request
 
         Parameters:
             is_channel (:class:`bool`):
@@ -9655,8 +9284,7 @@ class TDLibFunctions:
     async def getAvailableChatBoostSlots(
         self,
     ) -> Union["types.Error", "types.ChatBoostSlots"]:
-        r"""
-        Returns the list of available chat boost slots for the current user
+        r"""Returns the list of available chat boost slots for the current user
 
         Returns:
             :class:`~pytdbot.types.ChatBoostSlots`
@@ -9671,8 +9299,7 @@ class TDLibFunctions:
     async def getChatBoostStatus(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.ChatBoostStatus"]:
-        r"""
-        Returns the current boost status for a supergroup or a channel chat
+        r"""Returns the current boost status for a supergroup or a channel chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -9687,8 +9314,7 @@ class TDLibFunctions:
     async def boostChat(
         self, chat_id: int = 0, slot_ids: List[int] = None
     ) -> Union["types.Error", "types.ChatBoostSlots"]:
-        r"""
-        Boosts a chat and returns the list of available chat boost slots for the current user after the boost
+        r"""Boosts a chat and returns the list of available chat boost slots for the current user after the boost
 
         Parameters:
             chat_id (:class:`int`):
@@ -9708,8 +9334,7 @@ class TDLibFunctions:
     async def getChatBoostLink(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.ChatBoostLink"]:
-        r"""
-        Returns an HTTPS link to boost the specified supergroup or channel chat
+        r"""Returns an HTTPS link to boost the specified supergroup or channel chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -9724,8 +9349,7 @@ class TDLibFunctions:
     async def getChatBoostLinkInfo(
         self, url: str = ""
     ) -> Union["types.Error", "types.ChatBoostLinkInfo"]:
-        r"""
-        Returns information about a link to boost a chat\. Can be called for any internal link of the type internalLinkTypeChatBoost
+        r"""Returns information about a link to boost a chat\. Can be called for any internal link of the type internalLinkTypeChatBoost
 
         Parameters:
             url (:class:`str`):
@@ -9744,8 +9368,7 @@ class TDLibFunctions:
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.FoundChatBoosts"]:
-        r"""
-        Returns the list of boosts applied to a chat; requires administrator rights in the chat
+        r"""Returns the list of boosts applied to a chat; requires administrator rights in the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -9777,8 +9400,7 @@ class TDLibFunctions:
     async def getUserChatBoosts(
         self, chat_id: int = 0, user_id: int = 0
     ) -> Union["types.Error", "types.FoundChatBoosts"]:
-        r"""
-        Returns the list of boosts applied to a chat by a given user; requires administrator rights in the chat; for bots only
+        r"""Returns the list of boosts applied to a chat by a given user; requires administrator rights in the chat; for bots only
 
         Parameters:
             chat_id (:class:`int`):
@@ -9798,8 +9420,7 @@ class TDLibFunctions:
     async def getAttachmentMenuBot(
         self, bot_user_id: int = 0
     ) -> Union["types.Error", "types.AttachmentMenuBot"]:
-        r"""
-        Returns information about a bot that can be added to attachment or side menu
+        r"""Returns information about a bot that can be added to attachment or side menu
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -9819,8 +9440,7 @@ class TDLibFunctions:
         is_added: bool = False,
         allow_write_access: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds or removes a bot to attachment and side menu\. Bot can be added to the menu, only if userTypeBot\.can\_be\_added\_to\_attachment\_menu \=\= true
+        r"""Adds or removes a bot to attachment and side menu\. Bot can be added to the menu, only if userTypeBot\.can\_be\_added\_to\_attachment\_menu \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -9848,8 +9468,7 @@ class TDLibFunctions:
     async def getThemedEmojiStatuses(
         self,
     ) -> Union["types.Error", "types.EmojiStatuses"]:
-        r"""
-        Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list for self status
+        r"""Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list for self status
 
         Returns:
             :class:`~pytdbot.types.EmojiStatuses`
@@ -9864,8 +9483,7 @@ class TDLibFunctions:
     async def getRecentEmojiStatuses(
         self,
     ) -> Union["types.Error", "types.EmojiStatuses"]:
-        r"""
-        Returns recent emoji statuses for self status
+        r"""Returns recent emoji statuses for self status
 
         Returns:
             :class:`~pytdbot.types.EmojiStatuses`
@@ -9880,8 +9498,7 @@ class TDLibFunctions:
     async def getDefaultEmojiStatuses(
         self,
     ) -> Union["types.Error", "types.EmojiStatuses"]:
-        r"""
-        Returns default emoji statuses for self status
+        r"""Returns default emoji statuses for self status
 
         Returns:
             :class:`~pytdbot.types.EmojiStatuses`
@@ -9894,8 +9511,7 @@ class TDLibFunctions:
         )
 
     async def clearRecentEmojiStatuses(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Clears the list of recently used emoji statuses for self status
+        r"""Clears the list of recently used emoji statuses for self status
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -9910,8 +9526,7 @@ class TDLibFunctions:
     async def getThemedChatEmojiStatuses(
         self,
     ) -> Union["types.Error", "types.EmojiStatuses"]:
-        r"""
-        Returns up to 8 emoji statuses, which must be shown in the emoji status list for chats
+        r"""Returns up to 8 emoji statuses, which must be shown in the emoji status list for chats
 
         Returns:
             :class:`~pytdbot.types.EmojiStatuses`
@@ -9926,8 +9541,7 @@ class TDLibFunctions:
     async def getDefaultChatEmojiStatuses(
         self,
     ) -> Union["types.Error", "types.EmojiStatuses"]:
-        r"""
-        Returns default emoji statuses for chats
+        r"""Returns default emoji statuses for chats
 
         Returns:
             :class:`~pytdbot.types.EmojiStatuses`
@@ -9942,8 +9556,7 @@ class TDLibFunctions:
     async def getDisallowedChatEmojiStatuses(
         self,
     ) -> Union["types.Error", "types.EmojiStatuses"]:
-        r"""
-        Returns the list of emoji statuses, which can't be used as chat emoji status, even they are from a sticker set with is\_allowed\_as\_chat\_emoji\_status \=\= true
+        r"""Returns the list of emoji statuses, which can't be used as chat emoji status, even they are from a sticker set with is\_allowed\_as\_chat\_emoji\_status \=\= true
 
         Returns:
             :class:`~pytdbot.types.EmojiStatuses`
@@ -9963,8 +9576,7 @@ class TDLibFunctions:
         limit: int = 0,
         synchronous: bool = False,
     ) -> Union["types.Error", "types.File"]:
-        r"""
-        Downloads a file from the cloud\. Download progress and completion of the download will be notified through updateFile updates
+        r"""Downloads a file from the cloud\. Download progress and completion of the download will be notified through updateFile updates
 
         Parameters:
             file_id (:class:`int`):
@@ -10000,8 +9612,7 @@ class TDLibFunctions:
     async def getFileDownloadedPrefixSize(
         self, file_id: int = 0, offset: int = 0
     ) -> Union["types.Error", "types.FileDownloadedPrefixSize"]:
-        r"""
-        Returns file downloaded prefix size from a given offset, in bytes
+        r"""Returns file downloaded prefix size from a given offset, in bytes
 
         Parameters:
             file_id (:class:`int`):
@@ -10025,8 +9636,7 @@ class TDLibFunctions:
     async def cancelDownloadFile(
         self, file_id: int = 0, only_if_pending: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Stops the downloading of a file\. If a file has already been downloaded, does nothing
+        r"""Stops the downloading of a file\. If a file has already been downloaded, does nothing
 
         Parameters:
             file_id (:class:`int`):
@@ -10050,8 +9660,7 @@ class TDLibFunctions:
     async def getSuggestedFileName(
         self, file_id: int = 0, directory: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns suggested name for saving a file in a given directory
+        r"""Returns suggested name for saving a file in a given directory
 
         Parameters:
             file_id (:class:`int`):
@@ -10078,8 +9687,7 @@ class TDLibFunctions:
         file_type: "types.FileType" = None,
         priority: int = 0,
     ) -> Union["types.Error", "types.File"]:
-        r"""
-        Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes\. In all other cases there is no need to preliminary upload a file\. Updates updateFile will be used to notify about upload progress\. The upload will not be completed until the file is sent in a message
+        r"""Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes\. In all other cases there is no need to preliminary upload a file\. Updates updateFile will be used to notify about upload progress\. The upload will not be completed until the file is sent in a message
 
         Parameters:
             file (:class:`"types.InputFile"`):
@@ -10107,8 +9715,7 @@ class TDLibFunctions:
     async def cancelPreliminaryUploadFile(
         self, file_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Stops the preliminary uploading of a file\. Supported only for files uploaded by using preliminaryUploadFile
+        r"""Stops the preliminary uploading of a file\. Supported only for files uploaded by using preliminaryUploadFile
 
         Parameters:
             file_id (:class:`int`):
@@ -10125,8 +9732,7 @@ class TDLibFunctions:
     async def writeGeneratedFilePart(
         self, generation_id: int = 0, offset: int = 0, data: bytes = b""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Writes a part of a generated file\. This method is intended to be used only if the application has no direct access to TDLib's file system, because it is usually slower than a direct write to the destination file
+        r"""Writes a part of a generated file\. This method is intended to be used only if the application has no direct access to TDLib's file system, because it is usually slower than a direct write to the destination file
 
         Parameters:
             generation_id (:class:`int`):
@@ -10154,8 +9760,7 @@ class TDLibFunctions:
     async def setFileGenerationProgress(
         self, generation_id: int = 0, expected_size: int = 0, local_prefix_size: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib on a file generation progress
+        r"""Informs TDLib on a file generation progress
 
         Parameters:
             generation_id (:class:`int`):
@@ -10183,8 +9788,7 @@ class TDLibFunctions:
     async def finishFileGeneration(
         self, generation_id: int = 0, error: "types.Error" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Finishes the file generation
+        r"""Finishes the file generation
 
         Parameters:
             generation_id (:class:`int`):
@@ -10208,8 +9812,7 @@ class TDLibFunctions:
     async def readFilePart(
         self, file_id: int = 0, offset: int = 0, count: int = 0
     ) -> Union["types.Error", "types.FilePart"]:
-        r"""
-        Reads a part of a file from the TDLib file cache and returns read bytes\. This method is intended to be used only if the application has no direct access to TDLib's file system, because it is usually slower than a direct read from the file
+        r"""Reads a part of a file from the TDLib file cache and returns read bytes\. This method is intended to be used only if the application has no direct access to TDLib's file system, because it is usually slower than a direct read from the file
 
         Parameters:
             file_id (:class:`int`):
@@ -10235,8 +9838,7 @@ class TDLibFunctions:
         )
 
     async def deleteFile(self, file_id: int = 0) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes a file from the TDLib file cache
+        r"""Deletes a file from the TDLib file cache
 
         Parameters:
             file_id (:class:`int`):
@@ -10251,8 +9853,7 @@ class TDLibFunctions:
     async def addFileToDownloads(
         self, file_id: int = 0, chat_id: int = 0, message_id: int = 0, priority: int = 0
     ) -> Union["types.Error", "types.File"]:
-        r"""
-        Adds a file from a message to the list of file downloads\. Download progress and completion of the download will be notified through updateFile updates\. If message database is used, the list of file downloads is persistent across application restarts\. The downloading is independent of download using downloadFile, i\.e\. it continues if downloadFile is canceled or is used to download a part of the file
+        r"""Adds a file from a message to the list of file downloads\. Download progress and completion of the download will be notified through updateFile updates\. If message database is used, the list of file downloads is persistent across application restarts\. The downloading is independent of download using downloadFile, i\.e\. it continues if downloadFile is canceled or is used to download a part of the file
 
         Parameters:
             file_id (:class:`int`):
@@ -10284,8 +9885,7 @@ class TDLibFunctions:
     async def toggleDownloadIsPaused(
         self, file_id: int = 0, is_paused: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes pause state of a file in the file download list
+        r"""Changes pause state of a file in the file download list
 
         Parameters:
             file_id (:class:`int`):
@@ -10309,8 +9909,7 @@ class TDLibFunctions:
     async def toggleAllDownloadsArePaused(
         self, are_paused: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes pause state of all files in the file download list
+        r"""Changes pause state of all files in the file download list
 
         Parameters:
             are_paused (:class:`bool`):
@@ -10327,8 +9926,7 @@ class TDLibFunctions:
     async def removeFileFromDownloads(
         self, file_id: int = 0, delete_from_cache: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a file from the file download list
+        r"""Removes a file from the file download list
 
         Parameters:
             file_id (:class:`int`):
@@ -10355,8 +9953,7 @@ class TDLibFunctions:
         only_completed: bool = False,
         delete_from_cache: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes all files from the file download list
+        r"""Removes all files from the file download list
 
         Parameters:
             only_active (:class:`bool`):
@@ -10389,8 +9986,7 @@ class TDLibFunctions:
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.FoundFileDownloads"]:
-        r"""
-        Searches for files in the file download list or recently downloaded files from the list
+        r"""Searches for files in the file download list or recently downloaded files from the list
 
         Parameters:
             query (:class:`str`):
@@ -10426,8 +10022,7 @@ class TDLibFunctions:
     async def setApplicationVerificationToken(
         self, verification_id: int = 0, token: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Application verification has been completed\. Can be called before authorization
+        r"""Application verification has been completed\. Can be called before authorization
 
         Parameters:
             verification_id (:class:`int`):
@@ -10451,8 +10046,7 @@ class TDLibFunctions:
     async def getMessageFileType(
         self, message_file_head: str = ""
     ) -> Union["types.Error", "types.MessageFileType"]:
-        r"""
-        Returns information about a file with messages exported from another application
+        r"""Returns information about a file with messages exported from another application
 
         Parameters:
             message_file_head (:class:`str`):
@@ -10469,8 +10063,7 @@ class TDLibFunctions:
     async def getMessageImportConfirmationText(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns a confirmation text to be shown to the user before starting message import
+        r"""Returns a confirmation text to be shown to the user before starting message import
 
         Parameters:
             chat_id (:class:`int`):
@@ -10490,8 +10083,7 @@ class TDLibFunctions:
         message_file: "types.InputFile" = None,
         attached_files: List["types.InputFile"] = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Imports messages exported from another app
+        r"""Imports messages exported from another app
 
         Parameters:
             chat_id (:class:`int`):
@@ -10519,8 +10111,7 @@ class TDLibFunctions:
     async def replacePrimaryChatInviteLink(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.ChatInviteLink"]:
-        r"""
-        Replaces current primary invite link for a chat with a new primary invite link\. Available for basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right
+        r"""Replaces current primary invite link for a chat with a new primary invite link\. Available for basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right
 
         Parameters:
             chat_id (:class:`int`):
@@ -10542,8 +10133,7 @@ class TDLibFunctions:
         member_limit: int = 0,
         creates_join_request: bool = False,
     ) -> Union["types.Error", "types.ChatInviteLink"]:
-        r"""
-        Creates a new invite link for a chat\. Available for basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right in the chat
+        r"""Creates a new invite link for a chat\. Available for basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right in the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -10582,8 +10172,7 @@ class TDLibFunctions:
         name: str = "",
         subscription_pricing: "types.StarSubscriptionPricing" = None,
     ) -> Union["types.Error", "types.ChatInviteLink"]:
-        r"""
-        Creates a new subscription invite link for a channel chat\. Requires can\_invite\_users right in the chat
+        r"""Creates a new subscription invite link for a channel chat\. Requires can\_invite\_users right in the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -10617,8 +10206,7 @@ class TDLibFunctions:
         member_limit: int = 0,
         creates_join_request: bool = False,
     ) -> Union["types.Error", "types.ChatInviteLink"]:
-        r"""
-        Edits a non\-primary invite link for a chat\. Available for basic groups, supergroups, and channels\. If the link creates a subscription, then expiration\_date, member\_limit and creates\_join\_request must not be used\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
+        r"""Edits a non\-primary invite link for a chat\. Available for basic groups, supergroups, and channels\. If the link creates a subscription, then expiration\_date, member\_limit and creates\_join\_request must not be used\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Parameters:
             chat_id (:class:`int`):
@@ -10658,8 +10246,7 @@ class TDLibFunctions:
     async def editChatSubscriptionInviteLink(
         self, chat_id: int = 0, invite_link: str = "", name: str = ""
     ) -> Union["types.Error", "types.ChatInviteLink"]:
-        r"""
-        Edits a subscription invite link for a channel chat\. Requires can\_invite\_users right in the chat for own links and owner privileges for other links
+        r"""Edits a subscription invite link for a channel chat\. Requires can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Parameters:
             chat_id (:class:`int`):
@@ -10687,8 +10274,7 @@ class TDLibFunctions:
     async def getChatInviteLink(
         self, chat_id: int = 0, invite_link: str = ""
     ) -> Union["types.Error", "types.ChatInviteLink"]:
-        r"""
-        Returns information about an invite link\. Requires administrator privileges and can\_invite\_users right in the chat to get own links and owner privileges to get other links
+        r"""Returns information about an invite link\. Requires administrator privileges and can\_invite\_users right in the chat to get own links and owner privileges to get other links
 
         Parameters:
             chat_id (:class:`int`):
@@ -10712,8 +10298,7 @@ class TDLibFunctions:
     async def getChatInviteLinkCounts(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.ChatInviteLinkCounts"]:
-        r"""
-        Returns the list of chat administrators with number of their invite links\. Requires owner privileges in the chat
+        r"""Returns the list of chat administrators with number of their invite links\. Requires owner privileges in the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -10736,8 +10321,7 @@ class TDLibFunctions:
         offset_invite_link: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.ChatInviteLinks"]:
-        r"""
-        Returns invite links for a chat created by specified administrator\. Requires administrator privileges and can\_invite\_users right in the chat to get own links and owner privileges to get other links
+        r"""Returns invite links for a chat created by specified administrator\. Requires administrator privileges and can\_invite\_users right in the chat to get own links and owner privileges to get other links
 
         Parameters:
             chat_id (:class:`int`):
@@ -10782,8 +10366,7 @@ class TDLibFunctions:
         offset_member: "types.ChatInviteLinkMember" = None,
         limit: int = 0,
     ) -> Union["types.Error", "types.ChatInviteLinkMembers"]:
-        r"""
-        Returns chat members joined a chat via an invite link\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
+        r"""Returns chat members joined a chat via an invite link\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Parameters:
             chat_id (:class:`int`):
@@ -10819,8 +10402,7 @@ class TDLibFunctions:
     async def revokeChatInviteLink(
         self, chat_id: int = 0, invite_link: str = ""
     ) -> Union["types.Error", "types.ChatInviteLinks"]:
-        r"""
-        Revokes invite link for a chat\. Available for basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links\. If a primary link is revoked, then additionally to the revoked link returns new primary link
+        r"""Revokes invite link for a chat\. Available for basic groups, supergroups, and channels\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links\. If a primary link is revoked, then additionally to the revoked link returns new primary link
 
         Parameters:
             chat_id (:class:`int`):
@@ -10844,8 +10426,7 @@ class TDLibFunctions:
     async def deleteRevokedChatInviteLink(
         self, chat_id: int = 0, invite_link: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes revoked chat invite links\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
+        r"""Deletes revoked chat invite links\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Parameters:
             chat_id (:class:`int`):
@@ -10869,8 +10450,7 @@ class TDLibFunctions:
     async def deleteAllRevokedChatInviteLinks(
         self, chat_id: int = 0, creator_user_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes all revoked chat invite links created by a given chat administrator\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
+        r"""Deletes all revoked chat invite links created by a given chat administrator\. Requires administrator privileges and can\_invite\_users right in the chat for own links and owner privileges for other links
 
         Parameters:
             chat_id (:class:`int`):
@@ -10894,8 +10474,7 @@ class TDLibFunctions:
     async def checkChatInviteLink(
         self, invite_link: str = ""
     ) -> Union["types.Error", "types.ChatInviteLinkInfo"]:
-        r"""
-        Checks the validity of an invite link for a chat and returns information about the corresponding chat
+        r"""Checks the validity of an invite link for a chat and returns information about the corresponding chat
 
         Parameters:
             invite_link (:class:`str`):
@@ -10912,8 +10491,7 @@ class TDLibFunctions:
     async def joinChatByInviteLink(
         self, invite_link: str = ""
     ) -> Union["types.Error", "types.Chat"]:
-        r"""
-        Uses an invite link to add the current user to the chat if possible\. May return an error with a message \"INVITE\_REQUEST\_SENT\" if only a join request was created
+        r"""Uses an invite link to add the current user to the chat if possible\. May return an error with a message \"INVITE\_REQUEST\_SENT\" if only a join request was created
 
         Parameters:
             invite_link (:class:`str`):
@@ -10935,8 +10513,7 @@ class TDLibFunctions:
         offset_request: "types.ChatJoinRequest" = None,
         limit: int = 0,
     ) -> Union["types.Error", "types.ChatJoinRequests"]:
-        r"""
-        Returns pending join requests in a chat
+        r"""Returns pending join requests in a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -10972,8 +10549,7 @@ class TDLibFunctions:
     async def processChatJoinRequest(
         self, chat_id: int = 0, user_id: int = 0, approve: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Handles a pending join request in a chat
+        r"""Handles a pending join request in a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -11001,8 +10577,7 @@ class TDLibFunctions:
     async def processChatJoinRequests(
         self, chat_id: int = 0, invite_link: str = "", approve: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Handles all pending join requests for a given link in a chat
+        r"""Handles all pending join requests for a given link in a chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -11033,8 +10608,7 @@ class TDLibFunctions:
         protocol: "types.CallProtocol" = None,
         is_video: bool = False,
     ) -> Union["types.Error", "types.CallId"]:
-        r"""
-        Creates a new call
+        r"""Creates a new call
 
         Parameters:
             user_id (:class:`int`):
@@ -11062,8 +10636,7 @@ class TDLibFunctions:
     async def acceptCall(
         self, call_id: int = 0, protocol: "types.CallProtocol" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Accepts an incoming call
+        r"""Accepts an incoming call
 
         Parameters:
             call_id (:class:`int`):
@@ -11083,8 +10656,7 @@ class TDLibFunctions:
     async def sendCallSignalingData(
         self, call_id: int = 0, data: bytes = b""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends call signaling data
+        r"""Sends call signaling data
 
         Parameters:
             call_id (:class:`int`):
@@ -11109,8 +10681,7 @@ class TDLibFunctions:
         is_video: bool = False,
         connection_id: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Discards a call
+        r"""Discards a call
 
         Parameters:
             call_id (:class:`int`):
@@ -11150,8 +10721,7 @@ class TDLibFunctions:
         comment: str = "",
         problems: List["types.CallProblem"] = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends a call rating
+        r"""Sends a call rating
 
         Parameters:
             call_id (:class:`int`):
@@ -11183,8 +10753,7 @@ class TDLibFunctions:
     async def sendCallDebugInformation(
         self, call_id: int = 0, debug_information: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends debug information for a call to Telegram servers
+        r"""Sends debug information for a call to Telegram servers
 
         Parameters:
             call_id (:class:`int`):
@@ -11208,8 +10777,7 @@ class TDLibFunctions:
     async def sendCallLog(
         self, call_id: int = 0, log_file: "types.InputFile" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends log file for a call to Telegram servers
+        r"""Sends log file for a call to Telegram servers
 
         Parameters:
             call_id (:class:`int`):
@@ -11229,8 +10797,7 @@ class TDLibFunctions:
     async def getVideoChatAvailableParticipants(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.MessageSenders"]:
-        r"""
-        Returns the list of participant identifiers, on whose behalf a video chat in the chat can be joined
+        r"""Returns the list of participant identifiers, on whose behalf a video chat in the chat can be joined
 
         Parameters:
             chat_id (:class:`int`):
@@ -11247,8 +10814,7 @@ class TDLibFunctions:
     async def setVideoChatDefaultParticipant(
         self, chat_id: int = 0, default_participant_id: "types.MessageSender" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes default participant identifier, on whose behalf a video chat in the chat will be joined
+        r"""Changes default participant identifier, on whose behalf a video chat in the chat will be joined
 
         Parameters:
             chat_id (:class:`int`):
@@ -11276,8 +10842,7 @@ class TDLibFunctions:
         start_date: int = 0,
         is_rtmp_stream: bool = False,
     ) -> Union["types.Error", "types.GroupCallId"]:
-        r"""
-        Creates a video chat \(a group call bound to a chat\)\. Available only for basic groups, supergroups and channels; requires can\_manage\_video\_chats administrator right
+        r"""Creates a video chat \(a group call bound to a chat\)\. Available only for basic groups, supergroups and channels; requires can\_manage\_video\_chats administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -11309,8 +10874,7 @@ class TDLibFunctions:
     async def getVideoChatRtmpUrl(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.RtmpUrl"]:
-        r"""
-        Returns RTMP URL for streaming to the chat; requires owner privileges
+        r"""Returns RTMP URL for streaming to the chat; requires owner privileges
 
         Parameters:
             chat_id (:class:`int`):
@@ -11325,8 +10889,7 @@ class TDLibFunctions:
     async def replaceVideoChatRtmpUrl(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.RtmpUrl"]:
-        r"""
-        Replaces the current RTMP URL for streaming to the chat; requires owner privileges
+        r"""Replaces the current RTMP URL for streaming to the chat; requires owner privileges
 
         Parameters:
             chat_id (:class:`int`):
@@ -11343,8 +10906,7 @@ class TDLibFunctions:
     async def getGroupCall(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.GroupCall"]:
-        r"""
-        Returns information about a group call
+        r"""Returns information about a group call
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11361,8 +10923,7 @@ class TDLibFunctions:
     async def startScheduledGroupCall(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Starts a scheduled group call
+        r"""Starts a scheduled group call
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11379,8 +10940,7 @@ class TDLibFunctions:
     async def toggleGroupCallEnabledStartNotification(
         self, group_call_id: int = 0, enabled_start_notification: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether the current user will receive a notification when the group call starts; scheduled group calls only
+        r"""Toggles whether the current user will receive a notification when the group call starts; scheduled group calls only
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11411,8 +10971,7 @@ class TDLibFunctions:
         is_my_video_enabled: bool = False,
         invite_hash: str = "",
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Joins an active group call\. Returns join response payload for tgcalls
+        r"""Joins an active group call\. Returns join response payload for tgcalls
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11456,8 +11015,7 @@ class TDLibFunctions:
     async def startGroupCallScreenSharing(
         self, group_call_id: int = 0, audio_source_id: int = 0, payload: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Starts screen sharing in a joined group call\. Returns join response payload for tgcalls
+        r"""Starts screen sharing in a joined group call\. Returns join response payload for tgcalls
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11485,8 +11043,7 @@ class TDLibFunctions:
     async def toggleGroupCallScreenSharingIsPaused(
         self, group_call_id: int = 0, is_paused: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Pauses or unpauses screen sharing in a joined group call
+        r"""Pauses or unpauses screen sharing in a joined group call
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11510,8 +11067,7 @@ class TDLibFunctions:
     async def endGroupCallScreenSharing(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Ends screen sharing in a joined group call
+        r"""Ends screen sharing in a joined group call
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11528,8 +11084,7 @@ class TDLibFunctions:
     async def setGroupCallTitle(
         self, group_call_id: int = 0, title: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets group call title\. Requires groupCall\.can\_be\_managed group call flag
+        r"""Sets group call title\. Requires groupCall\.can\_be\_managed group call flag
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11553,8 +11108,7 @@ class TDLibFunctions:
     async def toggleGroupCallMuteNewParticipants(
         self, group_call_id: int = 0, mute_new_participants: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether new participants of a group call can be unmuted only by administrators of the group call\. Requires groupCall\.can\_toggle\_mute\_new\_participants group call flag
+        r"""Toggles whether new participants of a group call can be unmuted only by administrators of the group call\. Requires groupCall\.can\_toggle\_mute\_new\_participants group call flag
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11578,8 +11132,7 @@ class TDLibFunctions:
     async def inviteGroupCallParticipants(
         self, group_call_id: int = 0, user_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Invites users to an active group call\. Sends a service message of type messageInviteVideoChatParticipants for video chats
+        r"""Invites users to an active group call\. Sends a service message of type messageInviteVideoChatParticipants for video chats
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11603,8 +11156,7 @@ class TDLibFunctions:
     async def getGroupCallInviteLink(
         self, group_call_id: int = 0, can_self_unmute: bool = False
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns invite link to a video chat in a public chat
+        r"""Returns invite link to a video chat in a public chat
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11628,8 +11180,7 @@ class TDLibFunctions:
     async def revokeGroupCallInviteLink(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Revokes invite link for a group call\. Requires groupCall\.can\_be\_managed group call flag
+        r"""Revokes invite link for a group call\. Requires groupCall\.can\_be\_managed group call flag
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11650,8 +11201,7 @@ class TDLibFunctions:
         record_video: bool = False,
         use_portrait_orientation: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Starts recording of an active group call\. Requires groupCall\.can\_be\_managed group call flag
+        r"""Starts recording of an active group call\. Requires groupCall\.can\_be\_managed group call flag
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11683,8 +11233,7 @@ class TDLibFunctions:
     async def endGroupCallRecording(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Ends recording of an active group call\. Requires groupCall\.can\_be\_managed group call flag
+        r"""Ends recording of an active group call\. Requires groupCall\.can\_be\_managed group call flag
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11701,8 +11250,7 @@ class TDLibFunctions:
     async def toggleGroupCallIsMyVideoPaused(
         self, group_call_id: int = 0, is_my_video_paused: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether current user's video is paused
+        r"""Toggles whether current user's video is paused
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11726,8 +11274,7 @@ class TDLibFunctions:
     async def toggleGroupCallIsMyVideoEnabled(
         self, group_call_id: int = 0, is_my_video_enabled: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether current user's video is enabled
+        r"""Toggles whether current user's video is enabled
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11751,8 +11298,7 @@ class TDLibFunctions:
     async def setGroupCallParticipantIsSpeaking(
         self, group_call_id: int = 0, audio_source: int = 0, is_speaking: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that speaking state of a participant of an active group has changed
+        r"""Informs TDLib that speaking state of a participant of an active group has changed
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11783,8 +11329,7 @@ class TDLibFunctions:
         participant_id: "types.MessageSender" = None,
         is_muted: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether a participant of an active group call is muted, unmuted, or allowed to unmute themselves
+        r"""Toggles whether a participant of an active group call is muted, unmuted, or allowed to unmute themselves
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11815,8 +11360,7 @@ class TDLibFunctions:
         participant_id: "types.MessageSender" = None,
         volume_level: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes volume level of a participant of an active group call\. If the current user can manage the group call, then the participant's volume level will be changed for all users with the default volume level
+        r"""Changes volume level of a participant of an active group call\. If the current user can manage the group call, then the participant's volume level will be changed for all users with the default volume level
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11847,8 +11391,7 @@ class TDLibFunctions:
         participant_id: "types.MessageSender" = None,
         is_hand_raised: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether a group call participant hand is rased
+        r"""Toggles whether a group call participant hand is rased
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11876,8 +11419,7 @@ class TDLibFunctions:
     async def loadGroupCallParticipants(
         self, group_call_id: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Loads more participants of a group call\. The loaded participants will be received through updates\. Use the field groupCall\.loaded\_all\_participants to check whether all participants have already been loaded
+        r"""Loads more participants of a group call\. The loaded participants will be received through updates\. Use the field groupCall\.loaded\_all\_participants to check whether all participants have already been loaded
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11901,8 +11443,7 @@ class TDLibFunctions:
     async def leaveGroupCall(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Leaves a group call
+        r"""Leaves a group call
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11919,8 +11460,7 @@ class TDLibFunctions:
     async def endGroupCall(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Ends a group call\. Requires groupCall\.can\_be\_managed
+        r"""Ends a group call\. Requires groupCall\.can\_be\_managed
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11937,8 +11477,7 @@ class TDLibFunctions:
     async def getGroupCallStreams(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.GroupCallStreams"]:
-        r"""
-        Returns information about available group call streams
+        r"""Returns information about available group call streams
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11960,8 +11499,7 @@ class TDLibFunctions:
         channel_id: int = 0,
         video_quality: "types.GroupCallVideoQuality" = None,
     ) -> Union["types.Error", "types.FilePart"]:
-        r"""
-        Returns a file with a segment of a group call stream in a modified OGG format for audio or MPEG\-4 format for video
+        r"""Returns a file with a segment of a group call stream in a modified OGG format for audio or MPEG\-4 format for video
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11999,8 +11537,7 @@ class TDLibFunctions:
         sender_id: "types.MessageSender" = None,
         block_list: "types.BlockList" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the block list of a message sender\. Currently, only users and supergroup chats can be blocked
+        r"""Changes the block list of a message sender\. Currently, only users and supergroup chats can be blocked
 
         Parameters:
             sender_id (:class:`"types.MessageSender"`):
@@ -12028,8 +11565,7 @@ class TDLibFunctions:
         delete_all_messages: bool = False,
         report_spam: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Blocks an original sender of a message in the Replies chat
+        r"""Blocks an original sender of a message in the Replies chat
 
         Parameters:
             message_id (:class:`int`):
@@ -12061,8 +11597,7 @@ class TDLibFunctions:
     async def getBlockedMessageSenders(
         self, block_list: "types.BlockList" = None, offset: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.MessageSenders"]:
-        r"""
-        Returns users and chats that were blocked by the current user
+        r"""Returns users and chats that were blocked by the current user
 
         Parameters:
             block_list (:class:`"types.BlockList"`):
@@ -12090,8 +11625,7 @@ class TDLibFunctions:
     async def addContact(
         self, contact: "types.Contact" = None, share_phone_number: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds a user to the contact list or edits an existing contact by their user identifier
+        r"""Adds a user to the contact list or edits an existing contact by their user identifier
 
         Parameters:
             contact (:class:`"types.Contact"`):
@@ -12115,8 +11649,7 @@ class TDLibFunctions:
     async def importContacts(
         self, contacts: List["types.Contact"] = None
     ) -> Union["types.Error", "types.ImportedContacts"]:
-        r"""
-        Adds new contacts or edits existing contacts by their phone numbers; contacts' user identifiers are ignored
+        r"""Adds new contacts or edits existing contacts by their phone numbers; contacts' user identifiers are ignored
 
         Parameters:
             contacts (:class:`List["types.Contact"]`):
@@ -12129,8 +11662,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "importContacts", "contacts": contacts})
 
     async def getContacts(self) -> Union["types.Error", "types.Users"]:
-        r"""
-        Returns all contacts of the user
+        r"""Returns all contacts of the user
 
         Returns:
             :class:`~pytdbot.types.Users`
@@ -12145,8 +11677,7 @@ class TDLibFunctions:
     async def searchContacts(
         self, query: str = "", limit: int = 0
     ) -> Union["types.Error", "types.Users"]:
-        r"""
-        Searches for the specified query in the first names, last names and usernames of the known user contacts
+        r"""Searches for the specified query in the first names, last names and usernames of the known user contacts
 
         Parameters:
             query (:class:`str`):
@@ -12166,8 +11697,7 @@ class TDLibFunctions:
     async def removeContacts(
         self, user_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes users from the contact list
+        r"""Removes users from the contact list
 
         Parameters:
             user_ids (:class:`List[int]`):
@@ -12180,8 +11710,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "removeContacts", "user_ids": user_ids})
 
     async def getImportedContactCount(self) -> Union["types.Error", "types.Count"]:
-        r"""
-        Returns the total number of imported contacts
+        r"""Returns the total number of imported contacts
 
         Returns:
             :class:`~pytdbot.types.Count`
@@ -12196,8 +11725,7 @@ class TDLibFunctions:
     async def changeImportedContacts(
         self, contacts: List["types.Contact"] = None
     ) -> Union["types.Error", "types.ImportedContacts"]:
-        r"""
-        Changes imported contacts using the list of contacts saved on the device\. Imports newly added contacts and, if at least the file database is enabled, deletes recently deleted contacts\. Query result depends on the result of the previous query, so only one query is possible at the same time
+        r"""Changes imported contacts using the list of contacts saved on the device\. Imports newly added contacts and, if at least the file database is enabled, deletes recently deleted contacts\. Query result depends on the result of the previous query, so only one query is possible at the same time
 
         Parameters:
             contacts (:class:`List["types.Contact"]`):
@@ -12212,8 +11740,7 @@ class TDLibFunctions:
         )
 
     async def clearImportedContacts(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Clears all imported contacts, contact list remains unchanged
+        r"""Clears all imported contacts, contact list remains unchanged
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -12228,8 +11755,7 @@ class TDLibFunctions:
     async def setCloseFriends(
         self, user_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the list of close friends of the current user
+        r"""Changes the list of close friends of the current user
 
         Parameters:
             user_ids (:class:`List[int]`):
@@ -12242,8 +11768,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "setCloseFriends", "user_ids": user_ids})
 
     async def getCloseFriends(self) -> Union["types.Error", "types.Users"]:
-        r"""
-        Returns all close friends of the current user
+        r"""Returns all close friends of the current user
 
         Returns:
             :class:`~pytdbot.types.Users`
@@ -12258,8 +11783,7 @@ class TDLibFunctions:
     async def setUserPersonalProfilePhoto(
         self, user_id: int = 0, photo: "types.InputChatPhoto" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes a personal profile photo of a contact user
+        r"""Changes a personal profile photo of a contact user
 
         Parameters:
             user_id (:class:`int`):
@@ -12279,8 +11803,7 @@ class TDLibFunctions:
     async def suggestUserProfilePhoto(
         self, user_id: int = 0, photo: "types.InputChatPhoto" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Suggests a profile photo to another regular user with common messages
+        r"""Suggests a profile photo to another regular user with common messages
 
         Parameters:
             user_id (:class:`int`):
@@ -12300,8 +11823,7 @@ class TDLibFunctions:
     async def searchUserByPhoneNumber(
         self, phone_number: str = "", only_local: bool = False
     ) -> Union["types.Error", "types.User"]:
-        r"""
-        Searches a user by their phone number\. Returns a 404 error if the user can't be found
+        r"""Searches a user by their phone number\. Returns a 404 error if the user can't be found
 
         Parameters:
             phone_number (:class:`str`):
@@ -12325,8 +11847,7 @@ class TDLibFunctions:
     async def sharePhoneNumber(
         self, user_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Shares the phone number of the current user with a mutual contact\. Supposed to be called when the user clicks on chatActionBarSharePhoneNumber
+        r"""Shares the phone number of the current user with a mutual contact\. Supposed to be called when the user clicks on chatActionBarSharePhoneNumber
 
         Parameters:
             user_id (:class:`int`):
@@ -12341,8 +11862,7 @@ class TDLibFunctions:
     async def getUserProfilePhotos(
         self, user_id: int = 0, offset: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.ChatPhotos"]:
-        r"""
-        Returns the profile photos of a user\. Personal and public photo aren't returned
+        r"""Returns the profile photos of a user\. Personal and public photo aren't returned
 
         Parameters:
             user_id (:class:`int`):
@@ -12374,8 +11894,7 @@ class TDLibFunctions:
         limit: int = 0,
         chat_id: int = 0,
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns stickers from the installed sticker sets that correspond to any of the given emoji or can be found by sticker\-specific keywords\. If the query is non\-empty, then favorite, recently used or trending stickers may also be returned
+        r"""Returns stickers from the installed sticker sets that correspond to any of the given emoji or can be found by sticker\-specific keywords\. If the query is non\-empty, then favorite, recently used or trending stickers may also be returned
 
         Parameters:
             sticker_type (:class:`"types.StickerType"`):
@@ -12411,8 +11930,7 @@ class TDLibFunctions:
         chat_id: int = 0,
         return_only_main_emoji: bool = False,
     ) -> Union["types.Error", "types.Emojis"]:
-        r"""
-        Returns unique emoji that correspond to stickers to be found by the getStickers\(sticker\_type, query, 1000000, chat\_id\)
+        r"""Returns unique emoji that correspond to stickers to be found by the getStickers\(sticker\_type, query, 1000000, chat\_id\)
 
         Parameters:
             sticker_type (:class:`"types.StickerType"`):
@@ -12444,8 +11962,7 @@ class TDLibFunctions:
     async def searchStickers(
         self, sticker_type: "types.StickerType" = None, emojis: str = "", limit: int = 0
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Searches for stickers from public sticker sets that correspond to any of the given emoji
+        r"""Searches for stickers from public sticker sets that correspond to any of the given emoji
 
         Parameters:
             sticker_type (:class:`"types.StickerType"`):
@@ -12471,8 +11988,7 @@ class TDLibFunctions:
         )
 
     async def getGreetingStickers(self) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns greeting stickers from regular sticker sets that can be used for the start page of other users
+        r"""Returns greeting stickers from regular sticker sets that can be used for the start page of other users
 
         Returns:
             :class:`~pytdbot.types.Stickers`
@@ -12487,8 +12003,7 @@ class TDLibFunctions:
     async def getPremiumStickers(
         self, limit: int = 0
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns premium stickers from regular sticker sets
+        r"""Returns premium stickers from regular sticker sets
 
         Parameters:
             limit (:class:`int`):
@@ -12503,8 +12018,7 @@ class TDLibFunctions:
     async def getInstalledStickerSets(
         self, sticker_type: "types.StickerType" = None
     ) -> Union["types.Error", "types.StickerSets"]:
-        r"""
-        Returns a list of installed sticker sets
+        r"""Returns a list of installed sticker sets
 
         Parameters:
             sticker_type (:class:`"types.StickerType"`):
@@ -12524,8 +12038,7 @@ class TDLibFunctions:
         offset_sticker_set_id: int = 0,
         limit: int = 0,
     ) -> Union["types.Error", "types.StickerSets"]:
-        r"""
-        Returns a list of archived sticker sets
+        r"""Returns a list of archived sticker sets
 
         Parameters:
             sticker_type (:class:`"types.StickerType"`):
@@ -12553,8 +12066,7 @@ class TDLibFunctions:
     async def getTrendingStickerSets(
         self, sticker_type: "types.StickerType" = None, offset: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.TrendingStickerSets"]:
-        r"""
-        Returns a list of trending sticker sets\. For optimal performance, the number of returned sticker sets is chosen by TDLib
+        r"""Returns a list of trending sticker sets\. For optimal performance, the number of returned sticker sets is chosen by TDLib
 
         Parameters:
             sticker_type (:class:`"types.StickerType"`):
@@ -12582,8 +12094,7 @@ class TDLibFunctions:
     async def getAttachedStickerSets(
         self, file_id: int = 0
     ) -> Union["types.Error", "types.StickerSets"]:
-        r"""
-        Returns a list of sticker sets attached to a file, including regular, mask, and emoji sticker sets\. Currently, only animations, photos, and videos can have attached sticker sets
+        r"""Returns a list of sticker sets attached to a file, including regular, mask, and emoji sticker sets\. Currently, only animations, photos, and videos can have attached sticker sets
 
         Parameters:
             file_id (:class:`int`):
@@ -12600,8 +12111,7 @@ class TDLibFunctions:
     async def getStickerSet(
         self, set_id: int = 0
     ) -> Union["types.Error", "types.StickerSet"]:
-        r"""
-        Returns information about a sticker set by its identifier
+        r"""Returns information about a sticker set by its identifier
 
         Parameters:
             set_id (:class:`int`):
@@ -12616,8 +12126,7 @@ class TDLibFunctions:
     async def getStickerSetName(
         self, set_id: int = 0
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns name of a sticker set by its identifier
+        r"""Returns name of a sticker set by its identifier
 
         Parameters:
             set_id (:class:`int`):
@@ -12632,8 +12141,7 @@ class TDLibFunctions:
     async def searchStickerSet(
         self, name: str = ""
     ) -> Union["types.Error", "types.StickerSet"]:
-        r"""
-        Searches for a sticker set by its name
+        r"""Searches for a sticker set by its name
 
         Parameters:
             name (:class:`str`):
@@ -12648,8 +12156,7 @@ class TDLibFunctions:
     async def searchInstalledStickerSets(
         self, sticker_type: "types.StickerType" = None, query: str = "", limit: int = 0
     ) -> Union["types.Error", "types.StickerSets"]:
-        r"""
-        Searches for installed sticker sets by looking for specified query in their title and name
+        r"""Searches for installed sticker sets by looking for specified query in their title and name
 
         Parameters:
             sticker_type (:class:`"types.StickerType"`):
@@ -12677,8 +12184,7 @@ class TDLibFunctions:
     async def searchStickerSets(
         self, sticker_type: "types.StickerType" = None, query: str = ""
     ) -> Union["types.Error", "types.StickerSets"]:
-        r"""
-        Searches for sticker sets by looking for specified query in their title and name\. Excludes installed sticker sets from the results
+        r"""Searches for sticker sets by looking for specified query in their title and name\. Excludes installed sticker sets from the results
 
         Parameters:
             sticker_type (:class:`"types.StickerType"`):
@@ -12698,8 +12204,7 @@ class TDLibFunctions:
     async def changeStickerSet(
         self, set_id: int = 0, is_installed: bool = False, is_archived: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Installs/uninstalls or activates/archives a sticker set
+        r"""Installs/uninstalls or activates/archives a sticker set
 
         Parameters:
             set_id (:class:`int`):
@@ -12727,8 +12232,7 @@ class TDLibFunctions:
     async def viewTrendingStickerSets(
         self, sticker_set_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs the server that some trending sticker sets have been viewed by the user
+        r"""Informs the server that some trending sticker sets have been viewed by the user
 
         Parameters:
             sticker_set_ids (:class:`List[int]`):
@@ -12747,8 +12251,7 @@ class TDLibFunctions:
         sticker_type: "types.StickerType" = None,
         sticker_set_ids: List[int] = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the order of installed sticker sets
+        r"""Changes the order of installed sticker sets
 
         Parameters:
             sticker_type (:class:`"types.StickerType"`):
@@ -12772,8 +12275,7 @@ class TDLibFunctions:
     async def getRecentStickers(
         self, is_attached: bool = False
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns a list of recently used stickers
+        r"""Returns a list of recently used stickers
 
         Parameters:
             is_attached (:class:`bool`):
@@ -12790,8 +12292,7 @@ class TDLibFunctions:
     async def addRecentSticker(
         self, is_attached: bool = False, sticker: "types.InputFile" = None
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Manually adds a new sticker to the list of recently used stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP or WEBM format can be added to this list\. Emoji stickers can't be added to recent stickers
+        r"""Manually adds a new sticker to the list of recently used stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP or WEBM format can be added to this list\. Emoji stickers can't be added to recent stickers
 
         Parameters:
             is_attached (:class:`bool`):
@@ -12815,8 +12316,7 @@ class TDLibFunctions:
     async def removeRecentSticker(
         self, is_attached: bool = False, sticker: "types.InputFile" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a sticker from the list of recently used stickers
+        r"""Removes a sticker from the list of recently used stickers
 
         Parameters:
             is_attached (:class:`bool`):
@@ -12840,8 +12340,7 @@ class TDLibFunctions:
     async def clearRecentStickers(
         self, is_attached: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Clears the list of recently used stickers
+        r"""Clears the list of recently used stickers
 
         Parameters:
             is_attached (:class:`bool`):
@@ -12856,8 +12355,7 @@ class TDLibFunctions:
         )
 
     async def getFavoriteStickers(self) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns favorite stickers
+        r"""Returns favorite stickers
 
         Returns:
             :class:`~pytdbot.types.Stickers`
@@ -12872,8 +12370,7 @@ class TDLibFunctions:
     async def addFavoriteSticker(
         self, sticker: "types.InputFile" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds a new sticker to the list of favorite stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP or WEBM format can be added to this list\. Emoji stickers can't be added to favorite stickers
+        r"""Adds a new sticker to the list of favorite stickers\. The new sticker is added to the top of the list\. If the sticker was already in the list, it is removed from the list first\. Only stickers belonging to a sticker set or in WEBP or WEBM format can be added to this list\. Emoji stickers can't be added to favorite stickers
 
         Parameters:
             sticker (:class:`"types.InputFile"`):
@@ -12888,8 +12385,7 @@ class TDLibFunctions:
     async def removeFavoriteSticker(
         self, sticker: "types.InputFile" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a sticker from the list of favorite stickers
+        r"""Removes a sticker from the list of favorite stickers
 
         Parameters:
             sticker (:class:`"types.InputFile"`):
@@ -12904,8 +12400,7 @@ class TDLibFunctions:
     async def getStickerEmojis(
         self, sticker: "types.InputFile" = None
     ) -> Union["types.Error", "types.Emojis"]:
-        r"""
-        Returns emoji corresponding to a sticker\. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object
+        r"""Returns emoji corresponding to a sticker\. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object
 
         Parameters:
             sticker (:class:`"types.InputFile"`):
@@ -12920,8 +12415,7 @@ class TDLibFunctions:
     async def searchEmojis(
         self, text: str = "", input_language_codes: List[str] = None
     ) -> Union["types.Error", "types.EmojiKeywords"]:
-        r"""
-        Searches for emojis by keywords\. Supported only if the file database is enabled\. Order of results is unspecified
+        r"""Searches for emojis by keywords\. Supported only if the file database is enabled\. Order of results is unspecified
 
         Parameters:
             text (:class:`str`):
@@ -12945,8 +12439,7 @@ class TDLibFunctions:
     async def getKeywordEmojis(
         self, text: str = "", input_language_codes: List[str] = None
     ) -> Union["types.Error", "types.Emojis"]:
-        r"""
-        Return emojis matching the keyword\. Supported only if the file database is enabled\. Order of results is unspecified
+        r"""Return emojis matching the keyword\. Supported only if the file database is enabled\. Order of results is unspecified
 
         Parameters:
             text (:class:`str`):
@@ -12970,8 +12463,7 @@ class TDLibFunctions:
     async def getEmojiCategories(
         self, type: "types.EmojiCategoryType" = None
     ) -> Union["types.Error", "types.EmojiCategories"]:
-        r"""
-        Returns available emoji categories
+        r"""Returns available emoji categories
 
         Parameters:
             type (:class:`"types.EmojiCategoryType"`):
@@ -12986,8 +12478,7 @@ class TDLibFunctions:
     async def getAnimatedEmoji(
         self, emoji: str = ""
     ) -> Union["types.Error", "types.AnimatedEmoji"]:
-        r"""
-        Returns an animated emoji corresponding to a given emoji\. Returns a 404 error if the emoji has no animated emoji
+        r"""Returns an animated emoji corresponding to a given emoji\. Returns a 404 error if the emoji has no animated emoji
 
         Parameters:
             emoji (:class:`str`):
@@ -13002,8 +12493,7 @@ class TDLibFunctions:
     async def getEmojiSuggestionsUrl(
         self, language_code: str = ""
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns an HTTP URL which can be used to automatically log in to the translation platform and suggest new emoji replacements\. The URL will be valid for 30 seconds after generation
+        r"""Returns an HTTP URL which can be used to automatically log in to the translation platform and suggest new emoji replacements\. The URL will be valid for 30 seconds after generation
 
         Parameters:
             language_code (:class:`str`):
@@ -13020,8 +12510,7 @@ class TDLibFunctions:
     async def getCustomEmojiStickers(
         self, custom_emoji_ids: List[int] = None
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns the list of custom emoji stickers by their identifiers\. Stickers are returned in arbitrary order\. Only found stickers are returned
+        r"""Returns the list of custom emoji stickers by their identifiers\. Stickers are returned in arbitrary order\. Only found stickers are returned
 
         Parameters:
             custom_emoji_ids (:class:`List[int]`):
@@ -13038,8 +12527,7 @@ class TDLibFunctions:
     async def getDefaultChatPhotoCustomEmojiStickers(
         self,
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns default list of custom emoji stickers for placing on a chat photo
+        r"""Returns default list of custom emoji stickers for placing on a chat photo
 
         Returns:
             :class:`~pytdbot.types.Stickers`
@@ -13054,8 +12542,7 @@ class TDLibFunctions:
     async def getDefaultProfilePhotoCustomEmojiStickers(
         self,
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns default list of custom emoji stickers for placing on a profile photo
+        r"""Returns default list of custom emoji stickers for placing on a profile photo
 
         Returns:
             :class:`~pytdbot.types.Stickers`
@@ -13070,8 +12557,7 @@ class TDLibFunctions:
     async def getDefaultBackgroundCustomEmojiStickers(
         self,
     ) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns default list of custom emoji stickers for reply background
+        r"""Returns default list of custom emoji stickers for reply background
 
         Returns:
             :class:`~pytdbot.types.Stickers`
@@ -13084,8 +12570,7 @@ class TDLibFunctions:
         )
 
     async def getSavedAnimations(self) -> Union["types.Error", "types.Animations"]:
-        r"""
-        Returns saved animations
+        r"""Returns saved animations
 
         Returns:
             :class:`~pytdbot.types.Animations`
@@ -13100,8 +12585,7 @@ class TDLibFunctions:
     async def addSavedAnimation(
         self, animation: "types.InputFile" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Manually adds a new animation to the list of saved animations\. The new animation is added to the beginning of the list\. If the animation was already in the list, it is removed first\. Only non\-secret video animations with MIME type \"video/mp4\" can be added to the list
+        r"""Manually adds a new animation to the list of saved animations\. The new animation is added to the beginning of the list\. If the animation was already in the list, it is removed first\. Only non\-secret video animations with MIME type \"video/mp4\" can be added to the list
 
         Parameters:
             animation (:class:`"types.InputFile"`):
@@ -13116,8 +12600,7 @@ class TDLibFunctions:
     async def removeSavedAnimation(
         self, animation: "types.InputFile" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes an animation from the list of saved animations
+        r"""Removes an animation from the list of saved animations
 
         Parameters:
             animation (:class:`"types.InputFile"`):
@@ -13132,8 +12615,7 @@ class TDLibFunctions:
         )
 
     async def getRecentInlineBots(self) -> Union["types.Error", "types.Users"]:
-        r"""
-        Returns up to 20 recently used inline bots in the order of their last usage
+        r"""Returns up to 20 recently used inline bots in the order of their last usage
 
         Returns:
             :class:`~pytdbot.types.Users`
@@ -13148,8 +12630,7 @@ class TDLibFunctions:
     async def searchHashtags(
         self, prefix: str = "", limit: int = 0
     ) -> Union["types.Error", "types.Hashtags"]:
-        r"""
-        Searches for recently used hashtags by their prefix
+        r"""Searches for recently used hashtags by their prefix
 
         Parameters:
             prefix (:class:`str`):
@@ -13169,8 +12650,7 @@ class TDLibFunctions:
     async def removeRecentHashtag(
         self, hashtag: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a hashtag from the list of recently used hashtags
+        r"""Removes a hashtag from the list of recently used hashtags
 
         Parameters:
             hashtag (:class:`str`):
@@ -13187,8 +12667,7 @@ class TDLibFunctions:
         text: "types.FormattedText" = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
     ) -> Union["types.Error", "types.LinkPreview"]:
-        r"""
-        Returns a link preview by the text of a message\. Do not call this function too often\. Returns a 404 error if the text has no link preview
+        r"""Returns a link preview by the text of a message\. Do not call this function too often\. Returns a 404 error if the text has no link preview
 
         Parameters:
             text (:class:`"types.FormattedText"`):
@@ -13212,8 +12691,7 @@ class TDLibFunctions:
     async def getWebPageInstantView(
         self, url: str = "", force_full: bool = False
     ) -> Union["types.Error", "types.WebPageInstantView"]:
-        r"""
-        Returns an instant view version of a web page if available\. Returns a 404 error if the web page has no instant view page
+        r"""Returns an instant view version of a web page if available\. Returns a 404 error if the web page has no instant view page
 
         Parameters:
             url (:class:`str`):
@@ -13233,8 +12711,7 @@ class TDLibFunctions:
     async def setProfilePhoto(
         self, photo: "types.InputChatPhoto" = None, is_public: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes a profile photo for the current user
+        r"""Changes a profile photo for the current user
 
         Parameters:
             photo (:class:`"types.InputChatPhoto"`):
@@ -13254,8 +12731,7 @@ class TDLibFunctions:
     async def deleteProfilePhoto(
         self, profile_photo_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes a profile photo
+        r"""Deletes a profile photo
 
         Parameters:
             profile_photo_id (:class:`int`):
@@ -13272,8 +12748,7 @@ class TDLibFunctions:
     async def setAccentColor(
         self, accent_color_id: int = 0, background_custom_emoji_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes accent color and background custom emoji for the current user; for Telegram Premium users only
+        r"""Changes accent color and background custom emoji for the current user; for Telegram Premium users only
 
         Parameters:
             accent_color_id (:class:`int`):
@@ -13299,8 +12774,7 @@ class TDLibFunctions:
         profile_accent_color_id: int = 0,
         profile_background_custom_emoji_id: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes accent color and background custom emoji for profile of the current user; for Telegram Premium users only
+        r"""Changes accent color and background custom emoji for profile of the current user; for Telegram Premium users only
 
         Parameters:
             profile_accent_color_id (:class:`int`):
@@ -13324,8 +12798,7 @@ class TDLibFunctions:
     async def setName(
         self, first_name: str = "", last_name: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the first and last name of the current user
+        r"""Changes the first and last name of the current user
 
         Parameters:
             first_name (:class:`str`):
@@ -13343,8 +12816,7 @@ class TDLibFunctions:
         )
 
     async def setBio(self, bio: str = "") -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the bio of the current user
+        r"""Changes the bio of the current user
 
         Parameters:
             bio (:class:`str`):
@@ -13357,8 +12829,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "setBio", "bio": bio})
 
     async def setUsername(self, username: str = "") -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the editable username of the current user
+        r"""Changes the editable username of the current user
 
         Parameters:
             username (:class:`str`):
@@ -13373,8 +12844,7 @@ class TDLibFunctions:
     async def toggleUsernameIsActive(
         self, username: str = "", is_active: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes active state for a username of the current user\. The editable username can't be disabled\. May return an error with a message \"USERNAMES\_ACTIVE\_TOO\_MUCH\" if the maximum number of active usernames has been reached
+        r"""Changes active state for a username of the current user\. The editable username can't be disabled\. May return an error with a message \"USERNAMES\_ACTIVE\_TOO\_MUCH\" if the maximum number of active usernames has been reached
 
         Parameters:
             username (:class:`str`):
@@ -13398,8 +12868,7 @@ class TDLibFunctions:
     async def reorderActiveUsernames(
         self, usernames: List[str] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes order of active usernames of the current user
+        r"""Changes order of active usernames of the current user
 
         Parameters:
             usernames (:class:`List[str]`):
@@ -13416,8 +12885,7 @@ class TDLibFunctions:
     async def setBirthdate(
         self, birthdate: "types.Birthdate" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the birthdate of the current user
+        r"""Changes the birthdate of the current user
 
         Parameters:
             birthdate (:class:`"types.Birthdate"`):
@@ -13432,8 +12900,7 @@ class TDLibFunctions:
     async def setPersonalChat(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the personal chat of the current user
+        r"""Changes the personal chat of the current user
 
         Parameters:
             chat_id (:class:`int`):
@@ -13448,8 +12915,7 @@ class TDLibFunctions:
     async def setEmojiStatus(
         self, emoji_status: "types.EmojiStatus" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the emoji status of the current user; for Telegram Premium users only
+        r"""Changes the emoji status of the current user; for Telegram Premium users only
 
         Parameters:
             emoji_status (:class:`"types.EmojiStatus"`):
@@ -13466,8 +12932,7 @@ class TDLibFunctions:
     async def setLocation(
         self, location: "types.Location" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the location of the current user\. Needs to be called if getOption\(\"is\_location\_visible\"\) is true and location changes for more than 1 kilometer\. Must not be called if the user has a business location
+        r"""Changes the location of the current user\. Needs to be called if getOption\(\"is\_location\_visible\"\) is true and location changes for more than 1 kilometer\. Must not be called if the user has a business location
 
         Parameters:
             location (:class:`"types.Location"`):
@@ -13482,8 +12947,7 @@ class TDLibFunctions:
     async def toggleHasSponsoredMessagesEnabled(
         self, has_sponsored_messages_enabled: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether the current user has sponsored messages enabled\. The setting has no effect for users without Telegram Premium for which sponsored messages are always enabled
+        r"""Toggles whether the current user has sponsored messages enabled\. The setting has no effect for users without Telegram Premium for which sponsored messages are always enabled
 
         Parameters:
             has_sponsored_messages_enabled (:class:`bool`):
@@ -13503,8 +12967,7 @@ class TDLibFunctions:
     async def setBusinessLocation(
         self, location: "types.BusinessLocation" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the business location of the current user\. Requires Telegram Business subscription
+        r"""Changes the business location of the current user\. Requires Telegram Business subscription
 
         Parameters:
             location (:class:`"types.BusinessLocation"`):
@@ -13519,8 +12982,7 @@ class TDLibFunctions:
     async def setBusinessOpeningHours(
         self, opening_hours: "types.BusinessOpeningHours" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the business opening hours of the current user\. Requires Telegram Business subscription
+        r"""Changes the business opening hours of the current user\. Requires Telegram Business subscription
 
         Parameters:
             opening_hours (:class:`"types.BusinessOpeningHours"`):
@@ -13537,8 +12999,7 @@ class TDLibFunctions:
     async def setBusinessGreetingMessageSettings(
         self, greeting_message_settings: "types.BusinessGreetingMessageSettings" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the business greeting message settings of the current user\. Requires Telegram Business subscription
+        r"""Changes the business greeting message settings of the current user\. Requires Telegram Business subscription
 
         Parameters:
             greeting_message_settings (:class:`"types.BusinessGreetingMessageSettings"`):
@@ -13558,8 +13019,7 @@ class TDLibFunctions:
     async def setBusinessAwayMessageSettings(
         self, away_message_settings: "types.BusinessAwayMessageSettings" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the business away message settings of the current user\. Requires Telegram Business subscription
+        r"""Changes the business away message settings of the current user\. Requires Telegram Business subscription
 
         Parameters:
             away_message_settings (:class:`"types.BusinessAwayMessageSettings"`):
@@ -13579,8 +13039,7 @@ class TDLibFunctions:
     async def setBusinessStartPage(
         self, start_page: "types.InputBusinessStartPage" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the business start page of the current user\. Requires Telegram Business subscription
+        r"""Changes the business start page of the current user\. Requires Telegram Business subscription
 
         Parameters:
             start_page (:class:`"types.InputBusinessStartPage"`):
@@ -13600,8 +13059,7 @@ class TDLibFunctions:
         settings: "types.PhoneNumberAuthenticationSettings" = None,
         type: "types.PhoneNumberCodeType" = None,
     ) -> Union["types.Error", "types.AuthenticationCodeInfo"]:
-        r"""
-        Sends a code to the specified phone number\. Aborts previous phone number verification if there was one\. On success, returns information about the sent code
+        r"""Sends a code to the specified phone number\. Aborts previous phone number verification if there was one\. On success, returns information about the sent code
 
         Parameters:
             phone_number (:class:`str`):
@@ -13629,8 +13087,7 @@ class TDLibFunctions:
     async def sendPhoneNumberFirebaseSms(
         self, token: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends Firebase Authentication SMS to the specified phone number\. Works only when received a code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos
+        r"""Sends Firebase Authentication SMS to the specified phone number\. Works only when received a code of the type authenticationCodeTypeFirebaseAndroid or authenticationCodeTypeFirebaseIos
 
         Parameters:
             token (:class:`str`):
@@ -13647,8 +13104,7 @@ class TDLibFunctions:
     async def reportPhoneNumberCodeMissing(
         self, mobile_network_code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Reports that authentication code wasn't delivered via SMS to the specified phone number; for official mobile applications only
+        r"""Reports that authentication code wasn't delivered via SMS to the specified phone number; for official mobile applications only
 
         Parameters:
             mobile_network_code (:class:`str`):
@@ -13668,8 +13124,7 @@ class TDLibFunctions:
     async def resendPhoneNumberCode(
         self, reason: "types.ResendCodeReason" = None
     ) -> Union["types.Error", "types.AuthenticationCodeInfo"]:
-        r"""
-        Resends the authentication code sent to a phone number\. Works only if the previously received authenticationCodeInfo next\_code\_type was not null and the server\-specified timeout has passed
+        r"""Resends the authentication code sent to a phone number\. Works only if the previously received authenticationCodeInfo next\_code\_type was not null and the server\-specified timeout has passed
 
         Parameters:
             reason (:class:`"types.ResendCodeReason"`):
@@ -13684,8 +13139,7 @@ class TDLibFunctions:
     async def checkPhoneNumberCode(
         self, code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Check the authentication code and completes the request for which the code was sent if appropriate
+        r"""Check the authentication code and completes the request for which the code was sent if appropriate
 
         Parameters:
             code (:class:`str`):
@@ -13700,8 +13154,7 @@ class TDLibFunctions:
     async def getBusinessConnectedBot(
         self,
     ) -> Union["types.Error", "types.BusinessConnectedBot"]:
-        r"""
-        Returns the business bot that is connected to the current user account\. Returns a 404 error if there is no connected bot
+        r"""Returns the business bot that is connected to the current user account\. Returns a 404 error if there is no connected bot
 
         Returns:
             :class:`~pytdbot.types.BusinessConnectedBot`
@@ -13716,8 +13169,7 @@ class TDLibFunctions:
     async def setBusinessConnectedBot(
         self, bot: "types.BusinessConnectedBot" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds or changes business bot that is connected to the current user account
+        r"""Adds or changes business bot that is connected to the current user account
 
         Parameters:
             bot (:class:`"types.BusinessConnectedBot"`):
@@ -13732,8 +13184,7 @@ class TDLibFunctions:
     async def deleteBusinessConnectedBot(
         self, bot_user_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes the business bot that is connected to the current user account
+        r"""Deletes the business bot that is connected to the current user account
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -13750,8 +13201,7 @@ class TDLibFunctions:
     async def toggleBusinessConnectedBotChatIsPaused(
         self, chat_id: int = 0, is_paused: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Pauses or resumes the connected business bot in a specific chat
+        r"""Pauses or resumes the connected business bot in a specific chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -13775,8 +13225,7 @@ class TDLibFunctions:
     async def removeBusinessConnectedBotFromChat(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes the connected business bot from a specific chat by adding the chat to businessRecipients\.excluded\_chat\_ids
+        r"""Removes the connected business bot from a specific chat by adding the chat to businessRecipients\.excluded\_chat\_ids
 
         Parameters:
             chat_id (:class:`int`):
@@ -13793,8 +13242,7 @@ class TDLibFunctions:
     async def getBusinessChatLinks(
         self,
     ) -> Union["types.Error", "types.BusinessChatLinks"]:
-        r"""
-        Returns business chat links created for the current account
+        r"""Returns business chat links created for the current account
 
         Returns:
             :class:`~pytdbot.types.BusinessChatLinks`
@@ -13809,8 +13257,7 @@ class TDLibFunctions:
     async def createBusinessChatLink(
         self, link_info: "types.InputBusinessChatLink" = None
     ) -> Union["types.Error", "types.BusinessChatLink"]:
-        r"""
-        Creates a business chat link for the current account\. Requires Telegram Business subscription\. There can be up to getOption\(\"business\_chat\_link\_count\_max\"\) links created\. Returns the created link
+        r"""Creates a business chat link for the current account\. Requires Telegram Business subscription\. There can be up to getOption\(\"business\_chat\_link\_count\_max\"\) links created\. Returns the created link
 
         Parameters:
             link_info (:class:`"types.InputBusinessChatLink"`):
@@ -13827,8 +13274,7 @@ class TDLibFunctions:
     async def editBusinessChatLink(
         self, link: str = "", link_info: "types.InputBusinessChatLink" = None
     ) -> Union["types.Error", "types.BusinessChatLink"]:
-        r"""
-        Edits a business chat link of the current account\. Requires Telegram Business subscription\. Returns the edited link
+        r"""Edits a business chat link of the current account\. Requires Telegram Business subscription\. Returns the edited link
 
         Parameters:
             link (:class:`str`):
@@ -13848,8 +13294,7 @@ class TDLibFunctions:
     async def deleteBusinessChatLink(
         self, link: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes a business chat link of the current account
+        r"""Deletes a business chat link of the current account
 
         Parameters:
             link (:class:`str`):
@@ -13864,8 +13309,7 @@ class TDLibFunctions:
     async def getBusinessChatLinkInfo(
         self, link_name: str = ""
     ) -> Union["types.Error", "types.BusinessChatLinkInfo"]:
-        r"""
-        Returns information about a business chat link
+        r"""Returns information about a business chat link
 
         Parameters:
             link_name (:class:`str`):
@@ -13880,8 +13324,7 @@ class TDLibFunctions:
         )
 
     async def getUserLink(self) -> Union["types.Error", "types.UserLink"]:
-        r"""
-        Returns an HTTPS link, which can be used to get information about the current user
+        r"""Returns an HTTPS link, which can be used to get information about the current user
 
         Returns:
             :class:`~pytdbot.types.UserLink`
@@ -13896,8 +13339,7 @@ class TDLibFunctions:
     async def searchUserByToken(
         self, token: str = ""
     ) -> Union["types.Error", "types.User"]:
-        r"""
-        Searches a user by a token from the user's link
+        r"""Searches a user by a token from the user's link
 
         Parameters:
             token (:class:`str`):
@@ -13915,8 +13357,7 @@ class TDLibFunctions:
         language_code: str = "",
         commands: List["types.BotCommand"] = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the list of commands supported by the bot for the given user scope and language; for bots only
+        r"""Sets the list of commands supported by the bot for the given user scope and language; for bots only
 
         Parameters:
             scope (:class:`"types.BotCommandScope"`):
@@ -13944,8 +13385,7 @@ class TDLibFunctions:
     async def deleteCommands(
         self, scope: "types.BotCommandScope" = None, language_code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes commands supported by the bot for the given user scope and language; for bots only
+        r"""Deletes commands supported by the bot for the given user scope and language; for bots only
 
         Parameters:
             scope (:class:`"types.BotCommandScope"`):
@@ -13965,8 +13405,7 @@ class TDLibFunctions:
     async def getCommands(
         self, scope: "types.BotCommandScope" = None, language_code: str = ""
     ) -> Union["types.Error", "types.BotCommands"]:
-        r"""
-        Returns the list of commands supported by the bot for the given user scope and language; for bots only
+        r"""Returns the list of commands supported by the bot for the given user scope and language; for bots only
 
         Parameters:
             scope (:class:`"types.BotCommandScope"`):
@@ -13986,8 +13425,7 @@ class TDLibFunctions:
     async def setMenuButton(
         self, user_id: int = 0, menu_button: "types.BotMenuButton" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets menu button for the given user or for all users; for bots only
+        r"""Sets menu button for the given user or for all users; for bots only
 
         Parameters:
             user_id (:class:`int`):
@@ -14007,8 +13445,7 @@ class TDLibFunctions:
     async def getMenuButton(
         self, user_id: int = 0
     ) -> Union["types.Error", "types.BotMenuButton"]:
-        r"""
-        Returns menu button set by the bot for the given user; for bots only
+        r"""Returns menu button set by the bot for the given user; for bots only
 
         Parameters:
             user_id (:class:`int`):
@@ -14023,8 +13460,7 @@ class TDLibFunctions:
     async def setDefaultGroupAdministratorRights(
         self, default_group_administrator_rights: "types.ChatAdministratorRights" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets default administrator rights for adding the bot to basic group and supergroup chats; for bots only
+        r"""Sets default administrator rights for adding the bot to basic group and supergroup chats; for bots only
 
         Parameters:
             default_group_administrator_rights (:class:`"types.ChatAdministratorRights"`):
@@ -14045,8 +13481,7 @@ class TDLibFunctions:
         self,
         default_channel_administrator_rights: "types.ChatAdministratorRights" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets default administrator rights for adding the bot to channel chats; for bots only
+        r"""Sets default administrator rights for adding the bot to channel chats; for bots only
 
         Parameters:
             default_channel_administrator_rights (:class:`"types.ChatAdministratorRights"`):
@@ -14066,8 +13501,7 @@ class TDLibFunctions:
     async def canBotSendMessages(
         self, bot_user_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks whether the specified bot can send messages to the user\. Returns a 404 error if can't and the access can be granted by call to allowBotToSendMessages
+        r"""Checks whether the specified bot can send messages to the user\. Returns a 404 error if can't and the access can be granted by call to allowBotToSendMessages
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14084,8 +13518,7 @@ class TDLibFunctions:
     async def allowBotToSendMessages(
         self, bot_user_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Allows the specified bot to send messages to the user
+        r"""Allows the specified bot to send messages to the user
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14102,8 +13535,7 @@ class TDLibFunctions:
     async def sendWebAppCustomRequest(
         self, bot_user_id: int = 0, method: str = "", parameters: str = ""
     ) -> Union["types.Error", "types.CustomRequestResult"]:
-        r"""
-        Sends a custom request from a Web App
+        r"""Sends a custom request from a Web App
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14131,8 +13563,7 @@ class TDLibFunctions:
     async def getBotMediaPreviews(
         self, bot_user_id: int = 0
     ) -> Union["types.Error", "types.BotMediaPreviews"]:
-        r"""
-        Returns the list of media previews of a bot
+        r"""Returns the list of media previews of a bot
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14149,8 +13580,7 @@ class TDLibFunctions:
     async def getBotMediaPreviewInfo(
         self, bot_user_id: int = 0, language_code: str = ""
     ) -> Union["types.Error", "types.BotMediaPreviewInfo"]:
-        r"""
-        Returns the list of media previews for the given language and the list of languages for which the bot has dedicated previews
+        r"""Returns the list of media previews for the given language and the list of languages for which the bot has dedicated previews
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14177,8 +13607,7 @@ class TDLibFunctions:
         language_code: str = "",
         content: "types.InputStoryContent" = None,
     ) -> Union["types.Error", "types.BotMediaPreview"]:
-        r"""
-        Adds a new media preview to the beginning of the list of media previews of a bot\. Returns the added preview after addition is completed server\-side\. The total number of previews must not exceed getOption\(\"bot\_media\_preview\_count\_max\"\) for the given language
+        r"""Adds a new media preview to the beginning of the list of media previews of a bot\. Returns the added preview after addition is completed server\-side\. The total number of previews must not exceed getOption\(\"bot\_media\_preview\_count\_max\"\) for the given language
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14210,8 +13639,7 @@ class TDLibFunctions:
         file_id: int = 0,
         content: "types.InputStoryContent" = None,
     ) -> Union["types.Error", "types.BotMediaPreview"]:
-        r"""
-        Replaces media preview in the list of media previews of a bot\. Returns the new preview after edit is completed server\-side
+        r"""Replaces media preview in the list of media previews of a bot\. Returns the new preview after edit is completed server\-side
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14243,8 +13671,7 @@ class TDLibFunctions:
     async def reorderBotMediaPreviews(
         self, bot_user_id: int = 0, language_code: str = "", file_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes order of media previews in the list of media previews of a bot
+        r"""Changes order of media previews in the list of media previews of a bot
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14272,8 +13699,7 @@ class TDLibFunctions:
     async def deleteBotMediaPreviews(
         self, bot_user_id: int = 0, language_code: str = "", file_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Delete media previews from the list of media previews of a bot
+        r"""Delete media previews from the list of media previews of a bot
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14301,8 +13727,7 @@ class TDLibFunctions:
     async def setBotName(
         self, bot_user_id: int = 0, language_code: str = "", name: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the name of a bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+        r"""Sets the name of a bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14330,8 +13755,7 @@ class TDLibFunctions:
     async def getBotName(
         self, bot_user_id: int = 0, language_code: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns the name of a bot in the given language\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+        r"""Returns the name of a bot in the given language\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14355,8 +13779,7 @@ class TDLibFunctions:
     async def setBotProfilePhoto(
         self, bot_user_id: int = 0, photo: "types.InputChatPhoto" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes a profile photo for a bot
+        r"""Changes a profile photo for a bot
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14376,8 +13799,7 @@ class TDLibFunctions:
     async def toggleBotUsernameIsActive(
         self, bot_user_id: int = 0, username: str = "", is_active: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes active state for a username of a bot\. The editable username can't be disabled\. May return an error with a message \"USERNAMES\_ACTIVE\_TOO\_MUCH\" if the maximum number of active usernames has been reached\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+        r"""Changes active state for a username of a bot\. The editable username can't be disabled\. May return an error with a message \"USERNAMES\_ACTIVE\_TOO\_MUCH\" if the maximum number of active usernames has been reached\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14405,8 +13827,7 @@ class TDLibFunctions:
     async def reorderBotActiveUsernames(
         self, bot_user_id: int = 0, usernames: List[str] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes order of active usernames of a bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+        r"""Changes order of active usernames of a bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14430,8 +13851,7 @@ class TDLibFunctions:
     async def setBotInfoDescription(
         self, bot_user_id: int = 0, language_code: str = "", description: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the text shown in the chat with a bot if the chat is empty\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+        r"""Sets the text shown in the chat with a bot if the chat is empty\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14459,8 +13879,7 @@ class TDLibFunctions:
     async def getBotInfoDescription(
         self, bot_user_id: int = 0, language_code: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns the text shown in the chat with a bot if the chat is empty in the given language\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+        r"""Returns the text shown in the chat with a bot if the chat is empty in the given language\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14484,8 +13903,7 @@ class TDLibFunctions:
     async def setBotInfoShortDescription(
         self, bot_user_id: int = 0, language_code: str = "", short_description: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the text shown on a bot's profile page and sent together with the link when users share the bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+        r"""Sets the text shown on a bot's profile page and sent together with the link when users share the bot\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14513,8 +13931,7 @@ class TDLibFunctions:
     async def getBotInfoShortDescription(
         self, bot_user_id: int = 0, language_code: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns the text shown on a bot's profile page and sent together with the link when users share the bot in the given language\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+        r"""Returns the text shown on a bot's profile page and sent together with the link when users share the bot in the given language\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -14536,8 +13953,7 @@ class TDLibFunctions:
         )
 
     async def getActiveSessions(self) -> Union["types.Error", "types.Sessions"]:
-        r"""
-        Returns all active sessions of the current user
+        r"""Returns all active sessions of the current user
 
         Returns:
             :class:`~pytdbot.types.Sessions`
@@ -14552,8 +13968,7 @@ class TDLibFunctions:
     async def terminateSession(
         self, session_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Terminates a session of the current user
+        r"""Terminates a session of the current user
 
         Parameters:
             session_id (:class:`int`):
@@ -14568,8 +13983,7 @@ class TDLibFunctions:
         )
 
     async def terminateAllOtherSessions(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Terminates all other sessions of the current user
+        r"""Terminates all other sessions of the current user
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -14584,8 +13998,7 @@ class TDLibFunctions:
     async def confirmSession(
         self, session_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Confirms an unconfirmed session of the current user from another device
+        r"""Confirms an unconfirmed session of the current user from another device
 
         Parameters:
             session_id (:class:`int`):
@@ -14600,8 +14013,7 @@ class TDLibFunctions:
     async def toggleSessionCanAcceptCalls(
         self, session_id: int = 0, can_accept_calls: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether a session can accept incoming calls
+        r"""Toggles whether a session can accept incoming calls
 
         Parameters:
             session_id (:class:`int`):
@@ -14625,8 +14037,7 @@ class TDLibFunctions:
     async def toggleSessionCanAcceptSecretChats(
         self, session_id: int = 0, can_accept_secret_chats: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether a session can accept incoming secret chats
+        r"""Toggles whether a session can accept incoming secret chats
 
         Parameters:
             session_id (:class:`int`):
@@ -14650,8 +14061,7 @@ class TDLibFunctions:
     async def setInactiveSessionTtl(
         self, inactive_session_ttl_days: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the period of inactivity after which sessions will automatically be terminated
+        r"""Changes the period of inactivity after which sessions will automatically be terminated
 
         Parameters:
             inactive_session_ttl_days (:class:`int`):
@@ -14671,8 +14081,7 @@ class TDLibFunctions:
     async def getConnectedWebsites(
         self,
     ) -> Union["types.Error", "types.ConnectedWebsites"]:
-        r"""
-        Returns all website where the current user used Telegram to log in
+        r"""Returns all website where the current user used Telegram to log in
 
         Returns:
             :class:`~pytdbot.types.ConnectedWebsites`
@@ -14687,8 +14096,7 @@ class TDLibFunctions:
     async def disconnectWebsite(
         self, website_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Disconnects website from the current user's Telegram account
+        r"""Disconnects website from the current user's Telegram account
 
         Parameters:
             website_id (:class:`int`):
@@ -14703,8 +14111,7 @@ class TDLibFunctions:
         )
 
     async def disconnectAllWebsites(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Disconnects all websites from the current user's Telegram account
+        r"""Disconnects all websites from the current user's Telegram account
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -14719,8 +14126,7 @@ class TDLibFunctions:
     async def setSupergroupUsername(
         self, supergroup_id: int = 0, username: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the editable username of a supergroup or channel, requires owner privileges in the supergroup or channel
+        r"""Changes the editable username of a supergroup or channel, requires owner privileges in the supergroup or channel
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14744,8 +14150,7 @@ class TDLibFunctions:
     async def toggleSupergroupUsernameIsActive(
         self, supergroup_id: int = 0, username: str = "", is_active: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes active state for a username of a supergroup or channel, requires owner privileges in the supergroup or channel\. The editable username can't be disabled\. May return an error with a message \"USERNAMES\_ACTIVE\_TOO\_MUCH\" if the maximum number of active usernames has been reached
+        r"""Changes active state for a username of a supergroup or channel, requires owner privileges in the supergroup or channel\. The editable username can't be disabled\. May return an error with a message \"USERNAMES\_ACTIVE\_TOO\_MUCH\" if the maximum number of active usernames has been reached
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14773,8 +14178,7 @@ class TDLibFunctions:
     async def disableAllSupergroupUsernames(
         self, supergroup_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Disables all active non\-editable usernames of a supergroup or channel, requires owner privileges in the supergroup or channel
+        r"""Disables all active non\-editable usernames of a supergroup or channel, requires owner privileges in the supergroup or channel
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14791,8 +14195,7 @@ class TDLibFunctions:
     async def reorderSupergroupActiveUsernames(
         self, supergroup_id: int = 0, usernames: List[str] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes order of active usernames of a supergroup or channel, requires owner privileges in the supergroup or channel
+        r"""Changes order of active usernames of a supergroup or channel, requires owner privileges in the supergroup or channel
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14816,8 +14219,7 @@ class TDLibFunctions:
     async def setSupergroupStickerSet(
         self, supergroup_id: int = 0, sticker_set_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the sticker set of a supergroup; requires can\_change\_info administrator right
+        r"""Changes the sticker set of a supergroup; requires can\_change\_info administrator right
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14841,8 +14243,7 @@ class TDLibFunctions:
     async def setSupergroupCustomEmojiStickerSet(
         self, supergroup_id: int = 0, custom_emoji_sticker_set_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the custom emoji sticker set of a supergroup; requires can\_change\_info administrator right\. The chat must have at least chatBoostFeatures\.min\_custom\_emoji\_sticker\_set\_boost\_level boost level to pass the corresponding color
+        r"""Changes the custom emoji sticker set of a supergroup; requires can\_change\_info administrator right\. The chat must have at least chatBoostFeatures\.min\_custom\_emoji\_sticker\_set\_boost\_level boost level to pass the corresponding color
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14866,8 +14267,7 @@ class TDLibFunctions:
     async def setSupergroupUnrestrictBoostCount(
         self, supergroup_id: int = 0, unrestrict_boost_count: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the number of times the supergroup must be boosted by a user to ignore slow mode and chat permission restrictions; requires can\_restrict\_members administrator right
+        r"""Changes the number of times the supergroup must be boosted by a user to ignore slow mode and chat permission restrictions; requires can\_restrict\_members administrator right
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14894,8 +14294,7 @@ class TDLibFunctions:
         sign_messages: bool = False,
         show_message_sender: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether sender signature or link to the account is added to sent messages in a channel; requires can\_change\_info member right
+        r"""Toggles whether sender signature or link to the account is added to sent messages in a channel; requires can\_change\_info member right
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14923,8 +14322,7 @@ class TDLibFunctions:
     async def toggleSupergroupJoinToSendMessages(
         self, supergroup_id: int = 0, join_to_send_messages: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether joining is mandatory to send messages to a discussion supergroup; requires can\_restrict\_members administrator right
+        r"""Toggles whether joining is mandatory to send messages to a discussion supergroup; requires can\_restrict\_members administrator right
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14948,8 +14346,7 @@ class TDLibFunctions:
     async def toggleSupergroupJoinByRequest(
         self, supergroup_id: int = 0, join_by_request: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether all users directly joining the supergroup need to be approved by supergroup administrators; requires can\_restrict\_members administrator right
+        r"""Toggles whether all users directly joining the supergroup need to be approved by supergroup administrators; requires can\_restrict\_members administrator right
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14973,8 +14370,7 @@ class TDLibFunctions:
     async def toggleSupergroupIsAllHistoryAvailable(
         self, supergroup_id: int = 0, is_all_history_available: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether the message history of a supergroup is available to new members; requires can\_change\_info member right
+        r"""Toggles whether the message history of a supergroup is available to new members; requires can\_change\_info member right
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -14998,8 +14394,7 @@ class TDLibFunctions:
     async def toggleSupergroupCanHaveSponsoredMessages(
         self, supergroup_id: int = 0, can_have_sponsored_messages: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether sponsored messages are shown in the channel chat; requires owner privileges in the channel\. The chat must have at least chatBoostFeatures\.min\_sponsored\_message\_disable\_boost\_level boost level to disable sponsored messages
+        r"""Toggles whether sponsored messages are shown in the channel chat; requires owner privileges in the channel\. The chat must have at least chatBoostFeatures\.min\_sponsored\_message\_disable\_boost\_level boost level to disable sponsored messages
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -15023,8 +14418,7 @@ class TDLibFunctions:
     async def toggleSupergroupHasHiddenMembers(
         self, supergroup_id: int = 0, has_hidden_members: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether non\-administrators can receive only administrators and bots using getSupergroupMembers or searchChatMembers\. Can be called only if supergroupFullInfo\.can\_hide\_members \=\= true
+        r"""Toggles whether non\-administrators can receive only administrators and bots using getSupergroupMembers or searchChatMembers\. Can be called only if supergroupFullInfo\.can\_hide\_members \=\= true
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -15048,8 +14442,7 @@ class TDLibFunctions:
     async def toggleSupergroupHasAggressiveAntiSpamEnabled(
         self, supergroup_id: int = 0, has_aggressive_anti_spam_enabled: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether aggressive anti\-spam checks are enabled in the supergroup\. Can be called only if supergroupFullInfo\.can\_toggle\_aggressive\_anti\_spam \=\= true
+        r"""Toggles whether aggressive anti\-spam checks are enabled in the supergroup\. Can be called only if supergroupFullInfo\.can\_toggle\_aggressive\_anti\_spam \=\= true
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -15073,8 +14466,7 @@ class TDLibFunctions:
     async def toggleSupergroupIsForum(
         self, supergroup_id: int = 0, is_forum: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether the supergroup is a forum; requires owner privileges in the supergroup\. Discussion supergroups can't be converted to forums
+        r"""Toggles whether the supergroup is a forum; requires owner privileges in the supergroup\. Discussion supergroups can't be converted to forums
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -15098,8 +14490,7 @@ class TDLibFunctions:
     async def toggleSupergroupIsBroadcastGroup(
         self, supergroup_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Upgrades supergroup to a broadcast group; requires owner privileges in the supergroup
+        r"""Upgrades supergroup to a broadcast group; requires owner privileges in the supergroup
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -15119,8 +14510,7 @@ class TDLibFunctions:
     async def reportSupergroupSpam(
         self, supergroup_id: int = 0, message_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Reports messages in a supergroup as spam; requires administrator rights in the supergroup
+        r"""Reports messages in a supergroup as spam; requires administrator rights in the supergroup
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -15144,8 +14534,7 @@ class TDLibFunctions:
     async def reportSupergroupAntiSpamFalsePositive(
         self, supergroup_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Reports a false deletion of a message by aggressive anti\-spam checks; requires administrator rights in the supergroup\. Can be called only for messages from chatEventMessageDeleted with can\_report\_anti\_spam\_false\_positive \=\= true
+        r"""Reports a false deletion of a message by aggressive anti\-spam checks; requires administrator rights in the supergroup\. Can be called only for messages from chatEventMessageDeleted with can\_report\_anti\_spam\_false\_positive \=\= true
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -15173,8 +14562,7 @@ class TDLibFunctions:
         offset: int = 0,
         limit: int = 0,
     ) -> Union["types.Error", "types.ChatMembers"]:
-        r"""
-        Returns information about members or banned users in a supergroup or channel\. Can be used only if supergroupFullInfo\.can\_get\_members \=\= true; additionally, administrator privileges may be required for some filters
+        r"""Returns information about members or banned users in a supergroup or channel\. Can be used only if supergroupFullInfo\.can\_get\_members \=\= true; additionally, administrator privileges may be required for some filters
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -15206,8 +14594,7 @@ class TDLibFunctions:
     async def closeSecretChat(
         self, secret_chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Closes a secret chat, effectively transferring its state to secretChatStateClosed
+        r"""Closes a secret chat, effectively transferring its state to secretChatStateClosed
 
         Parameters:
             secret_chat_id (:class:`int`):
@@ -15230,8 +14617,7 @@ class TDLibFunctions:
         filters: "types.ChatEventLogFilters" = None,
         user_ids: List[int] = None,
     ) -> Union["types.Error", "types.ChatEvents"]:
-        r"""
-        Returns a list of service actions taken by chat members and administrators in the last 48 hours\. Available only for supergroups and channels\. Requires administrator rights\. Returns results in reverse chronological order \(i\.e\., in order of decreasing event\_id\)
+        r"""Returns a list of service actions taken by chat members and administrators in the last 48 hours\. Available only for supergroups and channels\. Requires administrator rights\. Returns results in reverse chronological order \(i\.e\., in order of decreasing event\_id\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -15269,8 +14655,7 @@ class TDLibFunctions:
         )
 
     async def getTimeZones(self) -> Union["types.Error", "types.TimeZones"]:
-        r"""
-        Returns the list of supported time zones
+        r"""Returns the list of supported time zones
 
         Returns:
             :class:`~pytdbot.types.TimeZones`
@@ -15287,8 +14672,7 @@ class TDLibFunctions:
         input_invoice: "types.InputInvoice" = None,
         theme: "types.ThemeParameters" = None,
     ) -> Union["types.Error", "types.PaymentForm"]:
-        r"""
-        Returns an invoice payment form\. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy, or wants to buy access to media in a messagePaidMedia message
+        r"""Returns an invoice payment form\. This method must be called when the user presses inline button of the type inlineKeyboardButtonTypeBuy, or wants to buy access to media in a messagePaidMedia message
 
         Parameters:
             input_invoice (:class:`"types.InputInvoice"`):
@@ -15311,8 +14695,7 @@ class TDLibFunctions:
         order_info: "types.OrderInfo" = None,
         allow_save: bool = False,
     ) -> Union["types.Error", "types.ValidatedOrderInfo"]:
-        r"""
-        Validates the order information provided by a user and returns the available shipping options for a flexible invoice
+        r"""Validates the order information provided by a user and returns the available shipping options for a flexible invoice
 
         Parameters:
             input_invoice (:class:`"types.InputInvoice"`):
@@ -15346,8 +14729,7 @@ class TDLibFunctions:
         credentials: "types.InputCredentials" = None,
         tip_amount: int = 0,
     ) -> Union["types.Error", "types.PaymentResult"]:
-        r"""
-        Sends a filled\-out payment form to the bot for final verification
+        r"""Sends a filled\-out payment form to the bot for final verification
 
         Parameters:
             input_invoice (:class:`"types.InputInvoice"`):
@@ -15387,8 +14769,7 @@ class TDLibFunctions:
     async def getPaymentReceipt(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.PaymentReceipt"]:
-        r"""
-        Returns information about a successful payment
+        r"""Returns information about a successful payment
 
         Parameters:
             chat_id (:class:`int`):
@@ -15406,8 +14787,7 @@ class TDLibFunctions:
         )
 
     async def getSavedOrderInfo(self) -> Union["types.Error", "types.OrderInfo"]:
-        r"""
-        Returns saved order information\. Returns a 404 error if there is no saved order information
+        r"""Returns saved order information\. Returns a 404 error if there is no saved order information
 
         Returns:
             :class:`~pytdbot.types.OrderInfo`
@@ -15420,8 +14800,7 @@ class TDLibFunctions:
         )
 
     async def deleteSavedOrderInfo(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes saved order information
+        r"""Deletes saved order information
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -15434,8 +14813,7 @@ class TDLibFunctions:
         )
 
     async def deleteSavedCredentials(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes saved credentials for all payment provider bots
+        r"""Deletes saved credentials for all payment provider bots
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -15448,8 +14826,7 @@ class TDLibFunctions:
         )
 
     async def getAvailableGifts(self) -> Union["types.Error", "types.Gifts"]:
-        r"""
-        Returns gifts that can be sent to other users
+        r"""Returns gifts that can be sent to other users
 
         Returns:
             :class:`~pytdbot.types.Gifts`
@@ -15468,8 +14845,7 @@ class TDLibFunctions:
         text: "types.FormattedText" = None,
         is_private: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends a gift to another user\. May return an error with a message \"STARGIFT\_USAGE\_LIMITED\" if the gift was sold out
+        r"""Sends a gift to another user\. May return an error with a message \"STARGIFT\_USAGE\_LIMITED\" if the gift was sold out
 
         Parameters:
             gift_id (:class:`int`):
@@ -15501,8 +14877,7 @@ class TDLibFunctions:
     async def sellGift(
         self, sender_user_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sells a gift received by the current user for Telegram Stars
+        r"""Sells a gift received by the current user for Telegram Stars
 
         Parameters:
             sender_user_id (:class:`int`):
@@ -15526,8 +14901,7 @@ class TDLibFunctions:
     async def toggleGiftIsSaved(
         self, sender_user_id: int = 0, message_id: int = 0, is_saved: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Toggles whether a gift is shown on the current user's profile page
+        r"""Toggles whether a gift is shown on the current user's profile page
 
         Parameters:
             sender_user_id (:class:`int`):
@@ -15555,8 +14929,7 @@ class TDLibFunctions:
     async def getUserGifts(
         self, user_id: int = 0, offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.UserGifts"]:
-        r"""
-        Returns gifts saved to profile by the given user
+        r"""Returns gifts saved to profile by the given user
 
         Parameters:
             user_id (:class:`int`):
@@ -15584,8 +14957,7 @@ class TDLibFunctions:
     async def createInvoiceLink(
         self, invoice: "types.InputMessageContent" = None
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Creates a link for the given invoice; for bots only
+        r"""Creates a link for the given invoice; for bots only
 
         Parameters:
             invoice (:class:`"types.InputMessageContent"`):
@@ -15600,8 +14972,7 @@ class TDLibFunctions:
     async def refundStarPayment(
         self, user_id: int = 0, telegram_payment_charge_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Refunds a previously done payment in Telegram Stars; for bots only
+        r"""Refunds a previously done payment in Telegram Stars; for bots only
 
         Parameters:
             user_id (:class:`int`):
@@ -15623,8 +14994,7 @@ class TDLibFunctions:
         )
 
     async def getSupportUser(self) -> Union["types.Error", "types.User"]:
-        r"""
-        Returns a user that can be contacted to get support
+        r"""Returns a user that can be contacted to get support
 
         Returns:
             :class:`~pytdbot.types.User`
@@ -15639,8 +15009,7 @@ class TDLibFunctions:
     async def getBackgroundUrl(
         self, name: str = "", type: "types.BackgroundType" = None
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Constructs a persistent HTTP URL for a background
+        r"""Constructs a persistent HTTP URL for a background
 
         Parameters:
             name (:class:`str`):
@@ -15660,8 +15029,7 @@ class TDLibFunctions:
     async def searchBackground(
         self, name: str = ""
     ) -> Union["types.Error", "types.Background"]:
-        r"""
-        Searches for a background by its name
+        r"""Searches for a background by its name
 
         Parameters:
             name (:class:`str`):
@@ -15679,8 +15047,7 @@ class TDLibFunctions:
         type: "types.BackgroundType" = None,
         for_dark_theme: bool = False,
     ) -> Union["types.Error", "types.Background"]:
-        r"""
-        Sets default background for chats; adds the background to the list of installed backgrounds
+        r"""Sets default background for chats; adds the background to the list of installed backgrounds
 
         Parameters:
             background (:class:`"types.InputBackground"`):
@@ -15708,8 +15075,7 @@ class TDLibFunctions:
     async def deleteDefaultBackground(
         self, for_dark_theme: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes default background for chats
+        r"""Deletes default background for chats
 
         Parameters:
             for_dark_theme (:class:`bool`):
@@ -15726,8 +15092,7 @@ class TDLibFunctions:
     async def getInstalledBackgrounds(
         self, for_dark_theme: bool = False
     ) -> Union["types.Error", "types.Backgrounds"]:
-        r"""
-        Returns backgrounds installed by the user
+        r"""Returns backgrounds installed by the user
 
         Parameters:
             for_dark_theme (:class:`bool`):
@@ -15744,8 +15109,7 @@ class TDLibFunctions:
     async def removeInstalledBackground(
         self, background_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes background from the list of installed backgrounds
+        r"""Removes background from the list of installed backgrounds
 
         Parameters:
             background_id (:class:`int`):
@@ -15760,8 +15124,7 @@ class TDLibFunctions:
         )
 
     async def resetInstalledBackgrounds(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Resets list of installed backgrounds to its default value
+        r"""Resets list of installed backgrounds to its default value
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -15776,8 +15139,7 @@ class TDLibFunctions:
     async def getLocalizationTargetInfo(
         self, only_local: bool = False
     ) -> Union["types.Error", "types.LocalizationTargetInfo"]:
-        r"""
-        Returns information about the current localization target\. This is an offline request if only\_local is true\. Can be called before authorization
+        r"""Returns information about the current localization target\. This is an offline request if only\_local is true\. Can be called before authorization
 
         Parameters:
             only_local (:class:`bool`):
@@ -15794,8 +15156,7 @@ class TDLibFunctions:
     async def getLanguagePackInfo(
         self, language_pack_id: str = ""
     ) -> Union["types.Error", "types.LanguagePackInfo"]:
-        r"""
-        Returns information about a language pack\. Returned language pack identifier may be different from a provided one\. Can be called before authorization
+        r"""Returns information about a language pack\. Returned language pack identifier may be different from a provided one\. Can be called before authorization
 
         Parameters:
             language_pack_id (:class:`str`):
@@ -15812,8 +15173,7 @@ class TDLibFunctions:
     async def getLanguagePackStrings(
         self, language_pack_id: str = "", keys: List[str] = None
     ) -> Union["types.Error", "types.LanguagePackStrings"]:
-        r"""
-        Returns strings from a language pack in the current localization target by their keys\. Can be called before authorization
+        r"""Returns strings from a language pack in the current localization target by their keys\. Can be called before authorization
 
         Parameters:
             language_pack_id (:class:`str`):
@@ -15837,8 +15197,7 @@ class TDLibFunctions:
     async def synchronizeLanguagePack(
         self, language_pack_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Fetches the latest versions of all strings from a language pack in the current localization target from the server\. This method doesn't need to be called explicitly for the current used/base language packs\. Can be called before authorization
+        r"""Fetches the latest versions of all strings from a language pack in the current localization target from the server\. This method doesn't need to be called explicitly for the current used/base language packs\. Can be called before authorization
 
         Parameters:
             language_pack_id (:class:`str`):
@@ -15855,8 +15214,7 @@ class TDLibFunctions:
     async def addCustomServerLanguagePack(
         self, language_pack_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds a custom server language pack to the list of installed language packs in current localization target\. Can be called before authorization
+        r"""Adds a custom server language pack to the list of installed language packs in current localization target\. Can be called before authorization
 
         Parameters:
             language_pack_id (:class:`str`):
@@ -15878,8 +15236,7 @@ class TDLibFunctions:
         info: "types.LanguagePackInfo" = None,
         strings: List["types.LanguagePackString"] = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds or changes a custom local language pack to the current localization target
+        r"""Adds or changes a custom local language pack to the current localization target
 
         Parameters:
             info (:class:`"types.LanguagePackInfo"`):
@@ -15899,8 +15256,7 @@ class TDLibFunctions:
     async def editCustomLanguagePackInfo(
         self, info: "types.LanguagePackInfo" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Edits information about a custom local language pack in the current localization target\. Can be called before authorization
+        r"""Edits information about a custom local language pack in the current localization target\. Can be called before authorization
 
         Parameters:
             info (:class:`"types.LanguagePackInfo"`):
@@ -15915,8 +15271,7 @@ class TDLibFunctions:
     async def setCustomLanguagePackString(
         self, language_pack_id: str = "", new_string: "types.LanguagePackString" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds, edits or deletes a string in a custom local language pack\. Can be called before authorization
+        r"""Adds, edits or deletes a string in a custom local language pack\. Can be called before authorization
 
         Parameters:
             language_pack_id (:class:`str`):
@@ -15940,8 +15295,7 @@ class TDLibFunctions:
     async def deleteLanguagePack(
         self, language_pack_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes all information about a language pack in the current localization target\. The language pack which is currently in use \(including base language pack\) or is being synchronized can't be deleted\. Can be called before authorization
+        r"""Deletes all information about a language pack in the current localization target\. The language pack which is currently in use \(including base language pack\) or is being synchronized can't be deleted\. Can be called before authorization
 
         Parameters:
             language_pack_id (:class:`str`):
@@ -15958,8 +15312,7 @@ class TDLibFunctions:
     async def registerDevice(
         self, device_token: "types.DeviceToken" = None, other_user_ids: List[int] = None
     ) -> Union["types.Error", "types.PushReceiverId"]:
-        r"""
-        Registers the currently used device for receiving push notifications\. Returns a globally unique identifier of the push notification subscription
+        r"""Registers the currently used device for receiving push notifications\. Returns a globally unique identifier of the push notification subscription
 
         Parameters:
             device_token (:class:`"types.DeviceToken"`):
@@ -15983,8 +15336,7 @@ class TDLibFunctions:
     async def processPushNotification(
         self, payload: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Handles a push notification\. Returns error with code 406 if the push notification is not supported and connection to the server is required to fetch new data\. Can be called before authorization
+        r"""Handles a push notification\. Returns error with code 406 if the push notification is not supported and connection to the server is required to fetch new data\. Can be called before authorization
 
         Parameters:
             payload (:class:`str`):
@@ -16001,8 +15353,7 @@ class TDLibFunctions:
     async def getPushReceiverId(
         self, payload: str = ""
     ) -> Union["types.Error", "types.PushReceiverId"]:
-        r"""
-        Returns a globally unique push notification subscription identifier for identification of an account, which has received a push notification\. Can be called synchronously
+        r"""Returns a globally unique push notification subscription identifier for identification of an account, which has received a push notification\. Can be called synchronously
 
         Parameters:
             payload (:class:`str`):
@@ -16017,8 +15368,7 @@ class TDLibFunctions:
     async def getRecentlyVisitedTMeUrls(
         self, referrer: str = ""
     ) -> Union["types.Error", "types.TMeUrls"]:
-        r"""
-        Returns t\.me URLs recently visited by a newly registered user
+        r"""Returns t\.me URLs recently visited by a newly registered user
 
         Parameters:
             referrer (:class:`str`):
@@ -16037,8 +15387,7 @@ class TDLibFunctions:
         setting: "types.UserPrivacySetting" = None,
         rules: "types.UserPrivacySettingRules" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes user privacy settings
+        r"""Changes user privacy settings
 
         Parameters:
             setting (:class:`"types.UserPrivacySetting"`):
@@ -16058,8 +15407,7 @@ class TDLibFunctions:
     async def getUserPrivacySettingRules(
         self, setting: "types.UserPrivacySetting" = None
     ) -> Union["types.Error", "types.UserPrivacySettingRules"]:
-        r"""
-        Returns the current privacy settings
+        r"""Returns the current privacy settings
 
         Parameters:
             setting (:class:`"types.UserPrivacySetting"`):
@@ -16076,8 +15424,7 @@ class TDLibFunctions:
     async def setReadDatePrivacySettings(
         self, settings: "types.ReadDatePrivacySettings" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes privacy settings for message read date
+        r"""Changes privacy settings for message read date
 
         Parameters:
             settings (:class:`"types.ReadDatePrivacySettings"`):
@@ -16094,8 +15441,7 @@ class TDLibFunctions:
     async def getReadDatePrivacySettings(
         self,
     ) -> Union["types.Error", "types.ReadDatePrivacySettings"]:
-        r"""
-        Returns privacy settings for message read date
+        r"""Returns privacy settings for message read date
 
         Returns:
             :class:`~pytdbot.types.ReadDatePrivacySettings`
@@ -16110,8 +15456,7 @@ class TDLibFunctions:
     async def setNewChatPrivacySettings(
         self, settings: "types.NewChatPrivacySettings" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes privacy settings for new chat creation; can be used only if getOption\(\"can\_set\_new\_chat\_privacy\_settings\"\)
+        r"""Changes privacy settings for new chat creation; can be used only if getOption\(\"can\_set\_new\_chat\_privacy\_settings\"\)
 
         Parameters:
             settings (:class:`"types.NewChatPrivacySettings"`):
@@ -16128,8 +15473,7 @@ class TDLibFunctions:
     async def getNewChatPrivacySettings(
         self,
     ) -> Union["types.Error", "types.NewChatPrivacySettings"]:
-        r"""
-        Returns privacy settings for new chat creation
+        r"""Returns privacy settings for new chat creation
 
         Returns:
             :class:`~pytdbot.types.NewChatPrivacySettings`
@@ -16144,8 +15488,7 @@ class TDLibFunctions:
     async def canSendMessageToUser(
         self, user_id: int = 0, only_local: bool = False
     ) -> Union["types.Error", "types.CanSendMessageToUserResult"]:
-        r"""
-        Check whether the current user can message another user or try to create a chat with them
+        r"""Check whether the current user can message another user or try to create a chat with them
 
         Parameters:
             user_id (:class:`int`):
@@ -16169,8 +15512,7 @@ class TDLibFunctions:
     async def getOption(
         self, name: str = ""
     ) -> Union["types.Error", "types.OptionValue"]:
-        r"""
-        Returns the value of an option by its name\. \(Check the list of available options on https://core\.telegram\.org/tdlib/options\.\) Can be called before authorization\. Can be called synchronously for options \"version\" and \"commit\_hash\"
+        r"""Returns the value of an option by its name\. \(Check the list of available options on https://core\.telegram\.org/tdlib/options\.\) Can be called before authorization\. Can be called synchronously for options \"version\" and \"commit\_hash\"
 
         Parameters:
             name (:class:`str`):
@@ -16185,8 +15527,7 @@ class TDLibFunctions:
     async def setOption(
         self, name: str = "", value: "types.OptionValue" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the value of an option\. \(Check the list of available options on https://core\.telegram\.org/tdlib/options\.\) Only writable options can be set\. Can be called before authorization
+        r"""Sets the value of an option\. \(Check the list of available options on https://core\.telegram\.org/tdlib/options\.\) Only writable options can be set\. Can be called before authorization
 
         Parameters:
             name (:class:`str`):
@@ -16204,8 +15545,7 @@ class TDLibFunctions:
     async def setAccountTtl(
         self, ttl: "types.AccountTtl" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the period of inactivity after which the account of the current user will automatically be deleted
+        r"""Changes the period of inactivity after which the account of the current user will automatically be deleted
 
         Parameters:
             ttl (:class:`"types.AccountTtl"`):
@@ -16218,8 +15558,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "setAccountTtl", "ttl": ttl})
 
     async def getAccountTtl(self) -> Union["types.Error", "types.AccountTtl"]:
-        r"""
-        Returns the period of inactivity after which the account of the current user will automatically be deleted
+        r"""Returns the period of inactivity after which the account of the current user will automatically be deleted
 
         Returns:
             :class:`~pytdbot.types.AccountTtl`
@@ -16234,8 +15573,7 @@ class TDLibFunctions:
     async def deleteAccount(
         self, reason: str = "", password: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes the account of the current user, deleting all information associated with the user from the server\. The phone number of the account can be used to create a new account\. Can be called before authorization when the current authorization state is authorizationStateWaitPassword
+        r"""Deletes the account of the current user, deleting all information associated with the user from the server\. The phone number of the account can be used to create a new account\. Can be called before authorization when the current authorization state is authorizationStateWaitPassword
 
         Parameters:
             reason (:class:`str`):
@@ -16255,8 +15593,7 @@ class TDLibFunctions:
     async def setDefaultMessageAutoDeleteTime(
         self, message_auto_delete_time: "types.MessageAutoDeleteTime" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the default message auto\-delete time for new chats
+        r"""Changes the default message auto\-delete time for new chats
 
         Parameters:
             message_auto_delete_time (:class:`"types.MessageAutoDeleteTime"`):
@@ -16276,8 +15613,7 @@ class TDLibFunctions:
     async def getDefaultMessageAutoDeleteTime(
         self,
     ) -> Union["types.Error", "types.MessageAutoDeleteTime"]:
-        r"""
-        Returns default message auto\-delete time setting for new chats
+        r"""Returns default message auto\-delete time setting for new chats
 
         Returns:
             :class:`~pytdbot.types.MessageAutoDeleteTime`
@@ -16292,8 +15628,7 @@ class TDLibFunctions:
     async def removeChatActionBar(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a chat action bar without any other action
+        r"""Removes a chat action bar without any other action
 
         Parameters:
             chat_id (:class:`int`):
@@ -16312,8 +15647,7 @@ class TDLibFunctions:
         message_ids: List[int] = None,
         text: str = "",
     ) -> Union["types.Error", "types.ReportChatResult"]:
-        r"""
-        Reports a chat to the Telegram moderators\. A chat can be reported only from the chat action bar, or if chat\.can\_be\_reported
+        r"""Reports a chat to the Telegram moderators\. A chat can be reported only from the chat action bar, or if chat\.can\_be\_reported
 
         Parameters:
             chat_id (:class:`int`):
@@ -16349,8 +15683,7 @@ class TDLibFunctions:
         reason: "types.ReportReason" = None,
         text: str = "",
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Reports a chat photo to the Telegram moderators\. A chat photo can be reported only if chat\.can\_be\_reported
+        r"""Reports a chat photo to the Telegram moderators\. A chat photo can be reported only if chat\.can\_be\_reported
 
         Parameters:
             chat_id (:class:`int`):
@@ -16385,8 +15718,7 @@ class TDLibFunctions:
         message_id: int = 0,
         sender_id: "types.MessageSender" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Reports reactions set on a message to the Telegram moderators\. Reactions on a message can be reported only if messageProperties\.can\_report\_reactions
+        r"""Reports reactions set on a message to the Telegram moderators\. Reactions on a message can be reported only if messageProperties\.can\_report\_reactions
 
         Parameters:
             chat_id (:class:`int`):
@@ -16414,8 +15746,7 @@ class TDLibFunctions:
     async def getChatRevenueStatistics(
         self, chat_id: int = 0, is_dark: bool = False
     ) -> Union["types.Error", "types.ChatRevenueStatistics"]:
-        r"""
-        Returns detailed revenue statistics about a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+        r"""Returns detailed revenue statistics about a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -16439,8 +15770,7 @@ class TDLibFunctions:
     async def getChatRevenueWithdrawalUrl(
         self, chat_id: int = 0, password: str = ""
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns a URL for chat revenue withdrawal; requires owner privileges in the chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true and getOption\(\"can\_withdraw\_chat\_revenue\"\)
+        r"""Returns a URL for chat revenue withdrawal; requires owner privileges in the chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true and getOption\(\"can\_withdraw\_chat\_revenue\"\)
 
         Parameters:
             chat_id (:class:`int`):
@@ -16464,8 +15794,7 @@ class TDLibFunctions:
     async def getChatRevenueTransactions(
         self, chat_id: int = 0, offset: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.ChatRevenueTransactions"]:
-        r"""
-        Returns the list of revenue transactions for a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+        r"""Returns the list of revenue transactions for a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -16493,8 +15822,7 @@ class TDLibFunctions:
     async def getStarRevenueStatistics(
         self, owner_id: "types.MessageSender" = None, is_dark: bool = False
     ) -> Union["types.Error", "types.StarRevenueStatistics"]:
-        r"""
-        Returns detailed Telegram Star revenue statistics
+        r"""Returns detailed Telegram Star revenue statistics
 
         Parameters:
             owner_id (:class:`"types.MessageSender"`):
@@ -16521,8 +15849,7 @@ class TDLibFunctions:
         star_count: int = 0,
         password: str = "",
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns a URL for Telegram Star withdrawal
+        r"""Returns a URL for Telegram Star withdrawal
 
         Parameters:
             owner_id (:class:`"types.MessageSender"`):
@@ -16550,8 +15877,7 @@ class TDLibFunctions:
     async def getStarAdAccountUrl(
         self, owner_id: "types.MessageSender" = None
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns a URL for a Telegram Ad platform account that can be used to set up advertisements for the chat paid in the owned Telegram Stars
+        r"""Returns a URL for a Telegram Ad platform account that can be used to set up advertisements for the chat paid in the owned Telegram Stars
 
         Parameters:
             owner_id (:class:`"types.MessageSender"`):
@@ -16566,8 +15892,7 @@ class TDLibFunctions:
     async def getChatStatistics(
         self, chat_id: int = 0, is_dark: bool = False
     ) -> Union["types.Error", "types.ChatStatistics"]:
-        r"""
-        Returns detailed statistics about a chat\. Currently, this method can be used only for supergroups and channels\. Can be used only if supergroupFullInfo\.can\_get\_statistics \=\= true
+        r"""Returns detailed statistics about a chat\. Currently, this method can be used only for supergroups and channels\. Can be used only if supergroupFullInfo\.can\_get\_statistics \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -16587,8 +15912,7 @@ class TDLibFunctions:
     async def getMessageStatistics(
         self, chat_id: int = 0, message_id: int = 0, is_dark: bool = False
     ) -> Union["types.Error", "types.MessageStatistics"]:
-        r"""
-        Returns detailed statistics about a message\. Can be used only if messageProperties\.can\_get\_statistics \=\= true
+        r"""Returns detailed statistics about a message\. Can be used only if messageProperties\.can\_get\_statistics \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -16616,8 +15940,7 @@ class TDLibFunctions:
     async def getMessagePublicForwards(
         self, chat_id: int = 0, message_id: int = 0, offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.PublicForwards"]:
-        r"""
-        Returns forwarded copies of a channel message to different public channels and public reposts as a story\. Can be used only if messageProperties\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
+        r"""Returns forwarded copies of a channel message to different public channels and public reposts as a story\. Can be used only if messageProperties\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -16649,8 +15972,7 @@ class TDLibFunctions:
     async def getStoryStatistics(
         self, chat_id: int = 0, story_id: int = 0, is_dark: bool = False
     ) -> Union["types.Error", "types.StoryStatistics"]:
-        r"""
-        Returns detailed statistics about a story\. Can be used only if story\.can\_get\_statistics \=\= true
+        r"""Returns detailed statistics about a story\. Can be used only if story\.can\_get\_statistics \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -16678,8 +16000,7 @@ class TDLibFunctions:
     async def getStatisticalGraph(
         self, chat_id: int = 0, token: str = "", x: int = 0
     ) -> Union["types.Error", "types.StatisticalGraph"]:
-        r"""
-        Loads an asynchronous or a zoomed in statistical graph
+        r"""Loads an asynchronous or a zoomed in statistical graph
 
         Parameters:
             chat_id (:class:`int`):
@@ -16702,8 +16023,7 @@ class TDLibFunctions:
     async def getStorageStatistics(
         self, chat_limit: int = 0
     ) -> Union["types.Error", "types.StorageStatistics"]:
-        r"""
-        Returns storage usage statistics\. Can be called before authorization
+        r"""Returns storage usage statistics\. Can be called before authorization
 
         Parameters:
             chat_limit (:class:`int`):
@@ -16720,8 +16040,7 @@ class TDLibFunctions:
     async def getStorageStatisticsFast(
         self,
     ) -> Union["types.Error", "types.StorageStatisticsFast"]:
-        r"""
-        Quickly returns approximate storage usage statistics\. Can be called before authorization
+        r"""Quickly returns approximate storage usage statistics\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.StorageStatisticsFast`
@@ -16736,8 +16055,7 @@ class TDLibFunctions:
     async def getDatabaseStatistics(
         self,
     ) -> Union["types.Error", "types.DatabaseStatistics"]:
-        r"""
-        Returns database statistics
+        r"""Returns database statistics
 
         Returns:
             :class:`~pytdbot.types.DatabaseStatistics`
@@ -16761,8 +16079,7 @@ class TDLibFunctions:
         return_deleted_file_statistics: bool = False,
         chat_limit: int = 0,
     ) -> Union["types.Error", "types.StorageStatistics"]:
-        r"""
-        Optimizes storage usage, i\.e\. deletes some files and returns new storage usage statistics\. Secret thumbnails can't be deleted
+        r"""Optimizes storage usage, i\.e\. deletes some files and returns new storage usage statistics\. Secret thumbnails can't be deleted
 
         Parameters:
             size (:class:`int`):
@@ -16814,8 +16131,7 @@ class TDLibFunctions:
     async def setNetworkType(
         self, type: "types.NetworkType" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the current network type\. Can be called before authorization\. Calling this method forces all network connections to reopen, mitigating the delay in switching between different networks, so it must be called whenever the network is changed, even if the network type remains the same\. Network type is used to check whether the library can use the network at all and also for collecting detailed network data usage statistics
+        r"""Sets the current network type\. Can be called before authorization\. Calling this method forces all network connections to reopen, mitigating the delay in switching between different networks, so it must be called whenever the network is changed, even if the network type remains the same\. Network type is used to check whether the library can use the network at all and also for collecting detailed network data usage statistics
 
         Parameters:
             type (:class:`"types.NetworkType"`):
@@ -16830,8 +16146,7 @@ class TDLibFunctions:
     async def getNetworkStatistics(
         self, only_current: bool = False
     ) -> Union["types.Error", "types.NetworkStatistics"]:
-        r"""
-        Returns network data usage statistics\. Can be called before authorization
+        r"""Returns network data usage statistics\. Can be called before authorization
 
         Parameters:
             only_current (:class:`bool`):
@@ -16848,8 +16163,7 @@ class TDLibFunctions:
     async def addNetworkStatistics(
         self, entry: "types.NetworkStatisticsEntry" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds the specified data to data usage statistics\. Can be called before authorization
+        r"""Adds the specified data to data usage statistics\. Can be called before authorization
 
         Parameters:
             entry (:class:`"types.NetworkStatisticsEntry"`):
@@ -16862,8 +16176,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "addNetworkStatistics", "entry": entry})
 
     async def resetNetworkStatistics(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Resets all network data usage statistics to zero\. Can be called before authorization
+        r"""Resets all network data usage statistics to zero\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -16878,8 +16191,7 @@ class TDLibFunctions:
     async def getAutoDownloadSettingsPresets(
         self,
     ) -> Union["types.Error", "types.AutoDownloadSettingsPresets"]:
-        r"""
-        Returns auto\-download settings presets for the current user
+        r"""Returns auto\-download settings presets for the current user
 
         Returns:
             :class:`~pytdbot.types.AutoDownloadSettingsPresets`
@@ -16896,8 +16208,7 @@ class TDLibFunctions:
         settings: "types.AutoDownloadSettings" = None,
         type: "types.NetworkType" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets auto\-download settings
+        r"""Sets auto\-download settings
 
         Parameters:
             settings (:class:`"types.AutoDownloadSettings"`):
@@ -16917,8 +16228,7 @@ class TDLibFunctions:
     async def getAutosaveSettings(
         self,
     ) -> Union["types.Error", "types.AutosaveSettings"]:
-        r"""
-        Returns autosave settings for the current user
+        r"""Returns autosave settings for the current user
 
         Returns:
             :class:`~pytdbot.types.AutosaveSettings`
@@ -16935,8 +16245,7 @@ class TDLibFunctions:
         scope: "types.AutosaveSettingsScope" = None,
         settings: "types.ScopeAutosaveSettings" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets autosave settings for the given scope\. The method is guaranteed to work only after at least one call to getAutosaveSettings
+        r"""Sets autosave settings for the given scope\. The method is guaranteed to work only after at least one call to getAutosaveSettings
 
         Parameters:
             scope (:class:`"types.AutosaveSettingsScope"`):
@@ -16954,8 +16263,7 @@ class TDLibFunctions:
         )
 
     async def clearAutosaveSettingsExceptions(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Clears the list of all autosave settings exceptions\. The method is guaranteed to work only after at least one call to getAutosaveSettings
+        r"""Clears the list of all autosave settings exceptions\. The method is guaranteed to work only after at least one call to getAutosaveSettings
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -16970,8 +16278,7 @@ class TDLibFunctions:
     async def getBankCardInfo(
         self, bank_card_number: str = ""
     ) -> Union["types.Error", "types.BankCardInfo"]:
-        r"""
-        Returns information about a bank card
+        r"""Returns information about a bank card
 
         Parameters:
             bank_card_number (:class:`str`):
@@ -16988,8 +16295,7 @@ class TDLibFunctions:
     async def getPassportElement(
         self, type: "types.PassportElementType" = None, password: str = ""
     ) -> Union["types.Error", "types.PassportElement"]:
-        r"""
-        Returns one of the available Telegram Passport elements
+        r"""Returns one of the available Telegram Passport elements
 
         Parameters:
             type (:class:`"types.PassportElementType"`):
@@ -17009,8 +16315,7 @@ class TDLibFunctions:
     async def getAllPassportElements(
         self, password: str = ""
     ) -> Union["types.Error", "types.PassportElements"]:
-        r"""
-        Returns all available Telegram Passport elements
+        r"""Returns all available Telegram Passport elements
 
         Parameters:
             password (:class:`str`):
@@ -17027,8 +16332,7 @@ class TDLibFunctions:
     async def setPassportElement(
         self, element: "types.InputPassportElement" = None, password: str = ""
     ) -> Union["types.Error", "types.PassportElement"]:
-        r"""
-        Adds an element to the user's Telegram Passport\. May return an error with a message \"PHONE\_VERIFICATION\_NEEDED\" or \"EMAIL\_VERIFICATION\_NEEDED\" if the chosen phone number or the chosen email address must be verified first
+        r"""Adds an element to the user's Telegram Passport\. May return an error with a message \"PHONE\_VERIFICATION\_NEEDED\" or \"EMAIL\_VERIFICATION\_NEEDED\" if the chosen phone number or the chosen email address must be verified first
 
         Parameters:
             element (:class:`"types.InputPassportElement"`):
@@ -17048,8 +16352,7 @@ class TDLibFunctions:
     async def deletePassportElement(
         self, type: "types.PassportElementType" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Deletes a Telegram Passport element
+        r"""Deletes a Telegram Passport element
 
         Parameters:
             type (:class:`"types.PassportElementType"`):
@@ -17064,8 +16367,7 @@ class TDLibFunctions:
     async def setPassportElementErrors(
         self, user_id: int = 0, errors: List["types.InputPassportElementError"] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs the user that some of the elements in their Telegram Passport contain errors; for bots only\. The user will not be able to resend the elements, until the errors are fixed
+        r"""Informs the user that some of the elements in their Telegram Passport contain errors; for bots only\. The user will not be able to resend the elements, until the errors are fixed
 
         Parameters:
             user_id (:class:`int`):
@@ -17085,8 +16387,7 @@ class TDLibFunctions:
     async def getPreferredCountryLanguage(
         self, country_code: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns an IETF language tag of the language preferred in the country, which must be used to fill native fields in Telegram Passport personal details\. Returns a 404 error if unknown
+        r"""Returns an IETF language tag of the language preferred in the country, which must be used to fill native fields in Telegram Passport personal details\. Returns a 404 error if unknown
 
         Parameters:
             country_code (:class:`str`):
@@ -17103,8 +16404,7 @@ class TDLibFunctions:
     async def sendEmailAddressVerificationCode(
         self, email_address: str = ""
     ) -> Union["types.Error", "types.EmailAddressAuthenticationCodeInfo"]:
-        r"""
-        Sends a code to verify an email address to be added to a user's Telegram Passport
+        r"""Sends a code to verify an email address to be added to a user's Telegram Passport
 
         Parameters:
             email_address (:class:`str`):
@@ -17124,8 +16424,7 @@ class TDLibFunctions:
     async def resendEmailAddressVerificationCode(
         self,
     ) -> Union["types.Error", "types.EmailAddressAuthenticationCodeInfo"]:
-        r"""
-        Resends the code to verify an email address to be added to a user's Telegram Passport
+        r"""Resends the code to verify an email address to be added to a user's Telegram Passport
 
         Returns:
             :class:`~pytdbot.types.EmailAddressAuthenticationCodeInfo`
@@ -17140,8 +16439,7 @@ class TDLibFunctions:
     async def checkEmailAddressVerificationCode(
         self, code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks the email address verification code for Telegram Passport
+        r"""Checks the email address verification code for Telegram Passport
 
         Parameters:
             code (:class:`str`):
@@ -17162,8 +16460,7 @@ class TDLibFunctions:
         public_key: str = "",
         nonce: str = "",
     ) -> Union["types.Error", "types.PassportAuthorizationForm"]:
-        r"""
-        Returns a Telegram Passport authorization form for sharing data with a service
+        r"""Returns a Telegram Passport authorization form for sharing data with a service
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -17195,8 +16492,7 @@ class TDLibFunctions:
     async def getPassportAuthorizationFormAvailableElements(
         self, authorization_form_id: int = 0, password: str = ""
     ) -> Union["types.Error", "types.PassportElementsWithErrors"]:
-        r"""
-        Returns already available Telegram Passport elements suitable for completing a Telegram Passport authorization form\. Result can be received only once for each authorization form
+        r"""Returns already available Telegram Passport elements suitable for completing a Telegram Passport authorization form\. Result can be received only once for each authorization form
 
         Parameters:
             authorization_form_id (:class:`int`):
@@ -17222,8 +16518,7 @@ class TDLibFunctions:
         authorization_form_id: int = 0,
         types: List["types.PassportElementType"] = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends a Telegram Passport authorization form, effectively sharing data with the service\. This method must be called after getPassportAuthorizationFormAvailableElements if some previously available elements are going to be reused
+        r"""Sends a Telegram Passport authorization form, effectively sharing data with the service\. This method must be called after getPassportAuthorizationFormAvailableElements if some previously available elements are going to be reused
 
         Parameters:
             authorization_form_id (:class:`int`):
@@ -17247,8 +16542,7 @@ class TDLibFunctions:
     async def setBotUpdatesStatus(
         self, pending_update_count: int = 0, error_message: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs the server about the number of pending bot updates if they haven't been processed for a long time; for bots only
+        r"""Informs the server about the number of pending bot updates if they haven't been processed for a long time; for bots only
 
         Parameters:
             pending_update_count (:class:`int`):
@@ -17275,8 +16569,7 @@ class TDLibFunctions:
         sticker_format: "types.StickerFormat" = None,
         sticker: "types.InputFile" = None,
     ) -> Union["types.Error", "types.File"]:
-        r"""
-        Uploads a file with a sticker; returns the uploaded file
+        r"""Uploads a file with a sticker; returns the uploaded file
 
         Parameters:
             user_id (:class:`int`):
@@ -17304,8 +16597,7 @@ class TDLibFunctions:
     async def getSuggestedStickerSetName(
         self, title: str = ""
     ) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns a suggested name for a new sticker set with a given title
+        r"""Returns a suggested name for a new sticker set with a given title
 
         Parameters:
             title (:class:`str`):
@@ -17322,8 +16614,7 @@ class TDLibFunctions:
     async def checkStickerSetName(
         self, name: str = ""
     ) -> Union["types.Error", "types.CheckStickerSetNameResult"]:
-        r"""
-        Checks whether a name can be used for a new sticker set
+        r"""Checks whether a name can be used for a new sticker set
 
         Parameters:
             name (:class:`str`):
@@ -17345,8 +16636,7 @@ class TDLibFunctions:
         stickers: List["types.InputSticker"] = None,
         source: str = "",
     ) -> Union["types.Error", "types.StickerSet"]:
-        r"""
-        Creates a new sticker set\. Returns the newly created sticker set
+        r"""Creates a new sticker set\. Returns the newly created sticker set
 
         Parameters:
             user_id (:class:`int`):
@@ -17390,8 +16680,7 @@ class TDLibFunctions:
     async def addStickerToSet(
         self, user_id: int = 0, name: str = "", sticker: "types.InputSticker" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds a new sticker to a set
+        r"""Adds a new sticker to a set
 
         Parameters:
             user_id (:class:`int`):
@@ -17423,8 +16712,7 @@ class TDLibFunctions:
         old_sticker: "types.InputFile" = None,
         new_sticker: "types.InputSticker" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Replaces existing sticker in a set\. The function is equivalent to removeStickerFromSet, then addStickerToSet, then setStickerPositionInSet
+        r"""Replaces existing sticker in a set\. The function is equivalent to removeStickerFromSet, then addStickerToSet, then setStickerPositionInSet
 
         Parameters:
             user_id (:class:`int`):
@@ -17460,8 +16748,7 @@ class TDLibFunctions:
         thumbnail: "types.InputFile" = None,
         format: "types.StickerFormat" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets a sticker set thumbnail
+        r"""Sets a sticker set thumbnail
 
         Parameters:
             user_id (:class:`int`):
@@ -17493,8 +16780,7 @@ class TDLibFunctions:
     async def setCustomEmojiStickerSetThumbnail(
         self, name: str = "", custom_emoji_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets a custom emoji sticker set thumbnail
+        r"""Sets a custom emoji sticker set thumbnail
 
         Parameters:
             name (:class:`str`):
@@ -17518,8 +16804,7 @@ class TDLibFunctions:
     async def setStickerSetTitle(
         self, name: str = "", title: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets a sticker set title
+        r"""Sets a sticker set title
 
         Parameters:
             name (:class:`str`):
@@ -17539,8 +16824,7 @@ class TDLibFunctions:
     async def deleteStickerSet(
         self, name: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Completely deletes a sticker set
+        r"""Completely deletes a sticker set
 
         Parameters:
             name (:class:`str`):
@@ -17555,8 +16839,7 @@ class TDLibFunctions:
     async def setStickerPositionInSet(
         self, sticker: "types.InputFile" = None, position: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the position of a sticker in the set to which it belongs\. The sticker set must be owned by the current user
+        r"""Changes the position of a sticker in the set to which it belongs\. The sticker set must be owned by the current user
 
         Parameters:
             sticker (:class:`"types.InputFile"`):
@@ -17580,8 +16863,7 @@ class TDLibFunctions:
     async def removeStickerFromSet(
         self, sticker: "types.InputFile" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a sticker from the set to which it belongs\. The sticker set must be owned by the current user
+        r"""Removes a sticker from the set to which it belongs\. The sticker set must be owned by the current user
 
         Parameters:
             sticker (:class:`"types.InputFile"`):
@@ -17596,8 +16878,7 @@ class TDLibFunctions:
     async def setStickerEmojis(
         self, sticker: "types.InputFile" = None, emojis: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the list of emojis corresponding to a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
+        r"""Changes the list of emojis corresponding to a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
 
         Parameters:
             sticker (:class:`"types.InputFile"`):
@@ -17617,8 +16898,7 @@ class TDLibFunctions:
     async def setStickerKeywords(
         self, sticker: "types.InputFile" = None, keywords: List[str] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the list of keywords of a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
+        r"""Changes the list of keywords of a sticker\. The sticker must belong to a regular or custom emoji sticker set that is owned by the current user
 
         Parameters:
             sticker (:class:`"types.InputFile"`):
@@ -17640,8 +16920,7 @@ class TDLibFunctions:
         sticker: "types.InputFile" = None,
         mask_position: "types.MaskPosition" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Changes the mask position of a mask sticker\. The sticker must belong to a mask sticker set that is owned by the current user
+        r"""Changes the mask position of a mask sticker\. The sticker must belong to a mask sticker set that is owned by the current user
 
         Parameters:
             sticker (:class:`"types.InputFile"`):
@@ -17665,8 +16944,7 @@ class TDLibFunctions:
     async def getOwnedStickerSets(
         self, offset_sticker_set_id: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.StickerSets"]:
-        r"""
-        Returns sticker sets owned by the current user
+        r"""Returns sticker sets owned by the current user
 
         Parameters:
             offset_sticker_set_id (:class:`int`):
@@ -17696,8 +16974,7 @@ class TDLibFunctions:
         scale: int = 0,
         chat_id: int = 0,
     ) -> Union["types.Error", "types.File"]:
-        r"""
-        Returns information about a file with a map thumbnail in PNG format\. Only map thumbnail files with size less than 1MB can be downloaded
+        r"""Returns information about a file with a map thumbnail in PNG format\. Only map thumbnail files with size less than 1MB can be downloaded
 
         Parameters:
             location (:class:`"types.Location"`):
@@ -17737,8 +17014,7 @@ class TDLibFunctions:
     async def getPremiumLimit(
         self, limit_type: "types.PremiumLimitType" = None
     ) -> Union["types.Error", "types.PremiumLimit"]:
-        r"""
-        Returns information about a limit, increased for Premium users\. Returns a 404 error if the limit is unknown
+        r"""Returns information about a limit, increased for Premium users\. Returns a 404 error if the limit is unknown
 
         Parameters:
             limit_type (:class:`"types.PremiumLimitType"`):
@@ -17753,8 +17029,7 @@ class TDLibFunctions:
     async def getPremiumFeatures(
         self, source: "types.PremiumSource" = None
     ) -> Union["types.Error", "types.PremiumFeatures"]:
-        r"""
-        Returns information about features, available to Premium users
+        r"""Returns information about features, available to Premium users
 
         Parameters:
             source (:class:`"types.PremiumSource"`):
@@ -17767,8 +17042,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "getPremiumFeatures", "source": source})
 
     async def getPremiumStickerExamples(self) -> Union["types.Error", "types.Stickers"]:
-        r"""
-        Returns examples of premium stickers for demonstration purposes
+        r"""Returns examples of premium stickers for demonstration purposes
 
         Returns:
             :class:`~pytdbot.types.Stickers`
@@ -17783,8 +17057,7 @@ class TDLibFunctions:
     async def getPremiumInfoSticker(
         self, month_count: int = 0
     ) -> Union["types.Error", "types.Sticker"]:
-        r"""
-        Returns the sticker to be used as representation of the Telegram Premium subscription
+        r"""Returns the sticker to be used as representation of the Telegram Premium subscription
 
         Parameters:
             month_count (:class:`int`):
@@ -17801,8 +17074,7 @@ class TDLibFunctions:
     async def viewPremiumFeature(
         self, feature: "types.PremiumFeature" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that the user viewed detailed information about a Premium feature on the Premium features screen
+        r"""Informs TDLib that the user viewed detailed information about a Premium feature on the Premium features screen
 
         Parameters:
             feature (:class:`"types.PremiumFeature"`):
@@ -17815,8 +17087,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "viewPremiumFeature", "feature": feature})
 
     async def clickPremiumSubscriptionButton(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs TDLib that the user clicked Premium subscription button on the Premium features screen
+        r"""Informs TDLib that the user clicked Premium subscription button on the Premium features screen
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -17829,8 +17100,7 @@ class TDLibFunctions:
         )
 
     async def getPremiumState(self) -> Union["types.Error", "types.PremiumState"]:
-        r"""
-        Returns state of Telegram Premium subscription and promotion videos for Premium features
+        r"""Returns state of Telegram Premium subscription and promotion videos for Premium features
 
         Returns:
             :class:`~pytdbot.types.PremiumState`
@@ -17845,8 +17115,7 @@ class TDLibFunctions:
     async def getPremiumGiftCodePaymentOptions(
         self, boosted_chat_id: int = 0
     ) -> Union["types.Error", "types.PremiumGiftCodePaymentOptions"]:
-        r"""
-        Returns available options for Telegram Premium gift code or Telegram Premium giveaway creation
+        r"""Returns available options for Telegram Premium gift code or Telegram Premium giveaway creation
 
         Parameters:
             boosted_chat_id (:class:`int`):
@@ -17866,8 +17135,7 @@ class TDLibFunctions:
     async def checkPremiumGiftCode(
         self, code: str = ""
     ) -> Union["types.Error", "types.PremiumGiftCodeInfo"]:
-        r"""
-        Return information about a Telegram Premium gift code
+        r"""Return information about a Telegram Premium gift code
 
         Parameters:
             code (:class:`str`):
@@ -17882,8 +17150,7 @@ class TDLibFunctions:
     async def applyPremiumGiftCode(
         self, code: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Applies a Telegram Premium gift code
+        r"""Applies a Telegram Premium gift code
 
         Parameters:
             code (:class:`str`):
@@ -17902,8 +17169,7 @@ class TDLibFunctions:
         winner_count: int = 0,
         star_count: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Launches a prepaid giveaway
+        r"""Launches a prepaid giveaway
 
         Parameters:
             giveaway_id (:class:`int`):
@@ -17935,8 +17201,7 @@ class TDLibFunctions:
     async def getGiveawayInfo(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.GiveawayInfo"]:
-        r"""
-        Returns information about a giveaway
+        r"""Returns information about a giveaway
 
         Parameters:
             chat_id (:class:`int`):
@@ -17956,8 +17221,7 @@ class TDLibFunctions:
     async def getStarPaymentOptions(
         self,
     ) -> Union["types.Error", "types.StarPaymentOptions"]:
-        r"""
-        Returns available options for Telegram Stars purchase
+        r"""Returns available options for Telegram Stars purchase
 
         Returns:
             :class:`~pytdbot.types.StarPaymentOptions`
@@ -17972,8 +17236,7 @@ class TDLibFunctions:
     async def getStarGiftPaymentOptions(
         self, user_id: int = 0
     ) -> Union["types.Error", "types.StarPaymentOptions"]:
-        r"""
-        Returns available options for Telegram Stars gifting
+        r"""Returns available options for Telegram Stars gifting
 
         Parameters:
             user_id (:class:`int`):
@@ -17990,8 +17253,7 @@ class TDLibFunctions:
     async def getStarGiveawayPaymentOptions(
         self,
     ) -> Union["types.Error", "types.StarGiveawayPaymentOptions"]:
-        r"""
-        Returns available options for Telegram Star giveaway creation
+        r"""Returns available options for Telegram Star giveaway creation
 
         Returns:
             :class:`~pytdbot.types.StarGiveawayPaymentOptions`
@@ -18011,8 +17273,7 @@ class TDLibFunctions:
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.StarTransactions"]:
-        r"""
-        Returns the list of Telegram Star transactions for the specified owner
+        r"""Returns the list of Telegram Star transactions for the specified owner
 
         Parameters:
             owner_id (:class:`"types.MessageSender"`):
@@ -18048,8 +17309,7 @@ class TDLibFunctions:
     async def getStarSubscriptions(
         self, only_expiring: bool = False, offset: str = ""
     ) -> Union["types.Error", "types.StarSubscriptions"]:
-        r"""
-        Returns the list of Telegram Star subscriptions for the current user
+        r"""Returns the list of Telegram Star subscriptions for the current user
 
         Parameters:
             only_expiring (:class:`bool`):
@@ -18073,8 +17333,7 @@ class TDLibFunctions:
     async def canPurchaseFromStore(
         self, purpose: "types.StorePaymentPurpose" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Checks whether an in\-store purchase is possible\. Must be called before any in\-store purchase
+        r"""Checks whether an in\-store purchase is possible\. Must be called before any in\-store purchase
 
         Parameters:
             purpose (:class:`"types.StorePaymentPurpose"`):
@@ -18089,8 +17348,7 @@ class TDLibFunctions:
     async def assignAppStoreTransaction(
         self, receipt: bytes = b"", purpose: "types.StorePaymentPurpose" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs server about a purchase through App Store\. For official applications only
+        r"""Informs server about a purchase through App Store\. For official applications only
 
         Parameters:
             receipt (:class:`bytes`):
@@ -18118,8 +17376,7 @@ class TDLibFunctions:
         purchase_token: str = "",
         purpose: "types.StorePaymentPurpose" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Informs server about a purchase through Google Play\. For official applications only
+        r"""Informs server about a purchase through Google Play\. For official applications only
 
         Parameters:
             package_name (:class:`str`):
@@ -18151,8 +17408,7 @@ class TDLibFunctions:
     async def editStarSubscription(
         self, subscription_id: str = "", is_canceled: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Cancels or reenables Telegram Star subscription to a channel
+        r"""Cancels or reenables Telegram Star subscription to a channel
 
         Parameters:
             subscription_id (:class:`str`):
@@ -18176,8 +17432,7 @@ class TDLibFunctions:
     async def reuseStarSubscription(
         self, subscription_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Reuses an active subscription and joins the subscribed chat again
+        r"""Reuses an active subscription and joins the subscribed chat again
 
         Parameters:
             subscription_id (:class:`str`):
@@ -18194,8 +17449,7 @@ class TDLibFunctions:
     async def getBusinessFeatures(
         self, source: "types.BusinessFeature" = None
     ) -> Union["types.Error", "types.BusinessFeatures"]:
-        r"""
-        Returns information about features, available to Business users
+        r"""Returns information about features, available to Business users
 
         Parameters:
             source (:class:`"types.BusinessFeature"`):
@@ -18210,8 +17464,7 @@ class TDLibFunctions:
     async def acceptTermsOfService(
         self, terms_of_service_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Accepts Telegram terms of services
+        r"""Accepts Telegram terms of services
 
         Parameters:
             terms_of_service_id (:class:`str`):
@@ -18235,8 +17488,7 @@ class TDLibFunctions:
         limit: int = 0,
         return_none_for_empty_query: bool = False,
     ) -> Union["types.Error", "types.FoundPositions"]:
-        r"""
-        Searches specified query by word prefixes in the provided strings\. Returns 0\-based positions of strings that matched\. Can be called synchronously
+        r"""Searches specified query by word prefixes in the provided strings\. Returns 0\-based positions of strings that matched\. Can be called synchronously
 
         Parameters:
             strings (:class:`List[str]`):
@@ -18268,8 +17520,7 @@ class TDLibFunctions:
     async def sendCustomRequest(
         self, method: str = "", parameters: str = ""
     ) -> Union["types.Error", "types.CustomRequestResult"]:
-        r"""
-        Sends a custom request; for bots only
+        r"""Sends a custom request; for bots only
 
         Parameters:
             method (:class:`str`):
@@ -18289,8 +17540,7 @@ class TDLibFunctions:
     async def answerCustomQuery(
         self, custom_query_id: int = 0, data: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Answers a custom query; for bots only
+        r"""Answers a custom query; for bots only
 
         Parameters:
             custom_query_id (:class:`int`):
@@ -18312,8 +17562,7 @@ class TDLibFunctions:
         )
 
     async def setAlarm(self, seconds: float = 0.0) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Succeeds after a specified amount of time has passed\. Can be called before initialization
+        r"""Succeeds after a specified amount of time has passed\. Can be called before initialization
 
         Parameters:
             seconds (:class:`float`):
@@ -18326,8 +17575,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "setAlarm", "seconds": seconds})
 
     async def getCountries(self) -> Union["types.Error", "types.Countries"]:
-        r"""
-        Returns information about existing countries\. Can be called before authorization
+        r"""Returns information about existing countries\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.Countries`
@@ -18340,8 +17588,7 @@ class TDLibFunctions:
         )
 
     async def getCountryCode(self) -> Union["types.Error", "types.Text"]:
-        r"""
-        Uses the current IP address to find the current country\. Returns two\-letter ISO 3166\-1 alpha\-2 country code\. Can be called before authorization
+        r"""Uses the current IP address to find the current country\. Returns two\-letter ISO 3166\-1 alpha\-2 country code\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.Text`
@@ -18356,8 +17603,7 @@ class TDLibFunctions:
     async def getPhoneNumberInfo(
         self, phone_number_prefix: str = ""
     ) -> Union["types.Error", "types.PhoneNumberInfo"]:
-        r"""
-        Returns information about a phone number by its prefix\. Can be called before authorization
+        r"""Returns information about a phone number by its prefix\. Can be called before authorization
 
         Parameters:
             phone_number_prefix (:class:`str`):
@@ -18374,8 +17620,7 @@ class TDLibFunctions:
     async def getPhoneNumberInfoSync(
         self, language_code: str = "", phone_number_prefix: str = ""
     ) -> Union["types.Error", "types.PhoneNumberInfo"]:
-        r"""
-        Returns information about a phone number by its prefix synchronously\. getCountries must be called at least once after changing localization to the specified language if properly localized country information is expected\. Can be called synchronously
+        r"""Returns information about a phone number by its prefix synchronously\. getCountries must be called at least once after changing localization to the specified language if properly localized country information is expected\. Can be called synchronously
 
         Parameters:
             language_code (:class:`str`):
@@ -18399,8 +17644,7 @@ class TDLibFunctions:
     async def getCollectibleItemInfo(
         self, type: "types.CollectibleItemType" = None
     ) -> Union["types.Error", "types.CollectibleItemInfo"]:
-        r"""
-        Returns information about a given collectible item that was purchased at https://fragment\.com
+        r"""Returns information about a given collectible item that was purchased at https://fragment\.com
 
         Parameters:
             type (:class:`"types.CollectibleItemType"`):
@@ -18415,8 +17659,7 @@ class TDLibFunctions:
     async def getDeepLinkInfo(
         self, link: str = ""
     ) -> Union["types.Error", "types.DeepLinkInfo"]:
-        r"""
-        Returns information about a tg:// deep link\. Use \"tg://need\_update\_for\_some\_feature\" or \"tg:some\_unsupported\_feature\" for testing\. Returns a 404 error for unknown links\. Can be called before authorization
+        r"""Returns information about a tg:// deep link\. Use \"tg://need\_update\_for\_some\_feature\" or \"tg:some\_unsupported\_feature\" for testing\. Returns a 404 error for unknown links\. Can be called before authorization
 
         Parameters:
             link (:class:`str`):
@@ -18429,8 +17672,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "getDeepLinkInfo", "link": link})
 
     async def getApplicationConfig(self) -> Union["types.Error", "types.JsonValue"]:
-        r"""
-        Returns application config, provided by the server\. Can be called before authorization
+        r"""Returns application config, provided by the server\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.JsonValue`
@@ -18445,8 +17687,7 @@ class TDLibFunctions:
     async def saveApplicationLogEvent(
         self, type: str = "", chat_id: int = 0, data: "types.JsonValue" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Saves application log event on the server\. Can be called before authorization
+        r"""Saves application log event on the server\. Can be called before authorization
 
         Parameters:
             type (:class:`str`):
@@ -18472,8 +17713,7 @@ class TDLibFunctions:
         )
 
     async def getApplicationDownloadLink(self) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns the link for downloading official Telegram application to be used when the current user invites friends to Telegram
+        r"""Returns the link for downloading official Telegram application to be used when the current user invites friends to Telegram
 
         Returns:
             :class:`~pytdbot.types.HttpUrl`
@@ -18492,8 +17732,7 @@ class TDLibFunctions:
         enable: bool = False,
         type: "types.ProxyType" = None,
     ) -> Union["types.Error", "types.Proxy"]:
-        r"""
-        Adds a proxy server for network requests\. Can be called before authorization
+        r"""Adds a proxy server for network requests\. Can be called before authorization
 
         Parameters:
             server (:class:`str`):
@@ -18530,8 +17769,7 @@ class TDLibFunctions:
         enable: bool = False,
         type: "types.ProxyType" = None,
     ) -> Union["types.Error", "types.Proxy"]:
-        r"""
-        Edits an existing proxy server for network requests\. Can be called before authorization
+        r"""Edits an existing proxy server for network requests\. Can be called before authorization
 
         Parameters:
             proxy_id (:class:`int`):
@@ -18565,8 +17803,7 @@ class TDLibFunctions:
         )
 
     async def enableProxy(self, proxy_id: int = 0) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Enables a proxy\. Only one proxy can be enabled at a time\. Can be called before authorization
+        r"""Enables a proxy\. Only one proxy can be enabled at a time\. Can be called before authorization
 
         Parameters:
             proxy_id (:class:`int`):
@@ -18579,8 +17816,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "enableProxy", "proxy_id": proxy_id})
 
     async def disableProxy(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Disables the currently enabled proxy\. Can be called before authorization
+        r"""Disables the currently enabled proxy\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -18593,8 +17829,7 @@ class TDLibFunctions:
         )
 
     async def removeProxy(self, proxy_id: int = 0) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Removes a proxy server\. Can be called before authorization
+        r"""Removes a proxy server\. Can be called before authorization
 
         Parameters:
             proxy_id (:class:`int`):
@@ -18607,8 +17842,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "removeProxy", "proxy_id": proxy_id})
 
     async def getProxies(self) -> Union["types.Error", "types.Proxies"]:
-        r"""
-        Returns the list of proxies that are currently set up\. Can be called before authorization
+        r"""Returns the list of proxies that are currently set up\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.Proxies`
@@ -18623,8 +17857,7 @@ class TDLibFunctions:
     async def getProxyLink(
         self, proxy_id: int = 0
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""
-        Returns an HTTPS link, which can be used to add a proxy\. Available only for SOCKS5 and MTProto proxies\. Can be called before authorization
+        r"""Returns an HTTPS link, which can be used to add a proxy\. Available only for SOCKS5 and MTProto proxies\. Can be called before authorization
 
         Parameters:
             proxy_id (:class:`int`):
@@ -18639,8 +17872,7 @@ class TDLibFunctions:
     async def pingProxy(
         self, proxy_id: int = 0
     ) -> Union["types.Error", "types.Seconds"]:
-        r"""
-        Computes time needed to receive a response from a Telegram server through a proxy\. Can be called before authorization
+        r"""Computes time needed to receive a response from a Telegram server through a proxy\. Can be called before authorization
 
         Parameters:
             proxy_id (:class:`int`):
@@ -18655,8 +17887,7 @@ class TDLibFunctions:
     async def setLogStream(
         self, log_stream: "types.LogStream" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets new log stream for internal logging of TDLib\. Can be called synchronously
+        r"""Sets new log stream for internal logging of TDLib\. Can be called synchronously
 
         Parameters:
             log_stream (:class:`"types.LogStream"`):
@@ -18669,8 +17900,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "setLogStream", "log_stream": log_stream})
 
     async def getLogStream(self) -> Union["types.Error", "types.LogStream"]:
-        r"""
-        Returns information about currently used log stream for internal logging of TDLib\. Can be called synchronously
+        r"""Returns information about currently used log stream for internal logging of TDLib\. Can be called synchronously
 
         Returns:
             :class:`~pytdbot.types.LogStream`
@@ -18685,8 +17915,7 @@ class TDLibFunctions:
     async def setLogVerbosityLevel(
         self, new_verbosity_level: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the verbosity level of the internal logging of TDLib\. Can be called synchronously
+        r"""Sets the verbosity level of the internal logging of TDLib\. Can be called synchronously
 
         Parameters:
             new_verbosity_level (:class:`int`):
@@ -18706,8 +17935,7 @@ class TDLibFunctions:
     async def getLogVerbosityLevel(
         self,
     ) -> Union["types.Error", "types.LogVerbosityLevel"]:
-        r"""
-        Returns current verbosity level of the internal logging of TDLib\. Can be called synchronously
+        r"""Returns current verbosity level of the internal logging of TDLib\. Can be called synchronously
 
         Returns:
             :class:`~pytdbot.types.LogVerbosityLevel`
@@ -18720,8 +17948,7 @@ class TDLibFunctions:
         )
 
     async def getLogTags(self) -> Union["types.Error", "types.LogTags"]:
-        r"""
-        Returns the list of available TDLib internal log tags, for example, \[\"actor\", \"binlog\", \"connections\", \"notifications\", \"proxy\"\]\. Can be called synchronously
+        r"""Returns the list of available TDLib internal log tags, for example, \[\"actor\", \"binlog\", \"connections\", \"notifications\", \"proxy\"\]\. Can be called synchronously
 
         Returns:
             :class:`~pytdbot.types.LogTags`
@@ -18736,8 +17963,7 @@ class TDLibFunctions:
     async def setLogTagVerbosityLevel(
         self, tag: str = "", new_verbosity_level: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sets the verbosity level for a specified TDLib internal log tag\. Can be called synchronously
+        r"""Sets the verbosity level for a specified TDLib internal log tag\. Can be called synchronously
 
         Parameters:
             tag (:class:`str`):
@@ -18761,8 +17987,7 @@ class TDLibFunctions:
     async def getLogTagVerbosityLevel(
         self, tag: str = ""
     ) -> Union["types.Error", "types.LogVerbosityLevel"]:
-        r"""
-        Returns current verbosity level for a specified TDLib internal log tag\. Can be called synchronously
+        r"""Returns current verbosity level for a specified TDLib internal log tag\. Can be called synchronously
 
         Parameters:
             tag (:class:`str`):
@@ -18777,8 +18002,7 @@ class TDLibFunctions:
     async def addLogMessage(
         self, verbosity_level: int = 0, text: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Adds a message to TDLib internal log\. Can be called synchronously
+        r"""Adds a message to TDLib internal log\. Can be called synchronously
 
         Parameters:
             verbosity_level (:class:`int`):
@@ -18798,8 +18022,7 @@ class TDLibFunctions:
     async def getUserSupportInfo(
         self, user_id: int = 0
     ) -> Union["types.Error", "types.UserSupportInfo"]:
-        r"""
-        Returns support information for the given user; for Telegram support only
+        r"""Returns support information for the given user; for Telegram support only
 
         Parameters:
             user_id (:class:`int`):
@@ -18814,8 +18037,7 @@ class TDLibFunctions:
     async def setUserSupportInfo(
         self, user_id: int = 0, message: "types.FormattedText" = None
     ) -> Union["types.Error", "types.UserSupportInfo"]:
-        r"""
-        Sets support information for the given user; for Telegram support only
+        r"""Sets support information for the given user; for Telegram support only
 
         Parameters:
             user_id (:class:`int`):
@@ -18833,8 +18055,7 @@ class TDLibFunctions:
         )
 
     async def getSupportName(self) -> Union["types.Error", "types.Text"]:
-        r"""
-        Returns localized name of the Telegram support user; for Telegram support only
+        r"""Returns localized name of the Telegram support user; for Telegram support only
 
         Returns:
             :class:`~pytdbot.types.Text`
@@ -18847,8 +18068,7 @@ class TDLibFunctions:
         )
 
     async def testCallEmpty(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Does nothing; for testing only\. This is an offline method\. Can be called before authorization
+        r"""Does nothing; for testing only\. This is an offline method\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -18863,8 +18083,7 @@ class TDLibFunctions:
     async def testCallString(
         self, x: str = ""
     ) -> Union["types.Error", "types.TestString"]:
-        r"""
-        Returns the received string; for testing only\. This is an offline method\. Can be called before authorization
+        r"""Returns the received string; for testing only\. This is an offline method\. Can be called before authorization
 
         Parameters:
             x (:class:`str`):
@@ -18879,8 +18098,7 @@ class TDLibFunctions:
     async def testCallBytes(
         self, x: bytes = b""
     ) -> Union["types.Error", "types.TestBytes"]:
-        r"""
-        Returns the received bytes; for testing only\. This is an offline method\. Can be called before authorization
+        r"""Returns the received bytes; for testing only\. This is an offline method\. Can be called before authorization
 
         Parameters:
             x (:class:`bytes`):
@@ -18895,8 +18113,7 @@ class TDLibFunctions:
     async def testCallVectorInt(
         self, x: List[int] = None
     ) -> Union["types.Error", "types.TestVectorInt"]:
-        r"""
-        Returns the received vector of numbers; for testing only\. This is an offline method\. Can be called before authorization
+        r"""Returns the received vector of numbers; for testing only\. This is an offline method\. Can be called before authorization
 
         Parameters:
             x (:class:`List[int]`):
@@ -18911,8 +18128,7 @@ class TDLibFunctions:
     async def testCallVectorIntObject(
         self, x: List["types.TestInt"] = None
     ) -> Union["types.Error", "types.TestVectorIntObject"]:
-        r"""
-        Returns the received vector of objects containing a number; for testing only\. This is an offline method\. Can be called before authorization
+        r"""Returns the received vector of objects containing a number; for testing only\. This is an offline method\. Can be called before authorization
 
         Parameters:
             x (:class:`List["types.TestInt"]`):
@@ -18927,8 +18143,7 @@ class TDLibFunctions:
     async def testCallVectorString(
         self, x: List[str] = None
     ) -> Union["types.Error", "types.TestVectorString"]:
-        r"""
-        Returns the received vector of strings; for testing only\. This is an offline method\. Can be called before authorization
+        r"""Returns the received vector of strings; for testing only\. This is an offline method\. Can be called before authorization
 
         Parameters:
             x (:class:`List[str]`):
@@ -18943,8 +18158,7 @@ class TDLibFunctions:
     async def testCallVectorStringObject(
         self, x: List["types.TestString"] = None
     ) -> Union["types.Error", "types.TestVectorStringObject"]:
-        r"""
-        Returns the received vector of objects containing a string; for testing only\. This is an offline method\. Can be called before authorization
+        r"""Returns the received vector of objects containing a string; for testing only\. This is an offline method\. Can be called before authorization
 
         Parameters:
             x (:class:`List["types.TestString"]`):
@@ -18957,8 +18171,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "testCallVectorStringObject", "x": x})
 
     async def testSquareInt(self, x: int = 0) -> Union["types.Error", "types.TestInt"]:
-        r"""
-        Returns the squared received number; for testing only\. This is an offline method\. Can be called before authorization
+        r"""Returns the squared received number; for testing only\. This is an offline method\. Can be called before authorization
 
         Parameters:
             x (:class:`int`):
@@ -18971,8 +18184,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "testSquareInt", "x": x})
 
     async def testNetwork(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends a simple network request to the Telegram servers; for testing only\. Can be called before authorization
+        r"""Sends a simple network request to the Telegram servers; for testing only\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -18992,8 +18204,7 @@ class TDLibFunctions:
         dc_id: int = 0,
         timeout: float = 0.0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Sends a simple network request to the Telegram servers via proxy; for testing only\. Can be called before authorization
+        r"""Sends a simple network request to the Telegram servers via proxy; for testing only\. Can be called before authorization
 
         Parameters:
             server (:class:`str`):
@@ -19027,8 +18238,7 @@ class TDLibFunctions:
         )
 
     async def testGetDifference(self) -> Union["types.Error", "types.Ok"]:
-        r"""
-        Forces an updates\.getDifference call to the Telegram servers; for testing only
+        r"""Forces an updates\.getDifference call to the Telegram servers; for testing only
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -19041,8 +18251,7 @@ class TDLibFunctions:
         )
 
     async def testUseUpdate(self) -> Union["types.Error", "types.Update"]:
-        r"""
-        Does nothing and ensures that the Update object is used; for testing only\. This is an offline method\. Can be called before authorization
+        r"""Does nothing and ensures that the Update object is used; for testing only\. This is an offline method\. Can be called before authorization
 
         Returns:
             :class:`~pytdbot.types.Update`
@@ -19057,8 +18266,7 @@ class TDLibFunctions:
     async def testReturnError(
         self, error: "types.Error" = None
     ) -> Union["types.Error", "types.Error"]:
-        r"""
-        Returns the specified error and ensures that the Error object is used; for testing only\. Can be called synchronously
+        r"""Returns the specified error and ensures that the Error object is used; for testing only\. Can be called synchronously
 
         Parameters:
             error (:class:`"types.Error"`):

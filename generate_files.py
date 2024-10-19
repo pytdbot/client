@@ -295,8 +295,7 @@ def generate_types(f, types, updates, classes):
 
 
 functions_template = """async def {function_name}({function_args}) -> Union["types.Error", "types.{return_type}"]:
-        r\"\"\"
-        {docstring}
+        r\"\"\"{docstring}
 {docstring_args}
         Returns:
             :class:`~pytdbot.types.{return_type}`
