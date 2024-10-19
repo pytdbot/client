@@ -212,6 +212,8 @@ class Client(Decorators, Methods):
                 {"@type": "setLogStream", "log_stream": obj_to_dict(td_log)}
             )
 
+        logger.info(f"Pytdbot v{pytdbot.VERSION}")
+
     async def __aenter__(self):
         await self.start()
         await self.login()
