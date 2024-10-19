@@ -7,6 +7,15 @@ import pytdbot
 class TlObject:
     """Base class for TL Objects"""
 
+    def __getitem__(self, item):
+        if item == "@type":
+            return self.getType()
+
+        return self.__dict__[item]
+
+    def __setitem__(self, item, value):
+        self.__dict__[item] = value
+
     def __bool__(self):
         return not isinstance(self, Error)
 
