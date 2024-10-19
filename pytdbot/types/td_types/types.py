@@ -1,6 +1,6 @@
 from typing import Union, Literal, List
 from base64 import b64decode
-from .bound_methods import MessageBoundMethods, FileBoundMethods
+from .bound_methods import FileBoundMethods, MessageBoundMethods
 import pytdbot
 
 
@@ -18,6 +18,10 @@ class TlObject:
 
     def __bool__(self):
         return not isinstance(self, Error)
+
+    @property
+    def is_error(self):  # for backward compatibility
+        return isinstance(self, Error)
 
     def getType(self):
         raise NotImplementedError

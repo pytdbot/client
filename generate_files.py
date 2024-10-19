@@ -398,6 +398,10 @@ if __name__ == "__main__":
     def __bool__(self):
         return not isinstance(self, Error)
 
+    @property
+    def is_error(self): # for backward compatibility
+        return isinstance(self, Error)
+
     def getType(self):
         raise NotImplementedError
 
