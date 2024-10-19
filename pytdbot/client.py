@@ -90,12 +90,6 @@ class Client(Decorators, Methods):
         use_message_database (``bool``, *optional*):
             If set to true, the library will maintain a cache of chats and messages. Implies use_chat_info_database. Default is ``True``
 
-        enable_storage_optimizer (``bool``, *optional*):
-            If set to true, old files will automatically be deleted. Default is ``True``
-
-        ignore_file_names (``bool``, *optional*):
-            If set to true, original file names will be ignored. Otherwise, downloaded files will be saved under names as close as possible to the original name. Default is ``False``
-
         loop (:py:class:`asyncio.AbstractEventLoop`, *optional*):
             Event loop. Default is ``None`` (auto-detect)
 
