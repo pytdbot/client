@@ -656,6 +656,7 @@ class Client(Decorators, Methods):
                         handler.func,
                         handler.filter,
                         handler.position,
+                        handler.inner_object,
                     )
                     handlers += 1
                     plugin_handlers_count += 1
