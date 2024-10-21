@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.37",
-    "commit_hash": "fe6f2f93e79f6d1ce49c010ec4931b7dc8554538",
+    "version": "1.8.38",
+    "commit_hash": "d321984b75fccdb76239529e8aadcf7f80b0e35a",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -473,7 +473,6 @@
             "description": "Describes actions which must be possible to do through a chat action bar",
             "types": [
                 "chatActionBarReportSpam",
-                "chatActionBarReportUnrelatedLocation",
                 "chatActionBarInviteMembers",
                 "chatActionBarReportAddBlock",
                 "chatActionBarAddContact",
@@ -4755,7 +4754,7 @@
                     "type": "int53"
                 },
                 "subscriptions": {
-                    "description": "List of subbscriptions for Telegram Stars",
+                    "description": "List of subscriptions for Telegram Stars",
                     "is_optional": false,
                     "type": "vector<starSubscription>"
                 },
@@ -5191,7 +5190,7 @@
             "description": "Paid media were bought",
             "args": {
                 "media": {
-                    "description": "The bought media if the trancastion wasn't refunded",
+                    "description": "The bought media if the transaction wasn't refunded",
                     "is_optional": false,
                     "type": "vector<PaidMedia>"
                 },
@@ -5228,7 +5227,7 @@
                     "type": "int53"
                 },
                 "media": {
-                    "description": "The bought media if the trancastion wasn't refunded",
+                    "description": "The bought media if the transaction wasn't refunded",
                     "is_optional": false,
                     "type": "vector<PaidMedia>"
                 }
@@ -5357,7 +5356,7 @@
                     "type": "int53"
                 },
                 "media": {
-                    "description": "The bought media if the trancastion wasn't refunded",
+                    "description": "The bought media if the transaction wasn't refunded",
                     "is_optional": false,
                     "type": "vector<PaidMedia>"
                 }
@@ -5381,7 +5380,7 @@
             "type": "StarTransactionPartner"
         },
         "starTransactionPartnerUser": {
-            "description": "The transaction is a transcation with another user",
+            "description": "The transaction is a transaction with another user",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user; 0 if the user was anonymous",
@@ -6798,7 +6797,7 @@
                     "type": "ChatMemberStatus"
                 },
                 "member_count": {
-                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo.missing_chat_ids, or in userFullInfo.personal_chat_id, or for chats with messages or stories from publicForwards and foundStories",
+                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchPublicChats, or in chatFolderInviteLinkInfo.missing_chat_ids, or in userFullInfo.personal_chat_id, or for chats with messages or stories from publicForwards and foundStories",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -9403,38 +9402,6 @@
             },
             "type": "CreatedBasicGroupChat"
         },
-        "chatNearby": {
-            "description": "Describes a chat located nearby",
-            "args": {
-                "chat_id": {
-                    "description": "Chat identifier",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "distance": {
-                    "description": "Distance to the chat location, in meters",
-                    "is_optional": false,
-                    "type": "int32"
-                }
-            },
-            "type": "ChatNearby"
-        },
-        "chatsNearby": {
-            "description": "Represents a list of chats located nearby",
-            "args": {
-                "users_nearby": {
-                    "description": "List of users nearby",
-                    "is_optional": false,
-                    "type": "vector<chatNearby>"
-                },
-                "supergroups_nearby": {
-                    "description": "List of location-based supergroups nearby",
-                    "is_optional": false,
-                    "type": "vector<chatNearby>"
-                }
-            },
-            "type": "ChatsNearby"
-        },
         "publicChatTypeHasUsername": {
             "description": "The chat is public, because it has an active username",
             "args": {},
@@ -9446,7 +9413,7 @@
             "type": "PublicChatType"
         },
         "chatActionBarReportSpam": {
-            "description": "The chat can be reported as spam using the method reportChat with the reason reportReasonSpam. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown",
+            "description": "The chat can be reported as spam using the method reportChat with an empty option_id and message_ids. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown",
             "args": {
                 "can_unarchive": {
                     "description": "If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings",
@@ -9454,11 +9421,6 @@
                     "type": "Bool"
                 }
             },
-            "type": "ChatActionBar"
-        },
-        "chatActionBarReportUnrelatedLocation": {
-            "description": "The chat is a location-based supergroup, which can be reported as having unrelated location using the method reportChat with the reason reportReasonUnrelatedLocation",
-            "args": {},
             "type": "ChatActionBar"
         },
         "chatActionBarInviteMembers": {
@@ -9473,11 +9435,6 @@
                     "description": "If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings",
                     "is_optional": false,
                     "type": "Bool"
-                },
-                "distance": {
-                    "description": "If non-negative, the current user was found by the other user through searchChatsNearby and this is the distance between the users",
-                    "is_optional": false,
-                    "type": "int32"
                 }
             },
             "type": "ChatActionBar"
@@ -11652,8 +11609,8 @@
                     "type": "vector<document>"
                 },
                 "settings": {
-                    "description": "Settings for the cloud theme",
-                    "is_optional": false,
+                    "description": "Settings for the cloud theme; may be null if unknown",
+                    "is_optional": true,
                     "type": "themeSettings"
                 }
             },
@@ -11733,8 +11690,8 @@
             "description": "The link is a link to a Web App",
             "args": {
                 "photo": {
-                    "description": "Web App photo",
-                    "is_optional": false,
+                    "description": "Web App photo; may be null if none",
+                    "is_optional": true,
                     "type": "photo"
                 }
             },
@@ -12035,77 +11992,77 @@
             "description": "Contains parameters of the application theme",
             "args": {
                 "background_color": {
-                    "description": "A color of the background in the RGB24 format",
+                    "description": "A color of the background in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "secondary_background_color": {
-                    "description": "A secondary color for the background in the RGB24 format",
+                    "description": "A secondary color for the background in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "header_background_color": {
-                    "description": "A color of the header background in the RGB24 format",
+                    "description": "A color of the header background in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "bottom_bar_background_color": {
-                    "description": "A color of the bottom bar background in the RGB24 format",
+                    "description": "A color of the bottom bar background in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "section_background_color": {
-                    "description": "A color of the section background in the RGB24 format",
+                    "description": "A color of the section background in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "section_separator_color": {
-                    "description": "A color of the section separator in the RGB24 format",
+                    "description": "A color of the section separator in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "text_color": {
-                    "description": "A color of text in the RGB24 format",
+                    "description": "A color of text in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "accent_text_color": {
-                    "description": "An accent color of the text in the RGB24 format",
+                    "description": "An accent color of the text in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "section_header_text_color": {
-                    "description": "A color of text on the section headers in the RGB24 format",
+                    "description": "A color of text on the section headers in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "subtitle_text_color": {
-                    "description": "A color of the subtitle text in the RGB24 format",
+                    "description": "A color of the subtitle text in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "destructive_text_color": {
-                    "description": "A color of the text for destructive actions in the RGB24 format",
+                    "description": "A color of the text for destructive actions in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "hint_color": {
-                    "description": "A color of hints in the RGB24 format",
+                    "description": "A color of hints in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "link_color": {
-                    "description": "A color of links in the RGB24 format",
+                    "description": "A color of links in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "button_color": {
-                    "description": "A color of the buttons in the RGB24 format",
+                    "description": "A color of the buttons in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "button_text_color": {
-                    "description": "A color of text on the buttons in the RGB24 format",
+                    "description": "A color of text on the buttons in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -12587,7 +12544,7 @@
                     "type": "int53"
                 },
                 "message_id": {
-                    "description": "Message identifier",
+                    "description": "Message identifier. Use messageProperties.can_be_paid to check whether the message can be used in the method",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -14579,6 +14536,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "text": {
+                    "description": "Message added to the gifted Telegram Premium by the sender",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
                 "currency": {
                     "description": "Currency for the paid amount",
                     "is_optional": false,
@@ -14619,6 +14581,11 @@
                     "description": "Identifier of a chat or a user that created the gift code; may be null if unknown",
                     "is_optional": true,
                     "type": "MessageSender"
+                },
+                "text": {
+                    "description": "Message added to the gift",
+                    "is_optional": false,
+                    "type": "formattedText"
                 },
                 "is_from_giveaway": {
                     "description": "True, if the gift code was created for a giveaway",
@@ -15049,12 +15016,12 @@
             "type": "TextEntityType"
         },
         "textEntityTypeHashtag": {
-            "description": "A hashtag text, beginning with \"#\"",
+            "description": "A hashtag text, beginning with \"#\" and optionally containing a chat username at the end",
             "args": {},
             "type": "TextEntityType"
         },
         "textEntityTypeCashtag": {
-            "description": "A cashtag text, beginning with \"$\" and consisting of capital English letters (e.g., \"$USD\")",
+            "description": "A cashtag text, beginning with \"$\", consisting of capital English letters (e.g., \"$USD\"), and optionally containing a chat username at the end",
             "args": {},
             "type": "TextEntityType"
         },
@@ -15343,7 +15310,7 @@
             "description": "Options to be used when a message content is copied without reference to the original sender. Service messages, messages with messageInvoice, messagePaidMedia, messageGiveaway, or messageGiveawayWinners content can't be copied",
             "args": {
                 "send_copy": {
-                    "description": "True, if content of the message needs to be copied without reference to the original sender. Always true if the message is forwarded to a secret chat or is local",
+                    "description": "True, if content of the message needs to be copied without reference to the original sender. Always true if the message is forwarded to a secret chat or is local. Use messageProperties.can_be_saved and messageProperties.can_be_copied_to_secret_chat to check whether the message is suitable",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -19104,12 +19071,12 @@
             "description": "Describes a color to highlight a bot added to attachment menu",
             "args": {
                 "light_color": {
-                    "description": "Color in the RGB24 format for light themes",
+                    "description": "Color in the RGB format for light themes",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "dark_color": {
-                    "description": "Color in the RGB24 format for dark themes",
+                    "description": "Color in the RGB format for dark themes",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -21845,6 +21812,11 @@
                     "description": "Identifiers of the users which can activate the gift codes",
                     "is_optional": false,
                     "type": "vector<int53>"
+                },
+                "text": {
+                    "description": "Text to show along with the gift codes; 0-getOption(\"gift_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed",
+                    "is_optional": false,
+                    "type": "formattedText"
                 }
             },
             "type": "StorePaymentPurpose"
@@ -21975,6 +21947,11 @@
                     "description": "Number of months the Telegram Premium subscription will be active for the users",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "text": {
+                    "description": "Text to show along with the gift codes; 0-getOption(\"gift_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed",
+                    "is_optional": false,
+                    "type": "formattedText"
                 }
             },
             "type": "TelegramPaymentPurpose"
@@ -22281,7 +22258,7 @@
             "description": "Describes a solid fill of a background",
             "args": {
                 "color": {
-                    "description": "A color of the background in the RGB24 format",
+                    "description": "A color of the background in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -22292,12 +22269,12 @@
             "description": "Describes a gradient fill of a background",
             "args": {
                 "top_color": {
-                    "description": "A top color of the background in the RGB24 format",
+                    "description": "A top color of the background in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "bottom_color": {
-                    "description": "A bottom color of the background in the RGB24 format",
+                    "description": "A bottom color of the background in the RGB format",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -22313,7 +22290,7 @@
             "description": "Describes a freeform gradient fill of a background",
             "args": {
                 "colors": {
-                    "description": "A list of 3 or 4 colors of the freeform gradient in the RGB24 format",
+                    "description": "A list of 3 or 4 colors of the freeform gradient in the RGB format",
                     "is_optional": false,
                     "type": "vector<int32>"
                 }
@@ -28512,17 +28489,6 @@
             },
             "type": "Update"
         },
-        "updateUsersNearby": {
-            "description": "The list of users nearby has changed. The update is guaranteed to be sent only 60 seconds after a successful searchChatsNearby request",
-            "args": {
-                "users_nearby": {
-                    "description": "The new list of users nearby",
-                    "is_optional": false,
-                    "type": "vector<chatNearby>"
-                }
-            },
-            "type": "Update"
-        },
         "updateUnconfirmedSession": {
             "description": "The first unconfirmed session has changed",
             "args": {
@@ -30182,17 +30148,6 @@
             },
             "type": "Chats"
         },
-        "searchChatsNearby": {
-            "description": "Returns a list of users and location-based supergroups nearby. The method was disabled and returns an empty list of chats now",
-            "args": {
-                "location": {
-                    "description": "Current user location",
-                    "is_optional": false,
-                    "type": "location"
-                }
-            },
-            "type": "ChatsNearby"
-        },
         "getRecommendedChats": {
             "description": "Returns a list of channel chats recommended to the current user",
             "args": {},
@@ -31515,7 +31470,7 @@
                     "type": "messageSendOptions"
                 },
                 "send_copy": {
-                    "description": "Pass true to copy content of the messages without reference to the original sender. Always true if the messages are forwarded to a secret chat or are local",
+                    "description": "Pass true to copy content of the messages without reference to the original sender. Always true if the messages are forwarded to a secret chat or are local. Use messageProperties.can_be_saved and messageProperties.can_be_copied_to_secret_chat to check whether the message is suitable",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -32898,7 +32853,7 @@
                     "type": "int53"
                 },
                 "reaction_types": {
-                    "description": "Types of the reaction to set",
+                    "description": "Types of the reaction to set; pass an empty list to remove the reactions",
                     "is_optional": false,
                     "type": "vector<ReactionType>"
                 },
@@ -37842,6 +37797,11 @@
                     "description": "Name of the sticker set",
                     "is_optional": false,
                     "type": "string"
+                },
+                "ignore_cache": {
+                    "description": "Pass true to ignore local cache of sticker sets and always send a network request",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "StickerSet"
@@ -38358,17 +38318,6 @@
                     "description": "New emoji status; pass null to switch to the default badge",
                     "is_optional": true,
                     "type": "emojiStatus"
-                }
-            },
-            "type": "Ok"
-        },
-        "setLocation": {
-            "description": "Changes the location of the current user. Needs to be called if getOption(\"is_location_visible\") is true and location changes for more than 1 kilometer. Must not be called if the user has a business location",
-            "args": {
-                "location": {
-                    "description": "The new location of the user",
-                    "is_optional": false,
-                    "type": "location"
                 }
             },
             "type": "Ok"
