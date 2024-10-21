@@ -8057,7 +8057,7 @@ class StarSubscriptions(TlObject):
             The amount of owned Telegram Stars
 
         subscriptions (:class:`List["types.StarSubscription"]`):
-            List of subbscriptions for Telegram Stars
+            List of subscriptions for Telegram Stars
 
         required_star_count (:class:`int`):
             The number of Telegram Stars required to buy to extend subscriptions expiring soon
@@ -8077,7 +8077,7 @@ class StarSubscriptions(TlObject):
         self.star_count: int = int(star_count)
         r"""The amount of owned Telegram Stars"""
         self.subscriptions: List[StarSubscription] = subscriptions or []
-        r"""List of subbscriptions for Telegram Stars"""
+        r"""List of subscriptions for Telegram Stars"""
         self.required_star_count: int = int(required_star_count)
         r"""The number of Telegram Stars required to buy to extend subscriptions expiring soon"""
         self.next_offset: Union[str, None] = next_offset
@@ -9172,7 +9172,7 @@ class BotTransactionPurposePaidMedia(TlObject, BotTransactionPurpose):
 
     Parameters:
         media (:class:`List["types.PaidMedia"]`):
-            The bought media if the trancastion wasn't refunded
+            The bought media if the transaction wasn't refunded
 
         payload (:class:`str`):
             Bot\-provided payload; for bots only
@@ -9181,7 +9181,7 @@ class BotTransactionPurposePaidMedia(TlObject, BotTransactionPurpose):
 
     def __init__(self, media: List[PaidMedia] = None, payload: str = "") -> None:
         self.media: List[PaidMedia] = media or []
-        r"""The bought media if the trancastion wasn't refunded"""
+        r"""The bought media if the transaction wasn't refunded"""
         self.payload: Union[str, None] = payload
         r"""Bot\-provided payload; for bots only"""
 
@@ -9263,7 +9263,7 @@ class ChatTransactionPurposePaidMedia(TlObject, ChatTransactionPurpose):
             Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message
 
         media (:class:`List["types.PaidMedia"]`):
-            The bought media if the trancastion wasn't refunded
+            The bought media if the transaction wasn't refunded
 
     """
 
@@ -9271,7 +9271,7 @@ class ChatTransactionPurposePaidMedia(TlObject, ChatTransactionPurpose):
         self.message_id: int = int(message_id)
         r"""Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message"""
         self.media: List[PaidMedia] = media or []
-        r"""The bought media if the trancastion wasn't refunded"""
+        r"""The bought media if the transaction wasn't refunded"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -9703,7 +9703,7 @@ class StarTransactionPartnerBusiness(TlObject, StarTransactionPartner):
             Identifier of the business account user
 
         media (:class:`List["types.PaidMedia"]`):
-            The bought media if the trancastion wasn't refunded
+            The bought media if the transaction wasn't refunded
 
     """
 
@@ -9711,7 +9711,7 @@ class StarTransactionPartnerBusiness(TlObject, StarTransactionPartner):
         self.user_id: int = int(user_id)
         r"""Identifier of the business account user"""
         self.media: List[PaidMedia] = media or []
-        r"""The bought media if the trancastion wasn't refunded"""
+        r"""The bought media if the transaction wasn't refunded"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -9788,7 +9788,7 @@ class StarTransactionPartnerChat(TlObject, StarTransactionPartner):
 
 
 class StarTransactionPartnerUser(TlObject, StarTransactionPartner):
-    r"""The transaction is a transcation with another user
+    r"""The transaction is a transaction with another user
 
     Parameters:
         user_id (:class:`int`):
@@ -13605,7 +13605,7 @@ class Supergroup(TlObject):
             Status of the current user in the supergroup or channel; custom title will always be empty
 
         member_count (:class:`int`):
-            Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories
+            Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories
 
         boost_level (:class:`int`):
             Approximate boost level for the chat
@@ -13706,7 +13706,7 @@ class Supergroup(TlObject):
         ] = status
         r"""Status of the current user in the supergroup or channel; custom title will always be empty"""
         self.member_count: int = int(member_count)
-        r"""Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchChatsNearby, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories"""
+        r"""Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories"""
         self.boost_level: int = int(boost_level)
         r"""Approximate boost level for the chat"""
         self.has_linked_chat: bool = bool(has_linked_chat)
@@ -20237,7 +20237,6 @@ class Chat(TlObject):
         r"""If non\-empty, name of a theme, set for the chat"""
         self.action_bar: Union[
             ChatActionBarReportSpam,
-            ChatActionBarReportUnrelatedLocation,
             ChatActionBarInviteMembers,
             ChatActionBarReportAddBlock,
             ChatActionBarAddContact,
@@ -20584,98 +20583,6 @@ class CreatedBasicGroupChat(TlObject):
         return data_class
 
 
-class ChatNearby(TlObject):
-    r"""Describes a chat located nearby
-
-    Parameters:
-        chat_id (:class:`int`):
-            Chat identifier
-
-        distance (:class:`int`):
-            Distance to the chat location, in meters
-
-    """
-
-    def __init__(self, chat_id: int = 0, distance: int = 0) -> None:
-        self.chat_id: int = int(chat_id)
-        r"""Chat identifier"""
-        self.distance: int = int(distance)
-        r"""Distance to the chat location, in meters"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["chatNearby"]:
-        return "chatNearby"
-
-    def getClass(self) -> Literal["ChatNearby"]:
-        return "ChatNearby"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "chat_id": self.chat_id,
-            "distance": self.distance,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatNearby", None]:
-        if data:
-            data_class = cls()
-            data_class.chat_id = int(data.get("chat_id", 0))
-            data_class.distance = int(data.get("distance", 0))
-
-        return data_class
-
-
-class ChatsNearby(TlObject):
-    r"""Represents a list of chats located nearby
-
-    Parameters:
-        users_nearby (:class:`List["types.ChatNearby"]`):
-            List of users nearby
-
-        supergroups_nearby (:class:`List["types.ChatNearby"]`):
-            List of location\-based supergroups nearby
-
-    """
-
-    def __init__(
-        self,
-        users_nearby: List[ChatNearby] = None,
-        supergroups_nearby: List[ChatNearby] = None,
-    ) -> None:
-        self.users_nearby: List[ChatNearby] = users_nearby or []
-        r"""List of users nearby"""
-        self.supergroups_nearby: List[ChatNearby] = supergroups_nearby or []
-        r"""List of location\-based supergroups nearby"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["chatsNearby"]:
-        return "chatsNearby"
-
-    def getClass(self) -> Literal["ChatsNearby"]:
-        return "ChatsNearby"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "users_nearby": self.users_nearby,
-            "supergroups_nearby": self.supergroups_nearby,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatsNearby", None]:
-        if data:
-            data_class = cls()
-            data_class.users_nearby = data.get("users_nearby", None)
-            data_class.supergroups_nearby = data.get("supergroups_nearby", None)
-
-        return data_class
-
-
 class PublicChatTypeHasUsername(TlObject, PublicChatType):
     r"""The chat is public, because it has an active username"""
 
@@ -20729,7 +20636,7 @@ class PublicChatTypeIsLocationBased(TlObject, PublicChatType):
 
 
 class ChatActionBarReportSpam(TlObject, ChatActionBar):
-    r"""The chat can be reported as spam using the method reportChat with the reason reportReasonSpam\. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown
+    r"""The chat can be reported as spam using the method reportChat with an empty option\_id and message\_ids\. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown
 
     Parameters:
         can_unarchive (:class:`bool`):
@@ -20758,34 +20665,6 @@ class ChatActionBarReportSpam(TlObject, ChatActionBar):
         if data:
             data_class = cls()
             data_class.can_unarchive = data.get("can_unarchive", False)
-
-        return data_class
-
-
-class ChatActionBarReportUnrelatedLocation(TlObject, ChatActionBar):
-    r"""The chat is a location\-based supergroup, which can be reported as having unrelated location using the method reportChat with the reason reportReasonUnrelatedLocation"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["chatActionBarReportUnrelatedLocation"]:
-        return "chatActionBarReportUnrelatedLocation"
-
-    def getClass(self) -> Literal["ChatActionBar"]:
-        return "ChatActionBar"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(
-        cls, data: dict
-    ) -> Union["ChatActionBarReportUnrelatedLocation", None]:
-        if data:
-            data_class = cls()
 
         return data_class
 
@@ -20823,16 +20702,11 @@ class ChatActionBarReportAddBlock(TlObject, ChatActionBar):
         can_unarchive (:class:`bool`):
             If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings
 
-        distance (:class:`int`):
-            If non\-negative, the current user was found by the other user through searchChatsNearby and this is the distance between the users
-
     """
 
-    def __init__(self, can_unarchive: bool = False, distance: int = 0) -> None:
+    def __init__(self, can_unarchive: bool = False) -> None:
         self.can_unarchive: bool = bool(can_unarchive)
         r"""If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings"""
-        self.distance: int = int(distance)
-        r"""If non\-negative, the current user was found by the other user through searchChatsNearby and this is the distance between the users"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -20844,18 +20718,13 @@ class ChatActionBarReportAddBlock(TlObject, ChatActionBar):
         return "ChatActionBar"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "can_unarchive": self.can_unarchive,
-            "distance": self.distance,
-        }
+        return {"@type": self.getType(), "can_unarchive": self.can_unarchive}
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["ChatActionBarReportAddBlock", None]:
         if data:
             data_class = cls()
             data_class.can_unarchive = data.get("can_unarchive", False)
-            data_class.distance = int(data.get("distance", 0))
 
         return data_class
 
@@ -27424,7 +27293,7 @@ class LinkPreviewTypeTheme(TlObject, LinkPreviewType):
             The list of files with theme description
 
         settings (:class:`"types.ThemeSettings"`):
-            Settings for the cloud theme
+            Settings for the cloud theme; may be null if unknown
 
     """
 
@@ -27434,7 +27303,7 @@ class LinkPreviewTypeTheme(TlObject, LinkPreviewType):
         self.documents: List[Document] = documents or []
         r"""The list of files with theme description"""
         self.settings: Union[ThemeSettings, None] = settings
-        r"""Settings for the cloud theme"""
+        r"""Settings for the cloud theme; may be null if unknown"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -27679,13 +27548,13 @@ class LinkPreviewTypeWebApp(TlObject, LinkPreviewType):
 
     Parameters:
         photo (:class:`"types.Photo"`):
-            Web App photo
+            Web App photo; may be null if none
 
     """
 
     def __init__(self, photo: Photo = None) -> None:
         self.photo: Union[Photo, None] = photo
-        r"""Web App photo"""
+        r"""Web App photo; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -28424,49 +28293,49 @@ class ThemeParameters(TlObject):
 
     Parameters:
         background_color (:class:`int`):
-            A color of the background in the RGB24 format
+            A color of the background in the RGB format
 
         secondary_background_color (:class:`int`):
-            A secondary color for the background in the RGB24 format
+            A secondary color for the background in the RGB format
 
         header_background_color (:class:`int`):
-            A color of the header background in the RGB24 format
+            A color of the header background in the RGB format
 
         bottom_bar_background_color (:class:`int`):
-            A color of the bottom bar background in the RGB24 format
+            A color of the bottom bar background in the RGB format
 
         section_background_color (:class:`int`):
-            A color of the section background in the RGB24 format
+            A color of the section background in the RGB format
 
         section_separator_color (:class:`int`):
-            A color of the section separator in the RGB24 format
+            A color of the section separator in the RGB format
 
         text_color (:class:`int`):
-            A color of text in the RGB24 format
+            A color of text in the RGB format
 
         accent_text_color (:class:`int`):
-            An accent color of the text in the RGB24 format
+            An accent color of the text in the RGB format
 
         section_header_text_color (:class:`int`):
-            A color of text on the section headers in the RGB24 format
+            A color of text on the section headers in the RGB format
 
         subtitle_text_color (:class:`int`):
-            A color of the subtitle text in the RGB24 format
+            A color of the subtitle text in the RGB format
 
         destructive_text_color (:class:`int`):
-            A color of the text for destructive actions in the RGB24 format
+            A color of the text for destructive actions in the RGB format
 
         hint_color (:class:`int`):
-            A color of hints in the RGB24 format
+            A color of hints in the RGB format
 
         link_color (:class:`int`):
-            A color of links in the RGB24 format
+            A color of links in the RGB format
 
         button_color (:class:`int`):
-            A color of the buttons in the RGB24 format
+            A color of the buttons in the RGB format
 
         button_text_color (:class:`int`):
-            A color of text on the buttons in the RGB24 format
+            A color of text on the buttons in the RGB format
 
     """
 
@@ -28489,35 +28358,35 @@ class ThemeParameters(TlObject):
         button_text_color: int = 0,
     ) -> None:
         self.background_color: int = int(background_color)
-        r"""A color of the background in the RGB24 format"""
+        r"""A color of the background in the RGB format"""
         self.secondary_background_color: int = int(secondary_background_color)
-        r"""A secondary color for the background in the RGB24 format"""
+        r"""A secondary color for the background in the RGB format"""
         self.header_background_color: int = int(header_background_color)
-        r"""A color of the header background in the RGB24 format"""
+        r"""A color of the header background in the RGB format"""
         self.bottom_bar_background_color: int = int(bottom_bar_background_color)
-        r"""A color of the bottom bar background in the RGB24 format"""
+        r"""A color of the bottom bar background in the RGB format"""
         self.section_background_color: int = int(section_background_color)
-        r"""A color of the section background in the RGB24 format"""
+        r"""A color of the section background in the RGB format"""
         self.section_separator_color: int = int(section_separator_color)
-        r"""A color of the section separator in the RGB24 format"""
+        r"""A color of the section separator in the RGB format"""
         self.text_color: int = int(text_color)
-        r"""A color of text in the RGB24 format"""
+        r"""A color of text in the RGB format"""
         self.accent_text_color: int = int(accent_text_color)
-        r"""An accent color of the text in the RGB24 format"""
+        r"""An accent color of the text in the RGB format"""
         self.section_header_text_color: int = int(section_header_text_color)
-        r"""A color of text on the section headers in the RGB24 format"""
+        r"""A color of text on the section headers in the RGB format"""
         self.subtitle_text_color: int = int(subtitle_text_color)
-        r"""A color of the subtitle text in the RGB24 format"""
+        r"""A color of the subtitle text in the RGB format"""
         self.destructive_text_color: int = int(destructive_text_color)
-        r"""A color of the text for destructive actions in the RGB24 format"""
+        r"""A color of the text for destructive actions in the RGB format"""
         self.hint_color: int = int(hint_color)
-        r"""A color of hints in the RGB24 format"""
+        r"""A color of hints in the RGB format"""
         self.link_color: int = int(link_color)
-        r"""A color of links in the RGB24 format"""
+        r"""A color of links in the RGB format"""
         self.button_color: int = int(button_color)
-        r"""A color of the buttons in the RGB24 format"""
+        r"""A color of the buttons in the RGB format"""
         self.button_text_color: int = int(button_text_color)
-        r"""A color of text on the buttons in the RGB24 format"""
+        r"""A color of text on the buttons in the RGB format"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -29760,7 +29629,7 @@ class InputInvoiceMessage(TlObject, InputInvoice):
             Chat identifier of the message
 
         message_id (:class:`int`):
-            Message identifier
+            Message identifier\. Use messageProperties\.can\_be\_paid to check whether the message can be used in the method
 
     """
 
@@ -29768,7 +29637,7 @@ class InputInvoiceMessage(TlObject, InputInvoice):
         self.chat_id: int = int(chat_id)
         r"""Chat identifier of the message"""
         self.message_id: int = int(message_id)
-        r"""Message identifier"""
+        r"""Message identifier\. Use messageProperties\.can\_be\_paid to check whether the message can be used in the method"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -35646,6 +35515,9 @@ class MessageGiftedPremium(TlObject, MessageContent):
         receiver_user_id (:class:`int`):
             The identifier of a user that received Telegram Premium; 0 if the gift is incoming
 
+        text (:class:`"types.FormattedText"`):
+            Message added to the gifted Telegram Premium by the sender
+
         currency (:class:`str`):
             Currency for the paid amount
 
@@ -35670,6 +35542,7 @@ class MessageGiftedPremium(TlObject, MessageContent):
         self,
         gifter_user_id: int = 0,
         receiver_user_id: int = 0,
+        text: FormattedText = None,
         currency: str = "",
         amount: int = 0,
         cryptocurrency: str = "",
@@ -35681,6 +35554,8 @@ class MessageGiftedPremium(TlObject, MessageContent):
         r"""The identifier of a user that gifted Telegram Premium; 0 if the gift was anonymous or is outgoing"""
         self.receiver_user_id: int = int(receiver_user_id)
         r"""The identifier of a user that received Telegram Premium; 0 if the gift is incoming"""
+        self.text: Union[FormattedText, None] = text
+        r"""Message added to the gifted Telegram Premium by the sender"""
         self.currency: Union[str, None] = currency
         r"""Currency for the paid amount"""
         self.amount: int = int(amount)
@@ -35708,6 +35583,7 @@ class MessageGiftedPremium(TlObject, MessageContent):
             "@type": self.getType(),
             "gifter_user_id": self.gifter_user_id,
             "receiver_user_id": self.receiver_user_id,
+            "text": self.text,
             "currency": self.currency,
             "amount": self.amount,
             "cryptocurrency": self.cryptocurrency,
@@ -35722,6 +35598,7 @@ class MessageGiftedPremium(TlObject, MessageContent):
             data_class = cls()
             data_class.gifter_user_id = int(data.get("gifter_user_id", 0))
             data_class.receiver_user_id = int(data.get("receiver_user_id", 0))
+            data_class.text = data.get("text", None)
             data_class.currency = data.get("currency", "")
             data_class.amount = int(data.get("amount", 0))
             data_class.cryptocurrency = data.get("cryptocurrency", "")
@@ -35738,6 +35615,9 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
     Parameters:
         creator_id (:class:`"types.MessageSender"`):
             Identifier of a chat or a user that created the gift code; may be null if unknown
+
+        text (:class:`"types.FormattedText"`):
+            Message added to the gift
 
         is_from_giveaway (:class:`bool`):
             True, if the gift code was created for a giveaway
@@ -35771,6 +35651,7 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
     def __init__(
         self,
         creator_id: MessageSender = None,
+        text: FormattedText = None,
         is_from_giveaway: bool = False,
         is_unclaimed: bool = False,
         currency: str = "",
@@ -35783,6 +35664,8 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
     ) -> None:
         self.creator_id: Union[MessageSenderUser, MessageSenderChat, None] = creator_id
         r"""Identifier of a chat or a user that created the gift code; may be null if unknown"""
+        self.text: Union[FormattedText, None] = text
+        r"""Message added to the gift"""
         self.is_from_giveaway: bool = bool(is_from_giveaway)
         r"""True, if the gift code was created for a giveaway"""
         self.is_unclaimed: bool = bool(is_unclaimed)
@@ -35815,6 +35698,7 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
         return {
             "@type": self.getType(),
             "creator_id": self.creator_id,
+            "text": self.text,
             "is_from_giveaway": self.is_from_giveaway,
             "is_unclaimed": self.is_unclaimed,
             "currency": self.currency,
@@ -35831,6 +35715,7 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.creator_id = data.get("creator_id", None)
+            data_class.text = data.get("text", None)
             data_class.is_from_giveaway = data.get("is_from_giveaway", False)
             data_class.is_unclaimed = data.get("is_unclaimed", False)
             data_class.currency = data.get("currency", "")
@@ -36813,7 +36698,7 @@ class TextEntityTypeMention(TlObject, TextEntityType):
 
 
 class TextEntityTypeHashtag(TlObject, TextEntityType):
-    r"""A hashtag text, beginning with \"\#\" """
+    r"""A hashtag text, beginning with \"\#\" and optionally containing a chat username at the end"""
 
     def __init__(self) -> None:
         pass
@@ -36839,7 +36724,7 @@ class TextEntityTypeHashtag(TlObject, TextEntityType):
 
 
 class TextEntityTypeCashtag(TlObject, TextEntityType):
-    r"""A cashtag text, beginning with \"$\" and consisting of capital English letters \(e\.g\., \"$USD\"\)"""
+    r"""A cashtag text, beginning with \"$\", consisting of capital English letters \(e\.g\., \"$USD\"\), and optionally containing a chat username at the end"""
 
     def __init__(self) -> None:
         pass
@@ -37834,7 +37719,7 @@ class MessageCopyOptions(TlObject):
 
     Parameters:
         send_copy (:class:`bool`):
-            True, if content of the message needs to be copied without reference to the original sender\. Always true if the message is forwarded to a secret chat or is local
+            True, if content of the message needs to be copied without reference to the original sender\. Always true if the message is forwarded to a secret chat or is local\. Use messageProperties\.can\_be\_saved and messageProperties\.can\_be\_copied\_to\_secret\_chat to check whether the message is suitable
 
         replace_caption (:class:`bool`):
             True, if media caption of the message copy needs to be replaced\. Ignored if send\_copy is false
@@ -37855,7 +37740,7 @@ class MessageCopyOptions(TlObject):
         new_show_caption_above_media: bool = False,
     ) -> None:
         self.send_copy: bool = bool(send_copy)
-        r"""True, if content of the message needs to be copied without reference to the original sender\. Always true if the message is forwarded to a secret chat or is local"""
+        r"""True, if content of the message needs to be copied without reference to the original sender\. Always true if the message is forwarded to a secret chat or is local\. Use messageProperties\.can\_be\_saved and messageProperties\.can\_be\_copied\_to\_secret\_chat to check whether the message is suitable"""
         self.replace_caption: bool = bool(replace_caption)
         r"""True, if media caption of the message copy needs to be replaced\. Ignored if send\_copy is false"""
         self.new_caption: Union[FormattedText, None] = new_caption
@@ -47925,18 +47810,18 @@ class AttachmentMenuBotColor(TlObject):
 
     Parameters:
         light_color (:class:`int`):
-            Color in the RGB24 format for light themes
+            Color in the RGB format for light themes
 
         dark_color (:class:`int`):
-            Color in the RGB24 format for dark themes
+            Color in the RGB format for dark themes
 
     """
 
     def __init__(self, light_color: int = 0, dark_color: int = 0) -> None:
         self.light_color: int = int(light_color)
-        r"""Color in the RGB24 format for light themes"""
+        r"""Color in the RGB format for light themes"""
         self.dark_color: int = int(dark_color)
-        r"""Color in the RGB24 format for dark themes"""
+        r"""Color in the RGB format for dark themes"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -56384,6 +56269,9 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
         user_ids (:class:`List[int]`):
             Identifiers of the users which can activate the gift codes
 
+        text (:class:`"types.FormattedText"`):
+            Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
+
     """
 
     def __init__(
@@ -56392,6 +56280,7 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
         currency: str = "",
         amount: int = 0,
         user_ids: List[int] = None,
+        text: FormattedText = None,
     ) -> None:
         self.boosted_chat_id: int = int(boosted_chat_id)
         r"""Identifier of the supergroup or channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user; 0 if none"""
@@ -56401,6 +56290,8 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
         r"""Paid amount, in the smallest units of the currency"""
         self.user_ids: List[int] = user_ids or []
         r"""Identifiers of the users which can activate the gift codes"""
+        self.text: Union[FormattedText, None] = text
+        r"""Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -56418,6 +56309,7 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
             "currency": self.currency,
             "amount": self.amount,
             "user_ids": self.user_ids,
+            "text": self.text,
         }
 
     @classmethod
@@ -56430,6 +56322,7 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
             data_class.currency = data.get("currency", "")
             data_class.amount = int(data.get("amount", 0))
             data_class.user_ids = data.get("user_ids", None)
+            data_class.text = data.get("text", None)
 
         return data_class
 
@@ -56691,6 +56584,9 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active for the users
 
+        text (:class:`"types.FormattedText"`):
+            Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
+
     """
 
     def __init__(
@@ -56700,6 +56596,7 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
         amount: int = 0,
         user_ids: List[int] = None,
         month_count: int = 0,
+        text: FormattedText = None,
     ) -> None:
         self.boosted_chat_id: int = int(boosted_chat_id)
         r"""Identifier of the supergroup or channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user; 0 if none"""
@@ -56711,6 +56608,8 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
         r"""Identifiers of the users which can activate the gift codes"""
         self.month_count: int = int(month_count)
         r"""Number of months the Telegram Premium subscription will be active for the users"""
+        self.text: Union[FormattedText, None] = text
+        r"""Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -56729,6 +56628,7 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
             "amount": self.amount,
             "user_ids": self.user_ids,
             "month_count": self.month_count,
+            "text": self.text,
         }
 
     @classmethod
@@ -56742,6 +56642,7 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
             data_class.amount = int(data.get("amount", 0))
             data_class.user_ids = data.get("user_ids", None)
             data_class.month_count = int(data.get("month_count", 0))
+            data_class.text = data.get("text", None)
 
         return data_class
 
@@ -57549,13 +57450,13 @@ class BackgroundFillSolid(TlObject, BackgroundFill):
 
     Parameters:
         color (:class:`int`):
-            A color of the background in the RGB24 format
+            A color of the background in the RGB format
 
     """
 
     def __init__(self, color: int = 0) -> None:
         self.color: int = int(color)
-        r"""A color of the background in the RGB24 format"""
+        r"""A color of the background in the RGB format"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -57583,10 +57484,10 @@ class BackgroundFillGradient(TlObject, BackgroundFill):
 
     Parameters:
         top_color (:class:`int`):
-            A top color of the background in the RGB24 format
+            A top color of the background in the RGB format
 
         bottom_color (:class:`int`):
-            A bottom color of the background in the RGB24 format
+            A bottom color of the background in the RGB format
 
         rotation_angle (:class:`int`):
             Clockwise rotation angle of the gradient, in degrees; 0\-359\. Must always be divisible by 45
@@ -57597,9 +57498,9 @@ class BackgroundFillGradient(TlObject, BackgroundFill):
         self, top_color: int = 0, bottom_color: int = 0, rotation_angle: int = 0
     ) -> None:
         self.top_color: int = int(top_color)
-        r"""A top color of the background in the RGB24 format"""
+        r"""A top color of the background in the RGB format"""
         self.bottom_color: int = int(bottom_color)
-        r"""A bottom color of the background in the RGB24 format"""
+        r"""A bottom color of the background in the RGB format"""
         self.rotation_angle: int = int(rotation_angle)
         r"""Clockwise rotation angle of the gradient, in degrees; 0\-359\. Must always be divisible by 45"""
 
@@ -57636,13 +57537,13 @@ class BackgroundFillFreeformGradient(TlObject, BackgroundFill):
 
     Parameters:
         colors (:class:`List[int]`):
-            A list of 3 or 4 colors of the freeform gradient in the RGB24 format
+            A list of 3 or 4 colors of the freeform gradient in the RGB format
 
     """
 
     def __init__(self, colors: List[int] = None) -> None:
         self.colors: List[int] = colors or []
-        r"""A list of 3 or 4 colors of the freeform gradient in the RGB24 format"""
+        r"""A list of 3 or 4 colors of the freeform gradient in the RGB format"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -73014,7 +72915,6 @@ class UpdateChatActionBar(TlObject, Update):
         r"""Chat identifier"""
         self.action_bar: Union[
             ChatActionBarReportSpam,
-            ChatActionBarReportUnrelatedLocation,
             ChatActionBarInviteMembers,
             ChatActionBarReportAddBlock,
             ChatActionBarAddContact,
@@ -76996,40 +76896,6 @@ class UpdateTermsOfService(TlObject, Update):
             data_class = cls()
             data_class.terms_of_service_id = data.get("terms_of_service_id", "")
             data_class.terms_of_service = data.get("terms_of_service", None)
-
-        return data_class
-
-
-class UpdateUsersNearby(TlObject, Update):
-    r"""The list of users nearby has changed\. The update is guaranteed to be sent only 60 seconds after a successful searchChatsNearby request
-
-    Parameters:
-        users_nearby (:class:`List["types.ChatNearby"]`):
-            The new list of users nearby
-
-    """
-
-    def __init__(self, users_nearby: List[ChatNearby] = None) -> None:
-        self.users_nearby: List[ChatNearby] = users_nearby or []
-        r"""The new list of users nearby"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["updateUsersNearby"]:
-        return "updateUsersNearby"
-
-    def getClass(self) -> Literal["Update"]:
-        return "Update"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType(), "users_nearby": self.users_nearby}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["UpdateUsersNearby", None]:
-        if data:
-            data_class = cls()
-            data_class.users_nearby = data.get("users_nearby", None)
 
         return data_class
 

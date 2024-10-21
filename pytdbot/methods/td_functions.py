@@ -1294,21 +1294,6 @@ class TDLibFunctions:
             {"@type": "searchChatsOnServer", "query": query, "limit": limit}
         )
 
-    async def searchChatsNearby(
-        self, location: "types.Location" = None
-    ) -> Union["types.Error", "types.ChatsNearby"]:
-        r"""Returns a list of users and location\-based supergroups nearby\. The method was disabled and returns an empty list of chats now
-
-        Parameters:
-            location (:class:`"types.Location"`):
-                Current user location
-
-        Returns:
-            :class:`~pytdbot.types.ChatsNearby`
-        """
-
-        return await self.invoke({"@type": "searchChatsNearby", "location": location})
-
     async def getRecommendedChats(self) -> Union["types.Error", "types.Chats"]:
         r"""Returns a list of channel chats recommended to the current user
 
@@ -3120,7 +3105,7 @@ class TDLibFunctions:
                 Options to be used to send the messages; pass null to use default options
 
             send_copy (:class:`bool`):
-                Pass true to copy content of the messages without reference to the original sender\. Always true if the messages are forwarded to a secret chat or are local
+                Pass true to copy content of the messages without reference to the original sender\. Always true if the messages are forwarded to a secret chat or are local\. Use messageProperties\.can\_be\_saved and messageProperties\.can\_be\_copied\_to\_secret\_chat to check whether the message is suitable
 
             remove_caption (:class:`bool`):
                 Pass true to remove media captions of message copies\. Ignored if send\_copy is false
@@ -5048,7 +5033,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             reaction_types (:class:`List["types.ReactionType"]`):
-                Types of the reaction to set
+                Types of the reaction to set; pass an empty list to remove the reactions
 
             is_big (:class:`bool`):
                 Pass true if the reactions are added with a big animation
@@ -12139,7 +12124,7 @@ class TDLibFunctions:
         return await self.invoke({"@type": "getStickerSetName", "set_id": set_id})
 
     async def searchStickerSet(
-        self, name: str = ""
+        self, name: str = "", ignore_cache: bool = False
     ) -> Union["types.Error", "types.StickerSet"]:
         r"""Searches for a sticker set by its name
 
@@ -12147,11 +12132,16 @@ class TDLibFunctions:
             name (:class:`str`):
                 Name of the sticker set
 
+            ignore_cache (:class:`bool`):
+                Pass true to ignore local cache of sticker sets and always send a network request
+
         Returns:
             :class:`~pytdbot.types.StickerSet`
         """
 
-        return await self.invoke({"@type": "searchStickerSet", "name": name})
+        return await self.invoke(
+            {"@type": "searchStickerSet", "name": name, "ignore_cache": ignore_cache}
+        )
 
     async def searchInstalledStickerSets(
         self, sticker_type: "types.StickerType" = None, query: str = "", limit: int = 0
@@ -12928,21 +12918,6 @@ class TDLibFunctions:
         return await self.invoke(
             {"@type": "setEmojiStatus", "emoji_status": emoji_status}
         )
-
-    async def setLocation(
-        self, location: "types.Location" = None
-    ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the location of the current user\. Needs to be called if getOption\(\"is\_location\_visible\"\) is true and location changes for more than 1 kilometer\. Must not be called if the user has a business location
-
-        Parameters:
-            location (:class:`"types.Location"`):
-                The new location of the user
-
-        Returns:
-            :class:`~pytdbot.types.Ok`
-        """
-
-        return await self.invoke({"@type": "setLocation", "location": location})
 
     async def toggleHasSponsoredMessagesEnabled(
         self, has_sponsored_messages_enabled: bool = False

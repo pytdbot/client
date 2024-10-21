@@ -518,12 +518,9 @@ __all__ = [
     "FailedToAddMember",
     "FailedToAddMembers",
     "CreatedBasicGroupChat",
-    "ChatNearby",
-    "ChatsNearby",
     "PublicChatTypeHasUsername",
     "PublicChatTypeIsLocationBased",
     "ChatActionBarReportSpam",
-    "ChatActionBarReportUnrelatedLocation",
     "ChatActionBarInviteMembers",
     "ChatActionBarReportAddBlock",
     "ChatActionBarAddContact",
@@ -1752,7 +1749,6 @@ __all__ = [
     "UpdateLanguagePackStrings",
     "UpdateConnectionState",
     "UpdateTermsOfService",
-    "UpdateUsersNearby",
     "UpdateUnconfirmedSession",
     "UpdateAttachmentMenuBots",
     "UpdateWebAppMessageSent",
@@ -2315,12 +2311,9 @@ from .td_types import (
     FailedToAddMember,
     FailedToAddMembers,
     CreatedBasicGroupChat,
-    ChatNearby,
-    ChatsNearby,
     PublicChatTypeHasUsername,
     PublicChatTypeIsLocationBased,
     ChatActionBarReportSpam,
-    ChatActionBarReportUnrelatedLocation,
     ChatActionBarInviteMembers,
     ChatActionBarReportAddBlock,
     ChatActionBarAddContact,
@@ -3549,7 +3542,6 @@ from .td_types import (
     UpdateLanguagePackStrings,
     UpdateConnectionState,
     UpdateTermsOfService,
-    UpdateUsersNearby,
     UpdateUnconfirmedSession,
     UpdateAttachmentMenuBots,
     UpdateWebAppMessageSent,
@@ -3594,4 +3586,4 @@ from .td_types import (
 )
 from .plugins import Plugins
 
-TDLIB_VERSION = "1.8.37"
+TDLIB_VERSION = "1.8.38"
