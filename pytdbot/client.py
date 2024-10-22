@@ -103,6 +103,9 @@ class Client(Decorators, Methods):
         workers (``int``, *optional*):
             Number of workers to handle updates. Default is ``5``. If set to ``None``, updates will be immediately handled instead of being queued, which can impact performance.
 
+        no_updates (``bool``, *optional*):
+            Whether the client should handle updates or not. Applicable only when using [TDLib Server](https://github.com/pytdbot/tdlib-server). Default is ``False``
+
         td_verbosity (``int``, *optional*):
             Verbosity level of TDLib. Default is ``2``
 
@@ -134,6 +137,7 @@ class Client(Decorators, Methods):
         options: dict = None,
         sleep_threshold: int = None,
         workers: int = 5,
+        no_updates: bool = False,
         td_verbosity: int = 2,
         td_log: LogStream = None,
     ) -> None:
@@ -167,6 +171,7 @@ class Client(Decorators, Methods):
             sleep_threshold if isinstance(sleep_threshold, int) else 0
         )
         self.workers = workers
+        self.no_updates = no_updates
         self.queue = asyncio.Queue()
         self.my_id = get_bot_id_from_token(self.__token)
         self.td_verbosity = td_verbosity
@@ -1028,7 +1033,10 @@ class Client(Decorators, Methods):
                 else "@" + self.me.usernames.editable_username,
             )
         )
-        await self.__rqueues["updates"].consume(self.__on_update, no_ack=True)
+
+        if not self.no_updates:
+            await self.__rqueues["updates"].consume(self.__on_update, no_ack=True)
+
         await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
 
     async def __handle_rabbitmq_message(self, message: aio_pika.IncomingMessage):
