@@ -34,9 +34,6 @@ from .utils import (
 )
 
 
-logger = getLogger(__name__)
-
-
 class Client(Decorators, Methods):
     r"""Pytdbot, a TDLib client
 
@@ -174,6 +171,7 @@ class Client(Decorators, Methods):
         self.no_updates = no_updates
         self.queue = asyncio.Queue()
         self.my_id = get_bot_id_from_token(self.__token)
+        self.logger = getLogger(f"{__name__}:{self.my_id or 0}")
         self.td_verbosity = td_verbosity
         self.connection_state: str = None
         self.is_running = None
@@ -217,7 +215,7 @@ class Client(Decorators, Methods):
                 {"@type": "setLogStream", "log_stream": obj_to_dict(td_log)}
             )
 
-        logger.info(f"Pytdbot v{pytdbot.VERSION}")
+        self.logger.info(f"Pytdbot v{pytdbot.VERSION}")
 
     async def __aenter__(self):
         await self.start()
@@ -245,7 +243,7 @@ class Client(Decorators, Methods):
         """
 
         if not self.is_running:
-            logger.info("Starting pytdbot client...")
+            self.logger.info("Starting pytdbot client...")
 
             if isinstance(self.workers, int):
                 self._workers_tasks = [
@@ -254,10 +252,10 @@ class Client(Decorators, Methods):
                 ]
                 self.__is_queue_worker = True
 
-                logger.info("Started with %s workers", self.workers)
+                self.logger.info(f"Started with {self.workers} workers")
             else:
                 self.__is_queue_worker = False
-                logger.info("Started with unlimited updates processes")
+                self.logger.info("Started with unlimited updates processes")
 
             if self.is_rabbitmq:
                 await self.__startRabbitMQ()
@@ -287,11 +285,11 @@ class Client(Decorators, Methods):
 
         self.me = await self.getMe()
         if isinstance(self.me, types.Error):
-            logger.error(f"Get me error: {self.me.message}")
+            self.logger.error(f"Get me error: {self.me.message}")
 
         self.is_authenticated = True
 
-        logger.info(
+        self.logger.info(
             "Logged in as {} {}".format(
                 self.me.first_name,
                 str(self.me.id)
@@ -403,9 +401,9 @@ class Client(Decorators, Methods):
         result = self._create_request_future(request)
 
         if (
-            logger.root.level >= DEBUG
+            self.logger.root.level >= DEBUG or self.logger.level >= DEBUG
         ):  # dumping all requests may create performance issues
-            logger.debug(f"Sending: {dumps(request, indent=4)}")
+            self.logger.debug(f"Sending: {dumps(request, indent=4)}")
 
         await self.__send(request)
         await result
@@ -415,7 +413,7 @@ class Client(Decorators, Methods):
                 retry_after = self.get_retry_after_time(result.message)
 
                 if retry_after <= self.sleep_threshold:
-                    logger.error(
+                    self.logger.error(
                         f"Sleeping for {retry_after}s (Caused by {request['@type']})"
                     )
 
@@ -432,12 +430,12 @@ class Client(Decorators, Methods):
             ):
                 chat_id = request["chat_id"]
 
-                logger.debug(f"Attempt to load chat {chat_id}")
+                self.logger.debug(f"Attempt to load chat {chat_id}")
 
                 load_chat = await self.getChat(chat_id)
 
                 if not isinstance(load_chat, types.Error):
-                    logger.debug(f"Chat {chat_id} is loaded")
+                    self.logger.debug(f"Chat {chat_id} is loaded")
 
                     message_id = request.get("reply_to", {}).get(
                         "message_id", request.get("message_id", 0)
@@ -454,7 +452,7 @@ class Client(Decorators, Methods):
                     await self.__send(request)
                     await result
                 else:
-                    logger.error(f"Couldn't load chat {chat_id}")
+                    self.logger.error(f"Couldn't load chat {chat_id}")
 
         return await result
 
@@ -532,7 +530,7 @@ class Client(Decorators, Methods):
         ):
             raise RuntimeError("Instance is not running")
 
-        logger.info("Waiting for TDLib to close...")
+        self.logger.info("Waiting for TDLib to close...")
 
         self.__is_closing = True
 
@@ -551,7 +549,7 @@ class Client(Decorators, Methods):
 
         self.__stop_client()
 
-        logger.info("Instance closed")
+        self.logger.info("Instance closed")
 
         return True
 
@@ -641,7 +639,7 @@ class Client(Decorators, Methods):
             try:
                 module = import_module(module_path)
             except Exception:
-                logger.exception(f"Failed to import plugin {module_path}")
+                self.logger.exception(f"Failed to import plugin {module_path}")
                 continue
 
             plugin_handlers_count = 0
@@ -666,18 +664,20 @@ class Client(Decorators, Methods):
                     handlers += 1
                     plugin_handlers_count += 1
 
-                    logger.debug(f"Handler {handler.func} added from {module_path}")
+                    self.logger.debug(
+                        f"Handler {handler.func} added from {module_path}"
+                    )
                 else:
-                    logger.warning(
+                    self.logger.warning(
                         f"Handler {handler.func} is not an async function from module {module_path}"
                     )
             count += 1
 
-            logger.debug(
+            self.logger.debug(
                 f"Plugin {module_path} is fully imported with {plugin_handlers_count} handlers"
             )
 
-        logger.info(f"From {count} plugins got {handlers} handlers")
+        self.logger.info(f"From {count} plugins got {handlers} handlers")
 
     def is_coro_filter(self, func: Callable) -> bool:
         if func in self.__cache["is_coro_filter"]:
@@ -694,7 +694,7 @@ class Client(Decorators, Methods):
         with ThreadPoolExecutor(1, "pytdbot_listener") as thread:
             try:
                 self.is_running = True
-                logger.info("Listening to updates...")
+                self.logger.info("Listening to updates...")
 
                 while self.is_running:
                     update = await self.loop.run_in_executor(
@@ -707,19 +707,19 @@ class Client(Decorators, Methods):
                     self.loop.create_task(self._process_update(update))
 
             except Exception:
-                logger.exception("Exception in __listen_loop")
+                self.logger.exception("Exception in __listen_loop")
             finally:
                 self.is_running = False
 
     async def _process_update(self, update):
         if not update:
-            logger.warning("Received None update")
+            self.logger.warning("Received None update")
             return
 
         if (
-            logger.root.level >= DEBUG
+            self.logger.root.level >= DEBUG or self.logger.level >= DEBUG
         ):  # dumping all results may create performance issues
-            logger.debug(f"Received: {dumps(update, indent=4)}")
+            self.logger.debug(f"Received: {dumps(update, indent=4)}")
 
         if "@extra" in update:
             if result := self._results.pop(update["@extra"]["id"], None):
@@ -727,7 +727,7 @@ class Client(Decorators, Methods):
 
                 result.set_result(obj)
             elif update["@type"] == "error" and "option" in update["@extra"]:
-                logger.error(f"{update['@extra']['option']}: {update['message']}")
+                self.logger.error(f"{update['@extra']['option']}: {update['message']}")
 
         else:
             update_handler = self.__local_handlers.get(update["@type"])
@@ -757,7 +757,7 @@ class Client(Decorators, Methods):
             except StopHandlers as e:
                 raise e
             except Exception:
-                logger.exception(f"Initializer {initializer} failed")
+                self.logger.exception(f"Initializer {initializer} failed")
 
     async def __run_handlers(self, update):
         for handler in self._handlers[update.getType()]:
@@ -777,7 +777,7 @@ class Client(Decorators, Methods):
             except StopHandlers as e:
                 raise e
             except Exception:
-                logger.exception(f"Exception in {handler}")
+                self.logger.exception(f"Exception in {handler}")
 
     async def __run_finalizers(self, update):
         for finalizer in self._handlers["finalizer"]:
@@ -795,7 +795,7 @@ class Client(Decorators, Methods):
             except StopHandlers as e:
                 raise e
             except Exception:
-                logger.exception(f"Finalizer {finalizer} failed")
+                self.logger.exception(f"Finalizer {finalizer} failed")
 
     async def _handle_update(self, update):
         if update.getType() in self._handlers:
@@ -819,7 +819,7 @@ class Client(Decorators, Methods):
             try:
                 await self._handle_update(await self.queue.get())
             except Exception:
-                logger.exception("Got worker exception")
+                self.logger.exception("Got worker exception")
 
     async def set_td_parameters(self):
         r"""Make a call to :meth:`~pytdbot.Client.setTdlibParameters` with the current client init parameters
@@ -881,7 +881,7 @@ class Client(Decorators, Methods):
                     "@extra": {"option": k, "value": v, "id": ""},
                 }
             )
-            logger.debug(f"Option {k} sent with value {v}")
+            self.logger.debug(f"Option {k} sent with value {v}")
 
     async def __handle_authorization_state(
         self, update: types.UpdateAuthorizationState
@@ -890,7 +890,7 @@ class Client(Decorators, Methods):
         self.__authorization_state = update.authorization_state.getType()
         self.__authorization = update.authorization_state
 
-        logger.info(
+        self.logger.info(
             f"Authorization state changed to {self.authorization_state.removeprefix('authorizationState')}"
         )
 
@@ -923,7 +923,7 @@ class Client(Decorators, Methods):
 
     async def __handle_connection_state(self, update: types.UpdateConnectionState):
         self.connection_state: str = update.state.getType()
-        logger.info(
+        self.logger.info(
             f"Connection state changed to {self.connection_state.removeprefix('connectionState')}"
         )
 
@@ -945,7 +945,7 @@ class Client(Decorators, Methods):
                 retry_after = update.message.sending_state.retry_after
 
                 if retry_after <= self.sleep_threshold:
-                    logger.error(
+                    self.logger.error(
                         f"Sleeping for {retry_after}s (Caused by {result.request['@type']})"
                     )
 
@@ -967,18 +967,22 @@ class Client(Decorators, Methods):
             self.options[update.name] = update.value.value
 
         if self.is_authenticated:
-            logger.info(f"Option {update.name} changed to {self.options[update.name]}")
+            self.logger.info(
+                f"Option {update.name} changed to {self.options[update.name]}"
+            )
 
     async def __get_updates_queue(self, retries=10, delay=2):
         for attempt in range(retries):
             try:
                 return await self.__rchannel.get_queue(self.my_id + "_updates")
             except aio_pika.exceptions.ChannelNotFoundEntity:
-                logger.warning(
+                self.logger.warning(
                     f"Attempt {attempt + 1}: TDLib Server is not running. Retrying in {delay} seconds..."
                 )
                 await asyncio.sleep(delay)
-        logger.error(f"Could not connect to TDLib Server after {retries} attempts.")
+        self.logger.error(
+            f"Could not connect to TDLib Server after {retries} attempts."
+        )
         raise AuthorizationError(
             f"Could not connect to TDLib Server after {delay * retries} seconds timeout"
         )
@@ -1025,7 +1029,7 @@ class Client(Decorators, Methods):
         self.me = await self.getMe()
         self.is_authenticated = True
 
-        logger.info(
+        self.logger.info(
             "Logged in as {} {}".format(
                 self.me.first_name,
                 str(self.me.id)
@@ -1047,7 +1051,7 @@ class Client(Decorators, Methods):
 
     async def __handle_update_user(self, update: types.UpdateUser):
         if self.is_authenticated and update.user.id == self.me.id:
-            logger.info(
+            self.logger.info(
                 "Updating {} ({}) info".format(
                     self.me.first_name,
                     str(self.me.id)
@@ -1057,9 +1061,9 @@ class Client(Decorators, Methods):
             )
 
             try:
-                deepdiff(obj_to_dict(self.me), obj_to_dict(update.user))
+                deepdiff(self, obj_to_dict(self.me), obj_to_dict(update.user))
             except Exception:
-                logger.exception("deepdiff failed")
+                self.logger.exception("deepdiff failed")
             self.me = update.user
 
     async def __handle_authorization_state_wait_phone_number(self):
@@ -1271,7 +1275,7 @@ class Client(Decorators, Methods):
         )
 
 
-def deepdiff(d1, d2):
+def deepdiff(self, d1, d2):
     d1 = obj_to_dict(d1)
     if not isinstance(d1, dict) or not isinstance(d2, dict):
         return d1 == d2
@@ -1284,6 +1288,6 @@ def deepdiff(d1, d2):
             key = ".".join(str(v) for v in difflist)
 
             if parent in {"dictionary_item_added", "values_changed"}:
-                logger.info(f"{key} changed to {diff.t2}")
+                self.logger.info(f"{key} changed to {diff.t2}")
             elif parent == "dictionary_item_removed":
-                logger.info(f"{key} removed")
+                self.logger.info(f"{key} removed")
