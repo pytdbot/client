@@ -38,8 +38,11 @@ class Client(Decorators, Methods):
     r"""Pytdbot, a TDLib client
 
     Args:
-        token (``str``):
-            Bot token or phone number
+        phone_number (``str``, *optional*):
+            Phone number
+
+        token (``str``, *optional*):
+            Bot token
 
         api_id (``int``):
             Identifier for Telegram API access, which can be obtained at https://my.telegram.org
@@ -112,7 +115,8 @@ class Client(Decorators, Methods):
 
     def __init__(
         self,
-        token: str,
+        phone_number: str = None,
+        token: str = None,
         api_id: int = None,
         api_hash: str = None,
         rabbitmq_url: str = None,
@@ -138,6 +142,9 @@ class Client(Decorators, Methods):
         td_verbosity: int = 2,
         td_log: LogStream = None,
     ) -> None:
+        if phone_number and token:
+            raise ValueError("Only one of phone_number or token should be provided")
+
         self.__api_id = api_id
         self.__api_hash = api_hash
         self.__rabbitmq_url = rabbitmq_url
@@ -145,6 +152,7 @@ class Client(Decorators, Methods):
             instance_id if isinstance(instance_id, str) else create_extra_id(4)
         )
         self.__token = token
+        self.__phone_number = phone_number
         self.__database_encryption_key = database_encryption_key
         self.files_directory = files_directory
         self.lib_path = lib_path
@@ -170,8 +178,11 @@ class Client(Decorators, Methods):
         self.workers = workers
         self.no_updates = no_updates
         self.queue = asyncio.Queue()
-        self.my_id = get_bot_id_from_token(self.__token)
-        self.logger = getLogger(f"{__name__}:{self.my_id or 0}")
+
+        # Initialize my_id only if token is provided (for bots)
+        self.my_id = get_bot_id_from_token(self.__token) if self.__token else None
+
+        self.logger = getLogger(f"{__name__}:{self.my_id or 'user'}")
         self.td_verbosity = td_verbosity
         self.connection_state: str = None
         self.is_running = None
@@ -182,6 +193,7 @@ class Client(Decorators, Methods):
 
         self._check_init_args()
 
+        # Initialize handlers and other properties
         self._handlers = {"initializer": [], "finalizer": []}
         self._results: Dict[str, asyncio.Future] = {}
         self._tdjson = None if self.is_rabbitmq else TdJson(lib_path, td_verbosity)
@@ -283,9 +295,12 @@ class Client(Decorators, Methods):
         if not self.is_running:
             return
 
-        self.me = await self.getMe()
-        if isinstance(self.me, types.Error):
-            self.logger.error(f"Get me error: {self.me.message}")
+        if self.is_bot:
+            await self._auth_with_bot_token(self.__token)
+        else:
+            self.me = await self.getMe()
+            if isinstance(self.me, types.Error):
+                self.logger.error(f"Get me error: {self.me.message}")
 
         self.is_authenticated = True
 
@@ -592,9 +607,6 @@ class Client(Decorators, Methods):
             if not isinstance(self.td_verbosity, int):
                 raise TypeError("td_verbosity must be an int")
 
-        if not self.my_id:
-            raise ValueError("Invalid bot token")
-
         if isinstance(self.workers, int) and self.workers < 1:
             raise ValueError("workers must be greater than 0")
 
@@ -852,10 +864,19 @@ class Client(Decorators, Methods):
         if isinstance(res, types.Error):
             raise AuthorizationError(res.message)
 
-    async def _set_bot_token(self):
-        res = await self.checkAuthenticationBotToken(self.__token)
+    async def _auth_with_bot_token(self, token: str):
+        """Auth with bot token and update my_id from getMe if needed"""
+        res = await self.checkAuthenticationBotToken(token)
         if isinstance(res, types.Error):
             raise AuthorizationError(res.message)
+
+        # If my_id wasn't set from token, get it from getMe
+        if not self.my_id:
+            me = await self.getMe()
+            if isinstance(me, types.Error):
+                raise AuthorizationError(f"Failed to get user info: {me.message}")
+            self.my_id = me.id
+            self.logger.debug(f"Updated my_id to {self.my_id} from getMe")
 
     async def _set_options(self):
         if not isinstance(self.td_options, dict):
@@ -1066,35 +1087,53 @@ class Client(Decorators, Methods):
                 self.logger.exception("deepdiff failed")
             self.me = update.user
 
+    @property
+    def is_bot(self) -> bool:
+        """Check if the client is a bot instance"""
+        return bool(self.__token)
+
     async def __handle_authorization_state_wait_phone_number(self):
+        """Handle the phone number/bot token authorization state"""
         if self.authorization_state != "authorizationStateWaitPhoneNumber":
             return
 
-        if not isinstance(self.__token, str):
-            while self.is_running:
-                user_input = await self.__ainput("Enter a phone number or bot token: ")
-
-                if user_input:
-                    y_n = await self.__ainput(f'Is "{user_input}" correct? (y/n): ')
-
-                    if y_n == "" or y_n.lower() in {"y", "yes"}:
-                        if ":" in user_input:
-                            res = await self.checkAuthenticationBotToken(user_input)
-                        else:
-                            res = await self.setAuthenticationPhoneNumber(user_input)
-
-                        if isinstance(res, types.Error):
-                            print(res.message)
-                        else:
-                            break
-        else:
-            if ":" in self.__token:
-                res = await self.checkAuthenticationBotToken(self.__token)
-            else:
-                res = await self.setAuthenticationPhoneNumber(self.__token)
-
+        # If credentials were provided during initialization, use them
+        if self.__token:
+            await self._auth_with_bot_token(self.__token)
+            return
+        elif self.__phone_number:
+            res = await self.setAuthenticationPhoneNumber(self.__phone_number)
             if isinstance(res, types.Error):
                 raise AuthorizationError(res.message)
+            return
+
+        # Otherwise prompt for input
+        while self.is_running:
+            user_input = await self.__ainput("Enter your phone number (starts with '+') or bot token: ")
+            if not user_input:
+                continue
+
+            is_phone = user_input.startswith('+')
+            input_type = "phone number" if is_phone else "bot token"
+            
+            y_n = await self.__ainput(f'Is "{user_input}" your {input_type}? (y/n): ')
+            if y_n.lower() not in {"y", "yes"}:
+                continue
+
+            try:
+                if is_phone:
+                    res = await self.setAuthenticationPhoneNumber(user_input)
+                    if not isinstance(res, types.Error):
+                        self.__phone_number = user_input
+                        break
+                else:
+                    self.__token = user_input
+                    await self._auth_with_bot_token(self.__token)
+                    break
+            except AuthorizationError as e:
+                print(f"Authorization failed: {e}")
+            except Exception as e:
+                print(f"Error occurred: {e}")
 
     async def __handle_authorization_state_wait_email_address(self):
         if self.authorization_state == "authorizationStateWaitEmailAddress":
@@ -1291,3 +1330,4 @@ def deepdiff(self, d1, d2):
                 self.logger.info(f"{key} changed to {diff.t2}")
             elif parent == "dictionary_item_removed":
                 self.logger.info(f"{key} removed")
+
