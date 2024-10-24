@@ -1115,7 +1115,7 @@ class Client(Decorators, Methods):
 
             is_phone = user_input.startswith('+')
             input_type = "phone number" if is_phone else "bot token"
-            
+
             y_n = await self.__ainput(f'Is "{user_input}" your {input_type}? (y/n): ')
             if y_n.lower() not in {"y", "yes"}:
                 continue
