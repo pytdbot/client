@@ -13,7 +13,7 @@ Pytdbot (Python TDLib) is an asynchronous [**TDLib**](https://github.com/tdlib/t
 - **Well-typed**: Provides clear and well-defined methods and types to enhance developer experience
 - **Decorator-Based Updates**: Simplifies the implementation of update handlers through a decorator pattern
 - **Bound Methods**: Features types bound methods for improved usability
-- **Unlimited Support**: Supports **Userbots**, **Plugins**, [**filters**](pytdbot/filters.py#L23), [**TDLib**](https://github.com/tdlib/td) types/functions and much more
+- **Unlimited Support**: Supports **Plugins**, [**filters**](pytdbot/filters.py#L23), [**TDLib**](https://github.com/tdlib/td) types/functions and much more
 
 
 

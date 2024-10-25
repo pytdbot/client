@@ -6,7 +6,6 @@ import aio_pika
 from platform import python_implementation, python_version
 from os.path import join as join_path
 from pathlib import Path
-from getpass import getpass
 from importlib import import_module
 
 from typing import Callable, Union, Dict
@@ -39,7 +38,7 @@ class Client(Decorators, Methods):
 
     Args:
         token (``str``):
-            Bot token or phone number
+            Bot token
 
         api_id (``int``):
             Identifier for Telegram API access, which can be obtained at https://my.telegram.org
@@ -128,8 +127,6 @@ class Client(Decorators, Methods):
         use_file_database: bool = True,
         use_chat_info_database: bool = True,
         use_message_database: bool = True,
-        enable_storage_optimizer: bool = True,
-        ignore_file_names: bool = False,
         loop: asyncio.AbstractEventLoop = None,
         options: dict = None,
         sleep_threshold: int = None,
@@ -161,8 +158,6 @@ class Client(Decorators, Methods):
         self.use_file_database = use_file_database
         self.use_chat_info_database = use_chat_info_database
         self.use_message_database = use_message_database
-        self.enable_storage_optimizer = enable_storage_optimizer
-        self.ignore_file_names = ignore_file_names
         self.td_options = options
         self.sleep_threshold = (
             sleep_threshold if isinstance(sleep_threshold, int) else 0
@@ -188,7 +183,6 @@ class Client(Decorators, Methods):
         self._retry_after_prefex = "Too Many Requests: retry after "
         self._workers_tasks = None
         self.__authorization_state = None
-        self.__authorization = None
         self.__cache = {"is_coro_filter": {}}
         self.__local_handlers = {
             "updateAuthorizationState": self.__handle_authorization_state,
@@ -592,7 +586,7 @@ class Client(Decorators, Methods):
             if not isinstance(self.td_verbosity, int):
                 raise TypeError("td_verbosity must be an int")
 
-        if not self.my_id:
+        if self.__token and not self.my_id:
             raise ValueError("Invalid bot token")
 
         if isinstance(self.workers, int) and self.workers < 1:
@@ -852,11 +846,6 @@ class Client(Decorators, Methods):
         if isinstance(res, types.Error):
             raise AuthorizationError(res.message)
 
-    async def _set_bot_token(self):
-        res = await self.checkAuthenticationBotToken(self.__token)
-        if isinstance(res, types.Error):
-            raise AuthorizationError(res.message)
-
     async def _set_options(self):
         if not isinstance(self.td_options, dict):
             return
@@ -886,9 +875,7 @@ class Client(Decorators, Methods):
     async def __handle_authorization_state(
         self, update: types.UpdateAuthorizationState
     ):
-        old_authorization_state = self.authorization_state
         self.__authorization_state = update.authorization_state.getType()
-        self.__authorization = update.authorization_state
 
         self.logger.info(
             f"Authorization state changed to {self.authorization_state.removeprefix('authorizationState')}"
@@ -901,19 +888,6 @@ class Client(Decorators, Methods):
             elif self.authorization_state == "authorizationStateWaitPhoneNumber":
                 self._print_welcome()
                 await self.__handle_authorization_state_wait_phone_number()
-            elif self.authorization_state == "authorizationStateWaitEmailAddress":
-                await self.__handle_authorization_state_wait_email_address()
-            elif self.authorization_state == "authorizationStateWaitEmailCode":
-                await self.__handle_authorization_state_wait_email_code()
-            elif self.authorization_state == "authorizationStateWaitCode":
-                await self.__handle_authorization_state_wait_code()
-            elif self.authorization_state == "authorizationStateWaitRegistration":
-                await self.__handle_authorization_state_wait_registration()
-            elif (
-                old_authorization_state != "authorizationStateWaitPassword"
-                and self.authorization_state == "authorizationStateWaitPassword"
-            ):
-                await self.__handle_authorization_state_wait_password()
 
         if (
             self.authorization_state == "authorizationStateClosed"
@@ -965,6 +939,9 @@ class Client(Decorators, Methods):
             self.options[update.name] = int(update.value.value)
         else:
             self.options[update.name] = update.value.value
+
+        if update.name == "my_id":
+            self.my_id = str(update.value.value)
 
         if self.is_authenticated:
             self.logger.info(
@@ -1067,172 +1044,16 @@ class Client(Decorators, Methods):
             self.me = update.user
 
     async def __handle_authorization_state_wait_phone_number(self):
-        if self.authorization_state != "authorizationStateWaitPhoneNumber":
+        if (
+            self.authorization_state != "authorizationStateWaitPhoneNumber"
+            or not self.__token
+        ):
             return
 
-        if not isinstance(self.__token, str):
-            while self.is_running:
-                user_input = await self.__ainput("Enter a phone number or bot token: ")
+        res = await self.checkAuthenticationBotToken(self.__token)
 
-                if user_input:
-                    y_n = await self.__ainput(f'Is "{user_input}" correct? (y/n): ')
-
-                    if y_n == "" or y_n.lower() in {"y", "yes"}:
-                        if ":" in user_input:
-                            res = await self.checkAuthenticationBotToken(user_input)
-                        else:
-                            res = await self.setAuthenticationPhoneNumber(user_input)
-
-                        if isinstance(res, types.Error):
-                            print(res.message)
-                        else:
-                            break
-        else:
-            if ":" in self.__token:
-                res = await self.checkAuthenticationBotToken(self.__token)
-            else:
-                res = await self.setAuthenticationPhoneNumber(self.__token)
-
-            if isinstance(res, types.Error):
-                raise AuthorizationError(res.message)
-
-    async def __handle_authorization_state_wait_email_address(self):
-        if self.authorization_state == "authorizationStateWaitEmailAddress":
-            return
-
-        while self.is_running:
-            email_address = await self.__ainput("Enter your email address: ")
-
-            res = await self.setAuthenticationEmailAddress(email_address)
-            if isinstance(res, types.Error):
-                print(res.message)
-            else:
-                break
-
-    async def __handle_authorization_state_wait_email_code(self):
-        if self.authorization_state != "authorizationStateWaitEmailCode":
-            return
-
-        while self.is_running:
-            code = await self.__ainput(
-                "Enter the email authentication code you received: ",
-            )
-
-            res = await self.checkAuthenticationEmailCode(
-                code=types.EmailAddressAuthenticationCode(code=code)
-            )
-
-            if isinstance(res, types.Error):
-                print(res.message)
-            else:
-                break
-
-    async def __handle_authorization_state_wait_code(self):
-        if self.authorization_state != "authorizationStateWaitCode":
-            return
-
-        code_type = self.__authorization.code_info.type
-
-        if isinstance(code_type, types.AuthenticationCodeTypeTelegramMessage):
-            code_type = "Telegram app"
-        elif isinstance(code_type, types.AuthenticationCodeTypeSms):
-            code_type = "SMS"
-        elif isinstance(code_type, types.AuthenticationCodeTypeCall):
-            code_type = "phone call"
-        elif isinstance(code_type, types.AuthenticationCodeTypeFlashCall):
-            code_type = "phone flush call"
-        elif isinstance(code_type, types.AuthenticationCodeTypeMissedCall):
-            code_type = "phone missed call"
-        elif isinstance(code_type, types.AuthenticationCodeTypeFragment):
-            code_type = "fragment.com SMS"
-
-        while self.is_running:
-            code = await self.__ainput(
-                f"Enter the login code received via {code_type}: "
-            )
-
-            res = await self.checkAuthenticationCode(code=code)
-            if isinstance(res, types.Error):
-                print(res.message)
-            else:
-                break
-
-    async def __handle_authorization_state_wait_registration(self):
-        if self.authorization_state != "authorizationStateWaitRegistration":
-            return
-
-        while self.is_running:
-            first_name = await self.__ainput("Enter your first name: ")
-            last_name = await self.__ainput("Enter your last name: ")
-
-            res = await self.registerUser(first_name=first_name, last_name=last_name)
-            if isinstance(res, types.Error):
-                print(res.message)
-            else:
-                break
-
-    async def __handle_authorization_state_wait_password(self):
-        if self.authorization_state != "authorizationStateWaitPassword":
-            return
-
-        if self.__authorization.password_hint:
-            print(f"Your 2FA password hint is: {self.__authorization.password_hint}")
-
-        while self.is_running:
-            password = await asyncio.to_thread(
-                getpass,
-                "Enter your 2FA password {}: ".format(
-                    "(empty to recover)"
-                    if self.__authorization.has_recovery_email_address
-                    else ""
-                ),
-            )
-
-            if password == "":
-                if self.__authorization.has_recovery_email_address:
-                    y_n = await self.__ainput(
-                        "Are you sure you want to recover your 2FA password? (y/n): ",
-                    )
-
-                    if y_n.lower() in {"y", "yes"}:
-                        res = await self.requestAuthenticationPasswordRecovery()
-
-                        if isinstance(res, types.Error):
-                            raise AuthorizationError(res.message)
-                        else:
-                            while True:
-                                recovery_code = await self.__ainput(
-                                    f"Enter your recovery code sent to {self.__authorization.recovery_email_address_pattern}: "
-                                )
-
-                                res = (
-                                    await self.checkAuthenticationPasswordRecoveryCode(
-                                        recovery_code
-                                    )
-                                )
-
-                                if isinstance(res, types.Error):
-                                    print(res.message)
-                                else:
-                                    recover_res = (
-                                        await self.recoverAuthenticationPassword(
-                                            recovery_code
-                                        )
-                                    )
-                                    if isinstance(recover_res, types.Error):
-                                        raise AuthorizationError(recover_res.message)
-
-                                    return
-                else:
-                    print(
-                        "You can't recover your 2FA password because you don't set any recovery email address"
-                    )
-            else:
-                res = await self.checkAuthenticationPassword(password)
-                if isinstance(res, types.Error):
-                    print(res.message)
-                else:
-                    break
+        if isinstance(res, types.Error):
+            raise AuthorizationError(res.message)
 
     def __stop_client(self) -> None:
         self.is_authenticated = False
@@ -1264,9 +1085,6 @@ class Client(Decorators, Methods):
                     self.loop.add_signal_handler(sig, _handle_signal)
             except NotImplementedError:  # Windows dosen't support add_signal_handler
                 pass
-
-    def __ainput(self, prompt: str):
-        return asyncio.to_thread(input, prompt)
 
     def _print_welcome(self):
         print(f"Welcome to Pytdbot (v{pytdbot.__version__}). {pytdbot.__copyright__}")
