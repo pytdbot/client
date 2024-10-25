@@ -37,13 +37,13 @@ class Client(Decorators, Methods):
     r"""Pytdbot, a TDLib client
 
     Args:
-        token (``str``):
+        token (``str``, *optional*):
             Bot token
 
-        api_id (``int``):
+        api_id (``int``, *optional*):
             Identifier for Telegram API access, which can be obtained at https://my.telegram.org
 
-        api_hash (``str``):
+        api_hash (``str``, *optional*):
             Identifier hash for Telegram API access, which can be obtained at https://my.telegram.org
 
         rabbitmq_url (``str``, *optional*):
@@ -111,7 +111,7 @@ class Client(Decorators, Methods):
 
     def __init__(
         self,
-        token: str,
+        token: str = None,
         api_id: int = None,
         api_hash: str = None,
         rabbitmq_url: str = None,
@@ -262,7 +262,7 @@ class Client(Decorators, Methods):
     async def login(self) -> None:
         r"""Login to Telegram."""
 
-        if self.is_authenticated or self.is_rabbitmq:
+        if not self.__token or (self.is_authenticated or self.is_rabbitmq):
             return
 
         self.__login = True
