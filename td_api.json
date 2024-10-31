@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.38",
-    "commit_hash": "d321984b75fccdb76239529e8aadcf7f80b0e35a",
+    "version": "1.8.39",
+    "commit_hash": "056963e48fa8d3f89556239c22d6ac843d3c8a5b",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -212,6 +212,7 @@
                 "starTransactionPartnerGooglePlay",
                 "starTransactionPartnerFragment",
                 "starTransactionPartnerTelegramAds",
+                "starTransactionPartnerTelegramApi",
                 "starTransactionPartnerBot",
                 "starTransactionPartnerBusiness",
                 "starTransactionPartnerChat",
@@ -933,7 +934,8 @@
             "description": "Contains information about the time when a scheduled message will be sent",
             "types": [
                 "messageSchedulingStateSendAtDate",
-                "messageSchedulingStateSendWhenOnline"
+                "messageSchedulingStateSendWhenOnline",
+                "messageSchedulingStateSendWhenVideoProcessed"
             ],
             "functions": []
         },
@@ -1456,7 +1458,6 @@
             "description": "Describes a purpose of an in-store payment",
             "types": [
                 "storePaymentPurposePremiumSubscription",
-                "storePaymentPurposeGiftedPremium",
                 "storePaymentPurposePremiumGiftCodes",
                 "storePaymentPurposePremiumGiveaway",
                 "storePaymentPurposeStarGiveaway",
@@ -4867,6 +4868,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "discount_percentage": {
+                    "description": "The discount associated with this option, as a percentage",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "winner_count": {
                     "description": "Number of users which will be able to activate the gift codes",
                     "is_optional": false,
@@ -4886,6 +4892,11 @@
                     "description": "Number of times the store product must be paid",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "sticker": {
+                    "description": "A sticker to be shown along with the gift code; may be null if unknown",
+                    "is_optional": true,
+                    "type": "sticker"
                 }
             },
             "type": "PremiumGiftCodePaymentOption"
@@ -5092,6 +5103,16 @@
                 },
                 "total_count": {
                     "description": "Number of total times the gift can be purchased by all users; 0 if not limited",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "first_send_date": {
+                    "description": "Point in time (Unix timestamp) when the gift was send for the first time; for sold out gifts only",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "last_send_date": {
+                    "description": "Point in time (Unix timestamp) when the gift was send for the last time; for sold out gifts only",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -5319,7 +5340,7 @@
             "description": "The transaction is a transaction with Fragment",
             "args": {
                 "withdrawal_state": {
-                    "description": "State of the withdrawal; may be null for refunds from Fragment",
+                    "description": "State of the withdrawal; may be null for refunds from Fragment or for Telegram Stars bought on Fragment",
                     "is_optional": true,
                     "type": "RevenueWithdrawalState"
                 }
@@ -5329,6 +5350,17 @@
         "starTransactionPartnerTelegramAds": {
             "description": "The transaction is a transaction with Telegram Ad platform",
             "args": {},
+            "type": "StarTransactionPartner"
+        },
+        "starTransactionPartnerTelegramApi": {
+            "description": "The transaction is a transaction with Telegram for API usage",
+            "args": {
+                "request_count": {
+                    "description": "The number of billed requests",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
             "type": "StarTransactionPartner"
         },
         "starTransactionPartnerBot": {
@@ -5909,6 +5941,11 @@
                     "is_optional": true,
                     "type": "chatAdministratorRights"
                 },
+                "can_get_revenue_statistics": {
+                    "description": "True, if the bot's revenue statistics are available",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "has_media_previews": {
                     "description": "True, if the bot has media previews",
                     "is_optional": false,
@@ -6019,11 +6056,6 @@
                     "description": "Identifier of the personal chat of the user; 0 if none",
                     "is_optional": false,
                     "type": "int53"
-                },
-                "premium_gift_options": {
-                    "description": "The list of available options for gifting Telegram Premium to the user",
-                    "is_optional": false,
-                    "type": "vector<premiumPaymentOption>"
                 },
                 "gift_count": {
                     "description": "Number of gifts saved to profile by the user",
@@ -7901,12 +7933,12 @@
                     "type": "Bool"
                 },
                 "date": {
-                    "description": "Point in time (Unix timestamp) when the message was sent",
+                    "description": "Point in time (Unix timestamp) when the message was sent; 0 for scheduled messages",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "edit_date": {
-                    "description": "Point in time (Unix timestamp) when the message was last edited",
+                    "description": "Point in time (Unix timestamp) when the message was last edited; 0 for scheduled messages",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -15244,6 +15276,17 @@
             "args": {},
             "type": "MessageSchedulingState"
         },
+        "messageSchedulingStateSendWhenVideoProcessed": {
+            "description": "The message will be sent when the video in the message is converted and optimized; can be used only by the server",
+            "args": {
+                "send_date": {
+                    "description": "Approximate point in time (Unix timestamp) when the message is expected to be sent",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageSchedulingState"
+        },
         "messageSelfDestructTypeTimer": {
             "description": "The message will be self-destructed in the specified time after its content was opened",
             "args": {
@@ -15275,6 +15318,11 @@
                 },
                 "protect_content": {
                     "description": "Pass true if the content of the message must be protected from forwarding and saving; for bots only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "allow_paid_broadcast": {
+                    "description": "Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -15644,7 +15692,7 @@
             "description": "A video note message",
             "args": {
                 "video_note": {
-                    "description": "Video note to be sent",
+                    "description": "Video note to be sent. The video is expected to be encoded to MPEG4 format with H.264 codec and have no data outside of the visible circle",
                     "is_optional": false,
                     "type": "InputFile"
                 },
@@ -15955,7 +16003,7 @@
                     "type": "Bool"
                 },
                 "can_be_edited": {
-                    "description": "True, if the message can be edited using the methods editMessageText, editMessageMedia, editMessageCaption, or editMessageReplyMarkup. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message",
+                    "description": "True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -15991,6 +16039,11 @@
                 },
                 "can_be_shared_in_story": {
                     "description": "True, if the message can be shared in a story using inputStoryAreaTypeMessage",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_edit_media": {
+                    "description": "True, if the message can be edited using the method editMessageMedia",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -21769,27 +21822,6 @@
             },
             "type": "StorePaymentPurpose"
         },
-        "storePaymentPurposeGiftedPremium": {
-            "description": "The user gifting Telegram Premium to another user",
-            "args": {
-                "user_id": {
-                    "description": "Identifier of the user to which Telegram Premium is gifted",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "currency": {
-                    "description": "ISO 4217 currency code of the payment currency",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "amount": {
-                    "description": "Paid amount, in the smallest units of the currency",
-                    "is_optional": false,
-                    "type": "int53"
-                }
-            },
-            "type": "StorePaymentPurpose"
-        },
         "storePaymentPurposePremiumGiftCodes": {
             "description": "The user creating Telegram Premium gift codes for other users",
             "args": {
@@ -24496,7 +24528,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePremiumGift": {
-            "description": "The link is a link to the screen for gifting Telegram Premium subscriptions to friends via inputInvoiceTelegram payments or in-store purchases",
+            "description": "The link is a link to the screen for gifting Telegram Premium subscriptions to friends via inputInvoiceTelegram with telegramPaymentPurposePremiumGiftCodes payments or in-store purchases",
             "args": {
                 "referrer": {
                     "description": "Referrer specified in the link",
@@ -26701,7 +26733,7 @@
             "description": "A message has been successfully sent",
             "args": {
                 "message": {
-                    "description": "The sent message. Usually only the message identifier, date, and content are changed, but almost all other fields can also change",
+                    "description": "The sent message. Almost any field of the new message can be different from the corresponding field of the original message. For example, the field scheduling_state may change, making the message scheduled, or non-scheduled",
                     "is_optional": false,
                     "type": "message"
                 },
@@ -26917,6 +26949,22 @@
                 },
                 "message_id": {
                     "description": "Identifier of the message with live location",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Update"
+        },
+        "updateVideoPublished": {
+            "description": "An automatically scheduled message with video has been successfully sent after conversion",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the sent message",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -30787,6 +30835,11 @@
         "searchPublicStoriesByTag": {
             "description": "Searches for public stories containing the given hashtag or cashtag. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
             "args": {
+                "story_sender_chat_id": {
+                    "description": "Identifier of the chat that posted the stories to search for; pass 0 to search stories in all chats",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "tag": {
                     "description": "Hashtag or cashtag to search for",
                     "is_optional": false,
@@ -31059,7 +31112,7 @@
             "type": "Messages"
         },
         "getChatSponsoredMessages": {
-            "description": "Returns sponsored messages to be shown in a chat; for channel chats only",
+            "description": "Returns sponsored messages to be shown in a chat; for channel chats and chats with bots only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -31686,7 +31739,7 @@
             "type": "Message"
         },
         "editMessageMedia": {
-            "description": "Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption. If only the caption needs to be edited, use editMessageCaption instead. The media can't be edited if the message was set to self-destruct or to a self-destructing media. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa. Returns the edited message after the edit is completed on the server side",
+            "description": "Edits the media content of a message, including message caption. If only the caption needs to be edited, use editMessageCaption instead. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa. Returns the edited message after the edit is completed on the server side",
             "args": {
                 "chat_id": {
                     "description": "The chat the message belongs to",
@@ -31694,7 +31747,7 @@
                     "type": "int53"
                 },
                 "message_id": {
-                    "description": "Identifier of the message. Use messageProperties.can_be_edited to check whether the message can be edited",
+                    "description": "Identifier of the message. Use messageProperties.can_edit_media to check whether the message can be edited",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -31821,7 +31874,7 @@
             "type": "Ok"
         },
         "editInlineMessageMedia": {
-            "description": "Edits the content of a message with an animation, an audio, a document, a photo or a video in an inline message sent via a bot; for bots only",
+            "description": "Edits the media content of a message with a text, an animation, an audio, a document, a photo or a video in an inline message sent via a bot; for bots only",
             "args": {
                 "inline_message_id": {
                     "description": "Inline message identifier",
@@ -31897,7 +31950,7 @@
                     "type": "int53"
                 },
                 "scheduling_state": {
-                    "description": "The new message scheduling state; pass null to send the message immediately",
+                    "description": "The new message scheduling state; pass null to send the message immediately. Must be null for messages in the state messageSchedulingStateSendWhenVideoProcessed",
                     "is_optional": true,
                     "type": "MessageSchedulingState"
                 }
@@ -32090,7 +32143,7 @@
             "type": "BusinessMessage"
         },
         "editBusinessMessageMedia": {
-            "description": "Edits the content of a message with an animation, an audio, a document, a photo or a video in a message sent on behalf of a business account; for bots only",
+            "description": "Edits the media content of a message with a text, an animation, an audio, a document, a photo or a video in a message sent on behalf of a business account; for bots only",
             "args": {
                 "business_connection_id": {
                     "description": "Unique identifier of business connection on behalf of which the message was sent",
@@ -32405,7 +32458,7 @@
             "type": "QuickReplyMessages"
         },
         "editQuickReplyMessage": {
-            "description": "Asynchronously edits the text, media or caption of a quick reply message. Use quickReplyMessage.can_be_edited to check whether a message can be edited. Text message can be edited only to a text message. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa",
+            "description": "Asynchronously edits the text, media or caption of a quick reply message. Use quickReplyMessage.can_be_edited to check whether a message can be edited. Media message can be edited only to a media message. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa",
             "args": {
                 "shortcut_id": {
                     "description": "Unique identifier of the quick reply shortcut with the message",
@@ -40173,7 +40226,7 @@
             "type": "Ok"
         },
         "getChatRevenueStatistics": {
-            "description": "Returns detailed revenue statistics about a chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true",
+            "description": "Returns detailed revenue statistics about a chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true or bots if userFullInfo.bot_info.can_get_revenue_statistics == true",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -40189,7 +40242,7 @@
             "type": "ChatRevenueStatistics"
         },
         "getChatRevenueWithdrawalUrl": {
-            "description": "Returns a URL for chat revenue withdrawal; requires owner privileges in the chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true and getOption(\"can_withdraw_chat_revenue\")",
+            "description": "Returns a URL for chat revenue withdrawal; requires owner privileges in the channel chat or the bot. Currently, this method can be used only if getOption(\"can_withdraw_chat_revenue\") for channels with supergroupFullInfo.can_get_revenue_statistics == true or bots with userFullInfo.bot_info.can_get_revenue_statistics == true",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -40205,7 +40258,7 @@
             "type": "HttpUrl"
         },
         "getChatRevenueTransactions": {
-            "description": "Returns the list of revenue transactions for a chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true",
+            "description": "Returns the list of revenue transactions for a chat. Currently, this method can be used only for channels if supergroupFullInfo.can_get_revenue_statistics == true or bots if userFullInfo.bot_info.can_get_revenue_statistics == true",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
