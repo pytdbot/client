@@ -541,6 +541,40 @@ class Updates:
 
         return decorator
 
+    def on_updateVideoPublished(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        r"""An automatically scheduled message with video has been successfully sent after conversion
+
+        Args:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateVideoPublished", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateVideoPublished", self, position)
+            else:
+                func._handler = Handler(func, "updateVideoPublished", filters, position)
+            return func
+
+        return decorator
+
     def on_updateNewChat(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,

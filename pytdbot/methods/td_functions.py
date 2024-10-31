@@ -2183,11 +2183,18 @@ class TDLibFunctions:
         )
 
     async def searchPublicStoriesByTag(
-        self, tag: str = "", offset: str = "", limit: int = 0
+        self,
+        story_sender_chat_id: int = 0,
+        tag: str = "",
+        offset: str = "",
+        limit: int = 0,
     ) -> Union["types.Error", "types.FoundStories"]:
         r"""Searches for public stories containing the given hashtag or cashtag\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
+            story_sender_chat_id (:class:`int`):
+                Identifier of the chat that posted the stories to search for; pass 0 to search stories in all chats
+
             tag (:class:`str`):
                 Hashtag or cashtag to search for
 
@@ -2204,6 +2211,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "searchPublicStoriesByTag",
+                "story_sender_chat_id": story_sender_chat_id,
                 "tag": tag,
                 "offset": offset,
                 "limit": limit,
@@ -2559,7 +2567,7 @@ class TDLibFunctions:
     async def getChatSponsoredMessages(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.SponsoredMessages"]:
-        r"""Returns sponsored messages to be shown in a chat; for channel chats only
+        r"""Returns sponsored messages to be shown in a chat; for channel chats and chats with bots only
 
         Parameters:
             chat_id (:class:`int`):
@@ -3409,14 +3417,14 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Message"]:
-        r"""Edits the content of a message with an animation, an audio, a document, a photo or a video, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The media can't be edited if the message was set to self\-destruct or to a self\-destructing media\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side
+        r"""Edits the media content of a message, including message caption\. If only the caption needs to be edited, use editMessageCaption instead\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa\. Returns the edited message after the edit is completed on the server side
 
         Parameters:
             chat_id (:class:`int`):
                 The chat the message belongs to
 
             message_id (:class:`int`):
-                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
+                Identifier of the message\. Use messageProperties\.can\_edit\_media to check whether the message can be edited
 
             reply_markup (:class:`"types.ReplyMarkup"`):
                 The new message reply markup; pass null if none; for bots only
@@ -3593,7 +3601,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Edits the content of a message with an animation, an audio, a document, a photo or a video in an inline message sent via a bot; for bots only
+        r"""Edits the media content of a message with a text, an animation, an audio, a document, a photo or a video in an inline message sent via a bot; for bots only
 
         Parameters:
             inline_message_id (:class:`str`):
@@ -3694,7 +3702,7 @@ class TDLibFunctions:
                 Identifier of the message\. Use messageProperties\.can\_edit\_scheduling\_state to check whether the message is suitable
 
             scheduling_state (:class:`"types.MessageSchedulingState"`):
-                The new message scheduling state; pass null to send the message immediately
+                The new message scheduling state; pass null to send the message immediately\. Must be null for messages in the state messageSchedulingStateSendWhenVideoProcessed
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -3949,7 +3957,7 @@ class TDLibFunctions:
         reply_markup: "types.ReplyMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.BusinessMessage"]:
-        r"""Edits the content of a message with an animation, an audio, a document, a photo or a video in a message sent on behalf of a business account; for bots only
+        r"""Edits the media content of a message with a text, an animation, an audio, a document, a photo or a video in a message sent on behalf of a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -4396,7 +4404,7 @@ class TDLibFunctions:
         message_id: int = 0,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Asynchronously edits the text, media or caption of a quick reply message\. Use quickReplyMessage\.can\_be\_edited to check whether a message can be edited\. Text message can be edited only to a text message\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa
+        r"""Asynchronously edits the text, media or caption of a quick reply message\. Use quickReplyMessage\.can\_be\_edited to check whether a message can be edited\. Media message can be edited only to a media message\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa
 
         Parameters:
             shortcut_id (:class:`int`):
@@ -15721,7 +15729,7 @@ class TDLibFunctions:
     async def getChatRevenueStatistics(
         self, chat_id: int = 0, is_dark: bool = False
     ) -> Union["types.Error", "types.ChatRevenueStatistics"]:
-        r"""Returns detailed revenue statistics about a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+        r"""Returns detailed revenue statistics about a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true or bots if userFullInfo\.bot\_info\.can\_get\_revenue\_statistics \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -15745,7 +15753,7 @@ class TDLibFunctions:
     async def getChatRevenueWithdrawalUrl(
         self, chat_id: int = 0, password: str = ""
     ) -> Union["types.Error", "types.HttpUrl"]:
-        r"""Returns a URL for chat revenue withdrawal; requires owner privileges in the chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true and getOption\(\"can\_withdraw\_chat\_revenue\"\)
+        r"""Returns a URL for chat revenue withdrawal; requires owner privileges in the channel chat or the bot\. Currently, this method can be used only if getOption\(\"can\_withdraw\_chat\_revenue\"\) for channels with supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true or bots with userFullInfo\.bot\_info\.can\_get\_revenue\_statistics \=\= true
 
         Parameters:
             chat_id (:class:`int`):
@@ -15769,7 +15777,7 @@ class TDLibFunctions:
     async def getChatRevenueTransactions(
         self, chat_id: int = 0, offset: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.ChatRevenueTransactions"]:
-        r"""Returns the list of revenue transactions for a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true
+        r"""Returns the list of revenue transactions for a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true or bots if userFullInfo\.bot\_info\.can\_get\_revenue\_statistics \=\= true
 
         Parameters:
             chat_id (:class:`int`):

@@ -8367,6 +8367,9 @@ class PremiumGiftCodePaymentOption(TlObject):
         amount (:class:`int`):
             The amount to pay, in the smallest units of the currency
 
+        discount_percentage (:class:`int`):
+            The discount associated with this option, as a percentage
+
         winner_count (:class:`int`):
             Number of users which will be able to activate the gift codes
 
@@ -8379,21 +8382,28 @@ class PremiumGiftCodePaymentOption(TlObject):
         store_product_quantity (:class:`int`):
             Number of times the store product must be paid
 
+        sticker (:class:`"types.Sticker"`):
+            A sticker to be shown along with the gift code; may be null if unknown
+
     """
 
     def __init__(
         self,
         currency: str = "",
         amount: int = 0,
+        discount_percentage: int = 0,
         winner_count: int = 0,
         month_count: int = 0,
         store_product_id: str = "",
         store_product_quantity: int = 0,
+        sticker: Sticker = None,
     ) -> None:
         self.currency: Union[str, None] = currency
         r"""ISO 4217 currency code for Telegram Premium gift code payment"""
         self.amount: int = int(amount)
         r"""The amount to pay, in the smallest units of the currency"""
+        self.discount_percentage: int = int(discount_percentage)
+        r"""The discount associated with this option, as a percentage"""
         self.winner_count: int = int(winner_count)
         r"""Number of users which will be able to activate the gift codes"""
         self.month_count: int = int(month_count)
@@ -8402,6 +8412,8 @@ class PremiumGiftCodePaymentOption(TlObject):
         r"""Identifier of the store product associated with the option; may be empty if none"""
         self.store_product_quantity: int = int(store_product_quantity)
         r"""Number of times the store product must be paid"""
+        self.sticker: Union[Sticker, None] = sticker
+        r"""A sticker to be shown along with the gift code; may be null if unknown"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -8417,10 +8429,12 @@ class PremiumGiftCodePaymentOption(TlObject):
             "@type": self.getType(),
             "currency": self.currency,
             "amount": self.amount,
+            "discount_percentage": self.discount_percentage,
             "winner_count": self.winner_count,
             "month_count": self.month_count,
             "store_product_id": self.store_product_id,
             "store_product_quantity": self.store_product_quantity,
+            "sticker": self.sticker,
         }
 
     @classmethod
@@ -8429,12 +8443,14 @@ class PremiumGiftCodePaymentOption(TlObject):
             data_class = cls()
             data_class.currency = data.get("currency", "")
             data_class.amount = int(data.get("amount", 0))
+            data_class.discount_percentage = int(data.get("discount_percentage", 0))
             data_class.winner_count = int(data.get("winner_count", 0))
             data_class.month_count = int(data.get("month_count", 0))
             data_class.store_product_id = data.get("store_product_id", "")
             data_class.store_product_quantity = int(
                 data.get("store_product_quantity", 0)
             )
+            data_class.sticker = data.get("sticker", None)
 
         return data_class
 
@@ -8872,6 +8888,12 @@ class Gift(TlObject):
         total_count (:class:`int`):
             Number of total times the gift can be purchased by all users; 0 if not limited
 
+        first_send_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the gift was send for the first time; for sold out gifts only
+
+        last_send_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the gift was send for the last time; for sold out gifts only
+
     """
 
     def __init__(
@@ -8882,6 +8904,8 @@ class Gift(TlObject):
         default_sell_star_count: int = 0,
         remaining_count: int = 0,
         total_count: int = 0,
+        first_send_date: int = 0,
+        last_send_date: int = 0,
     ) -> None:
         self.id: int = int(id)
         r"""Unique identifier of the gift"""
@@ -8895,6 +8919,10 @@ class Gift(TlObject):
         r"""Number of remaining times the gift can be purchased by all users; 0 if not limited or the gift was sold out"""
         self.total_count: int = int(total_count)
         r"""Number of total times the gift can be purchased by all users; 0 if not limited"""
+        self.first_send_date: int = int(first_send_date)
+        r"""Point in time \(Unix timestamp\) when the gift was send for the first time; for sold out gifts only"""
+        self.last_send_date: int = int(last_send_date)
+        r"""Point in time \(Unix timestamp\) when the gift was send for the last time; for sold out gifts only"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -8914,6 +8942,8 @@ class Gift(TlObject):
             "default_sell_star_count": self.default_sell_star_count,
             "remaining_count": self.remaining_count,
             "total_count": self.total_count,
+            "first_send_date": self.first_send_date,
+            "last_send_date": self.last_send_date,
         }
 
     @classmethod
@@ -8928,6 +8958,8 @@ class Gift(TlObject):
             )
             data_class.remaining_count = int(data.get("remaining_count", 0))
             data_class.total_count = int(data.get("total_count", 0))
+            data_class.first_send_date = int(data.get("first_send_date", 0))
+            data_class.last_send_date = int(data.get("last_send_date", 0))
 
         return data_class
 
@@ -9589,7 +9621,7 @@ class StarTransactionPartnerFragment(TlObject, StarTransactionPartner):
 
     Parameters:
         withdrawal_state (:class:`"types.RevenueWithdrawalState"`):
-            State of the withdrawal; may be null for refunds from Fragment
+            State of the withdrawal; may be null for refunds from Fragment or for Telegram Stars bought on Fragment
 
     """
 
@@ -9600,7 +9632,7 @@ class StarTransactionPartnerFragment(TlObject, StarTransactionPartner):
             RevenueWithdrawalStateFailed,
             None,
         ] = withdrawal_state
-        r"""State of the withdrawal; may be null for refunds from Fragment"""
+        r"""State of the withdrawal; may be null for refunds from Fragment or for Telegram Stars bought on Fragment"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -9645,6 +9677,40 @@ class StarTransactionPartnerTelegramAds(TlObject, StarTransactionPartner):
     def from_dict(cls, data: dict) -> Union["StarTransactionPartnerTelegramAds", None]:
         if data:
             data_class = cls()
+
+        return data_class
+
+
+class StarTransactionPartnerTelegramApi(TlObject, StarTransactionPartner):
+    r"""The transaction is a transaction with Telegram for API usage
+
+    Parameters:
+        request_count (:class:`int`):
+            The number of billed requests
+
+    """
+
+    def __init__(self, request_count: int = 0) -> None:
+        self.request_count: int = int(request_count)
+        r"""The number of billed requests"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionPartnerTelegramApi"]:
+        return "starTransactionPartnerTelegramApi"
+
+    def getClass(self) -> Literal["StarTransactionPartner"]:
+        return "StarTransactionPartner"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "request_count": self.request_count}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerTelegramApi", None]:
+        if data:
+            data_class = cls()
+            data_class.request_count = int(data.get("request_count", 0))
 
         return data_class
 
@@ -9907,6 +9973,7 @@ class StarTransaction(TlObject):
             StarTransactionPartnerGooglePlay,
             StarTransactionPartnerFragment,
             StarTransactionPartnerTelegramAds,
+            StarTransactionPartnerTelegramApi,
             StarTransactionPartnerBot,
             StarTransactionPartnerBusiness,
             StarTransactionPartnerChat,
@@ -11046,6 +11113,9 @@ class BotInfo(TlObject):
         default_channel_administrator_rights (:class:`"types.ChatAdministratorRights"`):
             Default administrator rights for adding the bot to channels; may be null
 
+        can_get_revenue_statistics (:class:`bool`):
+            True, if the bot's revenue statistics are available
+
         has_media_previews (:class:`bool`):
             True, if the bot has media previews
 
@@ -11074,6 +11144,7 @@ class BotInfo(TlObject):
         privacy_policy_url: str = "",
         default_group_administrator_rights: ChatAdministratorRights = None,
         default_channel_administrator_rights: ChatAdministratorRights = None,
+        can_get_revenue_statistics: bool = False,
         has_media_previews: bool = False,
         edit_commands_link: InternalLinkType = None,
         edit_description_link: InternalLinkType = None,
@@ -11102,6 +11173,8 @@ class BotInfo(TlObject):
             ChatAdministratorRights, None
         ] = default_channel_administrator_rights
         r"""Default administrator rights for adding the bot to channels; may be null"""
+        self.can_get_revenue_statistics: bool = bool(can_get_revenue_statistics)
+        r"""True, if the bot's revenue statistics are available"""
         self.has_media_previews: bool = bool(has_media_previews)
         r"""True, if the bot has media previews"""
         self.edit_commands_link: Union[
@@ -11322,6 +11395,7 @@ class BotInfo(TlObject):
             "privacy_policy_url": self.privacy_policy_url,
             "default_group_administrator_rights": self.default_group_administrator_rights,
             "default_channel_administrator_rights": self.default_channel_administrator_rights,
+            "can_get_revenue_statistics": self.can_get_revenue_statistics,
             "has_media_previews": self.has_media_previews,
             "edit_commands_link": self.edit_commands_link,
             "edit_description_link": self.edit_description_link,
@@ -11345,6 +11419,9 @@ class BotInfo(TlObject):
             )
             data_class.default_channel_administrator_rights = data.get(
                 "default_channel_administrator_rights", None
+            )
+            data_class.can_get_revenue_statistics = data.get(
+                "can_get_revenue_statistics", False
             )
             data_class.has_media_previews = data.get("has_media_previews", False)
             data_class.edit_commands_link = data.get("edit_commands_link", None)
@@ -11409,9 +11486,6 @@ class UserFullInfo(TlObject):
         personal_chat_id (:class:`int`):
             Identifier of the personal chat of the user; 0 if none
 
-        premium_gift_options (:class:`List["types.PremiumPaymentOption"]`):
-            The list of available options for gifting Telegram Premium to the user
-
         gift_count (:class:`int`):
             Number of gifts saved to profile by the user
 
@@ -11444,7 +11518,6 @@ class UserFullInfo(TlObject):
         bio: FormattedText = None,
         birthdate: Birthdate = None,
         personal_chat_id: int = 0,
-        premium_gift_options: List[PremiumPaymentOption] = None,
         gift_count: int = 0,
         group_in_common_count: int = 0,
         business_info: BusinessInfo = None,
@@ -11486,10 +11559,6 @@ class UserFullInfo(TlObject):
         r"""Birthdate of the user; may be null if unknown"""
         self.personal_chat_id: int = int(personal_chat_id)
         r"""Identifier of the personal chat of the user; 0 if none"""
-        self.premium_gift_options: List[PremiumPaymentOption] = (
-            premium_gift_options or []
-        )
-        r"""The list of available options for gifting Telegram Premium to the user"""
         self.gift_count: int = int(gift_count)
         r"""Number of gifts saved to profile by the user"""
         self.group_in_common_count: int = int(group_in_common_count)
@@ -11527,7 +11596,6 @@ class UserFullInfo(TlObject):
             "bio": self.bio,
             "birthdate": self.birthdate,
             "personal_chat_id": self.personal_chat_id,
-            "premium_gift_options": self.premium_gift_options,
             "gift_count": self.gift_count,
             "group_in_common_count": self.group_in_common_count,
             "business_info": self.business_info,
@@ -11562,7 +11630,6 @@ class UserFullInfo(TlObject):
             data_class.bio = data.get("bio", None)
             data_class.birthdate = data.get("birthdate", None)
             data_class.personal_chat_id = int(data.get("personal_chat_id", 0))
-            data_class.premium_gift_options = data.get("premium_gift_options", None)
             data_class.gift_count = int(data.get("gift_count", 0))
             data_class.group_in_common_count = int(data.get("group_in_common_count", 0))
             data_class.business_info = data.get("business_info", None)
@@ -16381,10 +16448,10 @@ class Message(TlObject, MessageBoundMethods):
             True, if the message contains an unread mention for the current user
 
         date (:class:`int`):
-            Point in time \(Unix timestamp\) when the message was sent
+            Point in time \(Unix timestamp\) when the message was sent; 0 for scheduled messages
 
         edit_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the message was last edited
+            Point in time \(Unix timestamp\) when the message was last edited; 0 for scheduled messages
 
         forward_info (:class:`"types.MessageForwardInfo"`):
             Information about the initial message sender; may be null if none or unknown
@@ -16501,7 +16568,10 @@ class Message(TlObject, MessageBoundMethods):
         ] = sending_state
         r"""The sending state of the message; may be null if the message isn't being sent and didn't fail to be sent"""
         self.scheduling_state: Union[
-            MessageSchedulingStateSendAtDate, MessageSchedulingStateSendWhenOnline, None
+            MessageSchedulingStateSendAtDate,
+            MessageSchedulingStateSendWhenOnline,
+            MessageSchedulingStateSendWhenVideoProcessed,
+            None,
         ] = scheduling_state
         r"""The scheduling state of the message; may be null if the message isn't scheduled"""
         self.is_outgoing: bool = bool(is_outgoing)
@@ -16521,9 +16591,9 @@ class Message(TlObject, MessageBoundMethods):
         self.contains_unread_mention: bool = bool(contains_unread_mention)
         r"""True, if the message contains an unread mention for the current user"""
         self.date: int = int(date)
-        r"""Point in time \(Unix timestamp\) when the message was sent"""
+        r"""Point in time \(Unix timestamp\) when the message was sent; 0 for scheduled messages"""
         self.edit_date: int = int(edit_date)
-        r"""Point in time \(Unix timestamp\) when the message was last edited"""
+        r"""Point in time \(Unix timestamp\) when the message was last edited; 0 for scheduled messages"""
         self.forward_info: Union[MessageForwardInfo, None] = forward_info
         r"""Information about the initial message sender; may be null if none or unknown"""
         self.import_info: Union[MessageImportInfo, None] = import_info
@@ -37552,6 +37622,42 @@ class MessageSchedulingStateSendWhenOnline(TlObject, MessageSchedulingState):
         return data_class
 
 
+class MessageSchedulingStateSendWhenVideoProcessed(TlObject, MessageSchedulingState):
+    r"""The message will be sent when the video in the message is converted and optimized; can be used only by the server
+
+    Parameters:
+        send_date (:class:`int`):
+            Approximate point in time \(Unix timestamp\) when the message is expected to be sent
+
+    """
+
+    def __init__(self, send_date: int = 0) -> None:
+        self.send_date: int = int(send_date)
+        r"""Approximate point in time \(Unix timestamp\) when the message is expected to be sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageSchedulingStateSendWhenVideoProcessed"]:
+        return "messageSchedulingStateSendWhenVideoProcessed"
+
+    def getClass(self) -> Literal["MessageSchedulingState"]:
+        return "MessageSchedulingState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "send_date": self.send_date}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["MessageSchedulingStateSendWhenVideoProcessed", None]:
+        if data:
+            data_class = cls()
+            data_class.send_date = int(data.get("send_date", 0))
+
+        return data_class
+
+
 class MessageSelfDestructTypeTimer(TlObject, MessageSelfDestructType):
     r"""The message will be self\-destructed in the specified time after its content was opened
 
@@ -37625,6 +37731,9 @@ class MessageSendOptions(TlObject):
         protect_content (:class:`bool`):
             Pass true if the content of the message must be protected from forwarding and saving; for bots only
 
+        allow_paid_broadcast (:class:`bool`):
+            Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
         update_order_of_installed_sticker_sets (:class:`bool`):
             Pass true if the user explicitly chosen a sticker or a custom emoji from an installed sticker set; applicable only to sendMessage and sendMessageAlbum
 
@@ -37647,6 +37756,7 @@ class MessageSendOptions(TlObject):
         disable_notification: bool = False,
         from_background: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         update_order_of_installed_sticker_sets: bool = False,
         scheduling_state: MessageSchedulingState = None,
         effect_id: int = 0,
@@ -37659,12 +37769,17 @@ class MessageSendOptions(TlObject):
         r"""Pass true if the message is sent from the background"""
         self.protect_content: bool = bool(protect_content)
         r"""Pass true if the content of the message must be protected from forwarding and saving; for bots only"""
+        self.allow_paid_broadcast: bool = bool(allow_paid_broadcast)
+        r"""Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only"""
         self.update_order_of_installed_sticker_sets: bool = bool(
             update_order_of_installed_sticker_sets
         )
         r"""Pass true if the user explicitly chosen a sticker or a custom emoji from an installed sticker set; applicable only to sendMessage and sendMessageAlbum"""
         self.scheduling_state: Union[
-            MessageSchedulingStateSendAtDate, MessageSchedulingStateSendWhenOnline, None
+            MessageSchedulingStateSendAtDate,
+            MessageSchedulingStateSendWhenOnline,
+            MessageSchedulingStateSendWhenVideoProcessed,
+            None,
         ] = scheduling_state
         r"""Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, live location messages and self\-destructing messages can't be scheduled"""
         self.effect_id: int = int(effect_id)
@@ -37689,6 +37804,7 @@ class MessageSendOptions(TlObject):
             "disable_notification": self.disable_notification,
             "from_background": self.from_background,
             "protect_content": self.protect_content,
+            "allow_paid_broadcast": self.allow_paid_broadcast,
             "update_order_of_installed_sticker_sets": self.update_order_of_installed_sticker_sets,
             "scheduling_state": self.scheduling_state,
             "effect_id": self.effect_id,
@@ -37703,6 +37819,7 @@ class MessageSendOptions(TlObject):
             data_class.disable_notification = data.get("disable_notification", False)
             data_class.from_background = data.get("from_background", False)
             data_class.protect_content = data.get("protect_content", False)
+            data_class.allow_paid_broadcast = data.get("allow_paid_broadcast", False)
             data_class.update_order_of_installed_sticker_sets = data.get(
                 "update_order_of_installed_sticker_sets", False
             )
@@ -38485,7 +38602,7 @@ class InputMessageVideoNote(TlObject, InputMessageContent):
 
     Parameters:
         video_note (:class:`"types.InputFile"`):
-            Video note to be sent
+            Video note to be sent\. The video is expected to be encoded to MPEG4 format with H\.264 codec and have no data outside of the visible circle
 
         thumbnail (:class:`"types.InputThumbnail"`):
             Video thumbnail; may be null if empty; pass null to skip thumbnail uploading
@@ -38512,7 +38629,7 @@ class InputMessageVideoNote(TlObject, InputMessageContent):
         self.video_note: Union[
             InputFileId, InputFileRemote, InputFileLocal, InputFileGenerated, None
         ] = video_note
-        r"""Video note to be sent"""
+        r"""Video note to be sent\. The video is expected to be encoded to MPEG4 format with H\.264 codec and have no data outside of the visible circle"""
         self.thumbnail: Union[InputThumbnail, None] = thumbnail
         r"""Video thumbnail; may be null if empty; pass null to skip thumbnail uploading"""
         self.duration: int = int(duration)
@@ -39200,7 +39317,7 @@ class MessageProperties(TlObject):
             True, if the message can be deleted for all users using the method deleteMessages with revoke \=\= true
 
         can_be_edited (:class:`bool`):
-            True, if the message can be edited using the methods editMessageText, editMessageMedia, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message
+            True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message
 
         can_be_forwarded (:class:`bool`):
             True, if the message can be forwarded using inputMessageForwarded or forwardMessages
@@ -39222,6 +39339,9 @@ class MessageProperties(TlObject):
 
         can_be_shared_in_story (:class:`bool`):
             True, if the message can be shared in a story using inputStoryAreaTypeMessage
+
+        can_edit_media (:class:`bool`):
+            True, if the message can be edited using the method editMessageMedia
 
         can_edit_scheduling_state (:class:`bool`):
             True, if scheduling state of the message can be edited
@@ -39280,6 +39400,7 @@ class MessageProperties(TlObject):
         can_be_replied_in_another_chat: bool = False,
         can_be_saved: bool = False,
         can_be_shared_in_story: bool = False,
+        can_edit_media: bool = False,
         can_edit_scheduling_state: bool = False,
         can_get_embedding_code: bool = False,
         can_get_link: bool = False,
@@ -39302,7 +39423,7 @@ class MessageProperties(TlObject):
         self.can_be_deleted_for_all_users: bool = bool(can_be_deleted_for_all_users)
         r"""True, if the message can be deleted for all users using the method deleteMessages with revoke \=\= true"""
         self.can_be_edited: bool = bool(can_be_edited)
-        r"""True, if the message can be edited using the methods editMessageText, editMessageMedia, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message"""
+        r"""True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message"""
         self.can_be_forwarded: bool = bool(can_be_forwarded)
         r"""True, if the message can be forwarded using inputMessageForwarded or forwardMessages"""
         self.can_be_paid: bool = bool(can_be_paid)
@@ -39317,6 +39438,8 @@ class MessageProperties(TlObject):
         r"""True, if content of the message can be saved locally or copied using inputMessageForwarded or forwardMessages with copy options"""
         self.can_be_shared_in_story: bool = bool(can_be_shared_in_story)
         r"""True, if the message can be shared in a story using inputStoryAreaTypeMessage"""
+        self.can_edit_media: bool = bool(can_edit_media)
+        r"""True, if the message can be edited using the method editMessageMedia"""
         self.can_edit_scheduling_state: bool = bool(can_edit_scheduling_state)
         r"""True, if scheduling state of the message can be edited"""
         self.can_get_embedding_code: bool = bool(can_get_embedding_code)
@@ -39369,6 +39492,7 @@ class MessageProperties(TlObject):
             "can_be_replied_in_another_chat": self.can_be_replied_in_another_chat,
             "can_be_saved": self.can_be_saved,
             "can_be_shared_in_story": self.can_be_shared_in_story,
+            "can_edit_media": self.can_edit_media,
             "can_edit_scheduling_state": self.can_edit_scheduling_state,
             "can_get_embedding_code": self.can_get_embedding_code,
             "can_get_link": self.can_get_link,
@@ -39410,6 +39534,7 @@ class MessageProperties(TlObject):
             data_class.can_be_shared_in_story = data.get(
                 "can_be_shared_in_story", False
             )
+            data_class.can_edit_media = data.get("can_edit_media", False)
             data_class.can_edit_scheduling_state = data.get(
                 "can_edit_scheduling_state", False
             )
@@ -56202,57 +56327,6 @@ class StorePaymentPurposePremiumSubscription(TlObject, StorePaymentPurpose):
         return data_class
 
 
-class StorePaymentPurposeGiftedPremium(TlObject, StorePaymentPurpose):
-    r"""The user gifting Telegram Premium to another user
-
-    Parameters:
-        user_id (:class:`int`):
-            Identifier of the user to which Telegram Premium is gifted
-
-        currency (:class:`str`):
-            ISO 4217 currency code of the payment currency
-
-        amount (:class:`int`):
-            Paid amount, in the smallest units of the currency
-
-    """
-
-    def __init__(self, user_id: int = 0, currency: str = "", amount: int = 0) -> None:
-        self.user_id: int = int(user_id)
-        r"""Identifier of the user to which Telegram Premium is gifted"""
-        self.currency: Union[str, None] = currency
-        r"""ISO 4217 currency code of the payment currency"""
-        self.amount: int = int(amount)
-        r"""Paid amount, in the smallest units of the currency"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["storePaymentPurposeGiftedPremium"]:
-        return "storePaymentPurposeGiftedPremium"
-
-    def getClass(self) -> Literal["StorePaymentPurpose"]:
-        return "StorePaymentPurpose"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "user_id": self.user_id,
-            "currency": self.currency,
-            "amount": self.amount,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["StorePaymentPurposeGiftedPremium", None]:
-        if data:
-            data_class = cls()
-            data_class.user_id = int(data.get("user_id", 0))
-            data_class.currency = data.get("currency", "")
-            data_class.amount = int(data.get("amount", 0))
-
-        return data_class
-
-
 class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
     r"""The user creating Telegram Premium gift codes for other users
 
@@ -64840,7 +64914,7 @@ class InternalLinkTypePremiumFeatures(TlObject, InternalLinkType):
 
 
 class InternalLinkTypePremiumGift(TlObject, InternalLinkType):
-    r"""The link is a link to the screen for gifting Telegram Premium subscriptions to friends via inputInvoiceTelegram payments or in\-store purchases
+    r"""The link is a link to the screen for gifting Telegram Premium subscriptions to friends via inputInvoiceTelegram with telegramPaymentPurposePremiumGiftCodes payments or in\-store purchases
 
     Parameters:
         referrer (:class:`str`):
@@ -71706,7 +71780,7 @@ class UpdateMessageSendSucceeded(TlObject, Update):
 
     Parameters:
         message (:class:`"types.Message"`):
-            The sent message\. Usually only the message identifier, date, and content are changed, but almost all other fields can also change
+            The sent message\. Almost any field of the new message can be different from the corresponding field of the original message\. For example, the field scheduling\_state may change, making the message scheduled, or non\-scheduled
 
         old_message_id (:class:`int`):
             The previous temporary message identifier
@@ -71715,7 +71789,7 @@ class UpdateMessageSendSucceeded(TlObject, Update):
 
     def __init__(self, message: Message = None, old_message_id: int = 0) -> None:
         self.message: Union[Message, None] = message
-        r"""The sent message\. Usually only the message identifier, date, and content are changed, but almost all other fields can also change"""
+        r"""The sent message\. Almost any field of the new message can be different from the corresponding field of the original message\. For example, the field scheduling\_state may change, making the message scheduled, or non\-scheduled"""
         self.old_message_id: int = int(old_message_id)
         r"""The previous temporary message identifier"""
 
@@ -72356,6 +72430,50 @@ class UpdateMessageLiveLocationViewed(TlObject, Update):
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["UpdateMessageLiveLocationViewed", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+
+        return data_class
+
+
+class UpdateVideoPublished(TlObject, Update):
+    r"""An automatically scheduled message with video has been successfully sent after conversion
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat with the message
+
+        message_id (:class:`int`):
+            Identifier of the sent message
+
+    """
+
+    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat with the message"""
+        self.message_id: int = int(message_id)
+        r"""Identifier of the sent message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateVideoPublished"]:
+        return "updateVideoPublished"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateVideoPublished", None]:
         if data:
             data_class = cls()
             data_class.chat_id = int(data.get("chat_id", 0))

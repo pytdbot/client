@@ -330,6 +330,7 @@ __all__ = [
     "StarTransactionPartnerGooglePlay",
     "StarTransactionPartnerFragment",
     "StarTransactionPartnerTelegramAds",
+    "StarTransactionPartnerTelegramApi",
     "StarTransactionPartnerBot",
     "StarTransactionPartnerBusiness",
     "StarTransactionPartnerChat",
@@ -873,6 +874,7 @@ __all__ = [
     "InputPaidMedia",
     "MessageSchedulingStateSendAtDate",
     "MessageSchedulingStateSendWhenOnline",
+    "MessageSchedulingStateSendWhenVideoProcessed",
     "MessageSelfDestructTypeTimer",
     "MessageSelfDestructTypeImmediately",
     "MessageSendOptions",
@@ -1249,7 +1251,6 @@ __all__ = [
     "BusinessFeaturePromotionAnimation",
     "PremiumState",
     "StorePaymentPurposePremiumSubscription",
-    "StorePaymentPurposeGiftedPremium",
     "StorePaymentPurposePremiumGiftCodes",
     "StorePaymentPurposePremiumGiveaway",
     "StorePaymentPurposeStarGiveaway",
@@ -1653,6 +1654,7 @@ __all__ = [
     "UpdateMessageUnreadReactions",
     "UpdateMessageFactCheck",
     "UpdateMessageLiveLocationViewed",
+    "UpdateVideoPublished",
     "UpdateNewChat",
     "UpdateChatTitle",
     "UpdateChatPhoto",
@@ -2123,6 +2125,7 @@ from .td_types import (
     StarTransactionPartnerGooglePlay,
     StarTransactionPartnerFragment,
     StarTransactionPartnerTelegramAds,
+    StarTransactionPartnerTelegramApi,
     StarTransactionPartnerBot,
     StarTransactionPartnerBusiness,
     StarTransactionPartnerChat,
@@ -2666,6 +2669,7 @@ from .td_types import (
     InputPaidMedia,
     MessageSchedulingStateSendAtDate,
     MessageSchedulingStateSendWhenOnline,
+    MessageSchedulingStateSendWhenVideoProcessed,
     MessageSelfDestructTypeTimer,
     MessageSelfDestructTypeImmediately,
     MessageSendOptions,
@@ -3042,7 +3046,6 @@ from .td_types import (
     BusinessFeaturePromotionAnimation,
     PremiumState,
     StorePaymentPurposePremiumSubscription,
-    StorePaymentPurposeGiftedPremium,
     StorePaymentPurposePremiumGiftCodes,
     StorePaymentPurposePremiumGiveaway,
     StorePaymentPurposeStarGiveaway,
@@ -3446,6 +3449,7 @@ from .td_types import (
     UpdateMessageUnreadReactions,
     UpdateMessageFactCheck,
     UpdateMessageLiveLocationViewed,
+    UpdateVideoPublished,
     UpdateNewChat,
     UpdateChatTitle,
     UpdateChatPhoto,
@@ -3586,4 +3590,4 @@ from .td_types import (
 )
 from .plugins import Plugins
 
-TDLIB_VERSION = "1.8.38"
+TDLIB_VERSION = "1.8.39"
