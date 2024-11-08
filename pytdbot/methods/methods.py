@@ -96,7 +96,7 @@ class Methods(TDLibFunctions):
         if isinstance(res, Error):
             return res
 
-        return await self._create_request_future(None, f"{res.id}{res.chat_id}")
+        return await self._create_request_future(None, f"{res.chat_id}:{res.id}")
 
     async def sendTextMessage(
         self,

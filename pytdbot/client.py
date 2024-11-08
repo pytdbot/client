@@ -904,7 +904,7 @@ class Client(Decorators, Methods):
     async def __handle_update_message_succeeded(
         self, update: types.UpdateMessageSendSucceeded
     ):
-        m_id = f"{update.old_message_id}{update.message.chat_id}"
+        m_id = f"{update.message.chat_id}:{update.old_message_id}"
 
         if result := self._results.pop(m_id, None):
             result.set_result(update.message)
@@ -912,7 +912,7 @@ class Client(Decorators, Methods):
     async def __handle_update_message_failed(
         self, update: types.UpdateMessageSendFailed
     ):
-        m_id = f"{update.old_message_id}{update.message.chat_id}"
+        m_id = f"{update.message.chat_id}:{update.old_message_id}"
 
         if result := self._results.pop(m_id, None):
             if update.error.code == 429:
