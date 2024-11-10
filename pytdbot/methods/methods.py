@@ -65,18 +65,20 @@ class Methods(TDLibFunctions):
         if not text or not parse_mode:
             return
 
-        if parse_mode.lower() == "markdown":
-            parse_mode_ = TextParseModeMarkdown(1)
-        elif parse_mode.lower() == "markdownv2":
-            parse_mode_ = TextParseModeMarkdown(2)
-        elif parse_mode.lower() == "html":
-            parse_mode_ = TextParseModeHTML()
+        parse_mode = parse_mode.lower()
+
+        if parse_mode == "markdown":
+            mode = TextParseModeMarkdown(1)
+        elif parse_mode == "markdownv2":
+            mode = TextParseModeMarkdown(2)
+        elif parse_mode == "html":
+            mode = TextParseModeHTML()
         else:
             raise ValueError(
                 "Invalid parse_mode. Currently supported: markdown, markdownv2, html"
             )
 
-        return await self.parseTextEntities(text, parse_mode_)
+        return await self.parseTextEntities(text, mode)
 
     async def getSupergoupId(
         self,
@@ -115,6 +117,7 @@ class Methods(TDLibFunctions):
         clear_draft: bool = False,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
@@ -166,6 +169,9 @@ class Methods(TDLibFunctions):
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
+
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
@@ -214,6 +220,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -236,6 +243,7 @@ class Methods(TDLibFunctions):
         height: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
@@ -287,6 +295,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
             has_spoiler (``bool``, *optional*):
                 True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
@@ -342,6 +353,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -363,6 +375,7 @@ class Methods(TDLibFunctions):
         duration: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
@@ -410,6 +423,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
@@ -461,6 +477,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -480,6 +497,7 @@ class Methods(TDLibFunctions):
         disable_content_type_detection: bool = True,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
@@ -521,6 +539,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
@@ -569,6 +590,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -591,6 +613,7 @@ class Methods(TDLibFunctions):
         self_destruct_type: MessageSelfDestructType = None,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
@@ -642,6 +665,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
             has_spoiler (``bool``, *optional*):
                 True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
@@ -697,6 +723,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -721,6 +748,7 @@ class Methods(TDLibFunctions):
         self_destruct_type: MessageSelfDestructType = None,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
@@ -779,6 +807,9 @@ class Methods(TDLibFunctions):
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
+
             has_spoiler (``bool``, *optional*):
                 True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
@@ -835,6 +866,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -852,6 +884,7 @@ class Methods(TDLibFunctions):
         length: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
@@ -887,6 +920,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
@@ -925,6 +961,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -944,6 +981,7 @@ class Methods(TDLibFunctions):
         waveform: bytes = None,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
@@ -985,6 +1023,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
@@ -1033,6 +1074,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -1051,6 +1093,7 @@ class Methods(TDLibFunctions):
         height: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
@@ -1090,6 +1133,9 @@ class Methods(TDLibFunctions):
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
+
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
 
@@ -1127,6 +1173,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -1147,6 +1194,7 @@ class Methods(TDLibFunctions):
         parse_mode: str = None,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
@@ -1185,6 +1233,9 @@ class Methods(TDLibFunctions):
 
             protect_content (``bool``, *optional*):
                 If True, the content of the message must be protected from forwarding and saving
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
             message_thread_id (``int``, *optional*):
                 If not 0, a message thread identifier in which the message will be sent
@@ -1229,6 +1280,7 @@ class Methods(TDLibFunctions):
             ),
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to=reply_to,
@@ -1371,6 +1423,7 @@ class Methods(TDLibFunctions):
         content: InputMessageContent,
         disable_notification: bool = False,
         protect_content: bool = False,
+        allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
@@ -1409,6 +1462,7 @@ class Methods(TDLibFunctions):
             options=MessageSendOptions(
                 disable_notification=disable_notification,
                 protect_content=protect_content,
+                allow_paid_broadcast=allow_paid_broadcast,
             ),
             reply_markup=reply_markup
             if isinstance(reply_markup, ReplyMarkup)
