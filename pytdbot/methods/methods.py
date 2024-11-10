@@ -56,7 +56,7 @@ class Methods(TDLibFunctions):
                 The text to parse
 
             parse_mode (``str``):
-                Text parse mode. Currently supported: markdown, markdownv2 and html. Default is "markdownv2"
+                Text parse mode. Currently supported: markdown, markdownv2 and html. Default is "html"
 
         Returns:
             :class:`~pytdbot.types.FormattedText`
@@ -140,7 +140,7 @@ class Methods(TDLibFunctions):
                 Text to send
 
             entities (``list``, *optional*):
-                List of ``MessageEntity`` objects to parse in the text. If you want to send a text with formatting, use ```parse_mode``` instead
+                List of ``TextEntity`` objects to parse in the text. If you want to send a text with formatting, use ```parse_mode``` instead
 
             parse_mode (``str``, *optional*):
                 Mode for parsing entities. Default is ``markdown``
