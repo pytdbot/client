@@ -43,60 +43,39 @@ from .td_functions import TDLibFunctions
 class Methods(TDLibFunctions):
     r"""TDLib API functions class"""
 
-    async def sendMessageWithContent(
+    async def parseText(
         self,
-        chat_id: int,
-        content: InputMessageContent,
-        disable_notification: bool = False,
-        protect_content: bool = False,
-        message_thread_id: int = 0,
-        quote: InputTextQuote = None,
-        reply_to: InputMessageReplyTo = None,
-        reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ):
-        if not load_replied_message and not self.use_message_database:
-            load_replied_message = True
+        text: str,
+        parse_mode: str = "markdownv2",
+    ) -> Union[Error, FormattedText]:
+        r"""Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text
 
-        if (
-            load_replied_message
-            and (isinstance(reply_to, InputMessageReplyToMessage))
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to.message_id if reply_to else reply_to_message_id
+        Args:
+            text (``str``):
+                The text to parse
+
+            parse_mode (``str``):
+                Text parse mode. Currently supported: markdown, markdownv2 and html. Default is "markdownv2"
+
+        Returns:
+            :class:`~pytdbot.types.FormattedText`
+        """
+
+        if not text or not parse_mode:
+            return
+
+        if parse_mode.lower() == "markdown":
+            parse_mode_ = TextParseModeMarkdown(1)
+        elif parse_mode.lower() == "markdownv2":
+            parse_mode_ = TextParseModeMarkdown(2)
+        elif parse_mode.lower() == "html":
+            parse_mode_ = TextParseModeHTML()
+        else:
+            raise ValueError(
+                "Invalid parse_mode. Currently supported: markdown, markdownv2, html"
             )
 
-        if isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
-            reply_to = InputMessageReplyToMessage(
-                message_id=reply_to_message_id, quote=quote
-            )
-
-        res = await self.sendMessage(
-            chat_id=chat_id,
-            message_thread_id=message_thread_id,
-            reply_to=reply_to,
-            options=MessageSendOptions(
-                disable_notification=disable_notification,
-                protect_content=protect_content,
-            ),
-            reply_markup=reply_markup
-            if isinstance(reply_markup, ReplyMarkup)
-            else None,
-            input_message_content=content,
-        )
-        if isinstance(res, Error):
-            return res
-
-        return await self._create_request_future(None, f"{res.chat_id}:{res.id}")
+        return await self.parseTextEntities(text, parse_mode_)
 
     async def sendTextMessage(
         self,
@@ -1362,36 +1341,57 @@ class Methods(TDLibFunctions):
             ),
         )
 
-    async def parseText(
+    async def sendMessageWithContent(
         self,
-        text: str,
-        parse_mode: str = "markdownv2",
-    ) -> Union[Error, FormattedText]:
-        r"""Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text
+        chat_id: int,
+        content: InputMessageContent,
+        disable_notification: bool = False,
+        protect_content: bool = False,
+        message_thread_id: int = 0,
+        quote: InputTextQuote = None,
+        reply_to: InputMessageReplyTo = None,
+        reply_to_message_id: int = 0,
+        load_replied_message: bool = None,
+        reply_markup: Union[
+            ReplyMarkupInlineKeyboard,
+            ReplyMarkupShowKeyboard,
+            ReplyMarkupForceReply,
+            ReplyMarkupRemoveKeyboard,
+        ] = None,
+    ):
+        if not load_replied_message and not self.use_message_database:
+            load_replied_message = True
 
-        Args:
-            text (``str``):
-                The text to parse
-
-            parse_mode (``str``):
-                Text parse mode. Currently supported: markdown, markdownv2 and html. Default is "markdownv2"
-
-        Returns:
-            :class:`~pytdbot.types.FormattedText`
-        """
-
-        if not text or not parse_mode:
-            return
-
-        if parse_mode.lower() == "markdown":
-            parse_mode_ = TextParseModeMarkdown(1)
-        elif parse_mode.lower() == "markdownv2":
-            parse_mode_ = TextParseModeMarkdown(2)
-        elif parse_mode.lower() == "html":
-            parse_mode_ = TextParseModeHTML()
-        else:
-            raise ValueError(
-                "Invalid parse_mode. Currently supported: markdown, markdownv2, html"
+        if (
+            load_replied_message
+            and (isinstance(reply_to, InputMessageReplyToMessage))
+            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
+        ):
+            # Because TDLib will not reply to
+            # a message isn't loaded in memory
+            await self.getMessage(
+                chat_id, reply_to.message_id if reply_to else reply_to_message_id
             )
 
-        return await self.parseTextEntities(text, parse_mode_)
+        if isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
+            reply_to = InputMessageReplyToMessage(
+                message_id=reply_to_message_id, quote=quote
+            )
+
+        res = await self.sendMessage(
+            chat_id=chat_id,
+            message_thread_id=message_thread_id,
+            reply_to=reply_to,
+            options=MessageSendOptions(
+                disable_notification=disable_notification,
+                protect_content=protect_content,
+            ),
+            reply_markup=reply_markup
+            if isinstance(reply_markup, ReplyMarkup)
+            else None,
+            input_message_content=content,
+        )
+        if isinstance(res, Error):
+            return res
+
+        return await self._create_request_future(None, f"{res.chat_id}:{res.id}")
