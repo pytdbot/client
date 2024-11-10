@@ -3,6 +3,7 @@ import pytdbot
 from typing import List, Union
 
 from ..types import (
+    ChatTypeSupergroup,
     Error,
     FormattedText,
     InputFile,
@@ -76,6 +77,29 @@ class Methods(TDLibFunctions):
             )
 
         return await self.parseTextEntities(text, parse_mode_)
+
+    async def getSupergoupId(
+        self,
+        chat_id: int,
+    ) -> Union[Error, int, None]:
+        r"""Get supergroup id from chat id
+
+        Args:
+            chat_id (``int``):
+                Chat identifier
+
+        Returns:
+            ``int``
+        """
+
+        chat_info = await self.getChat(chat_id)
+        if not chat_info:
+            return chat_info
+
+        if isinstance(chat_info.type, ChatTypeSupergroup):
+            return chat_info.type.supergroup_id
+
+        return None
 
     async def sendTextMessage(
         self,
