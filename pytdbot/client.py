@@ -149,7 +149,7 @@ class Client(Decorators, Methods):
         self.default_parse_mode = (
             default_parse_mode
             if isinstance(default_parse_mode, str)
-            and default_parse_mode in {"markdown", "markdownv2", "html"}
+            and default_parse_mode.lower() in {"markdown", "markdownv2", "html"}
             else None
         )
         self.system_language_code = system_language_code
