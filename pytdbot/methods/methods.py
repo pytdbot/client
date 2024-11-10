@@ -47,7 +47,7 @@ class Methods(TDLibFunctions):
     async def parseText(
         self,
         text: str,
-        parse_mode: str = "markdownv2",
+        parse_mode: str = "html",
     ) -> Union[Error, FormattedText]:
         r"""Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text
 

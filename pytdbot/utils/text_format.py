@@ -1,7 +1,7 @@
 from . import escape_html, escape_markdown
 
 
-def bold(text: str, html: bool = False, escape: bool = True) -> str:
+def bold(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to bold format
 
     Args:
@@ -9,7 +9,7 @@ def bold(text: str, html: bool = False, escape: bool = True) -> str:
             The text to convert
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -24,7 +24,7 @@ def bold(text: str, html: bool = False, escape: bool = True) -> str:
         return f"*{text if escape is False else escape_markdown(text)}*"
 
 
-def italic(text: str, html: bool = False, escape: bool = True) -> str:
+def italic(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to italic format
 
     Args:
@@ -32,7 +32,7 @@ def italic(text: str, html: bool = False, escape: bool = True) -> str:
             The text to convert
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -47,7 +47,7 @@ def italic(text: str, html: bool = False, escape: bool = True) -> str:
         return f"_{text if escape is False else escape_markdown(text)}_"
 
 
-def underline(text: str, html: bool = False, escape: bool = True) -> str:
+def underline(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to underline format
 
     Args:
@@ -55,7 +55,7 @@ def underline(text: str, html: bool = False, escape: bool = True) -> str:
             The text to convert
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -70,7 +70,7 @@ def underline(text: str, html: bool = False, escape: bool = True) -> str:
         return f"__{text if escape is False else escape_markdown(text)}__"
 
 
-def strikethrough(text: str, html: bool = False, escape: bool = True) -> str:
+def strikethrough(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to strikethrough format
 
     Args:
@@ -78,7 +78,7 @@ def strikethrough(text: str, html: bool = False, escape: bool = True) -> str:
             The text to convert
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -93,7 +93,7 @@ def strikethrough(text: str, html: bool = False, escape: bool = True) -> str:
         return f"~{text if escape is False else escape_markdown(text)}~"
 
 
-def spoiler(text: str, html: bool = False, escape: bool = True) -> str:
+def spoiler(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to spoiler format
 
     Args:
@@ -101,7 +101,7 @@ def spoiler(text: str, html: bool = False, escape: bool = True) -> str:
             The text to convert
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -116,7 +116,7 @@ def spoiler(text: str, html: bool = False, escape: bool = True) -> str:
         return f"||{text if escape is False else escape_markdown(text)}||"
 
 
-def hyperlink(text: str, url: str, html: bool = False, escape: bool = True) -> str:
+def hyperlink(text: str, url: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to hyperlink format
 
     Args:
@@ -127,7 +127,7 @@ def hyperlink(text: str, url: str, html: bool = False, escape: bool = True) -> s
             The hyperlink url
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -144,7 +144,7 @@ def hyperlink(text: str, url: str, html: bool = False, escape: bool = True) -> s
         return f"[{text if escape is False else escape_markdown(text)}]({url})"
 
 
-def mention(text: str, user_id: str, html: bool = False, escape: bool = True) -> str:
+def mention(text: str, user_id: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to inline mention format
 
     Args:
@@ -155,7 +155,7 @@ def mention(text: str, user_id: str, html: bool = False, escape: bool = True) ->
             The inline user id to mention
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -170,7 +170,7 @@ def mention(text: str, user_id: str, html: bool = False, escape: bool = True) ->
         return f"[{text if escape is False else escape_markdown(text)}](tg://user?id={user_id})"
 
 
-def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = False) -> str:
+def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = True) -> str:
     r"""Convert the given emoji to custom emoji format
 
     Args:
@@ -181,7 +181,7 @@ def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = False) -> str:
             Identifier of the custom emoji
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
     Returns:
         py:class:`str`: The formated text
@@ -193,7 +193,7 @@ def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = False) -> str:
         return f"![{emoji}](tg://emoji?id={custom_emoji_id})"
 
 
-def code(text: str, html: bool = False, escape: bool = True) -> str:
+def code(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to code format
 
     Args:
@@ -201,7 +201,7 @@ def code(text: str, html: bool = False, escape: bool = True) -> str:
             The text to convert
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -216,7 +216,7 @@ def code(text: str, html: bool = False, escape: bool = True) -> str:
         return f"`{text if escape is False else escape_markdown(text)}`"
 
 
-def pre(text: str, html: bool = False, escape: bool = True) -> str:
+def pre(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to pre format
 
     Args:
@@ -224,7 +224,7 @@ def pre(text: str, html: bool = False, escape: bool = True) -> str:
             The text to convert
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -239,7 +239,7 @@ def pre(text: str, html: bool = False, escape: bool = True) -> str:
         return f"```\n{text if escape is False else escape_markdown(text)}\n```"
 
 
-def pre_code(text: str, language: str, html: bool = False, escape: bool = True) -> str:
+def pre_code(text: str, language: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to pre-formatted fixed-width code block
 
     Args:
@@ -250,7 +250,7 @@ def pre_code(text: str, language: str, html: bool = False, escape: bool = True) 
             The name of the programming language written in the given code block
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``
@@ -269,7 +269,7 @@ def pre_code(text: str, language: str, html: bool = False, escape: bool = True) 
         )
 
 
-def quote(text: str, expandable: bool = False, html: bool = False, escape: bool = True):
+def quote(text: str, expandable: bool = False, html: bool = True, escape: bool = True):
     r"""Convert the given text to quote block
 
     Args:
@@ -280,7 +280,7 @@ def quote(text: str, expandable: bool = False, html: bool = False, escape: bool 
             Wether the quote is expandable or not. Default is ``False``
 
         html (``bool``, *optional*):
-            Pass ``True`` to return text in ``html`` format. Default is ``False`` (``markdownv2``)
+            If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
         escape (``bool``, *optional*):
             Whether escape special characters to the given text or not. Default is ``True``

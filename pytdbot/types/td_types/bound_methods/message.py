@@ -120,12 +120,12 @@ class MessageBoundMethods:
 
         return unique_file_id
 
-    async def mention(self, parse_mode: str = "markdownv2") -> str:
+    async def mention(self, parse_mode: str = "html") -> str:
         r"""Get the text_mention of the message sender
 
         Args:
             parse_mode (``str``, *optional*):
-                The parse mode of the mention. Default is ``markdownv2``
+                The parse mode of the mention. Default is ``html``
         """
 
         chat = await self._client.getChat(self.from_id)
