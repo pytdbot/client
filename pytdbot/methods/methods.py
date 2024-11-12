@@ -80,7 +80,7 @@ class Methods(TDLibFunctions):
 
         return await self.parseTextEntities(text, mode)
 
-    async def getSupergoupId(
+    async def getSupergroupId(
         self,
         chat_id: int,
     ) -> Union[Error, int, None]:
