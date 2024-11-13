@@ -735,9 +735,20 @@ class Client(Decorators, Methods):
             else:
                 await self._handle_update(update)
 
+    def get_inner_object(self, update: types.TlObject):
+        if isinstance(update, types.UpdateNewMessage):
+            return update.message
+        return update
+
     async def __run_initializers(self, update):
         for initializer in self._handlers["initializer"]:
             try:
+                update = (
+                    self.get_inner_object(update)
+                    if initializer.inner_object
+                    else update
+                )
+
                 if initializer.filter is not None:
                     filter_function = initializer.filter.func
 
@@ -756,8 +767,9 @@ class Client(Decorators, Methods):
     async def __run_handlers(self, update):
         for handler in self._handlers[update.getType()]:
             try:
-                if handler.inner_object and isinstance(update, types.UpdateNewMessage):
-                    update = update.message
+                update = (
+                    self.get_inner_object(update) if handler.inner_object else update
+                )
 
                 if handler.filter is not None:
                     filter_function = handler.filter.func
@@ -776,6 +788,10 @@ class Client(Decorators, Methods):
     async def __run_finalizers(self, update):
         for finalizer in self._handlers["finalizer"]:
             try:
+                update = (
+                    self.get_inner_object(update) if finalizer.inner_object else update
+                )
+
                 if finalizer.filter is not None:
                     filter_function = finalizer.filter.func
 

@@ -16,6 +16,7 @@ class Decorators(Updates):
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        inner_object: bool = False,
     ) -> None:
         r"""A decorator to initialize an event object before running other handlers
 
@@ -26,6 +27,9 @@ class Decorators(Updates):
             position (``int``, *optional*):
                 The function position in initializers list. Default is ``None`` (append)
 
+            inner_object (``bool``, *optional*):
+                Wether to pass an inner object of update or not; for example ``UpdateNewMessage.message``. Default is ``False``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -35,13 +39,19 @@ class Decorators(Updates):
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("initializer", func, filters, position)
+                    self.add_handler(
+                        "initializer", func, filters, position, inner_object
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "initializer", self, position)
+                func._handler = Handler(
+                    func, "initializer", self, position, inner_object
+                )
             else:
-                func._handler = Handler(func, "initializer", filters, position)
+                func._handler = Handler(
+                    func, "initializer", filters, position, inner_object
+                )
 
             return func
 
@@ -51,6 +61,7 @@ class Decorators(Updates):
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        inner_object: bool = False,
     ) -> None:
         r"""A decorator to finalize an event object after running all handlers
 
@@ -61,6 +72,9 @@ class Decorators(Updates):
             position (``int``, *optional*):
                 The function position in finalizers list. Default is ``None`` (append)
 
+            inner_object (``bool``, *optional*):
+                Wether to pass an inner object of update or not; for example ``UpdateNewMessage.message``. Default is ``False``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -70,13 +84,15 @@ class Decorators(Updates):
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("finalizer", func, filters, position)
+                    self.add_handler("finalizer", func, filters, position, inner_object)
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "finalizer", self, position)
+                func._handler = Handler(func, "finalizer", self, position, inner_object)
             else:
-                func._handler = Handler(func, "finalizer", filters, position)
+                func._handler = Handler(
+                    func, "finalizer", filters, position, inner_object
+                )
             return func
 
         return decorator
