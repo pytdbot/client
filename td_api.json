@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.39",
-    "commit_hash": "056963e48fa8d3f89556239c22d6ac843d3c8a5b",
+    "version": "1.8.40",
+    "commit_hash": "22d49d5b87a4d5fc60a194dab02dd1d71529687f",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -169,6 +169,14 @@
             ],
             "functions": []
         },
+        "StarSubscriptionType": {
+            "description": "Describes type of subscription paid in Telegram Stars",
+            "types": [
+                "starSubscriptionTypeChannel",
+                "starSubscriptionTypeBot"
+            ],
+            "functions": []
+        },
         "StarTransactionDirection": {
             "description": "Describes direction of a transaction with Telegram Stars",
             "types": [
@@ -181,7 +189,8 @@
             "description": "Describes purpose of a transaction with a bot",
             "types": [
                 "botTransactionPurposePaidMedia",
-                "botTransactionPurposeInvoicePayment"
+                "botTransactionPurposeInvoicePayment",
+                "botTransactionPurposeSubscription"
             ],
             "functions": []
         },
@@ -532,6 +541,15 @@
                 "getExternalLinkInfo"
             ]
         },
+        "WebAppOpenMode": {
+            "description": "Describes mode in which a Web App is opened",
+            "types": [
+                "webAppOpenModeCompact",
+                "webAppOpenModeFullSize",
+                "webAppOpenModeFullScreen"
+            ],
+            "functions": []
+        },
         "SavedMessagesTopicType": {
             "description": "Describes type of Saved Messages topic",
             "types": [
@@ -693,7 +711,8 @@
             "description": "Describes type of payment form",
             "types": [
                 "paymentFormTypeRegular",
-                "paymentFormTypeStars"
+                "paymentFormTypeStars",
+                "paymentFormTypeStarSubscription"
             ],
             "functions": []
         },
@@ -1236,6 +1255,15 @@
             ],
             "functions": []
         },
+        "TargetChat": {
+            "description": "Describes the target chat to be opened",
+            "types": [
+                "targetChatCurrent",
+                "targetChatChosen",
+                "targetChatInternalLink"
+            ],
+            "functions": []
+        },
         "InputInlineQueryResult": {
             "description": "Represents a single result of an inline query; for bots only",
             "types": [
@@ -1701,11 +1729,13 @@
             "types": [
                 "userPrivacySettingRuleAllowAll",
                 "userPrivacySettingRuleAllowContacts",
+                "userPrivacySettingRuleAllowBots",
                 "userPrivacySettingRuleAllowPremiumUsers",
                 "userPrivacySettingRuleAllowUsers",
                 "userPrivacySettingRuleAllowChatMembers",
                 "userPrivacySettingRuleRestrictAll",
                 "userPrivacySettingRuleRestrictContacts",
+                "userPrivacySettingRuleRestrictBots",
                 "userPrivacySettingRuleRestrictUsers",
                 "userPrivacySettingRuleRestrictChatMembers"
             ],
@@ -1724,7 +1754,8 @@
                 "userPrivacySettingAllowCalls",
                 "userPrivacySettingAllowPeerToPeerCalls",
                 "userPrivacySettingAllowFindingByPhoneNumber",
-                "userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages"
+                "userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages",
+                "userPrivacySettingAutosaveGifts"
             ],
             "functions": []
         },
@@ -1800,15 +1831,6 @@
             "functions": [
                 "reportStory"
             ]
-        },
-        "TargetChat": {
-            "description": "Describes the target chat to be opened",
-            "types": [
-                "targetChatCurrent",
-                "targetChatChosen",
-                "targetChatInternalLink"
-            ],
-            "functions": []
         },
         "InternalLinkType": {
             "description": "Describes an internal https://t.me or tg: link, which must be processed by the application in a special way",
@@ -3031,7 +3053,7 @@
             "type": "StickerFullType"
         },
         "closedVectorPath": {
-            "description": "Represents a closed vector path. The path begins at the end point of the last command",
+            "description": "Represents a closed vector path. The path begins at the end point of the last command. The coordinate system origin is in the upper-left corner",
             "args": {
                 "commands": {
                     "description": "List of vector path commands",
@@ -3040,6 +3062,17 @@
                 }
             },
             "type": "ClosedVectorPath"
+        },
+        "outline": {
+            "description": "Represents outline of an image",
+            "args": {
+                "paths": {
+                    "description": "The list of closed vector paths",
+                    "is_optional": false,
+                    "type": "vector<closedVectorPath>"
+                }
+            },
+            "type": "Outline"
         },
         "pollOption": {
             "description": "Describes one answer option of a poll",
@@ -3290,11 +3323,6 @@
                     "description": "Sticker's full type",
                     "is_optional": false,
                     "type": "StickerFullType"
-                },
-                "outline": {
-                    "description": "Sticker's outline represented as a list of closed vector paths; may be empty. The coordinate system origin is in the upper-left corner",
-                    "is_optional": true,
-                    "type": "vector<closedVectorPath>"
                 },
                 "thumbnail": {
                     "description": "Sticker thumbnail in WEBP or JPEG format; may be null",
@@ -3685,7 +3713,7 @@
             "type": "Poll"
         },
         "alternativeVideo": {
-            "description": "Describes an alternative reencoded quality of a video file",
+            "description": "Describes an alternative re-encoded quality of a video file",
             "args": {
                 "width": {
                     "description": "Video width",
@@ -4684,6 +4712,48 @@
             },
             "type": "ChatAdministratorRights"
         },
+        "starSubscriptionTypeChannel": {
+            "description": "Describes a subscription to a channel chat",
+            "args": {
+                "can_reuse": {
+                    "description": "True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "invite_link": {
+                    "description": "The invite link that can be used to renew the subscription if it has been expired; may be empty, if the link isn't available anymore",
+                    "is_optional": true,
+                    "type": "string"
+                }
+            },
+            "type": "StarSubscriptionType"
+        },
+        "starSubscriptionTypeBot": {
+            "description": "Describes a subscription in a bot or a business account",
+            "args": {
+                "is_canceled_by_bot": {
+                    "description": "True, if the subscription was canceled by the bot and can't be extended",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "title": {
+                    "description": "Subscription invoice title",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "photo": {
+                    "description": "Subscription invoice photo",
+                    "is_optional": false,
+                    "type": "photo"
+                },
+                "invoice_link": {
+                    "description": "The link to the subscription invoice",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StarSubscriptionType"
+        },
         "starSubscriptionPricing": {
             "description": "Describes subscription plan paid in Telegram Stars",
             "args": {
@@ -4701,7 +4771,7 @@
             "type": "StarSubscriptionPricing"
         },
         "starSubscription": {
-            "description": "Contains information about subscription to a channel chat paid in Telegram Stars",
+            "description": "Contains information about subscription to a channel chat, a bot, or a business account that was paid in Telegram Stars",
             "args": {
                 "id": {
                     "description": "Unique identifier of the subscription",
@@ -4709,7 +4779,7 @@
                     "type": "string"
                 },
                 "chat_id": {
-                    "description": "Identifier of the channel chat that is subscribed",
+                    "description": "Identifier of the chat that is subscribed",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -4717,11 +4787,6 @@
                     "description": "Point in time (Unix timestamp) when the subscription will expire or expired",
                     "is_optional": false,
                     "type": "int32"
-                },
-                "can_reuse": {
-                    "description": "True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again",
-                    "is_optional": false,
-                    "type": "Bool"
                 },
                 "is_canceled": {
                     "description": "True, if the subscription was canceled",
@@ -4733,15 +4798,15 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "invite_link": {
-                    "description": "The invite link that can be used to renew the subscription if it has been expired; may be empty, if the link isn't available anymore",
-                    "is_optional": true,
-                    "type": "string"
-                },
                 "pricing": {
                     "description": "The subscription plan",
                     "is_optional": false,
                     "type": "starSubscriptionPricing"
+                },
+                "type": {
+                    "description": "Type of the subscription",
+                    "is_optional": false,
+                    "type": "StarSubscriptionType"
                 }
             },
             "type": "StarSubscription"
@@ -5096,6 +5161,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "is_for_birthday": {
+                    "description": "True, if the gift is a birthday gift",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "remaining_count": {
                     "description": "Number of remaining times the gift can be purchased by all users; 0 if not limited or the gift was sold out",
                     "is_optional": false,
@@ -5169,7 +5239,7 @@
                     "type": "int53"
                 },
                 "sell_star_count": {
-                    "description": "Number of Telegram Stars that can be claimed by the receiver instead of the gift; only for the gift receiver",
+                    "description": "Number of Telegram Stars that can be claimed by the receiver instead of the gift; 0 if the gift can't be sold by the current user",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -5228,6 +5298,27 @@
             "args": {
                 "product_info": {
                     "description": "Information about the bought product; may be null if not applicable",
+                    "is_optional": true,
+                    "type": "productInfo"
+                },
+                "invoice_payload": {
+                    "description": "Invoice payload; for bots only",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "BotTransactionPurpose"
+        },
+        "botTransactionPurposeSubscription": {
+            "description": "User bought a subscription in a bot or a business account",
+            "args": {
+                "period": {
+                    "description": "The number of seconds between consecutive Telegram Star debiting",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "product_info": {
+                    "description": "Information about the bought subscription; may be null if not applicable",
                     "is_optional": true,
                     "type": "productInfo"
                 },
@@ -5300,7 +5391,7 @@
             "type": "UserTransactionPurpose"
         },
         "userTransactionPurposeGiftSell": {
-            "description": "The current user sold a gift received from another user",
+            "description": "The user sold a gift received from another user or bot",
             "args": {
                 "gift": {
                     "description": "The gift",
@@ -5311,7 +5402,7 @@
             "type": "UserTransactionPurpose"
         },
         "userTransactionPurposeGiftSend": {
-            "description": "The current user sent a gift to another user",
+            "description": "The user or the bot sent a gift to a user",
             "args": {
                 "gift": {
                     "description": "The gift",
@@ -5941,8 +6032,33 @@
                     "is_optional": true,
                     "type": "chatAdministratorRights"
                 },
+                "web_app_background_light_color": {
+                    "description": "Default light background color for bot Web Apps; -1 if not specified",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "web_app_background_dark_color": {
+                    "description": "Default dark background color for bot Web Apps; -1 if not specified",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "web_app_header_light_color": {
+                    "description": "Default light header color for bot Web Apps; -1 if not specified",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "web_app_header_dark_color": {
+                    "description": "Default dark header color for bot Web Apps; -1 if not specified",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "can_get_revenue_statistics": {
-                    "description": "True, if the bot's revenue statistics are available",
+                    "description": "True, if the bot's revenue statistics are available to the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_manage_emoji_status": {
+                    "description": "True, if the bot can manage emoji status of the current user",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -9927,6 +10043,102 @@
             },
             "type": "LoginUrlInfo"
         },
+        "themeParameters": {
+            "description": "Contains parameters of the application theme",
+            "args": {
+                "background_color": {
+                    "description": "A color of the background in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "secondary_background_color": {
+                    "description": "A secondary color for the background in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "header_background_color": {
+                    "description": "A color of the header background in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "bottom_bar_background_color": {
+                    "description": "A color of the bottom bar background in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "section_background_color": {
+                    "description": "A color of the section background in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "section_separator_color": {
+                    "description": "A color of the section separator in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "text_color": {
+                    "description": "A color of text in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "accent_text_color": {
+                    "description": "An accent color of the text in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "section_header_text_color": {
+                    "description": "A color of text on the section headers in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "subtitle_text_color": {
+                    "description": "A color of the subtitle text in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "destructive_text_color": {
+                    "description": "A color of the text for destructive actions in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "hint_color": {
+                    "description": "A color of hints in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "link_color": {
+                    "description": "A color of links in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "button_color": {
+                    "description": "A color of the buttons in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "button_text_color": {
+                    "description": "A color of text on the buttons in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ThemeParameters"
+        },
+        "webAppOpenModeCompact": {
+            "description": "The Web App is opened in the compact mode",
+            "args": {},
+            "type": "WebAppOpenMode"
+        },
+        "webAppOpenModeFullSize": {
+            "description": "The Web App is opened in the full-size mode",
+            "args": {},
+            "type": "WebAppOpenMode"
+        },
+        "webAppOpenModeFullScreen": {
+            "description": "The Web App is opened in the full-screen mode",
+            "args": {},
+            "type": "WebAppOpenMode"
+        },
         "foundWebApp": {
             "description": "Contains information about a Web App found by its short name",
             "args": {
@@ -9972,13 +10184,34 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "is_compact": {
-                    "description": "True, if the Web App must always be opened in the compact mode instead of the full-size mode",
+                "mode": {
+                    "description": "The mode in which the Web App must be opened",
                     "is_optional": false,
-                    "type": "Bool"
+                    "type": "WebAppOpenMode"
                 }
             },
             "type": "MainWebApp"
+        },
+        "webAppOpenParameters": {
+            "description": "Options to be used when a Web App is opened",
+            "args": {
+                "theme": {
+                    "description": "Preferred Web App theme; pass null to use the default theme",
+                    "is_optional": true,
+                    "type": "themeParameters"
+                },
+                "application_name": {
+                    "description": "Short name of the current application; 0-64 English letters, digits, and underscores",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "mode": {
+                    "description": "The mode in which the Web App is opened; pass null to open in webAppOpenModeFullSize",
+                    "is_optional": true,
+                    "type": "WebAppOpenMode"
+                }
+            },
+            "type": "WebAppOpenParameters"
         },
         "messageThreadInfo": {
             "description": "Contains information about a message thread",
@@ -12020,87 +12253,6 @@
             },
             "type": "LocationAddress"
         },
-        "themeParameters": {
-            "description": "Contains parameters of the application theme",
-            "args": {
-                "background_color": {
-                    "description": "A color of the background in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "secondary_background_color": {
-                    "description": "A secondary color for the background in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "header_background_color": {
-                    "description": "A color of the header background in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "bottom_bar_background_color": {
-                    "description": "A color of the bottom bar background in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "section_background_color": {
-                    "description": "A color of the section background in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "section_separator_color": {
-                    "description": "A color of the section separator in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "text_color": {
-                    "description": "A color of text in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "accent_text_color": {
-                    "description": "An accent color of the text in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "section_header_text_color": {
-                    "description": "A color of text on the section headers in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "subtitle_text_color": {
-                    "description": "A color of the subtitle text in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "destructive_text_color": {
-                    "description": "A color of the text for destructive actions in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "hint_color": {
-                    "description": "A color of hints in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "link_color": {
-                    "description": "A color of links in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "button_color": {
-                    "description": "A color of the buttons in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "button_text_color": {
-                    "description": "A color of text on the buttons in the RGB format",
-                    "is_optional": false,
-                    "type": "int32"
-                }
-            },
-            "type": "ThemeParameters"
-        },
         "labeledPricePart": {
             "description": "Portion of the price of a product (e.g., \"delivery cost\", \"tax amount\")",
             "args": {
@@ -12129,6 +12281,11 @@
                     "description": "A list of objects used to calculate the total price of the product",
                     "is_optional": false,
                     "type": "vector<labeledPricePart>"
+                },
+                "subscription_period": {
+                    "description": "The number of seconds between consecutive Telegram Star debiting for subscription invoices; 0 if the invoice doesn't create subscription",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "max_tip_amount": {
                     "description": "The maximum allowed amount of tip in the smallest units of the currency",
@@ -12427,6 +12584,17 @@
                     "description": "Number of Telegram Stars that will be paid",
                     "is_optional": false,
                     "type": "int53"
+                }
+            },
+            "type": "PaymentFormType"
+        },
+        "paymentFormTypeStarSubscription": {
+            "description": "The payment form is for a payment in Telegram Stars for subscription",
+            "args": {
+                "pricing": {
+                    "description": "Information about subscription plan",
+                    "is_optional": false,
+                    "type": "starSubscriptionPricing"
                 }
             },
             "type": "PaymentFormType"
@@ -14428,7 +14596,7 @@
             "type": "MessageContent"
         },
         "messagePaymentSuccessful": {
-            "description": "A payment has been completed",
+            "description": "A payment has been sent to a bot or a business account",
             "args": {
                 "invoice_chat_id": {
                     "description": "Identifier of the chat, containing the corresponding invoice message",
@@ -14450,6 +14618,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "subscription_until_date": {
+                    "description": "Point in time (Unix timestamp) when the subscription will expire; 0 if unknown or the payment isn't recurring",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "is_recurring": {
                     "description": "True, if this is a recurring payment",
                     "is_optional": false,
@@ -14469,7 +14642,7 @@
             "type": "MessageContent"
         },
         "messagePaymentSuccessfulBot": {
-            "description": "A payment has been completed; for bots only",
+            "description": "A payment has been received by the bot or the business account",
             "args": {
                 "currency": {
                     "description": "Currency for price of the product",
@@ -14480,6 +14653,11 @@
                     "description": "Total price for the product, in the smallest units of the currency",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "subscription_until_date": {
+                    "description": "Point in time (Unix timestamp) when the subscription will expire; 0 if unknown or the payment isn't recurring",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "is_recurring": {
                     "description": "True, if this is a recurring payment",
@@ -14497,12 +14675,12 @@
                     "type": "bytes"
                 },
                 "shipping_option_id": {
-                    "description": "Identifier of the shipping option chosen by the user; may be empty if not applicable",
+                    "description": "Identifier of the shipping option chosen by the user; may be empty if not applicable; for bots only",
                     "is_optional": true,
                     "type": "string"
                 },
                 "order_info": {
-                    "description": "Information about the order; may be null",
+                    "description": "Information about the order; may be null; for bots only",
                     "is_optional": true,
                     "type": "orderInfo"
                 },
@@ -14892,7 +15070,7 @@
                     "type": "formattedText"
                 },
                 "sell_star_count": {
-                    "description": "Number of Telegram Stars that can be claimed by the receiver instead of the gift",
+                    "description": "Number of Telegram Stars that can be claimed by the receiver instead of the gift; 0 if the gift can't be sold by the receiver",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -15631,7 +15809,7 @@
             "description": "A video message",
             "args": {
                 "video": {
-                    "description": "Video to be sent. The video is expected to be reencoded to MPEG4 format with H.264 codec by the sender",
+                    "description": "Video to be sent. The video is expected to be re-encoded to MPEG4 format with H.264 codec by the sender",
                     "is_optional": false,
                     "type": "InputFile"
                 },
@@ -16449,9 +16627,9 @@
                     "type": "thumbnail"
                 },
                 "thumbnail_outline": {
-                    "description": "Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty. The coordinate system origin is in the upper-left corner",
+                    "description": "Sticker set thumbnail's outline; may be null if unknown",
                     "is_optional": true,
-                    "type": "vector<closedVectorPath>"
+                    "type": "outline"
                 },
                 "is_owned": {
                     "description": "True, if the sticker set is owned by the current user",
@@ -16530,9 +16708,9 @@
                     "type": "thumbnail"
                 },
                 "thumbnail_outline": {
-                    "description": "Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty. The coordinate system origin is in the upper-left corner",
+                    "description": "Sticker set thumbnail's outline; may be null if unknown",
                     "is_optional": true,
-                    "type": "vector<closedVectorPath>"
+                    "type": "outline"
                 },
                 "is_owned": {
                     "description": "True, if the sticker set is owned by the current user",
@@ -19327,6 +19505,59 @@
             },
             "type": "UserLink"
         },
+        "targetChatTypes": {
+            "description": "Describes allowed types for the target chat",
+            "args": {
+                "allow_user_chats": {
+                    "description": "True, if private chats with ordinary users are allowed",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "allow_bot_chats": {
+                    "description": "True, if private chats with other bots are allowed",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "allow_group_chats": {
+                    "description": "True, if basic group and supergroup chats are allowed",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "allow_channel_chats": {
+                    "description": "True, if channel chats are allowed",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "TargetChatTypes"
+        },
+        "targetChatCurrent": {
+            "description": "The currently opened chat needs to be kept",
+            "args": {},
+            "type": "TargetChat"
+        },
+        "targetChatChosen": {
+            "description": "The chat needs to be chosen by the user among chats of the specified types",
+            "args": {
+                "types": {
+                    "description": "Allowed types for the chat",
+                    "is_optional": false,
+                    "type": "targetChatTypes"
+                }
+            },
+            "type": "TargetChat"
+        },
+        "targetChatInternalLink": {
+            "description": "The chat needs to be open with the provided internal link",
+            "args": {
+                "link": {
+                    "description": "An internal link pointing to the chat",
+                    "is_optional": false,
+                    "type": "InternalLinkType"
+                }
+            },
+            "type": "TargetChat"
+        },
         "inputInlineQueryResultAnimation": {
             "description": "Represents a link to an animated GIF or an animated (i.e., without sound) H.264/MPEG-4 AVC video",
             "args": {
@@ -20219,6 +20450,43 @@
                 }
             },
             "type": "InlineQueryResults"
+        },
+        "preparedInlineMessageId": {
+            "description": "Represents an inline message that can be sent via the bot",
+            "args": {
+                "id": {
+                    "description": "Unique identifier for the message",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "expiration_date": {
+                    "description": "Point in time (Unix timestamp) when the message can't be used anymore",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "PreparedInlineMessageId"
+        },
+        "preparedInlineMessage": {
+            "description": "Represents a ready to send inline message. Use sendInlineQueryResultMessage to send the message",
+            "args": {
+                "inline_query_id": {
+                    "description": "Unique identifier of the inline query to pass to sendInlineQueryResultMessage",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "result": {
+                    "description": "Resulted inline message of the query",
+                    "is_optional": false,
+                    "type": "InlineQueryResult"
+                },
+                "chat_types": {
+                    "description": "Types of the chats to which the message can be sent",
+                    "is_optional": false,
+                    "type": "targetChatTypes"
+                }
+            },
+            "type": "PreparedInlineMessage"
         },
         "callbackQueryPayloadData": {
             "description": "The payload for a general callback button",
@@ -23536,6 +23804,11 @@
             "args": {},
             "type": "UserPrivacySettingRule"
         },
+        "userPrivacySettingRuleAllowBots": {
+            "description": "A rule to allow all bots to do something",
+            "args": {},
+            "type": "UserPrivacySettingRule"
+        },
         "userPrivacySettingRuleAllowPremiumUsers": {
             "description": "A rule to allow all Premium Users to do something; currently, allowed only for userPrivacySettingAllowChatInvites",
             "args": {},
@@ -23570,6 +23843,11 @@
         },
         "userPrivacySettingRuleRestrictContacts": {
             "description": "A rule to restrict all contacts of the user from doing something",
+            "args": {},
+            "type": "UserPrivacySettingRule"
+        },
+        "userPrivacySettingRuleRestrictBots": {
+            "description": "A rule to restrict all bots from doing something",
             "args": {},
             "type": "UserPrivacySettingRule"
         },
@@ -23658,6 +23936,11 @@
         },
         "userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages": {
             "description": "A privacy setting for managing whether the user can receive voice and video messages in private chats; for Telegram Premium users only",
+            "args": {},
+            "type": "UserPrivacySetting"
+        },
+        "userPrivacySettingAutosaveGifts": {
+            "description": "A privacy setting for managing whether received gifts are automatically shown on the user's profile page",
             "args": {},
             "type": "UserPrivacySetting"
         },
@@ -24134,48 +24417,6 @@
             },
             "type": "ReportStoryResult"
         },
-        "targetChatCurrent": {
-            "description": "The currently opened chat needs to be kept",
-            "args": {},
-            "type": "TargetChat"
-        },
-        "targetChatChosen": {
-            "description": "The chat needs to be chosen by the user among chats of the specified types",
-            "args": {
-                "allow_user_chats": {
-                    "description": "True, if private chats with ordinary users are allowed",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "allow_bot_chats": {
-                    "description": "True, if private chats with other bots are allowed",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "allow_group_chats": {
-                    "description": "True, if basic group and supergroup chats are allowed",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "allow_channel_chats": {
-                    "description": "True, if channel chats are allowed",
-                    "is_optional": false,
-                    "type": "Bool"
-                }
-            },
-            "type": "TargetChat"
-        },
-        "targetChatInternalLink": {
-            "description": "The chat needs to be open with the provided internal link",
-            "args": {
-                "link": {
-                    "description": "An internal link pointing to the chat",
-                    "is_optional": false,
-                    "type": "InternalLinkType"
-                }
-            },
-            "type": "TargetChat"
-        },
         "internalLinkTypeActiveSessions": {
             "description": "The link is a link to the Devices section of the application. Use getActiveSessions to get the list of active sessions and show them to the user",
             "args": {},
@@ -24422,7 +24663,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeMainWebApp": {
-            "description": "The link is a link to the main Web App of a bot. Call searchPublicChat with the given bot username, check that the user is a bot and has the main Web App. If the bot can be added to attachment menu, then use getAttachmentMenuBot to receive information about the bot, then if the bot isn't added to side menu, show a disclaimer about Mini Apps being third-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu, then if the user accepts the terms and confirms adding, use toggleBotIsAddedToAttachmentMenu to add the bot. Then, use getMainWebApp with the given start parameter and open the returned URL as a Web App",
+            "description": "The link is a link to the main Web App of a bot. Call searchPublicChat with the given bot username, check that the user is a bot and has the main Web App. If the bot can be added to attachment menu, then use getAttachmentMenuBot to receive information about the bot, then if the bot isn't added to side menu, show a disclaimer about Mini Apps being third-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu, then if the user accepts the terms and confirms adding, use toggleBotIsAddedToAttachmentMenu to add the bot. Then, use getMainWebApp with the given start parameter and mode and open the returned URL as a Web App",
             "args": {
                 "bot_username": {
                     "description": "Username of the bot",
@@ -24434,10 +24675,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "is_compact": {
-                    "description": "True, if the Web App must be opened in the compact mode instead of the full-size mode",
+                "mode": {
+                    "description": "The mode to be passed to getMainWebApp",
                     "is_optional": false,
-                    "type": "Bool"
+                    "type": "WebAppOpenMode"
                 }
             },
             "type": "InternalLinkType"
@@ -24746,10 +24987,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "is_compact": {
-                    "description": "True, if the Web App must be opened in the compact mode instead of the full-size mode",
+                "mode": {
+                    "description": "The mode in which the Web App must be opened",
                     "is_optional": false,
-                    "type": "Bool"
+                    "type": "WebAppOpenMode"
                 }
             },
             "type": "InternalLinkType"
@@ -33447,6 +33688,43 @@
             },
             "type": "Ok"
         },
+        "savePreparedInlineMessage": {
+            "description": "Saves an inline message to be sent by the given user; for bots only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "result": {
+                    "description": "The description of the message",
+                    "is_optional": false,
+                    "type": "InputInlineQueryResult"
+                },
+                "chat_types": {
+                    "description": "Types of the chats to which the message can be sent",
+                    "is_optional": false,
+                    "type": "targetChatTypes"
+                }
+            },
+            "type": "PreparedInlineMessageId"
+        },
+        "getPreparedInlineMessage": {
+            "description": "Saves an inline message to be sent by the given user; for bots only",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the bot that created the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "prepared_message_id": {
+                    "description": "Identifier of the prepared message",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "PreparedInlineMessage"
+        },
         "getGrossingWebAppBots": {
             "description": "Returns the most grossing Web App bots",
             "args": {
@@ -33479,6 +33757,17 @@
             },
             "type": "FoundWebApp"
         },
+        "getWebAppPlaceholder": {
+            "description": "Returns a default placeholder for Web Apps of a bot; this is an offline request. Returns a 404 error if the placeholder isn't known",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Outline"
+        },
         "getWebAppLinkUrl": {
             "description": "Returns an HTTPS URL of a Web App to open after a link of the type internalLinkTypeWebApp is clicked",
             "args": {
@@ -33502,20 +33791,15 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "theme": {
-                    "description": "Preferred Web App theme; pass null to use the default theme",
-                    "is_optional": true,
-                    "type": "themeParameters"
-                },
-                "application_name": {
-                    "description": "Short name of the current application; 0-64 English letters, digits, and underscores",
-                    "is_optional": false,
-                    "type": "string"
-                },
                 "allow_write_access": {
                     "description": "Pass true if the current user allowed the bot to send them messages",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "parameters": {
+                    "description": "Parameters to use to open the Web App",
+                    "is_optional": false,
+                    "type": "webAppOpenParameters"
                 }
             },
             "type": "HttpUrl"
@@ -33538,15 +33822,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "theme": {
-                    "description": "Preferred Web App theme; pass null to use the default theme",
-                    "is_optional": true,
-                    "type": "themeParameters"
-                },
-                "application_name": {
-                    "description": "Short name of the current application; 0-64 English letters, digits, and underscores",
+                "parameters": {
+                    "description": "Parameters to use to open the Web App",
                     "is_optional": false,
-                    "type": "string"
+                    "type": "webAppOpenParameters"
                 }
             },
             "type": "MainWebApp"
@@ -33564,15 +33843,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "theme": {
-                    "description": "Preferred Web App theme; pass null to use the default theme",
-                    "is_optional": true,
-                    "type": "themeParameters"
-                },
-                "application_name": {
-                    "description": "Short name of the current application; 0-64 English letters, digits, and underscores",
+                "parameters": {
+                    "description": "Parameters to use to open the Web App",
                     "is_optional": false,
-                    "type": "string"
+                    "type": "webAppOpenParameters"
                 }
             },
             "type": "HttpUrl"
@@ -33616,16 +33890,6 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "theme": {
-                    "description": "Preferred Web App theme; pass null to use the default theme",
-                    "is_optional": true,
-                    "type": "themeParameters"
-                },
-                "application_name": {
-                    "description": "Short name of the current application; 0-64 English letters, digits, and underscores",
-                    "is_optional": false,
-                    "type": "string"
-                },
                 "message_thread_id": {
                     "description": "If not 0, the message thread identifier in which the message will be sent",
                     "is_optional": false,
@@ -33635,6 +33899,11 @@
                     "description": "Information about the message or story to be replied in the message sent by the Web App; pass null if none",
                     "is_optional": true,
                     "type": "InputMessageReplyTo"
+                },
+                "parameters": {
+                    "description": "Parameters to use to open the Web App",
+                    "is_optional": false,
+                    "type": "webAppOpenParameters"
                 }
             },
             "type": "WebAppInfo"
@@ -33665,6 +33934,27 @@
                 }
             },
             "type": "SentWebAppMessage"
+        },
+        "checkWebAppFileDownload": {
+            "description": "Checks whether a file can be downloaded and saved locally by Web App request",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the bot, providing the Web App",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "file_name": {
+                    "description": "Name of the file",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "url": {
+                    "description": "URL of the file",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Ok"
         },
         "getCallbackQueryAnswer": {
             "description": "Sends a callback query to a bot and returns an answer. Returns an error with code 502 if the bot fails to answer the query before the query timeout expires",
@@ -36973,7 +37263,7 @@
             "type": "GroupCallId"
         },
         "getVideoChatRtmpUrl": {
-            "description": "Returns RTMP URL for streaming to the chat; requires owner privileges",
+            "description": "Returns RTMP URL for streaming to the chat; requires can_manage_video_chats administrator right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -37620,6 +37910,38 @@
             },
             "type": "Ok"
         },
+        "toggleBotCanManageEmojiStatus": {
+            "description": "Toggles whether the bot can manage emoji status of the current user",
+            "args": {
+                "bot_user_id": {
+                    "description": "User identifier of the bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "can_manage_emoji_status": {
+                    "description": "Pass true if the bot is allowed to change emoji status of the user; pass false otherwise",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "setUserEmojiStatus": {
+            "description": "Changes the emoji status of a user; for bots only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "emoji_status": {
+                    "description": "New emoji status; pass null to switch to the default badge",
+                    "is_optional": true,
+                    "type": "emojiStatus"
+                }
+            },
+            "type": "Ok"
+        },
         "searchUserByPhoneNumber": {
             "description": "Searches a user by their phone number. Returns a 404 error if the user can't be found",
             "args": {
@@ -37667,6 +37989,27 @@
                 }
             },
             "type": "ChatPhotos"
+        },
+        "getStickerOutline": {
+            "description": "Returns outline of a sticker; this is an offline request. Returns a 404 error if the outline isn't known",
+            "args": {
+                "sticker_file_id": {
+                    "description": "File identifier of the sticker",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "for_animated_emoji": {
+                    "description": "Pass true to get the outline scaled for animated emoji",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "for_clicked_animated_emoji_message": {
+                    "description": "Pass true to get the outline scaled for clicked animated emoji message",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Outline"
         },
         "getStickers": {
             "description": "Returns stickers from the installed sticker sets that correspond to any of the given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned",
@@ -39713,6 +40056,11 @@
         "createInvoiceLink": {
             "description": "Creates a link for the given invoice; for bots only",
             "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which to send the request",
+                    "is_optional": false,
+                    "type": "string"
+                },
                 "invoice": {
                     "description": "Information about the invoice of the type inputMessageInvoice",
                     "is_optional": false,
@@ -41364,7 +41712,7 @@
             "type": "Ok"
         },
         "editStarSubscription": {
-            "description": "Cancels or reenables Telegram Star subscription to a channel",
+            "description": "Cancels or re-enables Telegram Star subscription",
             "args": {
                 "subscription_id": {
                     "description": "Identifier of the subscription to change",
@@ -41379,8 +41727,29 @@
             },
             "type": "Ok"
         },
+        "editUserStarSubscription": {
+            "description": "Cancels or re-enables Telegram Star subscription for a user; for bots only",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "telegram_payment_charge_id": {
+                    "description": "Telegram payment identifier of the subscription",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_canceled": {
+                    "description": "Pass true to cancel the subscription; pass false to allow the user to enable it",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
         "reuseStarSubscription": {
-            "description": "Reuses an active subscription and joins the subscribed chat again",
+            "description": "Reuses an active Telegram Star subscription to a channel chat and joins the chat again",
             "args": {
                 "subscription_id": {
                     "description": "Identifier of the subscription",
