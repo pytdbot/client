@@ -4,7 +4,7 @@ from html import escape as _html_escape
 def escape_html(text: str, quote: bool = True) -> str:
     r"""Escape HTML characters in the given text
 
-    Args:
+    Parameters:
         text (``str``):
             The text to escape
 
@@ -25,7 +25,7 @@ special_chars_v2 = r"\_*[]()~`>#+-=|{}.!"
 def escape_markdown(text: str, version: int = 2) -> str:
     r"""Escape Markdown characters in the given text
 
-    Args:
+    Parameters:
         text (``str``):
             The text to escape
 

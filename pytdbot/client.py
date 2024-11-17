@@ -36,7 +36,7 @@ from .utils import (
 class Client(Decorators, Methods):
     r"""Pytdbot, a TDLib client
 
-    Args:
+    Parameters:
         token (``str``, *optional*):
             Bot token
 
@@ -231,7 +231,7 @@ class Client(Decorators, Methods):
     async def start(self, login: bool = True) -> None:
         r"""Start pytdbot client
 
-        Args:
+        Parameters:
             login (``bool``, *optional*):
                 Login after start. Default is ``True``
         """
@@ -302,7 +302,7 @@ class Client(Decorators, Methods):
     ) -> None:
         r"""Add an update handler
 
-        Args:
+        Parameters:
             update_type (``str``):
                 An update type
 
@@ -341,7 +341,7 @@ class Client(Decorators, Methods):
     def remove_handler(self, func: Callable) -> bool:
         r"""Remove an update handler
 
-        Args:
+        Parameters:
             func (``Callable``):
                 A callable function
 
@@ -380,7 +380,7 @@ class Client(Decorators, Methods):
                     if not isinstance(res, types.Error):
                         print(res)
 
-        Args:
+        Parameters:
             request (``dict``):
                 The request to be sent
 
@@ -463,7 +463,7 @@ class Client(Decorators, Methods):
                     if not isinstance(res, types.Error):
                         print(res)
 
-        Args:
+        Parameters:
             method (``str``):
                 TDLib method name
 
@@ -491,7 +491,7 @@ class Client(Decorators, Methods):
 
                 client.run()
 
-        Args:
+        Parameters:
             login (``bool``, *optional*):
                 Login after start. Default is ``True``
         """
@@ -595,7 +595,7 @@ class Client(Decorators, Methods):
     def get_retry_after_time(self, error_message: str) -> int:
         r"""Get the retry after time from flood wait error message
 
-        Args:
+        Parameters:
             error_message (``str``):
                 The returned error message from TDLib
 

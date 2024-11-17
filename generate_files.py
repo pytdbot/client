@@ -331,7 +331,7 @@ updates_template = """    def on_{update_name}(
     ) -> Callable:
         r\"\"\"{description}
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 

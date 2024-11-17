@@ -20,7 +20,7 @@ class Decorators(Updates):
     ) -> None:
         r"""A decorator to initialize an event object before running other handlers
 
-        Args:
+        Parameters:
             filters (:class:`~pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -65,7 +65,7 @@ class Decorators(Updates):
     ) -> None:
         r"""A decorator to finalize an event object after running all handlers
 
-        Args:
+        Parameters:
             filters (:class:`~pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -104,7 +104,7 @@ class Decorators(Updates):
     ) -> None:
         r"""A decorator to handle ``updateNewMessage`` but with ``Message`` object.
 
-        Args:
+        Parameters:
             filters (:class:`~pytdbot.filters.Filter`, *optional*):
                 An update filter
 

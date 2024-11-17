@@ -11,7 +11,7 @@ class TdJson:
     def __init__(self, lib_path: str = None, verbosity: int = 2) -> None:
         """TdJson client
 
-        Args:
+        Parameters:
             lib_path (``str``, optional):
                 Path to shared library. Default is ``None``
 
@@ -40,7 +40,7 @@ class TdJson:
     def _build_client(self, lib_path: str, verbosity: int) -> None:
         """Build TdJson client
 
-        Args:
+        Parameters:
             lib_path (``str``):
                 Path to shared library
 
@@ -88,7 +88,7 @@ class TdJson:
     def receive(self, timeout: float = 2.0) -> Union[None, dict]:
         """Receives incoming updates and results from TDLib
 
-        Args:
+        Parameters:
             timeout (``float``, *optional*):
                 The maximum number of seconds allowed to wait for new data. Default is ``2.0``
 
@@ -101,7 +101,7 @@ class TdJson:
     def send(self, data: dict) -> None:
         """Sends a request to TDLib
 
-        Args:
+        Parameters:
             data (``dict``):
                 The request to be sent
         """
@@ -114,7 +114,7 @@ class TdJson:
     def execute(self, data: dict) -> Union[None, dict]:
         """Executes a TDLib request
 
-        Args:
+        Parameters:
             data (``dict``): The request to be executed
 
         Returns:

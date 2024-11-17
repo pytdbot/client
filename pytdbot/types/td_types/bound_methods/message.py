@@ -123,7 +123,7 @@ class MessageBoundMethods:
     async def mention(self, parse_mode: str = "html") -> str:
         r"""Get the text_mention of the message sender
 
-        Args:
+        Parameters:
             parse_mode (``str``, *optional*):
                 The parse mode of the mention. Default is ``html``
         """
@@ -180,7 +180,7 @@ class MessageBoundMethods:
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         r"""Delete the received message
 
-        Args:
+        Parameters:
             revoke (``bool``, *optional*):
                 Pass true to delete messages for all chat members. Always true for supergroups, channels and secret chats
         """
@@ -194,7 +194,7 @@ class MessageBoundMethods:
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         r"""React to the current message
 
-        Args:
+        Parameters:
             emoji (``str``, *optional*):
                 Text representation of the reaction; pass ``None`` to remove the current reaction. Default is ``👍``
 
@@ -218,7 +218,7 @@ class MessageBoundMethods:
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         r"""Pin the message
 
-        Args:
+        Parameters:
             disable_notification (``bool``, *optional*):
                 If True, disable notification for the message
 
@@ -321,7 +321,7 @@ class MessageBoundMethods:
                 await asyncio.sleep(2)
                 await update.reply_text("Hello?")
 
-        \Args:
+        \Parameters:
             action (``str``):
                 Type of action to broadcast. Choose one, depending on what the user is about to receive: ``typing`` for text messages, ``upload_photo`` for photos, ``record_video`` or ``upload_video`` for videos, ``record_voice`` or ``upload_voice`` for voice notes, ``upload_document`` for general files, ``choose_sticker`` for stickers, ``find_location` for location data, ``record_video_note`` or ``upload_video_note`` for video notes
 

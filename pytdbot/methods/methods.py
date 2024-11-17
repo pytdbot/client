@@ -51,7 +51,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, FormattedText]:
         r"""Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text
 
-        Args:
+        Parameters:
             text (``str``):
                 The text to parse
 
@@ -86,7 +86,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, int, None]:
         r"""Get supergroup id from chat id
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Chat identifier
 
@@ -132,7 +132,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Send text message to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -259,7 +259,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Send animation to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -390,7 +390,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Send audio to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -512,7 +512,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Send document to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -629,7 +629,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Send photo to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -764,7 +764,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Send video to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -899,7 +899,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Send video note to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -996,7 +996,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Send voice to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -1108,7 +1108,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Send sticker to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -1203,7 +1203,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Copy message to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -1298,7 +1298,7 @@ class Methods(TDLibFunctions):
     ):
         r"""Forward message to chat
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Target chat
 
@@ -1344,7 +1344,7 @@ class Methods(TDLibFunctions):
     ) -> Union[Error, Message]:
         r"""Edit text message
 
-        Args:
+        Parameters:
             chat_id (``int``):
                 Chat identifier
 

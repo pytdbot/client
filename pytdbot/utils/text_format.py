@@ -4,7 +4,7 @@ from . import escape_html, escape_markdown
 def bold(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to bold format
 
-    Args:
+    Parameters:
         text (``str``):
             The text to convert
 
@@ -27,7 +27,7 @@ def bold(text: str, html: bool = True, escape: bool = True) -> str:
 def italic(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to italic format
 
-    Args:
+    Parameters:
         text (``str``):
             The text to convert
 
@@ -50,7 +50,7 @@ def italic(text: str, html: bool = True, escape: bool = True) -> str:
 def underline(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to underline format
 
-    Args:
+    Parameters:
         text (``str``):
             The text to convert
 
@@ -73,7 +73,7 @@ def underline(text: str, html: bool = True, escape: bool = True) -> str:
 def strikethrough(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to strikethrough format
 
-    Args:
+    Parameters:
         text (``str``):
             The text to convert
 
@@ -96,7 +96,7 @@ def strikethrough(text: str, html: bool = True, escape: bool = True) -> str:
 def spoiler(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to spoiler format
 
-    Args:
+    Parameters:
         text (``str``):
             The text to convert
 
@@ -119,7 +119,7 @@ def spoiler(text: str, html: bool = True, escape: bool = True) -> str:
 def hyperlink(text: str, url: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to hyperlink format
 
-    Args:
+    Parameters:
         text (``str``):
             The hyperlink text
 
@@ -147,7 +147,7 @@ def hyperlink(text: str, url: str, html: bool = True, escape: bool = True) -> st
 def mention(text: str, user_id: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to inline mention format
 
-    Args:
+    Parameters:
         text (``str``):
             The text of inline mention
 
@@ -173,7 +173,7 @@ def mention(text: str, user_id: str, html: bool = True, escape: bool = True) -> 
 def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = True) -> str:
     r"""Convert the given emoji to custom emoji format
 
-    Args:
+    Parameters:
         emoji (``str``):
             The emoji of the custom emoji
 
@@ -196,7 +196,7 @@ def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = True) -> str:
 def code(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to code format
 
-    Args:
+    Parameters:
         text (``str``):
             The text to convert
 
@@ -219,7 +219,7 @@ def code(text: str, html: bool = True, escape: bool = True) -> str:
 def pre(text: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to pre format
 
-    Args:
+    Parameters:
         text (``str``):
             The text to convert
 
@@ -242,7 +242,7 @@ def pre(text: str, html: bool = True, escape: bool = True) -> str:
 def pre_code(text: str, language: str, html: bool = True, escape: bool = True) -> str:
     r"""Convert the given text to pre-formatted fixed-width code block
 
-    Args:
+    Parameters:
         text (``str``):
             The text to convert
 
@@ -272,7 +272,7 @@ def pre_code(text: str, language: str, html: bool = True, escape: bool = True) -
 def quote(text: str, expandable: bool = False, html: bool = True, escape: bool = True):
     r"""Convert the given text to quote block
 
-    Args:
+    Parameters:
         text (``str``):
             The text to convert
 

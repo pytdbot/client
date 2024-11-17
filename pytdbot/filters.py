@@ -52,7 +52,7 @@ def create(func: Callable) -> Filter:
 
             client.run()
 
-    Args:
+    Parameters:
         func (``Callable``):
             The filter function
 

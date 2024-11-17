@@ -18,7 +18,7 @@ class Updates:
     ) -> Callable:
         r"""The user authorization state has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -58,7 +58,7 @@ class Updates:
     ) -> Callable:
         r"""A new message was received; can also be an outgoing message
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -92,7 +92,7 @@ class Updates:
     ) -> Callable:
         r"""A request to send a message has reached the Telegram server\. This doesn't mean that the message will be sent successfully\. This update is sent only if the option \"use\_quick\_ack\" is set to true\. This update may be sent multiple times for the same message
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -132,7 +132,7 @@ class Updates:
     ) -> Callable:
         r"""A message has been successfully sent
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -172,7 +172,7 @@ class Updates:
     ) -> Callable:
         r"""A message failed to send\. Be aware that some messages being sent can be irrecoverably deleted, in which case updateDeleteMessages will be received instead of this update
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -208,7 +208,7 @@ class Updates:
     ) -> Callable:
         r"""The message content has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -242,7 +242,7 @@ class Updates:
     ) -> Callable:
         r"""A message was edited\. Changes in the message content will come in a separate updateMessageContent
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -276,7 +276,7 @@ class Updates:
     ) -> Callable:
         r"""The message pinned state was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -312,7 +312,7 @@ class Updates:
     ) -> Callable:
         r"""The information about interactions with a message has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -352,7 +352,7 @@ class Updates:
     ) -> Callable:
         r"""The message content was opened\. Updates voice note messages to \"listened\", video note messages to \"viewed\" and starts the self\-destruct timer
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -392,7 +392,7 @@ class Updates:
     ) -> Callable:
         r"""A message with an unread mention was read
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -432,7 +432,7 @@ class Updates:
     ) -> Callable:
         r"""The list of unread reactions added to a message was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -472,7 +472,7 @@ class Updates:
     ) -> Callable:
         r"""A fact\-check added to a message was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -508,7 +508,7 @@ class Updates:
     ) -> Callable:
         r"""A message with a live location was viewed\. When the update is received, the application is expected to update the live location
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -548,7 +548,7 @@ class Updates:
     ) -> Callable:
         r"""An automatically scheduled message with video has been successfully sent after conversion
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -582,7 +582,7 @@ class Updates:
     ) -> Callable:
         r"""A new chat has been loaded/created\. This update is guaranteed to come before the chat identifier is returned to the application\. The chat field changes will be reported through separate updates
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -616,7 +616,7 @@ class Updates:
     ) -> Callable:
         r"""The title of a chat was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -650,7 +650,7 @@ class Updates:
     ) -> Callable:
         r"""A chat photo was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -684,7 +684,7 @@ class Updates:
     ) -> Callable:
         r"""Chat accent colors have changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -720,7 +720,7 @@ class Updates:
     ) -> Callable:
         r"""Chat permissions were changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -756,7 +756,7 @@ class Updates:
     ) -> Callable:
         r"""The last message of a chat was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -792,7 +792,7 @@ class Updates:
     ) -> Callable:
         r"""The position of a chat in a chat list has changed\. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -826,7 +826,7 @@ class Updates:
     ) -> Callable:
         r"""A chat was added to a chat list
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -862,7 +862,7 @@ class Updates:
     ) -> Callable:
         r"""A chat was removed from a chat list
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -902,7 +902,7 @@ class Updates:
     ) -> Callable:
         r"""Incoming messages were read or the number of unread messages has been changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -936,7 +936,7 @@ class Updates:
     ) -> Callable:
         r"""Outgoing messages were read
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -970,7 +970,7 @@ class Updates:
     ) -> Callable:
         r"""The chat action bar was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1004,7 +1004,7 @@ class Updates:
     ) -> Callable:
         r"""The bar for managing business bot was changed in a chat
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1044,7 +1044,7 @@ class Updates:
     ) -> Callable:
         r"""The chat available reactions were changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1084,7 +1084,7 @@ class Updates:
     ) -> Callable:
         r"""A chat draft has changed\. Be aware that the update may come in the currently opened chat but with old content of the draft\. If the user has changed the content of the draft, this update mustn't be applied
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1120,7 +1120,7 @@ class Updates:
     ) -> Callable:
         r"""Chat emoji status has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1156,7 +1156,7 @@ class Updates:
     ) -> Callable:
         r"""The message sender that is selected to send messages in a chat has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1192,7 +1192,7 @@ class Updates:
     ) -> Callable:
         r"""The message auto\-delete or self\-destruct timer setting for a chat was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1232,7 +1232,7 @@ class Updates:
     ) -> Callable:
         r"""Notification settings for a chat were changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1272,7 +1272,7 @@ class Updates:
     ) -> Callable:
         r"""The chat pending join requests were changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1312,7 +1312,7 @@ class Updates:
     ) -> Callable:
         r"""The default chat reply markup was changed\. Can occur because new messages with reply markup were received or because an old reply markup was hidden by the user
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1348,7 +1348,7 @@ class Updates:
     ) -> Callable:
         r"""The chat background was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1382,7 +1382,7 @@ class Updates:
     ) -> Callable:
         r"""The chat theme was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1416,7 +1416,7 @@ class Updates:
     ) -> Callable:
         r"""The chat unread\_mention\_count has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1456,7 +1456,7 @@ class Updates:
     ) -> Callable:
         r"""The chat unread\_reaction\_count has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1496,7 +1496,7 @@ class Updates:
     ) -> Callable:
         r"""A chat video chat state has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1530,7 +1530,7 @@ class Updates:
     ) -> Callable:
         r"""The value of the default disable\_notification parameter, used when a message is sent to the chat, was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1570,7 +1570,7 @@ class Updates:
     ) -> Callable:
         r"""A chat content was allowed or restricted for saving
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1610,7 +1610,7 @@ class Updates:
     ) -> Callable:
         r"""Translation of chat messages was enabled or disabled
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1650,7 +1650,7 @@ class Updates:
     ) -> Callable:
         r"""A chat was marked as unread or was read
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1690,7 +1690,7 @@ class Updates:
     ) -> Callable:
         r"""A chat default appearance has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1726,7 +1726,7 @@ class Updates:
     ) -> Callable:
         r"""A chat was blocked or unblocked
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1760,7 +1760,7 @@ class Updates:
     ) -> Callable:
         r"""A chat's has\_scheduled\_messages field has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1800,7 +1800,7 @@ class Updates:
     ) -> Callable:
         r"""The list of chat folders or a chat folder has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1834,7 +1834,7 @@ class Updates:
     ) -> Callable:
         r"""The number of online group members has changed\. This update with non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it is sent just after the number of online users has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1874,7 +1874,7 @@ class Updates:
     ) -> Callable:
         r"""Basic information about a Saved Messages topic has changed\. This update is guaranteed to come before the topic identifier is returned to the application
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1914,7 +1914,7 @@ class Updates:
     ) -> Callable:
         r"""Number of Saved Messages topics has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1954,7 +1954,7 @@ class Updates:
     ) -> Callable:
         r"""Basic information about a quick reply shortcut has changed\. This update is guaranteed to come before the quick shortcut name is returned to the application
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -1994,7 +1994,7 @@ class Updates:
     ) -> Callable:
         r"""A quick reply shortcut and all its messages were deleted
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2034,7 +2034,7 @@ class Updates:
     ) -> Callable:
         r"""The list of quick reply shortcuts has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2074,7 +2074,7 @@ class Updates:
     ) -> Callable:
         r"""The list of quick reply shortcut messages has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2114,7 +2114,7 @@ class Updates:
     ) -> Callable:
         r"""Basic information about a topic in a forum chat was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2148,7 +2148,7 @@ class Updates:
     ) -> Callable:
         r"""Notification settings for some type of chats were updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2188,7 +2188,7 @@ class Updates:
     ) -> Callable:
         r"""Notification settings for reactions were updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2228,7 +2228,7 @@ class Updates:
     ) -> Callable:
         r"""A notification was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2262,7 +2262,7 @@ class Updates:
     ) -> Callable:
         r"""A list of active notifications in a notification group has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2298,7 +2298,7 @@ class Updates:
     ) -> Callable:
         r"""Contains active notifications that were shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2338,7 +2338,7 @@ class Updates:
     ) -> Callable:
         r"""Describes whether there are some pending notification updates\. Can be used to prevent application from killing, while there are some pending notifications
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2378,7 +2378,7 @@ class Updates:
     ) -> Callable:
         r"""Some messages were deleted
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2412,7 +2412,7 @@ class Updates:
     ) -> Callable:
         r"""A message sender activity in the chat has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2446,7 +2446,7 @@ class Updates:
     ) -> Callable:
         r"""The user went online or offline
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2480,7 +2480,7 @@ class Updates:
     ) -> Callable:
         r"""Some data of a user has changed\. This update is guaranteed to come before the user identifier is returned to the application
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2514,7 +2514,7 @@ class Updates:
     ) -> Callable:
         r"""Some data of a basic group has changed\. This update is guaranteed to come before the basic group identifier is returned to the application
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2548,7 +2548,7 @@ class Updates:
     ) -> Callable:
         r"""Some data of a supergroup or a channel has changed\. This update is guaranteed to come before the supergroup identifier is returned to the application
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2582,7 +2582,7 @@ class Updates:
     ) -> Callable:
         r"""Some data of a secret chat has changed\. This update is guaranteed to come before the secret chat identifier is returned to the application
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2616,7 +2616,7 @@ class Updates:
     ) -> Callable:
         r"""Some data in userFullInfo has been changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2650,7 +2650,7 @@ class Updates:
     ) -> Callable:
         r"""Some data in basicGroupFullInfo has been changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2690,7 +2690,7 @@ class Updates:
     ) -> Callable:
         r"""Some data in supergroupFullInfo has been changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2730,7 +2730,7 @@ class Updates:
     ) -> Callable:
         r"""A service notification from the server was received\. Upon receiving this the application must show a popup with the content of the notification
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2770,7 +2770,7 @@ class Updates:
     ) -> Callable:
         r"""Information about a file was updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2804,7 +2804,7 @@ class Updates:
     ) -> Callable:
         r"""The file generation process needs to be started by the application\. Use setFileGenerationProgress and finishFileGeneration to generate the file
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2844,7 +2844,7 @@ class Updates:
     ) -> Callable:
         r"""File generation is no longer needed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2884,7 +2884,7 @@ class Updates:
     ) -> Callable:
         r"""The state of the file download list has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2918,7 +2918,7 @@ class Updates:
     ) -> Callable:
         r"""A file was added to the file download list\. This update is sent only after file download list is loaded for the first time
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2958,7 +2958,7 @@ class Updates:
     ) -> Callable:
         r"""A file download was changed\. This update is sent only after file download list is loaded for the first time
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -2992,7 +2992,7 @@ class Updates:
     ) -> Callable:
         r"""A file was removed from the file download list\. This update is sent only after file download list is loaded for the first time
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3032,7 +3032,7 @@ class Updates:
     ) -> Callable:
         r"""A request can't be completed unless application verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3072,7 +3072,7 @@ class Updates:
     ) -> Callable:
         r"""New call was created or information about a call was updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3106,7 +3106,7 @@ class Updates:
     ) -> Callable:
         r"""Information about a group call was updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3140,7 +3140,7 @@ class Updates:
     ) -> Callable:
         r"""Information about a group call participant was changed\. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3180,7 +3180,7 @@ class Updates:
     ) -> Callable:
         r"""New call signaling data arrived
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3220,7 +3220,7 @@ class Updates:
     ) -> Callable:
         r"""Some privacy setting rules have been changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3260,7 +3260,7 @@ class Updates:
     ) -> Callable:
         r"""Number of unread messages in a chat list has changed\. This update is sent only if the message database is used
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3300,7 +3300,7 @@ class Updates:
     ) -> Callable:
         r"""Number of unread chats, i\.e\. with unread messages or marked as unread, has changed\. This update is sent only if the message database is used
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3336,7 +3336,7 @@ class Updates:
     ) -> Callable:
         r"""A story was changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3370,7 +3370,7 @@ class Updates:
     ) -> Callable:
         r"""A story became inaccessible
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3404,7 +3404,7 @@ class Updates:
     ) -> Callable:
         r"""A story has been successfully sent
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3444,7 +3444,7 @@ class Updates:
     ) -> Callable:
         r"""A story failed to send\. If the story sending is canceled, then updateStoryDeleted will be received instead of this update
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3480,7 +3480,7 @@ class Updates:
     ) -> Callable:
         r"""The list of active stories posted by a specific chat has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3516,7 +3516,7 @@ class Updates:
     ) -> Callable:
         r"""Number of chats in a story list has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3556,7 +3556,7 @@ class Updates:
     ) -> Callable:
         r"""Story stealth mode settings have changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3592,7 +3592,7 @@ class Updates:
     ) -> Callable:
         r"""An option changed its value
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3626,7 +3626,7 @@ class Updates:
     ) -> Callable:
         r"""A sticker set has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3660,7 +3660,7 @@ class Updates:
     ) -> Callable:
         r"""The list of installed sticker sets was updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3700,7 +3700,7 @@ class Updates:
     ) -> Callable:
         r"""The list of trending sticker sets was updated or some of them were viewed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3740,7 +3740,7 @@ class Updates:
     ) -> Callable:
         r"""The list of recently used stickers was updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3774,7 +3774,7 @@ class Updates:
     ) -> Callable:
         r"""The list of favorite stickers was updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3810,7 +3810,7 @@ class Updates:
     ) -> Callable:
         r"""The list of saved animations was updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3846,7 +3846,7 @@ class Updates:
     ) -> Callable:
         r"""The list of saved notification sounds was updated\. This update may not be sent until information about a notification sound was requested for the first time
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3886,7 +3886,7 @@ class Updates:
     ) -> Callable:
         r"""The default background has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3922,7 +3922,7 @@ class Updates:
     ) -> Callable:
         r"""The list of available chat themes has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3956,7 +3956,7 @@ class Updates:
     ) -> Callable:
         r"""The list of supported accent colors has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -3990,7 +3990,7 @@ class Updates:
     ) -> Callable:
         r"""The list of supported accent colors for user profiles has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4030,7 +4030,7 @@ class Updates:
     ) -> Callable:
         r"""Some language pack strings have been updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4070,7 +4070,7 @@ class Updates:
     ) -> Callable:
         r"""The connection state has changed\. This update must be used only to show a human\-readable description of the connection state
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4106,7 +4106,7 @@ class Updates:
     ) -> Callable:
         r"""New terms of service must be accepted by the user\. If the terms of service are declined, then the deleteAccount method must be called with the reason \"Decline ToS update\"
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4140,7 +4140,7 @@ class Updates:
     ) -> Callable:
         r"""The first unconfirmed session has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4180,7 +4180,7 @@ class Updates:
     ) -> Callable:
         r"""The list of bots added to attachment or side menu has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4220,7 +4220,7 @@ class Updates:
     ) -> Callable:
         r"""A message was sent by an opened Web App, so the Web App needs to be closed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4256,7 +4256,7 @@ class Updates:
     ) -> Callable:
         r"""The list of active emoji reactions has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4296,7 +4296,7 @@ class Updates:
     ) -> Callable:
         r"""The list of available message effects has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4336,7 +4336,7 @@ class Updates:
     ) -> Callable:
         r"""The type of default reaction has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4376,7 +4376,7 @@ class Updates:
     ) -> Callable:
         r"""Tags used in Saved Messages or a Saved Messages topic have changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4412,7 +4412,7 @@ class Updates:
     ) -> Callable:
         r"""The list of messages with active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4452,7 +4452,7 @@ class Updates:
     ) -> Callable:
         r"""The number of Telegram Stars owned by the current user has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4486,7 +4486,7 @@ class Updates:
     ) -> Callable:
         r"""The revenue earned from sponsored messages in a chat has changed\. If chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4522,7 +4522,7 @@ class Updates:
     ) -> Callable:
         r"""The Telegram Star revenue earned by a bot or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4558,7 +4558,7 @@ class Updates:
     ) -> Callable:
         r"""The parameters of speech recognition without Telegram Premium subscription has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4598,7 +4598,7 @@ class Updates:
     ) -> Callable:
         r"""The list of supported dice emojis has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4632,7 +4632,7 @@ class Updates:
     ) -> Callable:
         r"""Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen\. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4672,7 +4672,7 @@ class Updates:
     ) -> Callable:
         r"""The parameters of animation search through getOption\(\"animation\_search\_bot\_username\"\) bot has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4712,7 +4712,7 @@ class Updates:
     ) -> Callable:
         r"""The list of suggested to the user actions has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4748,7 +4748,7 @@ class Updates:
     ) -> Callable:
         r"""Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user\. Use getOption\(\"premium\_download\_speedup\"\) or getOption\(\"premium\_upload\_speedup\"\) to get expected speedup after subscription to Telegram Premium
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4788,7 +4788,7 @@ class Updates:
     ) -> Callable:
         r"""The list of contacts that had birthdays recently or will have birthday soon has changed
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4828,7 +4828,7 @@ class Updates:
     ) -> Callable:
         r"""Autosave settings for some type of chats were updated
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4864,7 +4864,7 @@ class Updates:
     ) -> Callable:
         r"""A business connection has changed; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4904,7 +4904,7 @@ class Updates:
     ) -> Callable:
         r"""A new message was added to a business account; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4944,7 +4944,7 @@ class Updates:
     ) -> Callable:
         r"""A message in a business account was edited; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -4984,7 +4984,7 @@ class Updates:
     ) -> Callable:
         r"""Messages in a business account were deleted; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5024,7 +5024,7 @@ class Updates:
     ) -> Callable:
         r"""A new incoming inline query; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5058,7 +5058,7 @@ class Updates:
     ) -> Callable:
         r"""The user has chosen a result of an inline query; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5098,7 +5098,7 @@ class Updates:
     ) -> Callable:
         r"""A new incoming callback query; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5134,7 +5134,7 @@ class Updates:
     ) -> Callable:
         r"""A new incoming callback query from a message sent via a bot; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5174,7 +5174,7 @@ class Updates:
     ) -> Callable:
         r"""A new incoming callback query from a business message; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5214,7 +5214,7 @@ class Updates:
     ) -> Callable:
         r"""A new incoming shipping query; for bots only\. Only for invoices with flexible price
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5250,7 +5250,7 @@ class Updates:
     ) -> Callable:
         r"""A new incoming pre\-checkout query; for bots only\. Contains full information about a checkout
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5290,7 +5290,7 @@ class Updates:
     ) -> Callable:
         r"""A new incoming event; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5324,7 +5324,7 @@ class Updates:
     ) -> Callable:
         r"""A new incoming query; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5358,7 +5358,7 @@ class Updates:
     ) -> Callable:
         r"""A poll was updated; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5392,7 +5392,7 @@ class Updates:
     ) -> Callable:
         r"""A user changed the answer to a poll; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5426,7 +5426,7 @@ class Updates:
     ) -> Callable:
         r"""User rights changed in a chat; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5460,7 +5460,7 @@ class Updates:
     ) -> Callable:
         r"""A user sent a join request to a chat; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5500,7 +5500,7 @@ class Updates:
     ) -> Callable:
         r"""A chat boost has changed; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5534,7 +5534,7 @@ class Updates:
     ) -> Callable:
         r"""User changed its reactions on a message with public reactions; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5570,7 +5570,7 @@ class Updates:
     ) -> Callable:
         r"""Reactions added to a message with anonymous reactions have changed; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5606,7 +5606,7 @@ class Updates:
     ) -> Callable:
         r"""Paid media were purchased by a user; for bots only
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 
@@ -5646,7 +5646,7 @@ class Updates:
     ) -> Callable:
         r"""Contains a list of updates
 
-        Args:
+        Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
                 An update filter
 

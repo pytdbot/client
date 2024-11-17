@@ -6,7 +6,7 @@ class Plugins:
 
     def __init__(self, folder: str, include: list = None, exclude: list = None) -> None:
         """
-        Args:
+        Parameters:
             folder (``str``):
                 The folder to load plugins from
 
