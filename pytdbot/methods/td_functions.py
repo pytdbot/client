@@ -5792,6 +5792,61 @@ class TDLibFunctions:
             }
         )
 
+    async def savePreparedInlineMessage(
+        self,
+        user_id: int = 0,
+        result: "types.InputInlineQueryResult" = None,
+        chat_types: "types.TargetChatTypes" = None,
+    ) -> Union["types.Error", "types.PreparedInlineMessageId"]:
+        r"""Saves an inline message to be sent by the given user; for bots only
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user
+
+            result (:class:`"types.InputInlineQueryResult"`):
+                The description of the message
+
+            chat_types (:class:`"types.TargetChatTypes"`):
+                Types of the chats to which the message can be sent
+
+        Returns:
+            :class:`~pytdbot.types.PreparedInlineMessageId`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "savePreparedInlineMessage",
+                "user_id": user_id,
+                "result": result,
+                "chat_types": chat_types,
+            }
+        )
+
+    async def getPreparedInlineMessage(
+        self, bot_user_id: int = 0, prepared_message_id: str = ""
+    ) -> Union["types.Error", "types.PreparedInlineMessage"]:
+        r"""Saves an inline message to be sent by the given user; for bots only
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the bot that created the message
+
+            prepared_message_id (:class:`str`):
+                Identifier of the prepared message
+
+        Returns:
+            :class:`~pytdbot.types.PreparedInlineMessage`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getPreparedInlineMessage",
+                "bot_user_id": bot_user_id,
+                "prepared_message_id": prepared_message_id,
+            }
+        )
+
     async def getGrossingWebAppBots(
         self, offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.FoundUsers"]:
@@ -5836,15 +5891,31 @@ class TDLibFunctions:
             }
         )
 
+    async def getWebAppPlaceholder(
+        self, bot_user_id: int = 0
+    ) -> Union["types.Error", "types.Outline"]:
+        r"""Returns a default placeholder for Web Apps of a bot; this is an offline request\. Returns a 404 error if the placeholder isn't known
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the target bot
+
+        Returns:
+            :class:`~pytdbot.types.Outline`
+        """
+
+        return await self.invoke(
+            {"@type": "getWebAppPlaceholder", "bot_user_id": bot_user_id}
+        )
+
     async def getWebAppLinkUrl(
         self,
         chat_id: int = 0,
         bot_user_id: int = 0,
         web_app_short_name: str = "",
         start_parameter: str = "",
-        theme: "types.ThemeParameters" = None,
-        application_name: str = "",
         allow_write_access: bool = False,
+        parameters: "types.WebAppOpenParameters" = None,
     ) -> Union["types.Error", "types.HttpUrl"]:
         r"""Returns an HTTPS URL of a Web App to open after a link of the type internalLinkTypeWebApp is clicked
 
@@ -5861,14 +5932,11 @@ class TDLibFunctions:
             start_parameter (:class:`str`):
                 Start parameter from internalLinkTypeWebApp
 
-            theme (:class:`"types.ThemeParameters"`):
-                Preferred Web App theme; pass null to use the default theme
-
-            application_name (:class:`str`):
-                Short name of the current application; 0\-64 English letters, digits, and underscores
-
             allow_write_access (:class:`bool`):
                 Pass true if the current user allowed the bot to send them messages
+
+            parameters (:class:`"types.WebAppOpenParameters"`):
+                Parameters to use to open the Web App
 
         Returns:
             :class:`~pytdbot.types.HttpUrl`
@@ -5881,9 +5949,8 @@ class TDLibFunctions:
                 "bot_user_id": bot_user_id,
                 "web_app_short_name": web_app_short_name,
                 "start_parameter": start_parameter,
-                "theme": theme,
-                "application_name": application_name,
                 "allow_write_access": allow_write_access,
+                "parameters": parameters,
             }
         )
 
@@ -5892,8 +5959,7 @@ class TDLibFunctions:
         chat_id: int = 0,
         bot_user_id: int = 0,
         start_parameter: str = "",
-        theme: "types.ThemeParameters" = None,
-        application_name: str = "",
+        parameters: "types.WebAppOpenParameters" = None,
     ) -> Union["types.Error", "types.MainWebApp"]:
         r"""Returns information needed to open the main Web App of a bot
 
@@ -5907,11 +5973,8 @@ class TDLibFunctions:
             start_parameter (:class:`str`):
                 Start parameter from internalLinkTypeMainWebApp
 
-            theme (:class:`"types.ThemeParameters"`):
-                Preferred Web App theme; pass null to use the default theme
-
-            application_name (:class:`str`):
-                Short name of the current application; 0\-64 English letters, digits, and underscores
+            parameters (:class:`"types.WebAppOpenParameters"`):
+                Parameters to use to open the Web App
 
         Returns:
             :class:`~pytdbot.types.MainWebApp`
@@ -5923,8 +5986,7 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "bot_user_id": bot_user_id,
                 "start_parameter": start_parameter,
-                "theme": theme,
-                "application_name": application_name,
+                "parameters": parameters,
             }
         )
 
@@ -5932,8 +5994,7 @@ class TDLibFunctions:
         self,
         bot_user_id: int = 0,
         url: str = "",
-        theme: "types.ThemeParameters" = None,
-        application_name: str = "",
+        parameters: "types.WebAppOpenParameters" = None,
     ) -> Union["types.Error", "types.HttpUrl"]:
         r"""Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, or an inlineQueryResultsButtonTypeWebApp button
 
@@ -5944,11 +6005,8 @@ class TDLibFunctions:
             url (:class:`str`):
                 The URL from a keyboardButtonTypeWebApp button, inlineQueryResultsButtonTypeWebApp button, or an empty string when the bot is opened from the side menu
 
-            theme (:class:`"types.ThemeParameters"`):
-                Preferred Web App theme; pass null to use the default theme
-
-            application_name (:class:`str`):
-                Short name of the current application; 0\-64 English letters, digits, and underscores
+            parameters (:class:`"types.WebAppOpenParameters"`):
+                Parameters to use to open the Web App
 
         Returns:
             :class:`~pytdbot.types.HttpUrl`
@@ -5959,8 +6017,7 @@ class TDLibFunctions:
                 "@type": "getWebAppUrl",
                 "bot_user_id": bot_user_id,
                 "url": url,
-                "theme": theme,
-                "application_name": application_name,
+                "parameters": parameters,
             }
         )
 
@@ -5997,10 +6054,9 @@ class TDLibFunctions:
         chat_id: int = 0,
         bot_user_id: int = 0,
         url: str = "",
-        theme: "types.ThemeParameters" = None,
-        application_name: str = "",
         message_thread_id: int = 0,
         reply_to: "types.InputMessageReplyTo" = None,
+        parameters: "types.WebAppOpenParameters" = None,
     ) -> Union["types.Error", "types.WebAppInfo"]:
         r"""Informs TDLib that a Web App is being opened from the attachment menu, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an inlineKeyboardButtonTypeWebApp button\. For each bot, a confirmation alert about data sent to the bot must be shown once
 
@@ -6014,17 +6070,14 @@ class TDLibFunctions:
             url (:class:`str`):
                 The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
 
-            theme (:class:`"types.ThemeParameters"`):
-                Preferred Web App theme; pass null to use the default theme
-
-            application_name (:class:`str`):
-                Short name of the current application; 0\-64 English letters, digits, and underscores
-
             message_thread_id (:class:`int`):
                 If not 0, the message thread identifier in which the message will be sent
 
             reply_to (:class:`"types.InputMessageReplyTo"`):
                 Information about the message or story to be replied in the message sent by the Web App; pass null if none
+
+            parameters (:class:`"types.WebAppOpenParameters"`):
+                Parameters to use to open the Web App
 
         Returns:
             :class:`~pytdbot.types.WebAppInfo`
@@ -6036,10 +6089,9 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "bot_user_id": bot_user_id,
                 "url": url,
-                "theme": theme,
-                "application_name": application_name,
                 "message_thread_id": message_thread_id,
                 "reply_to": reply_to,
+                "parameters": parameters,
             }
         )
 
@@ -6081,6 +6133,34 @@ class TDLibFunctions:
                 "@type": "answerWebAppQuery",
                 "web_app_query_id": web_app_query_id,
                 "result": result,
+            }
+        )
+
+    async def checkWebAppFileDownload(
+        self, bot_user_id: int = 0, file_name: str = "", url: str = ""
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Checks whether a file can be downloaded and saved locally by Web App request
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the bot, providing the Web App
+
+            file_name (:class:`str`):
+                Name of the file
+
+            url (:class:`str`):
+                URL of the file
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "checkWebAppFileDownload",
+                "bot_user_id": bot_user_id,
+                "file_name": file_name,
+                "url": url,
             }
         )
 
@@ -10867,7 +10947,7 @@ class TDLibFunctions:
     async def getVideoChatRtmpUrl(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.RtmpUrl"]:
-        r"""Returns RTMP URL for streaming to the chat; requires owner privileges
+        r"""Returns RTMP URL for streaming to the chat; requires can\_manage\_video\_chats administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -11813,6 +11893,54 @@ class TDLibFunctions:
             {"@type": "suggestUserProfilePhoto", "user_id": user_id, "photo": photo}
         )
 
+    async def toggleBotCanManageEmojiStatus(
+        self, bot_user_id: int = 0, can_manage_emoji_status: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Toggles whether the bot can manage emoji status of the current user
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                User identifier of the bot
+
+            can_manage_emoji_status (:class:`bool`):
+                Pass true if the bot is allowed to change emoji status of the user; pass false otherwise
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "toggleBotCanManageEmojiStatus",
+                "bot_user_id": bot_user_id,
+                "can_manage_emoji_status": can_manage_emoji_status,
+            }
+        )
+
+    async def setUserEmojiStatus(
+        self, user_id: int = 0, emoji_status: "types.EmojiStatus" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the emoji status of a user; for bots only
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user
+
+            emoji_status (:class:`"types.EmojiStatus"`):
+                New emoji status; pass null to switch to the default badge
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setUserEmojiStatus",
+                "user_id": user_id,
+                "emoji_status": emoji_status,
+            }
+        )
+
     async def searchUserByPhoneNumber(
         self, phone_number: str = "", only_local: bool = False
     ) -> Union["types.Error", "types.User"]:
@@ -11877,6 +12005,37 @@ class TDLibFunctions:
                 "user_id": user_id,
                 "offset": offset,
                 "limit": limit,
+            }
+        )
+
+    async def getStickerOutline(
+        self,
+        sticker_file_id: int = 0,
+        for_animated_emoji: bool = False,
+        for_clicked_animated_emoji_message: bool = False,
+    ) -> Union["types.Error", "types.Outline"]:
+        r"""Returns outline of a sticker; this is an offline request\. Returns a 404 error if the outline isn't known
+
+        Parameters:
+            sticker_file_id (:class:`int`):
+                File identifier of the sticker
+
+            for_animated_emoji (:class:`bool`):
+                Pass true to get the outline scaled for animated emoji
+
+            for_clicked_animated_emoji_message (:class:`bool`):
+                Pass true to get the outline scaled for clicked animated emoji message
+
+        Returns:
+            :class:`~pytdbot.types.Outline`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getStickerOutline",
+                "sticker_file_id": sticker_file_id,
+                "for_animated_emoji": for_animated_emoji,
+                "for_clicked_animated_emoji_message": for_clicked_animated_emoji_message,
             }
         )
 
@@ -14938,11 +15097,16 @@ class TDLibFunctions:
         )
 
     async def createInvoiceLink(
-        self, invoice: "types.InputMessageContent" = None
+        self,
+        business_connection_id: str = "",
+        invoice: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.HttpUrl"]:
         r"""Creates a link for the given invoice; for bots only
 
         Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which to send the request
+
             invoice (:class:`"types.InputMessageContent"`):
                 Information about the invoice of the type inputMessageInvoice
 
@@ -14950,7 +15114,13 @@ class TDLibFunctions:
             :class:`~pytdbot.types.HttpUrl`
         """
 
-        return await self.invoke({"@type": "createInvoiceLink", "invoice": invoice})
+        return await self.invoke(
+            {
+                "@type": "createInvoiceLink",
+                "business_connection_id": business_connection_id,
+                "invoice": invoice,
+            }
+        )
 
     async def refundStarPayment(
         self, user_id: int = 0, telegram_payment_charge_id: str = ""
@@ -17391,7 +17561,7 @@ class TDLibFunctions:
     async def editStarSubscription(
         self, subscription_id: str = "", is_canceled: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Cancels or reenables Telegram Star subscription to a channel
+        r"""Cancels or re\-enables Telegram Star subscription
 
         Parameters:
             subscription_id (:class:`str`):
@@ -17412,10 +17582,41 @@ class TDLibFunctions:
             }
         )
 
+    async def editUserStarSubscription(
+        self,
+        user_id: int = 0,
+        telegram_payment_charge_id: str = "",
+        is_canceled: bool = False,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Cancels or re\-enables Telegram Star subscription for a user; for bots only
+
+        Parameters:
+            user_id (:class:`int`):
+                User identifier
+
+            telegram_payment_charge_id (:class:`str`):
+                Telegram payment identifier of the subscription
+
+            is_canceled (:class:`bool`):
+                Pass true to cancel the subscription; pass false to allow the user to enable it
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editUserStarSubscription",
+                "user_id": user_id,
+                "telegram_payment_charge_id": telegram_payment_charge_id,
+                "is_canceled": is_canceled,
+            }
+        )
+
     async def reuseStarSubscription(
         self, subscription_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Reuses an active subscription and joins the subscribed chat again
+        r"""Reuses an active Telegram Star subscription to a channel chat and joins the chat again
 
         Parameters:
             subscription_id (:class:`str`):

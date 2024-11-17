@@ -1,6 +1,6 @@
 from typing import Union, Literal, List
 from base64 import b64decode
-from .bound_methods import FileBoundMethods, MessageBoundMethods
+from .bound_methods import MessageBoundMethods, FileBoundMethods
 import pytdbot
 
 
@@ -129,6 +129,12 @@ class ChatPhotoStickerType:
 
 class InputChatPhoto:
     r"""Describes a photo to be set as a user profile or chat photo"""
+
+    pass
+
+
+class StarSubscriptionType:
+    r"""Describes type of subscription paid in Telegram Stars"""
 
     pass
 
@@ -339,6 +345,12 @@ class ReplyMarkup:
 
 class LoginUrlInfo:
     r"""Contains information about an inline button of type inlineKeyboardButtonTypeLoginUrl"""
+
+    pass
+
+
+class WebAppOpenMode:
+    r"""Describes mode in which a Web App is opened"""
 
     pass
 
@@ -643,6 +655,12 @@ class BotWriteAccessAllowReason:
     pass
 
 
+class TargetChat:
+    r"""Describes the target chat to be opened"""
+
+    pass
+
+
 class InputInlineQueryResult:
     r"""Represents a single result of an inline query; for bots only"""
 
@@ -855,12 +873,6 @@ class ReportChatResult:
 
 class ReportStoryResult:
     r"""Describes result of story report"""
-
-    pass
-
-
-class TargetChat:
-    r"""Describes the target chat to be opened"""
 
     pass
 
@@ -3900,7 +3912,7 @@ class StickerFullTypeCustomEmoji(TlObject, StickerFullType):
 
 
 class ClosedVectorPath(TlObject):
-    r"""Represents a closed vector path\. The path begins at the end point of the last command
+    r"""Represents a closed vector path\. The path begins at the end point of the last command\. The coordinate system origin is in the upper\-left corner
 
     Parameters:
         commands (:class:`List["types.VectorPathCommand"]`):
@@ -3929,6 +3941,40 @@ class ClosedVectorPath(TlObject):
         if data:
             data_class = cls()
             data_class.commands = data.get("commands", None)
+
+        return data_class
+
+
+class Outline(TlObject):
+    r"""Represents outline of an image
+
+    Parameters:
+        paths (:class:`List["types.ClosedVectorPath"]`):
+            The list of closed vector paths
+
+    """
+
+    def __init__(self, paths: List[ClosedVectorPath] = None) -> None:
+        self.paths: List[ClosedVectorPath] = paths or []
+        r"""The list of closed vector paths"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["outline"]:
+        return "outline"
+
+    def getClass(self) -> Literal["Outline"]:
+        return "Outline"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "paths": self.paths}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["Outline", None]:
+        if data:
+            data_class = cls()
+            data_class.paths = data.get("paths", None)
 
         return data_class
 
@@ -4455,9 +4501,6 @@ class Sticker(TlObject):
         full_type (:class:`"types.StickerFullType"`):
             Sticker's full type
 
-        outline (:class:`List["types.ClosedVectorPath"]`):
-            Sticker's outline represented as a list of closed vector paths; may be empty\. The coordinate system origin is in the upper\-left corner
-
         thumbnail (:class:`"types.Thumbnail"`):
             Sticker thumbnail in WEBP or JPEG format; may be null
 
@@ -4475,7 +4518,6 @@ class Sticker(TlObject):
         emoji: str = "",
         format: StickerFormat = None,
         full_type: StickerFullType = None,
-        outline: List[ClosedVectorPath] = None,
         thumbnail: Thumbnail = None,
         sticker: File = None,
     ) -> None:
@@ -4500,8 +4542,6 @@ class Sticker(TlObject):
             None,
         ] = full_type
         r"""Sticker's full type"""
-        self.outline: List[ClosedVectorPath] = outline or []
-        r"""Sticker's outline represented as a list of closed vector paths; may be empty\. The coordinate system origin is in the upper\-left corner"""
         self.thumbnail: Union[Thumbnail, None] = thumbnail
         r"""Sticker thumbnail in WEBP or JPEG format; may be null"""
         self.sticker: Union[File, None] = sticker
@@ -4526,7 +4566,6 @@ class Sticker(TlObject):
             "emoji": self.emoji,
             "format": self.format,
             "full_type": self.full_type,
-            "outline": self.outline,
             "thumbnail": self.thumbnail,
             "sticker": self.sticker,
         }
@@ -4542,7 +4581,6 @@ class Sticker(TlObject):
             data_class.emoji = data.get("emoji", "")
             data_class.format = data.get("format", None)
             data_class.full_type = data.get("full_type", None)
-            data_class.outline = data.get("outline", None)
             data_class.thumbnail = data.get("thumbnail", None)
             data_class.sticker = data.get("sticker", None)
 
@@ -5388,7 +5426,7 @@ class Poll(TlObject):
 
 
 class AlternativeVideo(TlObject):
-    r"""Describes an alternative reencoded quality of a video file
+    r"""Describes an alternative re\-encoded quality of a video file
 
     Parameters:
         width (:class:`int`):
@@ -7909,6 +7947,114 @@ class ChatAdministratorRights(TlObject):
         return data_class
 
 
+class StarSubscriptionTypeChannel(TlObject, StarSubscriptionType):
+    r"""Describes a subscription to a channel chat
+
+    Parameters:
+        can_reuse (:class:`bool`):
+            True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again
+
+        invite_link (:class:`str`):
+            The invite link that can be used to renew the subscription if it has been expired; may be empty, if the link isn't available anymore
+
+    """
+
+    def __init__(self, can_reuse: bool = False, invite_link: str = "") -> None:
+        self.can_reuse: bool = bool(can_reuse)
+        r"""True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again"""
+        self.invite_link: Union[str, None] = invite_link
+        r"""The invite link that can be used to renew the subscription if it has been expired; may be empty, if the link isn't available anymore"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starSubscriptionTypeChannel"]:
+        return "starSubscriptionTypeChannel"
+
+    def getClass(self) -> Literal["StarSubscriptionType"]:
+        return "StarSubscriptionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "can_reuse": self.can_reuse,
+            "invite_link": self.invite_link,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarSubscriptionTypeChannel", None]:
+        if data:
+            data_class = cls()
+            data_class.can_reuse = data.get("can_reuse", False)
+            data_class.invite_link = data.get("invite_link", "")
+
+        return data_class
+
+
+class StarSubscriptionTypeBot(TlObject, StarSubscriptionType):
+    r"""Describes a subscription in a bot or a business account
+
+    Parameters:
+        is_canceled_by_bot (:class:`bool`):
+            True, if the subscription was canceled by the bot and can't be extended
+
+        title (:class:`str`):
+            Subscription invoice title
+
+        photo (:class:`"types.Photo"`):
+            Subscription invoice photo
+
+        invoice_link (:class:`str`):
+            The link to the subscription invoice
+
+    """
+
+    def __init__(
+        self,
+        is_canceled_by_bot: bool = False,
+        title: str = "",
+        photo: Photo = None,
+        invoice_link: str = "",
+    ) -> None:
+        self.is_canceled_by_bot: bool = bool(is_canceled_by_bot)
+        r"""True, if the subscription was canceled by the bot and can't be extended"""
+        self.title: Union[str, None] = title
+        r"""Subscription invoice title"""
+        self.photo: Union[Photo, None] = photo
+        r"""Subscription invoice photo"""
+        self.invoice_link: Union[str, None] = invoice_link
+        r"""The link to the subscription invoice"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starSubscriptionTypeBot"]:
+        return "starSubscriptionTypeBot"
+
+    def getClass(self) -> Literal["StarSubscriptionType"]:
+        return "StarSubscriptionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "is_canceled_by_bot": self.is_canceled_by_bot,
+            "title": self.title,
+            "photo": self.photo,
+            "invoice_link": self.invoice_link,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarSubscriptionTypeBot", None]:
+        if data:
+            data_class = cls()
+            data_class.is_canceled_by_bot = data.get("is_canceled_by_bot", False)
+            data_class.title = data.get("title", "")
+            data_class.photo = data.get("photo", None)
+            data_class.invoice_link = data.get("invoice_link", "")
+
+        return data_class
+
+
 class StarSubscriptionPricing(TlObject):
     r"""Describes subscription plan paid in Telegram Stars
 
@@ -7954,20 +8100,17 @@ class StarSubscriptionPricing(TlObject):
 
 
 class StarSubscription(TlObject):
-    r"""Contains information about subscription to a channel chat paid in Telegram Stars
+    r"""Contains information about subscription to a channel chat, a bot, or a business account that was paid in Telegram Stars
 
     Parameters:
         id (:class:`str`):
             Unique identifier of the subscription
 
         chat_id (:class:`int`):
-            Identifier of the channel chat that is subscribed
+            Identifier of the chat that is subscribed
 
         expiration_date (:class:`int`):
             Point in time \(Unix timestamp\) when the subscription will expire or expired
-
-        can_reuse (:class:`bool`):
-            True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again
 
         is_canceled (:class:`bool`):
             True, if the subscription was canceled
@@ -7975,11 +8118,11 @@ class StarSubscription(TlObject):
         is_expiring (:class:`bool`):
             True, if the subscription expires soon and there are no enough Telegram Stars on the user's balance to extend it
 
-        invite_link (:class:`str`):
-            The invite link that can be used to renew the subscription if it has been expired; may be empty, if the link isn't available anymore
-
         pricing (:class:`"types.StarSubscriptionPricing"`):
             The subscription plan
+
+        type (:class:`"types.StarSubscriptionType"`):
+            Type of the subscription
 
     """
 
@@ -7988,28 +8131,27 @@ class StarSubscription(TlObject):
         id: str = "",
         chat_id: int = 0,
         expiration_date: int = 0,
-        can_reuse: bool = False,
         is_canceled: bool = False,
         is_expiring: bool = False,
-        invite_link: str = "",
         pricing: StarSubscriptionPricing = None,
+        type: StarSubscriptionType = None,
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the subscription"""
         self.chat_id: int = int(chat_id)
-        r"""Identifier of the channel chat that is subscribed"""
+        r"""Identifier of the chat that is subscribed"""
         self.expiration_date: int = int(expiration_date)
         r"""Point in time \(Unix timestamp\) when the subscription will expire or expired"""
-        self.can_reuse: bool = bool(can_reuse)
-        r"""True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again"""
         self.is_canceled: bool = bool(is_canceled)
         r"""True, if the subscription was canceled"""
         self.is_expiring: bool = bool(is_expiring)
         r"""True, if the subscription expires soon and there are no enough Telegram Stars on the user's balance to extend it"""
-        self.invite_link: Union[str, None] = invite_link
-        r"""The invite link that can be used to renew the subscription if it has been expired; may be empty, if the link isn't available anymore"""
         self.pricing: Union[StarSubscriptionPricing, None] = pricing
         r"""The subscription plan"""
+        self.type: Union[StarSubscriptionTypeChannel, StarSubscriptionTypeBot, None] = (
+            type
+        )
+        r"""Type of the subscription"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -8026,11 +8168,10 @@ class StarSubscription(TlObject):
             "id": self.id,
             "chat_id": self.chat_id,
             "expiration_date": self.expiration_date,
-            "can_reuse": self.can_reuse,
             "is_canceled": self.is_canceled,
             "is_expiring": self.is_expiring,
-            "invite_link": self.invite_link,
             "pricing": self.pricing,
+            "type": self.type,
         }
 
     @classmethod
@@ -8040,11 +8181,10 @@ class StarSubscription(TlObject):
             data_class.id = data.get("id", "")
             data_class.chat_id = int(data.get("chat_id", 0))
             data_class.expiration_date = int(data.get("expiration_date", 0))
-            data_class.can_reuse = data.get("can_reuse", False)
             data_class.is_canceled = data.get("is_canceled", False)
             data_class.is_expiring = data.get("is_expiring", False)
-            data_class.invite_link = data.get("invite_link", "")
             data_class.pricing = data.get("pricing", None)
+            data_class.type = data.get("type", None)
 
         return data_class
 
@@ -8882,6 +9022,9 @@ class Gift(TlObject):
         default_sell_star_count (:class:`int`):
             Number of Telegram Stars that can be claimed by the receiver instead of the gift by default\. If the gift was paid with just bought Telegram Stars, then full value can be claimed
 
+        is_for_birthday (:class:`bool`):
+            True, if the gift is a birthday gift
+
         remaining_count (:class:`int`):
             Number of remaining times the gift can be purchased by all users; 0 if not limited or the gift was sold out
 
@@ -8902,6 +9045,7 @@ class Gift(TlObject):
         sticker: Sticker = None,
         star_count: int = 0,
         default_sell_star_count: int = 0,
+        is_for_birthday: bool = False,
         remaining_count: int = 0,
         total_count: int = 0,
         first_send_date: int = 0,
@@ -8915,6 +9059,8 @@ class Gift(TlObject):
         r"""Number of Telegram Stars that must be paid for the gift"""
         self.default_sell_star_count: int = int(default_sell_star_count)
         r"""Number of Telegram Stars that can be claimed by the receiver instead of the gift by default\. If the gift was paid with just bought Telegram Stars, then full value can be claimed"""
+        self.is_for_birthday: bool = bool(is_for_birthday)
+        r"""True, if the gift is a birthday gift"""
         self.remaining_count: int = int(remaining_count)
         r"""Number of remaining times the gift can be purchased by all users; 0 if not limited or the gift was sold out"""
         self.total_count: int = int(total_count)
@@ -8940,6 +9086,7 @@ class Gift(TlObject):
             "sticker": self.sticker,
             "star_count": self.star_count,
             "default_sell_star_count": self.default_sell_star_count,
+            "is_for_birthday": self.is_for_birthday,
             "remaining_count": self.remaining_count,
             "total_count": self.total_count,
             "first_send_date": self.first_send_date,
@@ -8956,6 +9103,7 @@ class Gift(TlObject):
             data_class.default_sell_star_count = int(
                 data.get("default_sell_star_count", 0)
             )
+            data_class.is_for_birthday = data.get("is_for_birthday", False)
             data_class.remaining_count = int(data.get("remaining_count", 0))
             data_class.total_count = int(data.get("total_count", 0))
             data_class.first_send_date = int(data.get("first_send_date", 0))
@@ -9024,7 +9172,7 @@ class UserGift(TlObject):
             Identifier of the message with the gift in the chat with the sender of the gift; can be 0 or an identifier of a deleted message; only for the gift receiver
 
         sell_star_count (:class:`int`):
-            Number of Telegram Stars that can be claimed by the receiver instead of the gift; only for the gift receiver
+            Number of Telegram Stars that can be claimed by the receiver instead of the gift; 0 if the gift can't be sold by the current user
 
     """
 
@@ -9054,7 +9202,7 @@ class UserGift(TlObject):
         self.message_id: int = int(message_id)
         r"""Identifier of the message with the gift in the chat with the sender of the gift; can be 0 or an identifier of a deleted message; only for the gift receiver"""
         self.sell_star_count: int = int(sell_star_count)
-        r"""Number of Telegram Stars that can be claimed by the receiver instead of the gift; only for the gift receiver"""
+        r"""Number of Telegram Stars that can be claimed by the receiver instead of the gift; 0 if the gift can't be sold by the current user"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -9287,6 +9435,62 @@ class BotTransactionPurposeInvoicePayment(TlObject, BotTransactionPurpose):
         return data_class
 
 
+class BotTransactionPurposeSubscription(TlObject, BotTransactionPurpose):
+    r"""User bought a subscription in a bot or a business account
+
+    Parameters:
+        period (:class:`int`):
+            The number of seconds between consecutive Telegram Star debiting
+
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the bought subscription; may be null if not applicable
+
+        invoice_payload (:class:`bytes`):
+            Invoice payload; for bots only
+
+    """
+
+    def __init__(
+        self,
+        period: int = 0,
+        product_info: ProductInfo = None,
+        invoice_payload: bytes = b"",
+    ) -> None:
+        self.period: int = int(period)
+        r"""The number of seconds between consecutive Telegram Star debiting"""
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the bought subscription; may be null if not applicable"""
+        self.invoice_payload: Union[bytes, None] = invoice_payload
+        r"""Invoice payload; for bots only"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["botTransactionPurposeSubscription"]:
+        return "botTransactionPurposeSubscription"
+
+    def getClass(self) -> Literal["BotTransactionPurpose"]:
+        return "BotTransactionPurpose"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "period": self.period,
+            "product_info": self.product_info,
+            "invoice_payload": self.invoice_payload,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BotTransactionPurposeSubscription", None]:
+        if data:
+            data_class = cls()
+            data_class.period = int(data.get("period", 0))
+            data_class.product_info = data.get("product_info", None)
+            data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
+
+        return data_class
+
+
 class ChatTransactionPurposePaidMedia(TlObject, ChatTransactionPurpose):
     r"""Paid media were bought
 
@@ -9471,7 +9675,7 @@ class UserTransactionPurposeGiftedStars(TlObject, UserTransactionPurpose):
 
 
 class UserTransactionPurposeGiftSell(TlObject, UserTransactionPurpose):
-    r"""The current user sold a gift received from another user
+    r"""The user sold a gift received from another user or bot
 
     Parameters:
         gift (:class:`"types.Gift"`):
@@ -9505,7 +9709,7 @@ class UserTransactionPurposeGiftSell(TlObject, UserTransactionPurpose):
 
 
 class UserTransactionPurposeGiftSend(TlObject, UserTransactionPurpose):
-    r"""The current user sent a gift to another user
+    r"""The user or the bot sent a gift to a user
 
     Parameters:
         gift (:class:`"types.Gift"`):
@@ -9731,7 +9935,10 @@ class StarTransactionPartnerBot(TlObject, StarTransactionPartner):
         self.user_id: int = int(user_id)
         r"""Identifier of the bot"""
         self.purpose: Union[
-            BotTransactionPurposePaidMedia, BotTransactionPurposeInvoicePayment, None
+            BotTransactionPurposePaidMedia,
+            BotTransactionPurposeInvoicePayment,
+            BotTransactionPurposeSubscription,
+            None,
         ] = purpose
         r"""Purpose of the transaction"""
 
@@ -11113,8 +11320,23 @@ class BotInfo(TlObject):
         default_channel_administrator_rights (:class:`"types.ChatAdministratorRights"`):
             Default administrator rights for adding the bot to channels; may be null
 
+        web_app_background_light_color (:class:`int`):
+            Default light background color for bot Web Apps; \-1 if not specified
+
+        web_app_background_dark_color (:class:`int`):
+            Default dark background color for bot Web Apps; \-1 if not specified
+
+        web_app_header_light_color (:class:`int`):
+            Default light header color for bot Web Apps; \-1 if not specified
+
+        web_app_header_dark_color (:class:`int`):
+            Default dark header color for bot Web Apps; \-1 if not specified
+
         can_get_revenue_statistics (:class:`bool`):
-            True, if the bot's revenue statistics are available
+            True, if the bot's revenue statistics are available to the current user
+
+        can_manage_emoji_status (:class:`bool`):
+            True, if the bot can manage emoji status of the current user
 
         has_media_previews (:class:`bool`):
             True, if the bot has media previews
@@ -11144,7 +11366,12 @@ class BotInfo(TlObject):
         privacy_policy_url: str = "",
         default_group_administrator_rights: ChatAdministratorRights = None,
         default_channel_administrator_rights: ChatAdministratorRights = None,
+        web_app_background_light_color: int = 0,
+        web_app_background_dark_color: int = 0,
+        web_app_header_light_color: int = 0,
+        web_app_header_dark_color: int = 0,
         can_get_revenue_statistics: bool = False,
+        can_manage_emoji_status: bool = False,
         has_media_previews: bool = False,
         edit_commands_link: InternalLinkType = None,
         edit_description_link: InternalLinkType = None,
@@ -11173,8 +11400,18 @@ class BotInfo(TlObject):
             ChatAdministratorRights, None
         ] = default_channel_administrator_rights
         r"""Default administrator rights for adding the bot to channels; may be null"""
+        self.web_app_background_light_color: int = int(web_app_background_light_color)
+        r"""Default light background color for bot Web Apps; \-1 if not specified"""
+        self.web_app_background_dark_color: int = int(web_app_background_dark_color)
+        r"""Default dark background color for bot Web Apps; \-1 if not specified"""
+        self.web_app_header_light_color: int = int(web_app_header_light_color)
+        r"""Default light header color for bot Web Apps; \-1 if not specified"""
+        self.web_app_header_dark_color: int = int(web_app_header_dark_color)
+        r"""Default dark header color for bot Web Apps; \-1 if not specified"""
         self.can_get_revenue_statistics: bool = bool(can_get_revenue_statistics)
-        r"""True, if the bot's revenue statistics are available"""
+        r"""True, if the bot's revenue statistics are available to the current user"""
+        self.can_manage_emoji_status: bool = bool(can_manage_emoji_status)
+        r"""True, if the bot can manage emoji status of the current user"""
         self.has_media_previews: bool = bool(has_media_previews)
         r"""True, if the bot has media previews"""
         self.edit_commands_link: Union[
@@ -11395,7 +11632,12 @@ class BotInfo(TlObject):
             "privacy_policy_url": self.privacy_policy_url,
             "default_group_administrator_rights": self.default_group_administrator_rights,
             "default_channel_administrator_rights": self.default_channel_administrator_rights,
+            "web_app_background_light_color": self.web_app_background_light_color,
+            "web_app_background_dark_color": self.web_app_background_dark_color,
+            "web_app_header_light_color": self.web_app_header_light_color,
+            "web_app_header_dark_color": self.web_app_header_dark_color,
             "can_get_revenue_statistics": self.can_get_revenue_statistics,
+            "can_manage_emoji_status": self.can_manage_emoji_status,
             "has_media_previews": self.has_media_previews,
             "edit_commands_link": self.edit_commands_link,
             "edit_description_link": self.edit_description_link,
@@ -11420,8 +11662,23 @@ class BotInfo(TlObject):
             data_class.default_channel_administrator_rights = data.get(
                 "default_channel_administrator_rights", None
             )
+            data_class.web_app_background_light_color = int(
+                data.get("web_app_background_light_color", 0)
+            )
+            data_class.web_app_background_dark_color = int(
+                data.get("web_app_background_dark_color", 0)
+            )
+            data_class.web_app_header_light_color = int(
+                data.get("web_app_header_light_color", 0)
+            )
+            data_class.web_app_header_dark_color = int(
+                data.get("web_app_header_dark_color", 0)
+            )
             data_class.can_get_revenue_statistics = data.get(
                 "can_get_revenue_statistics", False
+            )
+            data_class.can_manage_emoji_status = data.get(
+                "can_manage_emoji_status", False
             )
             data_class.has_media_previews = data.get("has_media_previews", False)
             data_class.edit_commands_link = data.get("edit_commands_link", None)
@@ -22078,6 +22335,250 @@ class LoginUrlInfoRequestConfirmation(TlObject, LoginUrlInfo):
         return data_class
 
 
+class ThemeParameters(TlObject):
+    r"""Contains parameters of the application theme
+
+    Parameters:
+        background_color (:class:`int`):
+            A color of the background in the RGB format
+
+        secondary_background_color (:class:`int`):
+            A secondary color for the background in the RGB format
+
+        header_background_color (:class:`int`):
+            A color of the header background in the RGB format
+
+        bottom_bar_background_color (:class:`int`):
+            A color of the bottom bar background in the RGB format
+
+        section_background_color (:class:`int`):
+            A color of the section background in the RGB format
+
+        section_separator_color (:class:`int`):
+            A color of the section separator in the RGB format
+
+        text_color (:class:`int`):
+            A color of text in the RGB format
+
+        accent_text_color (:class:`int`):
+            An accent color of the text in the RGB format
+
+        section_header_text_color (:class:`int`):
+            A color of text on the section headers in the RGB format
+
+        subtitle_text_color (:class:`int`):
+            A color of the subtitle text in the RGB format
+
+        destructive_text_color (:class:`int`):
+            A color of the text for destructive actions in the RGB format
+
+        hint_color (:class:`int`):
+            A color of hints in the RGB format
+
+        link_color (:class:`int`):
+            A color of links in the RGB format
+
+        button_color (:class:`int`):
+            A color of the buttons in the RGB format
+
+        button_text_color (:class:`int`):
+            A color of text on the buttons in the RGB format
+
+    """
+
+    def __init__(
+        self,
+        background_color: int = 0,
+        secondary_background_color: int = 0,
+        header_background_color: int = 0,
+        bottom_bar_background_color: int = 0,
+        section_background_color: int = 0,
+        section_separator_color: int = 0,
+        text_color: int = 0,
+        accent_text_color: int = 0,
+        section_header_text_color: int = 0,
+        subtitle_text_color: int = 0,
+        destructive_text_color: int = 0,
+        hint_color: int = 0,
+        link_color: int = 0,
+        button_color: int = 0,
+        button_text_color: int = 0,
+    ) -> None:
+        self.background_color: int = int(background_color)
+        r"""A color of the background in the RGB format"""
+        self.secondary_background_color: int = int(secondary_background_color)
+        r"""A secondary color for the background in the RGB format"""
+        self.header_background_color: int = int(header_background_color)
+        r"""A color of the header background in the RGB format"""
+        self.bottom_bar_background_color: int = int(bottom_bar_background_color)
+        r"""A color of the bottom bar background in the RGB format"""
+        self.section_background_color: int = int(section_background_color)
+        r"""A color of the section background in the RGB format"""
+        self.section_separator_color: int = int(section_separator_color)
+        r"""A color of the section separator in the RGB format"""
+        self.text_color: int = int(text_color)
+        r"""A color of text in the RGB format"""
+        self.accent_text_color: int = int(accent_text_color)
+        r"""An accent color of the text in the RGB format"""
+        self.section_header_text_color: int = int(section_header_text_color)
+        r"""A color of text on the section headers in the RGB format"""
+        self.subtitle_text_color: int = int(subtitle_text_color)
+        r"""A color of the subtitle text in the RGB format"""
+        self.destructive_text_color: int = int(destructive_text_color)
+        r"""A color of the text for destructive actions in the RGB format"""
+        self.hint_color: int = int(hint_color)
+        r"""A color of hints in the RGB format"""
+        self.link_color: int = int(link_color)
+        r"""A color of links in the RGB format"""
+        self.button_color: int = int(button_color)
+        r"""A color of the buttons in the RGB format"""
+        self.button_text_color: int = int(button_text_color)
+        r"""A color of text on the buttons in the RGB format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["themeParameters"]:
+        return "themeParameters"
+
+    def getClass(self) -> Literal["ThemeParameters"]:
+        return "ThemeParameters"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "background_color": self.background_color,
+            "secondary_background_color": self.secondary_background_color,
+            "header_background_color": self.header_background_color,
+            "bottom_bar_background_color": self.bottom_bar_background_color,
+            "section_background_color": self.section_background_color,
+            "section_separator_color": self.section_separator_color,
+            "text_color": self.text_color,
+            "accent_text_color": self.accent_text_color,
+            "section_header_text_color": self.section_header_text_color,
+            "subtitle_text_color": self.subtitle_text_color,
+            "destructive_text_color": self.destructive_text_color,
+            "hint_color": self.hint_color,
+            "link_color": self.link_color,
+            "button_color": self.button_color,
+            "button_text_color": self.button_text_color,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ThemeParameters", None]:
+        if data:
+            data_class = cls()
+            data_class.background_color = int(data.get("background_color", 0))
+            data_class.secondary_background_color = int(
+                data.get("secondary_background_color", 0)
+            )
+            data_class.header_background_color = int(
+                data.get("header_background_color", 0)
+            )
+            data_class.bottom_bar_background_color = int(
+                data.get("bottom_bar_background_color", 0)
+            )
+            data_class.section_background_color = int(
+                data.get("section_background_color", 0)
+            )
+            data_class.section_separator_color = int(
+                data.get("section_separator_color", 0)
+            )
+            data_class.text_color = int(data.get("text_color", 0))
+            data_class.accent_text_color = int(data.get("accent_text_color", 0))
+            data_class.section_header_text_color = int(
+                data.get("section_header_text_color", 0)
+            )
+            data_class.subtitle_text_color = int(data.get("subtitle_text_color", 0))
+            data_class.destructive_text_color = int(
+                data.get("destructive_text_color", 0)
+            )
+            data_class.hint_color = int(data.get("hint_color", 0))
+            data_class.link_color = int(data.get("link_color", 0))
+            data_class.button_color = int(data.get("button_color", 0))
+            data_class.button_text_color = int(data.get("button_text_color", 0))
+
+        return data_class
+
+
+class WebAppOpenModeCompact(TlObject, WebAppOpenMode):
+    r"""The Web App is opened in the compact mode"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["webAppOpenModeCompact"]:
+        return "webAppOpenModeCompact"
+
+    def getClass(self) -> Literal["WebAppOpenMode"]:
+        return "WebAppOpenMode"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["WebAppOpenModeCompact", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class WebAppOpenModeFullSize(TlObject, WebAppOpenMode):
+    r"""The Web App is opened in the full\-size mode"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["webAppOpenModeFullSize"]:
+        return "webAppOpenModeFullSize"
+
+    def getClass(self) -> Literal["WebAppOpenMode"]:
+        return "WebAppOpenMode"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["WebAppOpenModeFullSize", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class WebAppOpenModeFullScreen(TlObject, WebAppOpenMode):
+    r"""The Web App is opened in the full\-screen mode"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["webAppOpenModeFullScreen"]:
+        return "webAppOpenModeFullScreen"
+
+    def getClass(self) -> Literal["WebAppOpenMode"]:
+        return "WebAppOpenMode"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["WebAppOpenModeFullScreen", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class FoundWebApp(TlObject):
     r"""Contains information about a Web App found by its short name
 
@@ -22181,16 +22682,21 @@ class MainWebApp(TlObject):
         url (:class:`str`):
             URL of the Web App to open
 
-        is_compact (:class:`bool`):
-            True, if the Web App must always be opened in the compact mode instead of the full\-size mode
+        mode (:class:`"types.WebAppOpenMode"`):
+            The mode in which the Web App must be opened
 
     """
 
-    def __init__(self, url: str = "", is_compact: bool = False) -> None:
+    def __init__(self, url: str = "", mode: WebAppOpenMode = None) -> None:
         self.url: Union[str, None] = url
         r"""URL of the Web App to open"""
-        self.is_compact: bool = bool(is_compact)
-        r"""True, if the Web App must always be opened in the compact mode instead of the full\-size mode"""
+        self.mode: Union[
+            WebAppOpenModeCompact,
+            WebAppOpenModeFullSize,
+            WebAppOpenModeFullScreen,
+            None,
+        ] = mode
+        r"""The mode in which the Web App must be opened"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -22202,14 +22708,75 @@ class MainWebApp(TlObject):
         return "MainWebApp"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "url": self.url, "is_compact": self.is_compact}
+        return {"@type": self.getType(), "url": self.url, "mode": self.mode}
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["MainWebApp", None]:
         if data:
             data_class = cls()
             data_class.url = data.get("url", "")
-            data_class.is_compact = data.get("is_compact", False)
+            data_class.mode = data.get("mode", None)
+
+        return data_class
+
+
+class WebAppOpenParameters(TlObject):
+    r"""Options to be used when a Web App is opened
+
+    Parameters:
+        theme (:class:`"types.ThemeParameters"`):
+            Preferred Web App theme; pass null to use the default theme
+
+        application_name (:class:`str`):
+            Short name of the current application; 0\-64 English letters, digits, and underscores
+
+        mode (:class:`"types.WebAppOpenMode"`):
+            The mode in which the Web App is opened; pass null to open in webAppOpenModeFullSize
+
+    """
+
+    def __init__(
+        self,
+        theme: ThemeParameters = None,
+        application_name: str = "",
+        mode: WebAppOpenMode = None,
+    ) -> None:
+        self.theme: Union[ThemeParameters, None] = theme
+        r"""Preferred Web App theme; pass null to use the default theme"""
+        self.application_name: Union[str, None] = application_name
+        r"""Short name of the current application; 0\-64 English letters, digits, and underscores"""
+        self.mode: Union[
+            WebAppOpenModeCompact,
+            WebAppOpenModeFullSize,
+            WebAppOpenModeFullScreen,
+            None,
+        ] = mode
+        r"""The mode in which the Web App is opened; pass null to open in webAppOpenModeFullSize"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["webAppOpenParameters"]:
+        return "webAppOpenParameters"
+
+    def getClass(self) -> Literal["WebAppOpenParameters"]:
+        return "WebAppOpenParameters"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "theme": self.theme,
+            "application_name": self.application_name,
+            "mode": self.mode,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["WebAppOpenParameters", None]:
+        if data:
+            data_class = cls()
+            data_class.theme = data.get("theme", None)
+            data_class.application_name = data.get("application_name", "")
+            data_class.mode = data.get("mode", None)
 
         return data_class
 
@@ -28358,172 +28925,6 @@ class LocationAddress(TlObject):
         return data_class
 
 
-class ThemeParameters(TlObject):
-    r"""Contains parameters of the application theme
-
-    Parameters:
-        background_color (:class:`int`):
-            A color of the background in the RGB format
-
-        secondary_background_color (:class:`int`):
-            A secondary color for the background in the RGB format
-
-        header_background_color (:class:`int`):
-            A color of the header background in the RGB format
-
-        bottom_bar_background_color (:class:`int`):
-            A color of the bottom bar background in the RGB format
-
-        section_background_color (:class:`int`):
-            A color of the section background in the RGB format
-
-        section_separator_color (:class:`int`):
-            A color of the section separator in the RGB format
-
-        text_color (:class:`int`):
-            A color of text in the RGB format
-
-        accent_text_color (:class:`int`):
-            An accent color of the text in the RGB format
-
-        section_header_text_color (:class:`int`):
-            A color of text on the section headers in the RGB format
-
-        subtitle_text_color (:class:`int`):
-            A color of the subtitle text in the RGB format
-
-        destructive_text_color (:class:`int`):
-            A color of the text for destructive actions in the RGB format
-
-        hint_color (:class:`int`):
-            A color of hints in the RGB format
-
-        link_color (:class:`int`):
-            A color of links in the RGB format
-
-        button_color (:class:`int`):
-            A color of the buttons in the RGB format
-
-        button_text_color (:class:`int`):
-            A color of text on the buttons in the RGB format
-
-    """
-
-    def __init__(
-        self,
-        background_color: int = 0,
-        secondary_background_color: int = 0,
-        header_background_color: int = 0,
-        bottom_bar_background_color: int = 0,
-        section_background_color: int = 0,
-        section_separator_color: int = 0,
-        text_color: int = 0,
-        accent_text_color: int = 0,
-        section_header_text_color: int = 0,
-        subtitle_text_color: int = 0,
-        destructive_text_color: int = 0,
-        hint_color: int = 0,
-        link_color: int = 0,
-        button_color: int = 0,
-        button_text_color: int = 0,
-    ) -> None:
-        self.background_color: int = int(background_color)
-        r"""A color of the background in the RGB format"""
-        self.secondary_background_color: int = int(secondary_background_color)
-        r"""A secondary color for the background in the RGB format"""
-        self.header_background_color: int = int(header_background_color)
-        r"""A color of the header background in the RGB format"""
-        self.bottom_bar_background_color: int = int(bottom_bar_background_color)
-        r"""A color of the bottom bar background in the RGB format"""
-        self.section_background_color: int = int(section_background_color)
-        r"""A color of the section background in the RGB format"""
-        self.section_separator_color: int = int(section_separator_color)
-        r"""A color of the section separator in the RGB format"""
-        self.text_color: int = int(text_color)
-        r"""A color of text in the RGB format"""
-        self.accent_text_color: int = int(accent_text_color)
-        r"""An accent color of the text in the RGB format"""
-        self.section_header_text_color: int = int(section_header_text_color)
-        r"""A color of text on the section headers in the RGB format"""
-        self.subtitle_text_color: int = int(subtitle_text_color)
-        r"""A color of the subtitle text in the RGB format"""
-        self.destructive_text_color: int = int(destructive_text_color)
-        r"""A color of the text for destructive actions in the RGB format"""
-        self.hint_color: int = int(hint_color)
-        r"""A color of hints in the RGB format"""
-        self.link_color: int = int(link_color)
-        r"""A color of links in the RGB format"""
-        self.button_color: int = int(button_color)
-        r"""A color of the buttons in the RGB format"""
-        self.button_text_color: int = int(button_text_color)
-        r"""A color of text on the buttons in the RGB format"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["themeParameters"]:
-        return "themeParameters"
-
-    def getClass(self) -> Literal["ThemeParameters"]:
-        return "ThemeParameters"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "background_color": self.background_color,
-            "secondary_background_color": self.secondary_background_color,
-            "header_background_color": self.header_background_color,
-            "bottom_bar_background_color": self.bottom_bar_background_color,
-            "section_background_color": self.section_background_color,
-            "section_separator_color": self.section_separator_color,
-            "text_color": self.text_color,
-            "accent_text_color": self.accent_text_color,
-            "section_header_text_color": self.section_header_text_color,
-            "subtitle_text_color": self.subtitle_text_color,
-            "destructive_text_color": self.destructive_text_color,
-            "hint_color": self.hint_color,
-            "link_color": self.link_color,
-            "button_color": self.button_color,
-            "button_text_color": self.button_text_color,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["ThemeParameters", None]:
-        if data:
-            data_class = cls()
-            data_class.background_color = int(data.get("background_color", 0))
-            data_class.secondary_background_color = int(
-                data.get("secondary_background_color", 0)
-            )
-            data_class.header_background_color = int(
-                data.get("header_background_color", 0)
-            )
-            data_class.bottom_bar_background_color = int(
-                data.get("bottom_bar_background_color", 0)
-            )
-            data_class.section_background_color = int(
-                data.get("section_background_color", 0)
-            )
-            data_class.section_separator_color = int(
-                data.get("section_separator_color", 0)
-            )
-            data_class.text_color = int(data.get("text_color", 0))
-            data_class.accent_text_color = int(data.get("accent_text_color", 0))
-            data_class.section_header_text_color = int(
-                data.get("section_header_text_color", 0)
-            )
-            data_class.subtitle_text_color = int(data.get("subtitle_text_color", 0))
-            data_class.destructive_text_color = int(
-                data.get("destructive_text_color", 0)
-            )
-            data_class.hint_color = int(data.get("hint_color", 0))
-            data_class.link_color = int(data.get("link_color", 0))
-            data_class.button_color = int(data.get("button_color", 0))
-            data_class.button_text_color = int(data.get("button_text_color", 0))
-
-        return data_class
-
-
 class LabeledPricePart(TlObject):
     r"""Portion of the price of a product \(e\.g\., \"delivery cost\", \"tax amount\"\)
 
@@ -28574,6 +28975,9 @@ class Invoice(TlObject):
         price_parts (:class:`List["types.LabeledPricePart"]`):
             A list of objects used to calculate the total price of the product
 
+        subscription_period (:class:`int`):
+            The number of seconds between consecutive Telegram Star debiting for subscription invoices; 0 if the invoice doesn't create subscription
+
         max_tip_amount (:class:`int`):
             The maximum allowed amount of tip in the smallest units of the currency
 
@@ -28616,6 +29020,7 @@ class Invoice(TlObject):
         self,
         currency: str = "",
         price_parts: List[LabeledPricePart] = None,
+        subscription_period: int = 0,
         max_tip_amount: int = 0,
         suggested_tip_amounts: List[int] = None,
         recurring_payment_terms_of_service_url: str = "",
@@ -28633,6 +29038,8 @@ class Invoice(TlObject):
         r"""ISO 4217 currency code"""
         self.price_parts: List[LabeledPricePart] = price_parts or []
         r"""A list of objects used to calculate the total price of the product"""
+        self.subscription_period: int = int(subscription_period)
+        r"""The number of seconds between consecutive Telegram Star debiting for subscription invoices; 0 if the invoice doesn't create subscription"""
         self.max_tip_amount: int = int(max_tip_amount)
         r"""The maximum allowed amount of tip in the smallest units of the currency"""
         self.suggested_tip_amounts: List[int] = suggested_tip_amounts or []
@@ -28674,6 +29081,7 @@ class Invoice(TlObject):
             "@type": self.getType(),
             "currency": self.currency,
             "price_parts": self.price_parts,
+            "subscription_period": self.subscription_period,
             "max_tip_amount": self.max_tip_amount,
             "suggested_tip_amounts": self.suggested_tip_amounts,
             "recurring_payment_terms_of_service_url": self.recurring_payment_terms_of_service_url,
@@ -28694,6 +29102,7 @@ class Invoice(TlObject):
             data_class = cls()
             data_class.currency = data.get("currency", "")
             data_class.price_parts = data.get("price_parts", None)
+            data_class.subscription_period = int(data.get("subscription_period", 0))
             data_class.max_tip_amount = int(data.get("max_tip_amount", 0))
             data_class.suggested_tip_amounts = data.get("suggested_tip_amounts", None)
             data_class.recurring_payment_terms_of_service_url = data.get(
@@ -29345,6 +29754,40 @@ class PaymentFormTypeStars(TlObject, PaymentFormType):
         return data_class
 
 
+class PaymentFormTypeStarSubscription(TlObject, PaymentFormType):
+    r"""The payment form is for a payment in Telegram Stars for subscription
+
+    Parameters:
+        pricing (:class:`"types.StarSubscriptionPricing"`):
+            Information about subscription plan
+
+    """
+
+    def __init__(self, pricing: StarSubscriptionPricing = None) -> None:
+        self.pricing: Union[StarSubscriptionPricing, None] = pricing
+        r"""Information about subscription plan"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["paymentFormTypeStarSubscription"]:
+        return "paymentFormTypeStarSubscription"
+
+    def getClass(self) -> Literal["PaymentFormType"]:
+        return "PaymentFormType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "pricing": self.pricing}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PaymentFormTypeStarSubscription", None]:
+        if data:
+            data_class = cls()
+            data_class.pricing = data.get("pricing", None)
+
+        return data_class
+
+
 class PaymentForm(TlObject):
     r"""Contains information about an invoice payment form
 
@@ -29372,7 +29815,12 @@ class PaymentForm(TlObject):
     ) -> None:
         self.id: int = int(id)
         r"""The payment form identifier"""
-        self.type: Union[PaymentFormTypeRegular, PaymentFormTypeStars, None] = type
+        self.type: Union[
+            PaymentFormTypeRegular,
+            PaymentFormTypeStars,
+            PaymentFormTypeStarSubscription,
+            None,
+        ] = type
         r"""Type of the payment form"""
         self.seller_bot_user_id: int = int(seller_bot_user_id)
         r"""User identifier of the seller bot"""
@@ -35296,7 +35744,7 @@ class MessageGameScore(TlObject, MessageContent):
 
 
 class MessagePaymentSuccessful(TlObject, MessageContent):
-    r"""A payment has been completed
+    r"""A payment has been sent to a bot or a business account
 
     Parameters:
         invoice_chat_id (:class:`int`):
@@ -35310,6 +35758,9 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
 
         total_amount (:class:`int`):
             Total price for the product, in the smallest units of the currency
+
+        subscription_until_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the subscription will expire; 0 if unknown or the payment isn't recurring
 
         is_recurring (:class:`bool`):
             True, if this is a recurring payment
@@ -35328,6 +35779,7 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
         invoice_message_id: int = 0,
         currency: str = "",
         total_amount: int = 0,
+        subscription_until_date: int = 0,
         is_recurring: bool = False,
         is_first_recurring: bool = False,
         invoice_name: str = "",
@@ -35340,6 +35792,8 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
         r"""Currency for the price of the product"""
         self.total_amount: int = int(total_amount)
         r"""Total price for the product, in the smallest units of the currency"""
+        self.subscription_until_date: int = int(subscription_until_date)
+        r"""Point in time \(Unix timestamp\) when the subscription will expire; 0 if unknown or the payment isn't recurring"""
         self.is_recurring: bool = bool(is_recurring)
         r"""True, if this is a recurring payment"""
         self.is_first_recurring: bool = bool(is_first_recurring)
@@ -35363,6 +35817,7 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
             "invoice_message_id": self.invoice_message_id,
             "currency": self.currency,
             "total_amount": self.total_amount,
+            "subscription_until_date": self.subscription_until_date,
             "is_recurring": self.is_recurring,
             "is_first_recurring": self.is_first_recurring,
             "invoice_name": self.invoice_name,
@@ -35376,6 +35831,9 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
             data_class.invoice_message_id = int(data.get("invoice_message_id", 0))
             data_class.currency = data.get("currency", "")
             data_class.total_amount = int(data.get("total_amount", 0))
+            data_class.subscription_until_date = int(
+                data.get("subscription_until_date", 0)
+            )
             data_class.is_recurring = data.get("is_recurring", False)
             data_class.is_first_recurring = data.get("is_first_recurring", False)
             data_class.invoice_name = data.get("invoice_name", "")
@@ -35384,7 +35842,7 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
 
 
 class MessagePaymentSuccessfulBot(TlObject, MessageContent):
-    r"""A payment has been completed; for bots only
+    r"""A payment has been received by the bot or the business account
 
     Parameters:
         currency (:class:`str`):
@@ -35392,6 +35850,9 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
 
         total_amount (:class:`int`):
             Total price for the product, in the smallest units of the currency
+
+        subscription_until_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the subscription will expire; 0 if unknown or the payment isn't recurring
 
         is_recurring (:class:`bool`):
             True, if this is a recurring payment
@@ -35403,10 +35864,10 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
             Invoice payload
 
         shipping_option_id (:class:`str`):
-            Identifier of the shipping option chosen by the user; may be empty if not applicable
+            Identifier of the shipping option chosen by the user; may be empty if not applicable; for bots only
 
         order_info (:class:`"types.OrderInfo"`):
-            Information about the order; may be null
+            Information about the order; may be null; for bots only
 
         telegram_payment_charge_id (:class:`str`):
             Telegram payment identifier
@@ -35420,6 +35881,7 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
         self,
         currency: str = "",
         total_amount: int = 0,
+        subscription_until_date: int = 0,
         is_recurring: bool = False,
         is_first_recurring: bool = False,
         invoice_payload: bytes = b"",
@@ -35432,6 +35894,8 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
         r"""Currency for price of the product"""
         self.total_amount: int = int(total_amount)
         r"""Total price for the product, in the smallest units of the currency"""
+        self.subscription_until_date: int = int(subscription_until_date)
+        r"""Point in time \(Unix timestamp\) when the subscription will expire; 0 if unknown or the payment isn't recurring"""
         self.is_recurring: bool = bool(is_recurring)
         r"""True, if this is a recurring payment"""
         self.is_first_recurring: bool = bool(is_first_recurring)
@@ -35439,9 +35903,9 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
         self.invoice_payload: Union[bytes, None] = invoice_payload
         r"""Invoice payload"""
         self.shipping_option_id: Union[str, None] = shipping_option_id
-        r"""Identifier of the shipping option chosen by the user; may be empty if not applicable"""
+        r"""Identifier of the shipping option chosen by the user; may be empty if not applicable; for bots only"""
         self.order_info: Union[OrderInfo, None] = order_info
-        r"""Information about the order; may be null"""
+        r"""Information about the order; may be null; for bots only"""
         self.telegram_payment_charge_id: Union[str, None] = telegram_payment_charge_id
         r"""Telegram payment identifier"""
         self.provider_payment_charge_id: Union[str, None] = provider_payment_charge_id
@@ -35461,6 +35925,7 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
             "@type": self.getType(),
             "currency": self.currency,
             "total_amount": self.total_amount,
+            "subscription_until_date": self.subscription_until_date,
             "is_recurring": self.is_recurring,
             "is_first_recurring": self.is_first_recurring,
             "invoice_payload": self.invoice_payload,
@@ -35476,6 +35941,9 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
             data_class = cls()
             data_class.currency = data.get("currency", "")
             data_class.total_amount = int(data.get("total_amount", 0))
+            data_class.subscription_until_date = int(
+                data.get("subscription_until_date", 0)
+            )
             data_class.is_recurring = data.get("is_recurring", False)
             data_class.is_first_recurring = data.get("is_first_recurring", False)
             data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
@@ -36278,7 +36746,7 @@ class MessageGift(TlObject, MessageContent):
             Message added to the gift
 
         sell_star_count (:class:`int`):
-            Number of Telegram Stars that can be claimed by the receiver instead of the gift
+            Number of Telegram Stars that can be claimed by the receiver instead of the gift; 0 if the gift can't be sold by the receiver
 
         is_private (:class:`bool`):
             True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them
@@ -36305,7 +36773,7 @@ class MessageGift(TlObject, MessageContent):
         self.text: Union[FormattedText, None] = text
         r"""Message added to the gift"""
         self.sell_star_count: int = int(sell_star_count)
-        r"""Number of Telegram Stars that can be claimed by the receiver instead of the gift"""
+        r"""Number of Telegram Stars that can be claimed by the receiver instead of the gift; 0 if the gift can't be sold by the receiver"""
         self.is_private: bool = bool(is_private)
         r"""True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them"""
         self.is_saved: bool = bool(is_saved)
@@ -38476,7 +38944,7 @@ class InputMessageVideo(TlObject, InputMessageContent):
 
     Parameters:
         video (:class:`"types.InputFile"`):
-            Video to be sent\. The video is expected to be reencoded to MPEG4 format with H\.264 codec by the sender
+            Video to be sent\. The video is expected to be re\-encoded to MPEG4 format with H\.264 codec by the sender
 
         thumbnail (:class:`"types.InputThumbnail"`):
             Video thumbnail; pass null to skip thumbnail uploading
@@ -38527,7 +38995,7 @@ class InputMessageVideo(TlObject, InputMessageContent):
         self.video: Union[
             InputFileId, InputFileRemote, InputFileLocal, InputFileGenerated, None
         ] = video
-        r"""Video to be sent\. The video is expected to be reencoded to MPEG4 format with H\.264 codec by the sender"""
+        r"""Video to be sent\. The video is expected to be re\-encoded to MPEG4 format with H\.264 codec by the sender"""
         self.thumbnail: Union[InputThumbnail, None] = thumbnail
         r"""Video thumbnail; pass null to skip thumbnail uploading"""
         self.added_sticker_file_ids: List[int] = added_sticker_file_ids or []
@@ -40814,8 +41282,8 @@ class StickerSet(TlObject):
         thumbnail (:class:`"types.Thumbnail"`):
             Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null\. The file can be downloaded only before the thumbnail is changed
 
-        thumbnail_outline (:class:`List["types.ClosedVectorPath"]`):
-            Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty\. The coordinate system origin is in the upper\-left corner
+        thumbnail_outline (:class:`"types.Outline"`):
+            Sticker set thumbnail's outline; may be null if unknown
 
         is_owned (:class:`bool`):
             True, if the sticker set is owned by the current user
@@ -40855,7 +41323,7 @@ class StickerSet(TlObject):
         title: str = "",
         name: str = "",
         thumbnail: Thumbnail = None,
-        thumbnail_outline: List[ClosedVectorPath] = None,
+        thumbnail_outline: Outline = None,
         is_owned: bool = False,
         is_installed: bool = False,
         is_archived: bool = False,
@@ -40875,8 +41343,8 @@ class StickerSet(TlObject):
         r"""Name of the sticker set"""
         self.thumbnail: Union[Thumbnail, None] = thumbnail
         r"""Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null\. The file can be downloaded only before the thumbnail is changed"""
-        self.thumbnail_outline: List[ClosedVectorPath] = thumbnail_outline or []
-        r"""Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty\. The coordinate system origin is in the upper\-left corner"""
+        self.thumbnail_outline: Union[Outline, None] = thumbnail_outline
+        r"""Sticker set thumbnail's outline; may be null if unknown"""
         self.is_owned: bool = bool(is_owned)
         r"""True, if the sticker set is owned by the current user"""
         self.is_installed: bool = bool(is_installed)
@@ -40972,8 +41440,8 @@ class StickerSetInfo(TlObject):
         thumbnail (:class:`"types.Thumbnail"`):
             Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null\. The file can be downloaded only before the thumbnail is changed
 
-        thumbnail_outline (:class:`List["types.ClosedVectorPath"]`):
-            Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty\. The coordinate system origin is in the upper\-left corner
+        thumbnail_outline (:class:`"types.Outline"`):
+            Sticker set thumbnail's outline; may be null if unknown
 
         is_owned (:class:`bool`):
             True, if the sticker set is owned by the current user
@@ -41013,7 +41481,7 @@ class StickerSetInfo(TlObject):
         title: str = "",
         name: str = "",
         thumbnail: Thumbnail = None,
-        thumbnail_outline: List[ClosedVectorPath] = None,
+        thumbnail_outline: Outline = None,
         is_owned: bool = False,
         is_installed: bool = False,
         is_archived: bool = False,
@@ -41033,8 +41501,8 @@ class StickerSetInfo(TlObject):
         r"""Name of the sticker set"""
         self.thumbnail: Union[Thumbnail, None] = thumbnail
         r"""Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null\. The file can be downloaded only before the thumbnail is changed"""
-        self.thumbnail_outline: List[ClosedVectorPath] = thumbnail_outline or []
-        r"""Sticker set thumbnail's outline represented as a list of closed vector paths; may be empty\. The coordinate system origin is in the upper\-left corner"""
+        self.thumbnail_outline: Union[Outline, None] = thumbnail_outline
+        r"""Sticker set thumbnail's outline; may be null if unknown"""
         self.is_owned: bool = bool(is_owned)
         r"""True, if the sticker set is owned by the current user"""
         self.is_installed: bool = bool(is_installed)
@@ -48434,6 +48902,211 @@ class UserLink(TlObject):
         return data_class
 
 
+class TargetChatTypes(TlObject):
+    r"""Describes allowed types for the target chat
+
+    Parameters:
+        allow_user_chats (:class:`bool`):
+            True, if private chats with ordinary users are allowed
+
+        allow_bot_chats (:class:`bool`):
+            True, if private chats with other bots are allowed
+
+        allow_group_chats (:class:`bool`):
+            True, if basic group and supergroup chats are allowed
+
+        allow_channel_chats (:class:`bool`):
+            True, if channel chats are allowed
+
+    """
+
+    def __init__(
+        self,
+        allow_user_chats: bool = False,
+        allow_bot_chats: bool = False,
+        allow_group_chats: bool = False,
+        allow_channel_chats: bool = False,
+    ) -> None:
+        self.allow_user_chats: bool = bool(allow_user_chats)
+        r"""True, if private chats with ordinary users are allowed"""
+        self.allow_bot_chats: bool = bool(allow_bot_chats)
+        r"""True, if private chats with other bots are allowed"""
+        self.allow_group_chats: bool = bool(allow_group_chats)
+        r"""True, if basic group and supergroup chats are allowed"""
+        self.allow_channel_chats: bool = bool(allow_channel_chats)
+        r"""True, if channel chats are allowed"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["targetChatTypes"]:
+        return "targetChatTypes"
+
+    def getClass(self) -> Literal["TargetChatTypes"]:
+        return "TargetChatTypes"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "allow_user_chats": self.allow_user_chats,
+            "allow_bot_chats": self.allow_bot_chats,
+            "allow_group_chats": self.allow_group_chats,
+            "allow_channel_chats": self.allow_channel_chats,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TargetChatTypes", None]:
+        if data:
+            data_class = cls()
+            data_class.allow_user_chats = data.get("allow_user_chats", False)
+            data_class.allow_bot_chats = data.get("allow_bot_chats", False)
+            data_class.allow_group_chats = data.get("allow_group_chats", False)
+            data_class.allow_channel_chats = data.get("allow_channel_chats", False)
+
+        return data_class
+
+
+class TargetChatCurrent(TlObject, TargetChat):
+    r"""The currently opened chat needs to be kept"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["targetChatCurrent"]:
+        return "targetChatCurrent"
+
+    def getClass(self) -> Literal["TargetChat"]:
+        return "TargetChat"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TargetChatCurrent", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TargetChatChosen(TlObject, TargetChat):
+    r"""The chat needs to be chosen by the user among chats of the specified types
+
+    Parameters:
+        types (:class:`"types.TargetChatTypes"`):
+            Allowed types for the chat
+
+    """
+
+    def __init__(self, types: TargetChatTypes = None) -> None:
+        self.types: Union[TargetChatTypes, None] = types
+        r"""Allowed types for the chat"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["targetChatChosen"]:
+        return "targetChatChosen"
+
+    def getClass(self) -> Literal["TargetChat"]:
+        return "TargetChat"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "types": self.types}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TargetChatChosen", None]:
+        if data:
+            data_class = cls()
+            data_class.types = data.get("types", None)
+
+        return data_class
+
+
+class TargetChatInternalLink(TlObject, TargetChat):
+    r"""The chat needs to be open with the provided internal link
+
+    Parameters:
+        link (:class:`"types.InternalLinkType"`):
+            An internal link pointing to the chat
+
+    """
+
+    def __init__(self, link: InternalLinkType = None) -> None:
+        self.link: Union[
+            InternalLinkTypeActiveSessions,
+            InternalLinkTypeAttachmentMenuBot,
+            InternalLinkTypeAuthenticationCode,
+            InternalLinkTypeBackground,
+            InternalLinkTypeBotAddToChannel,
+            InternalLinkTypeBotStart,
+            InternalLinkTypeBotStartInGroup,
+            InternalLinkTypeBusinessChat,
+            InternalLinkTypeBuyStars,
+            InternalLinkTypeChangePhoneNumber,
+            InternalLinkTypeChatBoost,
+            InternalLinkTypeChatFolderInvite,
+            InternalLinkTypeChatFolderSettings,
+            InternalLinkTypeChatInvite,
+            InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
+            InternalLinkTypeEditProfileSettings,
+            InternalLinkTypeGame,
+            InternalLinkTypeInstantView,
+            InternalLinkTypeInvoice,
+            InternalLinkTypeLanguagePack,
+            InternalLinkTypeLanguageSettings,
+            InternalLinkTypeMainWebApp,
+            InternalLinkTypeMessage,
+            InternalLinkTypeMessageDraft,
+            InternalLinkTypePassportDataRequest,
+            InternalLinkTypePhoneNumberConfirmation,
+            InternalLinkTypePremiumFeatures,
+            InternalLinkTypePremiumGift,
+            InternalLinkTypePremiumGiftCode,
+            InternalLinkTypePrivacyAndSecuritySettings,
+            InternalLinkTypeProxy,
+            InternalLinkTypePublicChat,
+            InternalLinkTypeQrCodeAuthentication,
+            InternalLinkTypeRestorePurchases,
+            InternalLinkTypeSettings,
+            InternalLinkTypeStickerSet,
+            InternalLinkTypeStory,
+            InternalLinkTypeTheme,
+            InternalLinkTypeThemeSettings,
+            InternalLinkTypeUnknownDeepLink,
+            InternalLinkTypeUnsupportedProxy,
+            InternalLinkTypeUserPhoneNumber,
+            InternalLinkTypeUserToken,
+            InternalLinkTypeVideoChat,
+            InternalLinkTypeWebApp,
+            None,
+        ] = link
+        r"""An internal link pointing to the chat"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["targetChatInternalLink"]:
+        return "targetChatInternalLink"
+
+    def getClass(self) -> Literal["TargetChat"]:
+        return "TargetChat"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "link": self.link}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TargetChatInternalLink", None]:
+        if data:
+            data_class = cls()
+            data_class.link = data.get("link", None)
+
+        return data_class
+
+
 class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
     r"""Represents a link to an animated GIF or an animated \(i\.e\., without sound\) H\.264/MPEG\-4 AVC video
 
@@ -50730,6 +51403,120 @@ class InlineQueryResults(TlObject):
             data_class.button = data.get("button", None)
             data_class.results = data.get("results", None)
             data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class PreparedInlineMessageId(TlObject):
+    r"""Represents an inline message that can be sent via the bot
+
+    Parameters:
+        id (:class:`str`):
+            Unique identifier for the message
+
+        expiration_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the message can't be used anymore
+
+    """
+
+    def __init__(self, id: str = "", expiration_date: int = 0) -> None:
+        self.id: Union[str, None] = id
+        r"""Unique identifier for the message"""
+        self.expiration_date: int = int(expiration_date)
+        r"""Point in time \(Unix timestamp\) when the message can't be used anymore"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["preparedInlineMessageId"]:
+        return "preparedInlineMessageId"
+
+    def getClass(self) -> Literal["PreparedInlineMessageId"]:
+        return "PreparedInlineMessageId"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "expiration_date": self.expiration_date,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PreparedInlineMessageId", None]:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", "")
+            data_class.expiration_date = int(data.get("expiration_date", 0))
+
+        return data_class
+
+
+class PreparedInlineMessage(TlObject):
+    r"""Represents a ready to send inline message\. Use sendInlineQueryResultMessage to send the message
+
+    Parameters:
+        inline_query_id (:class:`int`):
+            Unique identifier of the inline query to pass to sendInlineQueryResultMessage
+
+        result (:class:`"types.InlineQueryResult"`):
+            Resulted inline message of the query
+
+        chat_types (:class:`"types.TargetChatTypes"`):
+            Types of the chats to which the message can be sent
+
+    """
+
+    def __init__(
+        self,
+        inline_query_id: int = 0,
+        result: InlineQueryResult = None,
+        chat_types: TargetChatTypes = None,
+    ) -> None:
+        self.inline_query_id: int = int(inline_query_id)
+        r"""Unique identifier of the inline query to pass to sendInlineQueryResultMessage"""
+        self.result: Union[
+            InlineQueryResultArticle,
+            InlineQueryResultContact,
+            InlineQueryResultLocation,
+            InlineQueryResultVenue,
+            InlineQueryResultGame,
+            InlineQueryResultAnimation,
+            InlineQueryResultAudio,
+            InlineQueryResultDocument,
+            InlineQueryResultPhoto,
+            InlineQueryResultSticker,
+            InlineQueryResultVideo,
+            InlineQueryResultVoiceNote,
+            None,
+        ] = result
+        r"""Resulted inline message of the query"""
+        self.chat_types: Union[TargetChatTypes, None] = chat_types
+        r"""Types of the chats to which the message can be sent"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["preparedInlineMessage"]:
+        return "preparedInlineMessage"
+
+    def getClass(self) -> Literal["PreparedInlineMessage"]:
+        return "PreparedInlineMessage"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "inline_query_id": self.inline_query_id,
+            "result": self.result,
+            "chat_types": self.chat_types,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PreparedInlineMessage", None]:
+        if data:
+            data_class = cls()
+            data_class.inline_query_id = int(data.get("inline_query_id", 0))
+            data_class.result = data.get("result", None)
+            data_class.chat_types = data.get("chat_types", None)
 
         return data_class
 
@@ -61492,6 +62279,32 @@ class UserPrivacySettingRuleAllowContacts(TlObject, UserPrivacySettingRule):
         return data_class
 
 
+class UserPrivacySettingRuleAllowBots(TlObject, UserPrivacySettingRule):
+    r"""A rule to allow all bots to do something"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["userPrivacySettingRuleAllowBots"]:
+        return "userPrivacySettingRuleAllowBots"
+
+    def getClass(self) -> Literal["UserPrivacySettingRule"]:
+        return "UserPrivacySettingRule"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UserPrivacySettingRuleAllowBots", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class UserPrivacySettingRuleAllowPremiumUsers(TlObject, UserPrivacySettingRule):
     r"""A rule to allow all Premium Users to do something; currently, allowed only for userPrivacySettingAllowChatInvites"""
 
@@ -61638,6 +62451,32 @@ class UserPrivacySettingRuleRestrictContacts(TlObject, UserPrivacySettingRule):
     def from_dict(
         cls, data: dict
     ) -> Union["UserPrivacySettingRuleRestrictContacts", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class UserPrivacySettingRuleRestrictBots(TlObject, UserPrivacySettingRule):
+    r"""A rule to restrict all bots from doing something"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["userPrivacySettingRuleRestrictBots"]:
+        return "userPrivacySettingRuleRestrictBots"
+
+    def getClass(self) -> Literal["UserPrivacySettingRule"]:
+        return "UserPrivacySettingRule"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UserPrivacySettingRuleRestrictBots", None]:
         if data:
             data_class = cls()
 
@@ -62042,6 +62881,32 @@ class UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages(
     def from_dict(
         cls, data: dict
     ) -> Union["UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class UserPrivacySettingAutosaveGifts(TlObject, UserPrivacySetting):
+    r"""A privacy setting for managing whether received gifts are automatically shown on the user's profile page"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["userPrivacySettingAutosaveGifts"]:
+        return "userPrivacySettingAutosaveGifts"
+
+    def getClass(self) -> Literal["UserPrivacySetting"]:
+        return "UserPrivacySetting"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UserPrivacySettingAutosaveGifts", None]:
         if data:
             data_class = cls()
 
@@ -63672,177 +64537,6 @@ class ReportStoryResultTextRequired(TlObject, ReportStoryResult):
         return data_class
 
 
-class TargetChatCurrent(TlObject, TargetChat):
-    r"""The currently opened chat needs to be kept"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["targetChatCurrent"]:
-        return "targetChatCurrent"
-
-    def getClass(self) -> Literal["TargetChat"]:
-        return "TargetChat"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["TargetChatCurrent", None]:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class TargetChatChosen(TlObject, TargetChat):
-    r"""The chat needs to be chosen by the user among chats of the specified types
-
-    Parameters:
-        allow_user_chats (:class:`bool`):
-            True, if private chats with ordinary users are allowed
-
-        allow_bot_chats (:class:`bool`):
-            True, if private chats with other bots are allowed
-
-        allow_group_chats (:class:`bool`):
-            True, if basic group and supergroup chats are allowed
-
-        allow_channel_chats (:class:`bool`):
-            True, if channel chats are allowed
-
-    """
-
-    def __init__(
-        self,
-        allow_user_chats: bool = False,
-        allow_bot_chats: bool = False,
-        allow_group_chats: bool = False,
-        allow_channel_chats: bool = False,
-    ) -> None:
-        self.allow_user_chats: bool = bool(allow_user_chats)
-        r"""True, if private chats with ordinary users are allowed"""
-        self.allow_bot_chats: bool = bool(allow_bot_chats)
-        r"""True, if private chats with other bots are allowed"""
-        self.allow_group_chats: bool = bool(allow_group_chats)
-        r"""True, if basic group and supergroup chats are allowed"""
-        self.allow_channel_chats: bool = bool(allow_channel_chats)
-        r"""True, if channel chats are allowed"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["targetChatChosen"]:
-        return "targetChatChosen"
-
-    def getClass(self) -> Literal["TargetChat"]:
-        return "TargetChat"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "allow_user_chats": self.allow_user_chats,
-            "allow_bot_chats": self.allow_bot_chats,
-            "allow_group_chats": self.allow_group_chats,
-            "allow_channel_chats": self.allow_channel_chats,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["TargetChatChosen", None]:
-        if data:
-            data_class = cls()
-            data_class.allow_user_chats = data.get("allow_user_chats", False)
-            data_class.allow_bot_chats = data.get("allow_bot_chats", False)
-            data_class.allow_group_chats = data.get("allow_group_chats", False)
-            data_class.allow_channel_chats = data.get("allow_channel_chats", False)
-
-        return data_class
-
-
-class TargetChatInternalLink(TlObject, TargetChat):
-    r"""The chat needs to be open with the provided internal link
-
-    Parameters:
-        link (:class:`"types.InternalLinkType"`):
-            An internal link pointing to the chat
-
-    """
-
-    def __init__(self, link: InternalLinkType = None) -> None:
-        self.link: Union[
-            InternalLinkTypeActiveSessions,
-            InternalLinkTypeAttachmentMenuBot,
-            InternalLinkTypeAuthenticationCode,
-            InternalLinkTypeBackground,
-            InternalLinkTypeBotAddToChannel,
-            InternalLinkTypeBotStart,
-            InternalLinkTypeBotStartInGroup,
-            InternalLinkTypeBusinessChat,
-            InternalLinkTypeBuyStars,
-            InternalLinkTypeChangePhoneNumber,
-            InternalLinkTypeChatBoost,
-            InternalLinkTypeChatFolderInvite,
-            InternalLinkTypeChatFolderSettings,
-            InternalLinkTypeChatInvite,
-            InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
-            InternalLinkTypeEditProfileSettings,
-            InternalLinkTypeGame,
-            InternalLinkTypeInstantView,
-            InternalLinkTypeInvoice,
-            InternalLinkTypeLanguagePack,
-            InternalLinkTypeLanguageSettings,
-            InternalLinkTypeMainWebApp,
-            InternalLinkTypeMessage,
-            InternalLinkTypeMessageDraft,
-            InternalLinkTypePassportDataRequest,
-            InternalLinkTypePhoneNumberConfirmation,
-            InternalLinkTypePremiumFeatures,
-            InternalLinkTypePremiumGift,
-            InternalLinkTypePremiumGiftCode,
-            InternalLinkTypePrivacyAndSecuritySettings,
-            InternalLinkTypeProxy,
-            InternalLinkTypePublicChat,
-            InternalLinkTypeQrCodeAuthentication,
-            InternalLinkTypeRestorePurchases,
-            InternalLinkTypeSettings,
-            InternalLinkTypeStickerSet,
-            InternalLinkTypeStory,
-            InternalLinkTypeTheme,
-            InternalLinkTypeThemeSettings,
-            InternalLinkTypeUnknownDeepLink,
-            InternalLinkTypeUnsupportedProxy,
-            InternalLinkTypeUserPhoneNumber,
-            InternalLinkTypeUserToken,
-            InternalLinkTypeVideoChat,
-            InternalLinkTypeWebApp,
-            None,
-        ] = link
-        r"""An internal link pointing to the chat"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["targetChatInternalLink"]:
-        return "targetChatInternalLink"
-
-    def getClass(self) -> Literal["TargetChat"]:
-        return "TargetChat"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType(), "link": self.link}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["TargetChatInternalLink", None]:
-        if data:
-            data_class = cls()
-            data_class.link = data.get("link", None)
-
-        return data_class
-
-
 class InternalLinkTypeActiveSessions(TlObject, InternalLinkType):
     r"""The link is a link to the Devices section of the application\. Use getActiveSessions to get the list of active sessions and show them to the user"""
 
@@ -64626,7 +65320,7 @@ class InternalLinkTypeLanguageSettings(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeMainWebApp(TlObject, InternalLinkType):
-    r"""The link is a link to the main Web App of a bot\. Call searchPublicChat with the given bot username, check that the user is a bot and has the main Web App\. If the bot can be added to attachment menu, then use getAttachmentMenuBot to receive information about the bot, then if the bot isn't added to side menu, show a disclaimer about Mini Apps being third\-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu, then if the user accepts the terms and confirms adding, use toggleBotIsAddedToAttachmentMenu to add the bot\. Then, use getMainWebApp with the given start parameter and open the returned URL as a Web App
+    r"""The link is a link to the main Web App of a bot\. Call searchPublicChat with the given bot username, check that the user is a bot and has the main Web App\. If the bot can be added to attachment menu, then use getAttachmentMenuBot to receive information about the bot, then if the bot isn't added to side menu, show a disclaimer about Mini Apps being third\-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu, then if the user accepts the terms and confirms adding, use toggleBotIsAddedToAttachmentMenu to add the bot\. Then, use getMainWebApp with the given start parameter and mode and open the returned URL as a Web App
 
     Parameters:
         bot_username (:class:`str`):
@@ -64635,8 +65329,8 @@ class InternalLinkTypeMainWebApp(TlObject, InternalLinkType):
         start_parameter (:class:`str`):
             Start parameter to be passed to getMainWebApp
 
-        is_compact (:class:`bool`):
-            True, if the Web App must be opened in the compact mode instead of the full\-size mode
+        mode (:class:`"types.WebAppOpenMode"`):
+            The mode to be passed to getMainWebApp
 
     """
 
@@ -64644,14 +65338,19 @@ class InternalLinkTypeMainWebApp(TlObject, InternalLinkType):
         self,
         bot_username: str = "",
         start_parameter: str = "",
-        is_compact: bool = False,
+        mode: WebAppOpenMode = None,
     ) -> None:
         self.bot_username: Union[str, None] = bot_username
         r"""Username of the bot"""
         self.start_parameter: Union[str, None] = start_parameter
         r"""Start parameter to be passed to getMainWebApp"""
-        self.is_compact: bool = bool(is_compact)
-        r"""True, if the Web App must be opened in the compact mode instead of the full\-size mode"""
+        self.mode: Union[
+            WebAppOpenModeCompact,
+            WebAppOpenModeFullSize,
+            WebAppOpenModeFullScreen,
+            None,
+        ] = mode
+        r"""The mode to be passed to getMainWebApp"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -64667,7 +65366,7 @@ class InternalLinkTypeMainWebApp(TlObject, InternalLinkType):
             "@type": self.getType(),
             "bot_username": self.bot_username,
             "start_parameter": self.start_parameter,
-            "is_compact": self.is_compact,
+            "mode": self.mode,
         }
 
     @classmethod
@@ -64676,7 +65375,7 @@ class InternalLinkTypeMainWebApp(TlObject, InternalLinkType):
             data_class = cls()
             data_class.bot_username = data.get("bot_username", "")
             data_class.start_parameter = data.get("start_parameter", "")
-            data_class.is_compact = data.get("is_compact", False)
+            data_class.mode = data.get("mode", None)
 
         return data_class
 
@@ -65559,8 +66258,8 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
         start_parameter (:class:`str`):
             Start parameter to be passed to getWebAppLinkUrl
 
-        is_compact (:class:`bool`):
-            True, if the Web App must be opened in the compact mode instead of the full\-size mode
+        mode (:class:`"types.WebAppOpenMode"`):
+            The mode in which the Web App must be opened
 
     """
 
@@ -65569,7 +66268,7 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
         bot_username: str = "",
         web_app_short_name: str = "",
         start_parameter: str = "",
-        is_compact: bool = False,
+        mode: WebAppOpenMode = None,
     ) -> None:
         self.bot_username: Union[str, None] = bot_username
         r"""Username of the bot that owns the Web App"""
@@ -65577,8 +66276,13 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
         r"""Short name of the Web App"""
         self.start_parameter: Union[str, None] = start_parameter
         r"""Start parameter to be passed to getWebAppLinkUrl"""
-        self.is_compact: bool = bool(is_compact)
-        r"""True, if the Web App must be opened in the compact mode instead of the full\-size mode"""
+        self.mode: Union[
+            WebAppOpenModeCompact,
+            WebAppOpenModeFullSize,
+            WebAppOpenModeFullScreen,
+            None,
+        ] = mode
+        r"""The mode in which the Web App must be opened"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -65595,7 +66299,7 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
             "bot_username": self.bot_username,
             "web_app_short_name": self.web_app_short_name,
             "start_parameter": self.start_parameter,
-            "is_compact": self.is_compact,
+            "mode": self.mode,
         }
 
     @classmethod
@@ -65605,7 +66309,7 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
             data_class.bot_username = data.get("bot_username", "")
             data_class.web_app_short_name = data.get("web_app_short_name", "")
             data_class.start_parameter = data.get("start_parameter", "")
-            data_class.is_compact = data.get("is_compact", False)
+            data_class.mode = data.get("mode", None)
 
         return data_class
 
@@ -75886,6 +76590,7 @@ class UpdateUserPrivacySettingRules(TlObject, Update):
             UserPrivacySettingAllowPeerToPeerCalls,
             UserPrivacySettingAllowFindingByPhoneNumber,
             UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages,
+            UserPrivacySettingAutosaveGifts,
             None,
         ] = setting
         r"""The privacy setting"""
