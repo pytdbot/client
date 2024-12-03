@@ -1,6 +1,10 @@
 from typing import Union, Literal, List
 from base64 import b64decode
-from .bound_methods import MessageBoundMethods, FileBoundMethods
+from .bound_methods import (
+    CallbackQueryBoundMethods,
+    MessageBoundMethods,
+    FileBoundMethods,
+)
 import pytdbot
 
 
@@ -78852,7 +78856,7 @@ class UpdateNewChosenInlineResult(TlObject, Update):
         return data_class
 
 
-class UpdateNewCallbackQuery(TlObject, Update):
+class UpdateNewCallbackQuery(TlObject, Update, CallbackQueryBoundMethods):
     r"""A new incoming callback query; for bots only
 
     Parameters:

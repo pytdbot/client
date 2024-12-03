@@ -6,6 +6,7 @@ bound_methods_class = {
     "Message": "MessageBoundMethods",
     "File": "FileBoundMethods",
     "RemoteFile": "FileBoundMethods",
+    "UpdateNewCallbackQuery": "CallbackQueryBoundMethods",
 }
 
 
