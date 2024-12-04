@@ -5826,7 +5826,7 @@ class TDLibFunctions:
     async def getPreparedInlineMessage(
         self, bot_user_id: int = 0, prepared_message_id: str = ""
     ) -> Union["types.Error", "types.PreparedInlineMessage"]:
-        r"""Saves an inline message to be sent by the given user; for bots only
+        r"""Saves an inline message to be sent by the given user
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -10928,7 +10928,7 @@ class TDLibFunctions:
                 Point in time \(Unix timestamp\) when the group call is expected to be started by an administrator; 0 to start the video chat immediately\. The date must be at least 10 seconds and at most 8 days in the future
 
             is_rtmp_stream (:class:`bool`):
-                Pass true to create an RTMP stream instead of an ordinary video chat; requires owner privileges
+                Pass true to create an RTMP stream instead of an ordinary video chat
 
         Returns:
             :class:`~pytdbot.types.GroupCallId`
@@ -12112,7 +12112,13 @@ class TDLibFunctions:
         )
 
     async def searchStickers(
-        self, sticker_type: "types.StickerType" = None, emojis: str = "", limit: int = 0
+        self,
+        sticker_type: "types.StickerType" = None,
+        emojis: str = "",
+        query: str = "",
+        input_language_codes: List[str] = None,
+        offset: int = 0,
+        limit: int = 0,
     ) -> Union["types.Error", "types.Stickers"]:
         r"""Searches for stickers from public sticker sets that correspond to any of the given emoji
 
@@ -12121,7 +12127,16 @@ class TDLibFunctions:
                 Type of the stickers to return
 
             emojis (:class:`str`):
-                Space\-separated list of emojis to search for; must be non\-empty
+                Space\-separated list of emojis to search for
+
+            query (:class:`str`):
+                Query to search for; may be empty to search for emoji only
+
+            input_language_codes (:class:`List[str]`):
+                List of possible IETF language tags of the user's input language; may be empty if unknown
+
+            offset (:class:`int`):
+                The offset from which to return the stickers; must be non\-negative
 
             limit (:class:`int`):
                 The maximum number of stickers to be returned; 0\-100
@@ -12135,6 +12150,9 @@ class TDLibFunctions:
                 "@type": "searchStickers",
                 "sticker_type": sticker_type,
                 "emojis": emojis,
+                "query": query,
+                "input_language_codes": input_language_codes,
+                "offset": offset,
                 "limit": limit,
             }
         )
@@ -12781,6 +12799,19 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "getRecentInlineBots",
+            }
+        )
+
+    async def getOwnedBots(self) -> Union["types.Error", "types.Users"]:
+        r"""Returns the list of owned by the current user bots
+
+        Returns:
+            :class:`~pytdbot.types.Users`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getOwnedBots",
             }
         )
 
@@ -17628,6 +17659,186 @@ class TDLibFunctions:
 
         return await self.invoke(
             {"@type": "reuseStarSubscription", "subscription_id": subscription_id}
+        )
+
+    async def setChatAffiliateProgram(
+        self, chat_id: int = 0, parameters: "types.AffiliateProgramParameters" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes affiliate program for a bot
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat with an owned bot for which affiliate program is changed
+
+            parameters (:class:`"types.AffiliateProgramParameters"`):
+                Parameters of the affiliate program; pass null to close the currently active program\. If there is an active program, then commission and program duration can only be increased\. If the active program is scheduled to be closed, then it can't be changed anymore
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setChatAffiliateProgram",
+                "chat_id": chat_id,
+                "parameters": parameters,
+            }
+        )
+
+    async def searchChatAffiliateProgram(
+        self, username: str = "", referrer: str = ""
+    ) -> Union["types.Error", "types.Chat"]:
+        r"""Searches a chat with an affiliate program\. Returns the chat if found and the program is active
+
+        Parameters:
+            username (:class:`str`):
+                Username of the chat
+
+            referrer (:class:`str`):
+                The referrer from an internalLinkTypeChatAffiliateProgram link
+
+        Returns:
+            :class:`~pytdbot.types.Chat`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "searchChatAffiliateProgram",
+                "username": username,
+                "referrer": referrer,
+            }
+        )
+
+    async def searchAffiliatePrograms(
+        self,
+        chat_id: int = 0,
+        sort_order: "types.AffiliateProgramSortOrder" = None,
+        offset: str = "",
+        limit: int = 0,
+    ) -> Union["types.Error", "types.FoundAffiliatePrograms"]:
+        r"""Searches affiliate programs that can be applied to the given chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat for which affiliate programs are searched for\. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can\_post\_messages administrator right
+
+            sort_order (:class:`"types.AffiliateProgramSortOrder"`):
+                Sort order for the results
+
+            offset (:class:`str`):
+                Offset of the first affiliate program to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of affiliate programs to return
+
+        Returns:
+            :class:`~pytdbot.types.FoundAffiliatePrograms`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "searchAffiliatePrograms",
+                "chat_id": chat_id,
+                "sort_order": sort_order,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def connectChatAffiliateProgram(
+        self, chat_id: int = 0, bot_user_id: int = 0
+    ) -> Union["types.Error", "types.ChatAffiliateProgram"]:
+        r"""Connects an affiliate program to the given chat\. Returns information about the connected affiliate program
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat to which the affiliate program will be connected\. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can\_post\_messages administrator right
+
+            bot_user_id (:class:`int`):
+                Identifier of the bot, which affiliate program is connected
+
+        Returns:
+            :class:`~pytdbot.types.ChatAffiliateProgram`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "connectChatAffiliateProgram",
+                "chat_id": chat_id,
+                "bot_user_id": bot_user_id,
+            }
+        )
+
+    async def disconnectChatAffiliateProgram(
+        self, chat_id: int = 0, url: str = ""
+    ) -> Union["types.Error", "types.ChatAffiliateProgram"]:
+        r"""Disconnects an affiliate program from the given chat and immediately deactivates its referral link\. Returns updated information about the disconnected affiliate program
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat for which the affiliate program is connected
+
+            url (:class:`str`):
+                The referral link of the affiliate program
+
+        Returns:
+            :class:`~pytdbot.types.ChatAffiliateProgram`
+        """
+
+        return await self.invoke(
+            {"@type": "disconnectChatAffiliateProgram", "chat_id": chat_id, "url": url}
+        )
+
+    async def getChatAffiliateProgram(
+        self, chat_id: int = 0, bot_user_id: int = 0
+    ) -> Union["types.Error", "types.ChatAffiliateProgram"]:
+        r"""Returns an affiliate program that were connected to the given chat by identifier of the bot that created the program
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat for which the affiliate program was connected\. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can\_post\_messages administrator right
+
+            bot_user_id (:class:`int`):
+                Identifier of the bot that created the program
+
+        Returns:
+            :class:`~pytdbot.types.ChatAffiliateProgram`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getChatAffiliateProgram",
+                "chat_id": chat_id,
+                "bot_user_id": bot_user_id,
+            }
+        )
+
+    async def getChatAffiliatePrograms(
+        self, chat_id: int = 0, offset: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.ChatAffiliatePrograms"]:
+        r"""Returns affiliate programs that were connected to the given chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat for which the affiliate programs were connected\. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can\_post\_messages administrator right
+
+            offset (:class:`str`):
+                Offset of the first affiliate program to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of affiliate programs to return
+
+        Returns:
+            :class:`~pytdbot.types.ChatAffiliatePrograms`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getChatAffiliatePrograms",
+                "chat_id": chat_id,
+                "offset": offset,
+                "limit": limit,
+            }
         )
 
     async def getBusinessFeatures(

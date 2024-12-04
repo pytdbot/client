@@ -1,9 +1,9 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
-    CallbackQueryBoundMethods,
-    MessageBoundMethods,
     FileBoundMethods,
+    MessageBoundMethods,
+    CallbackQueryBoundMethods,
 )
 import pytdbot
 
@@ -143,32 +143,20 @@ class StarSubscriptionType:
     pass
 
 
+class AffiliateProgramSortOrder:
+    r"""Describes the order of the found affiliate programs"""
+
+    pass
+
+
 class StarTransactionDirection:
     r"""Describes direction of a transaction with Telegram Stars"""
 
     pass
 
 
-class BotTransactionPurpose:
-    r"""Describes purpose of a transaction with a bot"""
-
-    pass
-
-
-class ChatTransactionPurpose:
-    r"""Describes purpose of a transaction with a supergroup or a channel"""
-
-    pass
-
-
-class UserTransactionPurpose:
-    r"""Describes purpose of a transaction with a user"""
-
-    pass
-
-
-class StarTransactionPartner:
-    r"""Describes source or recipient of a transaction with Telegram Stars"""
+class StarTransactionType:
+    r"""Describes type of transaction with Telegram Stars"""
 
     pass
 
@@ -7951,6 +7939,50 @@ class ChatAdministratorRights(TlObject):
         return data_class
 
 
+class StarAmount(TlObject):
+    r"""Describes a possibly non\-integer amount of Telegram Stars
+
+    Parameters:
+        star_count (:class:`int`):
+            The integer amount of Telegram Stars rounded to 0
+
+        nanostar_count (:class:`int`):
+            The number of 1/1000000000 shares of Telegram Stars; from \-999999999 to 999999999
+
+    """
+
+    def __init__(self, star_count: int = 0, nanostar_count: int = 0) -> None:
+        self.star_count: int = int(star_count)
+        r"""The integer amount of Telegram Stars rounded to 0"""
+        self.nanostar_count: int = int(nanostar_count)
+        r"""The number of 1/1000000000 shares of Telegram Stars; from \-999999999 to 999999999"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starAmount"]:
+        return "starAmount"
+
+    def getClass(self) -> Literal["StarAmount"]:
+        return "StarAmount"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "nanostar_count": self.nanostar_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarAmount", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.nanostar_count = int(data.get("nanostar_count", 0))
+
+        return data_class
+
+
 class StarSubscriptionTypeChannel(TlObject, StarSubscriptionType):
     r"""Describes a subscription to a channel chat
 
@@ -8197,7 +8229,7 @@ class StarSubscriptions(TlObject):
     r"""Represents a list of Telegram Star subscriptions
 
     Parameters:
-        star_count (:class:`int`):
+        star_amount (:class:`"types.StarAmount"`):
             The amount of owned Telegram Stars
 
         subscriptions (:class:`List["types.StarSubscription"]`):
@@ -8213,12 +8245,12 @@ class StarSubscriptions(TlObject):
 
     def __init__(
         self,
-        star_count: int = 0,
+        star_amount: StarAmount = None,
         subscriptions: List[StarSubscription] = None,
         required_star_count: int = 0,
         next_offset: str = "",
     ) -> None:
-        self.star_count: int = int(star_count)
+        self.star_amount: Union[StarAmount, None] = star_amount
         r"""The amount of owned Telegram Stars"""
         self.subscriptions: List[StarSubscription] = subscriptions or []
         r"""List of subscriptions for Telegram Stars"""
@@ -8239,7 +8271,7 @@ class StarSubscriptions(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "star_count": self.star_count,
+            "star_amount": self.star_amount,
             "subscriptions": self.subscriptions,
             "required_star_count": self.required_star_count,
             "next_offset": self.next_offset,
@@ -8249,9 +8281,497 @@ class StarSubscriptions(TlObject):
     def from_dict(cls, data: dict) -> Union["StarSubscriptions", None]:
         if data:
             data_class = cls()
-            data_class.star_count = int(data.get("star_count", 0))
+            data_class.star_amount = data.get("star_amount", None)
             data_class.subscriptions = data.get("subscriptions", None)
             data_class.required_star_count = int(data.get("required_star_count", 0))
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class AffiliateProgramSortOrderProfitability(TlObject, AffiliateProgramSortOrder):
+    r"""The affiliate programs must be sorted by the profitability"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["affiliateProgramSortOrderProfitability"]:
+        return "affiliateProgramSortOrderProfitability"
+
+    def getClass(self) -> Literal["AffiliateProgramSortOrder"]:
+        return "AffiliateProgramSortOrder"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["AffiliateProgramSortOrderProfitability", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class AffiliateProgramSortOrderCreationDate(TlObject, AffiliateProgramSortOrder):
+    r"""The affiliate programs must be sorted by creation date"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["affiliateProgramSortOrderCreationDate"]:
+        return "affiliateProgramSortOrderCreationDate"
+
+    def getClass(self) -> Literal["AffiliateProgramSortOrder"]:
+        return "AffiliateProgramSortOrder"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["AffiliateProgramSortOrderCreationDate", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class AffiliateProgramSortOrderRevenue(TlObject, AffiliateProgramSortOrder):
+    r"""The affiliate programs must be sorted by the expected revenue"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["affiliateProgramSortOrderRevenue"]:
+        return "affiliateProgramSortOrderRevenue"
+
+    def getClass(self) -> Literal["AffiliateProgramSortOrder"]:
+        return "AffiliateProgramSortOrder"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["AffiliateProgramSortOrderRevenue", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class AffiliateProgramParameters(TlObject):
+    r"""Describes parameters of an affiliate program
+
+    Parameters:
+        commission_per_mille (:class:`int`):
+            The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner; getOption\(\"affiliate\_program\_commission\_per\_mille\_min\"\)\-getOption\(\"affiliate\_program\_commission\_per\_mille\_max\"\)
+
+        month_count (:class:`int`):
+            Number of months the program will be active; 0\-36\. If 0, then the program is eternal
+
+    """
+
+    def __init__(self, commission_per_mille: int = 0, month_count: int = 0) -> None:
+        self.commission_per_mille: int = int(commission_per_mille)
+        r"""The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner; getOption\(\"affiliate\_program\_commission\_per\_mille\_min\"\)\-getOption\(\"affiliate\_program\_commission\_per\_mille\_max\"\)"""
+        self.month_count: int = int(month_count)
+        r"""Number of months the program will be active; 0\-36\. If 0, then the program is eternal"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["affiliateProgramParameters"]:
+        return "affiliateProgramParameters"
+
+    def getClass(self) -> Literal["AffiliateProgramParameters"]:
+        return "AffiliateProgramParameters"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "commission_per_mille": self.commission_per_mille,
+            "month_count": self.month_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["AffiliateProgramParameters", None]:
+        if data:
+            data_class = cls()
+            data_class.commission_per_mille = int(data.get("commission_per_mille", 0))
+            data_class.month_count = int(data.get("month_count", 0))
+
+        return data_class
+
+
+class AffiliateProgramInfo(TlObject):
+    r"""Contains information about an active affiliate program
+
+    Parameters:
+        parameters (:class:`"types.AffiliateProgramParameters"`):
+            Parameters of the affiliate program
+
+        end_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the affiliate program will be closed; 0 if the affiliate program isn't scheduled to be closed\. If positive, then the program can't be connected using connectChatAffiliateProgram, but active connections will work until the date
+
+        daily_revenue_per_user_amount (:class:`"types.StarAmount"`):
+            The amount of daily revenue per user in Telegram Stars of the bot that created the affiliate program
+
+    """
+
+    def __init__(
+        self,
+        parameters: AffiliateProgramParameters = None,
+        end_date: int = 0,
+        daily_revenue_per_user_amount: StarAmount = None,
+    ) -> None:
+        self.parameters: Union[AffiliateProgramParameters, None] = parameters
+        r"""Parameters of the affiliate program"""
+        self.end_date: int = int(end_date)
+        r"""Point in time \(Unix timestamp\) when the affiliate program will be closed; 0 if the affiliate program isn't scheduled to be closed\. If positive, then the program can't be connected using connectChatAffiliateProgram, but active connections will work until the date"""
+        self.daily_revenue_per_user_amount: Union[StarAmount, None] = (
+            daily_revenue_per_user_amount
+        )
+        r"""The amount of daily revenue per user in Telegram Stars of the bot that created the affiliate program"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["affiliateProgramInfo"]:
+        return "affiliateProgramInfo"
+
+    def getClass(self) -> Literal["AffiliateProgramInfo"]:
+        return "AffiliateProgramInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "parameters": self.parameters,
+            "end_date": self.end_date,
+            "daily_revenue_per_user_amount": self.daily_revenue_per_user_amount,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["AffiliateProgramInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.parameters = data.get("parameters", None)
+            data_class.end_date = int(data.get("end_date", 0))
+            data_class.daily_revenue_per_user_amount = data.get(
+                "daily_revenue_per_user_amount", None
+            )
+
+        return data_class
+
+
+class AffiliateInfo(TlObject):
+    r"""Contains information about an affiliate that received commission from a Telegram Star transaction
+
+    Parameters:
+        commission_per_mille (:class:`int`):
+            The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner
+
+        affiliate_chat_id (:class:`int`):
+            Identifier of the chat which received the commission
+
+        star_amount (:class:`"types.StarAmount"`):
+            The amount of Telegram Stars that were received by the affiliate; can be negative for refunds
+
+    """
+
+    def __init__(
+        self,
+        commission_per_mille: int = 0,
+        affiliate_chat_id: int = 0,
+        star_amount: StarAmount = None,
+    ) -> None:
+        self.commission_per_mille: int = int(commission_per_mille)
+        r"""The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner"""
+        self.affiliate_chat_id: int = int(affiliate_chat_id)
+        r"""Identifier of the chat which received the commission"""
+        self.star_amount: Union[StarAmount, None] = star_amount
+        r"""The amount of Telegram Stars that were received by the affiliate; can be negative for refunds"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["affiliateInfo"]:
+        return "affiliateInfo"
+
+    def getClass(self) -> Literal["AffiliateInfo"]:
+        return "AffiliateInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "commission_per_mille": self.commission_per_mille,
+            "affiliate_chat_id": self.affiliate_chat_id,
+            "star_amount": self.star_amount,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["AffiliateInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.commission_per_mille = int(data.get("commission_per_mille", 0))
+            data_class.affiliate_chat_id = int(data.get("affiliate_chat_id", 0))
+            data_class.star_amount = data.get("star_amount", None)
+
+        return data_class
+
+
+class FoundAffiliateProgram(TlObject):
+    r"""Describes a found affiliate program
+
+    Parameters:
+        bot_user_id (:class:`int`):
+            User identifier of the bot created the program
+
+        parameters (:class:`"types.AffiliateProgramInfo"`):
+            Information about the affiliate program
+
+    """
+
+    def __init__(
+        self, bot_user_id: int = 0, parameters: AffiliateProgramInfo = None
+    ) -> None:
+        self.bot_user_id: int = int(bot_user_id)
+        r"""User identifier of the bot created the program"""
+        self.parameters: Union[AffiliateProgramInfo, None] = parameters
+        r"""Information about the affiliate program"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["foundAffiliateProgram"]:
+        return "foundAffiliateProgram"
+
+    def getClass(self) -> Literal["FoundAffiliateProgram"]:
+        return "FoundAffiliateProgram"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "bot_user_id": self.bot_user_id,
+            "parameters": self.parameters,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["FoundAffiliateProgram", None]:
+        if data:
+            data_class = cls()
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
+            data_class.parameters = data.get("parameters", None)
+
+        return data_class
+
+
+class FoundAffiliatePrograms(TlObject):
+    r"""Represents a list of found affiliate programs
+
+    Parameters:
+        total_count (:class:`int`):
+            The total number of found affiliate programs
+
+        programs (:class:`List["types.FoundAffiliateProgram"]`):
+            The list of affiliate programs
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self,
+        total_count: int = 0,
+        programs: List[FoundAffiliateProgram] = None,
+        next_offset: str = "",
+    ) -> None:
+        self.total_count: int = int(total_count)
+        r"""The total number of found affiliate programs"""
+        self.programs: List[FoundAffiliateProgram] = programs or []
+        r"""The list of affiliate programs"""
+        self.next_offset: Union[str, None] = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["foundAffiliatePrograms"]:
+        return "foundAffiliatePrograms"
+
+    def getClass(self) -> Literal["FoundAffiliatePrograms"]:
+        return "FoundAffiliatePrograms"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "total_count": self.total_count,
+            "programs": self.programs,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["FoundAffiliatePrograms", None]:
+        if data:
+            data_class = cls()
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.programs = data.get("programs", None)
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class ChatAffiliateProgram(TlObject):
+    r"""Describes an affiliate program that was connected to a chat
+
+    Parameters:
+        url (:class:`str`):
+            The link that can be used to refer users if the program is still active
+
+        bot_user_id (:class:`int`):
+            User identifier of the bot created the program
+
+        parameters (:class:`"types.AffiliateProgramParameters"`):
+            The parameters of the affiliate program
+
+        connection_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the affiliate program was connected
+
+        is_disconnected (:class:`bool`):
+            True, if the program was canceled by the bot, or disconnected by the chat owner and isn't available anymore
+
+        user_count (:class:`int`):
+            The number of users that used the affiliate program
+
+        revenue_star_count (:class:`int`):
+            The number of Telegram Stars that were earned by the affiliate program
+
+    """
+
+    def __init__(
+        self,
+        url: str = "",
+        bot_user_id: int = 0,
+        parameters: AffiliateProgramParameters = None,
+        connection_date: int = 0,
+        is_disconnected: bool = False,
+        user_count: int = 0,
+        revenue_star_count: int = 0,
+    ) -> None:
+        self.url: Union[str, None] = url
+        r"""The link that can be used to refer users if the program is still active"""
+        self.bot_user_id: int = int(bot_user_id)
+        r"""User identifier of the bot created the program"""
+        self.parameters: Union[AffiliateProgramParameters, None] = parameters
+        r"""The parameters of the affiliate program"""
+        self.connection_date: int = int(connection_date)
+        r"""Point in time \(Unix timestamp\) when the affiliate program was connected"""
+        self.is_disconnected: bool = bool(is_disconnected)
+        r"""True, if the program was canceled by the bot, or disconnected by the chat owner and isn't available anymore"""
+        self.user_count: int = int(user_count)
+        r"""The number of users that used the affiliate program"""
+        self.revenue_star_count: int = int(revenue_star_count)
+        r"""The number of Telegram Stars that were earned by the affiliate program"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["chatAffiliateProgram"]:
+        return "chatAffiliateProgram"
+
+    def getClass(self) -> Literal["ChatAffiliateProgram"]:
+        return "ChatAffiliateProgram"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "url": self.url,
+            "bot_user_id": self.bot_user_id,
+            "parameters": self.parameters,
+            "connection_date": self.connection_date,
+            "is_disconnected": self.is_disconnected,
+            "user_count": self.user_count,
+            "revenue_star_count": self.revenue_star_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatAffiliateProgram", None]:
+        if data:
+            data_class = cls()
+            data_class.url = data.get("url", "")
+            data_class.bot_user_id = int(data.get("bot_user_id", 0))
+            data_class.parameters = data.get("parameters", None)
+            data_class.connection_date = int(data.get("connection_date", 0))
+            data_class.is_disconnected = data.get("is_disconnected", False)
+            data_class.user_count = int(data.get("user_count", 0))
+            data_class.revenue_star_count = int(data.get("revenue_star_count", 0))
+
+        return data_class
+
+
+class ChatAffiliatePrograms(TlObject):
+    r"""Represents a list of affiliate programs that were connected to a chat
+
+    Parameters:
+        total_count (:class:`int`):
+            The total number of affiliate programs that were connected to the chat
+
+        programs (:class:`List["types.ChatAffiliateProgram"]`):
+            The list of connected affiliate programs
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self,
+        total_count: int = 0,
+        programs: List[ChatAffiliateProgram] = None,
+        next_offset: str = "",
+    ) -> None:
+        self.total_count: int = int(total_count)
+        r"""The total number of affiliate programs that were connected to the chat"""
+        self.programs: List[ChatAffiliateProgram] = programs or []
+        r"""The list of connected affiliate programs"""
+        self.next_offset: Union[str, None] = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["chatAffiliatePrograms"]:
+        return "chatAffiliatePrograms"
+
+    def getClass(self) -> Literal["ChatAffiliatePrograms"]:
+        return "ChatAffiliatePrograms"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "total_count": self.total_count,
+            "programs": self.programs,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatAffiliatePrograms", None]:
+        if data:
+            data_class = cls()
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.programs = data.get("programs", None)
             data_class.next_offset = data.get("next_offset", "")
 
         return data_class
@@ -8364,6 +8884,7 @@ class PremiumPaymentOption(TlObject):
             InternalLinkTypeBusinessChat,
             InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
+            InternalLinkTypeChatAffiliateProgram,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
             InternalLinkTypeChatFolderSettings,
@@ -9351,485 +9872,208 @@ class StarTransactionDirectionOutgoing(TlObject, StarTransactionDirection):
         return data_class
 
 
-class BotTransactionPurposePaidMedia(TlObject, BotTransactionPurpose):
-    r"""Paid media were bought
+class StarTransactionTypePremiumBotDeposit(TlObject, StarTransactionType):
+    r"""The transaction is a deposit of Telegram Stars from the Premium bot; for regular users only"""
 
-    Parameters:
-        media (:class:`List["types.PaidMedia"]`):
-            The bought media if the transaction wasn't refunded
-
-        payload (:class:`str`):
-            Bot\-provided payload; for bots only
-
-    """
-
-    def __init__(self, media: List[PaidMedia] = None, payload: str = "") -> None:
-        self.media: List[PaidMedia] = media or []
-        r"""The bought media if the transaction wasn't refunded"""
-        self.payload: Union[str, None] = payload
-        r"""Bot\-provided payload; for bots only"""
+    def __init__(self) -> None:
+        pass
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["botTransactionPurposePaidMedia"]:
-        return "botTransactionPurposePaidMedia"
+    def getType(self) -> Literal["starTransactionTypePremiumBotDeposit"]:
+        return "starTransactionTypePremiumBotDeposit"
 
-    def getClass(self) -> Literal["BotTransactionPurpose"]:
-        return "BotTransactionPurpose"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType(), "media": self.media, "payload": self.payload}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["BotTransactionPurposePaidMedia", None]:
-        if data:
-            data_class = cls()
-            data_class.media = data.get("media", None)
-            data_class.payload = data.get("payload", "")
-
-        return data_class
-
-
-class BotTransactionPurposeInvoicePayment(TlObject, BotTransactionPurpose):
-    r"""User bought a product from the bot
-
-    Parameters:
-        product_info (:class:`"types.ProductInfo"`):
-            Information about the bought product; may be null if not applicable
-
-        invoice_payload (:class:`bytes`):
-            Invoice payload; for bots only
-
-    """
-
-    def __init__(
-        self, product_info: ProductInfo = None, invoice_payload: bytes = b""
-    ) -> None:
-        self.product_info: Union[ProductInfo, None] = product_info
-        r"""Information about the bought product; may be null if not applicable"""
-        self.invoice_payload: Union[bytes, None] = invoice_payload
-        r"""Invoice payload; for bots only"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["botTransactionPurposeInvoicePayment"]:
-        return "botTransactionPurposeInvoicePayment"
-
-    def getClass(self) -> Literal["BotTransactionPurpose"]:
-        return "BotTransactionPurpose"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "product_info": self.product_info,
-            "invoice_payload": self.invoice_payload,
-        }
+        return {"@type": self.getType()}
 
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["BotTransactionPurposeInvoicePayment", None]:
+    ) -> Union["StarTransactionTypePremiumBotDeposit", None]:
         if data:
             data_class = cls()
-            data_class.product_info = data.get("product_info", None)
-            data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
 
         return data_class
 
 
-class BotTransactionPurposeSubscription(TlObject, BotTransactionPurpose):
-    r"""User bought a subscription in a bot or a business account
+class StarTransactionTypeAppStoreDeposit(TlObject, StarTransactionType):
+    r"""The transaction is a deposit of Telegram Stars from App Store; for regular users only"""
 
-    Parameters:
-        period (:class:`int`):
-            The number of seconds between consecutive Telegram Star debiting
-
-        product_info (:class:`"types.ProductInfo"`):
-            Information about the bought subscription; may be null if not applicable
-
-        invoice_payload (:class:`bytes`):
-            Invoice payload; for bots only
-
-    """
-
-    def __init__(
-        self,
-        period: int = 0,
-        product_info: ProductInfo = None,
-        invoice_payload: bytes = b"",
-    ) -> None:
-        self.period: int = int(period)
-        r"""The number of seconds between consecutive Telegram Star debiting"""
-        self.product_info: Union[ProductInfo, None] = product_info
-        r"""Information about the bought subscription; may be null if not applicable"""
-        self.invoice_payload: Union[bytes, None] = invoice_payload
-        r"""Invoice payload; for bots only"""
+    def __init__(self) -> None:
+        pass
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["botTransactionPurposeSubscription"]:
-        return "botTransactionPurposeSubscription"
+    def getType(self) -> Literal["starTransactionTypeAppStoreDeposit"]:
+        return "starTransactionTypeAppStoreDeposit"
 
-    def getClass(self) -> Literal["BotTransactionPurpose"]:
-        return "BotTransactionPurpose"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "period": self.period,
-            "product_info": self.product_info,
-            "invoice_payload": self.invoice_payload,
-        }
+        return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["BotTransactionPurposeSubscription", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionTypeAppStoreDeposit", None]:
         if data:
             data_class = cls()
-            data_class.period = int(data.get("period", 0))
-            data_class.product_info = data.get("product_info", None)
-            data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
 
         return data_class
 
 
-class ChatTransactionPurposePaidMedia(TlObject, ChatTransactionPurpose):
-    r"""Paid media were bought
+class StarTransactionTypeGooglePlayDeposit(TlObject, StarTransactionType):
+    r"""The transaction is a deposit of Telegram Stars from Google Play; for regular users only"""
 
-    Parameters:
-        message_id (:class:`int`):
-            Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message
-
-        media (:class:`List["types.PaidMedia"]`):
-            The bought media if the transaction wasn't refunded
-
-    """
-
-    def __init__(self, message_id: int = 0, media: List[PaidMedia] = None) -> None:
-        self.message_id: int = int(message_id)
-        r"""Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message"""
-        self.media: List[PaidMedia] = media or []
-        r"""The bought media if the transaction wasn't refunded"""
+    def __init__(self) -> None:
+        pass
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["chatTransactionPurposePaidMedia"]:
-        return "chatTransactionPurposePaidMedia"
+    def getType(self) -> Literal["starTransactionTypeGooglePlayDeposit"]:
+        return "starTransactionTypeGooglePlayDeposit"
 
-    def getClass(self) -> Literal["ChatTransactionPurpose"]:
-        return "ChatTransactionPurpose"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "message_id": self.message_id,
-            "media": self.media,
-        }
+        return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatTransactionPurposePaidMedia", None]:
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeGooglePlayDeposit", None]:
         if data:
             data_class = cls()
-            data_class.message_id = int(data.get("message_id", 0))
-            data_class.media = data.get("media", None)
 
         return data_class
 
 
-class ChatTransactionPurposeJoin(TlObject, ChatTransactionPurpose):
-    r"""User joined the channel and subscribed to regular payments in Telegram Stars
+class StarTransactionTypeFragmentDeposit(TlObject, StarTransactionType):
+    r"""The transaction is a deposit of Telegram Stars from Fragment; for regular users and bots only"""
 
-    Parameters:
-        period (:class:`int`):
-            The number of seconds between consecutive Telegram Star debiting
-
-    """
-
-    def __init__(self, period: int = 0) -> None:
-        self.period: int = int(period)
-        r"""The number of seconds between consecutive Telegram Star debiting"""
+    def __init__(self) -> None:
+        pass
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["chatTransactionPurposeJoin"]:
-        return "chatTransactionPurposeJoin"
+    def getType(self) -> Literal["starTransactionTypeFragmentDeposit"]:
+        return "starTransactionTypeFragmentDeposit"
 
-    def getClass(self) -> Literal["ChatTransactionPurpose"]:
-        return "ChatTransactionPurpose"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "period": self.period}
+        return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatTransactionPurposeJoin", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionTypeFragmentDeposit", None]:
         if data:
             data_class = cls()
-            data_class.period = int(data.get("period", 0))
 
         return data_class
 
 
-class ChatTransactionPurposeReaction(TlObject, ChatTransactionPurpose):
-    r"""User paid for a reaction
+class StarTransactionTypeUserDeposit(TlObject, StarTransactionType):
+    r"""The transaction is a deposit of Telegram Stars by another user; for regular users only
 
     Parameters:
-        message_id (:class:`int`):
-            Identifier of the reacted message; can be 0 or an identifier of a deleted message
+        user_id (:class:`int`):
+            Identifier of the user that gifted Telegram Stars; 0 if the user was anonymous
 
-    """
-
-    def __init__(self, message_id: int = 0) -> None:
-        self.message_id: int = int(message_id)
-        r"""Identifier of the reacted message; can be 0 or an identifier of a deleted message"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["chatTransactionPurposeReaction"]:
-        return "chatTransactionPurposeReaction"
-
-    def getClass(self) -> Literal["ChatTransactionPurpose"]:
-        return "ChatTransactionPurpose"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType(), "message_id": self.message_id}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatTransactionPurposeReaction", None]:
-        if data:
-            data_class = cls()
-            data_class.message_id = int(data.get("message_id", 0))
-
-        return data_class
-
-
-class ChatTransactionPurposeGiveaway(TlObject, ChatTransactionPurpose):
-    r"""User received Telegram Stars from a giveaway
-
-    Parameters:
-        giveaway_message_id (:class:`int`):
-            Identifier of the message with giveaway; can be 0 or an identifier of a deleted message
-
-    """
-
-    def __init__(self, giveaway_message_id: int = 0) -> None:
-        self.giveaway_message_id: int = int(giveaway_message_id)
-        r"""Identifier of the message with giveaway; can be 0 or an identifier of a deleted message"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["chatTransactionPurposeGiveaway"]:
-        return "chatTransactionPurposeGiveaway"
-
-    def getClass(self) -> Literal["ChatTransactionPurpose"]:
-        return "ChatTransactionPurpose"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "giveaway_message_id": self.giveaway_message_id,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatTransactionPurposeGiveaway", None]:
-        if data:
-            data_class = cls()
-            data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
-
-        return data_class
-
-
-class UserTransactionPurposeGiftedStars(TlObject, UserTransactionPurpose):
-    r"""A user gifted Telegram Stars
-
-    Parameters:
         sticker (:class:`"types.Sticker"`):
-            A sticker to be shown in the transaction information; may be null if unknown
+            The sticker to be shown in the transaction information; may be null if unknown
 
     """
 
-    def __init__(self, sticker: Sticker = None) -> None:
+    def __init__(self, user_id: int = 0, sticker: Sticker = None) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that gifted Telegram Stars; 0 if the user was anonymous"""
         self.sticker: Union[Sticker, None] = sticker
-        r"""A sticker to be shown in the transaction information; may be null if unknown"""
+        r"""The sticker to be shown in the transaction information; may be null if unknown"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["userTransactionPurposeGiftedStars"]:
-        return "userTransactionPurposeGiftedStars"
+    def getType(self) -> Literal["starTransactionTypeUserDeposit"]:
+        return "starTransactionTypeUserDeposit"
 
-    def getClass(self) -> Literal["UserTransactionPurpose"]:
-        return "UserTransactionPurpose"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "sticker": self.sticker}
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "sticker": self.sticker,
+        }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["UserTransactionPurposeGiftedStars", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionTypeUserDeposit", None]:
         if data:
             data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
             data_class.sticker = data.get("sticker", None)
 
         return data_class
 
 
-class UserTransactionPurposeGiftSell(TlObject, UserTransactionPurpose):
-    r"""The user sold a gift received from another user or bot
+class StarTransactionTypeGiveawayDeposit(TlObject, StarTransactionType):
+    r"""The transaction is a deposit of Telegram Stars from a giveaway; for regular users only
 
     Parameters:
-        gift (:class:`"types.Gift"`):
-            The gift
+        chat_id (:class:`int`):
+            Identifier of a supergroup or a channel chat that created the giveaway
+
+        giveaway_message_id (:class:`int`):
+            Identifier of the message with the giveaway; can be 0 or an identifier of a deleted message
 
     """
 
-    def __init__(self, gift: Gift = None) -> None:
-        self.gift: Union[Gift, None] = gift
-        r"""The gift"""
+    def __init__(self, chat_id: int = 0, giveaway_message_id: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of a supergroup or a channel chat that created the giveaway"""
+        self.giveaway_message_id: int = int(giveaway_message_id)
+        r"""Identifier of the message with the giveaway; can be 0 or an identifier of a deleted message"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["userTransactionPurposeGiftSell"]:
-        return "userTransactionPurposeGiftSell"
+    def getType(self) -> Literal["starTransactionTypeGiveawayDeposit"]:
+        return "starTransactionTypeGiveawayDeposit"
 
-    def getClass(self) -> Literal["UserTransactionPurpose"]:
-        return "UserTransactionPurpose"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "gift": self.gift}
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "giveaway_message_id": self.giveaway_message_id,
+        }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["UserTransactionPurposeGiftSell", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionTypeGiveawayDeposit", None]:
         if data:
             data_class = cls()
-            data_class.gift = data.get("gift", None)
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.giveaway_message_id = int(data.get("giveaway_message_id", 0))
 
         return data_class
 
 
-class UserTransactionPurposeGiftSend(TlObject, UserTransactionPurpose):
-    r"""The user or the bot sent a gift to a user
-
-    Parameters:
-        gift (:class:`"types.Gift"`):
-            The gift
-
-    """
-
-    def __init__(self, gift: Gift = None) -> None:
-        self.gift: Union[Gift, None] = gift
-        r"""The gift"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["userTransactionPurposeGiftSend"]:
-        return "userTransactionPurposeGiftSend"
-
-    def getClass(self) -> Literal["UserTransactionPurpose"]:
-        return "UserTransactionPurpose"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType(), "gift": self.gift}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["UserTransactionPurposeGiftSend", None]:
-        if data:
-            data_class = cls()
-            data_class.gift = data.get("gift", None)
-
-        return data_class
-
-
-class StarTransactionPartnerTelegram(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with Telegram through a bot"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["starTransactionPartnerTelegram"]:
-        return "starTransactionPartnerTelegram"
-
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerTelegram", None]:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class StarTransactionPartnerAppStore(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with App Store"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["starTransactionPartnerAppStore"]:
-        return "starTransactionPartnerAppStore"
-
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerAppStore", None]:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class StarTransactionPartnerGooglePlay(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with Google Play"""
-
-    def __init__(self) -> None:
-        pass
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["starTransactionPartnerGooglePlay"]:
-        return "starTransactionPartnerGooglePlay"
-
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType()}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerGooglePlay", None]:
-        if data:
-            data_class = cls()
-
-        return data_class
-
-
-class StarTransactionPartnerFragment(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with Fragment
+class StarTransactionTypeFragmentWithdrawal(TlObject, StarTransactionType):
+    r"""The transaction is a withdrawal of earned Telegram Stars to Fragment; for bots and channel chats only
 
     Parameters:
         withdrawal_state (:class:`"types.RevenueWithdrawalState"`):
-            State of the withdrawal; may be null for refunds from Fragment or for Telegram Stars bought on Fragment
+            State of the withdrawal; may be null for refunds from Fragment
 
     """
 
@@ -9840,22 +10084,24 @@ class StarTransactionPartnerFragment(TlObject, StarTransactionPartner):
             RevenueWithdrawalStateFailed,
             None,
         ] = withdrawal_state
-        r"""State of the withdrawal; may be null for refunds from Fragment or for Telegram Stars bought on Fragment"""
+        r"""State of the withdrawal; may be null for refunds from Fragment"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionPartnerFragment"]:
-        return "starTransactionPartnerFragment"
+    def getType(self) -> Literal["starTransactionTypeFragmentWithdrawal"]:
+        return "starTransactionTypeFragmentWithdrawal"
 
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "withdrawal_state": self.withdrawal_state}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerFragment", None]:
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeFragmentWithdrawal", None]:
         if data:
             data_class = cls()
             data_class.withdrawal_state = data.get("withdrawal_state", None)
@@ -9863,8 +10109,8 @@ class StarTransactionPartnerFragment(TlObject, StarTransactionPartner):
         return data_class
 
 
-class StarTransactionPartnerTelegramAds(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with Telegram Ad platform"""
+class StarTransactionTypeTelegramAdsWithdrawal(TlObject, StarTransactionType):
+    r"""The transaction is a withdrawal of earned Telegram Stars to Telegram Ad platform; for bots and channel chats only"""
 
     def __init__(self) -> None:
         pass
@@ -9872,25 +10118,27 @@ class StarTransactionPartnerTelegramAds(TlObject, StarTransactionPartner):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionPartnerTelegramAds"]:
-        return "starTransactionPartnerTelegramAds"
+    def getType(self) -> Literal["starTransactionTypeTelegramAdsWithdrawal"]:
+        return "starTransactionTypeTelegramAdsWithdrawal"
 
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerTelegramAds", None]:
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeTelegramAdsWithdrawal", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class StarTransactionPartnerTelegramApi(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with Telegram for API usage
+class StarTransactionTypeTelegramApiUsage(TlObject, StarTransactionType):
+    r"""The transaction is a payment for Telegram API usage; for bots only
 
     Parameters:
         request_count (:class:`int`):
@@ -9905,17 +10153,19 @@ class StarTransactionPartnerTelegramApi(TlObject, StarTransactionPartner):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionPartnerTelegramApi"]:
-        return "starTransactionPartnerTelegramApi"
+    def getType(self) -> Literal["starTransactionTypeTelegramApiUsage"]:
+        return "starTransactionTypeTelegramApiUsage"
 
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "request_count": self.request_count}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerTelegramApi", None]:
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeTelegramApiUsage", None]:
         if data:
             data_class = cls()
             data_class.request_count = int(data.get("request_count", 0))
@@ -9923,61 +10173,12 @@ class StarTransactionPartnerTelegramApi(TlObject, StarTransactionPartner):
         return data_class
 
 
-class StarTransactionPartnerBot(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with a bot
+class StarTransactionTypeBotPaidMediaPurchase(TlObject, StarTransactionType):
+    r"""The transaction is a purchase of paid media from a bot or a business account by the current user; for regular users only
 
     Parameters:
         user_id (:class:`int`):
-            Identifier of the bot
-
-        purpose (:class:`"types.BotTransactionPurpose"`):
-            Purpose of the transaction
-
-    """
-
-    def __init__(self, user_id: int = 0, purpose: BotTransactionPurpose = None) -> None:
-        self.user_id: int = int(user_id)
-        r"""Identifier of the bot"""
-        self.purpose: Union[
-            BotTransactionPurposePaidMedia,
-            BotTransactionPurposeInvoicePayment,
-            BotTransactionPurposeSubscription,
-            None,
-        ] = purpose
-        r"""Purpose of the transaction"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["starTransactionPartnerBot"]:
-        return "starTransactionPartnerBot"
-
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "user_id": self.user_id,
-            "purpose": self.purpose,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerBot", None]:
-        if data:
-            data_class = cls()
-            data_class.user_id = int(data.get("user_id", 0))
-            data_class.purpose = data.get("purpose", None)
-
-        return data_class
-
-
-class StarTransactionPartnerBusiness(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with a business account
-
-    Parameters:
-        user_id (:class:`int`):
-            Identifier of the business account user
+            Identifier of the bot or the business account user that sent the paid media
 
         media (:class:`List["types.PaidMedia"]`):
             The bought media if the transaction wasn't refunded
@@ -9986,24 +10187,26 @@ class StarTransactionPartnerBusiness(TlObject, StarTransactionPartner):
 
     def __init__(self, user_id: int = 0, media: List[PaidMedia] = None) -> None:
         self.user_id: int = int(user_id)
-        r"""Identifier of the business account user"""
+        r"""Identifier of the bot or the business account user that sent the paid media"""
         self.media: List[PaidMedia] = media or []
         r"""The bought media if the transaction wasn't refunded"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionPartnerBusiness"]:
-        return "starTransactionPartnerBusiness"
+    def getType(self) -> Literal["starTransactionTypeBotPaidMediaPurchase"]:
+        return "starTransactionTypeBotPaidMediaPurchase"
 
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "user_id": self.user_id, "media": self.media}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerBusiness", None]:
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeBotPaidMediaPurchase", None]:
         if data:
             data_class = cls()
             data_class.user_id = int(data.get("user_id", 0))
@@ -10012,111 +10215,736 @@ class StarTransactionPartnerBusiness(TlObject, StarTransactionPartner):
         return data_class
 
 
-class StarTransactionPartnerChat(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with a supergroup or a channel chat
-
-    Parameters:
-        chat_id (:class:`int`):
-            Identifier of the chat
-
-        purpose (:class:`"types.ChatTransactionPurpose"`):
-            Purpose of the transaction
-
-    """
-
-    def __init__(
-        self, chat_id: int = 0, purpose: ChatTransactionPurpose = None
-    ) -> None:
-        self.chat_id: int = int(chat_id)
-        r"""Identifier of the chat"""
-        self.purpose: Union[
-            ChatTransactionPurposePaidMedia,
-            ChatTransactionPurposeJoin,
-            ChatTransactionPurposeReaction,
-            ChatTransactionPurposeGiveaway,
-            None,
-        ] = purpose
-        r"""Purpose of the transaction"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["starTransactionPartnerChat"]:
-        return "starTransactionPartnerChat"
-
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
-
-    def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "chat_id": self.chat_id,
-            "purpose": self.purpose,
-        }
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerChat", None]:
-        if data:
-            data_class = cls()
-            data_class.chat_id = int(data.get("chat_id", 0))
-            data_class.purpose = data.get("purpose", None)
-
-        return data_class
-
-
-class StarTransactionPartnerUser(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with another user
+class StarTransactionTypeBotPaidMediaSale(TlObject, StarTransactionType):
+    r"""The transaction is a sale of paid media by the bot or a business account managed by the bot; for bots only
 
     Parameters:
         user_id (:class:`int`):
-            Identifier of the user; 0 if the user was anonymous
+            Identifier of the user that bought the media
 
-        purpose (:class:`"types.UserTransactionPurpose"`):
-            Purpose of the transaction
+        media (:class:`List["types.PaidMedia"]`):
+            The bought media
+
+        payload (:class:`str`):
+            Bot\-provided payload
+
+        affiliate (:class:`"types.AffiliateInfo"`):
+            Information about the affiliate which received commission from the transaction; may be null if none
 
     """
 
     def __init__(
-        self, user_id: int = 0, purpose: UserTransactionPurpose = None
+        self,
+        user_id: int = 0,
+        media: List[PaidMedia] = None,
+        payload: str = "",
+        affiliate: AffiliateInfo = None,
     ) -> None:
         self.user_id: int = int(user_id)
-        r"""Identifier of the user; 0 if the user was anonymous"""
-        self.purpose: Union[
-            UserTransactionPurposeGiftedStars,
-            UserTransactionPurposeGiftSell,
-            UserTransactionPurposeGiftSend,
-            None,
-        ] = purpose
-        r"""Purpose of the transaction"""
+        r"""Identifier of the user that bought the media"""
+        self.media: List[PaidMedia] = media or []
+        r"""The bought media"""
+        self.payload: Union[str, None] = payload
+        r"""Bot\-provided payload"""
+        self.affiliate: Union[AffiliateInfo, None] = affiliate
+        r"""Information about the affiliate which received commission from the transaction; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionPartnerUser"]:
-        return "starTransactionPartnerUser"
+    def getType(self) -> Literal["starTransactionTypeBotPaidMediaSale"]:
+        return "starTransactionTypeBotPaidMediaSale"
 
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
             "user_id": self.user_id,
-            "purpose": self.purpose,
+            "media": self.media,
+            "payload": self.payload,
+            "affiliate": self.affiliate,
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerUser", None]:
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeBotPaidMediaSale", None]:
         if data:
             data_class = cls()
             data_class.user_id = int(data.get("user_id", 0))
-            data_class.purpose = data.get("purpose", None)
+            data_class.media = data.get("media", None)
+            data_class.payload = data.get("payload", "")
+            data_class.affiliate = data.get("affiliate", None)
 
         return data_class
 
 
-class StarTransactionPartnerUnsupported(TlObject, StarTransactionPartner):
-    r"""The transaction is a transaction with unknown partner"""
+class StarTransactionTypeChannelPaidMediaPurchase(TlObject, StarTransactionType):
+    r"""The transaction is a purchase of paid media from a channel by the current user; for regular users only
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the channel chat that sent the paid media
+
+        message_id (:class:`int`):
+            Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message
+
+        media (:class:`List["types.PaidMedia"]`):
+            The bought media if the transaction wasn't refunded
+
+    """
+
+    def __init__(
+        self, chat_id: int = 0, message_id: int = 0, media: List[PaidMedia] = None
+    ) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the channel chat that sent the paid media"""
+        self.message_id: int = int(message_id)
+        r"""Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message"""
+        self.media: List[PaidMedia] = media or []
+        r"""The bought media if the transaction wasn't refunded"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeChannelPaidMediaPurchase"]:
+        return "starTransactionTypeChannelPaidMediaPurchase"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+            "media": self.media,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeChannelPaidMediaPurchase", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.media = data.get("media", None)
+
+        return data_class
+
+
+class StarTransactionTypeChannelPaidMediaSale(TlObject, StarTransactionType):
+    r"""The transaction is a sale of paid media by the channel chat; for channel chats only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user that bought the media
+
+        message_id (:class:`int`):
+            Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message
+
+        media (:class:`List["types.PaidMedia"]`):
+            The bought media
+
+    """
+
+    def __init__(
+        self, user_id: int = 0, message_id: int = 0, media: List[PaidMedia] = None
+    ) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that bought the media"""
+        self.message_id: int = int(message_id)
+        r"""Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message"""
+        self.media: List[PaidMedia] = media or []
+        r"""The bought media"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeChannelPaidMediaSale"]:
+        return "starTransactionTypeChannelPaidMediaSale"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "message_id": self.message_id,
+            "media": self.media,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeChannelPaidMediaSale", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.media = data.get("media", None)
+
+        return data_class
+
+
+class StarTransactionTypeBotInvoicePurchase(TlObject, StarTransactionType):
+    r"""The transaction is a purchase of a product from a bot or a business account by the current user; for regular users only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the bot or the business account user that created the invoice
+
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the bought product
+
+    """
+
+    def __init__(self, user_id: int = 0, product_info: ProductInfo = None) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the bot or the business account user that created the invoice"""
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the bought product"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeBotInvoicePurchase"]:
+        return "starTransactionTypeBotInvoicePurchase"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "product_info": self.product_info,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeBotInvoicePurchase", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.product_info = data.get("product_info", None)
+
+        return data_class
+
+
+class StarTransactionTypeBotInvoiceSale(TlObject, StarTransactionType):
+    r"""The transaction is a sale of a product by the bot; for bots only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user that bought the product
+
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the bought product
+
+        invoice_payload (:class:`bytes`):
+            Invoice payload
+
+        affiliate (:class:`"types.AffiliateInfo"`):
+            Information about the affiliate which received commission from the transaction; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        user_id: int = 0,
+        product_info: ProductInfo = None,
+        invoice_payload: bytes = b"",
+        affiliate: AffiliateInfo = None,
+    ) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that bought the product"""
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the bought product"""
+        self.invoice_payload: Union[bytes, None] = invoice_payload
+        r"""Invoice payload"""
+        self.affiliate: Union[AffiliateInfo, None] = affiliate
+        r"""Information about the affiliate which received commission from the transaction; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeBotInvoiceSale"]:
+        return "starTransactionTypeBotInvoiceSale"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "product_info": self.product_info,
+            "invoice_payload": self.invoice_payload,
+            "affiliate": self.affiliate,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionTypeBotInvoiceSale", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.product_info = data.get("product_info", None)
+            data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
+            data_class.affiliate = data.get("affiliate", None)
+
+        return data_class
+
+
+class StarTransactionTypeBotSubscriptionPurchase(TlObject, StarTransactionType):
+    r"""The transaction is a purchase of a subscription from a bot or a business account by the current user; for regular users only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the bot or the business account user that created the subscription link
+
+        subscription_period (:class:`int`):
+            The number of seconds between consecutive Telegram Star debitings
+
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the bought subscription
+
+    """
+
+    def __init__(
+        self,
+        user_id: int = 0,
+        subscription_period: int = 0,
+        product_info: ProductInfo = None,
+    ) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the bot or the business account user that created the subscription link"""
+        self.subscription_period: int = int(subscription_period)
+        r"""The number of seconds between consecutive Telegram Star debitings"""
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the bought subscription"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeBotSubscriptionPurchase"]:
+        return "starTransactionTypeBotSubscriptionPurchase"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "subscription_period": self.subscription_period,
+            "product_info": self.product_info,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeBotSubscriptionPurchase", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.subscription_period = int(data.get("subscription_period", 0))
+            data_class.product_info = data.get("product_info", None)
+
+        return data_class
+
+
+class StarTransactionTypeBotSubscriptionSale(TlObject, StarTransactionType):
+    r"""The transaction is a sale of a subscription by the bot; for bots only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user that bought the subscription
+
+        subscription_period (:class:`int`):
+            The number of seconds between consecutive Telegram Star debitings
+
+        product_info (:class:`"types.ProductInfo"`):
+            Information about the bought subscription
+
+        invoice_payload (:class:`bytes`):
+            Invoice payload
+
+        affiliate (:class:`"types.AffiliateInfo"`):
+            Information about the affiliate which received commission from the transaction; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        user_id: int = 0,
+        subscription_period: int = 0,
+        product_info: ProductInfo = None,
+        invoice_payload: bytes = b"",
+        affiliate: AffiliateInfo = None,
+    ) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that bought the subscription"""
+        self.subscription_period: int = int(subscription_period)
+        r"""The number of seconds between consecutive Telegram Star debitings"""
+        self.product_info: Union[ProductInfo, None] = product_info
+        r"""Information about the bought subscription"""
+        self.invoice_payload: Union[bytes, None] = invoice_payload
+        r"""Invoice payload"""
+        self.affiliate: Union[AffiliateInfo, None] = affiliate
+        r"""Information about the affiliate which received commission from the transaction; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeBotSubscriptionSale"]:
+        return "starTransactionTypeBotSubscriptionSale"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "subscription_period": self.subscription_period,
+            "product_info": self.product_info,
+            "invoice_payload": self.invoice_payload,
+            "affiliate": self.affiliate,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeBotSubscriptionSale", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.subscription_period = int(data.get("subscription_period", 0))
+            data_class.product_info = data.get("product_info", None)
+            data_class.invoice_payload = b64decode(data.get("invoice_payload", b""))
+            data_class.affiliate = data.get("affiliate", None)
+
+        return data_class
+
+
+class StarTransactionTypeChannelSubscriptionPurchase(TlObject, StarTransactionType):
+    r"""The transaction is a purchase of a subscription to a channel chat by the current user; for regular users only
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the channel chat that created the subscription
+
+        subscription_period (:class:`int`):
+            The number of seconds between consecutive Telegram Star debitings
+
+    """
+
+    def __init__(self, chat_id: int = 0, subscription_period: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the channel chat that created the subscription"""
+        self.subscription_period: int = int(subscription_period)
+        r"""The number of seconds between consecutive Telegram Star debitings"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeChannelSubscriptionPurchase"]:
+        return "starTransactionTypeChannelSubscriptionPurchase"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "subscription_period": self.subscription_period,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeChannelSubscriptionPurchase", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.subscription_period = int(data.get("subscription_period", 0))
+
+        return data_class
+
+
+class StarTransactionTypeChannelSubscriptionSale(TlObject, StarTransactionType):
+    r"""The transaction is a sale of a subscription by the channel chat; for channel chats only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user that bought the subscription
+
+        subscription_period (:class:`int`):
+            The number of seconds between consecutive Telegram Star debitings
+
+    """
+
+    def __init__(self, user_id: int = 0, subscription_period: int = 0) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that bought the subscription"""
+        self.subscription_period: int = int(subscription_period)
+        r"""The number of seconds between consecutive Telegram Star debitings"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeChannelSubscriptionSale"]:
+        return "starTransactionTypeChannelSubscriptionSale"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "subscription_period": self.subscription_period,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeChannelSubscriptionSale", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.subscription_period = int(data.get("subscription_period", 0))
+
+        return data_class
+
+
+class StarTransactionTypeGiftPurchase(TlObject, StarTransactionType):
+    r"""The transaction is a purchase of a gift to another user; for regular users and bots only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user that received the gift
+
+        gift (:class:`"types.Gift"`):
+            The gift
+
+    """
+
+    def __init__(self, user_id: int = 0, gift: Gift = None) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that received the gift"""
+        self.gift: Union[Gift, None] = gift
+        r"""The gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeGiftPurchase"]:
+        return "starTransactionTypeGiftPurchase"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "user_id": self.user_id, "gift": self.gift}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionTypeGiftPurchase", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.gift = data.get("gift", None)
+
+        return data_class
+
+
+class StarTransactionTypeGiftSale(TlObject, StarTransactionType):
+    r"""The transaction is a sale of a gift received from another user or bot; for regular users only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user that sent the gift
+
+        gift (:class:`"types.Gift"`):
+            The gift
+
+    """
+
+    def __init__(self, user_id: int = 0, gift: Gift = None) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that sent the gift"""
+        self.gift: Union[Gift, None] = gift
+        r"""The gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeGiftSale"]:
+        return "starTransactionTypeGiftSale"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "user_id": self.user_id, "gift": self.gift}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionTypeGiftSale", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.gift = data.get("gift", None)
+
+        return data_class
+
+
+class StarTransactionTypeChannelPaidReactionSend(TlObject, StarTransactionType):
+    r"""The transaction is a sending of a paid reaction to a message in a channel chat by the current user; for regular users only
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the channel chat
+
+        message_id (:class:`int`):
+            Identifier of the reacted message; can be 0 or an identifier of a deleted message
+
+    """
+
+    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the channel chat"""
+        self.message_id: int = int(message_id)
+        r"""Identifier of the reacted message; can be 0 or an identifier of a deleted message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeChannelPaidReactionSend"]:
+        return "starTransactionTypeChannelPaidReactionSend"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeChannelPaidReactionSend", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+
+        return data_class
+
+
+class StarTransactionTypeChannelPaidReactionReceive(TlObject, StarTransactionType):
+    r"""The transaction is a receiving of a paid reaction to a message by the channel chat; for channel chats only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user that added the paid reaction
+
+        message_id (:class:`int`):
+            Identifier of the reacted message; can be 0 or an identifier of a deleted message
+
+    """
+
+    def __init__(self, user_id: int = 0, message_id: int = 0) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that added the paid reaction"""
+        self.message_id: int = int(message_id)
+        r"""Identifier of the reacted message; can be 0 or an identifier of a deleted message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeChannelPaidReactionReceive"]:
+        return "starTransactionTypeChannelPaidReactionReceive"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "user_id": self.user_id,
+            "message_id": self.message_id,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeChannelPaidReactionReceive", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+
+        return data_class
+
+
+class StarTransactionTypeAffiliateProgramCommission(TlObject, StarTransactionType):
+    r"""The transaction is a receiving of a commission from an affiliate program; for regular users, bots and channel chats only
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat that created the affiliate program
+
+        commission_per_mille (:class:`int`):
+            The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner
+
+    """
+
+    def __init__(self, chat_id: int = 0, commission_per_mille: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat that created the affiliate program"""
+        self.commission_per_mille: int = int(commission_per_mille)
+        r"""The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["starTransactionTypeAffiliateProgramCommission"]:
+        return "starTransactionTypeAffiliateProgramCommission"
+
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "commission_per_mille": self.commission_per_mille,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeAffiliateProgramCommission", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.commission_per_mille = int(data.get("commission_per_mille", 0))
+
+        return data_class
+
+
+class StarTransactionTypeUnsupported(TlObject, StarTransactionType):
+    r"""The transaction is a transaction of an unsupported type"""
 
     def __init__(self) -> None:
         pass
@@ -10124,17 +10952,17 @@ class StarTransactionPartnerUnsupported(TlObject, StarTransactionPartner):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["starTransactionPartnerUnsupported"]:
-        return "starTransactionPartnerUnsupported"
+    def getType(self) -> Literal["starTransactionTypeUnsupported"]:
+        return "starTransactionTypeUnsupported"
 
-    def getClass(self) -> Literal["StarTransactionPartner"]:
-        return "StarTransactionPartner"
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionPartnerUnsupported", None]:
+    def from_dict(cls, data: dict) -> Union["StarTransactionTypeUnsupported", None]:
         if data:
             data_class = cls()
 
@@ -10148,7 +10976,7 @@ class StarTransaction(TlObject):
         id (:class:`str`):
             Unique identifier of the transaction
 
-        star_count (:class:`int`):
+        star_amount (:class:`"types.StarAmount"`):
             The amount of added owned Telegram Stars; negative for outgoing transactions
 
         is_refund (:class:`bool`):
@@ -10157,42 +10985,56 @@ class StarTransaction(TlObject):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the transaction was completed
 
-        partner (:class:`"types.StarTransactionPartner"`):
-            Source of the incoming transaction, or its recipient for outgoing transactions
+        type (:class:`"types.StarTransactionType"`):
+            Type of the transaction
 
     """
 
     def __init__(
         self,
         id: str = "",
-        star_count: int = 0,
+        star_amount: StarAmount = None,
         is_refund: bool = False,
         date: int = 0,
-        partner: StarTransactionPartner = None,
+        type: StarTransactionType = None,
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the transaction"""
-        self.star_count: int = int(star_count)
+        self.star_amount: Union[StarAmount, None] = star_amount
         r"""The amount of added owned Telegram Stars; negative for outgoing transactions"""
         self.is_refund: bool = bool(is_refund)
         r"""True, if the transaction is a refund of a previous transaction"""
         self.date: int = int(date)
         r"""Point in time \(Unix timestamp\) when the transaction was completed"""
-        self.partner: Union[
-            StarTransactionPartnerTelegram,
-            StarTransactionPartnerAppStore,
-            StarTransactionPartnerGooglePlay,
-            StarTransactionPartnerFragment,
-            StarTransactionPartnerTelegramAds,
-            StarTransactionPartnerTelegramApi,
-            StarTransactionPartnerBot,
-            StarTransactionPartnerBusiness,
-            StarTransactionPartnerChat,
-            StarTransactionPartnerUser,
-            StarTransactionPartnerUnsupported,
+        self.type: Union[
+            StarTransactionTypePremiumBotDeposit,
+            StarTransactionTypeAppStoreDeposit,
+            StarTransactionTypeGooglePlayDeposit,
+            StarTransactionTypeFragmentDeposit,
+            StarTransactionTypeUserDeposit,
+            StarTransactionTypeGiveawayDeposit,
+            StarTransactionTypeFragmentWithdrawal,
+            StarTransactionTypeTelegramAdsWithdrawal,
+            StarTransactionTypeTelegramApiUsage,
+            StarTransactionTypeBotPaidMediaPurchase,
+            StarTransactionTypeBotPaidMediaSale,
+            StarTransactionTypeChannelPaidMediaPurchase,
+            StarTransactionTypeChannelPaidMediaSale,
+            StarTransactionTypeBotInvoicePurchase,
+            StarTransactionTypeBotInvoiceSale,
+            StarTransactionTypeBotSubscriptionPurchase,
+            StarTransactionTypeBotSubscriptionSale,
+            StarTransactionTypeChannelSubscriptionPurchase,
+            StarTransactionTypeChannelSubscriptionSale,
+            StarTransactionTypeGiftPurchase,
+            StarTransactionTypeGiftSale,
+            StarTransactionTypeChannelPaidReactionSend,
+            StarTransactionTypeChannelPaidReactionReceive,
+            StarTransactionTypeAffiliateProgramCommission,
+            StarTransactionTypeUnsupported,
             None,
-        ] = partner
-        r"""Source of the incoming transaction, or its recipient for outgoing transactions"""
+        ] = type
+        r"""Type of the transaction"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -10207,10 +11049,10 @@ class StarTransaction(TlObject):
         return {
             "@type": self.getType(),
             "id": self.id,
-            "star_count": self.star_count,
+            "star_amount": self.star_amount,
             "is_refund": self.is_refund,
             "date": self.date,
-            "partner": self.partner,
+            "type": self.type,
         }
 
     @classmethod
@@ -10218,10 +11060,10 @@ class StarTransaction(TlObject):
         if data:
             data_class = cls()
             data_class.id = data.get("id", "")
-            data_class.star_count = int(data.get("star_count", 0))
+            data_class.star_amount = data.get("star_amount", None)
             data_class.is_refund = data.get("is_refund", False)
             data_class.date = int(data.get("date", 0))
-            data_class.partner = data.get("partner", None)
+            data_class.type = data.get("type", None)
 
         return data_class
 
@@ -10230,7 +11072,7 @@ class StarTransactions(TlObject):
     r"""Represents a list of Telegram Star transactions
 
     Parameters:
-        star_count (:class:`int`):
+        star_amount (:class:`"types.StarAmount"`):
             The amount of owned Telegram Stars
 
         transactions (:class:`List["types.StarTransaction"]`):
@@ -10243,11 +11085,11 @@ class StarTransactions(TlObject):
 
     def __init__(
         self,
-        star_count: int = 0,
+        star_amount: StarAmount = None,
         transactions: List[StarTransaction] = None,
         next_offset: str = "",
     ) -> None:
-        self.star_count: int = int(star_count)
+        self.star_amount: Union[StarAmount, None] = star_amount
         r"""The amount of owned Telegram Stars"""
         self.transactions: List[StarTransaction] = transactions or []
         r"""List of transactions with Telegram Stars"""
@@ -10266,7 +11108,7 @@ class StarTransactions(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "star_count": self.star_count,
+            "star_amount": self.star_amount,
             "transactions": self.transactions,
             "next_offset": self.next_offset,
         }
@@ -10275,7 +11117,7 @@ class StarTransactions(TlObject):
     def from_dict(cls, data: dict) -> Union["StarTransactions", None]:
         if data:
             data_class = cls()
-            data_class.star_count = int(data.get("star_count", 0))
+            data_class.star_amount = data.get("star_amount", None)
             data_class.transactions = data.get("transactions", None)
             data_class.next_offset = data.get("next_offset", "")
 
@@ -11324,6 +12166,9 @@ class BotInfo(TlObject):
         default_channel_administrator_rights (:class:`"types.ChatAdministratorRights"`):
             Default administrator rights for adding the bot to channels; may be null
 
+        affiliate_program (:class:`"types.AffiliateProgramInfo"`):
+            Information about the affiliate program of the bot; may be null if none
+
         web_app_background_light_color (:class:`int`):
             Default light background color for bot Web Apps; \-1 if not specified
 
@@ -11370,6 +12215,7 @@ class BotInfo(TlObject):
         privacy_policy_url: str = "",
         default_group_administrator_rights: ChatAdministratorRights = None,
         default_channel_administrator_rights: ChatAdministratorRights = None,
+        affiliate_program: AffiliateProgramInfo = None,
         web_app_background_light_color: int = 0,
         web_app_background_dark_color: int = 0,
         web_app_header_light_color: int = 0,
@@ -11404,6 +12250,8 @@ class BotInfo(TlObject):
             ChatAdministratorRights, None
         ] = default_channel_administrator_rights
         r"""Default administrator rights for adding the bot to channels; may be null"""
+        self.affiliate_program: Union[AffiliateProgramInfo, None] = affiliate_program
+        r"""Information about the affiliate program of the bot; may be null if none"""
         self.web_app_background_light_color: int = int(web_app_background_light_color)
         r"""Default light background color for bot Web Apps; \-1 if not specified"""
         self.web_app_background_dark_color: int = int(web_app_background_dark_color)
@@ -11429,6 +12277,7 @@ class BotInfo(TlObject):
             InternalLinkTypeBusinessChat,
             InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
+            InternalLinkTypeChatAffiliateProgram,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
             InternalLinkTypeChatFolderSettings,
@@ -11478,6 +12327,7 @@ class BotInfo(TlObject):
             InternalLinkTypeBusinessChat,
             InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
+            InternalLinkTypeChatAffiliateProgram,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
             InternalLinkTypeChatFolderSettings,
@@ -11527,6 +12377,7 @@ class BotInfo(TlObject):
             InternalLinkTypeBusinessChat,
             InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
+            InternalLinkTypeChatAffiliateProgram,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
             InternalLinkTypeChatFolderSettings,
@@ -11576,6 +12427,7 @@ class BotInfo(TlObject):
             InternalLinkTypeBusinessChat,
             InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
+            InternalLinkTypeChatAffiliateProgram,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
             InternalLinkTypeChatFolderSettings,
@@ -11636,6 +12488,7 @@ class BotInfo(TlObject):
             "privacy_policy_url": self.privacy_policy_url,
             "default_group_administrator_rights": self.default_group_administrator_rights,
             "default_channel_administrator_rights": self.default_channel_administrator_rights,
+            "affiliate_program": self.affiliate_program,
             "web_app_background_light_color": self.web_app_background_light_color,
             "web_app_background_dark_color": self.web_app_background_dark_color,
             "web_app_header_light_color": self.web_app_header_light_color,
@@ -11666,6 +12519,7 @@ class BotInfo(TlObject):
             data_class.default_channel_administrator_rights = data.get(
                 "default_channel_administrator_rights", None
             )
+            data_class.affiliate_program = data.get("affiliate_program", None)
             data_class.web_app_background_light_color = int(
                 data.get("web_app_background_light_color", 0)
             )
@@ -26801,6 +27655,7 @@ class WebPageInstantView(TlObject):
             InternalLinkTypeBusinessChat,
             InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
+            InternalLinkTypeChatAffiliateProgram,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
             InternalLinkTypeChatFolderSettings,
@@ -48971,7 +49826,7 @@ class TargetChatTypes(TlObject):
 
 
 class TargetChatCurrent(TlObject, TargetChat):
-    r"""The currently opened chat needs to be kept"""
+    r"""The currently opened chat and forum topic must be kept"""
 
     def __init__(self) -> None:
         pass
@@ -49051,6 +49906,7 @@ class TargetChatInternalLink(TlObject, TargetChat):
             InternalLinkTypeBusinessChat,
             InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
+            InternalLinkTypeChatAffiliateProgram,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
             InternalLinkTypeChatFolderSettings,
@@ -56509,6 +57365,7 @@ class PremiumFeatures(TlObject):
             InternalLinkTypeBusinessChat,
             InternalLinkTypeBuyStars,
             InternalLinkTypeChangePhoneNumber,
+            InternalLinkTypeChatAffiliateProgram,
             InternalLinkTypeChatBoost,
             InternalLinkTypeChatFolderInvite,
             InternalLinkTypeChatFolderSettings,
@@ -64955,6 +65812,52 @@ class InternalLinkTypeChangePhoneNumber(TlObject, InternalLinkType):
         return data_class
 
 
+class InternalLinkTypeChatAffiliateProgram(TlObject, InternalLinkType):
+    r"""The link is an affiliate program link\. Call searchChatAffiliateProgram with the given username and referrer to process the link
+
+    Parameters:
+        username (:class:`str`):
+            Username to be passed to searchChatAffiliateProgram
+
+        referrer (:class:`str`):
+            Referrer to be passed to searchChatAffiliateProgram
+
+    """
+
+    def __init__(self, username: str = "", referrer: str = "") -> None:
+        self.username: Union[str, None] = username
+        r"""Username to be passed to searchChatAffiliateProgram"""
+        self.referrer: Union[str, None] = referrer
+        r"""Referrer to be passed to searchChatAffiliateProgram"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["internalLinkTypeChatAffiliateProgram"]:
+        return "internalLinkTypeChatAffiliateProgram"
+
+    def getClass(self) -> Literal["InternalLinkType"]:
+        return "InternalLinkType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "username": self.username,
+            "referrer": self.referrer,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["InternalLinkTypeChatAffiliateProgram", None]:
+        if data:
+            data_class = cls()
+            data_class.username = data.get("username", "")
+            data_class.referrer = data.get("referrer", "")
+
+        return data_class
+
+
 class InternalLinkTypeChatBoost(TlObject, InternalLinkType):
     r"""The link is a link to boost a Telegram chat\. Call getChatBoostLinkInfo with the given URL to process the link\. If the chat is found, then call getChatBoostStatus and getAvailableChatBoostSlots to get the current boost status and check whether the chat can be boosted\. If the user wants to boost the chat and the chat can be boosted, then call boostChat
 
@@ -66894,6 +67797,110 @@ class FileTypeSecure(TlObject, FileType):
         return data_class
 
 
+class FileTypeSelfDestructingPhoto(TlObject, FileType):
+    r"""The file is a self\-destructing photo in a private chat"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["fileTypeSelfDestructingPhoto"]:
+        return "fileTypeSelfDestructingPhoto"
+
+    def getClass(self) -> Literal["FileType"]:
+        return "FileType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["FileTypeSelfDestructingPhoto", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class FileTypeSelfDestructingVideo(TlObject, FileType):
+    r"""The file is a self\-destructing video in a private chat"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["fileTypeSelfDestructingVideo"]:
+        return "fileTypeSelfDestructingVideo"
+
+    def getClass(self) -> Literal["FileType"]:
+        return "FileType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["FileTypeSelfDestructingVideo", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class FileTypeSelfDestructingVideoNote(TlObject, FileType):
+    r"""The file is a self\-destructing video note in a private chat"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["fileTypeSelfDestructingVideoNote"]:
+        return "fileTypeSelfDestructingVideoNote"
+
+    def getClass(self) -> Literal["FileType"]:
+        return "FileType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["FileTypeSelfDestructingVideoNote", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class FileTypeSelfDestructingVoiceNote(TlObject, FileType):
+    r"""The file is a self\-destructing voice note in a private chat"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["fileTypeSelfDestructingVoiceNote"]:
+        return "fileTypeSelfDestructingVoiceNote"
+
+    def getClass(self) -> Literal["FileType"]:
+        return "FileType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["FileTypeSelfDestructingVoiceNote", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class FileTypeSticker(TlObject, FileType):
     r"""The file is a sticker"""
 
@@ -67132,6 +68139,10 @@ class StorageStatisticsByFileType(TlObject):
             FileTypeSecret,
             FileTypeSecretThumbnail,
             FileTypeSecure,
+            FileTypeSelfDestructingPhoto,
+            FileTypeSelfDestructingVideo,
+            FileTypeSelfDestructingVideoNote,
+            FileTypeSelfDestructingVoiceNote,
             FileTypeSticker,
             FileTypeThumbnail,
             FileTypeUnknown,
@@ -67571,6 +68582,10 @@ class NetworkStatisticsEntryFile(TlObject, NetworkStatisticsEntry):
             FileTypeSecret,
             FileTypeSecretThumbnail,
             FileTypeSecure,
+            FileTypeSelfDestructingPhoto,
+            FileTypeSelfDestructingVideo,
+            FileTypeSelfDestructingVideoNote,
+            FileTypeSelfDestructingVoiceNote,
             FileTypeSticker,
             FileTypeThumbnail,
             FileTypeUnknown,
@@ -71328,14 +72343,14 @@ class StarRevenueStatus(TlObject):
     r"""Contains information about Telegram Stars earned by a bot or a chat
 
     Parameters:
-        total_count (:class:`int`):
-            Total number of Telegram Stars earned
+        total_amount (:class:`"types.StarAmount"`):
+            Total amount of Telegram Stars earned
 
-        current_count (:class:`int`):
-            The number of Telegram Stars that aren't withdrawn yet
+        current_amount (:class:`"types.StarAmount"`):
+            The amount of Telegram Stars that aren't withdrawn yet
 
-        available_count (:class:`int`):
-            The number of Telegram Stars that are available for withdrawal
+        available_amount (:class:`"types.StarAmount"`):
+            The amount of Telegram Stars that are available for withdrawal
 
         withdrawal_enabled (:class:`bool`):
             True, if Telegram Stars can be withdrawn now or later
@@ -71347,18 +72362,18 @@ class StarRevenueStatus(TlObject):
 
     def __init__(
         self,
-        total_count: int = 0,
-        current_count: int = 0,
-        available_count: int = 0,
+        total_amount: StarAmount = None,
+        current_amount: StarAmount = None,
+        available_amount: StarAmount = None,
         withdrawal_enabled: bool = False,
         next_withdrawal_in: int = 0,
     ) -> None:
-        self.total_count: int = int(total_count)
-        r"""Total number of Telegram Stars earned"""
-        self.current_count: int = int(current_count)
-        r"""The number of Telegram Stars that aren't withdrawn yet"""
-        self.available_count: int = int(available_count)
-        r"""The number of Telegram Stars that are available for withdrawal"""
+        self.total_amount: Union[StarAmount, None] = total_amount
+        r"""Total amount of Telegram Stars earned"""
+        self.current_amount: Union[StarAmount, None] = current_amount
+        r"""The amount of Telegram Stars that aren't withdrawn yet"""
+        self.available_amount: Union[StarAmount, None] = available_amount
+        r"""The amount of Telegram Stars that are available for withdrawal"""
         self.withdrawal_enabled: bool = bool(withdrawal_enabled)
         r"""True, if Telegram Stars can be withdrawn now or later"""
         self.next_withdrawal_in: int = int(next_withdrawal_in)
@@ -71376,9 +72391,9 @@ class StarRevenueStatus(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "total_count": self.total_count,
-            "current_count": self.current_count,
-            "available_count": self.available_count,
+            "total_amount": self.total_amount,
+            "current_amount": self.current_amount,
+            "available_amount": self.available_amount,
             "withdrawal_enabled": self.withdrawal_enabled,
             "next_withdrawal_in": self.next_withdrawal_in,
         }
@@ -71387,9 +72402,9 @@ class StarRevenueStatus(TlObject):
     def from_dict(cls, data: dict) -> Union["StarRevenueStatus", None]:
         if data:
             data_class = cls()
-            data_class.total_count = int(data.get("total_count", 0))
-            data_class.current_count = int(data.get("current_count", 0))
-            data_class.available_count = int(data.get("available_count", 0))
+            data_class.total_amount = data.get("total_amount", None)
+            data_class.current_amount = data.get("current_amount", None)
+            data_class.available_amount = data.get("available_amount", None)
             data_class.withdrawal_enabled = data.get("withdrawal_enabled", False)
             data_class.next_withdrawal_in = int(data.get("next_withdrawal_in", 0))
 
@@ -78033,14 +79048,14 @@ class UpdateOwnedStarCount(TlObject, Update):
     r"""The number of Telegram Stars owned by the current user has changed
 
     Parameters:
-        star_count (:class:`int`):
-            The new number of Telegram Stars owned
+        star_amount (:class:`"types.StarAmount"`):
+            The new amount of owned Telegram Stars
 
     """
 
-    def __init__(self, star_count: int = 0) -> None:
-        self.star_count: int = int(star_count)
-        r"""The new number of Telegram Stars owned"""
+    def __init__(self, star_amount: StarAmount = None) -> None:
+        self.star_amount: Union[StarAmount, None] = star_amount
+        r"""The new amount of owned Telegram Stars"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -78052,13 +79067,13 @@ class UpdateOwnedStarCount(TlObject, Update):
         return "Update"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "star_count": self.star_count}
+        return {"@type": self.getType(), "star_amount": self.star_amount}
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["UpdateOwnedStarCount", None]:
         if data:
             data_class = cls()
-            data_class.star_count = int(data.get("star_count", 0))
+            data_class.star_amount = data.get("star_amount", None)
 
         return data_class
 
