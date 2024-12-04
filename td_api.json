@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.40",
-    "commit_hash": "22d49d5b87a4d5fc60a194dab02dd1d71529687f",
+    "version": "1.8.41",
+    "commit_hash": "eb98bbe611e1132f98914e4cd4e2c727079cc84d",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -177,6 +177,15 @@
             ],
             "functions": []
         },
+        "AffiliateProgramSortOrder": {
+            "description": "Describes the order of the found affiliate programs",
+            "types": [
+                "affiliateProgramSortOrderProfitability",
+                "affiliateProgramSortOrderCreationDate",
+                "affiliateProgramSortOrderRevenue"
+            ],
+            "functions": []
+        },
         "StarTransactionDirection": {
             "description": "Describes direction of a transaction with Telegram Stars",
             "types": [
@@ -185,48 +194,34 @@
             ],
             "functions": []
         },
-        "BotTransactionPurpose": {
-            "description": "Describes purpose of a transaction with a bot",
+        "StarTransactionType": {
+            "description": "Describes type of transaction with Telegram Stars",
             "types": [
-                "botTransactionPurposePaidMedia",
-                "botTransactionPurposeInvoicePayment",
-                "botTransactionPurposeSubscription"
-            ],
-            "functions": []
-        },
-        "ChatTransactionPurpose": {
-            "description": "Describes purpose of a transaction with a supergroup or a channel",
-            "types": [
-                "chatTransactionPurposePaidMedia",
-                "chatTransactionPurposeJoin",
-                "chatTransactionPurposeReaction",
-                "chatTransactionPurposeGiveaway"
-            ],
-            "functions": []
-        },
-        "UserTransactionPurpose": {
-            "description": "Describes purpose of a transaction with a user",
-            "types": [
-                "userTransactionPurposeGiftedStars",
-                "userTransactionPurposeGiftSell",
-                "userTransactionPurposeGiftSend"
-            ],
-            "functions": []
-        },
-        "StarTransactionPartner": {
-            "description": "Describes source or recipient of a transaction with Telegram Stars",
-            "types": [
-                "starTransactionPartnerTelegram",
-                "starTransactionPartnerAppStore",
-                "starTransactionPartnerGooglePlay",
-                "starTransactionPartnerFragment",
-                "starTransactionPartnerTelegramAds",
-                "starTransactionPartnerTelegramApi",
-                "starTransactionPartnerBot",
-                "starTransactionPartnerBusiness",
-                "starTransactionPartnerChat",
-                "starTransactionPartnerUser",
-                "starTransactionPartnerUnsupported"
+                "starTransactionTypePremiumBotDeposit",
+                "starTransactionTypeAppStoreDeposit",
+                "starTransactionTypeGooglePlayDeposit",
+                "starTransactionTypeFragmentDeposit",
+                "starTransactionTypeUserDeposit",
+                "starTransactionTypeGiveawayDeposit",
+                "starTransactionTypeFragmentWithdrawal",
+                "starTransactionTypeTelegramAdsWithdrawal",
+                "starTransactionTypeTelegramApiUsage",
+                "starTransactionTypeBotPaidMediaPurchase",
+                "starTransactionTypeBotPaidMediaSale",
+                "starTransactionTypeChannelPaidMediaPurchase",
+                "starTransactionTypeChannelPaidMediaSale",
+                "starTransactionTypeBotInvoicePurchase",
+                "starTransactionTypeBotInvoiceSale",
+                "starTransactionTypeBotSubscriptionPurchase",
+                "starTransactionTypeBotSubscriptionSale",
+                "starTransactionTypeChannelSubscriptionPurchase",
+                "starTransactionTypeChannelSubscriptionSale",
+                "starTransactionTypeGiftPurchase",
+                "starTransactionTypeGiftSale",
+                "starTransactionTypeChannelPaidReactionSend",
+                "starTransactionTypeChannelPaidReactionReceive",
+                "starTransactionTypeAffiliateProgramCommission",
+                "starTransactionTypeUnsupported"
             ],
             "functions": []
         },
@@ -1845,6 +1840,7 @@
                 "internalLinkTypeBusinessChat",
                 "internalLinkTypeBuyStars",
                 "internalLinkTypeChangePhoneNumber",
+                "internalLinkTypeChatAffiliateProgram",
                 "internalLinkTypeChatBoost",
                 "internalLinkTypeChatFolderInvite",
                 "internalLinkTypeChatFolderSettings",
@@ -1907,6 +1903,10 @@
                 "fileTypeSecret",
                 "fileTypeSecretThumbnail",
                 "fileTypeSecure",
+                "fileTypeSelfDestructingPhoto",
+                "fileTypeSelfDestructingVideo",
+                "fileTypeSelfDestructingVideoNote",
+                "fileTypeSelfDestructingVoiceNote",
                 "fileTypeSticker",
                 "fileTypeThumbnail",
                 "fileTypeUnknown",
@@ -4712,6 +4712,22 @@
             },
             "type": "ChatAdministratorRights"
         },
+        "starAmount": {
+            "description": "Describes a possibly non-integer amount of Telegram Stars",
+            "args": {
+                "star_count": {
+                    "description": "The integer amount of Telegram Stars rounded to 0",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "nanostar_count": {
+                    "description": "The number of 1/1000000000 shares of Telegram Stars; from -999999999 to 999999999",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StarAmount"
+        },
         "starSubscriptionTypeChannel": {
             "description": "Describes a subscription to a channel chat",
             "args": {
@@ -4814,10 +4830,10 @@
         "starSubscriptions": {
             "description": "Represents a list of Telegram Star subscriptions",
             "args": {
-                "star_count": {
+                "star_amount": {
                     "description": "The amount of owned Telegram Stars",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "starAmount"
                 },
                 "subscriptions": {
                     "description": "List of subscriptions for Telegram Stars",
@@ -4836,6 +4852,178 @@
                 }
             },
             "type": "StarSubscriptions"
+        },
+        "affiliateProgramSortOrderProfitability": {
+            "description": "The affiliate programs must be sorted by the profitability",
+            "args": {},
+            "type": "AffiliateProgramSortOrder"
+        },
+        "affiliateProgramSortOrderCreationDate": {
+            "description": "The affiliate programs must be sorted by creation date",
+            "args": {},
+            "type": "AffiliateProgramSortOrder"
+        },
+        "affiliateProgramSortOrderRevenue": {
+            "description": "The affiliate programs must be sorted by the expected revenue",
+            "args": {},
+            "type": "AffiliateProgramSortOrder"
+        },
+        "affiliateProgramParameters": {
+            "description": "Describes parameters of an affiliate program",
+            "args": {
+                "commission_per_mille": {
+                    "description": "The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner; getOption(\"affiliate_program_commission_per_mille_min\")-getOption(\"affiliate_program_commission_per_mille_max\")",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "month_count": {
+                    "description": "Number of months the program will be active; 0-36. If 0, then the program is eternal",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "AffiliateProgramParameters"
+        },
+        "affiliateProgramInfo": {
+            "description": "Contains information about an active affiliate program",
+            "args": {
+                "parameters": {
+                    "description": "Parameters of the affiliate program",
+                    "is_optional": false,
+                    "type": "affiliateProgramParameters"
+                },
+                "end_date": {
+                    "description": "Point in time (Unix timestamp) when the affiliate program will be closed; 0 if the affiliate program isn't scheduled to be closed. If positive, then the program can't be connected using connectChatAffiliateProgram, but active connections will work until the date",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "daily_revenue_per_user_amount": {
+                    "description": "The amount of daily revenue per user in Telegram Stars of the bot that created the affiliate program",
+                    "is_optional": false,
+                    "type": "starAmount"
+                }
+            },
+            "type": "AffiliateProgramInfo"
+        },
+        "affiliateInfo": {
+            "description": "Contains information about an affiliate that received commission from a Telegram Star transaction",
+            "args": {
+                "commission_per_mille": {
+                    "description": "The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "affiliate_chat_id": {
+                    "description": "Identifier of the chat which received the commission",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "star_amount": {
+                    "description": "The amount of Telegram Stars that were received by the affiliate; can be negative for refunds",
+                    "is_optional": false,
+                    "type": "starAmount"
+                }
+            },
+            "type": "AffiliateInfo"
+        },
+        "foundAffiliateProgram": {
+            "description": "Describes a found affiliate program",
+            "args": {
+                "bot_user_id": {
+                    "description": "User identifier of the bot created the program",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "parameters": {
+                    "description": "Information about the affiliate program",
+                    "is_optional": false,
+                    "type": "affiliateProgramInfo"
+                }
+            },
+            "type": "FoundAffiliateProgram"
+        },
+        "foundAffiliatePrograms": {
+            "description": "Represents a list of found affiliate programs",
+            "args": {
+                "total_count": {
+                    "description": "The total number of found affiliate programs",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "programs": {
+                    "description": "The list of affiliate programs",
+                    "is_optional": false,
+                    "type": "vector<foundAffiliateProgram>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "FoundAffiliatePrograms"
+        },
+        "chatAffiliateProgram": {
+            "description": "Describes an affiliate program that was connected to a chat",
+            "args": {
+                "url": {
+                    "description": "The link that can be used to refer users if the program is still active",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "bot_user_id": {
+                    "description": "User identifier of the bot created the program",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "parameters": {
+                    "description": "The parameters of the affiliate program",
+                    "is_optional": false,
+                    "type": "affiliateProgramParameters"
+                },
+                "connection_date": {
+                    "description": "Point in time (Unix timestamp) when the affiliate program was connected",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_disconnected": {
+                    "description": "True, if the program was canceled by the bot, or disconnected by the chat owner and isn't available anymore",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "user_count": {
+                    "description": "The number of users that used the affiliate program",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "revenue_star_count": {
+                    "description": "The number of Telegram Stars that were earned by the affiliate program",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "ChatAffiliateProgram"
+        },
+        "chatAffiliatePrograms": {
+            "description": "Represents a list of affiliate programs that were connected to a chat",
+            "args": {
+                "total_count": {
+                    "description": "The total number of affiliate programs that were connected to the chat",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "programs": {
+                    "description": "The list of connected affiliate programs",
+                    "is_optional": false,
+                    "type": "vector<chatAffiliateProgram>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "ChatAffiliatePrograms"
         },
         "productInfo": {
             "description": "Contains information about a product that can be paid with invoice",
@@ -5277,62 +5465,135 @@
             "args": {},
             "type": "StarTransactionDirection"
         },
-        "botTransactionPurposePaidMedia": {
-            "description": "Paid media were bought",
+        "starTransactionTypePremiumBotDeposit": {
+            "description": "The transaction is a deposit of Telegram Stars from the Premium bot; for regular users only",
+            "args": {},
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeAppStoreDeposit": {
+            "description": "The transaction is a deposit of Telegram Stars from App Store; for regular users only",
+            "args": {},
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeGooglePlayDeposit": {
+            "description": "The transaction is a deposit of Telegram Stars from Google Play; for regular users only",
+            "args": {},
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeFragmentDeposit": {
+            "description": "The transaction is a deposit of Telegram Stars from Fragment; for regular users and bots only",
+            "args": {},
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeUserDeposit": {
+            "description": "The transaction is a deposit of Telegram Stars by another user; for regular users only",
             "args": {
+                "user_id": {
+                    "description": "Identifier of the user that gifted Telegram Stars; 0 if the user was anonymous",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "sticker": {
+                    "description": "The sticker to be shown in the transaction information; may be null if unknown",
+                    "is_optional": true,
+                    "type": "sticker"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeGiveawayDeposit": {
+            "description": "The transaction is a deposit of Telegram Stars from a giveaway; for regular users only",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of a supergroup or a channel chat that created the giveaway",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "giveaway_message_id": {
+                    "description": "Identifier of the message with the giveaway; can be 0 or an identifier of a deleted message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeFragmentWithdrawal": {
+            "description": "The transaction is a withdrawal of earned Telegram Stars to Fragment; for bots and channel chats only",
+            "args": {
+                "withdrawal_state": {
+                    "description": "State of the withdrawal; may be null for refunds from Fragment",
+                    "is_optional": true,
+                    "type": "RevenueWithdrawalState"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeTelegramAdsWithdrawal": {
+            "description": "The transaction is a withdrawal of earned Telegram Stars to Telegram Ad platform; for bots and channel chats only",
+            "args": {},
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeTelegramApiUsage": {
+            "description": "The transaction is a payment for Telegram API usage; for bots only",
+            "args": {
+                "request_count": {
+                    "description": "The number of billed requests",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeBotPaidMediaPurchase": {
+            "description": "The transaction is a purchase of paid media from a bot or a business account by the current user; for regular users only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the bot or the business account user that sent the paid media",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "media": {
                     "description": "The bought media if the transaction wasn't refunded",
                     "is_optional": false,
                     "type": "vector<PaidMedia>"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeBotPaidMediaSale": {
+            "description": "The transaction is a sale of paid media by the bot or a business account managed by the bot; for bots only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user that bought the media",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "media": {
+                    "description": "The bought media",
+                    "is_optional": false,
+                    "type": "vector<PaidMedia>"
                 },
                 "payload": {
-                    "description": "Bot-provided payload; for bots only",
+                    "description": "Bot-provided payload",
                     "is_optional": false,
                     "type": "string"
-                }
-            },
-            "type": "BotTransactionPurpose"
-        },
-        "botTransactionPurposeInvoicePayment": {
-            "description": "User bought a product from the bot",
-            "args": {
-                "product_info": {
-                    "description": "Information about the bought product; may be null if not applicable",
+                },
+                "affiliate": {
+                    "description": "Information about the affiliate which received commission from the transaction; may be null if none",
                     "is_optional": true,
-                    "type": "productInfo"
-                },
-                "invoice_payload": {
-                    "description": "Invoice payload; for bots only",
-                    "is_optional": false,
-                    "type": "bytes"
+                    "type": "affiliateInfo"
                 }
             },
-            "type": "BotTransactionPurpose"
+            "type": "StarTransactionType"
         },
-        "botTransactionPurposeSubscription": {
-            "description": "User bought a subscription in a bot or a business account",
+        "starTransactionTypeChannelPaidMediaPurchase": {
+            "description": "The transaction is a purchase of paid media from a channel by the current user; for regular users only",
             "args": {
-                "period": {
-                    "description": "The number of seconds between consecutive Telegram Star debiting",
+                "chat_id": {
+                    "description": "Identifier of the channel chat that sent the paid media",
                     "is_optional": false,
-                    "type": "int32"
+                    "type": "int53"
                 },
-                "product_info": {
-                    "description": "Information about the bought subscription; may be null if not applicable",
-                    "is_optional": true,
-                    "type": "productInfo"
-                },
-                "invoice_payload": {
-                    "description": "Invoice payload; for bots only",
-                    "is_optional": false,
-                    "type": "bytes"
-                }
-            },
-            "type": "BotTransactionPurpose"
-        },
-        "chatTransactionPurposePaidMedia": {
-            "description": "Paid media were bought",
-            "args": {
                 "message_id": {
                     "description": "Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message",
                     "is_optional": false,
@@ -5344,184 +5605,239 @@
                     "type": "vector<PaidMedia>"
                 }
             },
-            "type": "ChatTransactionPurpose"
+            "type": "StarTransactionType"
         },
-        "chatTransactionPurposeJoin": {
-            "description": "User joined the channel and subscribed to regular payments in Telegram Stars",
+        "starTransactionTypeChannelPaidMediaSale": {
+            "description": "The transaction is a sale of paid media by the channel chat; for channel chats only",
             "args": {
-                "period": {
-                    "description": "The number of seconds between consecutive Telegram Star debiting",
+                "user_id": {
+                    "description": "Identifier of the user that bought the media",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "media": {
+                    "description": "The bought media",
+                    "is_optional": false,
+                    "type": "vector<PaidMedia>"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeBotInvoicePurchase": {
+            "description": "The transaction is a purchase of a product from a bot or a business account by the current user; for regular users only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the bot or the business account user that created the invoice",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "product_info": {
+                    "description": "Information about the bought product",
+                    "is_optional": false,
+                    "type": "productInfo"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeBotInvoiceSale": {
+            "description": "The transaction is a sale of a product by the bot; for bots only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user that bought the product",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "product_info": {
+                    "description": "Information about the bought product",
+                    "is_optional": false,
+                    "type": "productInfo"
+                },
+                "invoice_payload": {
+                    "description": "Invoice payload",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "affiliate": {
+                    "description": "Information about the affiliate which received commission from the transaction; may be null if none",
+                    "is_optional": true,
+                    "type": "affiliateInfo"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeBotSubscriptionPurchase": {
+            "description": "The transaction is a purchase of a subscription from a bot or a business account by the current user; for regular users only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the bot or the business account user that created the subscription link",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "subscription_period": {
+                    "description": "The number of seconds between consecutive Telegram Star debitings",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "product_info": {
+                    "description": "Information about the bought subscription",
+                    "is_optional": false,
+                    "type": "productInfo"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeBotSubscriptionSale": {
+            "description": "The transaction is a sale of a subscription by the bot; for bots only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user that bought the subscription",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "subscription_period": {
+                    "description": "The number of seconds between consecutive Telegram Star debitings",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "product_info": {
+                    "description": "Information about the bought subscription",
+                    "is_optional": false,
+                    "type": "productInfo"
+                },
+                "invoice_payload": {
+                    "description": "Invoice payload",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "affiliate": {
+                    "description": "Information about the affiliate which received commission from the transaction; may be null if none",
+                    "is_optional": true,
+                    "type": "affiliateInfo"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeChannelSubscriptionPurchase": {
+            "description": "The transaction is a purchase of a subscription to a channel chat by the current user; for regular users only",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the channel chat that created the subscription",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "subscription_period": {
+                    "description": "The number of seconds between consecutive Telegram Star debitings",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "ChatTransactionPurpose"
+            "type": "StarTransactionType"
         },
-        "chatTransactionPurposeReaction": {
-            "description": "User paid for a reaction",
+        "starTransactionTypeChannelSubscriptionSale": {
+            "description": "The transaction is a sale of a subscription by the channel chat; for channel chats only",
             "args": {
+                "user_id": {
+                    "description": "Identifier of the user that bought the subscription",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "subscription_period": {
+                    "description": "The number of seconds between consecutive Telegram Star debitings",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeGiftPurchase": {
+            "description": "The transaction is a purchase of a gift to another user; for regular users and bots only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user that received the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "gift"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeGiftSale": {
+            "description": "The transaction is a sale of a gift received from another user or bot; for regular users only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user that sent the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "gift"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeChannelPaidReactionSend": {
+            "description": "The transaction is a sending of a paid reaction to a message in a channel chat by the current user; for regular users only",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the channel chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "message_id": {
                     "description": "Identifier of the reacted message; can be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 }
             },
-            "type": "ChatTransactionPurpose"
+            "type": "StarTransactionType"
         },
-        "chatTransactionPurposeGiveaway": {
-            "description": "User received Telegram Stars from a giveaway",
+        "starTransactionTypeChannelPaidReactionReceive": {
+            "description": "The transaction is a receiving of a paid reaction to a message by the channel chat; for channel chats only",
             "args": {
-                "giveaway_message_id": {
-                    "description": "Identifier of the message with giveaway; can be 0 or an identifier of a deleted message",
+                "user_id": {
+                    "description": "Identifier of the user that added the paid reaction",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the reacted message; can be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 }
             },
-            "type": "ChatTransactionPurpose"
+            "type": "StarTransactionType"
         },
-        "userTransactionPurposeGiftedStars": {
-            "description": "A user gifted Telegram Stars",
+        "starTransactionTypeAffiliateProgramCommission": {
+            "description": "The transaction is a receiving of a commission from an affiliate program; for regular users, bots and channel chats only",
             "args": {
-                "sticker": {
-                    "description": "A sticker to be shown in the transaction information; may be null if unknown",
-                    "is_optional": true,
-                    "type": "sticker"
-                }
-            },
-            "type": "UserTransactionPurpose"
-        },
-        "userTransactionPurposeGiftSell": {
-            "description": "The user sold a gift received from another user or bot",
-            "args": {
-                "gift": {
-                    "description": "The gift",
+                "chat_id": {
+                    "description": "Identifier of the chat that created the affiliate program",
                     "is_optional": false,
-                    "type": "gift"
-                }
-            },
-            "type": "UserTransactionPurpose"
-        },
-        "userTransactionPurposeGiftSend": {
-            "description": "The user or the bot sent a gift to a user",
-            "args": {
-                "gift": {
-                    "description": "The gift",
-                    "is_optional": false,
-                    "type": "gift"
-                }
-            },
-            "type": "UserTransactionPurpose"
-        },
-        "starTransactionPartnerTelegram": {
-            "description": "The transaction is a transaction with Telegram through a bot",
-            "args": {},
-            "type": "StarTransactionPartner"
-        },
-        "starTransactionPartnerAppStore": {
-            "description": "The transaction is a transaction with App Store",
-            "args": {},
-            "type": "StarTransactionPartner"
-        },
-        "starTransactionPartnerGooglePlay": {
-            "description": "The transaction is a transaction with Google Play",
-            "args": {},
-            "type": "StarTransactionPartner"
-        },
-        "starTransactionPartnerFragment": {
-            "description": "The transaction is a transaction with Fragment",
-            "args": {
-                "withdrawal_state": {
-                    "description": "State of the withdrawal; may be null for refunds from Fragment or for Telegram Stars bought on Fragment",
-                    "is_optional": true,
-                    "type": "RevenueWithdrawalState"
-                }
-            },
-            "type": "StarTransactionPartner"
-        },
-        "starTransactionPartnerTelegramAds": {
-            "description": "The transaction is a transaction with Telegram Ad platform",
-            "args": {},
-            "type": "StarTransactionPartner"
-        },
-        "starTransactionPartnerTelegramApi": {
-            "description": "The transaction is a transaction with Telegram for API usage",
-            "args": {
-                "request_count": {
-                    "description": "The number of billed requests",
+                    "type": "int53"
+                },
+                "commission_per_mille": {
+                    "description": "The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "StarTransactionPartner"
+            "type": "StarTransactionType"
         },
-        "starTransactionPartnerBot": {
-            "description": "The transaction is a transaction with a bot",
-            "args": {
-                "user_id": {
-                    "description": "Identifier of the bot",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "purpose": {
-                    "description": "Purpose of the transaction",
-                    "is_optional": false,
-                    "type": "BotTransactionPurpose"
-                }
-            },
-            "type": "StarTransactionPartner"
-        },
-        "starTransactionPartnerBusiness": {
-            "description": "The transaction is a transaction with a business account",
-            "args": {
-                "user_id": {
-                    "description": "Identifier of the business account user",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "media": {
-                    "description": "The bought media if the transaction wasn't refunded",
-                    "is_optional": false,
-                    "type": "vector<PaidMedia>"
-                }
-            },
-            "type": "StarTransactionPartner"
-        },
-        "starTransactionPartnerChat": {
-            "description": "The transaction is a transaction with a supergroup or a channel chat",
-            "args": {
-                "chat_id": {
-                    "description": "Identifier of the chat",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "purpose": {
-                    "description": "Purpose of the transaction",
-                    "is_optional": false,
-                    "type": "ChatTransactionPurpose"
-                }
-            },
-            "type": "StarTransactionPartner"
-        },
-        "starTransactionPartnerUser": {
-            "description": "The transaction is a transaction with another user",
-            "args": {
-                "user_id": {
-                    "description": "Identifier of the user; 0 if the user was anonymous",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "purpose": {
-                    "description": "Purpose of the transaction",
-                    "is_optional": false,
-                    "type": "UserTransactionPurpose"
-                }
-            },
-            "type": "StarTransactionPartner"
-        },
-        "starTransactionPartnerUnsupported": {
-            "description": "The transaction is a transaction with unknown partner",
+        "starTransactionTypeUnsupported": {
+            "description": "The transaction is a transaction of an unsupported type",
             "args": {},
-            "type": "StarTransactionPartner"
+            "type": "StarTransactionType"
         },
         "starTransaction": {
             "description": "Represents a transaction changing the amount of owned Telegram Stars",
@@ -5531,10 +5847,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "star_count": {
+                "star_amount": {
                     "description": "The amount of added owned Telegram Stars; negative for outgoing transactions",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "starAmount"
                 },
                 "is_refund": {
                     "description": "True, if the transaction is a refund of a previous transaction",
@@ -5546,10 +5862,10 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "partner": {
-                    "description": "Source of the incoming transaction, or its recipient for outgoing transactions",
+                "type": {
+                    "description": "Type of the transaction",
                     "is_optional": false,
-                    "type": "StarTransactionPartner"
+                    "type": "StarTransactionType"
                 }
             },
             "type": "StarTransaction"
@@ -5557,10 +5873,10 @@
         "starTransactions": {
             "description": "Represents a list of Telegram Star transactions",
             "args": {
-                "star_count": {
+                "star_amount": {
                     "description": "The amount of owned Telegram Stars",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "starAmount"
                 },
                 "transactions": {
                     "description": "List of transactions with Telegram Stars",
@@ -6031,6 +6347,11 @@
                     "description": "Default administrator rights for adding the bot to channels; may be null",
                     "is_optional": true,
                     "type": "chatAdministratorRights"
+                },
+                "affiliate_program": {
+                    "description": "Information about the affiliate program of the bot; may be null if none",
+                    "is_optional": true,
+                    "type": "affiliateProgramInfo"
                 },
                 "web_app_background_light_color": {
                     "description": "Default light background color for bot Web Apps; -1 if not specified",
@@ -19532,7 +19853,7 @@
             "type": "TargetChatTypes"
         },
         "targetChatCurrent": {
-            "description": "The currently opened chat needs to be kept",
+            "description": "The currently opened chat and forum topic must be kept",
             "args": {},
             "type": "TargetChat"
         },
@@ -24555,6 +24876,22 @@
             "args": {},
             "type": "InternalLinkType"
         },
+        "internalLinkTypeChatAffiliateProgram": {
+            "description": "The link is an affiliate program link. Call searchChatAffiliateProgram with the given username and referrer to process the link",
+            "args": {
+                "username": {
+                    "description": "Username to be passed to searchChatAffiliateProgram",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "referrer": {
+                    "description": "Referrer to be passed to searchChatAffiliateProgram",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeChatBoost": {
             "description": "The link is a link to boost a Telegram chat. Call getChatBoostLinkInfo with the given URL to process the link. If the chat is found, then call getChatBoostStatus and getAvailableChatBoostSlots to get the current boost status and check whether the chat can be boosted. If the user wants to boost the chat and the chat can be boosted, then call boostChat",
             "args": {
@@ -25152,6 +25489,26 @@
         },
         "fileTypeSecure": {
             "description": "The file is a file from Secure storage used for storing Telegram Passport files",
+            "args": {},
+            "type": "FileType"
+        },
+        "fileTypeSelfDestructingPhoto": {
+            "description": "The file is a self-destructing photo in a private chat",
+            "args": {},
+            "type": "FileType"
+        },
+        "fileTypeSelfDestructingVideo": {
+            "description": "The file is a self-destructing video in a private chat",
+            "args": {},
+            "type": "FileType"
+        },
+        "fileTypeSelfDestructingVideoNote": {
+            "description": "The file is a self-destructing video note in a private chat",
+            "args": {},
+            "type": "FileType"
+        },
+        "fileTypeSelfDestructingVoiceNote": {
+            "description": "The file is a self-destructing voice note in a private chat",
             "args": {},
             "type": "FileType"
         },
@@ -26603,20 +26960,20 @@
         "starRevenueStatus": {
             "description": "Contains information about Telegram Stars earned by a bot or a chat",
             "args": {
-                "total_count": {
-                    "description": "Total number of Telegram Stars earned",
+                "total_amount": {
+                    "description": "Total amount of Telegram Stars earned",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "starAmount"
                 },
-                "current_count": {
-                    "description": "The number of Telegram Stars that aren't withdrawn yet",
+                "current_amount": {
+                    "description": "The amount of Telegram Stars that aren't withdrawn yet",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "starAmount"
                 },
-                "available_count": {
-                    "description": "The number of Telegram Stars that are available for withdrawal",
+                "available_amount": {
+                    "description": "The amount of Telegram Stars that are available for withdrawal",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "starAmount"
                 },
                 "withdrawal_enabled": {
                     "description": "True, if Telegram Stars can be withdrawn now or later",
@@ -28879,10 +29236,10 @@
         "updateOwnedStarCount": {
             "description": "The number of Telegram Stars owned by the current user has changed",
             "args": {
-                "star_count": {
-                    "description": "The new number of Telegram Stars owned",
+                "star_amount": {
+                    "description": "The new amount of owned Telegram Stars",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "starAmount"
                 }
             },
             "type": "Update"
@@ -33710,7 +34067,7 @@
             "type": "PreparedInlineMessageId"
         },
         "getPreparedInlineMessage": {
-            "description": "Saves an inline message to be sent by the given user; for bots only",
+            "description": "Saves an inline message to be sent by the given user",
             "args": {
                 "bot_user_id": {
                     "description": "Identifier of the bot that created the message",
@@ -37255,7 +37612,7 @@
                     "type": "int32"
                 },
                 "is_rtmp_stream": {
-                    "description": "Pass true to create an RTMP stream instead of an ordinary video chat; requires owner privileges",
+                    "description": "Pass true to create an RTMP stream instead of an ordinary video chat",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -38072,9 +38429,24 @@
                     "type": "StickerType"
                 },
                 "emojis": {
-                    "description": "Space-separated list of emojis to search for; must be non-empty",
+                    "description": "Space-separated list of emojis to search for",
                     "is_optional": false,
                     "type": "string"
+                },
+                "query": {
+                    "description": "Query to search for; may be empty to search for emoji only",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "input_language_codes": {
+                    "description": "List of possible IETF language tags of the user's input language; may be empty if unknown",
+                    "is_optional": true,
+                    "type": "vector<string>"
+                },
+                "offset": {
+                    "description": "The offset from which to return the stickers; must be non-negative",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "limit": {
                     "description": "The maximum number of stickers to be returned; 0-100",
@@ -38499,6 +38871,11 @@
         },
         "getRecentInlineBots": {
             "description": "Returns up to 20 recently used inline bots in the order of their last usage",
+            "args": {},
+            "type": "Users"
+        },
+        "getOwnedBots": {
+            "description": "Returns the list of owned by the current user bots",
             "args": {},
             "type": "Users"
         },
@@ -41758,6 +42135,133 @@
                 }
             },
             "type": "Ok"
+        },
+        "setChatAffiliateProgram": {
+            "description": "Changes affiliate program for a bot",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with an owned bot for which affiliate program is changed",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "parameters": {
+                    "description": "Parameters of the affiliate program; pass null to close the currently active program. If there is an active program, then commission and program duration can only be increased. If the active program is scheduled to be closed, then it can't be changed anymore",
+                    "is_optional": true,
+                    "type": "affiliateProgramParameters"
+                }
+            },
+            "type": "Ok"
+        },
+        "searchChatAffiliateProgram": {
+            "description": "Searches a chat with an affiliate program. Returns the chat if found and the program is active",
+            "args": {
+                "username": {
+                    "description": "Username of the chat",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "referrer": {
+                    "description": "The referrer from an internalLinkTypeChatAffiliateProgram link",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Chat"
+        },
+        "searchAffiliatePrograms": {
+            "description": "Searches affiliate programs that can be applied to the given chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat for which affiliate programs are searched for. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can_post_messages administrator right",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "sort_order": {
+                    "description": "Sort order for the results",
+                    "is_optional": false,
+                    "type": "AffiliateProgramSortOrder"
+                },
+                "offset": {
+                    "description": "Offset of the first affiliate program to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of affiliate programs to return",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "FoundAffiliatePrograms"
+        },
+        "connectChatAffiliateProgram": {
+            "description": "Connects an affiliate program to the given chat. Returns information about the connected affiliate program",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the affiliate program will be connected. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can_post_messages administrator right",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "bot_user_id": {
+                    "description": "Identifier of the bot, which affiliate program is connected",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "ChatAffiliateProgram"
+        },
+        "disconnectChatAffiliateProgram": {
+            "description": "Disconnects an affiliate program from the given chat and immediately deactivates its referral link. Returns updated information about the disconnected affiliate program",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat for which the affiliate program is connected",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "url": {
+                    "description": "The referral link of the affiliate program",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "ChatAffiliateProgram"
+        },
+        "getChatAffiliateProgram": {
+            "description": "Returns an affiliate program that were connected to the given chat by identifier of the bot that created the program",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat for which the affiliate program was connected. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can_post_messages administrator right",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "bot_user_id": {
+                    "description": "Identifier of the bot that created the program",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "ChatAffiliateProgram"
+        },
+        "getChatAffiliatePrograms": {
+            "description": "Returns affiliate programs that were connected to the given chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat for which the affiliate programs were connected. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can_post_messages administrator right",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset": {
+                    "description": "Offset of the first affiliate program to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of affiliate programs to return",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChatAffiliatePrograms"
         },
         "getBusinessFeatures": {
             "description": "Returns information about features, available to Business users",
