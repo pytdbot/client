@@ -20,6 +20,14 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
+    def reply_to_message_id(self) -> int:
+        r"""Replied message ID"""
+
+        if isinstance(self.reply_to, pytdbot.types.MessageReplyToMessage):
+            return self.reply_to.message_id
+
+    @property
+    @lru_cache(1)
     def text(self) -> str:
         r"""Text of the message"""
 
