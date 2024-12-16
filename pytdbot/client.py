@@ -392,7 +392,7 @@ class Client(Decorators, Methods):
 
         request["@extra"] = {"id": create_extra_id()}
 
-        result = self._create_request_future(request)
+        future = self._create_request_future(request)
 
         if (
             self.logger.root.level >= DEBUG or self.logger.level >= DEBUG
@@ -400,7 +400,7 @@ class Client(Decorators, Methods):
             self.logger.debug(f"Sending: {dumps(request, indent=4)}")
 
         await self.__send(request)
-        await result
+        result = await future
 
         if isinstance(result, types.Error):
             if result.code == 429:
@@ -413,10 +413,10 @@ class Client(Decorators, Methods):
 
                     await asyncio.sleep(retry_after)
 
-                    result = self._create_request_future(request)
+                    future = self._create_request_future(request)
 
                     await self.__send(request)
-                    await result
+                    result = await future
             elif not self.use_message_database and (
                 result.code == 400
                 and result.message == "Chat not found"
@@ -431,24 +431,24 @@ class Client(Decorators, Methods):
                 if not isinstance(load_chat, types.Error):
                     self.logger.debug(f"Chat {chat_id} is loaded")
 
-                    message_id = request.get("reply_to", {}).get(
+                    message_id = (request.get("reply_to") or {}).get(
                         "message_id", request.get("message_id", 0)
                     )
 
-                    # If there is a message_id then
-                    # we need to load it to avoid "Message not found"
+                    # if the request is a reply to another message
+                    # load the replied message to avoid "Message not found"
                     if message_id > 0:
                         await self.getMessage(chat_id, message_id)
 
                     # repeat the first request
-                    result = self._create_request_future(request)
+                    future = self._create_request_future(request)
 
                     await self.__send(request)
-                    await result
+                    result = await future
                 else:
                     self.logger.error(f"Couldn't load chat {chat_id}")
 
-        return await result
+        return result
 
     async def call_method(self, method: str, **kwargs) -> types.TlObject:
         r"""Call a method. with keyword arguments (``kwargs``) support
