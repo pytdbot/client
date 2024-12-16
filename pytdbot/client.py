@@ -431,14 +431,14 @@ class Client(Decorators, Methods):
                 if not isinstance(load_chat, types.Error):
                     self.logger.debug(f"Chat {chat_id} is loaded")
 
-                    message_id = (request.get("reply_to") or {}).get(
-                        "message_id", request.get("message_id", 0)
+                    reply_to_message_id = (request.get("reply_to") or {}).get(
+                        "message_id", 0
                     )
 
                     # if the request is a reply to another message
                     # load the replied message to avoid "Message not found"
-                    if message_id > 0:
-                        await self.getMessage(chat_id, message_id)
+                    if reply_to_message_id > 0:
+                        await self.getMessage(chat_id, reply_to_message_id)
 
                     # repeat the first request
                     future = self._create_request_future(request)
