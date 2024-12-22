@@ -146,6 +146,16 @@ class MessageBoundMethods:
                 html=True if parse_mode.lower() == "html" else False,
             )
 
+    async def getMessageProperties(
+        self,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.MessageProperties"]:
+        r"""Get the message properties"""
+
+        return await self._client.getMessageProperties(
+            chat_id=self.chat_id,
+            message_id=self.id,
+        )
+
     async def getRepliedMessage(
         self,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
