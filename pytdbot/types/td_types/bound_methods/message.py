@@ -34,6 +34,8 @@ class MessageBoundMethods:
         if isinstance(self.content, pytdbot.types.MessageText):
             return self.content.text.text
 
+        return ""
+
     @property
     @lru_cache(1)
     def entities(self) -> Union[List["pytdbot.types.TextEntity"], None]:
