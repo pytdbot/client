@@ -189,10 +189,37 @@ class MessageBoundMethods:
 
         return await self._client.getUser(self.from_id)
 
+    async def setChatMemberStatus(
+        self,
+        status: "pytdbot.types.ChatMemberStatus",
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Set chat member status"""
+
+        return await self._client.setChatMemberStatus(
+            chat_id=self.chat_id, member_id=self.sender_id, status=status
+        )
+
     async def leaveChat(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         r"""Leave the current chat"""
 
         return await self._client.leaveChat(self.chat_id)
+
+    async def ban(
+        self, banned_until_date: int = None
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Ban the message sender
+
+        Parameters:
+
+            banned_until_date (``int``):
+                Point in time (Unix timestamp) when the user will be unbanned; 0 if never. If the user is banned for more than 366 days or for less than 30 seconds from the current time, the user is considered to be banned forever. Always 0 in basic groups
+        """
+
+        return await self.setChatMemberStatus(
+            status=pytdbot.types.ChatMemberStatusBanned(
+                banned_until_date=banned_until_date
+            )
+        )
 
     async def delete(
         self,
