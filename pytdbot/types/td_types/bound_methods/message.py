@@ -175,7 +175,7 @@ class MessageBoundMethods:
 
     async def getChatMember(
         self,
-    ) -> Union["pytdbot.types.Error", "pytdbot.Clienttypes.ChatMember"]:
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.ChatMember"]:
         r"""Get member info in the current chat"""
 
         return await self._client.getChatMember(
