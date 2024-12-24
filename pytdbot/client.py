@@ -741,67 +741,65 @@ class Client(Decorators, Methods):
         return update
 
     async def __run_initializers(self, update):
+        inner_object = self.get_inner_object(update)
+
         for initializer in self._handlers["initializer"]:
             try:
-                update = (
-                    self.get_inner_object(update)
-                    if initializer.inner_object
-                    else update
-                )
+                handler_value = inner_object if initializer.inner_object else update
 
                 if initializer.filter is not None:
                     filter_function = initializer.filter.func
 
                     if self.is_coro_filter(filter_function):
-                        if not await filter_function(self, update):
+                        if not await filter_function(self, handler_value):
                             continue
-                    elif not filter_function(self, update):
+                    elif not filter_function(self, handler_value):
                         continue
 
-                await initializer(self, update)
+                await initializer(self, handler_value)
             except StopHandlers as e:
                 raise e
             except Exception:
                 self.logger.exception(f"Initializer {initializer} failed")
 
     async def __run_handlers(self, update):
+        inner_object = self.get_inner_object(update)
+
         for handler in self._handlers[update.getType()]:
             try:
-                update = (
-                    self.get_inner_object(update) if handler.inner_object else update
-                )
+                handler_value = inner_object if handler.inner_object else update
 
                 if handler.filter is not None:
                     filter_function = handler.filter.func
                     if self.is_coro_filter(filter_function):
-                        if not await filter_function(self, update):
+                        if not await filter_function(self, handler_value):
                             continue
-                    elif not filter_function(self, update):
+                    elif not filter_function(self, handler_value):
                         continue
 
-                await handler(self, update)
+                await handler(self, handler_value)
             except StopHandlers as e:
                 raise e
             except Exception:
                 self.logger.exception(f"Exception in {handler}")
 
     async def __run_finalizers(self, update):
+        inner_object = self.get_inner_object(update)
+
         for finalizer in self._handlers["finalizer"]:
             try:
-                update = (
-                    self.get_inner_object(update) if finalizer.inner_object else update
-                )
+                handler_value = inner_object if finalizer.inner_object else update
 
                 if finalizer.filter is not None:
                     filter_function = finalizer.filter.func
 
                     if self.is_coro_filter(filter_function):
-                        if not await filter_function(self, update):
+                        if not await filter_function(self, handler_value):
                             continue
-                    elif not filter_function(self, update):
+                    elif not filter_function(self, handler_value):
                         continue
 
-                await finalizer(self, update)
+                await finalizer(self, handler_value)
             except StopHandlers as e:
                 raise e
             except Exception:
