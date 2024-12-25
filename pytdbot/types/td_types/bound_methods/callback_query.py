@@ -16,6 +16,8 @@ class CallbackQueryBoundMethods:
         if isinstance(self.payload, pytdbot.types.CallbackQueryPayloadData):
             return self.payload.data.decode("utf-8")
 
+        return ""
+
     async def getMessage(self) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
         r"""Get callback query message"""
 
