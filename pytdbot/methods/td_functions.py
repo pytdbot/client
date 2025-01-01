@@ -1966,11 +1966,11 @@ class TDLibFunctions:
     async def searchMessages(
         self,
         chat_list: "types.ChatList" = None,
-        only_in_channels: bool = False,
         query: str = "",
         offset: str = "",
         limit: int = 0,
         filter: "types.SearchMessagesFilter" = None,
+        chat_type_filter: "types.SearchMessagesChatTypeFilter" = None,
         min_date: int = 0,
         max_date: int = 0,
     ) -> Union["types.Error", "types.FoundMessages"]:
@@ -1979,9 +1979,6 @@ class TDLibFunctions:
         Parameters:
             chat_list (:class:`"types.ChatList"`):
                 Chat list in which to search messages; pass null to search in all chats regardless of their chat list\. Only Main and Archive chat lists are supported
-
-            only_in_channels (:class:`bool`):
-                Pass true to search only for messages in channels
 
             query (:class:`str`):
                 Query to search for
@@ -1994,6 +1991,9 @@ class TDLibFunctions:
 
             filter (:class:`"types.SearchMessagesFilter"`):
                 Additional filter for messages to search; pass null to search for all messages\. Filters searchMessagesFilterMention, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, searchMessagesFilterFailedToSend, and searchMessagesFilterPinned are unsupported in this function
+
+            chat_type_filter (:class:`"types.SearchMessagesChatTypeFilter"`):
+                Additional filter for type of the chat of the searched messages; pass null to search for messages in all chats
 
             min_date (:class:`int`):
                 If not 0, the minimum date of the messages to return
@@ -2009,11 +2009,11 @@ class TDLibFunctions:
             {
                 "@type": "searchMessages",
                 "chat_list": chat_list,
-                "only_in_channels": only_in_channels,
                 "query": query,
                 "offset": offset,
                 "limit": limit,
                 "filter": filter,
+                "chat_type_filter": chat_type_filter,
                 "min_date": min_date,
                 "max_date": max_date,
             }
@@ -8810,7 +8810,7 @@ class TDLibFunctions:
                 Identifier of the story
 
             privacy_settings (:class:`"types.StoryPrivacySettings"`):
-                The new privacy settigs for the story
+                The new privacy settings for the story
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -10680,6 +10680,7 @@ class TDLibFunctions:
         user_id: int = 0,
         protocol: "types.CallProtocol" = None,
         is_video: bool = False,
+        group_call_id: int = 0,
     ) -> Union["types.Error", "types.CallId"]:
         r"""Creates a new call
 
@@ -10693,6 +10694,9 @@ class TDLibFunctions:
             is_video (:class:`bool`):
                 Pass true to create a video call
 
+            group_call_id (:class:`int`):
+                Identifier of the group call to which the user will be added after exchanging private key via the call; pass 0 if none; currently, ignored
+
         Returns:
             :class:`~pytdbot.types.CallId`
         """
@@ -10703,6 +10707,7 @@ class TDLibFunctions:
                 "user_id": user_id,
                 "protocol": protocol,
                 "is_video": is_video,
+                "group_call_id": group_call_id,
             }
         )
 
@@ -10943,6 +10948,21 @@ class TDLibFunctions:
                 "is_rtmp_stream": is_rtmp_stream,
             }
         )
+
+    async def createGroupCall(
+        self, call_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Creates a group call from a one\-to\-one call
+
+        Parameters:
+            call_id (:class:`int`):
+                Call identifier
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "createGroupCall", "call_id": call_id})
 
     async def getVideoChatRtmpUrl(
         self, chat_id: int = 0
@@ -12803,7 +12823,7 @@ class TDLibFunctions:
         )
 
     async def getOwnedBots(self) -> Union["types.Error", "types.Users"]:
-        r"""Returns the list of owned by the current user bots
+        r"""Returns the list of bots owned by the current user
 
         Returns:
             :class:`~pytdbot.types.Users`
@@ -14125,6 +14145,61 @@ class TDLibFunctions:
             }
         )
 
+    async def setMessageSenderBotVerification(
+        self,
+        bot_user_id: int = 0,
+        verified_id: "types.MessageSender" = None,
+        custom_description: str = "",
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the verification status of a user or a chat by an owned bot
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the owned bot, which will verify the user or the chat
+
+            verified_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the supergroup or channel chat, which will be verified by the bot
+
+            custom_description (:class:`str`):
+                Custom description of verification reason; 0\-getOption\(\"bot\_verification\_custom\_description\_length\_max\"\)\. If empty, then \"was verified by organization \"organization\_name\"\" will be used as description\. Can be specified only if the bot is allowed to provide custom description
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setMessageSenderBotVerification",
+                "bot_user_id": bot_user_id,
+                "verified_id": verified_id,
+                "custom_description": custom_description,
+            }
+        )
+
+    async def removeMessageSenderBotVerification(
+        self, bot_user_id: int = 0, verified_id: "types.MessageSender" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Removes the verification status of a user or a chat by an owned bot
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the owned bot, which verified the user or the chat
+
+            verified_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the supergroup or channel chat, which verification is removed
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "removeMessageSenderBotVerification",
+                "bot_user_id": bot_user_id,
+                "verified_id": verified_id,
+            }
+        )
+
     async def getActiveSessions(self) -> Union["types.Error", "types.Sessions"]:
         r"""Returns all active sessions of the current user
 
@@ -15017,6 +15092,7 @@ class TDLibFunctions:
         user_id: int = 0,
         text: "types.FormattedText" = None,
         is_private: bool = False,
+        pay_for_upgrade: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
         r"""Sends a gift to another user\. May return an error with a message \"STARGIFT\_USAGE\_LIMITED\" if the gift was sold out
 
@@ -15033,6 +15109,9 @@ class TDLibFunctions:
             is_private (:class:`bool`):
                 Pass true to show the current user as sender and gift text only to the gift receiver; otherwise, everyone will be able to see them
 
+            pay_for_upgrade (:class:`bool`):
+                Pass true to additionally pay for the gift upgrade and allow the receiver to upgrade it for free
+
         Returns:
             :class:`~pytdbot.types.Ok`
         """
@@ -15044,6 +15123,7 @@ class TDLibFunctions:
                 "user_id": user_id,
                 "text": text,
                 "is_private": is_private,
+                "pay_for_upgrade": pay_for_upgrade,
             }
         )
 
@@ -15099,6 +15179,88 @@ class TDLibFunctions:
             }
         )
 
+    async def getGiftUpgradePreview(
+        self, gift_id: int = 0
+    ) -> Union["types.Error", "types.GiftUpgradePreview"]:
+        r"""Returns examples of possible upgraded gifts for a regular gift
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the gift
+
+        Returns:
+            :class:`~pytdbot.types.GiftUpgradePreview`
+        """
+
+        return await self.invoke({"@type": "getGiftUpgradePreview", "gift_id": gift_id})
+
+    async def upgradeGift(
+        self,
+        sender_user_id: int = 0,
+        message_id: int = 0,
+        keep_original_details: bool = False,
+    ) -> Union["types.Error", "types.UpgradeGiftResult"]:
+        r"""Upgrades a gift received by the current user\. Unless the gift has prepaid\_upgrade\_star\_count \> 0, the user must pay gift\.upgrade\_star\_count Telegram Stars for the upgrade
+
+        Parameters:
+            sender_user_id (:class:`int`):
+                Identifier of the user that sent the gift
+
+            message_id (:class:`int`):
+                Identifier of the message with the gift in the chat with the user
+
+            keep_original_details (:class:`bool`):
+                Pass true to keep the original gift text, sender and receiver in the upgraded gift
+
+        Returns:
+            :class:`~pytdbot.types.UpgradeGiftResult`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "upgradeGift",
+                "sender_user_id": sender_user_id,
+                "message_id": message_id,
+                "keep_original_details": keep_original_details,
+            }
+        )
+
+    async def transferGift(
+        self,
+        sender_user_id: int = 0,
+        message_id: int = 0,
+        receiver_user_id: int = 0,
+        star_count: int = 0,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Sends a gift upgraded by the current user to another user
+
+        Parameters:
+            sender_user_id (:class:`int`):
+                Identifier of the user that sent the gift
+
+            message_id (:class:`int`):
+                Identifier of the message with the upgraded gift in the chat with the user
+
+            receiver_user_id (:class:`int`):
+                Identifier of the user that will receive the gift
+
+            star_count (:class:`int`):
+                The amount of Telegram Stars required for the transfer
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "transferGift",
+                "sender_user_id": sender_user_id,
+                "message_id": message_id,
+                "receiver_user_id": receiver_user_id,
+                "star_count": star_count,
+            }
+        )
+
     async def getUserGifts(
         self, user_id: int = 0, offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.UserGifts"]:
@@ -15126,6 +15288,21 @@ class TDLibFunctions:
                 "limit": limit,
             }
         )
+
+    async def getUserGift(
+        self, message_id: int = 0
+    ) -> Union["types.Error", "types.UserGift"]:
+        r"""Returns information about a gift received or sent by the current user
+
+        Parameters:
+            message_id (:class:`int`):
+                Identifier of the message with the gift
+
+        Returns:
+            :class:`~pytdbot.types.UserGift`
+        """
+
+        return await self.invoke({"@type": "getUserGift", "message_id": message_id})
 
     async def createInvoiceLink(
         self,
@@ -17711,16 +17888,16 @@ class TDLibFunctions:
 
     async def searchAffiliatePrograms(
         self,
-        chat_id: int = 0,
+        affiliate: "types.AffiliateType" = None,
         sort_order: "types.AffiliateProgramSortOrder" = None,
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.FoundAffiliatePrograms"]:
-        r"""Searches affiliate programs that can be applied to the given chat
+        r"""Searches affiliate programs that can be connected to the given affiliate
 
         Parameters:
-            chat_id (:class:`int`):
-                Identifier of the chat for which affiliate programs are searched for\. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can\_post\_messages administrator right
+            affiliate (:class:`"types.AffiliateType"`):
+                The affiliate for which affiliate programs are searched for
 
             sort_order (:class:`"types.AffiliateProgramSortOrder"`):
                 Sort order for the results
@@ -17738,89 +17915,89 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "searchAffiliatePrograms",
-                "chat_id": chat_id,
+                "affiliate": affiliate,
                 "sort_order": sort_order,
                 "offset": offset,
                 "limit": limit,
             }
         )
 
-    async def connectChatAffiliateProgram(
-        self, chat_id: int = 0, bot_user_id: int = 0
-    ) -> Union["types.Error", "types.ChatAffiliateProgram"]:
-        r"""Connects an affiliate program to the given chat\. Returns information about the connected affiliate program
+    async def connectAffiliateProgram(
+        self, affiliate: "types.AffiliateType" = None, bot_user_id: int = 0
+    ) -> Union["types.Error", "types.ConnectedAffiliateProgram"]:
+        r"""Connects an affiliate program to the given affiliate\. Returns information about the connected affiliate program
 
         Parameters:
-            chat_id (:class:`int`):
-                Identifier of the chat to which the affiliate program will be connected\. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can\_post\_messages administrator right
+            affiliate (:class:`"types.AffiliateType"`):
+                The affiliate to which the affiliate program will be connected
 
             bot_user_id (:class:`int`):
                 Identifier of the bot, which affiliate program is connected
 
         Returns:
-            :class:`~pytdbot.types.ChatAffiliateProgram`
+            :class:`~pytdbot.types.ConnectedAffiliateProgram`
         """
 
         return await self.invoke(
             {
-                "@type": "connectChatAffiliateProgram",
-                "chat_id": chat_id,
+                "@type": "connectAffiliateProgram",
+                "affiliate": affiliate,
                 "bot_user_id": bot_user_id,
             }
         )
 
-    async def disconnectChatAffiliateProgram(
-        self, chat_id: int = 0, url: str = ""
-    ) -> Union["types.Error", "types.ChatAffiliateProgram"]:
-        r"""Disconnects an affiliate program from the given chat and immediately deactivates its referral link\. Returns updated information about the disconnected affiliate program
+    async def disconnectAffiliateProgram(
+        self, affiliate: "types.AffiliateType" = None, url: str = ""
+    ) -> Union["types.Error", "types.ConnectedAffiliateProgram"]:
+        r"""Disconnects an affiliate program from the given affiliate and immediately deactivates its referral link\. Returns updated information about the disconnected affiliate program
 
         Parameters:
-            chat_id (:class:`int`):
-                Identifier of the chat for which the affiliate program is connected
+            affiliate (:class:`"types.AffiliateType"`):
+                The affiliate to which the affiliate program is connected
 
             url (:class:`str`):
                 The referral link of the affiliate program
 
         Returns:
-            :class:`~pytdbot.types.ChatAffiliateProgram`
+            :class:`~pytdbot.types.ConnectedAffiliateProgram`
         """
 
         return await self.invoke(
-            {"@type": "disconnectChatAffiliateProgram", "chat_id": chat_id, "url": url}
+            {"@type": "disconnectAffiliateProgram", "affiliate": affiliate, "url": url}
         )
 
-    async def getChatAffiliateProgram(
-        self, chat_id: int = 0, bot_user_id: int = 0
-    ) -> Union["types.Error", "types.ChatAffiliateProgram"]:
-        r"""Returns an affiliate program that were connected to the given chat by identifier of the bot that created the program
+    async def getConnectedAffiliateProgram(
+        self, affiliate: "types.AffiliateType" = None, bot_user_id: int = 0
+    ) -> Union["types.Error", "types.ConnectedAffiliateProgram"]:
+        r"""Returns an affiliate program that were connected to the given affiliate by identifier of the bot that created the program
 
         Parameters:
-            chat_id (:class:`int`):
-                Identifier of the chat for which the affiliate program was connected\. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can\_post\_messages administrator right
+            affiliate (:class:`"types.AffiliateType"`):
+                The affiliate to which the affiliate program will be connected
 
             bot_user_id (:class:`int`):
                 Identifier of the bot that created the program
 
         Returns:
-            :class:`~pytdbot.types.ChatAffiliateProgram`
+            :class:`~pytdbot.types.ConnectedAffiliateProgram`
         """
 
         return await self.invoke(
             {
-                "@type": "getChatAffiliateProgram",
-                "chat_id": chat_id,
+                "@type": "getConnectedAffiliateProgram",
+                "affiliate": affiliate,
                 "bot_user_id": bot_user_id,
             }
         )
 
-    async def getChatAffiliatePrograms(
-        self, chat_id: int = 0, offset: str = "", limit: int = 0
-    ) -> Union["types.Error", "types.ChatAffiliatePrograms"]:
-        r"""Returns affiliate programs that were connected to the given chat
+    async def getConnectedAffiliatePrograms(
+        self, affiliate: "types.AffiliateType" = None, offset: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.ConnectedAffiliatePrograms"]:
+        r"""Returns affiliate programs that were connected to the given affiliate
 
         Parameters:
-            chat_id (:class:`int`):
-                Identifier of the chat for which the affiliate programs were connected\. Can be an identifier of the Saved Messages chat, of a chat with an owned bot, or of a channel chat with can\_post\_messages administrator right
+            affiliate (:class:`"types.AffiliateType"`):
+                The affiliate to which the affiliate program were connected
 
             offset (:class:`str`):
                 Offset of the first affiliate program to return as received from the previous request; use empty string to get the first chunk of results
@@ -17829,13 +18006,13 @@ class TDLibFunctions:
                 The maximum number of affiliate programs to return
 
         Returns:
-            :class:`~pytdbot.types.ChatAffiliatePrograms`
+            :class:`~pytdbot.types.ConnectedAffiliatePrograms`
         """
 
         return await self.invoke(
             {
-                "@type": "getChatAffiliatePrograms",
-                "chat_id": chat_id,
+                "@type": "getConnectedAffiliatePrograms",
+                "affiliate": affiliate,
                 "offset": offset,
                 "limit": limit,
             }
