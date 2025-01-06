@@ -280,6 +280,13 @@ class MessageBoundMethods:
             only_for_self=only_for_self,
         )
 
+    async def unpin(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Unpin the message"""
+
+        return await self._client.unpinChatMessage(
+            chat_id=self.chat_id, message_id=self.id
+        )
+
     async def download(
         self,
         priority: int = 1,
