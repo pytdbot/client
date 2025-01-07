@@ -399,54 +399,61 @@ class Client(Decorators, Methods):
         ):  # dumping all requests may create performance issues
             self.logger.debug(f"Sending: {dumps(request, indent=4)}")
 
-        await self.__send(request)
-        result = await future
+        is_flood_wait = False
+        is_chat_attempted_load = False
 
-        if isinstance(result, types.Error):
-            if result.code == 429:
-                retry_after = self.get_retry_after_time(result.message)
+        while True:
+            future = self._create_request_future(request)
+            await self.__send(request)
+            result = await future
 
-                if retry_after <= self.sleep_threshold:
-                    self.logger.error(
-                        f"Sleeping for {retry_after}s (Caused by {request['@type']})"
+            if isinstance(result, types.Error):
+                if result.code == 429 and not is_flood_wait:
+                    is_flood_wait = True
+
+                    retry_after = self.get_retry_after_time(result.message)
+
+                    if retry_after <= self.sleep_threshold:
+                        self.logger.error(
+                            f"Sleeping for {retry_after}s (Caused by {request['@type']})"
+                        )
+
+                        await asyncio.sleep(retry_after)
+                        continue
+                elif (
+                    not self.use_message_database
+                    and not is_chat_attempted_load
+                    and (
+                        result.code == 400
+                        and result.message == "Chat not found"
+                        and "chat_id" in request
                     )
+                ):
+                    is_chat_attempted_load = True
 
-                    await asyncio.sleep(retry_after)
+                    chat_id = request["chat_id"]
 
-                    future = self._create_request_future(request)
+                    self.logger.debug(f"Attempt to load chat {chat_id}")
 
-                    await self.__send(request)
-                    result = await future
-            elif not self.use_message_database and (
-                result.code == 400
-                and result.message == "Chat not found"
-                and "chat_id" in request
-            ):
-                chat_id = request["chat_id"]
+                    load_chat = await self.getChat(chat_id)
 
-                self.logger.debug(f"Attempt to load chat {chat_id}")
+                    if not isinstance(load_chat, types.Error):
+                        self.logger.debug(f"Chat {chat_id} is loaded")
 
-                load_chat = await self.getChat(chat_id)
+                        reply_to_message_id = (request.get("reply_to") or {}).get(
+                            "message_id", 0
+                        )
 
-                if not isinstance(load_chat, types.Error):
-                    self.logger.debug(f"Chat {chat_id} is loaded")
+                        # if the request is a reply to another message
+                        # load the replied message to avoid "Message not found"
+                        if reply_to_message_id > 0:
+                            await self.getMessage(chat_id, reply_to_message_id)
 
-                    reply_to_message_id = (request.get("reply_to") or {}).get(
-                        "message_id", 0
-                    )
+                        continue
+                    else:
+                        self.logger.error(f"Couldn't load chat {chat_id}")
 
-                    # if the request is a reply to another message
-                    # load the replied message to avoid "Message not found"
-                    if reply_to_message_id > 0:
-                        await self.getMessage(chat_id, reply_to_message_id)
-
-                    # repeat the first request
-                    future = self._create_request_future(request)
-
-                    await self.__send(request)
-                    result = await future
-                else:
-                    self.logger.error(f"Couldn't load chat {chat_id}")
+            break
 
         return result
 
