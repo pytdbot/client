@@ -122,7 +122,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -184,9 +183,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -225,7 +221,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -249,7 +244,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -314,9 +308,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -358,7 +349,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -380,7 +370,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -439,9 +428,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -482,7 +468,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -502,7 +487,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -555,9 +539,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -595,7 +576,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -619,7 +599,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -684,9 +663,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -728,7 +704,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -754,7 +729,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -825,9 +799,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -871,7 +842,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -889,7 +859,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -936,9 +905,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -966,7 +932,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -986,7 +951,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -1039,9 +1003,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -1079,7 +1040,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -1098,7 +1058,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -1148,9 +1107,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
             reply_markup (:class:`~pytdbot.types.ReplyMarkupInlineKeyboard` | :class:`~pytdbot.types.ReplyMarkupShowKeyboard` | :class:`~pytdbot.types.ReplyMarkupForceReply` | :class:`~pytdbot.types.ReplyMarkupRemoveKeyboard`, *optional*):
                 The message reply markup
 
@@ -1178,7 +1134,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -1199,7 +1154,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
     ) -> Union[Error, Message]:
         r"""Copy message to chat
 
@@ -1249,9 +1203,6 @@ class Methods(TDLibFunctions):
             reply_to_message_id (``int``, *optional*):
                 Identifier of the message to reply. Ignored if ``reply_to`` is specified
 
-            load_replied_message (``bool``, *optional*):
-                If True, the replied message(``reply_to_message_id``) will be reloaded. Default is ``None``
-
 
         Returns:
             :class:`~pytdbot.types.Message`
@@ -1285,7 +1236,6 @@ class Methods(TDLibFunctions):
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
         )
 
     async def forwardMessage(
@@ -1428,7 +1378,6 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
         reply_markup: Union[
             ReplyMarkupInlineKeyboard,
             ReplyMarkupShowKeyboard,
@@ -1436,20 +1385,6 @@ class Methods(TDLibFunctions):
             ReplyMarkupRemoveKeyboard,
         ] = None,
     ):
-        if not load_replied_message and not self.use_message_database:
-            load_replied_message = True
-
-        if (
-            load_replied_message
-            and (isinstance(reply_to, InputMessageReplyToMessage))
-            or (isinstance(reply_to_message_id, int) and reply_to_message_id > 0)
-        ):
-            # Because TDLib will not reply to
-            # a message isn't loaded in memory
-            await self.getMessage(
-                chat_id, reply_to.message_id if reply_to else reply_to_message_id
-            )
-
         if isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             reply_to = InputMessageReplyToMessage(
                 message_id=reply_to_message_id, quote=quote
