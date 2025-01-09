@@ -406,7 +406,6 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
-        load_replied_message: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -433,7 +432,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=self.id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -454,7 +452,6 @@ class MessageBoundMethods:
         has_spoiler: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
-        load_replied_message: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -482,7 +479,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=self.id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -501,7 +497,6 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
-        load_replied_message: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -527,7 +522,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=self.id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -544,7 +538,6 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
-        load_replied_message: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -568,7 +561,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=self.id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -589,7 +581,6 @@ class MessageBoundMethods:
         has_spoiler: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
-        load_replied_message: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -617,7 +608,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=self.id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -640,7 +630,6 @@ class MessageBoundMethods:
         has_spoiler: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
-        load_replied_message: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -670,7 +659,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=self.id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -685,7 +673,6 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
-        load_replied_message: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -707,7 +694,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=self.id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -724,7 +710,6 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
-        load_replied_message: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -748,7 +733,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=self.id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -764,7 +748,6 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
-        load_replied_message: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -787,7 +770,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=self.id,
-            load_replied_message=load_replied_message,
             reply_markup=reply_markup,
         )
 
@@ -805,7 +787,6 @@ class MessageBoundMethods:
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
         reply_to_message_id: int = 0,
-        load_replied_message: bool = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
         r"""Copy message to chat. Shortcut for :meth:`~pytdbot.Client.sendCopy`."""
 
@@ -824,7 +805,6 @@ class MessageBoundMethods:
             message_thread_id=message_thread_id,
             quote=quote,
             reply_to_message_id=reply_to_message_id,
-            load_replied_message=load_replied_message,
         )
 
     async def forward(
