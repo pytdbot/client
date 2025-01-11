@@ -420,34 +420,37 @@ class Client(Decorators, Methods):
 
                         await asyncio.sleep(retry_after)
                         continue
-                elif not is_chat_attempted_load and (
-                    result.code == 400
-                    and result.message == "Chat not found"
-                    and "chat_id" in request
-                ):
-                    is_chat_attempted_load = True
+                elif result.code == 400:
+                    if result.message.startswith(
+                        "Failed to parse JSON object as TDLib request:"
+                    ):
+                        raise ValueError(result.message)
+                    elif not is_chat_attempted_load and (
+                        result.message == "Chat not found" and "chat_id" in request
+                    ):
+                        is_chat_attempted_load = True
 
-                    chat_id = request["chat_id"]
+                        chat_id = request["chat_id"]
 
-                    self.logger.debug(f"Attempt to load chat {chat_id}")
+                        self.logger.debug(f"Attempt to load chat {chat_id}")
 
-                    load_chat = await self.getChat(chat_id)
+                        load_chat = await self.getChat(chat_id)
 
-                    if not isinstance(load_chat, types.Error):
-                        self.logger.debug(f"Chat {chat_id} is loaded")
+                        if not isinstance(load_chat, types.Error):
+                            self.logger.debug(f"Chat {chat_id} is loaded")
 
-                        reply_to_message_id = (request.get("reply_to") or {}).get(
-                            "message_id", 0
-                        )
+                            reply_to_message_id = (request.get("reply_to") or {}).get(
+                                "message_id", 0
+                            )
 
-                        # if the request is a reply to another message
-                        # load the replied message to avoid "Message not found"
-                        if reply_to_message_id > 0:
-                            await self.getMessage(chat_id, reply_to_message_id)
+                            # if the request is a reply to another message
+                            # load the replied message to avoid "Message not found"
+                            if reply_to_message_id > 0:
+                                await self.getMessage(chat_id, reply_to_message_id)
 
-                        continue
-                    else:
-                        self.logger.error(f"Couldn't load chat {chat_id}")
+                            continue
+                        else:
+                            self.logger.error(f"Couldn't load chat {chat_id}")
 
             break
 
