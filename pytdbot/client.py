@@ -420,14 +420,10 @@ class Client(Decorators, Methods):
 
                         await asyncio.sleep(retry_after)
                         continue
-                elif (
-                    not self.use_message_database
-                    and not is_chat_attempted_load
-                    and (
-                        result.code == 400
-                        and result.message == "Chat not found"
-                        and "chat_id" in request
-                    )
+                elif not is_chat_attempted_load and (
+                    result.code == 400
+                    and result.message == "Chat not found"
+                    and "chat_id" in request
                 ):
                     is_chat_attempted_load = True
 
