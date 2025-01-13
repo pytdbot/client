@@ -26,7 +26,6 @@ client = Client(
     use_chat_info_database=False,
     use_file_database=False,
     use_message_database=False,
-    sleep_threshold=60,
     default_parse_mode="markdownv2",
 )
 

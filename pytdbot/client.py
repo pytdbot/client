@@ -92,10 +92,6 @@ class Client(Decorators, Methods):
         options (``dict``, *optional*):
             Pass key-value dictionary to set TDLib options. Check the list of available options at https://core.telegram.org/tdlib/options
 
-        sleep_threshold (``int``, *optional*):
-            Sleep threshold for all ``FLOOD_WAIT_X`` a.k.a ``Too Many Requests: retry after`` errors occur to this client.
-            If any request is rate limited (flood waited) the client will repeat the request after sleeping the required amount of seconds returned by the error. If the ``retry after`` value is higher than ``sleep_threshold`` the error is returned. Default is ``None`` (Disabled)
-
         workers (``int``, *optional*):
             Number of workers to handle updates. Default is ``5``. If set to ``None``, updates will be immediately handled instead of being queued, which can impact performance.
 
@@ -129,7 +125,6 @@ class Client(Decorators, Methods):
         use_message_database: bool = True,
         loop: asyncio.AbstractEventLoop = None,
         options: dict = None,
-        sleep_threshold: int = None,
         workers: int = 5,
         no_updates: bool = False,
         td_verbosity: int = 2,
@@ -159,9 +154,6 @@ class Client(Decorators, Methods):
         self.use_chat_info_database = use_chat_info_database
         self.use_message_database = use_message_database
         self.td_options = options
-        self.sleep_threshold = (
-            sleep_threshold if isinstance(sleep_threshold, int) else 0
-        )
         self.workers = workers
         self.no_updates = no_updates
         self.queue = asyncio.Queue()
@@ -399,7 +391,6 @@ class Client(Decorators, Methods):
         ):  # dumping all requests may create performance issues
             self.logger.debug(f"Sending: {dumps(request, indent=4)}")
 
-        is_flood_wait = False
         is_chat_attempted_load = False
 
         while True:
@@ -408,19 +399,7 @@ class Client(Decorators, Methods):
             result = await future
 
             if isinstance(result, types.Error):
-                if result.code == 429 and not is_flood_wait:
-                    is_flood_wait = True
-
-                    retry_after = self.get_retry_after_time(result.message)
-
-                    if retry_after <= self.sleep_threshold:
-                        self.logger.error(
-                            f"Sleeping for {retry_after}s (Caused by {request['@type']})"
-                        )
-
-                        await asyncio.sleep(retry_after)
-                        continue
-                elif result.code == 400:
+                if result.code == 400:
                     if result.message.startswith(
                         "Failed to parse JSON object as TDLib request:"
                     ):
@@ -935,20 +914,7 @@ class Client(Decorators, Methods):
         m_id = f"{update.message.chat_id}:{update.old_message_id}"
 
         if result := self._results.pop(m_id, None):
-            if update.error.code == 429:
-                retry_after = update.message.sending_state.retry_after
-
-                if retry_after <= self.sleep_threshold:
-                    self.logger.error(
-                        f"Sleeping for {retry_after}s (Caused by sendMessage)"
-                    )
-
-                    await asyncio.sleep(retry_after)
-                    res = await self.invoke(result.request)
-
-                    self._results[f"{update.message.chat_id}:{res.id}"] = result
-            else:
-                result.set_result(update.error)
+            result.set_result(update.error)
 
     async def __handle_update_option(self, update: types.UpdateOption):
         if isinstance(update.value, types.OptionValueBoolean):
