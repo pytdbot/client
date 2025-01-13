@@ -940,13 +940,13 @@ class Client(Decorators, Methods):
 
                 if retry_after <= self.sleep_threshold:
                     self.logger.error(
-                        f"Sleeping for {retry_after}s (Caused by {result.request['@type']})"
+                        f"Sleeping for {retry_after}s (Caused by sendMessage)"
                     )
 
                     await asyncio.sleep(retry_after)
                     res = await self.invoke(result.request)
 
-                    self._results[f"{res.id}{update.message.chat_id}"] = result
+                    self._results[f"{update.message.chat_id}:{res.id}"] = result
             else:
                 result.set_result(update.error)
 
