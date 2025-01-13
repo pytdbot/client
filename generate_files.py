@@ -148,7 +148,7 @@ def generate_self_args(args, classes):
             arg_type = generate_union_types(arg_type, arg_data["type"], classes)
 
         args_list.append(
-            f"self.{arg_name}: {arg_type} = {arg_value}\n{indent * 2}r\"\"\"{escape_quotes(arg_data['description'])}\"\"\""
+            f'self.{arg_name}: {arg_type} = {arg_value}\n{indent * 2}r"""{escape_quotes(arg_data["description"])}"""'
         )
     if not args_list:
         return "pass"
@@ -402,6 +402,13 @@ if __name__ == "__main__":
     @property
     def is_error(self): # for backward compatibility
         return isinstance(self, Error)
+
+    @property
+    def limited_seconds(self):
+        if self.is_error and self.code == 429:
+            return pytdbot.utils.get_retry_after_time(self.message)
+        else:
+            return 0
 
     def getType(self):
         raise NotImplementedError

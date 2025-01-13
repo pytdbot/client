@@ -1,8 +1,8 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
-    MessageBoundMethods,
     FileBoundMethods,
+    MessageBoundMethods,
     CallbackQueryBoundMethods,
 )
 import pytdbot
@@ -26,6 +26,13 @@ class TlObject:
     @property
     def is_error(self):  # for backward compatibility
         return isinstance(self, Error)
+
+    @property
+    def limited_seconds(self):
+        if self.is_error and self.code == 429:
+            return pytdbot.utils.get_retry_after_time(self.message)
+        else:
+            return 0
 
     def getType(self):
         raise NotImplementedError
