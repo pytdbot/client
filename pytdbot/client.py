@@ -172,7 +172,6 @@ class Client(Decorators, Methods):
         self._handlers = {"initializer": [], "finalizer": []}
         self._results: Dict[str, asyncio.Future] = {}
         self._tdjson = None if self.is_rabbitmq else TdJson(lib_path, td_verbosity)
-        self._retry_after_prefex = "Too Many Requests: retry after "
         self._workers_tasks = None
         self.__authorization_state = None
         self.__cache = {"is_coro_filter": {}}
@@ -576,22 +575,6 @@ class Client(Decorators, Methods):
 
         if isinstance(self.workers, int) and self.workers < 1:
             raise ValueError("workers must be greater than 0")
-
-    def get_retry_after_time(self, error_message: str) -> int:
-        r"""Get the retry after time from flood wait error message
-
-        Parameters:
-            error_message (``str``):
-                The returned error message from TDLib
-
-        Returns:
-            py:class:`int`
-        """
-
-        try:
-            return int(error_message.removeprefix(self._retry_after_prefex))
-        except Exception:
-            return 0
 
     def _load_plugins(self):
         count = 0

@@ -1,6 +1,8 @@
 import binascii
 import os
 
+RETRY_AFTER_PREFEX = "Too Many Requests: retry after "
+
 
 def to_camel_case(input_str: str, delimiter: str = ".", is_class: bool = True) -> str:
     if not input_str:
@@ -31,3 +33,20 @@ def get_bot_id_from_token(token: str) -> str:
     if len(token) > 80:
         return ""
     return token.split(":")[0] if ":" in token else ""
+
+
+def get_retry_after_time(error_message: str) -> int:
+    r"""Get the retry after time from flood wait error message
+
+    Parameters:
+        error_message (``str``):
+            The returned error message from TDLib
+
+    Returns:
+        py:class:`int`
+    """
+
+    try:
+        return int(error_message.removeprefix(RETRY_AFTER_PREFEX))
+    except Exception:
+        return 0
