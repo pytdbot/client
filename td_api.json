@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.42",
-    "commit_hash": "f1917d0d77ffdaa3495ea34e199eb61a9756c72d",
+    "version": "1.8.44",
+    "commit_hash": "28c6f2e9c045372d50217919bf5768b7fbbe0294",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -196,7 +196,7 @@
             "functions": []
         },
         "SentGift": {
-            "description": "Represents a gift received by a user",
+            "description": "Represents content of a gift received by a user or a channel chat",
             "types": [
                 "sentGiftRegular",
                 "sentGiftUpgraded"
@@ -270,6 +270,14 @@
             "types": [
                 "giveawayPrizePremium",
                 "giveawayPrizeStars"
+            ],
+            "functions": []
+        },
+        "EmojiStatusType": {
+            "description": "Describes type of emoji status",
+            "types": [
+                "emojiStatusTypeCustomEmoji",
+                "emojiStatusTypeUpgradedGift"
             ],
             "functions": []
         },
@@ -685,6 +693,7 @@
                 "linkPreviewTypeSupergroupBoost",
                 "linkPreviewTypeTheme",
                 "linkPreviewTypeUnsupported",
+                "linkPreviewTypeUpgradedGift",
                 "linkPreviewTypeUser",
                 "linkPreviewTypeVideo",
                 "linkPreviewTypeVideoChat",
@@ -1098,7 +1107,8 @@
                 "storyAreaTypeSuggestedReaction",
                 "storyAreaTypeMessage",
                 "storyAreaTypeLink",
-                "storyAreaTypeWeather"
+                "storyAreaTypeWeather",
+                "storyAreaTypeUpgradedGift"
             ],
             "functions": []
         },
@@ -1111,7 +1121,8 @@
                 "inputStoryAreaTypeSuggestedReaction",
                 "inputStoryAreaTypeMessage",
                 "inputStoryAreaTypeLink",
-                "inputStoryAreaTypeWeather"
+                "inputStoryAreaTypeWeather",
+                "inputStoryAreaTypeUpgradedGift"
             ],
             "functions": []
         },
@@ -1904,6 +1915,7 @@
                 "internalLinkTypeThemeSettings",
                 "internalLinkTypeUnknownDeepLink",
                 "internalLinkTypeUnsupportedProxy",
+                "internalLinkTypeUpgradedGift",
                 "internalLinkTypeUserPhoneNumber",
                 "internalLinkTypeUserToken",
                 "internalLinkTypeVideoChat",
@@ -4065,7 +4077,7 @@
                     "type": "int64"
                 },
                 "custom_description": {
-                    "description": "Custom description of verification reason set by the bot",
+                    "description": "Custom description of verification reason set by the bot. Can contain only Mention, Hashtag, Cashtag, PhoneNumber, BankCardNumber, Url, and EmailAddress entities",
                     "is_optional": false,
                     "type": "formattedText"
                 }
@@ -5501,14 +5513,9 @@
             },
             "type": "UpgradedGiftSymbol"
         },
-        "upgradedGiftBackdrop": {
-            "description": "Describes a backdrop of an upgraded gift",
+        "upgradedGiftBackdropColors": {
+            "description": "Describes colors of a backdrop of an upgraded gift",
             "args": {
-                "name": {
-                    "description": "Name of the backdrop",
-                    "is_optional": false,
-                    "type": "string"
-                },
                 "center_color": {
                     "description": "A color in the center of the backdrop in the RGB format",
                     "is_optional": false,
@@ -5528,6 +5535,22 @@
                     "description": "A color for the text on the backdrop in the RGB format",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "UpgradedGiftBackdropColors"
+        },
+        "upgradedGiftBackdrop": {
+            "description": "Describes a backdrop of an upgraded gift",
+            "args": {
+                "name": {
+                    "description": "Name of the backdrop",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "colors": {
+                    "description": "Colors of the backdrop",
+                    "is_optional": false,
+                    "type": "upgradedGiftBackdropColors"
                 },
                 "rarity_per_mille": {
                     "description": "The number of upgraded gift that receive this backdrop for each 1000 gifts upgraded",
@@ -5540,15 +5563,15 @@
         "upgradedGiftOriginalDetails": {
             "description": "Describes the original details about the gift",
             "args": {
-                "sender_user_id": {
-                    "description": "Identifier of the user that sent the gift; 0 if the gift was private",
-                    "is_optional": false,
-                    "type": "int53"
+                "sender_id": {
+                    "description": "Identifier of the user or the chat that sent the gift; may be null if the gift was private",
+                    "is_optional": true,
+                    "type": "MessageSender"
                 },
-                "receiver_user_id": {
-                    "description": "Identifier of the user that received the gift",
+                "receiver_id": {
+                    "description": "Identifier of the user or the chat that received the gift",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "MessageSender"
                 },
                 "text": {
                     "description": "Message added to the gift",
@@ -5564,7 +5587,7 @@
             "type": "UpgradedGiftOriginalDetails"
         },
         "gift": {
-            "description": "Describes a gift that can be sent to another user",
+            "description": "Describes a gift that can be sent to another user or channel chat",
             "args": {
                 "id": {
                     "description": "Unique identifier of the gift",
@@ -5597,12 +5620,12 @@
                     "type": "Bool"
                 },
                 "remaining_count": {
-                    "description": "Number of remaining times the gift can be purchased by all users; 0 if not limited or the gift was sold out",
+                    "description": "Number of remaining times the gift can be purchased; 0 if not limited or the gift was sold out",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "total_count": {
-                    "description": "Number of total times the gift can be purchased by all users; 0 if not limited",
+                    "description": "Number of total times the gift can be purchased; 0 if not limited",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -5620,7 +5643,7 @@
             "type": "Gift"
         },
         "gifts": {
-            "description": "Contains a list of gifts that can be sent to another user",
+            "description": "Contains a list of gifts that can be sent to another user or channel chat",
             "args": {
                 "gifts": {
                     "description": "The list of gifts",
@@ -5631,7 +5654,7 @@
             "type": "Gifts"
         },
         "upgradedGift": {
-            "description": "Describes an upgraded gift that can be gifted to another user or transferred to TON blockchain as an NFT",
+            "description": "Describes an upgraded gift that can be transferred to another owner or transferred to the TON blockchain as an NFT",
             "args": {
                 "id": {
                     "description": "Unique identifier of the gift",
@@ -5640,6 +5663,11 @@
                 },
                 "title": {
                     "description": "The title of the upgraded gift",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Unique name of the upgraded gift that can be used with internalLinkTypeUpgradedGift",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -5658,10 +5686,20 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "owner_user_id": {
-                    "description": "User identifier of the user that owns the upgraded gift; 0 if none",
+                "owner_id": {
+                    "description": "Identifier of the user or the chat that owns the upgraded gift; may be null if none or unknown",
+                    "is_optional": true,
+                    "type": "MessageSender"
+                },
+                "owner_address": {
+                    "description": "Address of the gift NFT owner in TON blockchain; may be empty if none",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "owner_name": {
+                    "description": "Name of the owner for the case when owner identifier and address aren't known",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "string"
                 },
                 "model": {
                     "description": "Model of the upgraded gift",
@@ -5694,13 +5732,18 @@
                     "is_optional": false,
                     "type": "upgradedGift"
                 },
+                "received_gift_id": {
+                    "description": "Unique identifier of the received gift for the current user",
+                    "is_optional": false,
+                    "type": "string"
+                },
                 "is_saved": {
-                    "description": "True, if the gift is displayed on the user's profile page",
+                    "description": "True, if the gift is displayed on the user's or the channel's profile page",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "can_be_transferred": {
-                    "description": "True, if the gift can be transferred to another user",
+                    "description": "True, if the gift can be transferred to another owner",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -5710,7 +5753,7 @@
                     "type": "int53"
                 },
                 "export_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be transferred to TON blockchain as an NFT",
+                    "description": "Point in time (Unix timestamp) when the gift can be transferred to the TON blockchain as an NFT",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -5739,13 +5782,18 @@
             },
             "type": "SentGift"
         },
-        "userGift": {
-            "description": "Represents a gift received by a user",
+        "receivedGift": {
+            "description": "Represents a gift received by a user or a chat",
             "args": {
-                "sender_user_id": {
-                    "description": "Identifier of the user that sent the gift; 0 if unknown",
+                "received_gift_id": {
+                    "description": "Unique identifier of the received gift for the current user; only for the receiver of the gift",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "string"
+                },
+                "sender_id": {
+                    "description": "Identifier of a user or a chat that sent the gift; may be null if unknown",
+                    "is_optional": true,
+                    "type": "MessageSender"
                 },
                 "text": {
                     "description": "Message added to the gift",
@@ -5758,7 +5806,7 @@
                     "type": "Bool"
                 },
                 "is_saved": {
-                    "description": "True, if the gift is displayed on the user's profile page; only for the receiver of the gift",
+                    "description": "True, if the gift is displayed on the chat's profile page; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -5768,7 +5816,7 @@
                     "type": "Bool"
                 },
                 "can_be_transferred": {
-                    "description": "True, if the gift is an upgraded gift that can be transferred to another user; only for the receiver of the gift",
+                    "description": "True, if the gift is an upgraded gift that can be transferred to another owner; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -5787,11 +5835,6 @@
                     "is_optional": false,
                     "type": "SentGift"
                 },
-                "message_id": {
-                    "description": "Identifier of the message with the gift in the chat with the sender of the gift; can be 0 or an identifier of a deleted message; only for the receiver of the gift",
-                    "is_optional": false,
-                    "type": "int53"
-                },
                 "sell_star_count": {
                     "description": "Number of Telegram Stars that can be claimed by the receiver instead of the regular gift; 0 if the gift can't be sold by the current user",
                     "is_optional": false,
@@ -5808,15 +5851,15 @@
                     "type": "int53"
                 },
                 "export_date": {
-                    "description": "Point in time (Unix timestamp) when the upgraded gift can be transferred to TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift",
+                    "description": "Point in time (Unix timestamp) when the upgraded gift can be transferred to the TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "UserGift"
+            "type": "ReceivedGift"
         },
-        "userGifts": {
-            "description": "Represents a list of gifts received by a user",
+        "receivedGifts": {
+            "description": "Represents a list of gifts received by a user or a chat",
             "args": {
                 "total_count": {
                     "description": "The total number of received gifts",
@@ -5826,7 +5869,12 @@
                 "gifts": {
                     "description": "The list of gifts",
                     "is_optional": false,
-                    "type": "vector<userGift>"
+                    "type": "vector<receivedGift>"
+                },
+                "are_notifications_enabled": {
+                    "description": "True, if notifications about new gifts of the owner are enabled",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "next_offset": {
                     "description": "The offset for the next request. If empty, then there are no more results",
@@ -5834,7 +5882,7 @@
                     "type": "string"
                 }
             },
-            "type": "UserGifts"
+            "type": "ReceivedGifts"
         },
         "giftUpgradePreview": {
             "description": "Contains examples of possible upgraded gifts for the given regular gift",
@@ -6157,12 +6205,12 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiftPurchase": {
-            "description": "The transaction is a purchase of a regular gift to another user; for regular users and bots only",
+            "description": "The transaction is a purchase of a regular gift; for regular users and bots only",
             "args": {
-                "user_id": {
-                    "description": "Identifier of the user that received the gift",
+                "owner_id": {
+                    "description": "Identifier of the user or the channel that received the gift",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "MessageSender"
                 },
                 "gift": {
                     "description": "The gift",
@@ -6173,12 +6221,12 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiftTransfer": {
-            "description": "The transaction is a transfer of an upgraded gift to another user; for regular users only",
+            "description": "The transaction is a transfer of an upgraded gift; for regular users only",
             "args": {
-                "user_id": {
-                    "description": "Identifier of the user that received the gift",
+                "owner_id": {
+                    "description": "Identifier of the user or the channel that received the gift",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "MessageSender"
                 },
                 "gift": {
                     "description": "The gift",
@@ -6189,7 +6237,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiftSale": {
-            "description": "The transaction is a sale of a gift received from another user or bot; for regular users only",
+            "description": "The transaction is a sale of a received gift; for regular users and channel chats only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that sent the gift",
@@ -6535,13 +6583,60 @@
             },
             "type": "ProfileAccentColor"
         },
-        "emojiStatus": {
-            "description": "Describes a custom emoji to be shown instead of the Telegram Premium badge",
+        "emojiStatusTypeCustomEmoji": {
+            "description": "A custom emoji set as emoji status",
             "args": {
                 "custom_emoji_id": {
                     "description": "Identifier of the custom emoji in stickerFormatTgs format",
                     "is_optional": false,
                     "type": "int64"
+                }
+            },
+            "type": "EmojiStatusType"
+        },
+        "emojiStatusTypeUpgradedGift": {
+            "description": "An upgraded gift set as emoji status",
+            "args": {
+                "upgraded_gift_id": {
+                    "description": "Identifier of the upgraded gift",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "gift_title": {
+                    "description": "The title of the upgraded gift",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "gift_name": {
+                    "description": "Unique name of the upgraded gift that can be used with internalLinkTypeUpgradedGift",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "model_custom_emoji_id": {
+                    "description": "Custom emoji identifier of the model of the upgraded gift",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "symbol_custom_emoji_id": {
+                    "description": "Custom emoji identifier of the symbol of the upgraded gift",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "backdrop_colors": {
+                    "description": "Colors of the backdrop of the upgraded gift",
+                    "is_optional": false,
+                    "type": "upgradedGiftBackdropColors"
+                }
+            },
+            "type": "EmojiStatusType"
+        },
+        "emojiStatus": {
+            "description": "Describes an emoji to be shown instead of the Telegram Premium badge",
+            "args": {
+                "type": {
+                    "description": "Type of the emoji status",
+                    "is_optional": false,
+                    "type": "EmojiStatusType"
                 },
                 "expiration_date": {
                     "description": "Point in time (Unix timestamp) when the status will expire; 0 if never",
@@ -6552,6 +6647,17 @@
             "type": "EmojiStatus"
         },
         "emojiStatuses": {
+            "description": "Contains a list of emoji statuses",
+            "args": {
+                "emoji_statuses": {
+                    "description": "The list of emoji statuses identifiers",
+                    "is_optional": false,
+                    "type": "vector<emojiStatus>"
+                }
+            },
+            "type": "EmojiStatuses"
+        },
+        "emojiStatusCustomEmojis": {
             "description": "Contains a list of custom emoji identifiers for emoji statuses",
             "args": {
                 "custom_emoji_ids": {
@@ -6560,7 +6666,7 @@
                     "type": "vector<int64>"
                 }
             },
-            "type": "EmojiStatuses"
+            "type": "EmojiStatusCustomEmojis"
         },
         "usernames": {
             "description": "Describes usernames assigned to a user, a supergroup, or a channel",
@@ -6919,7 +7025,7 @@
                     "type": "int53"
                 },
                 "gift_count": {
-                    "description": "Number of gifts saved to profile by the user",
+                    "description": "Number of saved to profile gifts for other users or the total number of received gifts for the current user",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -7865,6 +7971,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_send_gift": {
+                    "description": "True, if the user can send a gift to the supergroup or channel using sendGift or transferGift",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_toggle_aggressive_anti_spam": {
                     "description": "True, if aggressive anti-spam checks can be enabled or disabled in the supergroup",
                     "is_optional": false,
@@ -7894,6 +8005,11 @@
                     "description": "True, if the supergroup or channel has pinned stories",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "gift_count": {
+                    "description": "Number of saved to profile gifts for channels without can_post_messages administrator right, otherwise, the total number of received gifts",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "my_boost_count": {
                     "description": "Number of times the current user boosted the supergroup or channel",
@@ -12637,6 +12753,17 @@
             "args": {},
             "type": "LinkPreviewType"
         },
+        "linkPreviewTypeUpgradedGift": {
+            "description": "The link is a link to an upgraded gift",
+            "args": {
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "upgradedGift"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
         "linkPreviewTypeUser": {
             "description": "The link is a link to a user",
             "args": {
@@ -13568,6 +13695,16 @@
                     "description": "The video",
                     "is_optional": false,
                     "type": "video"
+                },
+                "cover": {
+                    "description": "Cover of the video; may be null if none",
+                    "is_optional": true,
+                    "type": "photo"
+                },
+                "start_timestamp": {
+                    "description": "Timestamp from which the video playing must start, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "PaidMedia"
@@ -14702,6 +14839,16 @@
                     "is_optional": false,
                     "type": "vector<alternativeVideo>"
                 },
+                "cover": {
+                    "description": "Cover of the video; may be null if none",
+                    "is_optional": true,
+                    "type": "photo"
+                },
+                "start_timestamp": {
+                    "description": "Timestamp from which the video playing must start, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "caption": {
                     "description": "Video caption",
                     "is_optional": false,
@@ -15808,12 +15955,22 @@
             "type": "MessageContent"
         },
         "messageGift": {
-            "description": "A regular gift was received or sent by the current user",
+            "description": "A regular gift was received or sent by the current user, or the current user was notified about a channel gift",
             "args": {
                 "gift": {
                     "description": "The gift",
                     "is_optional": false,
                     "type": "gift"
+                },
+                "sender_id": {
+                    "description": "Sender of the gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "received_gift_id": {
+                    "description": "Unique identifier of the received gift for the current user; only for the receiver of the gift",
+                    "is_optional": false,
+                    "type": "string"
                 },
                 "text": {
                     "description": "Message added to the gift",
@@ -15836,7 +15993,7 @@
                     "type": "Bool"
                 },
                 "is_saved": {
-                    "description": "True, if the gift is displayed on the user's profile page; only for the receiver of the gift",
+                    "description": "True, if the gift is displayed on the user's or the channel's profile page; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -15860,21 +16017,31 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "upgrade_message_id": {
-                    "description": "Identifier of the service message messageUpgradedGift or messageRefundedUpgradedGift with upgraded version of the gift; can be 0 if none or an identifier of a deleted message. Use getUserGift to get information about the gift",
-                    "is_optional": false,
-                    "type": "int53"
+                "upgraded_received_gift_id": {
+                    "description": "Identifier of the corresponding upgraded gift; may be empty if unknown. Use getReceivedGift to get information about the gift",
+                    "is_optional": true,
+                    "type": "string"
                 }
             },
             "type": "MessageContent"
         },
         "messageUpgradedGift": {
-            "description": "An upgraded gift was received or sent by the current user",
+            "description": "An upgraded gift was received or sent by the current user, or the current user was notified about a channel gift",
             "args": {
                 "gift": {
                     "description": "The gift",
                     "is_optional": false,
                     "type": "upgradedGift"
+                },
+                "sender_id": {
+                    "description": "Sender of the gift; may be null for anonymous gifts",
+                    "is_optional": true,
+                    "type": "MessageSender"
+                },
+                "received_gift_id": {
+                    "description": "Unique identifier of the received gift for the current user; only for the receiver of the gift",
+                    "is_optional": false,
+                    "type": "string"
                 },
                 "is_upgrade": {
                     "description": "True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred gift",
@@ -15882,17 +16049,17 @@
                     "type": "Bool"
                 },
                 "is_saved": {
-                    "description": "True, if the gift is displayed on the user's profile page; only for the receiver of the gift",
+                    "description": "True, if the gift is displayed on the user's or the channel's profile page; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "can_be_transferred": {
-                    "description": "True, if the gift can be transferred to another user; only for the receiver of the gift",
+                    "description": "True, if the gift can be transferred to another owner; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "was_transferred": {
-                    "description": "True, if the gift was transferred to another user; only for the receiver of the gift",
+                    "description": "True, if the gift was transferred to another owner; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -15902,7 +16069,7 @@
                     "type": "int53"
                 },
                 "export_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be transferred to TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift",
+                    "description": "Point in time (Unix timestamp) when the gift can be transferred to the TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -15916,6 +16083,11 @@
                     "description": "The gift",
                     "is_optional": false,
                     "type": "gift"
+                },
+                "sender_id": {
+                    "description": "Sender of the gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
                 },
                 "is_upgrade": {
                     "description": "True, if the gift was obtained by upgrading of a previously received gift",
@@ -16222,6 +16394,16 @@
         "inputPaidMediaTypeVideo": {
             "description": "The media is a video",
             "args": {
+                "cover": {
+                    "description": "Cover of the video; pass null to skip cover uploading",
+                    "is_optional": true,
+                    "type": "InputFile"
+                },
+                "start_timestamp": {
+                    "description": "Timestamp from which the video playing must start, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "duration": {
                     "description": "Duration of the video, in seconds",
                     "is_optional": false,
@@ -16651,6 +16833,16 @@
                     "is_optional": true,
                     "type": "inputThumbnail"
                 },
+                "cover": {
+                    "description": "Cover of the video; pass null to skip cover uploading; not supported in secret chats and for self-destructing messages",
+                    "is_optional": true,
+                    "type": "InputFile"
+                },
+                "start_timestamp": {
+                    "description": "Timestamp from which the video playing must start, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "added_sticker_file_ids": {
                     "description": "File identifiers of the stickers added to the video, if applicable",
                     "is_optional": false,
@@ -16983,9 +17175,19 @@
                     "type": "int53"
                 },
                 "in_game_share": {
-                    "description": "True, if a game message is being shared from a launched game; applies only to game messages",
+                    "description": "Pass true if a game message is being shared from a launched game; applies only to game messages",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "replace_video_start_timestamp": {
+                    "description": "Pass true to replace video start timestamp in the forwarded message",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "new_video_start_timestamp": {
+                    "description": "The new video start timestamp; ignored if replace_video_start_timestamp == false",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "copy_options": {
                     "description": "Options to be used to copy content of the message without reference to the original sender; pass null to forward the message as usual",
@@ -17876,6 +18078,17 @@
             },
             "type": "StoryAreaType"
         },
+        "storyAreaTypeUpgradedGift": {
+            "description": "An area with an upgraded gift",
+            "args": {
+                "gift_name": {
+                    "description": "Unique name of the upgraded gift",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StoryAreaType"
+        },
         "storyArea": {
             "description": "Describes a clickable rectangle area on a story media",
             "args": {
@@ -18009,6 +18222,17 @@
             },
             "type": "InputStoryAreaType"
         },
+        "inputStoryAreaTypeUpgradedGift": {
+            "description": "An area with an upgraded gift",
+            "args": {
+                "gift_name": {
+                    "description": "Unique name of the upgraded gift",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InputStoryAreaType"
+        },
         "inputStoryArea": {
             "description": "Describes a clickable rectangle area on a story media to be added",
             "args": {
@@ -18029,7 +18253,7 @@
             "description": "Contains a list of story areas to be added",
             "args": {
                 "areas": {
-                    "description": "List of input story areas. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption(\"story_suggested_reaction_area_count_max\") inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption(\"story_link_area_count_max\") inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, and up to 3 inputStoryAreaTypeWeather areas",
+                    "description": "List of input story areas. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption(\"story_suggested_reaction_area_count_max\") inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption(\"story_link_area_count_max\") inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, up to 3 inputStoryAreaTypeWeather areas, and up to 1 inputStoryAreaTypeUpgradedGift area",
                     "is_optional": false,
                     "type": "vector<inputStoryArea>"
                 }
@@ -25797,6 +26021,17 @@
             "args": {},
             "type": "InternalLinkType"
         },
+        "internalLinkTypeUpgradedGift": {
+            "description": "The link is a link to an upgraded gift. Call getUpgradedGift with the given name to process the link",
+            "args": {
+                "name": {
+                    "description": "Name of the unique gift",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeUserPhoneNumber": {
             "description": "The link is a link to a user by its phone number. Call searchUserByPhoneNumber with the given phone number to process the link. If the user is found, then call createPrivateChat and open user's profile information screen or the chat itself. If draft text isn't empty, then put the draft text in the input field",
             "args": {
@@ -31391,6 +31626,49 @@
             },
             "type": "Ok"
         },
+        "getBotSimilarBots": {
+            "description": "Returns a list of bots similar to the given bot",
+            "args": {
+                "bot_user_id": {
+                    "description": "User identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Users"
+        },
+        "getBotSimilarBotCount": {
+            "description": "Returns approximate number of bots similar to the given bot",
+            "args": {
+                "bot_user_id": {
+                    "description": "User identifier of the target bot",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "return_local": {
+                    "description": "Pass true to get the number of bots without sending network requests, or -1 if the number of bots is unknown locally",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Count"
+        },
+        "openBotSimilarBot": {
+            "description": "Informs TDLib that a bot was opened from the list of similar bots",
+            "args": {
+                "bot_user_id": {
+                    "description": "Identifier of the original bot, which similar bots were requested",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "opened_bot_user_id": {
+                    "description": "Identifier of the opened bot",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
         "getTopChats": {
             "description": "Returns a list of frequently used chats",
             "args": {
@@ -32777,7 +33055,7 @@
             "type": "Ok"
         },
         "deleteChatMessagesBySender": {
-            "description": "Deletes all messages sent by the specified message sender in a chat. Supported only for supergroups; requires can_delete_messages administrator privileges",
+            "description": "Deletes all messages sent by the specified message sender in a chat. Supported only for supergroups; requires can_delete_messages administrator right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -37203,17 +37481,22 @@
         "getThemedEmojiStatuses": {
             "description": "Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list for self status",
             "args": {},
-            "type": "EmojiStatuses"
+            "type": "EmojiStatusCustomEmojis"
         },
         "getRecentEmojiStatuses": {
             "description": "Returns recent emoji statuses for self status",
             "args": {},
             "type": "EmojiStatuses"
         },
+        "getUpgradedGiftEmojiStatuses": {
+            "description": "Returns available upgraded gift emoji statuses for self status",
+            "args": {},
+            "type": "EmojiStatuses"
+        },
         "getDefaultEmojiStatuses": {
             "description": "Returns default emoji statuses for self status",
             "args": {},
-            "type": "EmojiStatuses"
+            "type": "EmojiStatusCustomEmojis"
         },
         "clearRecentEmojiStatuses": {
             "description": "Clears the list of recently used emoji statuses for self status",
@@ -37223,17 +37506,17 @@
         "getThemedChatEmojiStatuses": {
             "description": "Returns up to 8 emoji statuses, which must be shown in the emoji status list for chats",
             "args": {},
-            "type": "EmojiStatuses"
+            "type": "EmojiStatusCustomEmojis"
         },
         "getDefaultChatEmojiStatuses": {
             "description": "Returns default emoji statuses for chats",
             "args": {},
-            "type": "EmojiStatuses"
+            "type": "EmojiStatusCustomEmojis"
         },
         "getDisallowedChatEmojiStatuses": {
             "description": "Returns the list of emoji statuses, which can't be used as chat emoji status, even they are from a sticker set with is_allowed_as_chat_emoji_status == true",
             "args": {},
-            "type": "EmojiStatuses"
+            "type": "EmojiStatusCustomEmojis"
         },
         "downloadFile": {
             "description": "Downloads a file from the cloud. Download progress and completion of the download will be notified through updateFile updates",
@@ -40944,22 +41227,22 @@
             "type": "Ok"
         },
         "getAvailableGifts": {
-            "description": "Returns gifts that can be sent to other users",
+            "description": "Returns gifts that can be sent to other users and channel chats",
             "args": {},
             "type": "Gifts"
         },
         "sendGift": {
-            "description": "Sends a gift to another user. May return an error with a message \"STARGIFT_USAGE_LIMITED\" if the gift was sold out",
+            "description": "Sends a gift to another user or channel chat. May return an error with a message \"STARGIFT_USAGE_LIMITED\" if the gift was sold out",
             "args": {
                 "gift_id": {
                     "description": "Identifier of the gift to send",
                     "is_optional": false,
                     "type": "int64"
                 },
-                "user_id": {
-                    "description": "Identifier of the user that will receive the gift",
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that will receive the gift",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "MessageSender"
                 },
                 "text": {
                     "description": "Text to show along with the gift; 0-getOption(\"gift_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed",
@@ -40967,7 +41250,7 @@
                     "type": "formattedText"
                 },
                 "is_private": {
-                    "description": "Pass true to show the current user as sender and gift text only to the gift receiver; otherwise, everyone will be able to see them",
+                    "description": "Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -40980,36 +41263,42 @@
             "type": "Ok"
         },
         "sellGift": {
-            "description": "Sells a gift received by the current user for Telegram Stars",
+            "description": "Sells a gift for Telegram Stars",
             "args": {
-                "sender_user_id": {
-                    "description": "Identifier of the user that sent the gift",
+                "received_gift_id": {
+                    "description": "Identifier of the gift",
                     "is_optional": false,
-                    "type": "int53"
-                },
-                "message_id": {
-                    "description": "Identifier of the message with the gift in the chat with the user",
-                    "is_optional": false,
-                    "type": "int53"
+                    "type": "string"
                 }
             },
             "type": "Ok"
         },
         "toggleGiftIsSaved": {
-            "description": "Toggles whether a gift is shown on the current user's profile page",
+            "description": "Toggles whether a gift is shown on the current user's or the channel's profile page; requires can_post_messages administrator right in the chat",
             "args": {
-                "sender_user_id": {
-                    "description": "Identifier of the user that sent the gift",
+                "received_gift_id": {
+                    "description": "Identifier of the gift",
                     "is_optional": false,
-                    "type": "int53"
-                },
-                "message_id": {
-                    "description": "Identifier of the message with the gift in the chat with the user",
-                    "is_optional": false,
-                    "type": "int53"
+                    "type": "string"
                 },
                 "is_saved": {
-                    "description": "Pass true to display the gift on the user's profile page; pass false to remove it from the profile page",
+                    "description": "Pass true to display the gift on the user's or the channel's profile page; pass false to remove it from the profile page",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "toggleChatGiftNotifications": {
+            "description": "Toggles whether notifications for new gifts received by a channel chat are sent to the current user; requires can_post_messages administrator right in the chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the channel chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "are_enabled": {
+                    "description": "Pass true to enable notifications about new gifts owned by the channel chat; pass false to disable the notifications",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -41028,59 +41317,84 @@
             "type": "GiftUpgradePreview"
         },
         "upgradeGift": {
-            "description": "Upgrades a gift received by the current user. Unless the gift has prepaid_upgrade_star_count > 0, the user must pay gift.upgrade_star_count Telegram Stars for the upgrade",
+            "description": "Upgrades a regular gift",
             "args": {
-                "sender_user_id": {
-                    "description": "Identifier of the user that sent the gift",
+                "received_gift_id": {
+                    "description": "Identifier of the gift",
                     "is_optional": false,
-                    "type": "int53"
-                },
-                "message_id": {
-                    "description": "Identifier of the message with the gift in the chat with the user",
-                    "is_optional": false,
-                    "type": "int53"
+                    "type": "string"
                 },
                 "keep_original_details": {
                     "description": "Pass true to keep the original gift text, sender and receiver in the upgraded gift",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "star_count": {
+                    "description": "The amount of Telegram Stars required to pay for the upgrade. It the gift has prepaid_upgrade_star_count > 0, then pass 0, otherwise, pass gift.upgrade_star_count",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "UpgradeGiftResult"
         },
         "transferGift": {
-            "description": "Sends a gift upgraded by the current user to another user",
+            "description": "Sends an upgraded gift to another user or a channel chat",
             "args": {
-                "sender_user_id": {
-                    "description": "Identifier of the user that sent the gift",
+                "received_gift_id": {
+                    "description": "Identifier of the gift",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "string"
                 },
-                "message_id": {
-                    "description": "Identifier of the message with the upgraded gift in the chat with the user",
+                "new_owner_id": {
+                    "description": "Identifier of the user or the channel chat that will receive the gift",
                     "is_optional": false,
-                    "type": "int53"
-                },
-                "receiver_user_id": {
-                    "description": "Identifier of the user that will receive the gift",
-                    "is_optional": false,
-                    "type": "int53"
+                    "type": "MessageSender"
                 },
                 "star_count": {
-                    "description": "The amount of Telegram Stars required for the transfer",
+                    "description": "The amount of Telegram Stars required to pay for the transfer",
                     "is_optional": false,
                     "type": "int53"
                 }
             },
             "type": "Ok"
         },
-        "getUserGifts": {
-            "description": "Returns gifts saved to profile by the given user",
+        "getReceivedGifts": {
+            "description": "Returns gifts received by the given user or chat",
             "args": {
-                "user_id": {
-                    "description": "Identifier of the user",
+                "owner_id": {
+                    "description": "Identifier of the gift receiver",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "MessageSender"
+                },
+                "exclude_unsaved": {
+                    "description": "Pass true to exclude gifts that aren't saved to the chat's profile page. Always true for gifts received by other users and channel chats without can_post_messages administrator right",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "exclude_saved": {
+                    "description": "Pass true to exclude gifts that are saved to the chat's profile page; for channel chats with can_post_messages administrator right only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "exclude_unlimited": {
+                    "description": "Pass true to exclude gifts that can be purchased unlimited number of times; for channel chats with can_post_messages administrator right only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "exclude_limited": {
+                    "description": "Pass true to exclude gifts that can be purchased limited number of times; for channel chats with can_post_messages administrator right only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "exclude_upgraded": {
+                    "description": "Pass true to exclude upgraded gifts; for channel chats with can_post_messages administrator right only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "sort_by_price": {
+                    "description": "Pass true to sort results by gift price instead of send date; for channel chats with can_post_messages administrator right only",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "offset": {
                     "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
@@ -41093,18 +41407,45 @@
                     "type": "int32"
                 }
             },
-            "type": "UserGifts"
+            "type": "ReceivedGifts"
         },
-        "getUserGift": {
-            "description": "Returns information about a gift received or sent by the current user",
+        "getReceivedGift": {
+            "description": "Returns information about a received gift",
             "args": {
-                "message_id": {
-                    "description": "Identifier of the message with the gift",
+                "received_gift_id": {
+                    "description": "Identifier of the gift",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "string"
                 }
             },
-            "type": "UserGift"
+            "type": "ReceivedGift"
+        },
+        "getUpgradedGift": {
+            "description": "Returns information about an upgraded gift by its name",
+            "args": {
+                "name": {
+                    "description": "Unique name of the upgraded gift",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "UpgradedGift"
+        },
+        "getUpgradedGiftWithdrawalUrl": {
+            "description": "Returns a URL for upgraded gift withdrawal in the TON blockchain as an NFT; requires owner privileges for gifts owned by a chat",
+            "args": {
+                "received_gift_id": {
+                    "description": "Identifier of the gift",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The 2-step verification password of the current user",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "HttpUrl"
         },
         "createInvoiceLink": {
             "description": "Creates a link for the given invoice; for bots only",
