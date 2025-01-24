@@ -1370,6 +1370,71 @@ class TDLibFunctions:
             }
         )
 
+    async def getBotSimilarBots(
+        self, bot_user_id: int = 0
+    ) -> Union["types.Error", "types.Users"]:
+        r"""Returns a list of bots similar to the given bot
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                User identifier of the target bot
+
+        Returns:
+            :class:`~pytdbot.types.Users`
+        """
+
+        return await self.invoke(
+            {"@type": "getBotSimilarBots", "bot_user_id": bot_user_id}
+        )
+
+    async def getBotSimilarBotCount(
+        self, bot_user_id: int = 0, return_local: bool = False
+    ) -> Union["types.Error", "types.Count"]:
+        r"""Returns approximate number of bots similar to the given bot
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                User identifier of the target bot
+
+            return_local (:class:`bool`):
+                Pass true to get the number of bots without sending network requests, or \-1 if the number of bots is unknown locally
+
+        Returns:
+            :class:`~pytdbot.types.Count`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getBotSimilarBotCount",
+                "bot_user_id": bot_user_id,
+                "return_local": return_local,
+            }
+        )
+
+    async def openBotSimilarBot(
+        self, bot_user_id: int = 0, opened_bot_user_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Informs TDLib that a bot was opened from the list of similar bots
+
+        Parameters:
+            bot_user_id (:class:`int`):
+                Identifier of the original bot, which similar bots were requested
+
+            opened_bot_user_id (:class:`int`):
+                Identifier of the opened bot
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "openBotSimilarBot",
+                "bot_user_id": bot_user_id,
+                "opened_bot_user_id": opened_bot_user_id,
+            }
+        )
+
     async def getTopChats(
         self, category: "types.TopChatCategory" = None, limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
@@ -3266,7 +3331,7 @@ class TDLibFunctions:
     async def deleteChatMessagesBySender(
         self, chat_id: int = 0, sender_id: "types.MessageSender" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Deletes all messages sent by the specified message sender in a chat\. Supported only for supergroups; requires can\_delete\_messages administrator privileges
+        r"""Deletes all messages sent by the specified message sender in a chat\. Supported only for supergroups; requires can\_delete\_messages administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -9540,11 +9605,11 @@ class TDLibFunctions:
 
     async def getThemedEmojiStatuses(
         self,
-    ) -> Union["types.Error", "types.EmojiStatuses"]:
+    ) -> Union["types.Error", "types.EmojiStatusCustomEmojis"]:
         r"""Returns up to 8 emoji statuses, which must be shown right after the default Premium Badge in the emoji status list for self status
 
         Returns:
-            :class:`~pytdbot.types.EmojiStatuses`
+            :class:`~pytdbot.types.EmojiStatusCustomEmojis`
         """
 
         return await self.invoke(
@@ -9568,13 +9633,28 @@ class TDLibFunctions:
             }
         )
 
-    async def getDefaultEmojiStatuses(
+    async def getUpgradedGiftEmojiStatuses(
         self,
     ) -> Union["types.Error", "types.EmojiStatuses"]:
-        r"""Returns default emoji statuses for self status
+        r"""Returns available upgraded gift emoji statuses for self status
 
         Returns:
             :class:`~pytdbot.types.EmojiStatuses`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getUpgradedGiftEmojiStatuses",
+            }
+        )
+
+    async def getDefaultEmojiStatuses(
+        self,
+    ) -> Union["types.Error", "types.EmojiStatusCustomEmojis"]:
+        r"""Returns default emoji statuses for self status
+
+        Returns:
+            :class:`~pytdbot.types.EmojiStatusCustomEmojis`
         """
 
         return await self.invoke(
@@ -9598,11 +9678,11 @@ class TDLibFunctions:
 
     async def getThemedChatEmojiStatuses(
         self,
-    ) -> Union["types.Error", "types.EmojiStatuses"]:
+    ) -> Union["types.Error", "types.EmojiStatusCustomEmojis"]:
         r"""Returns up to 8 emoji statuses, which must be shown in the emoji status list for chats
 
         Returns:
-            :class:`~pytdbot.types.EmojiStatuses`
+            :class:`~pytdbot.types.EmojiStatusCustomEmojis`
         """
 
         return await self.invoke(
@@ -9613,11 +9693,11 @@ class TDLibFunctions:
 
     async def getDefaultChatEmojiStatuses(
         self,
-    ) -> Union["types.Error", "types.EmojiStatuses"]:
+    ) -> Union["types.Error", "types.EmojiStatusCustomEmojis"]:
         r"""Returns default emoji statuses for chats
 
         Returns:
-            :class:`~pytdbot.types.EmojiStatuses`
+            :class:`~pytdbot.types.EmojiStatusCustomEmojis`
         """
 
         return await self.invoke(
@@ -9628,11 +9708,11 @@ class TDLibFunctions:
 
     async def getDisallowedChatEmojiStatuses(
         self,
-    ) -> Union["types.Error", "types.EmojiStatuses"]:
+    ) -> Union["types.Error", "types.EmojiStatusCustomEmojis"]:
         r"""Returns the list of emoji statuses, which can't be used as chat emoji status, even they are from a sticker set with is\_allowed\_as\_chat\_emoji\_status \=\= true
 
         Returns:
-            :class:`~pytdbot.types.EmojiStatuses`
+            :class:`~pytdbot.types.EmojiStatusCustomEmojis`
         """
 
         return await self.invoke(
@@ -15074,7 +15154,7 @@ class TDLibFunctions:
         )
 
     async def getAvailableGifts(self) -> Union["types.Error", "types.Gifts"]:
-        r"""Returns gifts that can be sent to other users
+        r"""Returns gifts that can be sent to other users and channel chats
 
         Returns:
             :class:`~pytdbot.types.Gifts`
@@ -15089,25 +15169,25 @@ class TDLibFunctions:
     async def sendGift(
         self,
         gift_id: int = 0,
-        user_id: int = 0,
+        owner_id: "types.MessageSender" = None,
         text: "types.FormattedText" = None,
         is_private: bool = False,
         pay_for_upgrade: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Sends a gift to another user\. May return an error with a message \"STARGIFT\_USAGE\_LIMITED\" if the gift was sold out
+        r"""Sends a gift to another user or channel chat\. May return an error with a message \"STARGIFT\_USAGE\_LIMITED\" if the gift was sold out
 
         Parameters:
             gift_id (:class:`int`):
                 Identifier of the gift to send
 
-            user_id (:class:`int`):
-                Identifier of the user that will receive the gift
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that will receive the gift
 
             text (:class:`"types.FormattedText"`):
                 Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
 
             is_private (:class:`bool`):
-                Pass true to show the current user as sender and gift text only to the gift receiver; otherwise, everyone will be able to see them
+                Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them
 
             pay_for_upgrade (:class:`bool`):
                 Pass true to additionally pay for the gift upgrade and allow the receiver to upgrade it for free
@@ -15120,7 +15200,7 @@ class TDLibFunctions:
             {
                 "@type": "sendGift",
                 "gift_id": gift_id,
-                "user_id": user_id,
+                "owner_id": owner_id,
                 "text": text,
                 "is_private": is_private,
                 "pay_for_upgrade": pay_for_upgrade,
@@ -15128,43 +15208,33 @@ class TDLibFunctions:
         )
 
     async def sellGift(
-        self, sender_user_id: int = 0, message_id: int = 0
+        self, received_gift_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Sells a gift received by the current user for Telegram Stars
+        r"""Sells a gift for Telegram Stars
 
         Parameters:
-            sender_user_id (:class:`int`):
-                Identifier of the user that sent the gift
-
-            message_id (:class:`int`):
-                Identifier of the message with the gift in the chat with the user
+            received_gift_id (:class:`str`):
+                Identifier of the gift
 
         Returns:
             :class:`~pytdbot.types.Ok`
         """
 
         return await self.invoke(
-            {
-                "@type": "sellGift",
-                "sender_user_id": sender_user_id,
-                "message_id": message_id,
-            }
+            {"@type": "sellGift", "received_gift_id": received_gift_id}
         )
 
     async def toggleGiftIsSaved(
-        self, sender_user_id: int = 0, message_id: int = 0, is_saved: bool = False
+        self, received_gift_id: str = "", is_saved: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Toggles whether a gift is shown on the current user's profile page
+        r"""Toggles whether a gift is shown on the current user's or the channel's profile page; requires can\_post\_messages administrator right in the chat
 
         Parameters:
-            sender_user_id (:class:`int`):
-                Identifier of the user that sent the gift
-
-            message_id (:class:`int`):
-                Identifier of the message with the gift in the chat with the user
+            received_gift_id (:class:`str`):
+                Identifier of the gift
 
             is_saved (:class:`bool`):
-                Pass true to display the gift on the user's profile page; pass false to remove it from the profile page
+                Pass true to display the gift on the user's or the channel's profile page; pass false to remove it from the profile page
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -15173,9 +15243,32 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "toggleGiftIsSaved",
-                "sender_user_id": sender_user_id,
-                "message_id": message_id,
+                "received_gift_id": received_gift_id,
                 "is_saved": is_saved,
+            }
+        )
+
+    async def toggleChatGiftNotifications(
+        self, chat_id: int = 0, are_enabled: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Toggles whether notifications for new gifts received by a channel chat are sent to the current user; requires can\_post\_messages administrator right in the chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the channel chat
+
+            are_enabled (:class:`bool`):
+                Pass true to enable notifications about new gifts owned by the channel chat; pass false to disable the notifications
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "toggleChatGiftNotifications",
+                "chat_id": chat_id,
+                "are_enabled": are_enabled,
             }
         )
 
@@ -15196,21 +15289,21 @@ class TDLibFunctions:
 
     async def upgradeGift(
         self,
-        sender_user_id: int = 0,
-        message_id: int = 0,
+        received_gift_id: str = "",
         keep_original_details: bool = False,
+        star_count: int = 0,
     ) -> Union["types.Error", "types.UpgradeGiftResult"]:
-        r"""Upgrades a gift received by the current user\. Unless the gift has prepaid\_upgrade\_star\_count \> 0, the user must pay gift\.upgrade\_star\_count Telegram Stars for the upgrade
+        r"""Upgrades a regular gift
 
         Parameters:
-            sender_user_id (:class:`int`):
-                Identifier of the user that sent the gift
-
-            message_id (:class:`int`):
-                Identifier of the message with the gift in the chat with the user
+            received_gift_id (:class:`str`):
+                Identifier of the gift
 
             keep_original_details (:class:`bool`):
                 Pass true to keep the original gift text, sender and receiver in the upgraded gift
+
+            star_count (:class:`int`):
+                The amount of Telegram Stars required to pay for the upgrade\. It the gift has prepaid\_upgrade\_star\_count \> 0, then pass 0, otherwise, pass gift\.upgrade\_star\_count
 
         Returns:
             :class:`~pytdbot.types.UpgradeGiftResult`
@@ -15219,33 +15312,29 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "upgradeGift",
-                "sender_user_id": sender_user_id,
-                "message_id": message_id,
+                "received_gift_id": received_gift_id,
                 "keep_original_details": keep_original_details,
+                "star_count": star_count,
             }
         )
 
     async def transferGift(
         self,
-        sender_user_id: int = 0,
-        message_id: int = 0,
-        receiver_user_id: int = 0,
+        received_gift_id: str = "",
+        new_owner_id: "types.MessageSender" = None,
         star_count: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Sends a gift upgraded by the current user to another user
+        r"""Sends an upgraded gift to another user or a channel chat
 
         Parameters:
-            sender_user_id (:class:`int`):
-                Identifier of the user that sent the gift
+            received_gift_id (:class:`str`):
+                Identifier of the gift
 
-            message_id (:class:`int`):
-                Identifier of the message with the upgraded gift in the chat with the user
-
-            receiver_user_id (:class:`int`):
-                Identifier of the user that will receive the gift
+            new_owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that will receive the gift
 
             star_count (:class:`int`):
-                The amount of Telegram Stars required for the transfer
+                The amount of Telegram Stars required to pay for the transfer
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -15254,21 +15343,47 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "transferGift",
-                "sender_user_id": sender_user_id,
-                "message_id": message_id,
-                "receiver_user_id": receiver_user_id,
+                "received_gift_id": received_gift_id,
+                "new_owner_id": new_owner_id,
                 "star_count": star_count,
             }
         )
 
-    async def getUserGifts(
-        self, user_id: int = 0, offset: str = "", limit: int = 0
-    ) -> Union["types.Error", "types.UserGifts"]:
-        r"""Returns gifts saved to profile by the given user
+    async def getReceivedGifts(
+        self,
+        owner_id: "types.MessageSender" = None,
+        exclude_unsaved: bool = False,
+        exclude_saved: bool = False,
+        exclude_unlimited: bool = False,
+        exclude_limited: bool = False,
+        exclude_upgraded: bool = False,
+        sort_by_price: bool = False,
+        offset: str = "",
+        limit: int = 0,
+    ) -> Union["types.Error", "types.ReceivedGifts"]:
+        r"""Returns gifts received by the given user or chat
 
         Parameters:
-            user_id (:class:`int`):
-                Identifier of the user
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the gift receiver
+
+            exclude_unsaved (:class:`bool`):
+                Pass true to exclude gifts that aren't saved to the chat's profile page\. Always true for gifts received by other users and channel chats without can\_post\_messages administrator right
+
+            exclude_saved (:class:`bool`):
+                Pass true to exclude gifts that are saved to the chat's profile page; for channel chats with can\_post\_messages administrator right only
+
+            exclude_unlimited (:class:`bool`):
+                Pass true to exclude gifts that can be purchased unlimited number of times; for channel chats with can\_post\_messages administrator right only
+
+            exclude_limited (:class:`bool`):
+                Pass true to exclude gifts that can be purchased limited number of times; for channel chats with can\_post\_messages administrator right only
+
+            exclude_upgraded (:class:`bool`):
+                Pass true to exclude upgraded gifts; for channel chats with can\_post\_messages administrator right only
+
+            sort_by_price (:class:`bool`):
+                Pass true to sort results by gift price instead of send date; for channel chats with can\_post\_messages administrator right only
 
             offset (:class:`str`):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
@@ -15277,32 +15392,79 @@ class TDLibFunctions:
                 The maximum number of gifts to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit
 
         Returns:
-            :class:`~pytdbot.types.UserGifts`
+            :class:`~pytdbot.types.ReceivedGifts`
         """
 
         return await self.invoke(
             {
-                "@type": "getUserGifts",
-                "user_id": user_id,
+                "@type": "getReceivedGifts",
+                "owner_id": owner_id,
+                "exclude_unsaved": exclude_unsaved,
+                "exclude_saved": exclude_saved,
+                "exclude_unlimited": exclude_unlimited,
+                "exclude_limited": exclude_limited,
+                "exclude_upgraded": exclude_upgraded,
+                "sort_by_price": sort_by_price,
                 "offset": offset,
                 "limit": limit,
             }
         )
 
-    async def getUserGift(
-        self, message_id: int = 0
-    ) -> Union["types.Error", "types.UserGift"]:
-        r"""Returns information about a gift received or sent by the current user
+    async def getReceivedGift(
+        self, received_gift_id: str = ""
+    ) -> Union["types.Error", "types.ReceivedGift"]:
+        r"""Returns information about a received gift
 
         Parameters:
-            message_id (:class:`int`):
-                Identifier of the message with the gift
+            received_gift_id (:class:`str`):
+                Identifier of the gift
 
         Returns:
-            :class:`~pytdbot.types.UserGift`
+            :class:`~pytdbot.types.ReceivedGift`
         """
 
-        return await self.invoke({"@type": "getUserGift", "message_id": message_id})
+        return await self.invoke(
+            {"@type": "getReceivedGift", "received_gift_id": received_gift_id}
+        )
+
+    async def getUpgradedGift(
+        self, name: str = ""
+    ) -> Union["types.Error", "types.UpgradedGift"]:
+        r"""Returns information about an upgraded gift by its name
+
+        Parameters:
+            name (:class:`str`):
+                Unique name of the upgraded gift
+
+        Returns:
+            :class:`~pytdbot.types.UpgradedGift`
+        """
+
+        return await self.invoke({"@type": "getUpgradedGift", "name": name})
+
+    async def getUpgradedGiftWithdrawalUrl(
+        self, received_gift_id: str = "", password: str = ""
+    ) -> Union["types.Error", "types.HttpUrl"]:
+        r"""Returns a URL for upgraded gift withdrawal in the TON blockchain as an NFT; requires owner privileges for gifts owned by a chat
+
+        Parameters:
+            received_gift_id (:class:`str`):
+                Identifier of the gift
+
+            password (:class:`str`):
+                The 2\-step verification password of the current user
+
+        Returns:
+            :class:`~pytdbot.types.HttpUrl`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getUpgradedGiftWithdrawalUrl",
+                "received_gift_id": received_gift_id,
+                "password": password,
+            }
+        )
 
     async def createInvoiceLink(
         self,
