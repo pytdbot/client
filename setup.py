@@ -24,13 +24,16 @@ setup(
     license="MIT",
     python_requires=">=3.9",
     install_requires=requirements,
+    extras_require={
+        "tdjson": ["tdjson"],
+    },
     project_urls={
         "Source": "https://github.com/pytdbot/client",
         "Tracker": "https://github.com/pytdbot/client/issues",
     },
     packages=find_packages(exclude=["examples"]),
     package_data={
-        "pytdbot": ["lib/*.so", "td_api.*"],
+        "pytdbot": ["td_api.*"],
     },
     keywords=[
         "telegram",

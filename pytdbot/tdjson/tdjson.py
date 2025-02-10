@@ -1,8 +1,15 @@
-from ctypes.util import find_library
+try:
+    import tdjson
+except ImportError:
+    tdjson = None
+
 from ctypes import c_int, c_double, c_char_p, CDLL
+
 from logging import getLogger
 from typing import Union
 from ..utils import JSON_ENCODER, json_dumps, json_loads
+
+import sys
 
 logger = getLogger(__name__)
 
@@ -13,7 +20,7 @@ class TdJson:
 
         Parameters:
             lib_path (``str``, optional):
-                Path to shared library. Default is ``None``
+                Path to shared library; if ``None`` then [`tdjson`](https://github.com/AYMENJD/tdjson) binding will be used. Default is ``None``
 
             verbosity (``int``, optional):
                 TDLib verbosity level. Default is ``2``
@@ -22,13 +29,6 @@ class TdJson:
             :py:class:``ValueError``: If library not found
         """
 
-        if lib_path is None:
-            lib_path = find_library("tdjson")
-
-        if not lib_path:
-            raise ValueError("TDLib library not found")
-
-        logger.info(f"Initializing TdJson client with library: {lib_path}")
         self._build_client(lib_path, verbosity)
 
     def __enter__(self):
@@ -47,26 +47,50 @@ class TdJson:
             verbosity (``int``):
                 TDLib verbosity level
         """
-        self._tdjson = CDLL(lib_path)
 
-        # load TDLib functions from shared library
-        self._td_create_client_id = self._tdjson.td_create_client_id
-        self._td_create_client_id.restype = c_int
-        self._td_create_client_id.argtypes = []
+        self.using_binding = False
 
-        self._td_receive = self._tdjson.td_receive
-        self._td_receive.restype = c_char_p
-        self._td_receive.argtypes = [c_double]
+        if lib_path is None:
+            if not tdjson:
+                raise ValueError(
+                    f"tdjson binding not found. Try install using: `{sys.executable} -m pip install --upgrade tdjson`"
+                )
 
-        self._td_send = self._tdjson.td_send
-        self._td_send.restype = None
-        self._td_send.argtypes = [c_int, c_char_p]
+            # Use tdjson binding that already include TDLib
+            self._td_create_client_id = tdjson.td_create_client_id
+            self._td_send = tdjson.td_send
+            self._td_receive = tdjson.td_receive
+            self._td_execute = tdjson.td_execute
 
-        self._td_execute = self._tdjson.td_execute
-        self._td_execute.restype = c_char_p
-        self._td_execute.argtypes = [c_char_p]
+            self.using_binding = True
 
-        self.client_id = self._td_create_client_id()
+            logger.info(f"Using tdjson binding {tdjson.__version__}")
+        else:
+            if not lib_path:
+                raise ValueError(
+                    "Could not find TDLib, provide full path to libtdjson.so in lib_path"
+                )
+
+            logger.info(f"Initializing TdJson client with library: {lib_path}")
+
+            self._tdjson = CDLL(lib_path)
+
+            # load TDLib functions from shared library
+            self._td_create_client_id = self._tdjson.td_create_client_id
+            self._td_create_client_id.restype = c_int
+            self._td_create_client_id.argtypes = []
+
+            self._td_receive = self._tdjson.td_receive
+            self._td_receive.restype = c_char_p
+            self._td_receive.argtypes = [c_double]
+
+            self._td_send = self._tdjson.td_send
+            self._td_send.restype = None
+            self._td_send.argtypes = [c_int, c_char_p]
+
+            self._td_execute = self._tdjson.td_execute
+            self._td_execute.restype = c_char_p
+            self._td_execute.argtypes = [c_char_p]
 
         td_version, td_commit_hash = (
             self.execute({"@type": "getOption", "name": "version"}),
@@ -85,6 +109,8 @@ class TdJson:
             if res["@type"] == "error":
                 logger.error("Can't set log level: {}".format(res["message"]))
 
+        self.client_id = self._td_create_client_id()
+
     def receive(self, timeout: float = 2.0) -> Union[None, dict]:
         """Receives incoming updates and results from TDLib
 
@@ -95,7 +121,10 @@ class TdJson:
         Returns:
             :py:class:``dict``: An incoming update or result to a request. If no data is received, ``None`` is returned
         """
-        if res := self._td_receive(self.client_id, c_double(timeout)):
+
+        if res := self._td_receive(
+            timeout if self.using_binding else c_double(timeout)
+        ):
             return json_loads(res)
 
     def send(self, data: dict) -> None:
@@ -105,11 +134,8 @@ class TdJson:
             data (``dict``):
                 The request to be sent
         """
-        try:
-            self._td_send(self.client_id, json_dumps(data))
-        except Exception:
-            logger.exception(f"Exception while sending: {data}")
-            raise
+
+        self._td_send(self.client_id, json_dumps(data, encode=not self.using_binding))
 
     def execute(self, data: dict) -> Union[None, dict]:
         """Executes a TDLib request
@@ -120,9 +146,6 @@ class TdJson:
         Returns:
             :py:class:``dict``: The result of the request
         """
-        try:
-            if res := self._td_execute(json_dumps(data)):
-                return json_loads(res)
-        except Exception:
-            logger.exception("Exception while executing")
-            raise
+
+        if res := self._td_execute(json_dumps(data, encode=not self.using_binding)):
+            return json_loads(res)
