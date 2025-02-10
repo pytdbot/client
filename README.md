@@ -39,9 +39,9 @@ or without **pre-built** TDLib:
 pip install pytdbot
 ```
 
-If the install fails, then you need to build TDLib from [source](https://github.com/tdlib/td#building) and pass it to `Client(lib_path="/path/to/libtdjson")`.
+If the install fails, then you need to build TDLib from [source](https://github.com/tdlib/td#building) and pass it to `Client(lib_path="/path/to/libtdjson.so")`.
 
-You could also install the development version from Github, using the following command:
+You could also install the development version using the following command:
 
 ```bash
 pip install --pre pytdbot
