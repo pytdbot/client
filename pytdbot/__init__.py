@@ -4,7 +4,7 @@ from .client import Client
 
 __all__ = ["types", "utils", "filters", "exception", "TdJson", "Client"]
 
-__version__ = "0.9.0dev6"
+__version__ = "0.9.0dev7"
 __copyright__ = "Copyright (c) 2022-2025 Pytdbot, AYMENJD"
 __license__ = "MIT License"
 
