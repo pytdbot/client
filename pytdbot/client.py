@@ -831,6 +831,7 @@ class Client(Decorators, Methods):
             application_version=f"Pytdbot {pytdbot.__version__}",
         )
         if isinstance(res, types.Error):
+            await self.stop()
             raise AuthorizationError(res.message)
 
     async def _set_options(self):
@@ -1027,6 +1028,7 @@ class Client(Decorators, Methods):
         res = await self.checkAuthenticationBotToken(self.__token)
 
         if isinstance(res, types.Error):
+            await self.stop()
             raise AuthorizationError(res.message)
 
     def __stop_client(self) -> None:
