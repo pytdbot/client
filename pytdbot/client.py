@@ -667,7 +667,7 @@ class Client(Decorators, Methods):
                     update = await self.loop.run_in_executor(
                         thread,
                         self._tdjson.receive,
-                        100000.0,  # Seconds
+                        3.0,  # Seconds
                     )
                     if update is None:
                         continue
