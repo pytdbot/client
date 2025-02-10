@@ -33,6 +33,13 @@ from .utils import (
 )
 
 
+def get_running_loop():
+    try:
+        return asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.new_event_loop()
+
+
 class Client(Decorators, Methods):
     r"""Pytdbot, a TDLib client
 
@@ -187,9 +194,7 @@ class Client(Decorators, Methods):
         self.__is_closing = False
 
         self.loop = (
-            loop
-            if isinstance(loop, asyncio.AbstractEventLoop)
-            else asyncio.get_event_loop()
+            loop if isinstance(loop, asyncio.AbstractEventLoop) else get_running_loop()
         )
 
         if plugins is not None:
