@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.44",
-    "commit_hash": "28c6f2e9c045372d50217919bf5768b7fbbe0294",
+    "version": "1.8.45",
+    "commit_hash": "8e29c4d7d21db3ab2c7a88c384626e95ef789f61",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -375,6 +375,15 @@
                 "reactionTypeEmoji",
                 "reactionTypeCustomEmoji",
                 "reactionTypePaid"
+            ],
+            "functions": []
+        },
+        "PaidReactionType": {
+            "description": "Describes type of paid message reaction",
+            "types": [
+                "paidReactionTypeRegular",
+                "paidReactionTypeAnonymous",
+                "paidReactionTypeChat"
             ],
             "functions": []
         },
@@ -5701,6 +5710,11 @@
                     "is_optional": false,
                     "type": "string"
                 },
+                "gift_address": {
+                    "description": "Address of the gift NFT in TON blockchain; may be empty if none",
+                    "is_optional": true,
+                    "type": "string"
+                },
                 "model": {
                     "description": "Model of the upgraded gift",
                     "is_optional": false,
@@ -8359,6 +8373,27 @@
             "description": "The paid reaction in a channel chat",
             "args": {},
             "type": "ReactionType"
+        },
+        "paidReactionTypeRegular": {
+            "description": "A paid reaction on behalf of the current user",
+            "args": {},
+            "type": "PaidReactionType"
+        },
+        "paidReactionTypeAnonymous": {
+            "description": "An anonymous paid reaction",
+            "args": {},
+            "type": "PaidReactionType"
+        },
+        "paidReactionTypeChat": {
+            "description": "A paid reaction on behalf of an owned chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "PaidReactionType"
         },
         "paidReactor": {
             "description": "Contains information about a user that added paid reactions",
@@ -12787,6 +12822,16 @@
                     "description": "The video description",
                     "is_optional": false,
                     "type": "video"
+                },
+                "cover": {
+                    "description": "Cover of the video; may be null if none",
+                    "is_optional": true,
+                    "type": "photo"
+                },
+                "start_timestamp": {
+                    "description": "Timestamp from which the video playing must start, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "LinkPreviewType"
@@ -26086,7 +26131,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeWebApp": {
-            "description": "The link is a link to a Web App. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web_app_short_name. Process received foundWebApp by showing a confirmation dialog if needed. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being third-party applications instead of the dialog and ask the user to accept their Terms of service. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. Then, call getWebAppLinkUrl and open the returned URL as a Web App",
+            "description": "The link is a link to a Web App. Call searchPublicChat with the given bot username, check that the user is a bot. If the bot is restricted for the current user, then show an error message. Otherwise, call searchWebApp with the received bot and the given web_app_short_name. Process received foundWebApp by showing a confirmation dialog if needed. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being third-party applications instead of the dialog and ask the user to accept their Terms of service. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. Then, call getWebAppLinkUrl and open the returned URL as a Web App",
             "args": {
                 "bot_username": {
                     "description": "Username of the bot that owns the Web App",
@@ -29470,6 +29515,27 @@
             },
             "type": "Update"
         },
+        "updateApplicationRecaptchaVerificationRequired": {
+            "description": "A request can't be completed unless reCAPTCHA verification is performed; for official mobile applications only. The method setApplicationVerificationToken must be called once the verification is completed or failed",
+            "args": {
+                "verification_id": {
+                    "description": "Unique identifier for the verification process",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "action": {
+                    "description": "The action for the check",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "recaptcha_key_id": {
+                    "description": "Identifier of the reCAPTCHA key",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "Update"
+        },
         "updateCall": {
             "description": "New call was created or information about a call was updated",
             "args": {
@@ -29986,6 +30052,17 @@
                     "description": "The new type of the default reaction",
                     "is_optional": false,
                     "type": "ReactionType"
+                }
+            },
+            "type": "Update"
+        },
+        "updateDefaultPaidReactionType": {
+            "description": "The type of default paid reaction has changed",
+            "args": {
+                "type": {
+                    "description": "The new type of the default paid reaction",
+                    "is_optional": false,
+                    "type": "PaidReactionType"
                 }
             },
             "type": "Update"
@@ -34233,6 +34310,17 @@
             },
             "type": "Ok"
         },
+        "getChatAvailablePaidMessageReactionSenders": {
+            "description": "Returns the list of message sender identifiers, which can be used to send a paid reaction in a chat",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "MessageSenders"
+        },
         "addPendingPaidMessageReaction": {
             "description": "Adds the paid message reaction to a message. Use getMessageAvailableReactions to check whether the reaction is available for the message",
             "args": {
@@ -34251,15 +34339,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "use_default_is_anonymous": {
-                    "description": "Pass true if the user didn't choose anonymity explicitly, for example, the reaction is set from the message bubble",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "is_anonymous": {
-                    "description": "Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors. Ignored if use_default_is_anonymous == true",
-                    "is_optional": false,
-                    "type": "Bool"
+                "type": {
+                    "description": "Type of the paid reaction; pass null if the user didn't choose reaction type explicitly, for example, the reaction is set from the message bubble",
+                    "is_optional": true,
+                    "type": "PaidReactionType"
                 }
             },
             "type": "Ok"
@@ -34296,8 +34379,8 @@
             },
             "type": "Ok"
         },
-        "togglePaidMessageReactionIsAnonymous": {
-            "description": "Changes whether the paid message reaction of the user to a message is anonymous. The message must have paid reaction added by the user",
+        "setPaidMessageReactionType": {
+            "description": "Changes type of paid message reaction of the current user on a message. The message must have paid reaction added by the current user",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which the message belongs",
@@ -34309,10 +34392,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "is_anonymous": {
-                    "description": "Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors",
+                "type": {
+                    "description": "New type of the paid reaction",
                     "is_optional": false,
-                    "type": "Bool"
+                    "type": "PaidReactionType"
                 }
             },
             "type": "Ok"
@@ -34997,7 +35080,7 @@
                     "type": "int53"
                 },
                 "bot_user_id": {
-                    "description": "Identifier of the target bot",
+                    "description": "Identifier of the target bot. If the bot is restricted for the current user, then show an error instead of calling the method",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -35018,7 +35101,7 @@
             "description": "Returns an HTTPS URL of a Web App to open from the side menu, a keyboardButtonTypeWebApp button, or an inlineQueryResultsButtonTypeWebApp button",
             "args": {
                 "bot_user_id": {
-                    "description": "Identifier of the target bot",
+                    "description": "Identifier of the target bot. If the bot is restricted for the current user, then show an error instead of calling the method",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -35065,7 +35148,7 @@
                     "type": "int53"
                 },
                 "bot_user_id": {
-                    "description": "Identifier of the bot, providing the Web App",
+                    "description": "Identifier of the bot, providing the Web App. If the bot is restricted for the current user, then show an error instead of calling the method",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -37841,15 +37924,15 @@
             "type": "FoundFileDownloads"
         },
         "setApplicationVerificationToken": {
-            "description": "Application verification has been completed. Can be called before authorization",
+            "description": "Application or reCAPTCHA verification has been completed. Can be called before authorization",
             "args": {
                 "verification_id": {
-                    "description": "Unique identifier for the verification process as received from updateApplicationVerificationRequired",
+                    "description": "Unique identifier for the verification process as received from updateApplicationVerificationRequired or updateApplicationRecaptchaVerificationRequired",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "token": {
-                    "description": "Play Integrity API token for the Android application, or secret from push notification for the iOS application; pass an empty string to abort verification and receive error VERIFICATION_FAILED for the request",
+                    "description": "Play Integrity API token for the Android application, or secret from push notification for the iOS application for application verification, or reCAPTCHA token for reCAPTCHA verifications; pass an empty string to abort verification and receive error VERIFICATION_FAILED for the request",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -41372,27 +41455,27 @@
                     "type": "Bool"
                 },
                 "exclude_saved": {
-                    "description": "Pass true to exclude gifts that are saved to the chat's profile page; for channel chats with can_post_messages administrator right only",
+                    "description": "Pass true to exclude gifts that are saved to the chat's profile page. Always false for gifts received by other users and channel chats without can_post_messages administrator right",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "exclude_unlimited": {
-                    "description": "Pass true to exclude gifts that can be purchased unlimited number of times; for channel chats with can_post_messages administrator right only",
+                    "description": "Pass true to exclude gifts that can be purchased unlimited number of times",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "exclude_limited": {
-                    "description": "Pass true to exclude gifts that can be purchased limited number of times; for channel chats with can_post_messages administrator right only",
+                    "description": "Pass true to exclude gifts that can be purchased limited number of times",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "exclude_upgraded": {
-                    "description": "Pass true to exclude upgraded gifts; for channel chats with can_post_messages administrator right only",
+                    "description": "Pass true to exclude upgraded gifts",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "sort_by_price": {
-                    "description": "Pass true to sort results by gift price instead of send date; for channel chats with can_post_messages administrator right only",
+                    "description": "Pass true to sort results by gift price instead of send date",
                     "is_optional": false,
                     "type": "Bool"
                 },
