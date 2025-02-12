@@ -3065,6 +3065,55 @@ class Updates:
 
         return decorator
 
+    def on_updateApplicationRecaptchaVerificationRequired(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        r"""A request can't be completed unless reCAPTCHA verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateApplicationRecaptchaVerificationRequired",
+                        func,
+                        filters,
+                        position,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func,
+                    "updateApplicationRecaptchaVerificationRequired",
+                    self,
+                    position,
+                )
+            else:
+                func._handler = Handler(
+                    func,
+                    "updateApplicationRecaptchaVerificationRequired",
+                    filters,
+                    position,
+                )
+            return func
+
+        return decorator
+
     def on_updateCall(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -4364,6 +4413,46 @@ class Updates:
             else:
                 func._handler = Handler(
                     func, "updateDefaultReactionType", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateDefaultPaidReactionType(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        r"""The type of default paid reaction has changed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateDefaultPaidReactionType", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateDefaultPaidReactionType", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateDefaultPaidReactionType", filters, position
                 )
             return func
 

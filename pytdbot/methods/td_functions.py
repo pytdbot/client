@@ -4972,13 +4972,29 @@ class TDLibFunctions:
             }
         )
 
+    async def getChatAvailablePaidMessageReactionSenders(
+        self, chat_id: int = 0
+    ) -> Union["types.Error", "types.MessageSenders"]:
+        r"""Returns the list of message sender identifiers, which can be used to send a paid reaction in a chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+        Returns:
+            :class:`~pytdbot.types.MessageSenders`
+        """
+
+        return await self.invoke(
+            {"@type": "getChatAvailablePaidMessageReactionSenders", "chat_id": chat_id}
+        )
+
     async def addPendingPaidMessageReaction(
         self,
         chat_id: int = 0,
         message_id: int = 0,
         star_count: int = 0,
-        use_default_is_anonymous: bool = False,
-        is_anonymous: bool = False,
+        type: "types.PaidReactionType" = None,
     ) -> Union["types.Error", "types.Ok"]:
         r"""Adds the paid message reaction to a message\. Use getMessageAvailableReactions to check whether the reaction is available for the message
 
@@ -4992,11 +5008,8 @@ class TDLibFunctions:
             star_count (:class:`int`):
                 Number of Telegram Stars to be used for the reaction\. The total number of pending paid reactions must not exceed getOption\(\"paid\_reaction\_star\_count\_max\"\)
 
-            use_default_is_anonymous (:class:`bool`):
-                Pass true if the user didn't choose anonymity explicitly, for example, the reaction is set from the message bubble
-
-            is_anonymous (:class:`bool`):
-                Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors\. Ignored if use\_default\_is\_anonymous \=\= true
+            type (:class:`"types.PaidReactionType"`):
+                Type of the paid reaction; pass null if the user didn't choose reaction type explicitly, for example, the reaction is set from the message bubble
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5008,8 +5021,7 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "message_id": message_id,
                 "star_count": star_count,
-                "use_default_is_anonymous": use_default_is_anonymous,
-                "is_anonymous": is_anonymous,
+                "type": type,
             }
         )
 
@@ -5061,10 +5073,13 @@ class TDLibFunctions:
             }
         )
 
-    async def togglePaidMessageReactionIsAnonymous(
-        self, chat_id: int = 0, message_id: int = 0, is_anonymous: bool = False
+    async def setPaidMessageReactionType(
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        type: "types.PaidReactionType" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes whether the paid message reaction of the user to a message is anonymous\. The message must have paid reaction added by the user
+        r"""Changes type of paid message reaction of the current user on a message\. The message must have paid reaction added by the current user
 
         Parameters:
             chat_id (:class:`int`):
@@ -5073,8 +5088,8 @@ class TDLibFunctions:
             message_id (:class:`int`):
                 Identifier of the message
 
-            is_anonymous (:class:`bool`):
-                Pass true to make paid reaction of the user on the message anonymous; pass false to make the user's profile visible among top reactors
+            type (:class:`"types.PaidReactionType"`):
+                New type of the paid reaction
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5082,10 +5097,10 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "togglePaidMessageReactionIsAnonymous",
+                "@type": "setPaidMessageReactionType",
                 "chat_id": chat_id,
                 "message_id": message_id,
-                "is_anonymous": is_anonymous,
+                "type": type,
             }
         )
 
@@ -6033,7 +6048,7 @@ class TDLibFunctions:
                 Identifier of the chat in which the Web App is opened; pass 0 if none
 
             bot_user_id (:class:`int`):
-                Identifier of the target bot
+                Identifier of the target bot\. If the bot is restricted for the current user, then show an error instead of calling the method
 
             start_parameter (:class:`str`):
                 Start parameter from internalLinkTypeMainWebApp
@@ -6065,7 +6080,7 @@ class TDLibFunctions:
 
         Parameters:
             bot_user_id (:class:`int`):
-                Identifier of the target bot
+                Identifier of the target bot\. If the bot is restricted for the current user, then show an error instead of calling the method
 
             url (:class:`str`):
                 The URL from a keyboardButtonTypeWebApp button, inlineQueryResultsButtonTypeWebApp button, or an empty string when the bot is opened from the side menu
@@ -6130,7 +6145,7 @@ class TDLibFunctions:
                 Identifier of the chat in which the Web App is opened\. The Web App can't be opened in secret chats
 
             bot_user_id (:class:`int`):
-                Identifier of the bot, providing the Web App
+                Identifier of the bot, providing the Web App\. If the bot is restricted for the current user, then show an error instead of calling the method
 
             url (:class:`str`):
                 The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
@@ -10175,14 +10190,14 @@ class TDLibFunctions:
     async def setApplicationVerificationToken(
         self, verification_id: int = 0, token: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Application verification has been completed\. Can be called before authorization
+        r"""Application or reCAPTCHA verification has been completed\. Can be called before authorization
 
         Parameters:
             verification_id (:class:`int`):
-                Unique identifier for the verification process as received from updateApplicationVerificationRequired
+                Unique identifier for the verification process as received from updateApplicationVerificationRequired or updateApplicationRecaptchaVerificationRequired
 
             token (:class:`str`):
-                Play Integrity API token for the Android application, or secret from push notification for the iOS application; pass an empty string to abort verification and receive error VERIFICATION\_FAILED for the request
+                Play Integrity API token for the Android application, or secret from push notification for the iOS application for application verification, or reCAPTCHA token for reCAPTCHA verifications; pass an empty string to abort verification and receive error VERIFICATION\_FAILED for the request
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -15371,19 +15386,19 @@ class TDLibFunctions:
                 Pass true to exclude gifts that aren't saved to the chat's profile page\. Always true for gifts received by other users and channel chats without can\_post\_messages administrator right
 
             exclude_saved (:class:`bool`):
-                Pass true to exclude gifts that are saved to the chat's profile page; for channel chats with can\_post\_messages administrator right only
+                Pass true to exclude gifts that are saved to the chat's profile page\. Always false for gifts received by other users and channel chats without can\_post\_messages administrator right
 
             exclude_unlimited (:class:`bool`):
-                Pass true to exclude gifts that can be purchased unlimited number of times; for channel chats with can\_post\_messages administrator right only
+                Pass true to exclude gifts that can be purchased unlimited number of times
 
             exclude_limited (:class:`bool`):
-                Pass true to exclude gifts that can be purchased limited number of times; for channel chats with can\_post\_messages administrator right only
+                Pass true to exclude gifts that can be purchased limited number of times
 
             exclude_upgraded (:class:`bool`):
-                Pass true to exclude upgraded gifts; for channel chats with can\_post\_messages administrator right only
+                Pass true to exclude upgraded gifts
 
             sort_by_price (:class:`bool`):
-                Pass true to sort results by gift price instead of send date; for channel chats with can\_post\_messages administrator right only
+                Pass true to sort results by gift price instead of send date
 
             offset (:class:`str`):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results

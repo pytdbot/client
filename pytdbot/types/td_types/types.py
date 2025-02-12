@@ -2,8 +2,8 @@ from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
     CallbackQueryBoundMethods,
-    FileBoundMethods,
     MessageBoundMethods,
+    FileBoundMethods,
 )
 import pytdbot
 
@@ -254,6 +254,12 @@ class MessageOrigin:
 
 class ReactionType:
     r"""Describes type of message reaction"""
+
+    pass
+
+
+class PaidReactionType:
+    r"""Describes type of paid message reaction"""
 
     pass
 
@@ -10320,6 +10326,9 @@ class UpgradedGift(TlObject):
         owner_name (:class:`str`):
             Name of the owner for the case when owner identifier and address aren't known
 
+        gift_address (:class:`str`):
+            Address of the gift NFT in TON blockchain; may be empty if none
+
         model (:class:`"types.UpgradedGiftModel"`):
             Model of the upgraded gift
 
@@ -10345,6 +10354,7 @@ class UpgradedGift(TlObject):
         owner_id: MessageSender = None,
         owner_address: str = "",
         owner_name: str = "",
+        gift_address: str = "",
         model: UpgradedGiftModel = None,
         symbol: UpgradedGiftSymbol = None,
         backdrop: UpgradedGiftBackdrop = None,
@@ -10368,6 +10378,8 @@ class UpgradedGift(TlObject):
         r"""Address of the gift NFT owner in TON blockchain; may be empty if none"""
         self.owner_name: Union[str, None] = owner_name
         r"""Name of the owner for the case when owner identifier and address aren't known"""
+        self.gift_address: Union[str, None] = gift_address
+        r"""Address of the gift NFT in TON blockchain; may be empty if none"""
         self.model: Union[UpgradedGiftModel, None] = model
         r"""Model of the upgraded gift"""
         self.symbol: Union[UpgradedGiftSymbol, None] = symbol
@@ -10400,6 +10412,7 @@ class UpgradedGift(TlObject):
             "owner_id": self.owner_id,
             "owner_address": self.owner_address,
             "owner_name": self.owner_name,
+            "gift_address": self.gift_address,
             "model": self.model,
             "symbol": self.symbol,
             "backdrop": self.backdrop,
@@ -10419,6 +10432,7 @@ class UpgradedGift(TlObject):
             data_class.owner_id = data.get("owner_id", None)
             data_class.owner_address = data.get("owner_address", "")
             data_class.owner_name = data.get("owner_name", "")
+            data_class.gift_address = data.get("gift_address", "")
             data_class.model = data.get("model", None)
             data_class.symbol = data.get("symbol", None)
             data_class.backdrop = data.get("backdrop", None)
@@ -17484,6 +17498,92 @@ class ReactionTypePaid(TlObject, ReactionType):
     def from_dict(cls, data: dict) -> Union["ReactionTypePaid", None]:
         if data:
             data_class = cls()
+
+        return data_class
+
+
+class PaidReactionTypeRegular(TlObject, PaidReactionType):
+    r"""A paid reaction on behalf of the current user"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["paidReactionTypeRegular"]:
+        return "paidReactionTypeRegular"
+
+    def getClass(self) -> Literal["PaidReactionType"]:
+        return "PaidReactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PaidReactionTypeRegular", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class PaidReactionTypeAnonymous(TlObject, PaidReactionType):
+    r"""An anonymous paid reaction"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["paidReactionTypeAnonymous"]:
+        return "paidReactionTypeAnonymous"
+
+    def getClass(self) -> Literal["PaidReactionType"]:
+        return "PaidReactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PaidReactionTypeAnonymous", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class PaidReactionTypeChat(TlObject, PaidReactionType):
+    r"""A paid reaction on behalf of an owned chat
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat
+
+    """
+
+    def __init__(self, chat_id: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["paidReactionTypeChat"]:
+        return "paidReactionTypeChat"
+
+    def getClass(self) -> Literal["PaidReactionType"]:
+        return "PaidReactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "chat_id": self.chat_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PaidReactionTypeChat", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -30240,11 +30340,23 @@ class LinkPreviewTypeVideo(TlObject, LinkPreviewType):
         video (:class:`"types.Video"`):
             The video description
 
+        cover (:class:`"types.Photo"`):
+            Cover of the video; may be null if none
+
+        start_timestamp (:class:`int`):
+            Timestamp from which the video playing must start, in seconds
+
     """
 
-    def __init__(self, video: Video = None) -> None:
+    def __init__(
+        self, video: Video = None, cover: Photo = None, start_timestamp: int = 0
+    ) -> None:
         self.video: Union[Video, None] = video
         r"""The video description"""
+        self.cover: Union[Photo, None] = cover
+        r"""Cover of the video; may be null if none"""
+        self.start_timestamp: int = int(start_timestamp)
+        r"""Timestamp from which the video playing must start, in seconds"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -30256,13 +30368,20 @@ class LinkPreviewTypeVideo(TlObject, LinkPreviewType):
         return "LinkPreviewType"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "video": self.video}
+        return {
+            "@type": self.getType(),
+            "video": self.video,
+            "cover": self.cover,
+            "start_timestamp": self.start_timestamp,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["LinkPreviewTypeVideo", None]:
         if data:
             data_class = cls()
             data_class.video = data.get("video", None)
+            data_class.cover = data.get("cover", None)
+            data_class.start_timestamp = int(data.get("start_timestamp", 0))
 
         return data_class
 
@@ -69067,7 +69186,7 @@ class InternalLinkTypeVideoChat(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeWebApp(TlObject, InternalLinkType):
-    r"""The link is a link to a Web App\. Call searchPublicChat with the given bot username, check that the user is a bot, then call searchWebApp with the received bot and the given web\_app\_short\_name\. Process received foundWebApp by showing a confirmation dialog if needed\. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being third\-party applications instead of the dialog and ask the user to accept their Terms of service\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. Then, call getWebAppLinkUrl and open the returned URL as a Web App
+    r"""The link is a link to a Web App\. Call searchPublicChat with the given bot username, check that the user is a bot\. If the bot is restricted for the current user, then show an error message\. Otherwise, call searchWebApp with the received bot and the given web\_app\_short\_name\. Process received foundWebApp by showing a confirmation dialog if needed\. If the bot can be added to attachment or side menu, but isn't added yet, then show a disclaimer about Mini Apps being third\-party applications instead of the dialog and ask the user to accept their Terms of service\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. Then, call getWebAppLinkUrl and open the returned URL as a Web App
 
     Parameters:
         bot_username (:class:`str`):
@@ -79372,6 +79491,61 @@ class UpdateApplicationVerificationRequired(TlObject, Update):
         return data_class
 
 
+class UpdateApplicationRecaptchaVerificationRequired(TlObject, Update):
+    r"""A request can't be completed unless reCAPTCHA verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
+
+    Parameters:
+        verification_id (:class:`int`):
+            Unique identifier for the verification process
+
+        action (:class:`str`):
+            The action for the check
+
+        recaptcha_key_id (:class:`str`):
+            Identifier of the reCAPTCHA key
+
+    """
+
+    def __init__(
+        self, verification_id: int = 0, action: str = "", recaptcha_key_id: str = ""
+    ) -> None:
+        self.verification_id: int = int(verification_id)
+        r"""Unique identifier for the verification process"""
+        self.action: Union[str, None] = action
+        r"""The action for the check"""
+        self.recaptcha_key_id: Union[str, None] = recaptcha_key_id
+        r"""Identifier of the reCAPTCHA key"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateApplicationRecaptchaVerificationRequired"]:
+        return "updateApplicationRecaptchaVerificationRequired"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "verification_id": self.verification_id,
+            "action": self.action,
+            "recaptcha_key_id": self.recaptcha_key_id,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["UpdateApplicationRecaptchaVerificationRequired", None]:
+        if data:
+            data_class = cls()
+            data_class.verification_id = int(data.get("verification_id", 0))
+            data_class.action = data.get("action", "")
+            data_class.recaptcha_key_id = data.get("recaptcha_key_id", "")
+
+        return data_class
+
+
 class UpdateCall(TlObject, Update):
     r"""New call was created or information about a call was updated
 
@@ -80902,6 +81076,45 @@ class UpdateDefaultReactionType(TlObject, Update):
         if data:
             data_class = cls()
             data_class.reaction_type = data.get("reaction_type", None)
+
+        return data_class
+
+
+class UpdateDefaultPaidReactionType(TlObject, Update):
+    r"""The type of default paid reaction has changed
+
+    Parameters:
+        type (:class:`"types.PaidReactionType"`):
+            The new type of the default paid reaction
+
+    """
+
+    def __init__(self, type: PaidReactionType = None) -> None:
+        self.type: Union[
+            PaidReactionTypeRegular,
+            PaidReactionTypeAnonymous,
+            PaidReactionTypeChat,
+            None,
+        ] = type
+        r"""The new type of the default paid reaction"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateDefaultPaidReactionType"]:
+        return "updateDefaultPaidReactionType"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "type": self.type}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateDefaultPaidReactionType", None]:
+        if data:
+            data_class = cls()
+            data_class.type = data.get("type", None)
 
         return data_class
 

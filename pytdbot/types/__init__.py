@@ -36,6 +36,7 @@ __all__ = [
     "MessageReadDate",
     "MessageOrigin",
     "ReactionType",
+    "PaidReactionType",
     "MessageEffectType",
     "MessageSendingState",
     "MessageReplyTo",
@@ -469,6 +470,9 @@ __all__ = [
     "ReactionTypeEmoji",
     "ReactionTypeCustomEmoji",
     "ReactionTypePaid",
+    "PaidReactionTypeRegular",
+    "PaidReactionTypeAnonymous",
+    "PaidReactionTypeChat",
     "PaidReactor",
     "MessageForwardInfo",
     "MessageImportInfo",
@@ -1795,6 +1799,7 @@ __all__ = [
     "UpdateFileDownload",
     "UpdateFileRemovedFromDownloads",
     "UpdateApplicationVerificationRequired",
+    "UpdateApplicationRecaptchaVerificationRequired",
     "UpdateCall",
     "UpdateGroupCall",
     "UpdateGroupCallParticipant",
@@ -1830,6 +1835,7 @@ __all__ = [
     "UpdateActiveEmojiReactions",
     "UpdateAvailableMessageEffects",
     "UpdateDefaultReactionType",
+    "UpdateDefaultPaidReactionType",
     "UpdateSavedMessagesTags",
     "UpdateActiveLiveLocationMessages",
     "UpdateOwnedStarCount",
@@ -1904,6 +1910,7 @@ from .td_types import (
     MessageReadDate,
     MessageOrigin,
     ReactionType,
+    PaidReactionType,
     MessageEffectType,
     MessageSendingState,
     MessageReplyTo,
@@ -2337,6 +2344,9 @@ from .td_types import (
     ReactionTypeEmoji,
     ReactionTypeCustomEmoji,
     ReactionTypePaid,
+    PaidReactionTypeRegular,
+    PaidReactionTypeAnonymous,
+    PaidReactionTypeChat,
     PaidReactor,
     MessageForwardInfo,
     MessageImportInfo,
@@ -3663,6 +3673,7 @@ from .td_types import (
     UpdateFileDownload,
     UpdateFileRemovedFromDownloads,
     UpdateApplicationVerificationRequired,
+    UpdateApplicationRecaptchaVerificationRequired,
     UpdateCall,
     UpdateGroupCall,
     UpdateGroupCallParticipant,
@@ -3698,6 +3709,7 @@ from .td_types import (
     UpdateActiveEmojiReactions,
     UpdateAvailableMessageEffects,
     UpdateDefaultReactionType,
+    UpdateDefaultPaidReactionType,
     UpdateSavedMessagesTags,
     UpdateActiveLiveLocationMessages,
     UpdateOwnedStarCount,
@@ -3736,4 +3748,4 @@ from .td_types import (
 )
 from .plugins import Plugins
 
-TDLIB_VERSION = "1.8.44"
+TDLIB_VERSION = "1.8.45"
