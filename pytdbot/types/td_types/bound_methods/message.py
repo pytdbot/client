@@ -78,7 +78,7 @@ class MessageBoundMethods:
                 pytdbot.types.MessageVoiceNote,
             ),
         ):
-            return self.content.caption.text
+            return self.content.caption.entities
 
     @property
     @lru_cache(1)
