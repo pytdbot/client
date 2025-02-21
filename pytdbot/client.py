@@ -396,7 +396,7 @@ class Client(Decorators, Methods):
         ):  # dumping all requests may create performance issues
             self.logger.debug(f"Sending: {dumps(request, indent=4)}")
 
-        is_chat_attempted_load = False
+        is_chat_attempted_load = request["@type"].lower() == "getchat"
 
         while True:
             future = self._create_request_future(request)
@@ -409,7 +409,8 @@ class Client(Decorators, Methods):
                         "Failed to parse JSON object as TDLib request:"
                     ):
                         raise ValueError(result.message)
-                    elif not is_chat_attempted_load and (
+
+                    if not is_chat_attempted_load and (
                         result.message == "Chat not found" and "chat_id" in request
                     ):
                         is_chat_attempted_load = True
@@ -433,8 +434,8 @@ class Client(Decorators, Methods):
                                 await self.getMessage(chat_id, reply_to_message_id)
 
                             continue
-                        else:
-                            self.logger.error(f"Couldn't load chat {chat_id}")
+
+                        self.logger.error(f"Couldn't load chat {chat_id}")
 
             break
 
