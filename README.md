@@ -58,10 +58,9 @@ import asyncio
 from pytdbot import Client, types
 
 client = Client(
-    token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token or phone number if you want to login as user
+    token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token
     api_id=0,
     api_hash="API_HASH",
-    lib_path="/path/to/libtdjson.so", # Path to TDjson shared library
     files_directory="BotDB",  # Path where to store TDLib files
     database_encryption_key="1234echobot$",
     td_verbosity=2,  # TDLib verbosity level
