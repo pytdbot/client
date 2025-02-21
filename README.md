@@ -30,7 +30,7 @@ Pytdbot (Python TDLib) is an asynchronous [**TDLib**](https://github.com/tdlib/t
 You can install Pytdbot with TDLib included using pip:
 
 ```bash
-pip install pytdbot[tdjson]
+pip install --upgrade pytdbot[tdjson]
 ```
 
 or without **pre-built** TDLib:
