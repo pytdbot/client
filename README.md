@@ -33,13 +33,13 @@ You can install Pytdbot with TDLib included using pip:
 pip install --upgrade pytdbot[tdjson]
 ```
 
-or without **pre-built** TDLib:
+If the installation fails, then install without **pre-built** TDLib:
 
 ```bash
 pip install pytdbot
 ```
 
-If the install fails, then you need to build TDLib from [source](https://github.com/tdlib/td#building) and pass it to `Client(lib_path="/path/to/libtdjson.so")`.
+Then you need to build TDLib from [source](https://github.com/tdlib/td#building) and pass it to `Client.lib_path`.
 
 You could also install the development version using the following command:
 
