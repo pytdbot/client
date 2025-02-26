@@ -559,7 +559,8 @@ class Client(Decorators, Methods):
         else:
             await self.__rchannel.default_exchange.publish(
                 aio_pika.Message(
-                    json_dumps(request), reply_to=self.__rqueues["responses"].name
+                    json_dumps(request, encode=True),
+                    reply_to=self.__rqueues["responses"].name,
                 ),
                 routing_key=self.__rqueues["requests"].name,
             )
@@ -1041,7 +1042,8 @@ class Client(Decorators, Methods):
             for worker_task in self._workers_tasks:
                 worker_task.cancel()
 
-        self.__listen_loop_task.cancel()
+        if self.__listen_loop_task:
+            self.__listen_loop_task.cancel()
 
     def _register_signal_handlers(self):
         def _handle_signal():
