@@ -850,3 +850,24 @@ class MessageBoundMethods:
             show_above_text=show_above_text,
             reply_markup=reply_markup,
         )
+
+    async def edit_message_reply_markup(self, reply_markup: "pytdbot.types.ReplyMarkup") -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        r"""Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`."""
+
+        return await self._client.editMessageReplyMarkup(
+            chat_id=self.chat_id, message_id=self.id, reply_markup=reply_markup
+        )
+
+    async def edit_message_media(
+        self,
+        input_message_content: "pytdbot.types.InputMessageContent",
+        reply_markup: "pytdbot.types.ReplyMarkup" = None,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        r"""Edit message media content. Shortcut for :meth:`~pytdbot.Client.editMessageMedia`."""
+
+        return await self._client.editMessageMedia(
+            chat_id=self.chat_id,
+            message_id=self.id,
+            input_message_content=input_message_content,
+            reply_markup=reply_markup,
+        )
