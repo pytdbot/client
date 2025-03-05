@@ -77,7 +77,7 @@ class CallbackQueryBoundMethods:
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
         r"""Edit message caption"""
 
-        parse_mode = parse_mode or self.default_parse_mode
+        parse_mode = parse_mode or self._client.default_parse_mode
         if isinstance(caption_entities, list):
             caption = pytdbot.types.FormattedText(
                 text=caption, entities=caption_entities
