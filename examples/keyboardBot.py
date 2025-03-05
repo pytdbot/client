@@ -35,7 +35,7 @@ async def start(c: Client, message: types.Message):
                     [
                         types.InlineKeyboardButton(
                             text="GitHub",
-                            type=types.InlineKeyboardButton(
+                            type=types.InlineKeyboardButtonTypeUrl(
                                 "https://github.com/pytdbot/client"
                             ),
                         )
@@ -110,7 +110,7 @@ async def callback_query(c: Client, message: types.UpdateNewCallbackQuery):
                     [
                         types.InlineKeyboardButton(
                             text="GitHub",
-                            type=types.InlineKeyboardButton(
+                            type=types.InlineKeyboardButtonTypeUrl(
                                 "https://github.com/pytdbot/client"
                             ),
                         )
