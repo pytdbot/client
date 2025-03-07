@@ -3203,7 +3203,7 @@ class TDLibFunctions:
     async def sendQuickReplyShortcutMessages(
         self, chat_id: int = 0, shortcut_id: int = 0, sending_id: int = 0
     ) -> Union["types.Error", "types.Messages"]:
-        r"""Sends messages from a quick reply shortcut\. Requires Telegram Business subscription
+        r"""Sends messages from a quick reply shortcut\. Requires Telegram Business subscription\. Can't be used to send paid messages
 
         Parameters:
             chat_id (:class:`int`):
@@ -3233,6 +3233,7 @@ class TDLibFunctions:
         chat_id: int = 0,
         message_ids: List[int] = None,
         quote: "types.InputTextQuote" = None,
+        paid_message_star_count: int = 0,
     ) -> Union["types.Error", "types.Messages"]:
         r"""Resends messages which failed to send\. Can be called only for messages for which messageSendingStateFailed\.can\_retry is true and after specified in messageSendingStateFailed\.retry\_after time passed\. If a message is re\-sent, the corresponding failed to send message is deleted\. Returns the sent messages in the same order as the message identifiers passed in message\_ids\. If a message can't be re\-sent, null will be returned instead of the message
 
@@ -3246,6 +3247,9 @@ class TDLibFunctions:
             quote (:class:`"types.InputTextQuote"`):
                 New manually chosen quote from the message to be replied; pass null if none\. Ignored if more than one message is re\-sent, or if messageSendingStateFailed\.need\_another\_reply\_quote \=\= false
 
+            paid_message_star_count (:class:`int`):
+                The number of Telegram Stars the user agreed to pay to send the messages\. Ignored if messageSendingStateFailed\.required\_paid\_message\_star\_count \=\= 0
+
         Returns:
             :class:`~pytdbot.types.Messages`
         """
@@ -3256,6 +3260,7 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "message_ids": message_ids,
                 "quote": quote,
+                "paid_message_star_count": paid_message_star_count,
             }
         )
 
@@ -10790,7 +10795,7 @@ class TDLibFunctions:
                 Pass true to create a video call
 
             group_call_id (:class:`int`):
-                Identifier of the group call to which the user will be added after exchanging private key via the call; pass 0 if none; currently, ignored
+                Identifier of the group call to which the user will be added after exchanging private key via the call; pass 0 if none
 
         Returns:
             :class:`~pytdbot.types.CallId`
@@ -11158,6 +11163,7 @@ class TDLibFunctions:
         is_muted: bool = False,
         is_my_video_enabled: bool = False,
         invite_hash: str = "",
+        key_fingerprint: int = 0,
     ) -> Union["types.Error", "types.Text"]:
         r"""Joins an active group call\. Returns join response payload for tgcalls
 
@@ -11183,6 +11189,9 @@ class TDLibFunctions:
             invite_hash (:class:`str`):
                 If non\-empty, invite hash to be used to join the group call without being muted by administrators
 
+            key_fingerprint (:class:`int`):
+                Fingerprint of the encryption key for E2E group calls not bound to a chat; pass 0 for voice chats
+
         Returns:
             :class:`~pytdbot.types.Text`
         """
@@ -11197,6 +11206,7 @@ class TDLibFunctions:
                 "is_muted": is_muted,
                 "is_my_video_enabled": is_my_video_enabled,
                 "invite_hash": invite_hash,
+                "key_fingerprint": key_fingerprint,
             }
         )
 
@@ -11991,7 +12001,7 @@ class TDLibFunctions:
     async def suggestUserProfilePhoto(
         self, user_id: int = 0, photo: "types.InputChatPhoto" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Suggests a profile photo to another regular user with common messages
+        r"""Suggests a profile photo to another regular user with common messages and allowing non\-paid messages
 
         Parameters:
             user_id (:class:`int`):
@@ -12992,23 +13002,23 @@ class TDLibFunctions:
         )
 
     async def getWebPageInstantView(
-        self, url: str = "", force_full: bool = False
+        self, url: str = "", only_local: bool = False
     ) -> Union["types.Error", "types.WebPageInstantView"]:
-        r"""Returns an instant view version of a web page if available\. Returns a 404 error if the web page has no instant view page
+        r"""Returns an instant view version of a web page if available\. This is an offline request if only\_local is true\. Returns a 404 error if the web page has no instant view page
 
         Parameters:
             url (:class:`str`):
                 The web page URL
 
-            force_full (:class:`bool`):
-                Pass true to get full instant view for the web page
+            only_local (:class:`bool`):
+                Pass true to get only locally available information without sending network requests
 
         Returns:
             :class:`~pytdbot.types.WebPageInstantView`
         """
 
         return await self.invoke(
-            {"@type": "getWebPageInstantView", "url": url, "force_full": force_full}
+            {"@type": "getWebPageInstantView", "url": url, "only_local": only_local}
         )
 
     async def setProfilePhoto(
@@ -15199,7 +15209,7 @@ class TDLibFunctions:
                 Identifier of the user or the channel chat that will receive the gift
 
             text (:class:`"types.FormattedText"`):
-                Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
+                Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed\. Must be empty if the receiver enabled paid messages
 
             is_private (:class:`bool`):
                 Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them
@@ -15242,7 +15252,7 @@ class TDLibFunctions:
     async def toggleGiftIsSaved(
         self, received_gift_id: str = "", is_saved: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Toggles whether a gift is shown on the current user's or the channel's profile page; requires can\_post\_messages administrator right in the chat
+        r"""Toggles whether a gift is shown on the current user's or the channel's profile page; requires can\_post\_messages administrator right in the channel chat
 
         Parameters:
             received_gift_id (:class:`str`):
@@ -15260,6 +15270,32 @@ class TDLibFunctions:
                 "@type": "toggleGiftIsSaved",
                 "received_gift_id": received_gift_id,
                 "is_saved": is_saved,
+            }
+        )
+
+    async def setPinnedGifts(
+        self,
+        owner_id: "types.MessageSender" = None,
+        received_gift_ids: List[str] = None,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the list of pinned gifts on the current user's or the channel's profile page; requires can\_post\_messages administrator right in the channel chat
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that received the gifts
+
+            received_gift_ids (:class:`List[str]`):
+                New list of pinned gifts\. All gifts must be upgraded and saved on the profile page first\. There can be up to getOption\(\"pinned\_gift\_count\_max\"\) pinned gifts
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setPinnedGifts",
+                "owner_id": owner_id,
+                "received_gift_ids": received_gift_ids,
             }
         )
 
@@ -16023,6 +16059,69 @@ class TDLibFunctions:
             }
         )
 
+    async def getPaidMessageRevenue(
+        self, user_id: int = 0
+    ) -> Union["types.Error", "types.StarCount"]:
+        r"""Returns the total number of Telegram Stars received by the current user for paid messages from the given user
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user
+
+        Returns:
+            :class:`~pytdbot.types.StarCount`
+        """
+
+        return await self.invoke({"@type": "getPaidMessageRevenue", "user_id": user_id})
+
+    async def allowUnpaidMessagesFromUser(
+        self, user_id: int = 0, refund_payments: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Allows the specified user to send unpaid private messages to the current user by adding a rule to userPrivacySettingAllowUnpaidMessages
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user
+
+            refund_payments (:class:`bool`):
+                Pass true to refund the user previously paid messages
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "allowUnpaidMessagesFromUser",
+                "user_id": user_id,
+                "refund_payments": refund_payments,
+            }
+        )
+
+    async def setChatPaidMessageStarCount(
+        self, chat_id: int = 0, paid_message_star_count: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the amount of Telegram Stars that must be paid to send a message to a supergroup chat; requires can\_restrict\_members administrator right and supergroupFullInfo\.can\_enable\_paid\_messages
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the supergroup chat
+
+            paid_message_star_count (:class:`int`):
+                The new number of Telegram Stars that must be paid for each message that is sent to the supergroup chat unless the sender is an administrator of the chat; 0\-getOption\(\"paid\_message\_star\_count\_max\"\)\. The supergroup will receive getOption\(\"paid\_message\_earnings\_per\_mille\"\) Telegram Stars for each 1000 Telegram Stars paid for message sending
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setChatPaidMessageStarCount",
+                "chat_id": chat_id,
+                "paid_message_star_count": paid_message_star_count,
+            }
+        )
+
     async def canSendMessageToUser(
         self, user_id: int = 0, only_local: bool = False
     ) -> Union["types.Error", "types.CanSendMessageToUserResult"]:
@@ -16364,7 +16463,7 @@ class TDLibFunctions:
 
         Parameters:
             owner_id (:class:`"types.MessageSender"`):
-                Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
+                Identifier of the owner of the Telegram Stars; can be identifier of the current user, an owned bot, or a supergroup or a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
 
             is_dark (:class:`bool`):
                 Pass true if a dark theme is used by the application
@@ -16391,7 +16490,7 @@ class TDLibFunctions:
 
         Parameters:
             owner_id (:class:`"types.MessageSender"`):
-                Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of an owned channel chat
+                Identifier of the owner of the Telegram Stars; can be identifier of the current user, an owned bot, or an owned supergroup or channel chat
 
             star_count (:class:`int`):
                 The number of Telegram Stars to withdraw\. Must be at least getOption\(\"star\_withdrawal\_count\_min\"\)
@@ -17650,22 +17749,37 @@ class TDLibFunctions:
             }
         )
 
-    async def getPremiumGiftCodePaymentOptions(
-        self, boosted_chat_id: int = 0
-    ) -> Union["types.Error", "types.PremiumGiftCodePaymentOptions"]:
-        r"""Returns available options for Telegram Premium gift code or Telegram Premium giveaway creation
-
-        Parameters:
-            boosted_chat_id (:class:`int`):
-                Identifier of the supergroup or channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user; 0 if none
+    async def getPremiumGiftPaymentOptions(
+        self,
+    ) -> Union["types.Error", "types.PremiumGiftPaymentOptions"]:
+        r"""Returns available options for gifting Telegram Premium to a user
 
         Returns:
-            :class:`~pytdbot.types.PremiumGiftCodePaymentOptions`
+            :class:`~pytdbot.types.PremiumGiftPaymentOptions`
         """
 
         return await self.invoke(
             {
-                "@type": "getPremiumGiftCodePaymentOptions",
+                "@type": "getPremiumGiftPaymentOptions",
+            }
+        )
+
+    async def getPremiumGiveawayPaymentOptions(
+        self, boosted_chat_id: int = 0
+    ) -> Union["types.Error", "types.PremiumGiveawayPaymentOptions"]:
+        r"""Returns available options for creating of Telegram Premium giveaway or manual distribution of Telegram Premium among chat members
+
+        Parameters:
+            boosted_chat_id (:class:`int`):
+                Identifier of the supergroup or channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user
+
+        Returns:
+            :class:`~pytdbot.types.PremiumGiveawayPaymentOptions`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getPremiumGiveawayPaymentOptions",
                 "boosted_chat_id": boosted_chat_id,
             }
         )
@@ -17815,7 +17929,7 @@ class TDLibFunctions:
 
         Parameters:
             owner_id (:class:`"types.MessageSender"`):
-                Identifier of the owner of the Telegram Stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
+                Identifier of the owner of the Telegram Stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a supergroup or a channel chat with supergroupFullInfo\.can\_get\_star\_revenue\_statistics \=\= true
 
             subscription_id (:class:`str`):
                 If non\-empty, only transactions related to the Star Subscription will be returned
