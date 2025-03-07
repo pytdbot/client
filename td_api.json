@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.45",
-    "commit_hash": "8e29c4d7d21db3ab2c7a88c384626e95ef789f61",
+    "version": "1.8.46",
+    "commit_hash": "207f3be7b58b2a2b9f0a066b5b6ef18782b8b517",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -240,6 +240,9 @@
                 "starTransactionTypeChannelPaidReactionSend",
                 "starTransactionTypeChannelPaidReactionReceive",
                 "starTransactionTypeAffiliateProgramCommission",
+                "starTransactionTypePaidMessageSend",
+                "starTransactionTypePaidMessageReceive",
+                "starTransactionTypePremiumPurchase",
                 "starTransactionTypeUnsupported"
             ],
             "functions": []
@@ -1532,6 +1535,7 @@
             "description": "Describes a purpose of an in-store payment",
             "types": [
                 "storePaymentPurposePremiumSubscription",
+                "storePaymentPurposePremiumGift",
                 "storePaymentPurposePremiumGiftCodes",
                 "storePaymentPurposePremiumGiveaway",
                 "storePaymentPurposeStarGiveaway",
@@ -1543,6 +1547,7 @@
         "TelegramPaymentPurpose": {
             "description": "Describes a purpose of a payment toward Telegram",
             "types": [
+                "telegramPaymentPurposePremiumGift",
                 "telegramPaymentPurposePremiumGiftCodes",
                 "telegramPaymentPurposePremiumGiveaway",
                 "telegramPaymentPurposeStars",
@@ -1699,6 +1704,9 @@
                 "pushMessageContentVideoNote",
                 "pushMessageContentVoiceNote",
                 "pushMessageContentBasicGroupChatCreate",
+                "pushMessageContentVideoChatStarted",
+                "pushMessageContentVideoChatEnded",
+                "pushMessageContentInviteVideoChatParticipants",
                 "pushMessageContentChatAddMembers",
                 "pushMessageContentChatChangePhoto",
                 "pushMessageContentChatChangeTitle",
@@ -1709,6 +1717,7 @@
                 "pushMessageContentChatJoinByRequest",
                 "pushMessageContentRecurringPayment",
                 "pushMessageContentSuggestProfilePhoto",
+                "pushMessageContentProximityAlertTriggered",
                 "pushMessageContentMessageForwards",
                 "pushMessageContentMediaAlbum"
             ],
@@ -1802,7 +1811,8 @@
                 "userPrivacySettingAllowPeerToPeerCalls",
                 "userPrivacySettingAllowFindingByPhoneNumber",
                 "userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages",
-                "userPrivacySettingAutosaveGifts"
+                "userPrivacySettingAutosaveGifts",
+                "userPrivacySettingAllowUnpaidMessages"
             ],
             "functions": []
         },
@@ -1810,6 +1820,7 @@
             "description": "Describes result of canSendMessageToUser",
             "types": [
                 "canSendMessageToUserResultOk",
+                "canSendMessageToUserResultUserHasPaidMessages",
                 "canSendMessageToUserResultUserIsDeleted",
                 "canSendMessageToUserResultUserRestrictsNewChats"
             ],
@@ -3769,6 +3780,11 @@
         "alternativeVideo": {
             "description": "Describes an alternative re-encoded quality of a video file",
             "args": {
+                "id": {
+                    "description": "Unique identifier of the alternative video, which is used in the HLS file",
+                    "is_optional": false,
+                    "type": "int64"
+                },
                 "width": {
                     "description": "Video width",
                     "is_optional": false,
@@ -5262,8 +5278,60 @@
             },
             "type": "PremiumStatePaymentOption"
         },
-        "premiumGiftCodePaymentOption": {
-            "description": "Describes an option for creating Telegram Premium gift codes or Telegram Premium giveaway. Use telegramPaymentPurposePremiumGiftCodes or telegramPaymentPurposePremiumGiveaway for out-of-store payments",
+        "premiumGiftPaymentOption": {
+            "description": "Describes an option for gifting Telegram Premium to a user. Use telegramPaymentPurposePremiumGift for out-of-store payments or payments in Telegram Stars",
+            "args": {
+                "currency": {
+                    "description": "ISO 4217 currency code for the payment",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "The amount to pay, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "star_count": {
+                    "description": "The alternative amount of Telegram Stars to pay; 0 if payment in Telegram Stars is not possible",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "discount_percentage": {
+                    "description": "The discount associated with this option, as a percentage",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "month_count": {
+                    "description": "Number of months the Telegram Premium subscription will be active",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "store_product_id": {
+                    "description": "Identifier of the store product associated with the option",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "sticker": {
+                    "description": "A sticker to be shown along with the option; may be null if unknown",
+                    "is_optional": true,
+                    "type": "sticker"
+                }
+            },
+            "type": "PremiumGiftPaymentOption"
+        },
+        "premiumGiftPaymentOptions": {
+            "description": "Contains a list of options for gifting Telegram Premium to a user",
+            "args": {
+                "options": {
+                    "description": "The list of options sorted by Telegram Premium subscription duration",
+                    "is_optional": false,
+                    "type": "vector<premiumGiftPaymentOption>"
+                }
+            },
+            "type": "PremiumGiftPaymentOptions"
+        },
+        "premiumGiveawayPaymentOption": {
+            "description": "Describes an option for creating of Telegram Premium giveaway or manual distribution of Telegram Premium among chat members. Use telegramPaymentPurposePremiumGiftCodes or telegramPaymentPurposePremiumGiveaway for out-of-store payments",
             "args": {
                 "currency": {
                     "description": "ISO 4217 currency code for Telegram Premium gift code payment",
@@ -5274,11 +5342,6 @@
                     "description": "The amount to pay, in the smallest units of the currency",
                     "is_optional": false,
                     "type": "int53"
-                },
-                "discount_percentage": {
-                    "description": "The discount associated with this option, as a percentage",
-                    "is_optional": false,
-                    "type": "int32"
                 },
                 "winner_count": {
                     "description": "Number of users which will be able to activate the gift codes",
@@ -5299,25 +5362,20 @@
                     "description": "Number of times the store product must be paid",
                     "is_optional": false,
                     "type": "int32"
-                },
-                "sticker": {
-                    "description": "A sticker to be shown along with the gift code; may be null if unknown",
-                    "is_optional": true,
-                    "type": "sticker"
                 }
             },
-            "type": "PremiumGiftCodePaymentOption"
+            "type": "PremiumGiveawayPaymentOption"
         },
-        "premiumGiftCodePaymentOptions": {
-            "description": "Contains a list of options for creating Telegram Premium gift codes or Telegram Premium giveaway",
+        "premiumGiveawayPaymentOptions": {
+            "description": "Contains a list of options for creating of Telegram Premium giveaway or manual distribution of Telegram Premium among chat members",
             "args": {
                 "options": {
                     "description": "The list of options",
                     "is_optional": false,
-                    "type": "vector<premiumGiftCodePaymentOption>"
+                    "type": "vector<premiumGiveawayPaymentOption>"
                 }
             },
-            "type": "PremiumGiftCodePaymentOptions"
+            "type": "PremiumGiveawayPaymentOptions"
         },
         "premiumGiftCodeInfo": {
             "description": "Contains information about a Telegram Premium gift code",
@@ -5424,7 +5482,7 @@
             "type": "StarGiveawayWinnerOption"
         },
         "starGiveawayPaymentOption": {
-            "description": "Describes an option for creating Telegram Star giveaway. Use telegramPaymentPurposeStarGiveaway for out-of-store payments",
+            "description": "Describes an option for creating of Telegram Star giveaway. Use telegramPaymentPurposeStarGiveaway for out-of-store payments",
             "args": {
                 "currency": {
                     "description": "ISO 4217 currency code for the payment",
@@ -5470,7 +5528,7 @@
             "type": "StarGiveawayPaymentOption"
         },
         "starGiveawayPaymentOptions": {
-            "description": "Contains a list of options for creating Telegram Star giveaway",
+            "description": "Contains a list of options for creating of Telegram Star giveaway",
             "args": {
                 "options": {
                     "description": "The list of options",
@@ -5824,6 +5882,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_pinned": {
+                    "description": "True, if the gift is pinned to the top of the chat's profile page",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_be_upgraded": {
                     "description": "True, if the gift is a regular gift that can be upgraded to a unique gift; only for the receiver of the gift",
                     "is_optional": false,
@@ -5982,7 +6045,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeFragmentWithdrawal": {
-            "description": "The transaction is a withdrawal of earned Telegram Stars to Fragment; for bots and channel chats only",
+            "description": "The transaction is a withdrawal of earned Telegram Stars to Fragment; for regular users, bots, supergroup and channel chats only",
             "args": {
                 "withdrawal_state": {
                     "description": "State of the withdrawal; may be null for refunds from Fragment",
@@ -6269,6 +6332,11 @@
         "starTransactionTypeGiftUpgrade": {
             "description": "The transaction is an upgrade of a gift; for regular users only",
             "args": {
+                "user_id": {
+                    "description": "Identifier of the user that initially sent the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "gift": {
                     "description": "The upgraded gift",
                     "is_optional": false,
@@ -6321,6 +6389,69 @@
                     "description": "The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypePaidMessageSend": {
+            "description": "The transaction is a sending of a paid message; for regular users only",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that received the payment",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_count": {
+                    "description": "Number of sent paid messages",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypePaidMessageReceive": {
+            "description": "The transaction is a receiving of a paid message; for regular users and supergroup chats only",
+            "args": {
+                "sender_id": {
+                    "description": "Identifier of the sender of the message",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "message_count": {
+                    "description": "Number of received paid messages",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "commission_per_mille": {
+                    "description": "The number of Telegram Stars received by the Telegram for each 1000 Telegram Stars paid for message sending",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "commission_star_amount": {
+                    "description": "The amount of Telegram Stars that were received by Telegram; can be negative for refunds",
+                    "is_optional": false,
+                    "type": "starAmount"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypePremiumPurchase": {
+            "description": "The transaction is a purchase of Telegram Premium subscription; for regular users only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user that received the Telegram Premium subscription",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "month_count": {
+                    "description": "Number of months the Telegram Premium subscription will be active",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "sticker": {
+                    "description": "A sticker to be shown in the transaction information; may be null if unknown",
+                    "is_optional": true,
+                    "type": "sticker"
                 }
             },
             "type": "StarTransactionType"
@@ -6816,6 +6947,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "paid_message_star_count": {
+                    "description": "Number of Telegram Stars that must be paid by general user for each sent message to the user. If positive and userFullInfo is unknown, use canSendMessageToUser to check whether the current user must pay",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "have_access": {
                     "description": "If false, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method",
                     "is_optional": false,
@@ -7047,6 +7183,16 @@
                     "description": "Number of group chats where both the other user and the current user are a member; 0 for the current user",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "incoming_paid_message_star_count": {
+                    "description": "Number of Telegram Stars that must be paid by the user for each sent message to the current user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "outgoing_paid_message_star_count": {
+                    "description": "Number of Telegram Stars that must be paid by the current user for each sent message to the user",
+                    "is_optional": false,
+                    "type": "int53"
                 },
                 "bot_verification": {
                     "description": "Information about verification status of the user provided by a bot; may be null if none or unknown",
@@ -7879,6 +8025,11 @@
                     "is_optional": true,
                     "type": "string"
                 },
+                "paid_message_star_count": {
+                    "description": "Number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "has_active_stories": {
                     "description": "True, if the supergroup or channel has non-expired stories available to the current user",
                     "is_optional": false,
@@ -7939,6 +8090,11 @@
                     "description": "Time left before next message can be sent in the supergroup, in seconds. An updateSupergroupFullInfo update is not triggered when value of this field changes, but both new and old values are non-zero",
                     "is_optional": false,
                     "type": "double"
+                },
+                "can_enable_paid_messages": {
+                    "description": "True, if paid messages can be enabled in the supergroup chat; for supergroup only",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "can_enable_paid_reaction": {
                     "description": "True, if paid reaction can be enabled in the channel chat; for channels only",
@@ -8700,6 +8856,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "required_paid_message_star_count": {
+                    "description": "The number of Telegram Stars that must be paid to send the message; 0 if the current amount is correct",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "retry_after": {
                     "description": "Time left before the message can be re-sent, in seconds. No update is sent when this field changes",
                     "is_optional": false,
@@ -9013,6 +9174,11 @@
                     "description": "Number of times the sender of the message boosted the supergroup at the time the message was sent; 0 if none or unknown. For messages sent by the current user, supergroupFullInfo.my_boost_count must be used instead",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "paid_message_star_count": {
+                    "description": "The number of Telegram Stars the sender paid to send the message",
+                    "is_optional": false,
+                    "type": "int53"
                 },
                 "author_signature": {
                     "description": "For channel posts and anonymous group messages, optional author signature",
@@ -10462,6 +10628,37 @@
             "args": {},
             "type": "PublicChatType"
         },
+        "accountInfo": {
+            "description": "Contains basic information about another user that started a chat with the current user",
+            "args": {
+                "registration_month": {
+                    "description": "Month when the user was registered in Telegram; 0-12; may be 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "registration_year": {
+                    "description": "Year when the user was registered in Telegram; 0-9999; may be 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "phone_number_country_code": {
+                    "description": "A two-letter ISO 3166-1 alpha-2 country code based on the phone number of the user; may be empty if unknown",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "last_name_change_date": {
+                    "description": "Point in time (Unix timestamp) when the user changed name last time; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "last_photo_change_date": {
+                    "description": "Point in time (Unix timestamp) when the user changed photo last time; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "AccountInfo"
+        },
         "chatActionBarReportSpam": {
             "description": "The chat can be reported as spam using the method reportChat with an empty option_id and message_ids. If the chat is a private chat with a user with an emoji status, then a notice about emoji status usage must be shown",
             "args": {
@@ -10485,6 +10682,11 @@
                     "description": "If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "account_info": {
+                    "description": "Basic information about the other user in the chat; may be null if unknown",
+                    "is_optional": true,
+                    "type": "accountInfo"
                 }
             },
             "type": "ChatActionBar"
@@ -16564,13 +16766,18 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "paid_message_star_count": {
+                    "description": "The number of Telegram Stars the user agreed to pay to send the messages",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "update_order_of_installed_sticker_sets": {
                     "description": "Pass true if the user explicitly chosen a sticker or a custom emoji from an installed sticker set; applicable only to sendMessage and sendMessageAlbum",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "scheduling_state": {
-                    "description": "Message scheduling state; pass null to send message immediately. Messages sent to a secret chat, live location messages and self-destructing messages can't be scheduled",
+                    "description": "Message scheduling state; pass null to send message immediately. Messages sent to a secret chat, to a chat with paid messages, live location messages and self-destructing messages can't be scheduled",
                     "is_optional": true,
                     "type": "MessageSchedulingState"
                 },
@@ -19746,6 +19953,11 @@
             "args": {
                 "id": {
                     "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "from_call_id": {
+                    "description": "Identifier of one-to-one call from which the group call was created; 0 if unknown",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -23213,11 +23425,37 @@
             },
             "type": "StorePaymentPurpose"
         },
+        "storePaymentPurposePremiumGift": {
+            "description": "The user gifting Telegram Premium to another user",
+            "args": {
+                "currency": {
+                    "description": "ISO 4217 currency code of the payment currency",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "Paid amount, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "user_id": {
+                    "description": "Identifiers of the user which will receive Telegram Premium",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "text": {
+                    "description": "Text to show along with the gift codes; 0-getOption(\"gift_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "StorePaymentPurpose"
+        },
         "storePaymentPurposePremiumGiftCodes": {
-            "description": "The user creating Telegram Premium gift codes for other users",
+            "description": "The user boosting a chat by creating Telegram Premium gift codes for other users",
             "args": {
                 "boosted_chat_id": {
-                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user; 0 if none",
+                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -23343,11 +23581,42 @@
             },
             "type": "StorePaymentPurpose"
         },
+        "telegramPaymentPurposePremiumGift": {
+            "description": "The user gifting Telegram Premium to another user",
+            "args": {
+                "currency": {
+                    "description": "ISO 4217 currency code of the payment currency",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "amount": {
+                    "description": "Paid amount, in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "user_id": {
+                    "description": "Identifier of the user which will receive Telegram Premium",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "month_count": {
+                    "description": "Number of months the Telegram Premium subscription will be active for the user",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "text": {
+                    "description": "Text to show to the user receiving Telegram Premium; 0-getOption(\"gift_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "TelegramPaymentPurpose"
+        },
         "telegramPaymentPurposePremiumGiftCodes": {
-            "description": "The user creating Telegram Premium gift codes for other users",
+            "description": "The user boosting a chat by creating Telegram Premium gift codes for other users",
             "args": {
                 "boosted_chat_id": {
-                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user; 0 if none",
+                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by the users for duration of the Premium subscription and which is administered by the user",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -24354,6 +24623,11 @@
         "pushMessageContentStory": {
             "description": "A message with a story",
             "args": {
+                "is_mention": {
+                    "description": "True, if the user was mentioned in the story",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_pinned": {
                     "description": "True, if the message is a pinned message with the specified content",
                     "is_optional": false,
@@ -24439,6 +24713,27 @@
         "pushMessageContentBasicGroupChatCreate": {
             "description": "A newly created basic group",
             "args": {},
+            "type": "PushMessageContent"
+        },
+        "pushMessageContentVideoChatStarted": {
+            "description": "A video chat or live stream was started",
+            "args": {},
+            "type": "PushMessageContent"
+        },
+        "pushMessageContentVideoChatEnded": {
+            "description": "A video chat or live stream has ended",
+            "args": {},
+            "type": "PushMessageContent"
+        },
+        "pushMessageContentInviteVideoChatParticipants": {
+            "description": "An invitation of participants to a video chat or live stream",
+            "args": {
+                "is_current_user": {
+                    "description": "True, if the current user was invited to the video chat or the live stream",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
             "type": "PushMessageContent"
         },
         "pushMessageContentChatAddMembers": {
@@ -24545,6 +24840,17 @@
         "pushMessageContentSuggestProfilePhoto": {
             "description": "A profile photo was suggested to the user",
             "args": {},
+            "type": "PushMessageContent"
+        },
+        "pushMessageContentProximityAlertTriggered": {
+            "description": "A user in the chat came within proximity alert range from the current user",
+            "args": {
+                "distance": {
+                    "description": "The distance to the user",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
             "type": "PushMessageContent"
         },
         "pushMessageContentMessageForwards": {
@@ -25078,6 +25384,11 @@
             "args": {},
             "type": "UserPrivacySetting"
         },
+        "userPrivacySettingAllowUnpaidMessages": {
+            "description": "A privacy setting for managing whether the user can receive messages without additional payment",
+            "args": {},
+            "type": "UserPrivacySetting"
+        },
         "readDatePrivacySettings": {
             "description": "Contains privacy settings for message read date in private chats. Read dates are always shown to the users that can see online status of the current user regardless of this setting",
             "args": {
@@ -25090,12 +25401,17 @@
             "type": "ReadDatePrivacySettings"
         },
         "newChatPrivacySettings": {
-            "description": "Contains privacy settings for new chats with non-contacts",
+            "description": "Contains privacy settings for chats with non-contacts",
             "args": {
                 "allow_new_chats_from_unknown_users": {
                     "description": "True, if non-contacts users are able to write first to the current user. Telegram Premium subscribers are able to write first regardless of this setting",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "incoming_paid_message_star_count": {
+                    "description": "Number of Telegram Stars that must be paid for every incoming private message by non-contacts; 0-getOption(\"paid_message_star_count_max\"). If positive, then allow_new_chats_from_unknown_users must be true. The current user will receive getOption(\"paid_message_earnings_per_mille\") Telegram Stars for each 1000 Telegram Stars paid for message sending",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "NewChatPrivacySettings"
@@ -25103,6 +25419,17 @@
         "canSendMessageToUserResultOk": {
             "description": "The user can be messaged",
             "args": {},
+            "type": "CanSendMessageToUserResult"
+        },
+        "canSendMessageToUserResultUserHasPaidMessages": {
+            "description": "The user can be messaged, but the messages are paid",
+            "args": {
+                "outgoing_paid_message_star_count": {
+                    "description": "Number of Telegram Stars that must be paid by the current user for each sent message to the user",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
             "type": "CanSendMessageToUserResult"
         },
         "canSendMessageToUserResultUserIsDeleted": {
@@ -25919,7 +26246,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypePremiumGift": {
-            "description": "The link is a link to the screen for gifting Telegram Premium subscriptions to friends via inputInvoiceTelegram with telegramPaymentPurposePremiumGiftCodes payments or in-store purchases",
+            "description": "The link is a link to the screen for gifting Telegram Premium subscriptions to friends via inputInvoiceTelegram with telegramPaymentPurposePremiumGift payments or in-store purchases",
             "args": {
                 "referrer": {
                     "description": "Referrer specified in the link",
@@ -27034,6 +27361,17 @@
                 }
             },
             "type": "FileDownloadedPrefixSize"
+        },
+        "starCount": {
+            "description": "Contains a number of Telegram Stars",
+            "args": {
+                "star_count": {
+                    "description": "Number of Telegram Stars",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StarCount"
         },
         "deepLinkInfo": {
             "description": "Contains information about a tg: deep link",
@@ -33038,7 +33376,7 @@
             "type": "Messages"
         },
         "sendQuickReplyShortcutMessages": {
-            "description": "Sends messages from a quick reply shortcut. Requires Telegram Business subscription",
+            "description": "Sends messages from a quick reply shortcut. Requires Telegram Business subscription. Can't be used to send paid messages",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat to which to send messages. The chat must be a private chat with a regular user",
@@ -33075,6 +33413,11 @@
                     "description": "New manually chosen quote from the message to be replied; pass null if none. Ignored if more than one message is re-sent, or if messageSendingStateFailed.need_another_reply_quote == false",
                     "is_optional": true,
                     "type": "inputTextQuote"
+                },
+                "paid_message_star_count": {
+                    "description": "The number of Telegram Stars the user agreed to pay to send the messages. Ignored if messageSendingStateFailed.required_paid_message_star_count == 0",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "Messages"
@@ -38358,7 +38701,7 @@
                     "type": "Bool"
                 },
                 "group_call_id": {
-                    "description": "Identifier of the group call to which the user will be added after exchanging private key via the call; pass 0 if none; currently, ignored",
+                    "description": "Identifier of the group call to which the user will be added after exchanging private key via the call; pass 0 if none",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -38647,6 +38990,11 @@
                     "description": "If non-empty, invite hash to be used to join the group call without being muted by administrators",
                     "is_optional": true,
                     "type": "string"
+                },
+                "key_fingerprint": {
+                    "description": "Fingerprint of the encryption key for E2E group calls not bound to a chat; pass 0 for voice chats",
+                    "is_optional": false,
+                    "type": "int64"
                 }
             },
             "type": "Text"
@@ -39183,7 +39531,7 @@
             "type": "Ok"
         },
         "suggestUserProfilePhoto": {
-            "description": "Suggests a profile photo to another regular user with common messages",
+            "description": "Suggests a profile photo to another regular user with common messages and allowing non-paid messages",
             "args": {
                 "user_id": {
                     "description": "User identifier",
@@ -39854,15 +40202,15 @@
             "type": "LinkPreview"
         },
         "getWebPageInstantView": {
-            "description": "Returns an instant view version of a web page if available. Returns a 404 error if the web page has no instant view page",
+            "description": "Returns an instant view version of a web page if available. This is an offline request if only_local is true. Returns a 404 error if the web page has no instant view page",
             "args": {
                 "url": {
                     "description": "The web page URL",
                     "is_optional": false,
                     "type": "string"
                 },
-                "force_full": {
-                    "description": "Pass true to get full instant view for the web page",
+                "only_local": {
+                    "description": "Pass true to get only locally available information without sending network requests",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -41328,7 +41676,7 @@
                     "type": "MessageSender"
                 },
                 "text": {
-                    "description": "Text to show along with the gift; 0-getOption(\"gift_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed",
+                    "description": "Text to show along with the gift; 0-getOption(\"gift_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed. Must be empty if the receiver enabled paid messages",
                     "is_optional": false,
                     "type": "formattedText"
                 },
@@ -41357,7 +41705,7 @@
             "type": "Ok"
         },
         "toggleGiftIsSaved": {
-            "description": "Toggles whether a gift is shown on the current user's or the channel's profile page; requires can_post_messages administrator right in the chat",
+            "description": "Toggles whether a gift is shown on the current user's or the channel's profile page; requires can_post_messages administrator right in the channel chat",
             "args": {
                 "received_gift_id": {
                     "description": "Identifier of the gift",
@@ -41368,6 +41716,22 @@
                     "description": "Pass true to display the gift on the user's or the channel's profile page; pass false to remove it from the profile page",
                     "is_optional": false,
                     "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "setPinnedGifts": {
+            "description": "Changes the list of pinned gifts on the current user's or the channel's profile page; requires can_post_messages administrator right in the channel chat",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that received the gifts",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "received_gift_ids": {
+                    "description": "New list of pinned gifts. All gifts must be upgraded and saved on the profile page first. There can be up to getOption(\"pinned_gift_count_max\") pinned gifts",
+                    "is_optional": false,
+                    "type": "vector<string>"
                 }
             },
             "type": "Ok"
@@ -41875,6 +42239,49 @@
             "args": {},
             "type": "NewChatPrivacySettings"
         },
+        "getPaidMessageRevenue": {
+            "description": "Returns the total number of Telegram Stars received by the current user for paid messages from the given user",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StarCount"
+        },
+        "allowUnpaidMessagesFromUser": {
+            "description": "Allows the specified user to send unpaid private messages to the current user by adding a rule to userPrivacySettingAllowUnpaidMessages",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "refund_payments": {
+                    "description": "Pass true to refund the user previously paid messages",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "setChatPaidMessageStarCount": {
+            "description": "Changes the amount of Telegram Stars that must be paid to send a message to a supergroup chat; requires can_restrict_members administrator right and supergroupFullInfo.can_enable_paid_messages",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the supergroup chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "paid_message_star_count": {
+                    "description": "The new number of Telegram Stars that must be paid for each message that is sent to the supergroup chat unless the sender is an administrator of the chat; 0-getOption(\"paid_message_star_count_max\"). The supergroup will receive getOption(\"paid_message_earnings_per_mille\") Telegram Stars for each 1000 Telegram Stars paid for message sending",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
         "canSendMessageToUser": {
             "description": "Check whether the current user can message another user or try to create a chat with them",
             "args": {
@@ -42107,7 +42514,7 @@
             "description": "Returns detailed Telegram Star revenue statistics",
             "args": {
                 "owner_id": {
-                    "description": "Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_star_revenue_statistics == true",
+                    "description": "Identifier of the owner of the Telegram Stars; can be identifier of the current user, an owned bot, or a supergroup or a channel chat with supergroupFullInfo.can_get_star_revenue_statistics == true",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
@@ -42123,7 +42530,7 @@
             "description": "Returns a URL for Telegram Star withdrawal",
             "args": {
                 "owner_id": {
-                    "description": "Identifier of the owner of the Telegram Stars; can be identifier of an owned bot, or identifier of an owned channel chat",
+                    "description": "Identifier of the owner of the Telegram Stars; can be identifier of the current user, an owned bot, or an owned supergroup or channel chat",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
@@ -42992,16 +43399,21 @@
             "args": {},
             "type": "PremiumState"
         },
-        "getPremiumGiftCodePaymentOptions": {
-            "description": "Returns available options for Telegram Premium gift code or Telegram Premium giveaway creation",
+        "getPremiumGiftPaymentOptions": {
+            "description": "Returns available options for gifting Telegram Premium to a user",
+            "args": {},
+            "type": "PremiumGiftPaymentOptions"
+        },
+        "getPremiumGiveawayPaymentOptions": {
+            "description": "Returns available options for creating of Telegram Premium giveaway or manual distribution of Telegram Premium among chat members",
             "args": {
                 "boosted_chat_id": {
-                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user; 0 if none",
+                    "description": "Identifier of the supergroup or channel chat, which will be automatically boosted by receivers of the gift codes and which is administered by the user",
                     "is_optional": false,
                     "type": "int53"
                 }
             },
-            "type": "PremiumGiftCodePaymentOptions"
+            "type": "PremiumGiveawayPaymentOptions"
         },
         "checkPremiumGiftCode": {
             "description": "Return information about a Telegram Premium gift code",
@@ -43092,7 +43504,7 @@
             "description": "Returns the list of Telegram Star transactions for the specified owner",
             "args": {
                 "owner_id": {
-                    "description": "Identifier of the owner of the Telegram Stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a channel chat with supergroupFullInfo.can_get_star_revenue_statistics == true",
+                    "description": "Identifier of the owner of the Telegram Stars; can be the identifier of the current user, identifier of an owned bot, or identifier of a supergroup or a channel chat with supergroupFullInfo.can_get_star_revenue_statistics == true",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
