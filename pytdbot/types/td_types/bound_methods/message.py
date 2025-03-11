@@ -64,7 +64,7 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
-    def caption_entities(self) -> Union[str, None]:
+    def caption_entities(self) -> Union[List["pytdbot.types.TextEntity"], None]:
         r"""Caption entities of the received media"""
 
         if isinstance(
@@ -130,7 +130,7 @@ class MessageBoundMethods:
 
         return unique_file_id
 
-    async def mention(self, parse_mode: str = "html") -> str:
+    async def mention(self, parse_mode: str = "html") -> Union[str, None]:
         r"""Get the text_mention of the message sender
 
         Parameters:
