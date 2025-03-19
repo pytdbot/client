@@ -136,6 +136,7 @@ class Client(Decorators, Methods):
         no_updates: bool = False,
         td_verbosity: int = 2,
         td_log: LogStream = None,
+        user_bot: bool = False,
     ) -> None:
         self.__api_id = api_id
         self.__api_hash = api_hash
@@ -164,7 +165,12 @@ class Client(Decorators, Methods):
         self.workers = workers
         self.no_updates = no_updates
         self.queue = asyncio.Queue()
-        self.my_id = get_bot_id_from_token(self.__token)
+        self.user_bot = user_bot
+        self.my_id = (
+            get_bot_id_from_token(self.__token)
+            if isinstance(self.__token, str)
+            else None
+        )
         self.logger = getLogger(f"{__name__}:{self.my_id or 0}")
         self.td_verbosity = td_verbosity
         self.connection_state: str = None
@@ -233,6 +239,9 @@ class Client(Decorators, Methods):
                 Login after start. Default is ``True``
         """
 
+        if self.user_bot:
+            login = False
+
         if not self.is_running:
             self.logger.info("Starting pytdbot client...")
 
@@ -259,7 +268,11 @@ class Client(Decorators, Methods):
     async def login(self) -> None:
         r"""Login to Telegram."""
 
-        if not self.__token or (self.is_authenticated or self.is_rabbitmq):
+        if (
+            not self.__token
+            or self.user_bot
+            or (self.is_authenticated or self.is_rabbitmq)
+        ):
             return
 
         self.__login = True
@@ -566,6 +579,9 @@ class Client(Decorators, Methods):
             )
 
     def _check_init_args(self):
+        if self.user_bot:
+            return
+
         if not self.is_rabbitmq:
             if not isinstance(self.__api_id, int):
                 raise TypeError("api_id must be an int")
