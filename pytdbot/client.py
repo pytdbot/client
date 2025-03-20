@@ -802,7 +802,8 @@ class Client(Decorators, Methods):
     async def _handle_update(self, update):
         if update.getType() in self._handlers:
             if (
-                isinstance(update, types.UpdateNewMessage)
+                not self.user_bot
+                and isinstance(update, types.UpdateNewMessage)
                 and update.message.is_outgoing
             ):
                 return
