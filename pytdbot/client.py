@@ -262,6 +262,10 @@ class Client(Decorators, Methods):
             else:
                 self.__listen_loop_task = self.loop.create_task(self.__listen_loop())
 
+        self.loop.create_task(
+            self.getOption("version")
+        )  # Ping TDLib to start processing updates
+
         if login:
             await self.login()
 
@@ -276,8 +280,6 @@ class Client(Decorators, Methods):
             return
 
         self.__login = True
-
-        await self.getOption("version")  # Ping TDLib to start authorization process
 
         while self.authorization_state != "authorizationStateReady":
             await asyncio.sleep(0.1)
