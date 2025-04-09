@@ -225,16 +225,8 @@ class Client(Decorators, Methods):
 
         return self.__authorization_state
 
-    async def start(self, login: bool = True) -> None:
-        r"""Start pytdbot client
-
-        Parameters:
-            login (``bool``, *optional*):
-                Login after start. Default is ``True``
-        """
-
-        if self.user_bot:
-            login = False
+    async def start(self) -> None:
+        r"""Start pytdbot client"""
 
         if not self.is_running:
             self.logger.info("Starting pytdbot client...")
@@ -260,8 +252,7 @@ class Client(Decorators, Methods):
             self.getOption("version")
         )  # Ping TDLib to start processing updates
 
-        if login:
-            await self.login()
+        await self.login()
 
     async def login(self) -> None:
         r"""Login to Telegram."""
@@ -475,7 +466,7 @@ class Client(Decorators, Methods):
 
         return await self.invoke(kwargs)
 
-    def run(self, login: bool = True) -> None:
+    def run(self) -> None:
         r"""Start the client and block until the client is stopped
 
         Example:
@@ -490,15 +481,11 @@ class Client(Decorators, Methods):
                     await update.reply_text('Hello!')
 
                 client.run()
-
-        Parameters:
-            login (``bool``, *optional*):
-                Login after start. Default is ``True``
         """
 
         self._register_signal_handlers()
 
-        self.loop.run_until_complete(self.start(login))
+        self.loop.run_until_complete(self.start())
         self.loop.run_until_complete(self.idle())
 
     async def idle(self):
