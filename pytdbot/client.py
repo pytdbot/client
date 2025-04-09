@@ -24,6 +24,7 @@ from . import types
 from .filters import Filter
 from .exception import StopHandlers, AuthorizationError
 from .utils import (
+    get_running_loop,
     create_extra_id,
     json_loads,
     json_dumps,
