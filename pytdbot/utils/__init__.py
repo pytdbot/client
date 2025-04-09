@@ -1,5 +1,6 @@
 __all__ = [
     "RETRY_AFTER_PREFEX",
+    "get_running_loop",
     "escape_markdown",
     "escape_html",
     "JSON_ENCODER",
@@ -27,6 +28,7 @@ __all__ = [
     "quote",
 ]
 
+from .asyncio_utils import get_running_loop
 from .escape import escape_markdown, escape_html
 from .json_utils import JSON_ENCODER, json_dumps, json_loads
 from .obj_encoder import obj_to_json, obj_to_dict, dict_to_obj

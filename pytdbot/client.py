@@ -33,13 +33,6 @@ from .utils import (
 )
 
 
-def get_running_loop():
-    try:
-        return asyncio.get_running_loop()
-    except RuntimeError:
-        return asyncio.new_event_loop()
-
-
 class Client(Decorators, Methods):
     r"""Pytdbot, a TDLib client
 
