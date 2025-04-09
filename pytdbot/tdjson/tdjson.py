@@ -15,9 +15,7 @@ logger = getLogger(__name__)
 
 
 class TdJson:
-    def __init__(
-        self, lib_path: str = None, verbosity: int = 2, create_client: bool = True
-    ) -> None:
+    def __init__(self, lib_path: str = None, verbosity: int = 2) -> None:
         """TdJson client
 
         Parameters:
@@ -31,7 +29,7 @@ class TdJson:
             :py:class:``ValueError``: If library not found
         """
 
-        self._build_client(lib_path, verbosity, create_client)
+        self._build_client(lib_path, verbosity)
 
     def __enter__(self):
         return self
@@ -39,7 +37,7 @@ class TdJson:
     def __exit__(self, exc_type, exc_value, traceback):
         pass
 
-    def _build_client(self, lib_path: str, verbosity: int, create_client: bool) -> None:
+    def _build_client(self, lib_path: str, verbosity: int) -> None:
         """Build TdJson client
 
         Parameters:
@@ -111,7 +109,9 @@ class TdJson:
             if res["@type"] == "error":
                 logger.error("Can't set log level: {}".format(res["message"]))
 
-        self.client_id = self._td_create_client_id() if create_client else None
+    def create_client_id(self) -> int:
+        """Returns an opaque identifier of a new TDLib instance"""
+        return self._td_create_client_id()
 
     def receive(self, timeout: float = 2.0) -> Union[None, dict]:
         """Receives incoming updates and results from TDLib
@@ -129,20 +129,21 @@ class TdJson:
         ):
             return json_loads(res)
 
-    def send(self, data: dict, client_id: int = None) -> None:
+    def send(self, client_id: int, data: dict) -> None:
         """Sends a request to TDLib
 
         Parameters:
+            client_id (``int``):
+                TDLib Client identifier
+
             data (``dict``):
-                The request to be sent
+                Request to be sent
         """
 
-        if not client_id and not self.client_id:
+        if not client_id:
             raise ValueError("client_id is required")
 
-        self._td_send(
-            client_id or self.client_id, json_dumps(data, encode=not self.using_binding)
-        )
+        self._td_send(client_id, json_dumps(data, encode=not self.using_binding))
 
     def execute(self, data: dict) -> Union[None, dict]:
         """Executes a TDLib request
