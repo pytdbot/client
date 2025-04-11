@@ -2141,6 +2141,40 @@ class Updates:
 
         return decorator
 
+    def on_updateForumTopic(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        r"""Information about a topic in a forum chat was changed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateForumTopic", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateForumTopic", self, position)
+            else:
+                func._handler = Handler(func, "updateForumTopic", filters, position)
+            return func
+
+        return decorator
+
     def on_updateScopeNotificationSettings(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -4144,6 +4178,40 @@ class Updates:
                 func._handler = Handler(
                     func, "updateConnectionState", filters, position
                 )
+            return func
+
+        return decorator
+
+    def on_updateFreezeState(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        r"""The freeze state of the current user's account has changed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateFreezeState", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateFreezeState", self, position)
+            else:
+                func._handler = Handler(func, "updateFreezeState", filters, position)
             return func
 
         return decorator

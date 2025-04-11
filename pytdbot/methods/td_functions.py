@@ -8,7 +8,7 @@ class TDLibFunctions:
     async def getAuthorizationState(
         self,
     ) -> Union["types.Error", "types.AuthorizationState"]:
-        r"""Returns the current authorization state; this is an offline request\. For informational purposes only\. Use updateAuthorizationState instead to maintain the current authorization state\. Can be called before initialization
+        r"""Returns the current authorization state\. This is an offline method\. For informational purposes only\. Use updateAuthorizationState instead to maintain the current authorization state\. Can be called before initialization
 
         Returns:
             :class:`~pytdbot.types.AuthorizationState`
@@ -111,7 +111,7 @@ class TDLibFunctions:
         phone_number: str = "",
         settings: "types.PhoneNumberAuthenticationSettings" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Sets the phone number of the user and sends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
+        r"""Sets the phone number of the user and sends an authentication code to the user\. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitPremiumPurchase, authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
 
         Parameters:
             phone_number (:class:`str`):
@@ -129,6 +129,66 @@ class TDLibFunctions:
                 "@type": "setAuthenticationPhoneNumber",
                 "phone_number": phone_number,
                 "settings": settings,
+            }
+        )
+
+    async def checkAuthenticationPremiumPurchase(
+        self, currency: str = "", amount: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Checks whether an in\-store purchase of Telegram Premium is possible before authorization\. Works only when the current authorization state is authorizationStateWaitPremiumPurchase
+
+        Parameters:
+            currency (:class:`str`):
+                ISO 4217 currency code of the payment currency
+
+            amount (:class:`int`):
+                Paid amount, in the smallest units of the currency
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "checkAuthenticationPremiumPurchase",
+                "currency": currency,
+                "amount": amount,
+            }
+        )
+
+    async def setAuthenticationPremiumPurchaseTransaction(
+        self,
+        transaction: "types.StoreTransaction" = None,
+        is_restore: bool = False,
+        currency: str = "",
+        amount: int = 0,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Informs server about an in\-store purchase of Telegram Premium before authorization\. Works only when the current authorization state is authorizationStateWaitPremiumPurchase
+
+        Parameters:
+            transaction (:class:`"types.StoreTransaction"`):
+                Information about the transaction
+
+            is_restore (:class:`bool`):
+                Pass true if this is a restore of a Telegram Premium purchase; only for App Store
+
+            currency (:class:`str`):
+                ISO 4217 currency code of the payment currency
+
+            amount (:class:`int`):
+                Paid amount, in the smallest units of the currency
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setAuthenticationPremiumPurchaseTransaction",
+                "transaction": transaction,
+                "is_restore": is_restore,
+                "currency": currency,
+                "amount": amount,
             }
         )
 
@@ -201,7 +261,7 @@ class TDLibFunctions:
     async def requestQrCodeAuthentication(
         self, other_user_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Requests QR code authentication by scanning a QR code on another logged in device\. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
+        r"""Requests QR code authentication by scanning a QR code on another logged in device\. Works only when the current authorization state is authorizationStateWaitPhoneNumber, or if there is no pending authentication query and the current authorization state is authorizationStateWaitPremiumPurchase, authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
 
         Parameters:
             other_user_ids (:class:`List[int]`):
@@ -811,7 +871,7 @@ class TDLibFunctions:
         )
 
     async def getUser(self, user_id: int = 0) -> Union["types.Error", "types.User"]:
-        r"""Returns information about a user by their identifier\. This is an offline request if the current user is not a bot
+        r"""Returns information about a user by their identifier\. This is an offline method if the current user is not a bot
 
         Parameters:
             user_id (:class:`int`):
@@ -841,7 +901,7 @@ class TDLibFunctions:
     async def getBasicGroup(
         self, basic_group_id: int = 0
     ) -> Union["types.Error", "types.BasicGroup"]:
-        r"""Returns information about a basic group by its identifier\. This is an offline request if the current user is not a bot
+        r"""Returns information about a basic group by its identifier\. This is an offline method if the current user is not a bot
 
         Parameters:
             basic_group_id (:class:`int`):
@@ -875,7 +935,7 @@ class TDLibFunctions:
     async def getSupergroup(
         self, supergroup_id: int = 0
     ) -> Union["types.Error", "types.Supergroup"]:
-        r"""Returns information about a supergroup or a channel by its identifier\. This is an offline request if the current user is not a bot
+        r"""Returns information about a supergroup or a channel by its identifier\. This is an offline method if the current user is not a bot
 
         Parameters:
             supergroup_id (:class:`int`):
@@ -909,7 +969,7 @@ class TDLibFunctions:
     async def getSecretChat(
         self, secret_chat_id: int = 0
     ) -> Union["types.Error", "types.SecretChat"]:
-        r"""Returns information about a secret chat by its identifier\. This is an offline request
+        r"""Returns information about a secret chat by its identifier\. This is an offline method
 
         Parameters:
             secret_chat_id (:class:`int`):
@@ -924,7 +984,7 @@ class TDLibFunctions:
         )
 
     async def getChat(self, chat_id: int = 0) -> Union["types.Error", "types.Chat"]:
-        r"""Returns information about a chat by its identifier; this is an offline request if the current user is not a bot
+        r"""Returns information about a chat by its identifier\. This is an offline method if the current user is not a bot
 
         Parameters:
             chat_id (:class:`int`):
@@ -959,7 +1019,7 @@ class TDLibFunctions:
     async def getMessageLocally(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""Returns information about a message, if it is available without sending network request\. Returns a 404 error if message isn't available locally\. This is an offline request
+        r"""Returns information about a message, if it is available without sending network request\. Returns a 404 error if message isn't available locally\. This is an offline method
 
         Parameters:
             chat_id (:class:`int`):
@@ -1062,7 +1122,7 @@ class TDLibFunctions:
     async def getMessageProperties(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.MessageProperties"]:
-        r"""Returns properties of a message; this is an offline request
+        r"""Returns properties of a message\. This is an offline method
 
         Parameters:
             chat_id (:class:`int`):
@@ -1148,7 +1208,7 @@ class TDLibFunctions:
         )
 
     async def getFile(self, file_id: int = 0) -> Union["types.Error", "types.File"]:
-        r"""Returns information about a file; this is an offline request
+        r"""Returns information about a file\. This is an offline method
 
         Parameters:
             file_id (:class:`int`):
@@ -1163,7 +1223,7 @@ class TDLibFunctions:
     async def getRemoteFile(
         self, remote_file_id: str = "", file_type: "types.FileType" = None
     ) -> Union["types.Error", "types.File"]:
-        r"""Returns information about a file by its remote identifier; this is an offline request\. Can be used to register a URL as a file for further uploading, or sending as a message\. Even the request succeeds, the file can be used only if it is still accessible to the user\. For example, if the file is from a message, then the message must be not deleted and accessible to the user\. If the file database is disabled, then the corresponding object with the file must be preloaded by the application
+        r"""Returns information about a file by its remote identifier\. This is an offline method\. Can be used to register a URL as a file for further uploading, or sending as a message\. Even the request succeeds, the file can be used only if it is still accessible to the user\. For example, if the file is from a message, then the message must be not deleted and accessible to the user\. If the file database is disabled, then the corresponding object with the file must be preloaded by the application
 
         Parameters:
             remote_file_id (:class:`str`):
@@ -1257,7 +1317,7 @@ class TDLibFunctions:
     async def searchChats(
         self, query: str = "", limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""Searches for the specified query in the title and username of already known chats; this is an offline request\. Returns chats in the order seen in the main chat list
+        r"""Searches for the specified query in the title and username of already known chats\. This is an offline method\. Returns chats in the order seen in the main chat list
 
         Parameters:
             query (:class:`str`):
@@ -1478,7 +1538,7 @@ class TDLibFunctions:
     async def searchRecentlyFoundChats(
         self, query: str = "", limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""Searches for the specified query in the title and username of up to 50 recently found chats; this is an offline request
+        r"""Searches for the specified query in the title and username of up to 50 recently found chats\. This is an offline method
 
         Parameters:
             query (:class:`str`):
@@ -1543,7 +1603,7 @@ class TDLibFunctions:
     async def getRecentlyOpenedChats(
         self, limit: int = 0
     ) -> Union["types.Error", "types.Chats"]:
-        r"""Returns recently opened chats; this is an offline request\. Returns chats in the order of last opening
+        r"""Returns recently opened chats\. This is an offline method\. Returns chats in the order of last opening
 
         Parameters:
             limit (:class:`int`):
@@ -1849,7 +1909,7 @@ class TDLibFunctions:
         limit: int = 0,
         only_local: bool = False,
     ) -> Union["types.Error", "types.Messages"]:
-        r"""Returns messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline request if only\_local is true
+        r"""Returns messages in a chat\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib\. This is an offline method if only\_local is true
 
         Parameters:
             chat_id (:class:`int`):
@@ -2684,7 +2744,7 @@ class TDLibFunctions:
 
     async def reportChatSponsoredMessage(
         self, chat_id: int = 0, message_id: int = 0, option_id: bytes = b""
-    ) -> Union["types.Error", "types.ReportChatSponsoredMessageResult"]:
+    ) -> Union["types.Error", "types.ReportSponsoredResult"]:
         r"""Reports a sponsored message to Telegram moderators
 
         Parameters:
@@ -2698,7 +2758,7 @@ class TDLibFunctions:
                 Option identifier chosen by the user; leave empty for the initial request
 
         Returns:
-            :class:`~pytdbot.types.ReportChatSponsoredMessageResult`
+            :class:`~pytdbot.types.ReportSponsoredResult`
         """
 
         return await self.invoke(
@@ -2706,6 +2766,85 @@ class TDLibFunctions:
                 "@type": "reportChatSponsoredMessage",
                 "chat_id": chat_id,
                 "message_id": message_id,
+                "option_id": option_id,
+            }
+        )
+
+    async def getSearchSponsoredChats(
+        self, query: str = ""
+    ) -> Union["types.Error", "types.SponsoredChats"]:
+        r"""Returns sponsored chats to be shown in the search results
+
+        Parameters:
+            query (:class:`str`):
+                Query the user searches for
+
+        Returns:
+            :class:`~pytdbot.types.SponsoredChats`
+        """
+
+        return await self.invoke({"@type": "getSearchSponsoredChats", "query": query})
+
+    async def viewSponsoredChat(
+        self, sponsored_chat_unique_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Informs TDLib that the user fully viewed a sponsored chat
+
+        Parameters:
+            sponsored_chat_unique_id (:class:`int`):
+                Unique identifier of the sponsored chat
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "viewSponsoredChat",
+                "sponsored_chat_unique_id": sponsored_chat_unique_id,
+            }
+        )
+
+    async def openSponsoredChat(
+        self, sponsored_chat_unique_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Informs TDLib that the user opened a sponsored chat
+
+        Parameters:
+            sponsored_chat_unique_id (:class:`int`):
+                Unique identifier of the sponsored chat
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "openSponsoredChat",
+                "sponsored_chat_unique_id": sponsored_chat_unique_id,
+            }
+        )
+
+    async def reportSponsoredChat(
+        self, sponsored_chat_unique_id: int = 0, option_id: bytes = b""
+    ) -> Union["types.Error", "types.ReportSponsoredResult"]:
+        r"""Reports a sponsored chat to Telegram moderators
+
+        Parameters:
+            sponsored_chat_unique_id (:class:`int`):
+                Unique identifier of the sponsored chat
+
+            option_id (:class:`bytes`):
+                Option identifier chosen by the user; leave empty for the initial request
+
+        Returns:
+            :class:`~pytdbot.types.ReportSponsoredResult`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "reportSponsoredChat",
+                "sponsored_chat_unique_id": sponsored_chat_unique_id,
                 "option_id": option_id,
             }
         )
@@ -2766,7 +2905,7 @@ class TDLibFunctions:
         for_album: bool = False,
         in_message_thread: bool = False,
     ) -> Union["types.Error", "types.MessageLink"]:
-        r"""Returns an HTTPS link to a message in a chat\. Available only if messageProperties\.can\_get\_link, or if messageProperties\.can\_get\_media\_timestamp\_links and a media timestamp link is generated\. This is an offline request
+        r"""Returns an HTTPS link to a message in a chat\. Available only if messageProperties\.can\_get\_link, or if messageProperties\.can\_get\_media\_timestamp\_links and a media timestamp link is generated\. This is an offline method
 
         Parameters:
             chat_id (:class:`int`):
@@ -4214,6 +4353,306 @@ class TDLibFunctions:
             }
         )
 
+    async def readBusinessMessage(
+        self, business_connection_id: str = "", chat_id: int = 0, message_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Reads a message on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection through which the message was received
+
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "readBusinessMessage",
+                "business_connection_id": business_connection_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+            }
+        )
+
+    async def deleteBusinessMessages(
+        self, business_connection_id: str = "", message_ids: List[int] = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Deletes messages on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection through which the messages were received
+
+            message_ids (:class:`List[int]`):
+                Identifier of the messages
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteBusinessMessages",
+                "business_connection_id": business_connection_id,
+                "message_ids": message_ids,
+            }
+        )
+
+    async def editBusinessStory(
+        self,
+        story_sender_chat_id: int = 0,
+        story_id: int = 0,
+        content: "types.InputStoryContent" = None,
+        areas: "types.InputStoryAreas" = None,
+        caption: "types.FormattedText" = None,
+        privacy_settings: "types.StoryPrivacySettings" = None,
+    ) -> Union["types.Error", "types.Story"]:
+        r"""Changes a story sent by the bot on behalf of a business account; for bots only
+
+        Parameters:
+            story_sender_chat_id (:class:`int`):
+                Identifier of the chat that posted the story
+
+            story_id (:class:`int`):
+                Identifier of the story to edit
+
+            content (:class:`"types.InputStoryContent"`):
+                New content of the story
+
+            areas (:class:`"types.InputStoryAreas"`):
+                New clickable rectangle areas to be shown on the story media
+
+            caption (:class:`"types.FormattedText"`):
+                New story caption
+
+            privacy_settings (:class:`"types.StoryPrivacySettings"`):
+                The new privacy settings for the story
+
+        Returns:
+            :class:`~pytdbot.types.Story`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editBusinessStory",
+                "story_sender_chat_id": story_sender_chat_id,
+                "story_id": story_id,
+                "content": content,
+                "areas": areas,
+                "caption": caption,
+                "privacy_settings": privacy_settings,
+            }
+        )
+
+    async def deleteBusinessStory(
+        self, business_connection_id: str = "", story_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Deletes a story sent by the bot on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection
+
+            story_id (:class:`int`):
+                Identifier of the story to delete
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteBusinessStory",
+                "business_connection_id": business_connection_id,
+                "story_id": story_id,
+            }
+        )
+
+    async def setBusinessAccountName(
+        self,
+        business_connection_id: str = "",
+        first_name: str = "",
+        last_name: str = "",
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the first and last name of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection
+
+            first_name (:class:`str`):
+                The new value of the first name for the business account; 1\-64 characters
+
+            last_name (:class:`str`):
+                The new value of the optional last name for the business account; 0\-64 characters
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setBusinessAccountName",
+                "business_connection_id": business_connection_id,
+                "first_name": first_name,
+                "last_name": last_name,
+            }
+        )
+
+    async def setBusinessAccountBio(
+        self, business_connection_id: str = "", bio: str = ""
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the bio of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection
+
+            bio (:class:`str`):
+                The new value of the bio; 0\-getOption\(\"bio\_length\_max\"\) characters without line feeds
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setBusinessAccountBio",
+                "business_connection_id": business_connection_id,
+                "bio": bio,
+            }
+        )
+
+    async def setBusinessAccountProfilePhoto(
+        self,
+        business_connection_id: str = "",
+        photo: "types.InputChatPhoto" = None,
+        is_public: bool = False,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes a profile photo of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection
+
+            photo (:class:`"types.InputChatPhoto"`):
+                Profile photo to set; pass null to remove the photo
+
+            is_public (:class:`bool`):
+                Pass true to set the public photo, which will be visible even the main photo is hidden by privacy settings
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setBusinessAccountProfilePhoto",
+                "business_connection_id": business_connection_id,
+                "photo": photo,
+                "is_public": is_public,
+            }
+        )
+
+    async def setBusinessAccountUsername(
+        self, business_connection_id: str = "", username: str = ""
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the editable username of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection
+
+            username (:class:`str`):
+                The new value of the username
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setBusinessAccountUsername",
+                "business_connection_id": business_connection_id,
+                "username": username,
+            }
+        )
+
+    async def setBusinessAccountGiftSettings(
+        self, business_connection_id: str = "", settings: "types.GiftSettings" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes settings for gift receiving of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection
+
+            settings (:class:`"types.GiftSettings"`):
+                The new settings
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setBusinessAccountGiftSettings",
+                "business_connection_id": business_connection_id,
+                "settings": settings,
+            }
+        )
+
+    async def getBusinessAccountStarAmount(
+        self, business_connection_id: str = ""
+    ) -> Union["types.Error", "types.StarAmount"]:
+        r"""Returns the amount of Telegram Stars owned by a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection
+
+        Returns:
+            :class:`~pytdbot.types.StarAmount`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getBusinessAccountStarAmount",
+                "business_connection_id": business_connection_id,
+            }
+        )
+
+    async def transferBusinessAccountStars(
+        self, business_connection_id: str = "", star_count: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Transfer Telegram Stars from the business account to the business bot; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection
+
+            star_count (:class:`int`):
+                Number of Telegram Stars to transfer
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "transferBusinessAccountStars",
+                "business_connection_id": business_connection_id,
+                "star_count": star_count,
+            }
+        )
+
     async def checkQuickReplyShortcutName(
         self, name: str = ""
     ) -> Union["types.Error", "types.Ok"]:
@@ -4608,7 +5047,7 @@ class TDLibFunctions:
     async def getForumTopicLink(
         self, chat_id: int = 0, message_thread_id: int = 0
     ) -> Union["types.Error", "types.MessageLink"]:
-        r"""Returns an HTTPS link to a topic in a forum chat\. This is an offline request
+        r"""Returns an HTTPS link to a topic in a forum chat\. This is an offline method
 
         Parameters:
             chat_id (:class:`int`):
@@ -5979,7 +6418,7 @@ class TDLibFunctions:
     async def getWebAppPlaceholder(
         self, bot_user_id: int = 0
     ) -> Union["types.Error", "types.Outline"]:
-        r"""Returns a default placeholder for Web Apps of a bot; this is an offline request\. Returns a 404 error if the placeholder isn't known
+        r"""Returns a default placeholder for Web Apps of a bot\. This is an offline method\. Returns a 404 error if the placeholder isn't known
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -7039,7 +7478,7 @@ class TDLibFunctions:
     async def getChatListsToAddChat(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.ChatLists"]:
-        r"""Returns chat lists to which the chat can be added\. This is an offline request
+        r"""Returns chat lists to which the chat can be added\. This is an offline method
 
         Parameters:
             chat_id (:class:`int`):
@@ -9401,7 +9840,7 @@ class TDLibFunctions:
     async def getChatBoostLevelFeatures(
         self, is_channel: bool = False, level: int = 0
     ) -> Union["types.Error", "types.ChatBoostLevelFeatures"]:
-        r"""Returns the list of features available on the specific chat boost level; this is an offline request
+        r"""Returns the list of features available on the specific chat boost level\. This is an offline method
 
         Parameters:
             is_channel (:class:`bool`):
@@ -9425,7 +9864,7 @@ class TDLibFunctions:
     async def getChatBoostFeatures(
         self, is_channel: bool = False
     ) -> Union["types.Error", "types.ChatBoostFeatures"]:
-        r"""Returns the list of features available for different chat boost levels; this is an offline request
+        r"""Returns the list of features available for different chat boost levels\. This is an offline method
 
         Parameters:
             is_channel (:class:`bool`):
@@ -12139,7 +12578,7 @@ class TDLibFunctions:
         for_animated_emoji: bool = False,
         for_clicked_animated_emoji_message: bool = False,
     ) -> Union["types.Error", "types.Outline"]:
-        r"""Returns outline of a sticker; this is an offline request\. Returns a 404 error if the outline isn't known
+        r"""Returns outline of a sticker\. This is an offline method\. Returns a 404 error if the outline isn't known
 
         Parameters:
             sticker_file_id (:class:`int`):
@@ -13004,7 +13443,7 @@ class TDLibFunctions:
     async def getWebPageInstantView(
         self, url: str = "", only_local: bool = False
     ) -> Union["types.Error", "types.WebPageInstantView"]:
-        r"""Returns an instant view version of a web page if available\. This is an offline request if only\_local is true\. Returns a 404 error if the web page has no instant view page
+        r"""Returns an instant view version of a web page if available\. This is an offline method if only\_local is true\. Returns a 404 error if the web page has no instant view page
 
         Parameters:
             url (:class:`str`):
@@ -13031,7 +13470,7 @@ class TDLibFunctions:
                 Profile photo to set
 
             is_public (:class:`bool`):
-                Pass true to set a public photo, which will be visible even the main photo is hidden by privacy settings
+                Pass true to set the public photo, which will be visible even the main photo is hidden by privacy settings
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -15178,6 +15617,21 @@ class TDLibFunctions:
             }
         )
 
+    async def setGiftSettings(
+        self, settings: "types.GiftSettings" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes settings for gift receiving for the current user
+
+        Parameters:
+            settings (:class:`"types.GiftSettings"`):
+                The new settings
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "setGiftSettings", "settings": settings})
+
     async def getAvailableGifts(self) -> Union["types.Error", "types.Gifts"]:
         r"""Returns gifts that can be sent to other users and channel chats
 
@@ -15233,11 +15687,14 @@ class TDLibFunctions:
         )
 
     async def sellGift(
-        self, received_gift_id: str = ""
+        self, business_connection_id: str = "", received_gift_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
         r"""Sells a gift for Telegram Stars
 
         Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which to send the request; for bots only
+
             received_gift_id (:class:`str`):
                 Identifier of the gift
 
@@ -15246,7 +15703,11 @@ class TDLibFunctions:
         """
 
         return await self.invoke(
-            {"@type": "sellGift", "received_gift_id": received_gift_id}
+            {
+                "@type": "sellGift",
+                "business_connection_id": business_connection_id,
+                "received_gift_id": received_gift_id,
+            }
         )
 
     async def toggleGiftIsSaved(
@@ -15340,6 +15801,7 @@ class TDLibFunctions:
 
     async def upgradeGift(
         self,
+        business_connection_id: str = "",
         received_gift_id: str = "",
         keep_original_details: bool = False,
         star_count: int = 0,
@@ -15347,6 +15809,9 @@ class TDLibFunctions:
         r"""Upgrades a regular gift
 
         Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which to send the request; for bots only
+
             received_gift_id (:class:`str`):
                 Identifier of the gift
 
@@ -15363,6 +15828,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "upgradeGift",
+                "business_connection_id": business_connection_id,
                 "received_gift_id": received_gift_id,
                 "keep_original_details": keep_original_details,
                 "star_count": star_count,
@@ -15371,6 +15837,7 @@ class TDLibFunctions:
 
     async def transferGift(
         self,
+        business_connection_id: str = "",
         received_gift_id: str = "",
         new_owner_id: "types.MessageSender" = None,
         star_count: int = 0,
@@ -15378,6 +15845,9 @@ class TDLibFunctions:
         r"""Sends an upgraded gift to another user or a channel chat
 
         Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which to send the request; for bots only
+
             received_gift_id (:class:`str`):
                 Identifier of the gift
 
@@ -15394,6 +15864,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "transferGift",
+                "business_connection_id": business_connection_id,
                 "received_gift_id": received_gift_id,
                 "new_owner_id": new_owner_id,
                 "star_count": star_count,
@@ -15402,6 +15873,7 @@ class TDLibFunctions:
 
     async def getReceivedGifts(
         self,
+        business_connection_id: str = "",
         owner_id: "types.MessageSender" = None,
         exclude_unsaved: bool = False,
         exclude_saved: bool = False,
@@ -15415,6 +15887,9 @@ class TDLibFunctions:
         r"""Returns gifts received by the given user or chat
 
         Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which to send the request; for bots only
+
             owner_id (:class:`"types.MessageSender"`):
                 Identifier of the gift receiver
 
@@ -15449,6 +15924,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "getReceivedGifts",
+                "business_connection_id": business_connection_id,
                 "owner_id": owner_id,
                 "exclude_unsaved": exclude_unsaved,
                 "exclude_saved": exclude_saved,
@@ -15713,7 +16189,7 @@ class TDLibFunctions:
     async def getLocalizationTargetInfo(
         self, only_local: bool = False
     ) -> Union["types.Error", "types.LocalizationTargetInfo"]:
-        r"""Returns information about the current localization target\. This is an offline request if only\_local is true\. Can be called before authorization
+        r"""Returns information about the current localization target\. This is an offline method if only\_local is true\. Can be called before authorization
 
         Parameters:
             only_local (:class:`bool`):
@@ -17814,6 +18290,42 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "applyPremiumGiftCode", "code": code})
 
+    async def giftPremiumWithStars(
+        self,
+        user_id: int = 0,
+        star_count: int = 0,
+        month_count: int = 0,
+        text: "types.FormattedText" = None,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Allows to buy a Telegram Premium subscription for another user with payment in Telegram Stars; for bots only
+
+        Parameters:
+            user_id (:class:`int`):
+                Identifier of the user which will receive Telegram Premium
+
+            star_count (:class:`int`):
+                The number of Telegram Stars to pay for subscription
+
+            month_count (:class:`int`):
+                Number of months the Telegram Premium subscription will be active for the user
+
+            text (:class:`"types.FormattedText"`):
+                Text to show to the user receiving Telegram Premium; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "giftPremiumWithStars",
+                "user_id": user_id,
+                "star_count": star_count,
+                "month_count": month_count,
+                "text": text,
+            }
+        )
+
     async def launchPrepaidGiveaway(
         self,
         giveaway_id: int = 0,
@@ -17985,7 +18497,7 @@ class TDLibFunctions:
     async def canPurchaseFromStore(
         self, purpose: "types.StorePaymentPurpose" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Checks whether an in\-store purchase is possible\. Must be called before any in\-store purchase
+        r"""Checks whether an in\-store purchase is possible\. Must be called before any in\-store purchase\. For official applications only
 
         Parameters:
             purpose (:class:`"types.StorePaymentPurpose"`):
@@ -17997,48 +18509,16 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "canPurchaseFromStore", "purpose": purpose})
 
-    async def assignAppStoreTransaction(
-        self, receipt: bytes = b"", purpose: "types.StorePaymentPurpose" = None
-    ) -> Union["types.Error", "types.Ok"]:
-        r"""Informs server about a purchase through App Store\. For official applications only
-
-        Parameters:
-            receipt (:class:`bytes`):
-                App Store receipt
-
-            purpose (:class:`"types.StorePaymentPurpose"`):
-                Transaction purpose
-
-        Returns:
-            :class:`~pytdbot.types.Ok`
-        """
-
-        return await self.invoke(
-            {
-                "@type": "assignAppStoreTransaction",
-                "receipt": receipt,
-                "purpose": purpose,
-            }
-        )
-
-    async def assignGooglePlayTransaction(
+    async def assignStoreTransaction(
         self,
-        package_name: str = "",
-        store_product_id: str = "",
-        purchase_token: str = "",
+        transaction: "types.StoreTransaction" = None,
         purpose: "types.StorePaymentPurpose" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Informs server about a purchase through Google Play\. For official applications only
+        r"""Informs server about an in\-store purchase\. For official applications only
 
         Parameters:
-            package_name (:class:`str`):
-                Application package name
-
-            store_product_id (:class:`str`):
-                Identifier of the purchased store product
-
-            purchase_token (:class:`str`):
-                Google Play purchase token
+            transaction (:class:`"types.StoreTransaction"`):
+                Information about the transaction
 
             purpose (:class:`"types.StorePaymentPurpose"`):
                 Transaction purpose
@@ -18049,10 +18529,8 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "assignGooglePlayTransaction",
-                "package_name": package_name,
-                "store_product_id": store_product_id,
-                "purchase_token": purchase_token,
+                "@type": "assignStoreTransaction",
+                "transaction": transaction,
                 "purpose": purpose,
             }
         )
