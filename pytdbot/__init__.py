@@ -1,8 +1,17 @@
 from . import types, utils, filters, exception
 from .tdjson import TdJson
+from .client_manager import ClientManager
 from .client import Client
 
-__all__ = ["types", "utils", "filters", "exception", "TdJson", "Client"]
+__all__ = [
+    "types",
+    "utils",
+    "filters",
+    "exception",
+    "TdJson",
+    "ClientManager",
+    "Client",
+]
 
 __version__ = "0.9.2.dev2"
 __copyright__ = "Copyright (c) 2022-2025 Pytdbot, AYMENJD"

@@ -16,7 +16,7 @@ from concurrent.futures import ThreadPoolExecutor
 from threading import current_thread, main_thread
 from json import dumps
 
-from .tdjson import TdJson
+from .client_manager import ClientManager
 from .handlers import Decorators, Handler
 from .methods import Methods
 from .types import Plugins, LogStream
@@ -165,8 +165,11 @@ class Client(Decorators, Methods):
             if isinstance(self.__token, str)
             else None
         )
+        self.client_id = None
+        self.client_manager = None
         self.logger = getLogger(f"{__name__}:{self.my_id or 0}")
         self.td_verbosity = td_verbosity
+        self.td_log = td_log
         self.connection_state: str = None
         self.is_running = None
         self.me: types.User = None
@@ -178,8 +181,6 @@ class Client(Decorators, Methods):
 
         self._handlers = {"initializer": [], "finalizer": []}
         self._results: Dict[str, asyncio.Future] = {}
-        self._tdjson = None if self.is_rabbitmq else TdJson(lib_path, td_verbosity)
-        self.__listen_loop_task = None
         self._workers_tasks = None
         self.__authorization_state = None
         self.__cache = {"is_coro_filter": {}}
@@ -192,7 +193,9 @@ class Client(Decorators, Methods):
             "updateUser": self.__handle_update_user,
         }
         self.__login = False
+        self.__is_queue_worker = False
         self.__is_closing = False
+        self.client_manager = None
 
         self.loop = (
             loop if isinstance(loop, asyncio.AbstractEventLoop) else get_running_loop()
@@ -200,11 +203,6 @@ class Client(Decorators, Methods):
 
         if plugins is not None:
             self._load_plugins()
-
-        if isinstance(td_log, LogStream) and not self.is_rabbitmq:
-            self._tdjson.execute(
-                {"@type": "setLogStream", "log_stream": obj_to_dict(td_log)}
-            )
 
         self.logger.info(f"Pytdbot v{pytdbot.VERSION}")
 
@@ -231,10 +229,21 @@ class Client(Decorators, Methods):
         if not self.is_running:
             self.logger.info("Starting pytdbot client...")
 
+            if not self.client_manager:
+                self.client_manager = ClientManager(
+                    self, self.lib_path, self.td_verbosity, loop=self.loop
+                )
+                await self.client_manager.start()
+
+            if isinstance(self.td_log, LogStream) and not self.is_rabbitmq:
+                await self.__send(
+                    {"@type": "setLogStream", "log_stream": obj_to_dict(self.td_log)}
+                )
+
             if isinstance(self.workers, int):
                 self._workers_tasks = [
                     self.loop.create_task(self._queue_update_worker())
-                    for x in range(self.workers)
+                    for _ in range(self.workers)
                 ]
                 self.__is_queue_worker = True
 
@@ -245,8 +254,8 @@ class Client(Decorators, Methods):
 
             if self.is_rabbitmq:
                 await self.__startRabbitMQ()
-            else:
-                self.__listen_loop_task = self.loop.create_task(self.__listen_loop())
+            else:  # client_manager
+                self.is_running = True
 
         self.loop.create_task(
             self.getOption("version")
@@ -530,6 +539,9 @@ class Client(Decorators, Methods):
 
         self.__stop_client()
 
+        if not self.client_manager.start_clients_on_add:
+            await self.client_manager.close()
+
         self.logger.info("Instance closed")
 
         return True
@@ -548,11 +560,7 @@ class Client(Decorators, Methods):
         return result
 
     async def __send(self, request: dict) -> None:
-        if not self.is_rabbitmq:
-            self._tdjson.send(
-                request
-            )  # tdjson.send is non-blocking method, So we don't need run_in_executor. This improves performance
-        else:
+        if self.is_rabbitmq:
             await self.__rchannel.default_exchange.publish(
                 aio_pika.Message(
                     json_dumps(request, encode=True),
@@ -560,6 +568,8 @@ class Client(Decorators, Methods):
                 ),
                 routing_key=self.__rqueues["requests"].name,
             )
+        else:
+            self.client_manager.send(self.client_id, request)
 
     def _check_init_args(self):
         if self.user_bot:
@@ -656,31 +666,7 @@ class Client(Decorators, Methods):
             self.__cache["is_coro_filter"][func] = is_coro
             return is_coro
 
-    async def __listen_loop(self):
-        if self.is_rabbitmq:
-            return
-
-        with ThreadPoolExecutor(1, "pytdbot_listener") as thread:
-            try:
-                self.is_running = True
-                self.logger.info("Listening to updates...")
-
-                while self.is_running:
-                    update = await self.loop.run_in_executor(
-                        thread,
-                        self._tdjson.receive,
-                        1.0,  # Seconds
-                    )
-                    if update is None:
-                        continue
-                    self.loop.create_task(self._process_update(update))
-
-            except Exception:
-                self.logger.exception("Exception in __listen_loop")
-            finally:
-                self.is_running = False
-
-    async def _process_update(self, update):
+    async def process_update(self, update):
         if not update:
             self.logger.warning("Received None update")
             return
@@ -979,7 +965,7 @@ class Client(Decorators, Methods):
         for update in res.updates:
             # when using obj_to_dict the key "@client_id" won't exists
             # since it's not part of the object
-            await self._process_update(obj_to_dict(update))
+            await self.process_update(obj_to_dict(update))
 
         self.me = await self.getMe()
         self.is_authenticated = True
@@ -999,7 +985,7 @@ class Client(Decorators, Methods):
         await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
 
     async def __handle_rabbitmq_message(self, message: aio_pika.IncomingMessage):
-        await self._process_update(json_loads(message.body))
+        await self.process_update(json_loads(message.body))
 
     async def __on_update(self, update):
         self.loop.create_task(self.__handle_rabbitmq_message(update))
@@ -1041,9 +1027,6 @@ class Client(Decorators, Methods):
         if self.__is_queue_worker:
             for worker_task in self._workers_tasks:
                 worker_task.cancel()
-
-        if self.__listen_loop_task:
-            self.__listen_loop_task.cancel()
 
     def _register_signal_handlers(self):
         def _handle_signal():
