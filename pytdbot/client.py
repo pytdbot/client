@@ -12,7 +12,6 @@ from typing import Callable, Union, Dict
 from logging import getLogger, DEBUG
 
 from deepdiff import DeepDiff
-from concurrent.futures import ThreadPoolExecutor
 from threading import current_thread, main_thread
 from json import dumps
 
@@ -192,10 +191,8 @@ class Client(Decorators, Methods):
             "updateOption": self.__handle_update_option,
             "updateUser": self.__handle_update_user,
         }
-        self.__login = False
         self.__is_queue_worker = False
         self.__is_closing = False
-        self.client_manager = None
 
         self.loop = (
             loop if isinstance(loop, asyncio.AbstractEventLoop) else get_running_loop()
@@ -208,7 +205,6 @@ class Client(Decorators, Methods):
 
     async def __aenter__(self):
         await self.start()
-        await self.login()
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
@@ -260,43 +256,6 @@ class Client(Decorators, Methods):
         self.loop.create_task(
             self.getOption("version")
         )  # Ping TDLib to start processing updates
-
-        await self.login()
-
-    async def login(self) -> None:
-        r"""Login to Telegram."""
-
-        if (
-            not self.__token
-            or self.user_bot
-            or (self.is_authenticated or self.is_rabbitmq)
-        ):
-            return
-
-        self.__login = True
-
-        while self.authorization_state != "authorizationStateReady":
-            await asyncio.sleep(0.1)
-            if self.authorization_state == "authorizationStateClosed":
-                return
-
-        if not self.is_running:
-            return
-
-        self.me = await self.getMe()
-        if isinstance(self.me, types.Error):
-            self.logger.error(f"Get me error: {self.me.message}")
-
-        self.is_authenticated = True
-
-        self.logger.info(
-            "Logged in as {} {}".format(
-                self.me.first_name,
-                str(self.me.id)
-                if not self.me.usernames
-                else "@" + self.me.usernames.editable_username,
-            )
-        )
 
     def add_handler(
         self,
@@ -858,13 +817,27 @@ class Client(Decorators, Methods):
             f"Authorization state changed to {self.authorization_state.removeprefix('authorizationState')}"
         )
 
-        if self.__login:
-            if self.authorization_state == "authorizationStateWaitTdlibParameters":
-                await self._set_options()
-                await self.set_td_parameters()
-            elif self.authorization_state == "authorizationStateWaitPhoneNumber":
-                self._print_welcome()
-                await self.__handle_authorization_state_wait_phone_number()
+        if self.authorization_state == "authorizationStateWaitTdlibParameters":
+            await self._set_options()
+            await self.set_td_parameters()
+        elif self.authorization_state == "authorizationStateWaitPhoneNumber":
+            self._print_welcome()
+            await self.__handle_authorization_state_wait_phone_number()
+        elif self.authorization_state == "authorizationStateReady":
+            self.is_authenticated = True
+
+            self.me = await self.getMe()
+            if isinstance(self.me, types.Error):
+                self.logger.error(f"Get me error: {self.me.message}")
+
+            self.logger.info(
+                "Logged in as {} {}".format(
+                    self.me.first_name,
+                    str(self.me.id)
+                    if not self.me.usernames
+                    else "@" + self.me.usernames.editable_username,
+                )
+            )
 
         if (
             self.authorization_state == "authorizationStateClosed"
@@ -966,18 +939,6 @@ class Client(Decorators, Methods):
             # when using obj_to_dict the key "@client_id" won't exists
             # since it's not part of the object
             await self.process_update(obj_to_dict(update))
-
-        self.me = await self.getMe()
-        self.is_authenticated = True
-
-        self.logger.info(
-            "Logged in as {} {}".format(
-                self.me.first_name,
-                str(self.me.id)
-                if not self.me.usernames
-                else "@" + self.me.usernames.editable_username,
-            )
-        )
 
         if not self.no_updates:
             await self.__rqueues["updates"].consume(self.__on_update, no_ack=True)
