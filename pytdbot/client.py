@@ -950,7 +950,7 @@ class Client(Decorators, Methods):
         self.loop.create_task(self.__handle_rabbitmq_message(update))
 
     async def __handle_update_user(self, update: types.UpdateUser):
-        if self.is_authenticated and update.user.id == self.me.id:
+        if self.is_authenticated and self.me and update.user.id == self.me.id:
             self.logger.info(
                 f"Updating {self.me.first_name} "
                 f"({str(self.me.id) if not self.me.usernames else '@' + self.me.usernames.editable_username}) info"
