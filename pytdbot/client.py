@@ -1,35 +1,34 @@
-import signal
-import pytdbot
 import asyncio
-import aio_pika
-
-from platform import python_implementation, python_version
+import signal
+from importlib import import_module
+from json import dumps
+from logging import DEBUG, getLogger
 from os.path import join as join_path
 from pathlib import Path
-from importlib import import_module
-
-from typing import Callable, Union, Dict
-from logging import getLogger, DEBUG
-
-from deepdiff import DeepDiff
+from platform import python_implementation, python_version
 from threading import current_thread, main_thread
-from json import dumps
+from typing import Callable, Dict, Union
 
+import aio_pika
+from deepdiff import DeepDiff
+
+import pytdbot
+
+from . import types
 from .client_manager import ClientManager
+from .exception import AuthorizationError, StopHandlers
+from .filters import Filter
 from .handlers import Decorators, Handler
 from .methods import Methods
-from .types import Plugins, LogStream
-from . import types
-from .filters import Filter
-from .exception import StopHandlers, AuthorizationError
+from .types import LogStream, Plugins
 from .utils import (
-    get_running_loop,
     create_extra_id,
-    json_loads,
-    json_dumps,
-    get_bot_id_from_token,
-    obj_to_dict,
     dict_to_obj,
+    get_bot_id_from_token,
+    get_running_loop,
+    json_dumps,
+    json_loads,
+    obj_to_dict,
 )
 
 
@@ -194,6 +193,11 @@ class Client(Decorators, Methods):
         self.__is_queue_worker = False
         self.__is_closing = False
 
+        # RabbitMQ
+        self.__rqueues = None
+        self.__rconnection = None
+        self.__rchannel = None
+
         self.loop = (
             loop if isinstance(loop, asyncio.AbstractEventLoop) else get_running_loop()
         )
@@ -249,7 +253,7 @@ class Client(Decorators, Methods):
                 self.logger.info("Started with unlimited updates processes")
 
             if self.is_rabbitmq:
-                await self.__startRabbitMQ()
+                await self.__start_rabbitmq()
             else:  # client_manager
                 self.is_running = True
 
@@ -319,13 +323,11 @@ class Client(Decorators, Methods):
 
         if not isinstance(func, Callable):
             raise TypeError("func must be callable")
-        for update_type in self._handlers:
-            for handler in self._handlers[update_type]:
+        for _, handlers in self._handlers.items():
+            for handler in handlers.copy():
                 if handler.func == func:
-                    self._handlers[update_type].remove(handler)
-                    self._handlers[update_type].sort(
-                        key=lambda x: (x.position is None, x.position)
-                    )
+                    handlers.remove(handler)
+                    handlers.sort(key=lambda x: (x.position is None, x.position))
                     return True
         return False
 
@@ -831,12 +833,8 @@ class Client(Decorators, Methods):
                 self.logger.error(f"Get me error: {self.me.message}")
 
             self.logger.info(
-                "Logged in as {} {}".format(
-                    self.me.first_name,
-                    str(self.me.id)
-                    if not self.me.usernames
-                    else "@" + self.me.usernames.editable_username,
-                )
+                f"Logged in as {self.me.first_name} "
+                f"{str(self.me.id) if not self.me.usernames else '@' + self.me.usernames.editable_username}"
             )
 
         if (
@@ -901,7 +899,7 @@ class Client(Decorators, Methods):
             f"Could not connect to TDLib Server after {delay * retries} seconds timeout"
         )
 
-    async def __startRabbitMQ(self):
+    async def __start_rabbitmq(self):
         self.__rconnection = await aio_pika.connect_robust(
             self.__rabbitmq_url,
             client_properties={
@@ -954,12 +952,8 @@ class Client(Decorators, Methods):
     async def __handle_update_user(self, update: types.UpdateUser):
         if self.is_authenticated and update.user.id == self.me.id:
             self.logger.info(
-                "Updating {} ({}) info".format(
-                    self.me.first_name,
-                    str(self.me.id)
-                    if not self.me.usernames
-                    else "@" + self.me.usernames.editable_username,
-                )
+                f"Updating {self.me.first_name} "
+                f"({str(self.me.id) if not self.me.usernames else '@' + self.me.usernames.editable_username}) info"
             )
 
             try:
@@ -992,22 +986,22 @@ class Client(Decorators, Methods):
     def _register_signal_handlers(self):
         def _handle_signal():
             self.loop.create_task(self.stop())
-            for sig in {
+            for sig in (
                 signal.SIGINT,
                 signal.SIGTERM,
                 signal.SIGABRT,
                 signal.SIGSEGV,
-            }:
+            ):
                 self.loop.remove_signal_handler(sig)
 
         if current_thread() is main_thread():
             try:
-                for sig in {
+                for sig in (
                     signal.SIGINT,
                     signal.SIGTERM,
                     signal.SIGABRT,
                     signal.SIGSEGV,
-                }:
+                ):
                     self.loop.add_signal_handler(sig, _handle_signal)
             except NotImplementedError:  # Windows dosen't support add_signal_handler
                 pass
@@ -1026,12 +1020,12 @@ def deepdiff(self, d1, d2):
 
     deep = DeepDiff(d1, d2, ignore_order=True, view="tree")
 
-    for parent in deep.keys():
-        for diff in deep[parent]:
+    for parent, diffs in deep.items():
+        for diff in diffs:
             difflist = diff.path(output_format="list")
-            key = ".".join(str(v) for v in difflist)
+            key = ".".join(map(str, difflist))
 
-            if parent in {"dictionary_item_added", "values_changed"}:
+            if parent in ("dictionary_item_added", "values_changed"):
                 self.logger.info(f"{key} changed to {diff.t2}")
             elif parent == "dictionary_item_removed":
                 self.logger.info(f"{key} removed")
