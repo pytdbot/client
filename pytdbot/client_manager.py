@@ -79,7 +79,7 @@ class ClientManager:
         self.__pending_clients = None
 
     async def add_client(
-        self, client: pytdbot.Client, start_client: bool = False
+        self, client: "pytdbot.Client", start_client: bool = False
     ) -> None:
         """Add a client to the manager
 
