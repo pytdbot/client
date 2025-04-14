@@ -14,7 +14,7 @@ class ClientManager:
 
     def __init__(
         self,
-        clients: List[pytdbot.Client] = None,
+        clients: List["pytdbot.Client"] = None,
         lib_path: str = None,
         verbosity: int = 2,
         loop: asyncio.AbstractEventLoop = None,
