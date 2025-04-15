@@ -189,7 +189,7 @@ class ClientManager:
                 await self.delete_client(client_id, close_client=True)
 
         # Send dummy request to wake up receiver
-        self.send(1, {"@type": "getOption", "name": "version"})
+        self.send(0, {"@type": "getOption", "name": "version"})
 
         await self.__receiver_task
 
