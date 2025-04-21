@@ -387,7 +387,7 @@ class MessageBoundMethods:
             client=self._client,
             chat_id=self.chat_id,
             action=action,
-            message_thread_id=message_thread_id or self.message_thread_id,
+            message_thread_id=message_thread_id,
         )
 
     async def reply_text(
