@@ -140,7 +140,7 @@ class TdJson:
                 Request to be sent
         """
 
-        if not client_id:
+        if client_id is None:
             raise ValueError("client_id is required")
 
         self._td_send(client_id, json_dumps(data, encode=not self.using_binding))
