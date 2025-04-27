@@ -1,11 +1,13 @@
 from pytdbot import Client, types
 import logging
 
+# Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="[%(levelname)s][p %(process)d %(threadName)s][%(created)f][%(filename)s:%(lineno)d][%(funcName)s]  %(message)s",
 )
 
+# Initialize the client
 client = Client(
     api_id=0,  # Your api_id. You can get it from https://my.telegram.org/
     api_hash="API_HASH",  # Your api_hash. You can get it from https://my.telegram.org/
@@ -17,16 +19,20 @@ client = Client(
     td_log=types.LogStreamFile("tdlib.log", 104857600),  # Set TDLib log file path
 )
 
+# Define the welcome message
+async def welcome_message(message: types.Message):
+    return f"Hello {await message.mention('html')}!\n" \
+           "Here are some bot commands:\n\n" \
+           "- /keyboard - show keyboard\n" \
+           "- /inline - show inline keyboard\n" \
+           "- /remove - remove keyboard\n" \
+           "- /force - force reply"
 
+# Handle the '/start' command
 @client.on_message()
 async def start(c: Client, message: types.Message):
     if message.text == "/start":
-        text = "Hello {}!\n".format(await message.mention("html"))
-        text += "Here is some bot commands:\n\n"
-        text += "- /keyboard - show keyboard\n"
-        text += "- /inline - show inline keyboard\n"
-        text += "- /remove - remove keyboard\n"
-        text += "- /force - force reply"
+        text = await welcome_message(message)
 
         await message.reply_text(
             text,
@@ -35,32 +41,24 @@ async def start(c: Client, message: types.Message):
                     [
                         types.InlineKeyboardButton(
                             text="GitHub",
-                            type=types.InlineKeyboardButtonTypeUrl(
-                                "https://github.com/pytdbot/client"
-                            ),
+                            type=types.InlineKeyboardButtonTypeUrl("https://github.com/pytdbot/client"),
                         )
                     ]
                 ]
             ),
         )
 
-
+# Handle other commands
 @client.on_message()
 async def commands(c: Client, message: types.Message):
     if message.text == "/inline":
         await message.reply_text(
-            "This is a Inline keyboard",
+            "This is an Inline keyboard",
             reply_markup=types.ReplyMarkupInlineKeyboard(
                 [
                     [
-                        types.InlineKeyboardButton(
-                            text="OwO",
-                            type=types.InlineKeyboardButtonTypeCallback(b"OwO"),
-                        ),
-                        types.InlineKeyboardButton(
-                            text="UwU",
-                            type=types.InlineKeyboardButtonTypeCallback(b"UwU"),
-                        ),
+                        types.InlineKeyboardButton(text="OwO", type=types.InlineKeyboardButtonTypeCallback(b"OwO")),
+                        types.InlineKeyboardButton(text="UwU", type=types.InlineKeyboardButtonTypeCallback(b"UwU")),
                     ],
                 ]
             ),
@@ -71,12 +69,8 @@ async def commands(c: Client, message: types.Message):
             reply_markup=types.ReplyMarkupShowKeyboard(
                 [
                     [
-                        types.KeyboardButton(
-                            "OwO", type=types.KeyboardButtonTypeText()
-                        ),
-                        types.KeyboardButton(
-                            "UwU", type=types.KeyboardButtonTypeText()
-                        ),
+                        types.KeyboardButton("OwO", type=types.KeyboardButtonTypeText()),
+                        types.KeyboardButton("UwU", type=types.KeyboardButtonTypeText()),
                     ],
                 ],
                 one_time=True,
@@ -95,30 +89,27 @@ async def commands(c: Client, message: types.Message):
         )
     elif message.text:
         if "/start" not in message.text:
-            await message.reply_text('You said "{}"'.format(message.text))
+            await message.reply_text(f'You said "{message.text}"')
 
-
+# Handle callback queries
 @client.on_updateNewCallbackQuery()
 async def callback_query(c: Client, message: types.UpdateNewCallbackQuery):
     if message.payload.data:
         await c.editTextMessage(
             message.chat_id,
             message.message_id,
-            "You pressed {}".format(message.payload.data.decode()),
+            f"You pressed {message.payload.data.decode()}",
             reply_markup=types.ReplyMarkupInlineKeyboard(
                 [
                     [
                         types.InlineKeyboardButton(
                             text="GitHub",
-                            type=types.InlineKeyboardButtonTypeUrl(
-                                "https://github.com/pytdbot/client"
-                            ),
+                            type=types.InlineKeyboardButtonTypeUrl("https://github.com/pytdbot/client"),
                         )
                     ]
                 ]
             ),
         )
-
 
 # Run the client
 client.run()
