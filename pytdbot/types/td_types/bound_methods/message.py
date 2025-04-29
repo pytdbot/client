@@ -1,7 +1,9 @@
-from typing import List, Union, Literal
-from .chatActions import ChatActions
 from functools import lru_cache
+from typing import List, Literal, Union
+
 import pytdbot
+
+from .chatActions import ChatActions
 
 
 class MessageBoundMethods:
@@ -154,6 +156,33 @@ class MessageBoundMethods:
         return await self._client.getMessageProperties(
             chat_id=self.chat_id,
             message_id=self.id,
+        )
+
+    async def getMessageLink(
+        self,
+        media_timestamp: int = 0,
+        for_album: bool = False,
+        in_message_thread: bool = False,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.MessageLink"]:
+        r"""Get message link
+
+        Parameters:
+            media_timestamp (:class:`int`):
+                If not 0, timestamp from which the video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the message content or in its link preview
+
+            for_album (:class:`bool`):
+                Pass true to create a link for the whole media album
+
+            in_message_thread (:class:`bool`):
+                Pass true to create a link to the message as a channel post comment, in a message thread, or a forum topic
+        """
+
+        return await self._client.getMessageLink(
+            chat_id=self.chat_id,
+            message_id=self.id,
+            media_timestamp=media_timestamp,
+            for_album=for_album,
+            in_message_thread=in_message_thread,
         )
 
     async def getRepliedMessage(
