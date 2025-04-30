@@ -3256,6 +3256,86 @@ class Updates:
 
         return decorator
 
+    def on_updateGroupCallParticipants(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        r"""The list of group call participants that can send and receive encrypted call data has changed; for group calls not bound to a chat only
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateGroupCallParticipants", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateGroupCallParticipants", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateGroupCallParticipants", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateGroupCallVerificationState(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        r"""The verification state of an encrypted group call has changed; for group calls not bound to a chat only
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateGroupCallVerificationState", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateGroupCallVerificationState", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateGroupCallVerificationState", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateNewCallSignalingData(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
@@ -3480,12 +3560,12 @@ class Updates:
 
         return decorator
 
-    def on_updateStorySendSucceeded(
+    def on_updateStoryPostSucceeded(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        r"""A story has been successfully sent
+        r"""A story has been successfully posted
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3504,28 +3584,28 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateStorySendSucceeded", func, filters, position
+                        "updateStoryPostSucceeded", func, filters, position
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateStorySendSucceeded", self, position
+                    func, "updateStoryPostSucceeded", self, position
                 )
             else:
                 func._handler = Handler(
-                    func, "updateStorySendSucceeded", filters, position
+                    func, "updateStoryPostSucceeded", filters, position
                 )
             return func
 
         return decorator
 
-    def on_updateStorySendFailed(
+    def on_updateStoryPostFailed(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
     ) -> Callable:
-        r"""A story failed to send\. If the story sending is canceled, then updateStoryDeleted will be received instead of this update
+        r"""A story failed to post\. If the story posting is canceled, then updateStoryDeleted will be received instead of this update
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -3543,14 +3623,14 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateStorySendFailed", func, filters, position)
+                    self.add_handler("updateStoryPostFailed", func, filters, position)
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateStorySendFailed", self, position)
+                func._handler = Handler(func, "updateStoryPostFailed", self, position)
             else:
                 func._handler = Handler(
-                    func, "updateStorySendFailed", filters, position
+                    func, "updateStoryPostFailed", filters, position
                 )
             return func
 

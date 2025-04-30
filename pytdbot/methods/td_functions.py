@@ -2234,7 +2234,7 @@ class TDLibFunctions:
     async def searchCallMessages(
         self, offset: str = "", limit: int = 0, only_missed: bool = False
     ) -> Union["types.Error", "types.FoundMessages"]:
-        r"""Searches for call messages\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
+        r"""Searches for call and group call messages\. Returns the results in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
 
         Parameters:
             offset (:class:`str`):
@@ -2309,7 +2309,7 @@ class TDLibFunctions:
 
     async def searchPublicStoriesByTag(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         tag: str = "",
         offset: str = "",
         limit: int = 0,
@@ -2317,7 +2317,7 @@ class TDLibFunctions:
         r"""Searches for public stories containing the given hashtag or cashtag\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
+            story_poster_chat_id (:class:`int`):
                 Identifier of the chat that posted the stories to search for; pass 0 to search stories in all chats
 
             tag (:class:`str`):
@@ -2336,7 +2336,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "searchPublicStoriesByTag",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "tag": tag,
                 "offset": offset,
                 "limit": limit,
@@ -4407,17 +4407,17 @@ class TDLibFunctions:
 
     async def editBusinessStory(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         story_id: int = 0,
         content: "types.InputStoryContent" = None,
         areas: "types.InputStoryAreas" = None,
         caption: "types.FormattedText" = None,
         privacy_settings: "types.StoryPrivacySettings" = None,
     ) -> Union["types.Error", "types.Story"]:
-        r"""Changes a story sent by the bot on behalf of a business account; for bots only
+        r"""Changes a story posted by the bot on behalf of a business account; for bots only
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
+            story_poster_chat_id (:class:`int`):
                 Identifier of the chat that posted the story
 
             story_id (:class:`int`):
@@ -4442,7 +4442,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "editBusinessStory",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
                 "content": content,
                 "areas": areas,
@@ -4454,7 +4454,7 @@ class TDLibFunctions:
     async def deleteBusinessStory(
         self, business_connection_id: str = "", story_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Deletes a story sent by the bot on behalf of a business account; for bots only
+        r"""Deletes a story posted by the bot on behalf of a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -9136,12 +9136,12 @@ class TDLibFunctions:
         return await self.invoke({"@type": "getCurrentWeather", "location": location})
 
     async def getStory(
-        self, story_sender_chat_id: int = 0, story_id: int = 0, only_local: bool = False
+        self, story_poster_chat_id: int = 0, story_id: int = 0, only_local: bool = False
     ) -> Union["types.Error", "types.Story"]:
         r"""Returns a story
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
+            story_poster_chat_id (:class:`int`):
                 Identifier of the chat that posted the story
 
             story_id (:class:`int`):
@@ -9157,14 +9157,14 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "getStory",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
                 "only_local": only_local,
             }
         )
 
-    async def getChatsToSendStories(self) -> Union["types.Error", "types.Chats"]:
-        r"""Returns supergroup and channel chats in which the current user has the right to post stories\. The chats must be rechecked with canSendStory before actually trying to post a story there
+    async def getChatsToPostStories(self) -> Union["types.Error", "types.Chats"]:
+        r"""Returns supergroup and channel chats in which the current user has the right to post stories\. The chats must be rechecked with canPostStory before actually trying to post a story there
 
         Returns:
             :class:`~pytdbot.types.Chats`
@@ -9172,26 +9172,26 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "getChatsToSendStories",
+                "@type": "getChatsToPostStories",
             }
         )
 
-    async def canSendStory(
+    async def canPostStory(
         self, chat_id: int = 0
-    ) -> Union["types.Error", "types.CanSendStoryResult"]:
-        r"""Checks whether the current user can send a story on behalf of a chat; requires can\_post\_stories right for supergroup and channel chats
+    ) -> Union["types.Error", "types.CanPostStoryResult"]:
+        r"""Checks whether the current user can post a story on behalf of a chat; requires can\_post\_stories right for supergroup and channel chats
 
         Parameters:
             chat_id (:class:`int`):
                 Chat identifier\. Pass Saved Messages chat identifier when posting a story on behalf of the current user
 
         Returns:
-            :class:`~pytdbot.types.CanSendStoryResult`
+            :class:`~pytdbot.types.CanPostStoryResult`
         """
 
-        return await self.invoke({"@type": "canSendStory", "chat_id": chat_id})
+        return await self.invoke({"@type": "canPostStory", "chat_id": chat_id})
 
-    async def sendStory(
+    async def postStory(
         self,
         chat_id: int = 0,
         content: "types.InputStoryContent" = None,
@@ -9203,7 +9203,7 @@ class TDLibFunctions:
         is_posted_to_chat_page: bool = False,
         protect_content: bool = False,
     ) -> Union["types.Error", "types.Story"]:
-        r"""Sends a new story to a chat; requires can\_post\_stories right for supergroup and channel chats\. Returns a temporary story
+        r"""Posts a new story on behalf of a chat; requires can\_post\_stories right for supergroup and channel chats\. Returns a temporary story
 
         Parameters:
             chat_id (:class:`int`):
@@ -9219,7 +9219,7 @@ class TDLibFunctions:
                 Story caption; pass null to use an empty caption; 0\-getOption\(\"story\_caption\_length\_max\"\) characters; can have entities only if getOption\(\"can\_use\_text\_entities\_in\_story\_caption\"\)
 
             privacy_settings (:class:`"types.StoryPrivacySettings"`):
-                The privacy settings for the story; ignored for stories sent to supergroup and channel chats
+                The privacy settings for the story; ignored for stories posted on behalf of supergroup and channel chats
 
             active_period (:class:`int`):
                 Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, or 2 \* 86400 for Telegram Premium users, and 86400 otherwise
@@ -9239,7 +9239,7 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "sendStory",
+                "@type": "postStory",
                 "chat_id": chat_id,
                 "content": content,
                 "areas": areas,
@@ -9254,7 +9254,7 @@ class TDLibFunctions:
 
     async def editStory(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         story_id: int = 0,
         content: "types.InputStoryContent" = None,
         areas: "types.InputStoryAreas" = None,
@@ -9263,7 +9263,7 @@ class TDLibFunctions:
         r"""Changes content and caption of a story\. Can be called only if story\.can\_be\_edited \=\= true
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
+            story_poster_chat_id (:class:`int`):
                 Identifier of the chat that posted the story
 
             story_id (:class:`int`):
@@ -9285,7 +9285,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "editStory",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
                 "content": content,
                 "areas": areas,
@@ -9295,14 +9295,14 @@ class TDLibFunctions:
 
     async def editStoryCover(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         story_id: int = 0,
         cover_frame_timestamp: float = 0.0,
     ) -> Union["types.Error", "types.Ok"]:
         r"""Changes cover of a video story\. Can be called only if story\.can\_be\_edited \=\= true and the story isn't being edited now
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
+            story_poster_chat_id (:class:`int`):
                 Identifier of the chat that posted the story
 
             story_id (:class:`int`):
@@ -9318,7 +9318,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "editStoryCover",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
                 "cover_frame_timestamp": cover_frame_timestamp,
             }
@@ -9350,14 +9350,14 @@ class TDLibFunctions:
 
     async def toggleStoryIsPostedToChatPage(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         story_id: int = 0,
         is_posted_to_chat_page: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
         r"""Toggles whether a story is accessible after expiration\. Can be called only if story\.can\_toggle\_is\_posted\_to\_chat\_page \=\= true
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
+            story_poster_chat_id (:class:`int`):
                 Identifier of the chat that posted the story
 
             story_id (:class:`int`):
@@ -9373,19 +9373,19 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "toggleStoryIsPostedToChatPage",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
                 "is_posted_to_chat_page": is_posted_to_chat_page,
             }
         )
 
     async def deleteStory(
-        self, story_sender_chat_id: int = 0, story_id: int = 0
+        self, story_poster_chat_id: int = 0, story_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Deletes a previously sent story\. Can be called only if story\.can\_be\_deleted \=\= true
+        r"""Deletes a previously posted story\. Can be called only if story\.can\_be\_deleted \=\= true
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
+            story_poster_chat_id (:class:`int`):
                 Identifier of the chat that posted the story
 
             story_id (:class:`int`):
@@ -9398,7 +9398,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "deleteStory",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
             }
         )
@@ -9421,7 +9421,7 @@ class TDLibFunctions:
     async def loadActiveStories(
         self, story_list: "types.StoryList" = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Loads more active stories from a story list\. The loaded stories will be sent through updates\. Active stories are sorted by the pair \(active\_stories\.order, active\_stories\.story\_sender\_chat\_id\) in descending order\. Returns a 404 error if all active stories have been loaded
+        r"""Loads more active stories from a story list\. The loaded stories will be sent through updates\. Active stories are sorted by the pair \(active\_stories\.order, active\_stories\.story\_poster\_chat\_id\) in descending order\. Returns a 404 error if all active stories have been loaded
 
         Parameters:
             story_list (:class:`"types.StoryList"`):
@@ -9555,13 +9555,13 @@ class TDLibFunctions:
         )
 
     async def openStory(
-        self, story_sender_chat_id: int = 0, story_id: int = 0
+        self, story_poster_chat_id: int = 0, story_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
         r"""Informs TDLib that a story is opened and is being viewed by the user
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
-                The identifier of the sender of the opened story
+            story_poster_chat_id (:class:`int`):
+                The identifier of the chat that posted the opened story
 
             story_id (:class:`int`):
                 The identifier of the story
@@ -9573,19 +9573,19 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "openStory",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
             }
         )
 
     async def closeStory(
-        self, story_sender_chat_id: int = 0, story_id: int = 0
+        self, story_poster_chat_id: int = 0, story_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
         r"""Informs TDLib that a story is closed by the user
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
-                The identifier of the sender of the story to close
+            story_poster_chat_id (:class:`int`):
+                The identifier of the poster of the story to close
 
             story_id (:class:`int`):
                 The identifier of the story
@@ -9597,7 +9597,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "closeStory",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
             }
         )
@@ -9621,7 +9621,7 @@ class TDLibFunctions:
 
     async def setStoryReaction(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         story_id: int = 0,
         reaction_type: "types.ReactionType" = None,
         update_recent_reactions: bool = False,
@@ -9629,8 +9629,8 @@ class TDLibFunctions:
         r"""Changes chosen reaction on a story that has already been sent
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
-                The identifier of the sender of the story
+            story_poster_chat_id (:class:`int`):
+                The identifier of the poster of the story
 
             story_id (:class:`int`):
                 The identifier of the story
@@ -9648,7 +9648,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "setStoryReaction",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
                 "reaction_type": reaction_type,
                 "update_recent_reactions": update_recent_reactions,
@@ -9708,7 +9708,7 @@ class TDLibFunctions:
 
     async def getChatStoryInteractions(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         story_id: int = 0,
         reaction_type: "types.ReactionType" = None,
         prefer_forwards: bool = False,
@@ -9718,8 +9718,8 @@ class TDLibFunctions:
         r"""Returns interactions with a story posted in a chat\. Can be used only if story is posted on behalf of a chat and the user is an administrator in the chat
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
-                The identifier of the sender of the story
+            story_poster_chat_id (:class:`int`):
+                The identifier of the poster of the story
 
             story_id (:class:`int`):
                 Story identifier
@@ -9743,7 +9743,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "getChatStoryInteractions",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
                 "reaction_type": reaction_type,
                 "prefer_forwards": prefer_forwards,
@@ -9754,7 +9754,7 @@ class TDLibFunctions:
 
     async def reportStory(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         story_id: int = 0,
         option_id: bytes = b"",
         text: str = "",
@@ -9762,8 +9762,8 @@ class TDLibFunctions:
         r"""Reports a story to the Telegram moderators
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
-                The identifier of the sender of the story to report
+            story_poster_chat_id (:class:`int`):
+                The identifier of the poster of the story to report
 
             story_id (:class:`int`):
                 The identifier of the story to report
@@ -9781,7 +9781,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "reportStory",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
                 "option_id": option_id,
                 "text": text,
@@ -9803,7 +9803,7 @@ class TDLibFunctions:
 
     async def getStoryPublicForwards(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         story_id: int = 0,
         offset: str = "",
         limit: int = 0,
@@ -9811,8 +9811,8 @@ class TDLibFunctions:
         r"""Returns forwards of a story as a message to public chats and reposts by public channels\. Can be used only if the story is posted on behalf of the current user or story\.can\_get\_statistics \=\= true\. For optimal performance, the number of returned messages and stories is chosen by TDLib
 
         Parameters:
-            story_sender_chat_id (:class:`int`):
-                The identifier of the sender of the story
+            story_poster_chat_id (:class:`int`):
+                The identifier of the poster of the story
 
             story_id (:class:`int`):
                 The identifier of the story
@@ -9830,7 +9830,7 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "getStoryPublicForwards",
-                "story_sender_chat_id": story_sender_chat_id,
+                "story_poster_chat_id": story_poster_chat_id,
                 "story_id": story_id,
                 "offset": offset,
                 "limit": limit,
@@ -10423,7 +10423,7 @@ class TDLibFunctions:
 
     async def readFilePart(
         self, file_id: int = 0, offset: int = 0, count: int = 0
-    ) -> Union["types.Error", "types.FilePart"]:
+    ) -> Union["types.Error", "types.Data"]:
         r"""Reads a part of a file from the TDLib file cache and returns read bytes\. This method is intended to be used only if the application has no direct access to TDLib's file system, because it is usually slower than a direct read from the file
 
         Parameters:
@@ -10437,7 +10437,7 @@ class TDLibFunctions:
                 Number of bytes to read\. An error will be returned if there are not enough bytes available in the file from the specified position\. Pass 0 to read all available data from the specified position
 
         Returns:
-            :class:`~pytdbot.types.FilePart`
+            :class:`~pytdbot.types.Data`
         """
 
         return await self.invoke(
@@ -11219,7 +11219,6 @@ class TDLibFunctions:
         user_id: int = 0,
         protocol: "types.CallProtocol" = None,
         is_video: bool = False,
-        group_call_id: int = 0,
     ) -> Union["types.Error", "types.CallId"]:
         r"""Creates a new call
 
@@ -11233,9 +11232,6 @@ class TDLibFunctions:
             is_video (:class:`bool`):
                 Pass true to create a video call
 
-            group_call_id (:class:`int`):
-                Identifier of the group call to which the user will be added after exchanging private key via the call; pass 0 if none
-
         Returns:
             :class:`~pytdbot.types.CallId`
         """
@@ -11246,7 +11242,6 @@ class TDLibFunctions:
                 "user_id": user_id,
                 "protocol": protocol,
                 "is_video": is_video,
-                "group_call_id": group_call_id,
             }
         )
 
@@ -11294,6 +11289,7 @@ class TDLibFunctions:
         self,
         call_id: int = 0,
         is_disconnected: bool = False,
+        invite_link: str = "",
         duration: int = 0,
         is_video: bool = False,
         connection_id: int = 0,
@@ -11306,6 +11302,9 @@ class TDLibFunctions:
 
             is_disconnected (:class:`bool`):
                 Pass true if the user was disconnected
+
+            invite_link (:class:`str`):
+                If the call was upgraded to a group call, pass invite link to the group call
 
             duration (:class:`int`):
                 The call duration, in seconds
@@ -11325,6 +11324,7 @@ class TDLibFunctions:
                 "@type": "discardCall",
                 "call_id": call_id,
                 "is_disconnected": is_disconnected,
+                "invite_link": invite_link,
                 "duration": duration,
                 "is_video": is_video,
                 "connection_id": connection_id,
@@ -11489,24 +11489,26 @@ class TDLibFunctions:
         )
 
     async def createGroupCall(
-        self, call_id: int = 0
-    ) -> Union["types.Error", "types.Ok"]:
-        r"""Creates a group call from a one\-to\-one call
+        self, join_parameters: "types.GroupCallJoinParameters" = None
+    ) -> Union["types.Error", "types.GroupCallInfo"]:
+        r"""Creates a new group call that isn't bound to a chat
 
         Parameters:
-            call_id (:class:`int`):
-                Call identifier
+            join_parameters (:class:`"types.GroupCallJoinParameters"`):
+                Parameters to join the call; pass null to only create call link without joining the call
 
         Returns:
-            :class:`~pytdbot.types.Ok`
+            :class:`~pytdbot.types.GroupCallInfo`
         """
 
-        return await self.invoke({"@type": "createGroupCall", "call_id": call_id})
+        return await self.invoke(
+            {"@type": "createGroupCall", "join_parameters": join_parameters}
+        )
 
     async def getVideoChatRtmpUrl(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.RtmpUrl"]:
-        r"""Returns RTMP URL for streaming to the chat; requires can\_manage\_video\_chats administrator right
+        r"""Returns RTMP URL for streaming to the video chat of a chat; requires can\_manage\_video\_chats administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -11521,7 +11523,7 @@ class TDLibFunctions:
     async def replaceVideoChatRtmpUrl(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.RtmpUrl"]:
-        r"""Replaces the current RTMP URL for streaming to the chat; requires owner privileges
+        r"""Replaces the current RTMP URL for streaming to the video chat of a chat; requires owner privileges in the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -11552,27 +11554,27 @@ class TDLibFunctions:
             {"@type": "getGroupCall", "group_call_id": group_call_id}
         )
 
-    async def startScheduledGroupCall(
+    async def startScheduledVideoChat(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Starts a scheduled group call
+        r"""Starts a scheduled video chat
 
         Parameters:
             group_call_id (:class:`int`):
-                Group call identifier
+                Group call identifier of the video chat
 
         Returns:
             :class:`~pytdbot.types.Ok`
         """
 
         return await self.invoke(
-            {"@type": "startScheduledGroupCall", "group_call_id": group_call_id}
+            {"@type": "startScheduledVideoChat", "group_call_id": group_call_id}
         )
 
-    async def toggleGroupCallEnabledStartNotification(
+    async def toggleVideoChatEnabledStartNotification(
         self, group_call_id: int = 0, enabled_start_notification: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Toggles whether the current user will receive a notification when the group call starts; scheduled group calls only
+        r"""Toggles whether the current user will receive a notification when the video chat starts; for scheduled video chats only
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11587,7 +11589,7 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "toggleGroupCallEnabledStartNotification",
+                "@type": "toggleVideoChatEnabledStartNotification",
                 "group_call_id": group_call_id,
                 "enabled_start_notification": enabled_start_notification,
             }
@@ -11595,16 +11597,38 @@ class TDLibFunctions:
 
     async def joinGroupCall(
         self,
+        input_group_call: "types.InputGroupCall" = None,
+        join_parameters: "types.GroupCallJoinParameters" = None,
+    ) -> Union["types.Error", "types.GroupCallInfo"]:
+        r"""Joins a group call that is not bound to a chat
+
+        Parameters:
+            input_group_call (:class:`"types.InputGroupCall"`):
+                The group call to join
+
+            join_parameters (:class:`"types.GroupCallJoinParameters"`):
+                Parameters to join the call
+
+        Returns:
+            :class:`~pytdbot.types.GroupCallInfo`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "joinGroupCall",
+                "input_group_call": input_group_call,
+                "join_parameters": join_parameters,
+            }
+        )
+
+    async def joinVideoChat(
+        self,
         group_call_id: int = 0,
         participant_id: "types.MessageSender" = None,
-        audio_source_id: int = 0,
-        payload: str = "",
-        is_muted: bool = False,
-        is_my_video_enabled: bool = False,
+        join_parameters: "types.GroupCallJoinParameters" = None,
         invite_hash: str = "",
-        key_fingerprint: int = 0,
     ) -> Union["types.Error", "types.Text"]:
-        r"""Joins an active group call\. Returns join response payload for tgcalls
+        r"""Joins an active video chat\. Returns join response payload for tgcalls
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11613,23 +11637,11 @@ class TDLibFunctions:
             participant_id (:class:`"types.MessageSender"`):
                 Identifier of a group call participant, which will be used to join the call; pass null to join as self; video chats only
 
-            audio_source_id (:class:`int`):
-                Caller audio channel synchronization source identifier; received from tgcalls
-
-            payload (:class:`str`):
-                Group call join payload; received from tgcalls
-
-            is_muted (:class:`bool`):
-                Pass true to join the call with muted microphone
-
-            is_my_video_enabled (:class:`bool`):
-                Pass true if the user's video is enabled
+            join_parameters (:class:`"types.GroupCallJoinParameters"`):
+                Parameters to join the call
 
             invite_hash (:class:`str`):
-                If non\-empty, invite hash to be used to join the group call without being muted by administrators
-
-            key_fingerprint (:class:`int`):
-                Fingerprint of the encryption key for E2E group calls not bound to a chat; pass 0 for voice chats
+                Invite hash as received from internalLinkTypeVideoChat
 
         Returns:
             :class:`~pytdbot.types.Text`
@@ -11637,15 +11649,11 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "joinGroupCall",
+                "@type": "joinVideoChat",
                 "group_call_id": group_call_id,
                 "participant_id": participant_id,
-                "audio_source_id": audio_source_id,
-                "payload": payload,
-                "is_muted": is_muted,
-                "is_my_video_enabled": is_my_video_enabled,
+                "join_parameters": join_parameters,
                 "invite_hash": invite_hash,
-                "key_fingerprint": key_fingerprint,
             }
         )
 
@@ -11718,10 +11726,10 @@ class TDLibFunctions:
             {"@type": "endGroupCallScreenSharing", "group_call_id": group_call_id}
         )
 
-    async def setGroupCallTitle(
+    async def setVideoChatTitle(
         self, group_call_id: int = 0, title: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Sets group call title\. Requires groupCall\.can\_be\_managed group call flag
+        r"""Sets title of a video chat; requires groupCall\.can\_be\_managed right
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11736,16 +11744,16 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "setGroupCallTitle",
+                "@type": "setVideoChatTitle",
                 "group_call_id": group_call_id,
                 "title": title,
             }
         )
 
-    async def toggleGroupCallMuteNewParticipants(
+    async def toggleVideoChatMuteNewParticipants(
         self, group_call_id: int = 0, mute_new_participants: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Toggles whether new participants of a group call can be unmuted only by administrators of the group call\. Requires groupCall\.can\_toggle\_mute\_new\_participants group call flag
+        r"""Toggles whether new participants of a video chat can be unmuted only by administrators of the video chat\. Requires groupCall\.can\_toggle\_mute\_new\_participants right
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11760,16 +11768,92 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "toggleGroupCallMuteNewParticipants",
+                "@type": "toggleVideoChatMuteNewParticipants",
                 "group_call_id": group_call_id,
                 "mute_new_participants": mute_new_participants,
             }
         )
 
-    async def inviteGroupCallParticipants(
+    async def inviteGroupCallParticipant(
+        self, group_call_id: int = 0, user_id: int = 0, is_video: bool = False
+    ) -> Union["types.Error", "types.InviteGroupCallParticipantResult"]:
+        r"""Invites a user to an active group call; for group calls not bound to a chat only\. Sends a service message of the type messageGroupCall\. The group call can have at most getOption\(\"group\_call\_participant\_count\_max\"\) participants
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+            user_id (:class:`int`):
+                User identifier
+
+            is_video (:class:`bool`):
+                Pass true if the group call is a video call
+
+        Returns:
+            :class:`~pytdbot.types.InviteGroupCallParticipantResult`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "inviteGroupCallParticipant",
+                "group_call_id": group_call_id,
+                "user_id": user_id,
+                "is_video": is_video,
+            }
+        )
+
+    async def declineGroupCallInvitation(
+        self, chat_id: int = 0, message_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Declines an invitation to an active group call via messageGroupCall\. Can be called both by the sender and the receiver of the invitation
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat with the message
+
+            message_id (:class:`int`):
+                Identifier of the message of the type messageGroupCall
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "declineGroupCallInvitation",
+                "chat_id": chat_id,
+                "message_id": message_id,
+            }
+        )
+
+    async def banGroupCallParticipants(
         self, group_call_id: int = 0, user_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Invites users to an active group call\. Sends a service message of type messageInviteVideoChatParticipants for video chats
+        r"""Bans users from a group call not bound to a chat; requires groupCall\.is\_owned\. Only the owner of the group call can invite the banned users back
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+            user_ids (:class:`List[int]`):
+                Identifiers of group call participants to ban; identifiers of unknown users from the update updateGroupCallParticipants can be also passed to the method
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "banGroupCallParticipants",
+                "group_call_id": group_call_id,
+                "user_ids": user_ids,
+            }
+        )
+
+    async def inviteVideoChatParticipants(
+        self, group_call_id: int = 0, user_ids: List[int] = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Invites users to an active video chat\. Sends a service message of the type messageInviteVideoChatParticipants to the chat bound to the group call
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11784,13 +11868,13 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "inviteGroupCallParticipants",
+                "@type": "inviteVideoChatParticipants",
                 "group_call_id": group_call_id,
                 "user_ids": user_ids,
             }
         )
 
-    async def getGroupCallInviteLink(
+    async def getVideoChatInviteLink(
         self, group_call_id: int = 0, can_self_unmute: bool = False
     ) -> Union["types.Error", "types.HttpUrl"]:
         r"""Returns invite link to a video chat in a public chat
@@ -11800,7 +11884,7 @@ class TDLibFunctions:
                 Group call identifier
 
             can_self_unmute (:class:`bool`):
-                Pass true if the invite link needs to contain an invite hash, passing which to joinGroupCall would allow the invited user to unmute themselves\. Requires groupCall\.can\_be\_managed group call flag
+                Pass true if the invite link needs to contain an invite hash, passing which to joinVideoChat would allow the invited user to unmute themselves\. Requires groupCall\.can\_be\_managed right
 
         Returns:
             :class:`~pytdbot.types.HttpUrl`
@@ -11808,7 +11892,7 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "getGroupCallInviteLink",
+                "@type": "getVideoChatInviteLink",
                 "group_call_id": group_call_id,
                 "can_self_unmute": can_self_unmute,
             }
@@ -11817,7 +11901,7 @@ class TDLibFunctions:
     async def revokeGroupCallInviteLink(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Revokes invite link for a group call\. Requires groupCall\.can\_be\_managed group call flag
+        r"""Revokes invite link for a group call\. Requires groupCall\.can\_be\_managed right for video chats or groupCall\.is\_owned otherwise
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11838,7 +11922,7 @@ class TDLibFunctions:
         record_video: bool = False,
         use_portrait_orientation: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Starts recording of an active group call\. Requires groupCall\.can\_be\_managed group call flag
+        r"""Starts recording of an active group call; for video chats only\. Requires groupCall\.can\_be\_managed right
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11870,7 +11954,7 @@ class TDLibFunctions:
     async def endGroupCallRecording(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Ends recording of an active group call\. Requires groupCall\.can\_be\_managed group call flag
+        r"""Ends recording of an active group call; for video chats only\. Requires groupCall\.can\_be\_managed right
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11935,7 +12019,7 @@ class TDLibFunctions:
     async def setGroupCallParticipantIsSpeaking(
         self, group_call_id: int = 0, audio_source: int = 0, is_speaking: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Informs TDLib that speaking state of a participant of an active group has changed
+        r"""Informs TDLib that speaking state of a participant of an active group call has changed
 
         Parameters:
             group_call_id (:class:`int`):
@@ -11997,7 +12081,7 @@ class TDLibFunctions:
         participant_id: "types.MessageSender" = None,
         volume_level: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes volume level of a participant of an active group call\. If the current user can manage the group call, then the participant's volume level will be changed for all users with the default volume level
+        r"""Changes volume level of a participant of an active group call\. If the current user can manage the group call or is the owner of the group call, then the participant's volume level will be changed for all users with the default volume level
 
         Parameters:
             group_call_id (:class:`int`):
@@ -12028,7 +12112,7 @@ class TDLibFunctions:
         participant_id: "types.MessageSender" = None,
         is_hand_raised: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Toggles whether a group call participant hand is rased
+        r"""Toggles whether a group call participant hand is rased; for video chats only
 
         Parameters:
             group_call_id (:class:`int`):
@@ -12038,7 +12122,7 @@ class TDLibFunctions:
                 Participant identifier
 
             is_hand_raised (:class:`bool`):
-                Pass true if the user's hand needs to be raised\. Only self hand can be raised\. Requires groupCall\.can\_be\_managed group call flag to lower other's hand
+                Pass true if the user's hand needs to be raised\. Only self hand can be raised\. Requires groupCall\.can\_be\_managed right to lower other's hand
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -12050,6 +12134,30 @@ class TDLibFunctions:
                 "group_call_id": group_call_id,
                 "participant_id": participant_id,
                 "is_hand_raised": is_hand_raised,
+            }
+        )
+
+    async def getGroupCallParticipants(
+        self, input_group_call: "types.InputGroupCall" = None, limit: int = 0
+    ) -> Union["types.Error", "types.GroupCallParticipants"]:
+        r"""Returns information about participants of a non\-joined group call that is not bound to a chat
+
+        Parameters:
+            input_group_call (:class:`"types.InputGroupCall"`):
+                The group call which participants will be returned
+
+            limit (:class:`int`):
+                The maximum number of participants to return; must be positive
+
+        Returns:
+            :class:`~pytdbot.types.GroupCallParticipants`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getGroupCallParticipants",
+                "input_group_call": input_group_call,
+                "limit": limit,
             }
         )
 
@@ -12097,7 +12205,7 @@ class TDLibFunctions:
     async def endGroupCall(
         self, group_call_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Ends a group call\. Requires groupCall\.can\_be\_managed
+        r"""Ends a group call\. Requires groupCall\.can\_be\_managed right for video chats or groupCall\.is\_owned otherwise
 
         Parameters:
             group_call_id (:class:`int`):
@@ -12111,32 +12219,32 @@ class TDLibFunctions:
             {"@type": "endGroupCall", "group_call_id": group_call_id}
         )
 
-    async def getGroupCallStreams(
+    async def getVideoChatStreams(
         self, group_call_id: int = 0
-    ) -> Union["types.Error", "types.GroupCallStreams"]:
-        r"""Returns information about available group call streams
+    ) -> Union["types.Error", "types.VideoChatStreams"]:
+        r"""Returns information about available video chat streams
 
         Parameters:
             group_call_id (:class:`int`):
                 Group call identifier
 
         Returns:
-            :class:`~pytdbot.types.GroupCallStreams`
+            :class:`~pytdbot.types.VideoChatStreams`
         """
 
         return await self.invoke(
-            {"@type": "getGroupCallStreams", "group_call_id": group_call_id}
+            {"@type": "getVideoChatStreams", "group_call_id": group_call_id}
         )
 
-    async def getGroupCallStreamSegment(
+    async def getVideoChatStreamSegment(
         self,
         group_call_id: int = 0,
         time_offset: int = 0,
         scale: int = 0,
         channel_id: int = 0,
         video_quality: "types.GroupCallVideoQuality" = None,
-    ) -> Union["types.Error", "types.FilePart"]:
-        r"""Returns a file with a segment of a group call stream in a modified OGG format for audio or MPEG\-4 format for video
+    ) -> Union["types.Error", "types.Data"]:
+        r"""Returns a file with a segment of a video chat stream in a modified OGG format for audio or MPEG\-4 format for video
 
         Parameters:
             group_call_id (:class:`int`):
@@ -12155,17 +12263,89 @@ class TDLibFunctions:
                 Video quality as received from tgcalls; pass null to get the worst available quality
 
         Returns:
-            :class:`~pytdbot.types.FilePart`
+            :class:`~pytdbot.types.Data`
         """
 
         return await self.invoke(
             {
-                "@type": "getGroupCallStreamSegment",
+                "@type": "getVideoChatStreamSegment",
                 "group_call_id": group_call_id,
                 "time_offset": time_offset,
                 "scale": scale,
                 "channel_id": channel_id,
                 "video_quality": video_quality,
+            }
+        )
+
+    async def encryptGroupCallData(
+        self,
+        group_call_id: int = 0,
+        data_channel: "types.GroupCallDataChannel" = None,
+        data: bytes = b"",
+        unencrypted_prefix_size: int = 0,
+    ) -> Union["types.Error", "types.Data"]:
+        r"""Encrypts group call data before sending them over network using tgcalls
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier\. The call must not be a video chat
+
+            data_channel (:class:`"types.GroupCallDataChannel"`):
+                Data channel for which data is encrypted
+
+            data (:class:`bytes`):
+                Data to encrypt
+
+            unencrypted_prefix_size (:class:`int`):
+                Size of data prefix that must be kept unencrypted
+
+        Returns:
+            :class:`~pytdbot.types.Data`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "encryptGroupCallData",
+                "group_call_id": group_call_id,
+                "data_channel": data_channel,
+                "data": data,
+                "unencrypted_prefix_size": unencrypted_prefix_size,
+            }
+        )
+
+    async def decryptGroupCallData(
+        self,
+        group_call_id: int = 0,
+        participant_id: "types.MessageSender" = None,
+        data_channel: "types.GroupCallDataChannel" = None,
+        data: bytes = b"",
+    ) -> Union["types.Error", "types.Data"]:
+        r"""Decrypts group call data received by tgcalls
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier\. The call must not be a video chat
+
+            participant_id (:class:`"types.MessageSender"`):
+                Identifier of the group call participant, which sent the data
+
+            data_channel (:class:`"types.GroupCallDataChannel"`):
+                Data channel for which data was encrypted; pass null if unknown
+
+            data (:class:`bytes`):
+                Data to decrypt
+
+        Returns:
+            :class:`~pytdbot.types.Data`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "decryptGroupCallData",
+                "group_call_id": group_call_id,
+                "participant_id": participant_id,
+                "data_channel": data_channel,
+                "data": data,
             }
         )
 

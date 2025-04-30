@@ -1,9 +1,9 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
-    MessageBoundMethods,
     FileBoundMethods,
     CallbackQueryBoundMethods,
+    MessageBoundMethods,
 )
 import pytdbot
 
@@ -583,7 +583,7 @@ class StoryContent:
 
 
 class InputStoryContent:
-    r"""The content of a story to send"""
+    r"""The content of a story to post"""
 
     pass
 
@@ -644,6 +644,24 @@ class CallState:
 
 class GroupCallVideoQuality:
     r"""Describes the quality of a group call video"""
+
+    pass
+
+
+class InviteGroupCallParticipantResult:
+    r"""Describes result of group call participant invitation"""
+
+    pass
+
+
+class GroupCallDataChannel:
+    r"""Describes data channel for a group call"""
+
+    pass
+
+
+class InputGroupCall:
+    r"""Describes a non\-joined group call that isn't bound to a chat"""
 
     pass
 
@@ -798,8 +816,8 @@ class InputBackground:
     pass
 
 
-class CanSendStoryResult:
-    r"""Represents result of checking whether the current user can send a story in the specific chat"""
+class CanPostStoryResult:
+    r"""Represents result of checking whether the current user can post a story on behalf of the specific chat"""
 
     pass
 
@@ -6956,7 +6974,7 @@ class BusinessBotRights(TlObject):
             True, if the bot can transfer Telegram Stars received by the business account to account of the bot, or use them to upgrade and transfer gifts
 
         can_manage_stories (:class:`bool`):
-            True, if the bot can send, edit and delete stories
+            True, if the bot can post, edit and delete stories
 
     """
 
@@ -7004,7 +7022,7 @@ class BusinessBotRights(TlObject):
         self.can_transfer_stars: bool = bool(can_transfer_stars)
         r"""True, if the bot can transfer Telegram Stars received by the business account to account of the bot, or use them to upgrade and transfer gifts"""
         self.can_manage_stories: bool = bool(can_manage_stories)
-        r"""True, if the bot can send, edit and delete stories"""
+        r"""True, if the bot can post, edit and delete stories"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -9421,6 +9439,7 @@ class PremiumPaymentOption(TlObject):
             InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
@@ -14232,6 +14251,7 @@ class BotInfo(TlObject):
             InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
@@ -14283,6 +14303,7 @@ class BotInfo(TlObject):
             InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
@@ -14334,6 +14355,7 @@ class BotInfo(TlObject):
             InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
@@ -14385,6 +14407,7 @@ class BotInfo(TlObject):
             InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
@@ -16766,7 +16789,7 @@ class Supergroup(TlObject):
             Status of the current user in the supergroup or channel; custom title will always be empty
 
         member_count (:class:`int`):
-            Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories
+            Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToPostStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories
 
         boost_level (:class:`int`):
             Approximate boost level for the chat
@@ -16863,7 +16886,7 @@ class Supergroup(TlObject):
         ] = status
         r"""Status of the current user in the supergroup or channel; custom title will always be empty"""
         self.member_count: int = int(member_count)
-        r"""Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories"""
+        r"""Number of members in the supergroup or channel; 0 if unknown\. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToPostStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchPublicChats, or in chatFolderInviteLinkInfo\.missing\_chat\_ids, or in userFullInfo\.personal\_chat\_id, or for chats with messages or stories from publicForwards and foundStories"""
         self.boost_level: int = int(boost_level)
         r"""Approximate boost level for the chat"""
         self.has_linked_chat: bool = bool(has_linked_chat)
@@ -19307,6 +19330,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageStory,
             MessageInvoice,
             MessageCall,
+            MessageGroupCall,
             MessageVideoChatScheduled,
             MessageVideoChatStarted,
             MessageVideoChatEnded,
@@ -19403,17 +19427,17 @@ class MessageReplyToStory(TlObject, MessageReplyTo):
     r"""Describes a story replied by a given message
 
     Parameters:
-        story_sender_chat_id (:class:`int`):
-            The identifier of the sender of the story
+        story_poster_chat_id (:class:`int`):
+            The identifier of the poster of the story
 
         story_id (:class:`int`):
             The identifier of the story
 
     """
 
-    def __init__(self, story_sender_chat_id: int = 0, story_id: int = 0) -> None:
-        self.story_sender_chat_id: int = int(story_sender_chat_id)
-        r"""The identifier of the sender of the story"""
+    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+        self.story_poster_chat_id: int = int(story_poster_chat_id)
+        r"""The identifier of the poster of the story"""
         self.story_id: int = int(story_id)
         r"""The identifier of the story"""
 
@@ -19429,7 +19453,7 @@ class MessageReplyToStory(TlObject, MessageReplyTo):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "story_sender_chat_id": self.story_sender_chat_id,
+            "story_poster_chat_id": self.story_poster_chat_id,
             "story_id": self.story_id,
         }
 
@@ -19437,7 +19461,7 @@ class MessageReplyToStory(TlObject, MessageReplyTo):
     def from_dict(cls, data: dict) -> Union["MessageReplyToStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_poster_chat_id = int(data.get("story_poster_chat_id", 0))
             data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
@@ -19544,17 +19568,17 @@ class InputMessageReplyToStory(TlObject, InputMessageReplyTo):
     r"""Describes a story to be replied
 
     Parameters:
-        story_sender_chat_id (:class:`int`):
-            The identifier of the sender of the story\. Currently, stories can be replied only in the sender's chat and channel stories can't be replied
+        story_poster_chat_id (:class:`int`):
+            The identifier of the poster of the story\. Currently, stories can be replied only in the chat that posted the story; channel stories can't be replied
 
         story_id (:class:`int`):
             The identifier of the story
 
     """
 
-    def __init__(self, story_sender_chat_id: int = 0, story_id: int = 0) -> None:
-        self.story_sender_chat_id: int = int(story_sender_chat_id)
-        r"""The identifier of the sender of the story\. Currently, stories can be replied only in the sender's chat and channel stories can't be replied"""
+    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+        self.story_poster_chat_id: int = int(story_poster_chat_id)
+        r"""The identifier of the poster of the story\. Currently, stories can be replied only in the chat that posted the story; channel stories can't be replied"""
         self.story_id: int = int(story_id)
         r"""The identifier of the story"""
 
@@ -19570,7 +19594,7 @@ class InputMessageReplyToStory(TlObject, InputMessageReplyTo):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "story_sender_chat_id": self.story_sender_chat_id,
+            "story_poster_chat_id": self.story_poster_chat_id,
             "story_id": self.story_id,
         }
 
@@ -19578,7 +19602,7 @@ class InputMessageReplyToStory(TlObject, InputMessageReplyTo):
     def from_dict(cls, data: dict) -> Union["InputMessageReplyToStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_poster_chat_id = int(data.get("story_poster_chat_id", 0))
             data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
@@ -19891,6 +19915,7 @@ class Message(TlObject, MessageBoundMethods):
             MessageStory,
             MessageInvoice,
             MessageCall,
+            MessageGroupCall,
             MessageVideoChatScheduled,
             MessageVideoChatStarted,
             MessageVideoChatEnded,
@@ -20875,6 +20900,7 @@ class SponsoredMessage(TlObject):
             MessageStory,
             MessageInvoice,
             MessageCall,
+            MessageGroupCall,
             MessageVideoChatScheduled,
             MessageVideoChatStarted,
             MessageVideoChatEnded,
@@ -21620,11 +21646,11 @@ class ChatNotificationSettings(TlObject):
         story_sound_id (:class:`int`):
             Identifier of the notification sound to be played for stories; 0 if sound is disabled
 
-        use_default_show_story_sender (:class:`bool`):
-            If true, the value for the relevant type of chat is used instead of show\_story\_sender
+        use_default_show_story_poster (:class:`bool`):
+            If true, the value for the relevant type of chat is used instead of show\_story\_poster
 
-        show_story_sender (:class:`bool`):
-            True, if the sender of stories must be displayed in notifications
+        show_story_poster (:class:`bool`):
+            True, if the chat that posted a story must be displayed in notifications
 
         use_default_disable_pinned_message_notifications (:class:`bool`):
             If true, the value for the relevant type of chat or the forum chat is used instead of disable\_pinned\_message\_notifications
@@ -21652,8 +21678,8 @@ class ChatNotificationSettings(TlObject):
         mute_stories: bool = False,
         use_default_story_sound: bool = False,
         story_sound_id: int = 0,
-        use_default_show_story_sender: bool = False,
-        show_story_sender: bool = False,
+        use_default_show_story_poster: bool = False,
+        show_story_poster: bool = False,
         use_default_disable_pinned_message_notifications: bool = False,
         disable_pinned_message_notifications: bool = False,
         use_default_disable_mention_notifications: bool = False,
@@ -21679,10 +21705,10 @@ class ChatNotificationSettings(TlObject):
         r"""If true, the value for the relevant type of chat is used instead of story\_sound\_id"""
         self.story_sound_id: int = int(story_sound_id)
         r"""Identifier of the notification sound to be played for stories; 0 if sound is disabled"""
-        self.use_default_show_story_sender: bool = bool(use_default_show_story_sender)
-        r"""If true, the value for the relevant type of chat is used instead of show\_story\_sender"""
-        self.show_story_sender: bool = bool(show_story_sender)
-        r"""True, if the sender of stories must be displayed in notifications"""
+        self.use_default_show_story_poster: bool = bool(use_default_show_story_poster)
+        r"""If true, the value for the relevant type of chat is used instead of show\_story\_poster"""
+        self.show_story_poster: bool = bool(show_story_poster)
+        r"""True, if the chat that posted a story must be displayed in notifications"""
         self.use_default_disable_pinned_message_notifications: bool = bool(
             use_default_disable_pinned_message_notifications
         )
@@ -21720,8 +21746,8 @@ class ChatNotificationSettings(TlObject):
             "mute_stories": self.mute_stories,
             "use_default_story_sound": self.use_default_story_sound,
             "story_sound_id": self.story_sound_id,
-            "use_default_show_story_sender": self.use_default_show_story_sender,
-            "show_story_sender": self.show_story_sender,
+            "use_default_show_story_poster": self.use_default_show_story_poster,
+            "show_story_poster": self.show_story_poster,
             "use_default_disable_pinned_message_notifications": self.use_default_disable_pinned_message_notifications,
             "disable_pinned_message_notifications": self.disable_pinned_message_notifications,
             "use_default_disable_mention_notifications": self.use_default_disable_mention_notifications,
@@ -21748,10 +21774,10 @@ class ChatNotificationSettings(TlObject):
                 "use_default_story_sound", False
             )
             data_class.story_sound_id = int(data.get("story_sound_id", 0))
-            data_class.use_default_show_story_sender = data.get(
-                "use_default_show_story_sender", False
+            data_class.use_default_show_story_poster = data.get(
+                "use_default_show_story_poster", False
             )
-            data_class.show_story_sender = data.get("show_story_sender", False)
+            data_class.show_story_poster = data.get("show_story_poster", False)
             data_class.use_default_disable_pinned_message_notifications = data.get(
                 "use_default_disable_pinned_message_notifications", False
             )
@@ -21790,8 +21816,8 @@ class ScopeNotificationSettings(TlObject):
         story_sound_id (:class:`int`):
             Identifier of the notification sound to be played for stories; 0 if sound is disabled
 
-        show_story_sender (:class:`bool`):
-            True, if the sender of stories must be displayed in notifications
+        show_story_poster (:class:`bool`):
+            True, if the chat that posted a story must be displayed in notifications
 
         disable_pinned_message_notifications (:class:`bool`):
             True, if notifications for incoming pinned messages will be created as for an ordinary unread message
@@ -21809,7 +21835,7 @@ class ScopeNotificationSettings(TlObject):
         use_default_mute_stories: bool = False,
         mute_stories: bool = False,
         story_sound_id: int = 0,
-        show_story_sender: bool = False,
+        show_story_poster: bool = False,
         disable_pinned_message_notifications: bool = False,
         disable_mention_notifications: bool = False,
     ) -> None:
@@ -21825,8 +21851,8 @@ class ScopeNotificationSettings(TlObject):
         r"""True, if story notifications are disabled"""
         self.story_sound_id: int = int(story_sound_id)
         r"""Identifier of the notification sound to be played for stories; 0 if sound is disabled"""
-        self.show_story_sender: bool = bool(show_story_sender)
-        r"""True, if the sender of stories must be displayed in notifications"""
+        self.show_story_poster: bool = bool(show_story_poster)
+        r"""True, if the chat that posted a story must be displayed in notifications"""
         self.disable_pinned_message_notifications: bool = bool(
             disable_pinned_message_notifications
         )
@@ -21852,7 +21878,7 @@ class ScopeNotificationSettings(TlObject):
             "use_default_mute_stories": self.use_default_mute_stories,
             "mute_stories": self.mute_stories,
             "story_sound_id": self.story_sound_id,
-            "show_story_sender": self.show_story_sender,
+            "show_story_poster": self.show_story_poster,
             "disable_pinned_message_notifications": self.disable_pinned_message_notifications,
             "disable_mention_notifications": self.disable_mention_notifications,
         }
@@ -21869,7 +21895,7 @@ class ScopeNotificationSettings(TlObject):
             )
             data_class.mute_stories = data.get("mute_stories", False)
             data_class.story_sound_id = int(data.get("story_sound_id", 0))
-            data_class.show_story_sender = data.get("show_story_sender", False)
+            data_class.show_story_poster = data.get("show_story_poster", False)
             data_class.disable_pinned_message_notifications = data.get(
                 "disable_pinned_message_notifications", False
             )
@@ -23367,7 +23393,7 @@ class BusinessBotManageBar(TlObject):
 
 
 class VideoChat(TlObject):
-    r"""Describes a video chat
+    r"""Describes a video chat, i\.e\. a group call bound to a chat
 
     Parameters:
         group_call_id (:class:`int`):
@@ -30026,6 +30052,7 @@ class WebPageInstantView(TlObject):
             InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
@@ -30861,6 +30888,32 @@ class LinkPreviewTypeExternalVideo(TlObject, LinkPreviewType):
         return data_class
 
 
+class LinkPreviewTypeGroupCall(TlObject, LinkPreviewType):
+    r"""The link is a link to a group call that isn't bound to a chat"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["linkPreviewTypeGroupCall"]:
+        return "linkPreviewTypeGroupCall"
+
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeGroupCall", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class LinkPreviewTypeInvoice(TlObject, LinkPreviewType):
     r"""The link is a link to an invoice"""
 
@@ -31071,7 +31124,7 @@ class LinkPreviewTypeStory(TlObject, LinkPreviewType):
     r"""The link is a link to a story\. Link preview description is unavailable
 
     Parameters:
-        story_sender_chat_id (:class:`int`):
+        story_poster_chat_id (:class:`int`):
             The identifier of the chat that posted the story
 
         story_id (:class:`int`):
@@ -31079,8 +31132,8 @@ class LinkPreviewTypeStory(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, story_sender_chat_id: int = 0, story_id: int = 0) -> None:
-        self.story_sender_chat_id: int = int(story_sender_chat_id)
+    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+        self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""The identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
         r"""Story identifier"""
@@ -31097,7 +31150,7 @@ class LinkPreviewTypeStory(TlObject, LinkPreviewType):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "story_sender_chat_id": self.story_sender_chat_id,
+            "story_poster_chat_id": self.story_poster_chat_id,
             "story_id": self.story_id,
         }
 
@@ -31105,7 +31158,7 @@ class LinkPreviewTypeStory(TlObject, LinkPreviewType):
     def from_dict(cls, data: dict) -> Union["LinkPreviewTypeStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_poster_chat_id = int(data.get("story_poster_chat_id", 0))
             data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
@@ -31578,6 +31631,7 @@ class LinkPreview(TlObject):
             LinkPreviewTypeEmbeddedVideoPlayer,
             LinkPreviewTypeExternalAudio,
             LinkPreviewTypeExternalVideo,
+            LinkPreviewTypeGroupCall,
             LinkPreviewTypeInvoice,
             LinkPreviewTypeMessage,
             LinkPreviewTypePhoto,
@@ -37786,7 +37840,7 @@ class MessageStory(TlObject, MessageContent):
     r"""A message with a forwarded story
 
     Parameters:
-        story_sender_chat_id (:class:`int`):
+        story_poster_chat_id (:class:`int`):
             Identifier of the chat that posted the story
 
         story_id (:class:`int`):
@@ -37799,11 +37853,11 @@ class MessageStory(TlObject, MessageContent):
 
     def __init__(
         self,
-        story_sender_chat_id: int = 0,
+        story_poster_chat_id: int = 0,
         story_id: int = 0,
         via_mention: bool = False,
     ) -> None:
-        self.story_sender_chat_id: int = int(story_sender_chat_id)
+        self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""Identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
         r"""Story identifier"""
@@ -37822,7 +37876,7 @@ class MessageStory(TlObject, MessageContent):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "story_sender_chat_id": self.story_sender_chat_id,
+            "story_poster_chat_id": self.story_poster_chat_id,
             "story_id": self.story_id,
             "via_mention": self.via_mention,
         }
@@ -37831,7 +37885,7 @@ class MessageStory(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessageStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_poster_chat_id = int(data.get("story_poster_chat_id", 0))
             data_class.story_id = int(data.get("story_id", 0))
             data_class.via_mention = data.get("via_mention", False)
 
@@ -37973,7 +38027,7 @@ class MessageCall(TlObject, MessageContent):
             CallDiscardReasonDeclined,
             CallDiscardReasonDisconnected,
             CallDiscardReasonHungUp,
-            CallDiscardReasonAllowGroupCall,
+            CallDiscardReasonUpgradeToGroupCall,
             None,
         ] = discard_reason
         r"""Reason why the call was discarded"""
@@ -38004,6 +38058,78 @@ class MessageCall(TlObject, MessageContent):
             data_class.is_video = data.get("is_video", False)
             data_class.discard_reason = data.get("discard_reason", None)
             data_class.duration = int(data.get("duration", 0))
+
+        return data_class
+
+
+class MessageGroupCall(TlObject, MessageContent):
+    r"""A message with information about a group call not bound to a chat\. If the message is incoming, the call isn't active, isn't missed, and has no duration, and getOption\(\"can\_accept\_calls\"\) is true, then incoming call screen must be shown to the user\. Use joinGroupCall to accept the call or declineGroupCallInvitation to decline it\. If the call become active or missed, then the call screen must be hidden
+
+    Parameters:
+        is_active (:class:`bool`):
+            True, if the call is active, i\.e\. the called user joined the call
+
+        was_missed (:class:`bool`):
+            True, if the called user missed or declined the call
+
+        is_video (:class:`bool`):
+            True, if the call is a video call
+
+        duration (:class:`int`):
+            Call duration, in seconds; for left calls only
+
+        other_participant_ids (:class:`List["types.MessageSender"]`):
+            Identifiers of some other call participants
+
+    """
+
+    def __init__(
+        self,
+        is_active: bool = False,
+        was_missed: bool = False,
+        is_video: bool = False,
+        duration: int = 0,
+        other_participant_ids: List[MessageSender] = None,
+    ) -> None:
+        self.is_active: bool = bool(is_active)
+        r"""True, if the call is active, i\.e\. the called user joined the call"""
+        self.was_missed: bool = bool(was_missed)
+        r"""True, if the called user missed or declined the call"""
+        self.is_video: bool = bool(is_video)
+        r"""True, if the call is a video call"""
+        self.duration: int = int(duration)
+        r"""Call duration, in seconds; for left calls only"""
+        self.other_participant_ids: List[MessageSender] = other_participant_ids or []
+        r"""Identifiers of some other call participants"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageGroupCall"]:
+        return "messageGroupCall"
+
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "is_active": self.is_active,
+            "was_missed": self.was_missed,
+            "is_video": self.is_video,
+            "duration": self.duration,
+            "other_participant_ids": self.other_participant_ids,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageGroupCall", None]:
+        if data:
+            data_class = cls()
+            data_class.is_active = data.get("is_active", False)
+            data_class.was_missed = data.get("was_missed", False)
+            data_class.is_video = data.get("is_video", False)
+            data_class.duration = int(data.get("duration", 0))
+            data_class.other_participant_ids = data.get("other_participant_ids", None)
 
         return data_class
 
@@ -43331,10 +43457,10 @@ class InputMessagePoll(TlObject, InputMessageContent):
 
 
 class InputMessageStory(TlObject, InputMessageContent):
-    r"""A message with a forwarded story\. Stories can't be sent to secret chats\. A story can be forwarded only if story\.can\_be\_forwarded
+    r"""A message with a forwarded story\. Stories can't be forwarded to secret chats\. A story can be forwarded only if story\.can\_be\_forwarded
 
     Parameters:
-        story_sender_chat_id (:class:`int`):
+        story_poster_chat_id (:class:`int`):
             Identifier of the chat that posted the story
 
         story_id (:class:`int`):
@@ -43342,8 +43468,8 @@ class InputMessageStory(TlObject, InputMessageContent):
 
     """
 
-    def __init__(self, story_sender_chat_id: int = 0, story_id: int = 0) -> None:
-        self.story_sender_chat_id: int = int(story_sender_chat_id)
+    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+        self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""Identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
         r"""Story identifier"""
@@ -43360,7 +43486,7 @@ class InputMessageStory(TlObject, InputMessageContent):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "story_sender_chat_id": self.story_sender_chat_id,
+            "story_poster_chat_id": self.story_poster_chat_id,
             "story_id": self.story_id,
         }
 
@@ -43368,7 +43494,7 @@ class InputMessageStory(TlObject, InputMessageContent):
     def from_dict(cls, data: dict) -> Union["InputMessageStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_poster_chat_id = int(data.get("story_poster_chat_id", 0))
             data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
@@ -46649,7 +46775,7 @@ class InputStoryAreas(TlObject):
 
 
 class StoryVideo(TlObject):
-    r"""Describes a video file sent in a story
+    r"""Describes a video file posted as a story
 
     Parameters:
         duration (:class:`float`):
@@ -47041,7 +47167,7 @@ class StoryListArchive(TlObject, StoryList):
 
 
 class StoryOriginPublicStory(TlObject, StoryOrigin):
-    r"""The original story was a public story with known sender
+    r"""The original story was a public story that was posted by a known chat
 
     Parameters:
         chat_id (:class:`int`):
@@ -47085,17 +47211,17 @@ class StoryOriginPublicStory(TlObject, StoryOrigin):
 
 
 class StoryOriginHiddenUser(TlObject, StoryOrigin):
-    r"""The original story was sent by an unknown user
+    r"""The original story was posted by an unknown user
 
     Parameters:
-        sender_name (:class:`str`):
-            Name of the story sender
+        poster_name (:class:`str`):
+            Name of the user or the chat that posted the story
 
     """
 
-    def __init__(self, sender_name: str = "") -> None:
-        self.sender_name: Union[str, None] = sender_name
-        r"""Name of the story sender"""
+    def __init__(self, poster_name: str = "") -> None:
+        self.poster_name: Union[str, None] = poster_name
+        r"""Name of the user or the chat that posted the story"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -47107,13 +47233,13 @@ class StoryOriginHiddenUser(TlObject, StoryOrigin):
         return "StoryOrigin"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "sender_name": self.sender_name}
+        return {"@type": self.getType(), "poster_name": self.poster_name}
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["StoryOriginHiddenUser", None]:
         if data:
             data_class = cls()
-            data_class.sender_name = data.get("sender_name", "")
+            data_class.poster_name = data.get("poster_name", "")
 
         return data_class
 
@@ -47233,19 +47359,19 @@ class Story(TlObject):
 
     Parameters:
         id (:class:`int`):
-            Unique story identifier among stories of the given sender
+            Unique story identifier among stories posted by the given chat
 
-        sender_chat_id (:class:`int`):
+        poster_chat_id (:class:`int`):
             Identifier of the chat that posted the story
 
-        sender_id (:class:`"types.MessageSender"`):
-            Identifier of the sender of the story; may be null if the story is posted on behalf of the sender\_chat\_id
+        poster_id (:class:`"types.MessageSender"`):
+            Identifier of the user or chat that posted the story; may be null if the story is posted on behalf of the poster\_chat\_id
 
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the story was published
 
-        is_being_sent (:class:`bool`):
-            True, if the story is being sent by the current user
+        is_being_posted (:class:`bool`):
+            True, if the story is being posted by the current user
 
         is_being_edited (:class:`bool`):
             True, if the story is being edited by the current user
@@ -47254,7 +47380,7 @@ class Story(TlObject):
             True, if the story was edited
 
         is_posted_to_chat_page (:class:`bool`):
-            True, if the story is saved in the sender's profile and will be available there after expiration
+            True, if the story is saved in the profile of the chat that posted it and will be available there after expiration
 
         is_visible_only_for_self (:class:`bool`):
             True, if the story is visible only for the current user
@@ -47269,7 +47395,7 @@ class Story(TlObject):
             True, if the story can be forwarded as a message\. Otherwise, screenshots and saving of the story content must be also forbidden
 
         can_be_replied (:class:`bool`):
-            True, if the story can be replied in the chat with the story sender
+            True, if the story can be replied in the chat with the user that posted the story
 
         can_toggle_is_posted_to_chat_page (:class:`bool`):
             True, if the story's is\_posted\_to\_chat\_page value can be changed
@@ -47309,10 +47435,10 @@ class Story(TlObject):
     def __init__(
         self,
         id: int = 0,
-        sender_chat_id: int = 0,
-        sender_id: MessageSender = None,
+        poster_chat_id: int = 0,
+        poster_id: MessageSender = None,
         date: int = 0,
-        is_being_sent: bool = False,
+        is_being_posted: bool = False,
         is_being_edited: bool = False,
         is_edited: bool = False,
         is_posted_to_chat_page: bool = False,
@@ -47334,21 +47460,21 @@ class Story(TlObject):
         caption: FormattedText = None,
     ) -> None:
         self.id: int = int(id)
-        r"""Unique story identifier among stories of the given sender"""
-        self.sender_chat_id: int = int(sender_chat_id)
+        r"""Unique story identifier among stories posted by the given chat"""
+        self.poster_chat_id: int = int(poster_chat_id)
         r"""Identifier of the chat that posted the story"""
-        self.sender_id: Union[MessageSenderUser, MessageSenderChat, None] = sender_id
-        r"""Identifier of the sender of the story; may be null if the story is posted on behalf of the sender\_chat\_id"""
+        self.poster_id: Union[MessageSenderUser, MessageSenderChat, None] = poster_id
+        r"""Identifier of the user or chat that posted the story; may be null if the story is posted on behalf of the poster\_chat\_id"""
         self.date: int = int(date)
         r"""Point in time \(Unix timestamp\) when the story was published"""
-        self.is_being_sent: bool = bool(is_being_sent)
-        r"""True, if the story is being sent by the current user"""
+        self.is_being_posted: bool = bool(is_being_posted)
+        r"""True, if the story is being posted by the current user"""
         self.is_being_edited: bool = bool(is_being_edited)
         r"""True, if the story is being edited by the current user"""
         self.is_edited: bool = bool(is_edited)
         r"""True, if the story was edited"""
         self.is_posted_to_chat_page: bool = bool(is_posted_to_chat_page)
-        r"""True, if the story is saved in the sender's profile and will be available there after expiration"""
+        r"""True, if the story is saved in the profile of the chat that posted it and will be available there after expiration"""
         self.is_visible_only_for_self: bool = bool(is_visible_only_for_self)
         r"""True, if the story is visible only for the current user"""
         self.can_be_deleted: bool = bool(can_be_deleted)
@@ -47358,7 +47484,7 @@ class Story(TlObject):
         self.can_be_forwarded: bool = bool(can_be_forwarded)
         r"""True, if the story can be forwarded as a message\. Otherwise, screenshots and saving of the story content must be also forbidden"""
         self.can_be_replied: bool = bool(can_be_replied)
-        r"""True, if the story can be replied in the chat with the story sender"""
+        r"""True, if the story can be replied in the chat with the user that posted the story"""
         self.can_toggle_is_posted_to_chat_page: bool = bool(
             can_toggle_is_posted_to_chat_page
         )
@@ -47407,10 +47533,10 @@ class Story(TlObject):
         return {
             "@type": self.getType(),
             "id": self.id,
-            "sender_chat_id": self.sender_chat_id,
-            "sender_id": self.sender_id,
+            "poster_chat_id": self.poster_chat_id,
+            "poster_id": self.poster_id,
             "date": self.date,
-            "is_being_sent": self.is_being_sent,
+            "is_being_posted": self.is_being_posted,
             "is_being_edited": self.is_being_edited,
             "is_edited": self.is_edited,
             "is_posted_to_chat_page": self.is_posted_to_chat_page,
@@ -47437,10 +47563,10 @@ class Story(TlObject):
         if data:
             data_class = cls()
             data_class.id = int(data.get("id", 0))
-            data_class.sender_chat_id = int(data.get("sender_chat_id", 0))
-            data_class.sender_id = data.get("sender_id", None)
+            data_class.poster_chat_id = int(data.get("poster_chat_id", 0))
+            data_class.poster_id = data.get("poster_id", None)
             data_class.date = int(data.get("date", 0))
-            data_class.is_being_sent = data.get("is_being_sent", False)
+            data_class.is_being_posted = data.get("is_being_posted", False)
             data_class.is_being_edited = data.get("is_being_edited", False)
             data_class.is_edited = data.get("is_edited", False)
             data_class.is_posted_to_chat_page = data.get(
@@ -47580,22 +47706,22 @@ class FoundStories(TlObject):
 
 
 class StoryFullId(TlObject):
-    r"""Contains identifier of a story along with identifier of its sender
+    r"""Contains identifier of a story along with identifier of the chat that posted it
 
     Parameters:
-        sender_chat_id (:class:`int`):
+        poster_chat_id (:class:`int`):
             Identifier of the chat that posted the story
 
         story_id (:class:`int`):
-            Unique story identifier among stories of the given sender
+            Unique story identifier among stories of the chat
 
     """
 
-    def __init__(self, sender_chat_id: int = 0, story_id: int = 0) -> None:
-        self.sender_chat_id: int = int(sender_chat_id)
+    def __init__(self, poster_chat_id: int = 0, story_id: int = 0) -> None:
+        self.poster_chat_id: int = int(poster_chat_id)
         r"""Identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
-        r"""Unique story identifier among stories of the given sender"""
+        r"""Unique story identifier among stories of the chat"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -47609,7 +47735,7 @@ class StoryFullId(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "sender_chat_id": self.sender_chat_id,
+            "poster_chat_id": self.poster_chat_id,
             "story_id": self.story_id,
         }
 
@@ -47617,7 +47743,7 @@ class StoryFullId(TlObject):
     def from_dict(cls, data: dict) -> Union["StoryFullId", None]:
         if data:
             data_class = cls()
-            data_class.sender_chat_id = int(data.get("sender_chat_id", 0))
+            data_class.poster_chat_id = int(data.get("poster_chat_id", 0))
             data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
@@ -47628,7 +47754,7 @@ class StoryInfo(TlObject):
 
     Parameters:
         story_id (:class:`int`):
-            Unique story identifier among stories of the given sender
+            Unique story identifier among stories of the chat
 
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the story was published
@@ -47642,7 +47768,7 @@ class StoryInfo(TlObject):
         self, story_id: int = 0, date: int = 0, is_for_close_friends: bool = False
     ) -> None:
         self.story_id: int = int(story_id)
-        r"""Unique story identifier among stories of the given sender"""
+        r"""Unique story identifier among stories of the chat"""
         self.date: int = int(date)
         r"""Point in time \(Unix timestamp\) when the story was published"""
         self.is_for_close_friends: bool = bool(is_for_close_friends)
@@ -47687,7 +47813,7 @@ class ChatActiveStories(TlObject):
             Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list
 
         order (:class:`int`):
-            A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_sender\_chat\_id\) in descending order
+            A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_poster\_chat\_id\) in descending order
 
         max_read_story_id (:class:`int`):
             Identifier of the last read active story
@@ -47710,7 +47836,7 @@ class ChatActiveStories(TlObject):
         self.list: Union[StoryListMain, StoryListArchive, None] = list
         r"""Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list"""
         self.order: int = int(order)
-        r"""A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_sender\_chat\_id\) in descending order"""
+        r"""A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list\. Stories must be sorted by the pair \(order, story\_poster\_chat\_id\) in descending order"""
         self.max_read_story_id: int = int(max_read_story_id)
         r"""Identifier of the last read active story"""
         self.stories: List[StoryInfo] = stories or []
@@ -48076,6 +48202,7 @@ class QuickReplyMessage(TlObject):
             MessageStory,
             MessageInvoice,
             MessageCall,
+            MessageGroupCall,
             MessageVideoChatScheduled,
             MessageVideoChatStarted,
             MessageVideoChatEnded,
@@ -49595,41 +49722,38 @@ class CallDiscardReasonHungUp(TlObject, CallDiscardReason):
         return data_class
 
 
-class CallDiscardReasonAllowGroupCall(TlObject, CallDiscardReason):
-    r"""The call was ended because it has been used successfully to transfer private encryption key for the associated group call
+class CallDiscardReasonUpgradeToGroupCall(TlObject, CallDiscardReason):
+    r"""The call was ended because it has been upgraded to a group call
 
     Parameters:
-        encrypted_group_call_key (:class:`bytes`):
-            Encrypted using the call private key encryption key for the associated group call
+        invite_link (:class:`str`):
+            Invite link for the group call
 
     """
 
-    def __init__(self, encrypted_group_call_key: bytes = b"") -> None:
-        self.encrypted_group_call_key: Union[bytes, None] = encrypted_group_call_key
-        r"""Encrypted using the call private key encryption key for the associated group call"""
+    def __init__(self, invite_link: str = "") -> None:
+        self.invite_link: Union[str, None] = invite_link
+        r"""Invite link for the group call"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["callDiscardReasonAllowGroupCall"]:
-        return "callDiscardReasonAllowGroupCall"
+    def getType(self) -> Literal["callDiscardReasonUpgradeToGroupCall"]:
+        return "callDiscardReasonUpgradeToGroupCall"
 
     def getClass(self) -> Literal["CallDiscardReason"]:
         return "CallDiscardReason"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "encrypted_group_call_key": self.encrypted_group_call_key,
-        }
+        return {"@type": self.getType(), "invite_link": self.invite_link}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["CallDiscardReasonAllowGroupCall", None]:
+    def from_dict(
+        cls, data: dict
+    ) -> Union["CallDiscardReasonUpgradeToGroupCall", None]:
         if data:
             data_class = cls()
-            data_class.encrypted_group_call_key = b64decode(
-                data.get("encrypted_group_call_key", b"")
-            )
+            data_class.invite_link = data.get("invite_link", "")
 
         return data_class
 
@@ -50048,6 +50172,9 @@ class CallStateReady(TlObject, CallState):
         allow_p2p (:class:`bool`):
             True, if peer\-to\-peer connection is allowed by users privacy settings
 
+        is_group_call_supported (:class:`bool`):
+            True, if the other party supports upgrading of the call to a group call
+
         custom_parameters (:class:`str`):
             Custom JSON\-encoded call parameters to be passed to tgcalls
 
@@ -50061,6 +50188,7 @@ class CallStateReady(TlObject, CallState):
         encryption_key: bytes = b"",
         emojis: List[str] = None,
         allow_p2p: bool = False,
+        is_group_call_supported: bool = False,
         custom_parameters: str = "",
     ) -> None:
         self.protocol: Union[CallProtocol, None] = protocol
@@ -50075,6 +50203,8 @@ class CallStateReady(TlObject, CallState):
         r"""Encryption key fingerprint represented as 4 emoji"""
         self.allow_p2p: bool = bool(allow_p2p)
         r"""True, if peer\-to\-peer connection is allowed by users privacy settings"""
+        self.is_group_call_supported: bool = bool(is_group_call_supported)
+        r"""True, if the other party supports upgrading of the call to a group call"""
         self.custom_parameters: Union[str, None] = custom_parameters
         r"""Custom JSON\-encoded call parameters to be passed to tgcalls"""
 
@@ -50096,6 +50226,7 @@ class CallStateReady(TlObject, CallState):
             "encryption_key": self.encryption_key,
             "emojis": self.emojis,
             "allow_p2p": self.allow_p2p,
+            "is_group_call_supported": self.is_group_call_supported,
             "custom_parameters": self.custom_parameters,
         }
 
@@ -50109,6 +50240,9 @@ class CallStateReady(TlObject, CallState):
             data_class.encryption_key = b64decode(data.get("encryption_key", b""))
             data_class.emojis = data.get("emojis", None)
             data_class.allow_p2p = data.get("allow_p2p", False)
+            data_class.is_group_call_supported = data.get(
+                "is_group_call_supported", False
+            )
             data_class.custom_parameters = data.get("custom_parameters", "")
 
         return data_class
@@ -50171,7 +50305,7 @@ class CallStateDiscarded(TlObject, CallState):
             CallDiscardReasonDeclined,
             CallDiscardReasonDisconnected,
             CallDiscardReasonHungUp,
-            CallDiscardReasonAllowGroupCall,
+            CallDiscardReasonUpgradeToGroupCall,
             None,
         ] = reason
         r"""The reason why the call has ended"""
@@ -50244,6 +50378,70 @@ class CallStateError(TlObject, CallState):
         if data:
             data_class = cls()
             data_class.error = data.get("error", None)
+
+        return data_class
+
+
+class GroupCallJoinParameters(TlObject):
+    r"""Describes parameters used to join a group call
+
+    Parameters:
+        audio_source_id (:class:`int`):
+            Audio channel synchronization source identifier; received from tgcalls
+
+        payload (:class:`str`):
+            Group call join payload; received from tgcalls
+
+        is_muted (:class:`bool`):
+            Pass true to join the call with muted microphone
+
+        is_my_video_enabled (:class:`bool`):
+            Pass true if the user's video is enabled
+
+    """
+
+    def __init__(
+        self,
+        audio_source_id: int = 0,
+        payload: str = "",
+        is_muted: bool = False,
+        is_my_video_enabled: bool = False,
+    ) -> None:
+        self.audio_source_id: int = int(audio_source_id)
+        r"""Audio channel synchronization source identifier; received from tgcalls"""
+        self.payload: Union[str, None] = payload
+        r"""Group call join payload; received from tgcalls"""
+        self.is_muted: bool = bool(is_muted)
+        r"""Pass true to join the call with muted microphone"""
+        self.is_my_video_enabled: bool = bool(is_my_video_enabled)
+        r"""Pass true if the user's video is enabled"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["groupCallJoinParameters"]:
+        return "groupCallJoinParameters"
+
+    def getClass(self) -> Literal["GroupCallJoinParameters"]:
+        return "GroupCallJoinParameters"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "audio_source_id": self.audio_source_id,
+            "payload": self.payload,
+            "is_muted": self.is_muted,
+            "is_my_video_enabled": self.is_my_video_enabled,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GroupCallJoinParameters", None]:
+        if data:
+            data_class = cls()
+            data_class.audio_source_id = int(data.get("audio_source_id", 0))
+            data_class.payload = data.get("payload", "")
+            data_class.is_muted = data.get("is_muted", False)
+            data_class.is_my_video_enabled = data.get("is_my_video_enabled", False)
 
         return data_class
 
@@ -50326,8 +50524,8 @@ class GroupCallVideoQualityFull(TlObject, GroupCallVideoQuality):
         return data_class
 
 
-class GroupCallStream(TlObject):
-    r"""Describes an available stream in a group call
+class VideoChatStream(TlObject):
+    r"""Describes an available stream in a video chat
 
     Parameters:
         channel_id (:class:`int`):
@@ -50354,11 +50552,11 @@ class GroupCallStream(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["groupCallStream"]:
-        return "groupCallStream"
+    def getType(self) -> Literal["videoChatStream"]:
+        return "videoChatStream"
 
-    def getClass(self) -> Literal["GroupCallStream"]:
-        return "GroupCallStream"
+    def getClass(self) -> Literal["VideoChatStream"]:
+        return "VideoChatStream"
 
     def to_dict(self) -> dict:
         return {
@@ -50369,7 +50567,7 @@ class GroupCallStream(TlObject):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["GroupCallStream", None]:
+    def from_dict(cls, data: dict) -> Union["VideoChatStream", None]:
         if data:
             data_class = cls()
             data_class.channel_id = int(data.get("channel_id", 0))
@@ -50379,33 +50577,33 @@ class GroupCallStream(TlObject):
         return data_class
 
 
-class GroupCallStreams(TlObject):
-    r"""Represents a list of group call streams
+class VideoChatStreams(TlObject):
+    r"""Represents a list of video chat streams
 
     Parameters:
-        streams (:class:`List["types.GroupCallStream"]`):
-            A list of group call streams
+        streams (:class:`List["types.VideoChatStream"]`):
+            A list of video chat streams
 
     """
 
-    def __init__(self, streams: List[GroupCallStream] = None) -> None:
-        self.streams: List[GroupCallStream] = streams or []
-        r"""A list of group call streams"""
+    def __init__(self, streams: List[VideoChatStream] = None) -> None:
+        self.streams: List[VideoChatStream] = streams or []
+        r"""A list of video chat streams"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["groupCallStreams"]:
-        return "groupCallStreams"
+    def getType(self) -> Literal["videoChatStreams"]:
+        return "videoChatStreams"
 
-    def getClass(self) -> Literal["GroupCallStreams"]:
-        return "GroupCallStreams"
+    def getClass(self) -> Literal["VideoChatStreams"]:
+        return "VideoChatStreams"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "streams": self.streams}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["GroupCallStreams", None]:
+    def from_dict(cls, data: dict) -> Union["VideoChatStreams", None]:
         if data:
             data_class = cls()
             data_class.streams = data.get("streams", None)
@@ -50508,23 +50706,26 @@ class GroupCall(TlObject):
         id (:class:`int`):
             Group call identifier
 
-        from_call_id (:class:`int`):
-            Identifier of one\-to\-one call from which the group call was created; 0 if unknown
-
         title (:class:`str`):
-            Group call title
+            Group call title; for video chats only
+
+        invite_link (:class:`str`):
+            Invite link for the group call; for group calls that aren't bound to a chat\. For video chats call getVideoChatInviteLink to get the link
 
         scheduled_start_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the group call is expected to be started by an administrator; 0 if it is already active or was ended
+            Point in time \(Unix timestamp\) when the group call is expected to be started by an administrator; 0 if it is already active or was ended; for video chats only
 
         enabled_start_notification (:class:`bool`):
-            True, if the group call is scheduled and the current user will receive a notification when the group call starts
+            True, if the group call is scheduled and the current user will receive a notification when the group call starts; for video chats only
 
         is_active (:class:`bool`):
             True, if the call is active
 
+        is_video_chat (:class:`bool`):
+            True, if the call is bound to a chat
+
         is_rtmp_stream (:class:`bool`):
-            True, if the chat is an RTMP stream instead of an ordinary video chat
+            True, if the call is an RTMP stream instead of an ordinary video chat; for video chats only
 
         is_joined (:class:`bool`):
             True, if the call is joined
@@ -50532,14 +50733,17 @@ class GroupCall(TlObject):
         need_rejoin (:class:`bool`):
             True, if user was kicked from the call because of network loss and the call needs to be rejoined
 
+        is_owned (:class:`bool`):
+            True, if the user is the owner of the call and can end the call, change volume level of other users, or ban users there; for group calls that aren't bound to a chat
+
         can_be_managed (:class:`bool`):
-            True, if the current user can manage the group call
+            True, if the current user can manage the group call; for video chats only
 
         participant_count (:class:`int`):
             Number of participants in the group call
 
         has_hidden_listeners (:class:`bool`):
-            True, if group call participants, which are muted, aren't returned in participant list
+            True, if group call participants, which are muted, aren't returned in participant list; for video chats only
 
         loaded_all_participants (:class:`bool`):
             True, if all group call participants are loaded
@@ -50557,10 +50761,10 @@ class GroupCall(TlObject):
             True, if the current user can broadcast video or share screen
 
         mute_new_participants (:class:`bool`):
-            True, if only group call administrators can unmute new participants
+            True, if only group call administrators can unmute new participants; for video chats only
 
         can_toggle_mute_new_participants (:class:`bool`):
-            True, if the current user can enable or disable mute\_new\_participants setting
+            True, if the current user can enable or disable mute\_new\_participants setting; for video chats only
 
         record_duration (:class:`int`):
             Duration of the ongoing group call recording, in seconds; 0 if none\. An updateGroupCall update is not triggered when value of this field changes, but the same recording goes on
@@ -50576,14 +50780,16 @@ class GroupCall(TlObject):
     def __init__(
         self,
         id: int = 0,
-        from_call_id: int = 0,
         title: str = "",
+        invite_link: str = "",
         scheduled_start_date: int = 0,
         enabled_start_notification: bool = False,
         is_active: bool = False,
+        is_video_chat: bool = False,
         is_rtmp_stream: bool = False,
         is_joined: bool = False,
         need_rejoin: bool = False,
+        is_owned: bool = False,
         can_be_managed: bool = False,
         participant_count: int = 0,
         has_hidden_listeners: bool = False,
@@ -50600,28 +50806,32 @@ class GroupCall(TlObject):
     ) -> None:
         self.id: int = int(id)
         r"""Group call identifier"""
-        self.from_call_id: int = int(from_call_id)
-        r"""Identifier of one\-to\-one call from which the group call was created; 0 if unknown"""
         self.title: Union[str, None] = title
-        r"""Group call title"""
+        r"""Group call title; for video chats only"""
+        self.invite_link: Union[str, None] = invite_link
+        r"""Invite link for the group call; for group calls that aren't bound to a chat\. For video chats call getVideoChatInviteLink to get the link"""
         self.scheduled_start_date: int = int(scheduled_start_date)
-        r"""Point in time \(Unix timestamp\) when the group call is expected to be started by an administrator; 0 if it is already active or was ended"""
+        r"""Point in time \(Unix timestamp\) when the group call is expected to be started by an administrator; 0 if it is already active or was ended; for video chats only"""
         self.enabled_start_notification: bool = bool(enabled_start_notification)
-        r"""True, if the group call is scheduled and the current user will receive a notification when the group call starts"""
+        r"""True, if the group call is scheduled and the current user will receive a notification when the group call starts; for video chats only"""
         self.is_active: bool = bool(is_active)
         r"""True, if the call is active"""
+        self.is_video_chat: bool = bool(is_video_chat)
+        r"""True, if the call is bound to a chat"""
         self.is_rtmp_stream: bool = bool(is_rtmp_stream)
-        r"""True, if the chat is an RTMP stream instead of an ordinary video chat"""
+        r"""True, if the call is an RTMP stream instead of an ordinary video chat; for video chats only"""
         self.is_joined: bool = bool(is_joined)
         r"""True, if the call is joined"""
         self.need_rejoin: bool = bool(need_rejoin)
         r"""True, if user was kicked from the call because of network loss and the call needs to be rejoined"""
+        self.is_owned: bool = bool(is_owned)
+        r"""True, if the user is the owner of the call and can end the call, change volume level of other users, or ban users there; for group calls that aren't bound to a chat"""
         self.can_be_managed: bool = bool(can_be_managed)
-        r"""True, if the current user can manage the group call"""
+        r"""True, if the current user can manage the group call; for video chats only"""
         self.participant_count: int = int(participant_count)
         r"""Number of participants in the group call"""
         self.has_hidden_listeners: bool = bool(has_hidden_listeners)
-        r"""True, if group call participants, which are muted, aren't returned in participant list"""
+        r"""True, if group call participants, which are muted, aren't returned in participant list; for video chats only"""
         self.loaded_all_participants: bool = bool(loaded_all_participants)
         r"""True, if all group call participants are loaded"""
         self.recent_speakers: List[GroupCallRecentSpeaker] = recent_speakers or []
@@ -50633,11 +50843,11 @@ class GroupCall(TlObject):
         self.can_enable_video: bool = bool(can_enable_video)
         r"""True, if the current user can broadcast video or share screen"""
         self.mute_new_participants: bool = bool(mute_new_participants)
-        r"""True, if only group call administrators can unmute new participants"""
+        r"""True, if only group call administrators can unmute new participants; for video chats only"""
         self.can_toggle_mute_new_participants: bool = bool(
             can_toggle_mute_new_participants
         )
-        r"""True, if the current user can enable or disable mute\_new\_participants setting"""
+        r"""True, if the current user can enable or disable mute\_new\_participants setting; for video chats only"""
         self.record_duration: int = int(record_duration)
         r"""Duration of the ongoing group call recording, in seconds; 0 if none\. An updateGroupCall update is not triggered when value of this field changes, but the same recording goes on"""
         self.is_video_recorded: bool = bool(is_video_recorded)
@@ -50658,14 +50868,16 @@ class GroupCall(TlObject):
         return {
             "@type": self.getType(),
             "id": self.id,
-            "from_call_id": self.from_call_id,
             "title": self.title,
+            "invite_link": self.invite_link,
             "scheduled_start_date": self.scheduled_start_date,
             "enabled_start_notification": self.enabled_start_notification,
             "is_active": self.is_active,
+            "is_video_chat": self.is_video_chat,
             "is_rtmp_stream": self.is_rtmp_stream,
             "is_joined": self.is_joined,
             "need_rejoin": self.need_rejoin,
+            "is_owned": self.is_owned,
             "can_be_managed": self.can_be_managed,
             "participant_count": self.participant_count,
             "has_hidden_listeners": self.has_hidden_listeners,
@@ -50686,16 +50898,18 @@ class GroupCall(TlObject):
         if data:
             data_class = cls()
             data_class.id = int(data.get("id", 0))
-            data_class.from_call_id = int(data.get("from_call_id", 0))
             data_class.title = data.get("title", "")
+            data_class.invite_link = data.get("invite_link", "")
             data_class.scheduled_start_date = int(data.get("scheduled_start_date", 0))
             data_class.enabled_start_notification = data.get(
                 "enabled_start_notification", False
             )
             data_class.is_active = data.get("is_active", False)
+            data_class.is_video_chat = data.get("is_video_chat", False)
             data_class.is_rtmp_stream = data.get("is_rtmp_stream", False)
             data_class.is_joined = data.get("is_joined", False)
             data_class.need_rejoin = data.get("need_rejoin", False)
+            data_class.is_owned = data.get("is_owned", False)
             data_class.can_be_managed = data.get("can_be_managed", False)
             data_class.participant_count = int(data.get("participant_count", 0))
             data_class.has_hidden_listeners = data.get("has_hidden_listeners", False)
@@ -51015,6 +51229,368 @@ class GroupCallParticipant(TlObject):
         return data_class
 
 
+class GroupCallParticipants(TlObject):
+    r"""Contains identifiers of group call participants
+
+    Parameters:
+        total_count (:class:`int`):
+            Total number of group call participants
+
+        participant_ids (:class:`List["types.MessageSender"]`):
+            Identifiers of the participants
+
+    """
+
+    def __init__(
+        self, total_count: int = 0, participant_ids: List[MessageSender] = None
+    ) -> None:
+        self.total_count: int = int(total_count)
+        r"""Total number of group call participants"""
+        self.participant_ids: List[MessageSender] = participant_ids or []
+        r"""Identifiers of the participants"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["groupCallParticipants"]:
+        return "groupCallParticipants"
+
+    def getClass(self) -> Literal["GroupCallParticipants"]:
+        return "GroupCallParticipants"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "total_count": self.total_count,
+            "participant_ids": self.participant_ids,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GroupCallParticipants", None]:
+        if data:
+            data_class = cls()
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.participant_ids = data.get("participant_ids", None)
+
+        return data_class
+
+
+class GroupCallInfo(TlObject):
+    r"""Contains information about a just created or just joined group call
+
+    Parameters:
+        group_call_id (:class:`int`):
+            Identifier of the group call
+
+        join_payload (:class:`str`):
+            Join response payload for tgcalls; empty if the call isn't joined
+
+    """
+
+    def __init__(self, group_call_id: int = 0, join_payload: str = "") -> None:
+        self.group_call_id: int = int(group_call_id)
+        r"""Identifier of the group call"""
+        self.join_payload: Union[str, None] = join_payload
+        r"""Join response payload for tgcalls; empty if the call isn't joined"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["groupCallInfo"]:
+        return "groupCallInfo"
+
+    def getClass(self) -> Literal["GroupCallInfo"]:
+        return "GroupCallInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "group_call_id": self.group_call_id,
+            "join_payload": self.join_payload,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GroupCallInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.group_call_id = int(data.get("group_call_id", 0))
+            data_class.join_payload = data.get("join_payload", "")
+
+        return data_class
+
+
+class InviteGroupCallParticipantResultUserPrivacyRestricted(
+    TlObject, InviteGroupCallParticipantResult
+):
+    r"""The user can't be invited due to their privacy settings"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(
+        self,
+    ) -> Literal["inviteGroupCallParticipantResultUserPrivacyRestricted"]:
+        return "inviteGroupCallParticipantResultUserPrivacyRestricted"
+
+    def getClass(self) -> Literal["InviteGroupCallParticipantResult"]:
+        return "InviteGroupCallParticipantResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["InviteGroupCallParticipantResultUserPrivacyRestricted", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class InviteGroupCallParticipantResultUserAlreadyParticipant(
+    TlObject, InviteGroupCallParticipantResult
+):
+    r"""The user can't be invited because they are already a participant of the call"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(
+        self,
+    ) -> Literal["inviteGroupCallParticipantResultUserAlreadyParticipant"]:
+        return "inviteGroupCallParticipantResultUserAlreadyParticipant"
+
+    def getClass(self) -> Literal["InviteGroupCallParticipantResult"]:
+        return "InviteGroupCallParticipantResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["InviteGroupCallParticipantResultUserAlreadyParticipant", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class InviteGroupCallParticipantResultUserWasBanned(
+    TlObject, InviteGroupCallParticipantResult
+):
+    r"""The user can't be invited because they were banned by the owner of the call and can be invited back only by the owner of the group call"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inviteGroupCallParticipantResultUserWasBanned"]:
+        return "inviteGroupCallParticipantResultUserWasBanned"
+
+    def getClass(self) -> Literal["InviteGroupCallParticipantResult"]:
+        return "InviteGroupCallParticipantResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["InviteGroupCallParticipantResultUserWasBanned", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class InviteGroupCallParticipantResultSuccess(
+    TlObject, InviteGroupCallParticipantResult
+):
+    r"""The user was invited and a service message of the type messageGroupCall was sent which can be used in declineGroupCallInvitation to cancel the invitation
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat with the invitation message
+
+        message_id (:class:`int`):
+            Identifier of the message
+
+    """
+
+    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat with the invitation message"""
+        self.message_id: int = int(message_id)
+        r"""Identifier of the message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inviteGroupCallParticipantResultSuccess"]:
+        return "inviteGroupCallParticipantResultSuccess"
+
+    def getClass(self) -> Literal["InviteGroupCallParticipantResult"]:
+        return "InviteGroupCallParticipantResult"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["InviteGroupCallParticipantResultSuccess", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+
+        return data_class
+
+
+class GroupCallDataChannelMain(TlObject, GroupCallDataChannel):
+    r"""The main data channel for audio and video data"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["groupCallDataChannelMain"]:
+        return "groupCallDataChannelMain"
+
+    def getClass(self) -> Literal["GroupCallDataChannel"]:
+        return "GroupCallDataChannel"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GroupCallDataChannelMain", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class GroupCallDataChannelScreenSharing(TlObject, GroupCallDataChannel):
+    r"""The data channel for screen sharing"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["groupCallDataChannelScreenSharing"]:
+        return "groupCallDataChannelScreenSharing"
+
+    def getClass(self) -> Literal["GroupCallDataChannel"]:
+        return "GroupCallDataChannel"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GroupCallDataChannelScreenSharing", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class InputGroupCallLink(TlObject, InputGroupCall):
+    r"""The group call is accessible through a link
+
+    Parameters:
+        link (:class:`str`):
+            The link for the group call
+
+    """
+
+    def __init__(self, link: str = "") -> None:
+        self.link: Union[str, None] = link
+        r"""The link for the group call"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputGroupCallLink"]:
+        return "inputGroupCallLink"
+
+    def getClass(self) -> Literal["InputGroupCall"]:
+        return "InputGroupCall"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "link": self.link}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputGroupCallLink", None]:
+        if data:
+            data_class = cls()
+            data_class.link = data.get("link", "")
+
+        return data_class
+
+
+class InputGroupCallMessage(TlObject, InputGroupCall):
+    r"""The group call is accessible through a message of the type messageGroupCall
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat with the message
+
+        message_id (:class:`int`):
+            Identifier of the message of the type messageGroupCall
+
+    """
+
+    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat with the message"""
+        self.message_id: int = int(message_id)
+        r"""Identifier of the message of the type messageGroupCall"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputGroupCallMessage"]:
+        return "inputGroupCallMessage"
+
+    def getClass(self) -> Literal["InputGroupCall"]:
+        return "InputGroupCall"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputGroupCallMessage", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+
+        return data_class
+
+
 class CallProblemEcho(TlObject, CallProblem):
     r"""The user heard their own voice"""
 
@@ -51268,9 +51844,6 @@ class Call(TlObject):
         state (:class:`"types.CallState"`):
             Call state
 
-        group_call_id (:class:`int`):
-            Identifier of the group call associated with the call; 0 if the group call isn't created yet\. The group call can be received through the method getGroupCall
-
     """
 
     def __init__(
@@ -51280,7 +51853,6 @@ class Call(TlObject):
         is_outgoing: bool = False,
         is_video: bool = False,
         state: CallState = None,
-        group_call_id: int = 0,
     ) -> None:
         self.id: int = int(id)
         r"""Call identifier, not persistent"""
@@ -51300,8 +51872,6 @@ class Call(TlObject):
             None,
         ] = state
         r"""Call state"""
-        self.group_call_id: int = int(group_call_id)
-        r"""Identifier of the group call associated with the call; 0 if the group call isn't created yet\. The group call can be received through the method getGroupCall"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -51320,7 +51890,6 @@ class Call(TlObject):
             "is_outgoing": self.is_outgoing,
             "is_video": self.is_video,
             "state": self.state,
-            "group_call_id": self.group_call_id,
         }
 
     @classmethod
@@ -51332,7 +51901,6 @@ class Call(TlObject):
             data_class.is_outgoing = data.get("is_outgoing", False)
             data_class.is_video = data.get("is_video", False)
             data_class.state = data.get("state", None)
-            data_class.group_call_id = int(data.get("group_call_id", 0))
 
         return data_class
 
@@ -51432,7 +52000,7 @@ class PhoneNumberAuthenticationSettings(TlObject):
             For official Android and iOS applications only; pass null otherwise\. Settings for Firebase Authentication
 
         authentication_tokens (:class:`List[str]`):
-            List of up to 20 authentication tokens, recently received in updateOption\(\"authentication\_token\"\) in previously logged out sessions
+            List of up to 20 authentication tokens, recently received in updateOption\(\"authentication\_token\"\) in previously logged out sessions; for setAuthenticationPhoneNumber only
 
     """
 
@@ -51463,7 +52031,7 @@ class PhoneNumberAuthenticationSettings(TlObject):
         ] = firebase_authentication_settings
         r"""For official Android and iOS applications only; pass null otherwise\. Settings for Firebase Authentication"""
         self.authentication_tokens: List[str] = authentication_tokens or []
-        r"""List of up to 20 authentication tokens, recently received in updateOption\(\"authentication\_token\"\) in previously logged out sessions"""
+        r"""List of up to 20 authentication tokens, recently received in updateOption\(\"authentication\_token\"\) in previously logged out sessions; for setAuthenticationPhoneNumber only"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -52954,6 +53522,7 @@ class TargetChatInternalLink(TlObject, TargetChat):
             InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
@@ -59035,8 +59604,8 @@ class PremiumLimitTypeActiveStoryCount(TlObject, PremiumLimitType):
         return data_class
 
 
-class PremiumLimitTypeWeeklySentStoryCount(TlObject, PremiumLimitType):
-    r"""The maximum number of stories sent per week"""
+class PremiumLimitTypeWeeklyPostedStoryCount(TlObject, PremiumLimitType):
+    r"""The maximum number of stories posted per week"""
 
     def __init__(self) -> None:
         pass
@@ -59044,8 +59613,8 @@ class PremiumLimitTypeWeeklySentStoryCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumLimitTypeWeeklySentStoryCount"]:
-        return "premiumLimitTypeWeeklySentStoryCount"
+    def getType(self) -> Literal["premiumLimitTypeWeeklyPostedStoryCount"]:
+        return "premiumLimitTypeWeeklyPostedStoryCount"
 
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
@@ -59056,15 +59625,15 @@ class PremiumLimitTypeWeeklySentStoryCount(TlObject, PremiumLimitType):
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["PremiumLimitTypeWeeklySentStoryCount", None]:
+    ) -> Union["PremiumLimitTypeWeeklyPostedStoryCount", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class PremiumLimitTypeMonthlySentStoryCount(TlObject, PremiumLimitType):
-    r"""The maximum number of stories sent per month"""
+class PremiumLimitTypeMonthlyPostedStoryCount(TlObject, PremiumLimitType):
+    r"""The maximum number of stories posted per month"""
 
     def __init__(self) -> None:
         pass
@@ -59072,8 +59641,8 @@ class PremiumLimitTypeMonthlySentStoryCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["premiumLimitTypeMonthlySentStoryCount"]:
-        return "premiumLimitTypeMonthlySentStoryCount"
+    def getType(self) -> Literal["premiumLimitTypeMonthlyPostedStoryCount"]:
+        return "premiumLimitTypeMonthlyPostedStoryCount"
 
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
@@ -59084,7 +59653,7 @@ class PremiumLimitTypeMonthlySentStoryCount(TlObject, PremiumLimitType):
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["PremiumLimitTypeMonthlySentStoryCount", None]:
+    ) -> Union["PremiumLimitTypeMonthlyPostedStoryCount", None]:
         if data:
             data_class = cls()
 
@@ -59092,7 +59661,7 @@ class PremiumLimitTypeMonthlySentStoryCount(TlObject, PremiumLimitType):
 
 
 class PremiumLimitTypeStoryCaptionLength(TlObject, PremiumLimitType):
-    r"""The maximum length of captions of sent stories"""
+    r"""The maximum length of captions of posted stories"""
 
     def __init__(self) -> None:
         pass
@@ -60313,8 +60882,8 @@ class PremiumLimit(TlObject):
             PremiumLimitTypeChatFolderInviteLinkCount,
             PremiumLimitTypeShareableChatFolderCount,
             PremiumLimitTypeActiveStoryCount,
-            PremiumLimitTypeWeeklySentStoryCount,
-            PremiumLimitTypeMonthlySentStoryCount,
+            PremiumLimitTypeWeeklyPostedStoryCount,
+            PremiumLimitTypeMonthlyPostedStoryCount,
             PremiumLimitTypeStoryCaptionLength,
             PremiumLimitTypeStorySuggestedReactionAreaCount,
             PremiumLimitTypeSimilarChatCount,
@@ -60398,6 +60967,7 @@ class PremiumFeatures(TlObject):
             InternalLinkTypeDefaultMessageAutoDeleteTimerSettings,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
             InternalLinkTypeInvoice,
             InternalLinkTypeLanguagePack,
@@ -60518,8 +61088,8 @@ class PremiumSourceLimitExceeded(TlObject, PremiumSource):
             PremiumLimitTypeChatFolderInviteLinkCount,
             PremiumLimitTypeShareableChatFolderCount,
             PremiumLimitTypeActiveStoryCount,
-            PremiumLimitTypeWeeklySentStoryCount,
-            PremiumLimitTypeMonthlySentStoryCount,
+            PremiumLimitTypeWeeklyPostedStoryCount,
+            PremiumLimitTypeMonthlyPostedStoryCount,
             PremiumLimitTypeStoryCaptionLength,
             PremiumLimitTypeStorySuggestedReactionAreaCount,
             PremiumLimitTypeSimilarChatCount,
@@ -63005,7 +63575,7 @@ class Hashtags(TlObject):
         return data_class
 
 
-class CanSendStoryResultOk(TlObject, CanSendStoryResult):
+class CanPostStoryResultOk(TlObject, CanPostStoryResult):
     r"""A story can be sent"""
 
     def __init__(self) -> None:
@@ -63014,24 +63584,24 @@ class CanSendStoryResultOk(TlObject, CanSendStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["canSendStoryResultOk"]:
-        return "canSendStoryResultOk"
+    def getType(self) -> Literal["canPostStoryResultOk"]:
+        return "canPostStoryResultOk"
 
-    def getClass(self) -> Literal["CanSendStoryResult"]:
-        return "CanSendStoryResult"
+    def getClass(self) -> Literal["CanPostStoryResult"]:
+        return "CanPostStoryResult"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["CanSendStoryResultOk", None]:
+    def from_dict(cls, data: dict) -> Union["CanPostStoryResultOk", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class CanSendStoryResultPremiumNeeded(TlObject, CanSendStoryResult):
+class CanPostStoryResultPremiumNeeded(TlObject, CanPostStoryResult):
     r"""The user must subscribe to Telegram Premium to be able to post stories"""
 
     def __init__(self) -> None:
@@ -63040,24 +63610,24 @@ class CanSendStoryResultPremiumNeeded(TlObject, CanSendStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["canSendStoryResultPremiumNeeded"]:
-        return "canSendStoryResultPremiumNeeded"
+    def getType(self) -> Literal["canPostStoryResultPremiumNeeded"]:
+        return "canPostStoryResultPremiumNeeded"
 
-    def getClass(self) -> Literal["CanSendStoryResult"]:
-        return "CanSendStoryResult"
+    def getClass(self) -> Literal["CanPostStoryResult"]:
+        return "CanPostStoryResult"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["CanSendStoryResultPremiumNeeded", None]:
+    def from_dict(cls, data: dict) -> Union["CanPostStoryResultPremiumNeeded", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class CanSendStoryResultBoostNeeded(TlObject, CanSendStoryResult):
+class CanPostStoryResultBoostNeeded(TlObject, CanPostStoryResult):
     r"""The chat must be boosted first by Telegram Premium subscribers to post more stories\. Call getChatBoostStatus to get current boost status of the chat"""
 
     def __init__(self) -> None:
@@ -63066,24 +63636,24 @@ class CanSendStoryResultBoostNeeded(TlObject, CanSendStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["canSendStoryResultBoostNeeded"]:
-        return "canSendStoryResultBoostNeeded"
+    def getType(self) -> Literal["canPostStoryResultBoostNeeded"]:
+        return "canPostStoryResultBoostNeeded"
 
-    def getClass(self) -> Literal["CanSendStoryResult"]:
-        return "CanSendStoryResult"
+    def getClass(self) -> Literal["CanPostStoryResult"]:
+        return "CanPostStoryResult"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["CanSendStoryResultBoostNeeded", None]:
+    def from_dict(cls, data: dict) -> Union["CanPostStoryResultBoostNeeded", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class CanSendStoryResultActiveStoryLimitExceeded(TlObject, CanSendStoryResult):
+class CanPostStoryResultActiveStoryLimitExceeded(TlObject, CanPostStoryResult):
     r"""The limit for the number of active stories exceeded\. The user can buy Telegram Premium, delete an active story, or wait for the oldest story to expire"""
 
     def __init__(self) -> None:
@@ -63092,11 +63662,11 @@ class CanSendStoryResultActiveStoryLimitExceeded(TlObject, CanSendStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["canSendStoryResultActiveStoryLimitExceeded"]:
-        return "canSendStoryResultActiveStoryLimitExceeded"
+    def getType(self) -> Literal["canPostStoryResultActiveStoryLimitExceeded"]:
+        return "canPostStoryResultActiveStoryLimitExceeded"
 
-    def getClass(self) -> Literal["CanSendStoryResult"]:
-        return "CanSendStoryResult"
+    def getClass(self) -> Literal["CanPostStoryResult"]:
+        return "CanPostStoryResult"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
@@ -63104,34 +63674,34 @@ class CanSendStoryResultActiveStoryLimitExceeded(TlObject, CanSendStoryResult):
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["CanSendStoryResultActiveStoryLimitExceeded", None]:
+    ) -> Union["CanPostStoryResultActiveStoryLimitExceeded", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class CanSendStoryResultWeeklyLimitExceeded(TlObject, CanSendStoryResult):
+class CanPostStoryResultWeeklyLimitExceeded(TlObject, CanPostStoryResult):
     r"""The weekly limit for the number of posted stories exceeded\. The user needs to buy Telegram Premium or wait specified time
 
     Parameters:
         retry_after (:class:`int`):
-            Time left before the user can send the next story
+            Time left before the user can post the next story
 
     """
 
     def __init__(self, retry_after: int = 0) -> None:
         self.retry_after: int = int(retry_after)
-        r"""Time left before the user can send the next story"""
+        r"""Time left before the user can post the next story"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["canSendStoryResultWeeklyLimitExceeded"]:
-        return "canSendStoryResultWeeklyLimitExceeded"
+    def getType(self) -> Literal["canPostStoryResultWeeklyLimitExceeded"]:
+        return "canPostStoryResultWeeklyLimitExceeded"
 
-    def getClass(self) -> Literal["CanSendStoryResult"]:
-        return "CanSendStoryResult"
+    def getClass(self) -> Literal["CanPostStoryResult"]:
+        return "CanPostStoryResult"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "retry_after": self.retry_after}
@@ -63139,7 +63709,7 @@ class CanSendStoryResultWeeklyLimitExceeded(TlObject, CanSendStoryResult):
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["CanSendStoryResultWeeklyLimitExceeded", None]:
+    ) -> Union["CanPostStoryResultWeeklyLimitExceeded", None]:
         if data:
             data_class = cls()
             data_class.retry_after = int(data.get("retry_after", 0))
@@ -63147,27 +63717,27 @@ class CanSendStoryResultWeeklyLimitExceeded(TlObject, CanSendStoryResult):
         return data_class
 
 
-class CanSendStoryResultMonthlyLimitExceeded(TlObject, CanSendStoryResult):
+class CanPostStoryResultMonthlyLimitExceeded(TlObject, CanPostStoryResult):
     r"""The monthly limit for the number of posted stories exceeded\. The user needs to buy Telegram Premium or wait specified time
 
     Parameters:
         retry_after (:class:`int`):
-            Time left before the user can send the next story
+            Time left before the user can post the next story
 
     """
 
     def __init__(self, retry_after: int = 0) -> None:
         self.retry_after: int = int(retry_after)
-        r"""Time left before the user can send the next story"""
+        r"""Time left before the user can post the next story"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["canSendStoryResultMonthlyLimitExceeded"]:
-        return "canSendStoryResultMonthlyLimitExceeded"
+    def getType(self) -> Literal["canPostStoryResultMonthlyLimitExceeded"]:
+        return "canPostStoryResultMonthlyLimitExceeded"
 
-    def getClass(self) -> Literal["CanSendStoryResult"]:
-        return "CanSendStoryResult"
+    def getClass(self) -> Literal["CanPostStoryResult"]:
+        return "CanPostStoryResult"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType(), "retry_after": self.retry_after}
@@ -63175,7 +63745,7 @@ class CanSendStoryResultMonthlyLimitExceeded(TlObject, CanSendStoryResult):
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["CanSendStoryResultMonthlyLimitExceeded", None]:
+    ) -> Union["CanPostStoryResultMonthlyLimitExceeded", None]:
         if data:
             data_class = cls()
             data_class.retry_after = int(data.get("retry_after", 0))
@@ -69601,6 +70171,40 @@ class InternalLinkTypeGame(TlObject, InternalLinkType):
         return data_class
 
 
+class InternalLinkTypeGroupCall(TlObject, InternalLinkType):
+    r"""The link is a link to a group call that isn't bound to a chat\. Call joinGroupCall with the given invite\_link
+
+    Parameters:
+        invite_link (:class:`str`):
+            Internal representation of the invite link
+
+    """
+
+    def __init__(self, invite_link: str = "") -> None:
+        self.invite_link: Union[str, None] = invite_link
+        r"""Internal representation of the invite link"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["internalLinkTypeGroupCall"]:
+        return "internalLinkTypeGroupCall"
+
+    def getClass(self) -> Literal["InternalLinkType"]:
+        return "InternalLinkType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "invite_link": self.invite_link}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InternalLinkTypeGroupCall", None]:
+        if data:
+            data_class = cls()
+            data_class.invite_link = data.get("invite_link", "")
+
+        return data_class
+
+
 class InternalLinkTypeInstantView(TlObject, InternalLinkType):
     r"""The link must be opened in an Instant View\. Call getWebPageInstantView with the given URL to process the link\. If Instant View is found, then show it, otherwise, open the fallback URL in an external browser
 
@@ -70359,20 +70963,20 @@ class InternalLinkTypeStickerSet(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeStory(TlObject, InternalLinkType):
-    r"""The link is a link to a story\. Call searchPublicChat with the given sender username, then call getStory with the received chat identifier and the given story identifier, then show the story if received
+    r"""The link is a link to a story\. Call searchPublicChat with the given poster username, then call getStory with the received chat identifier and the given story identifier, then show the story if received
 
     Parameters:
-        story_sender_username (:class:`str`):
-            Username of the sender of the story
+        story_poster_username (:class:`str`):
+            Username of the poster of the story
 
         story_id (:class:`int`):
             Story identifier
 
     """
 
-    def __init__(self, story_sender_username: str = "", story_id: int = 0) -> None:
-        self.story_sender_username: Union[str, None] = story_sender_username
-        r"""Username of the sender of the story"""
+    def __init__(self, story_poster_username: str = "", story_id: int = 0) -> None:
+        self.story_poster_username: Union[str, None] = story_poster_username
+        r"""Username of the poster of the story"""
         self.story_id: int = int(story_id)
         r"""Story identifier"""
 
@@ -70388,7 +70992,7 @@ class InternalLinkTypeStory(TlObject, InternalLinkType):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "story_sender_username": self.story_sender_username,
+            "story_poster_username": self.story_poster_username,
             "story_id": self.story_id,
         }
 
@@ -70396,7 +71000,7 @@ class InternalLinkTypeStory(TlObject, InternalLinkType):
     def from_dict(cls, data: dict) -> Union["InternalLinkTypeStory", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_username = data.get("story_sender_username", "")
+            data_class.story_poster_username = data.get("story_poster_username", "")
             data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
@@ -70644,7 +71248,7 @@ class InternalLinkTypeUserToken(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeVideoChat(TlObject, InternalLinkType):
-    r"""The link is a link to a video chat\. Call searchPublicChat with the given chat username, and then joinGroupCall with the given invite hash to process the link
+    r"""The link is a link to a video chat\. Call searchPublicChat with the given chat username, and then joinVideoChat with the given invite hash to process the link
 
     Parameters:
         chat_username (:class:`str`):
@@ -71020,40 +71624,6 @@ class BlockListStories(TlObject, BlockList):
     def from_dict(cls, data: dict) -> Union["BlockListStories", None]:
         if data:
             data_class = cls()
-
-        return data_class
-
-
-class FilePart(TlObject):
-    r"""Contains a part of a file
-
-    Parameters:
-        data (:class:`bytes`):
-            File bytes
-
-    """
-
-    def __init__(self, data: bytes = b"") -> None:
-        self.data: Union[bytes, None] = data
-        r"""File bytes"""
-
-    def __str__(self):
-        return str(pytdbot.utils.obj_to_json(self, indent=4))
-
-    def getType(self) -> Literal["filePart"]:
-        return "filePart"
-
-    def getClass(self) -> Literal["FilePart"]:
-        return "FilePart"
-
-    def to_dict(self) -> dict:
-        return {"@type": self.getType(), "data": self.data}
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Union["FilePart", None]:
-        if data:
-            data_class = cls()
-            data_class.data = b64decode(data.get("data", b""))
 
         return data_class
 
@@ -73857,6 +74427,40 @@ class Text(TlObject):
         return data_class
 
 
+class Data(TlObject):
+    r"""Contains some binary data
+
+    Parameters:
+        data (:class:`bytes`):
+            Data
+
+    """
+
+    def __init__(self, data: bytes = b"") -> None:
+        self.data: Union[bytes, None] = data
+        r"""Data"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["data"]:
+        return "data"
+
+    def getClass(self) -> Literal["Data"]:
+        return "Data"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "data": self.data}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["Data", None]:
+        if data:
+            data_class = cls()
+            data_class.data = b64decode(data.get("data", b""))
+
+        return data_class
+
+
 class Seconds(TlObject):
     r"""Contains a value representing a number of seconds
 
@@ -74635,7 +75239,7 @@ class ChatStatisticsObjectTypeMessage(TlObject, ChatStatisticsObjectType):
 
 
 class ChatStatisticsObjectTypeStory(TlObject, ChatStatisticsObjectType):
-    r"""Describes a story sent by the chat
+    r"""Describes a story posted on behalf of the chat
 
     Parameters:
         story_id (:class:`int`):
@@ -74669,7 +75273,7 @@ class ChatStatisticsObjectTypeStory(TlObject, ChatStatisticsObjectType):
 
 
 class ChatStatisticsInteractionInfo(TlObject):
-    r"""Contains statistics about interactions with a message sent in the chat or a story sent by the chat
+    r"""Contains statistics about interactions with a message sent in the chat or a story posted on behalf of the chat
 
     Parameters:
         object_type (:class:`"types.ChatStatisticsObjectType"`):
@@ -75100,13 +75704,13 @@ class ChatStatisticsChannel(TlObject, ChatStatistics):
             Mean number of times reactions were added to the recently sent messages
 
         mean_story_view_count (:class:`"types.StatisticalValue"`):
-            Mean number of times the recently sent stories were viewed
+            Mean number of times the recently posted stories were viewed
 
         mean_story_share_count (:class:`"types.StatisticalValue"`):
-            Mean number of times the recently sent stories were shared
+            Mean number of times the recently posted stories were shared
 
         mean_story_reaction_count (:class:`"types.StatisticalValue"`):
-            Mean number of times reactions were added to the recently sent stories
+            Mean number of times reactions were added to the recently posted stories
 
         enabled_notifications_percentage (:class:`float`):
             A percentage of users with enabled notifications for the chat; 0\-100
@@ -75148,7 +75752,7 @@ class ChatStatisticsChannel(TlObject, ChatStatistics):
             A graph containing number of views of associated with the chat instant views
 
         recent_interactions (:class:`List["types.ChatStatisticsInteractionInfo"]`):
-            Detailed statistics about number of views and shares of recently sent messages and stories
+            Detailed statistics about number of views and shares of recently sent messages and posted stories
 
     """
 
@@ -75196,15 +75800,15 @@ class ChatStatisticsChannel(TlObject, ChatStatistics):
         self.mean_story_view_count: Union[StatisticalValue, None] = (
             mean_story_view_count
         )
-        r"""Mean number of times the recently sent stories were viewed"""
+        r"""Mean number of times the recently posted stories were viewed"""
         self.mean_story_share_count: Union[StatisticalValue, None] = (
             mean_story_share_count
         )
-        r"""Mean number of times the recently sent stories were shared"""
+        r"""Mean number of times the recently posted stories were shared"""
         self.mean_story_reaction_count: Union[StatisticalValue, None] = (
             mean_story_reaction_count
         )
-        r"""Mean number of times reactions were added to the recently sent stories"""
+        r"""Mean number of times reactions were added to the recently posted stories"""
         self.enabled_notifications_percentage: float = float(
             enabled_notifications_percentage
         )
@@ -75260,7 +75864,7 @@ class ChatStatisticsChannel(TlObject, ChatStatistics):
         self.recent_interactions: List[ChatStatisticsInteractionInfo] = (
             recent_interactions or []
         )
-        r"""Detailed statistics about number of views and shares of recently sent messages and stories"""
+        r"""Detailed statistics about number of views and shares of recently sent messages and posted stories"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -77250,6 +77854,7 @@ class UpdateMessageContent(TlObject, Update):
             MessageStory,
             MessageInvoice,
             MessageCall,
+            MessageGroupCall,
             MessageVideoChatScheduled,
             MessageVideoChatStarted,
             MessageVideoChatEnded,
@@ -79738,6 +80343,9 @@ class UpdateForumTopic(TlObject, Update):
         is_pinned (:class:`bool`):
             True, if the topic is pinned in the topic list
 
+        last_read_inbox_message_id (:class:`int`):
+            Identifier of the last read incoming message
+
         last_read_outbox_message_id (:class:`int`):
             Identifier of the last read outgoing message
 
@@ -79751,6 +80359,7 @@ class UpdateForumTopic(TlObject, Update):
         chat_id: int = 0,
         message_thread_id: int = 0,
         is_pinned: bool = False,
+        last_read_inbox_message_id: int = 0,
         last_read_outbox_message_id: int = 0,
         notification_settings: ChatNotificationSettings = None,
     ) -> None:
@@ -79760,6 +80369,8 @@ class UpdateForumTopic(TlObject, Update):
         r"""Message thread identifier of the topic"""
         self.is_pinned: bool = bool(is_pinned)
         r"""True, if the topic is pinned in the topic list"""
+        self.last_read_inbox_message_id: int = int(last_read_inbox_message_id)
+        r"""Identifier of the last read incoming message"""
         self.last_read_outbox_message_id: int = int(last_read_outbox_message_id)
         r"""Identifier of the last read outgoing message"""
         self.notification_settings: Union[ChatNotificationSettings, None] = (
@@ -79782,6 +80393,7 @@ class UpdateForumTopic(TlObject, Update):
             "chat_id": self.chat_id,
             "message_thread_id": self.message_thread_id,
             "is_pinned": self.is_pinned,
+            "last_read_inbox_message_id": self.last_read_inbox_message_id,
             "last_read_outbox_message_id": self.last_read_outbox_message_id,
             "notification_settings": self.notification_settings,
         }
@@ -79793,6 +80405,9 @@ class UpdateForumTopic(TlObject, Update):
             data_class.chat_id = int(data.get("chat_id", 0))
             data_class.message_thread_id = int(data.get("message_thread_id", 0))
             data_class.is_pinned = data.get("is_pinned", False)
+            data_class.last_read_inbox_message_id = int(
+                data.get("last_read_inbox_message_id", 0)
+            )
             data_class.last_read_outbox_message_id = int(
                 data.get("last_read_outbox_message_id", 0)
             )
@@ -80644,6 +81259,7 @@ class UpdateServiceNotification(TlObject, Update):
             MessageStory,
             MessageInvoice,
             MessageCall,
+            MessageGroupCall,
             MessageVideoChatScheduled,
             MessageVideoChatStarted,
             MessageVideoChatEnded,
@@ -81208,13 +81824,13 @@ class UpdateGroupCall(TlObject, Update):
 
     Parameters:
         group_call (:class:`"types.GroupCall"`):
-            New data about a group call
+            New data about the group call
 
     """
 
     def __init__(self, group_call: GroupCall = None) -> None:
         self.group_call: Union[GroupCall, None] = group_call
-        r"""New data about a group call"""
+        r"""New data about the group call"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -81242,10 +81858,10 @@ class UpdateGroupCallParticipant(TlObject, Update):
 
     Parameters:
         group_call_id (:class:`int`):
-            Identifier of group call
+            Identifier of the group call
 
         participant (:class:`"types.GroupCallParticipant"`):
-            New data about a participant
+            New data about the participant
 
     """
 
@@ -81253,9 +81869,9 @@ class UpdateGroupCallParticipant(TlObject, Update):
         self, group_call_id: int = 0, participant: GroupCallParticipant = None
     ) -> None:
         self.group_call_id: int = int(group_call_id)
-        r"""Identifier of group call"""
+        r"""Identifier of the group call"""
         self.participant: Union[GroupCallParticipant, None] = participant
-        r"""New data about a participant"""
+        r"""New data about the participant"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -81279,6 +81895,105 @@ class UpdateGroupCallParticipant(TlObject, Update):
             data_class = cls()
             data_class.group_call_id = int(data.get("group_call_id", 0))
             data_class.participant = data.get("participant", None)
+
+        return data_class
+
+
+class UpdateGroupCallParticipants(TlObject, Update):
+    r"""The list of group call participants that can send and receive encrypted call data has changed; for group calls not bound to a chat only
+
+    Parameters:
+        group_call_id (:class:`int`):
+            Identifier of the group call
+
+        participant_user_ids (:class:`List[int]`):
+            New list of group call participant user identifiers\. The identifiers may be invalid or the corresponding users may be unknown\. The participants must be shown in the list of group call participants even there is no information about them
+
+    """
+
+    def __init__(
+        self, group_call_id: int = 0, participant_user_ids: List[int] = None
+    ) -> None:
+        self.group_call_id: int = int(group_call_id)
+        r"""Identifier of the group call"""
+        self.participant_user_ids: List[int] = participant_user_ids or []
+        r"""New list of group call participant user identifiers\. The identifiers may be invalid or the corresponding users may be unknown\. The participants must be shown in the list of group call participants even there is no information about them"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateGroupCallParticipants"]:
+        return "updateGroupCallParticipants"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "group_call_id": self.group_call_id,
+            "participant_user_ids": self.participant_user_ids,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateGroupCallParticipants", None]:
+        if data:
+            data_class = cls()
+            data_class.group_call_id = int(data.get("group_call_id", 0))
+            data_class.participant_user_ids = data.get("participant_user_ids", None)
+
+        return data_class
+
+
+class UpdateGroupCallVerificationState(TlObject, Update):
+    r"""The verification state of an encrypted group call has changed; for group calls not bound to a chat only
+
+    Parameters:
+        group_call_id (:class:`int`):
+            Identifier of the group call
+
+        generation (:class:`int`):
+            The call state generation to which the emoji corresponds\. If generation is different for two users, then their emoji may be also different
+
+        emojis (:class:`List[str]`):
+            Group call state fingerprint represented as 4 emoji; may be empty if the state isn't verified yet
+
+    """
+
+    def __init__(
+        self, group_call_id: int = 0, generation: int = 0, emojis: List[str] = None
+    ) -> None:
+        self.group_call_id: int = int(group_call_id)
+        r"""Identifier of the group call"""
+        self.generation: int = int(generation)
+        r"""The call state generation to which the emoji corresponds\. If generation is different for two users, then their emoji may be also different"""
+        self.emojis: List[str] = emojis or []
+        r"""Group call state fingerprint represented as 4 emoji; may be empty if the state isn't verified yet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateGroupCallVerificationState"]:
+        return "updateGroupCallVerificationState"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "group_call_id": self.group_call_id,
+            "generation": self.generation,
+            "emojis": self.emojis,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateGroupCallVerificationState", None]:
+        if data:
+            data_class = cls()
+            data_class.group_call_id = int(data.get("group_call_id", 0))
+            data_class.generation = int(data.get("generation", 0))
+            data_class.emojis = data.get("emojis", None)
 
         return data_class
 
@@ -81562,7 +82277,7 @@ class UpdateStoryDeleted(TlObject, Update):
     r"""A story became inaccessible
 
     Parameters:
-        story_sender_chat_id (:class:`int`):
+        story_poster_chat_id (:class:`int`):
             Identifier of the chat that posted the story
 
         story_id (:class:`int`):
@@ -81570,8 +82285,8 @@ class UpdateStoryDeleted(TlObject, Update):
 
     """
 
-    def __init__(self, story_sender_chat_id: int = 0, story_id: int = 0) -> None:
-        self.story_sender_chat_id: int = int(story_sender_chat_id)
+    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+        self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""Identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
         r"""Story identifier"""
@@ -81588,7 +82303,7 @@ class UpdateStoryDeleted(TlObject, Update):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "story_sender_chat_id": self.story_sender_chat_id,
+            "story_poster_chat_id": self.story_poster_chat_id,
             "story_id": self.story_id,
         }
 
@@ -81596,18 +82311,18 @@ class UpdateStoryDeleted(TlObject, Update):
     def from_dict(cls, data: dict) -> Union["UpdateStoryDeleted", None]:
         if data:
             data_class = cls()
-            data_class.story_sender_chat_id = int(data.get("story_sender_chat_id", 0))
+            data_class.story_poster_chat_id = int(data.get("story_poster_chat_id", 0))
             data_class.story_id = int(data.get("story_id", 0))
 
         return data_class
 
 
-class UpdateStorySendSucceeded(TlObject, Update):
-    r"""A story has been successfully sent
+class UpdateStoryPostSucceeded(TlObject, Update):
+    r"""A story has been successfully posted
 
     Parameters:
         story (:class:`"types.Story"`):
-            The sent story
+            The posted story
 
         old_story_id (:class:`int`):
             The previous temporary story identifier
@@ -81616,15 +82331,15 @@ class UpdateStorySendSucceeded(TlObject, Update):
 
     def __init__(self, story: Story = None, old_story_id: int = 0) -> None:
         self.story: Union[Story, None] = story
-        r"""The sent story"""
+        r"""The posted story"""
         self.old_story_id: int = int(old_story_id)
         r"""The previous temporary story identifier"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["updateStorySendSucceeded"]:
-        return "updateStorySendSucceeded"
+    def getType(self) -> Literal["updateStoryPostSucceeded"]:
+        return "updateStoryPostSucceeded"
 
     def getClass(self) -> Literal["Update"]:
         return "Update"
@@ -81637,7 +82352,7 @@ class UpdateStorySendSucceeded(TlObject, Update):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["UpdateStorySendSucceeded", None]:
+    def from_dict(cls, data: dict) -> Union["UpdateStoryPostSucceeded", None]:
         if data:
             data_class = cls()
             data_class.story = data.get("story", None)
@@ -81646,17 +82361,17 @@ class UpdateStorySendSucceeded(TlObject, Update):
         return data_class
 
 
-class UpdateStorySendFailed(TlObject, Update):
-    r"""A story failed to send\. If the story sending is canceled, then updateStoryDeleted will be received instead of this update
+class UpdateStoryPostFailed(TlObject, Update):
+    r"""A story failed to post\. If the story posting is canceled, then updateStoryDeleted will be received instead of this update
 
     Parameters:
         story (:class:`"types.Story"`):
-            The failed to send story
+            The failed to post story
 
         error (:class:`"types.Error"`):
-            The cause of the story sending failure
+            The cause of the story posting failure
 
-        error_type (:class:`"types.CanSendStoryResult"`):
+        error_type (:class:`"types.CanPostStoryResult"`):
             Type of the error; may be null if unknown
 
     """
@@ -81665,19 +82380,19 @@ class UpdateStorySendFailed(TlObject, Update):
         self,
         story: Story = None,
         error: Error = None,
-        error_type: CanSendStoryResult = None,
+        error_type: CanPostStoryResult = None,
     ) -> None:
         self.story: Union[Story, None] = story
-        r"""The failed to send story"""
+        r"""The failed to post story"""
         self.error: Union[Error, None] = error
-        r"""The cause of the story sending failure"""
+        r"""The cause of the story posting failure"""
         self.error_type: Union[
-            CanSendStoryResultOk,
-            CanSendStoryResultPremiumNeeded,
-            CanSendStoryResultBoostNeeded,
-            CanSendStoryResultActiveStoryLimitExceeded,
-            CanSendStoryResultWeeklyLimitExceeded,
-            CanSendStoryResultMonthlyLimitExceeded,
+            CanPostStoryResultOk,
+            CanPostStoryResultPremiumNeeded,
+            CanPostStoryResultBoostNeeded,
+            CanPostStoryResultActiveStoryLimitExceeded,
+            CanPostStoryResultWeeklyLimitExceeded,
+            CanPostStoryResultMonthlyLimitExceeded,
             None,
         ] = error_type
         r"""Type of the error; may be null if unknown"""
@@ -81685,8 +82400,8 @@ class UpdateStorySendFailed(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["updateStorySendFailed"]:
-        return "updateStorySendFailed"
+    def getType(self) -> Literal["updateStoryPostFailed"]:
+        return "updateStoryPostFailed"
 
     def getClass(self) -> Literal["Update"]:
         return "Update"
@@ -81700,7 +82415,7 @@ class UpdateStorySendFailed(TlObject, Update):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["UpdateStorySendFailed", None]:
+    def from_dict(cls, data: dict) -> Union["UpdateStoryPostFailed", None]:
         if data:
             data_class = cls()
             data_class.story = data.get("story", None)
