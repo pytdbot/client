@@ -1,6 +1,7 @@
-import pytdbot
 from asyncio import sleep
 from typing import Literal
+
+import pytdbot
 
 
 class ChatActions:

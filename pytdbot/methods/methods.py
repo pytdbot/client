@@ -1,6 +1,6 @@
-import pytdbot
-
 from typing import List, Union
+
+import pytdbot
 
 from ..types import (
     ChatTypeSupergroup,
@@ -37,7 +37,6 @@ from ..types import (
     TextParseModeHTML,
     TextParseModeMarkdown,
 )
-
 from .td_functions import TDLibFunctions
 
 

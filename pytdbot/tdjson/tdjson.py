@@ -3,13 +3,12 @@ try:
 except ImportError:
     tdjson = None
 
-from ctypes import c_int, c_double, c_char_p, CDLL
-
+import sys
+from ctypes import CDLL, c_char_p, c_double, c_int
 from logging import getLogger
 from typing import Union
-from ..utils import JSON_ENCODER, json_dumps, json_loads
 
-import sys
+from ..utils import JSON_ENCODER, json_dumps, json_loads
 
 logger = getLogger(__name__)
 

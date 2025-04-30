@@ -1,6 +1,6 @@
 from re import findall
-from setuptools import setup, find_packages
 
+from setuptools import find_packages, setup
 
 with open("pytdbot/__init__.py", "r") as f:
     version = findall(r"__version__ = \"(.+)\"", f.read())[0]

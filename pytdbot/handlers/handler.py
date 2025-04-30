@@ -1,6 +1,8 @@
 from typing import Callable
-from ..filters import Filter
+
 import pytdbot
+
+from ..filters import Filter
 
 
 class Handler:

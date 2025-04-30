@@ -1,8 +1,9 @@
 import logging
+from asyncio import iscoroutinefunction
+from typing import Callable
+
 import pytdbot
 
-from typing import Callable
-from asyncio import iscoroutinefunction
 from .handler import Handler
 from .td_updates import Updates
 
