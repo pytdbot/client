@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.47",
-    "commit_hash": "a03a90470d6fca9a5a3db747ba3f3e4a465b5fe7",
+    "version": "1.8.48",
+    "commit_hash": "b8b08b02dbbc0c05e7129e2f306c636c5b8ec04f",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -698,6 +698,7 @@
                 "linkPreviewTypeEmbeddedVideoPlayer",
                 "linkPreviewTypeExternalAudio",
                 "linkPreviewTypeExternalVideo",
+                "linkPreviewTypeGroupCall",
                 "linkPreviewTypeInvoice",
                 "linkPreviewTypeMessage",
                 "linkPreviewTypePhoto",
@@ -899,6 +900,7 @@
                 "messageStory",
                 "messageInvoice",
                 "messageCall",
+                "messageGroupCall",
                 "messageVideoChatScheduled",
                 "messageVideoChatStarted",
                 "messageVideoChatEnded",
@@ -1154,7 +1156,7 @@
             "functions": []
         },
         "InputStoryContent": {
-            "description": "The content of a story to send",
+            "description": "The content of a story to post",
             "types": [
                 "inputStoryContentPhoto",
                 "inputStoryContentVideo"
@@ -1219,7 +1221,7 @@
                 "callDiscardReasonDeclined",
                 "callDiscardReasonDisconnected",
                 "callDiscardReasonHungUp",
-                "callDiscardReasonAllowGroupCall"
+                "callDiscardReasonUpgradeToGroupCall"
             ],
             "functions": []
         },
@@ -1249,6 +1251,34 @@
                 "groupCallVideoQualityThumbnail",
                 "groupCallVideoQualityMedium",
                 "groupCallVideoQualityFull"
+            ],
+            "functions": []
+        },
+        "InviteGroupCallParticipantResult": {
+            "description": "Describes result of group call participant invitation",
+            "types": [
+                "inviteGroupCallParticipantResultUserPrivacyRestricted",
+                "inviteGroupCallParticipantResultUserAlreadyParticipant",
+                "inviteGroupCallParticipantResultUserWasBanned",
+                "inviteGroupCallParticipantResultSuccess"
+            ],
+            "functions": [
+                "inviteGroupCallParticipant"
+            ]
+        },
+        "GroupCallDataChannel": {
+            "description": "Describes data channel for a group call",
+            "types": [
+                "groupCallDataChannelMain",
+                "groupCallDataChannelScreenSharing"
+            ],
+            "functions": []
+        },
+        "InputGroupCall": {
+            "description": "Describes a non-joined group call that isn't bound to a chat",
+            "types": [
+                "inputGroupCallLink",
+                "inputGroupCallMessage"
             ],
             "functions": []
         },
@@ -1457,8 +1487,8 @@
                 "premiumLimitTypeChatFolderInviteLinkCount",
                 "premiumLimitTypeShareableChatFolderCount",
                 "premiumLimitTypeActiveStoryCount",
-                "premiumLimitTypeWeeklySentStoryCount",
-                "premiumLimitTypeMonthlySentStoryCount",
+                "premiumLimitTypeWeeklyPostedStoryCount",
+                "premiumLimitTypeMonthlyPostedStoryCount",
                 "premiumLimitTypeStoryCaptionLength",
                 "premiumLimitTypeStorySuggestedReactionAreaCount",
                 "premiumLimitTypeSimilarChatCount"
@@ -1617,18 +1647,18 @@
             ],
             "functions": []
         },
-        "CanSendStoryResult": {
-            "description": "Represents result of checking whether the current user can send a story in the specific chat",
+        "CanPostStoryResult": {
+            "description": "Represents result of checking whether the current user can post a story on behalf of the specific chat",
             "types": [
-                "canSendStoryResultOk",
-                "canSendStoryResultPremiumNeeded",
-                "canSendStoryResultBoostNeeded",
-                "canSendStoryResultActiveStoryLimitExceeded",
-                "canSendStoryResultWeeklyLimitExceeded",
-                "canSendStoryResultMonthlyLimitExceeded"
+                "canPostStoryResultOk",
+                "canPostStoryResultPremiumNeeded",
+                "canPostStoryResultBoostNeeded",
+                "canPostStoryResultActiveStoryLimitExceeded",
+                "canPostStoryResultWeeklyLimitExceeded",
+                "canPostStoryResultMonthlyLimitExceeded"
             ],
             "functions": [
-                "canSendStory"
+                "canPostStory"
             ]
         },
         "CanTransferOwnershipResult": {
@@ -1925,6 +1955,7 @@
                 "internalLinkTypeDefaultMessageAutoDeleteTimerSettings",
                 "internalLinkTypeEditProfileSettings",
                 "internalLinkTypeGame",
+                "internalLinkTypeGroupCall",
                 "internalLinkTypeInstantView",
                 "internalLinkTypeInvoice",
                 "internalLinkTypeLanguagePack",
@@ -2264,14 +2295,16 @@
                 "updateCall",
                 "updateGroupCall",
                 "updateGroupCallParticipant",
+                "updateGroupCallParticipants",
+                "updateGroupCallVerificationState",
                 "updateNewCallSignalingData",
                 "updateUserPrivacySettingRules",
                 "updateUnreadMessageCount",
                 "updateUnreadChatCount",
                 "updateStory",
                 "updateStoryDeleted",
-                "updateStorySendSucceeded",
-                "updateStorySendFailed",
+                "updateStoryPostSucceeded",
+                "updateStoryPostFailed",
                 "updateChatActiveStories",
                 "updateStoryListChatCount",
                 "updateStoryStealthMode",
@@ -4568,7 +4601,7 @@
                     "type": "Bool"
                 },
                 "can_manage_stories": {
-                    "description": "True, if the bot can send, edit and delete stories",
+                    "description": "True, if the bot can post, edit and delete stories",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -8277,7 +8310,7 @@
                     "type": "ChatMemberStatus"
                 },
                 "member_count": {
-                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToSendStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchPublicChats, or in chatFolderInviteLinkInfo.missing_chat_ids, or in userFullInfo.personal_chat_id, or for chats with messages or stories from publicForwards and foundStories",
+                    "description": "Number of members in the supergroup or channel; 0 if unknown. Currently, it is guaranteed to be known only if the supergroup or channel was received through getChatSimilarChats, getChatsToPostStories, getCreatedPublicChats, getGroupsInCommon, getInactiveSupergroupChats, getRecommendedChats, getSuitableDiscussionChats, getUserPrivacySettingRules, getVideoChatAvailableParticipants, searchPublicChats, or in chatFolderInviteLinkInfo.missing_chat_ids, or in userFullInfo.personal_chat_id, or for chats with messages or stories from publicForwards and foundStories",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -9271,8 +9304,8 @@
         "messageReplyToStory": {
             "description": "Describes a story replied by a given message",
             "args": {
-                "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the story",
+                "story_poster_chat_id": {
+                    "description": "The identifier of the poster of the story",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -9324,8 +9357,8 @@
         "inputMessageReplyToStory": {
             "description": "Describes a story to be replied",
             "args": {
-                "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the story. Currently, stories can be replied only in the sender's chat and channel stories can't be replied",
+                "story_poster_chat_id": {
+                    "description": "The identifier of the poster of the story. Currently, stories can be replied only in the chat that posted the story; channel stories can't be replied",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -10071,13 +10104,13 @@
                     "is_optional": false,
                     "type": "int64"
                 },
-                "use_default_show_story_sender": {
-                    "description": "If true, the value for the relevant type of chat is used instead of show_story_sender",
+                "use_default_show_story_poster": {
+                    "description": "If true, the value for the relevant type of chat is used instead of show_story_poster",
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "show_story_sender": {
-                    "description": "True, if the sender of stories must be displayed in notifications",
+                "show_story_poster": {
+                    "description": "True, if the chat that posted a story must be displayed in notifications",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -10137,8 +10170,8 @@
                     "is_optional": false,
                     "type": "int64"
                 },
-                "show_story_sender": {
-                    "description": "True, if the sender of stories must be displayed in notifications",
+                "show_story_poster": {
+                    "description": "True, if the chat that posted a story must be displayed in notifications",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -10686,7 +10719,7 @@
             "type": "BusinessBotManageBar"
         },
         "videoChat": {
-            "description": "Describes a video chat",
+            "description": "Describes a video chat, i.e. a group call bound to a chat",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier of an active video chat; 0 if none. Full information about the video chat can be received through the method getGroupCall",
@@ -13262,6 +13295,11 @@
             },
             "type": "LinkPreviewType"
         },
+        "linkPreviewTypeGroupCall": {
+            "description": "The link is a link to a group call that isn't bound to a chat",
+            "args": {},
+            "type": "LinkPreviewType"
+        },
         "linkPreviewTypeInvoice": {
             "description": "The link is a link to an invoice",
             "args": {},
@@ -13318,7 +13356,7 @@
         "linkPreviewTypeStory": {
             "description": "The link is a link to a story. Link preview description is unavailable",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "The identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -15679,7 +15717,7 @@
         "messageStory": {
             "description": "A message with a forwarded story",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -15765,6 +15803,37 @@
                     "description": "Call duration, in seconds",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageGroupCall": {
+            "description": "A message with information about a group call not bound to a chat. If the message is incoming, the call isn't active, isn't missed, and has no duration, and getOption(\"can_accept_calls\") is true, then incoming call screen must be shown to the user. Use joinGroupCall to accept the call or declineGroupCallInvitation to decline it. If the call become active or missed, then the call screen must be hidden",
+            "args": {
+                "is_active": {
+                    "description": "True, if the call is active, i.e. the called user joined the call",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "was_missed": {
+                    "description": "True, if the called user missed or declined the call",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_video": {
+                    "description": "True, if the call is a video call",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "duration": {
+                    "description": "Call duration, in seconds; for left calls only",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "other_participant_ids": {
+                    "description": "Identifiers of some other call participants",
+                    "is_optional": false,
+                    "type": "vector<MessageSender>"
                 }
             },
             "type": "MessageContent"
@@ -17798,9 +17867,9 @@
             "type": "InputMessageContent"
         },
         "inputMessageStory": {
-            "description": "A message with a forwarded story. Stories can't be sent to secret chats. A story can be forwarded only if story.can_be_forwarded",
+            "description": "A message with a forwarded story. Stories can't be forwarded to secret chats. A story can be forwarded only if story.can_be_forwarded",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -18913,7 +18982,7 @@
             "type": "InputStoryAreas"
         },
         "storyVideo": {
-            "description": "Describes a video file sent in a story",
+            "description": "Describes a video file posted as a story",
             "args": {
                 "duration": {
                     "description": "Duration of the video, in seconds",
@@ -19058,7 +19127,7 @@
             "type": "StoryList"
         },
         "storyOriginPublicStory": {
-            "description": "The original story was a public story with known sender",
+            "description": "The original story was a public story that was posted by a known chat",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat that posted original story",
@@ -19074,10 +19143,10 @@
             "type": "StoryOrigin"
         },
         "storyOriginHiddenUser": {
-            "description": "The original story was sent by an unknown user",
+            "description": "The original story was posted by an unknown user",
             "args": {
-                "sender_name": {
-                    "description": "Name of the story sender",
+                "poster_name": {
+                    "description": "Name of the user or the chat that posted the story",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -19130,17 +19199,17 @@
             "description": "Represents a story",
             "args": {
                 "id": {
-                    "description": "Unique story identifier among stories of the given sender",
+                    "description": "Unique story identifier among stories posted by the given chat",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "sender_chat_id": {
+                "poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "sender_id": {
-                    "description": "Identifier of the sender of the story; may be null if the story is posted on behalf of the sender_chat_id",
+                "poster_id": {
+                    "description": "Identifier of the user or chat that posted the story; may be null if the story is posted on behalf of the poster_chat_id",
                     "is_optional": true,
                     "type": "MessageSender"
                 },
@@ -19149,8 +19218,8 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "is_being_sent": {
-                    "description": "True, if the story is being sent by the current user",
+                "is_being_posted": {
+                    "description": "True, if the story is being posted by the current user",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -19165,7 +19234,7 @@
                     "type": "Bool"
                 },
                 "is_posted_to_chat_page": {
-                    "description": "True, if the story is saved in the sender's profile and will be available there after expiration",
+                    "description": "True, if the story is saved in the profile of the chat that posted it and will be available there after expiration",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -19190,7 +19259,7 @@
                     "type": "Bool"
                 },
                 "can_be_replied": {
-                    "description": "True, if the story can be replied in the chat with the story sender",
+                    "description": "True, if the story can be replied in the chat with the user that posted the story",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -19295,15 +19364,15 @@
             "type": "FoundStories"
         },
         "storyFullId": {
-            "description": "Contains identifier of a story along with identifier of its sender",
+            "description": "Contains identifier of a story along with identifier of the chat that posted it",
             "args": {
-                "sender_chat_id": {
+                "poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "story_id": {
-                    "description": "Unique story identifier among stories of the given sender",
+                    "description": "Unique story identifier among stories of the chat",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -19314,7 +19383,7 @@
             "description": "Contains basic information about a story",
             "args": {
                 "story_id": {
-                    "description": "Unique story identifier among stories of the given sender",
+                    "description": "Unique story identifier among stories of the chat",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -19345,7 +19414,7 @@
                     "type": "StoryList"
                 },
                 "order": {
-                    "description": "A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list. Stories must be sorted by the pair (order, story_sender_chat_id) in descending order",
+                    "description": "A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list. Stories must be sorted by the pair (order, story_poster_chat_id) in descending order",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -20028,13 +20097,13 @@
             "args": {},
             "type": "CallDiscardReason"
         },
-        "callDiscardReasonAllowGroupCall": {
-            "description": "The call was ended because it has been used successfully to transfer private encryption key for the associated group call",
+        "callDiscardReasonUpgradeToGroupCall": {
+            "description": "The call was ended because it has been upgraded to a group call",
             "args": {
-                "encrypted_group_call_key": {
-                    "description": "Encrypted using the call private key encryption key for the associated group call",
+                "invite_link": {
+                    "description": "Invite link for the group call",
                     "is_optional": false,
-                    "type": "bytes"
+                    "type": "string"
                 }
             },
             "type": "CallDiscardReason"
@@ -20219,6 +20288,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_group_call_supported": {
+                    "description": "True, if the other party supports upgrading of the call to a group call",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "custom_parameters": {
                     "description": "Custom JSON-encoded call parameters to be passed to tgcalls",
                     "is_optional": false,
@@ -20269,6 +20343,32 @@
             },
             "type": "CallState"
         },
+        "groupCallJoinParameters": {
+            "description": "Describes parameters used to join a group call",
+            "args": {
+                "audio_source_id": {
+                    "description": "Audio channel synchronization source identifier; received from tgcalls",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "payload": {
+                    "description": "Group call join payload; received from tgcalls",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_muted": {
+                    "description": "Pass true to join the call with muted microphone",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_my_video_enabled": {
+                    "description": "Pass true if the user's video is enabled",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "GroupCallJoinParameters"
+        },
         "groupCallVideoQualityThumbnail": {
             "description": "The worst available video quality",
             "args": {},
@@ -20284,8 +20384,8 @@
             "args": {},
             "type": "GroupCallVideoQuality"
         },
-        "groupCallStream": {
-            "description": "Describes an available stream in a group call",
+        "videoChatStream": {
+            "description": "Describes an available stream in a video chat",
             "args": {
                 "channel_id": {
                     "description": "Identifier of an audio/video channel",
@@ -20303,18 +20403,18 @@
                     "type": "int53"
                 }
             },
-            "type": "GroupCallStream"
+            "type": "VideoChatStream"
         },
-        "groupCallStreams": {
-            "description": "Represents a list of group call streams",
+        "videoChatStreams": {
+            "description": "Represents a list of video chat streams",
             "args": {
                 "streams": {
-                    "description": "A list of group call streams",
+                    "description": "A list of video chat streams",
                     "is_optional": false,
-                    "type": "vector<groupCallStream>"
+                    "type": "vector<videoChatStream>"
                 }
             },
-            "type": "GroupCallStreams"
+            "type": "VideoChatStreams"
         },
         "rtmpUrl": {
             "description": "Represents an RTMP URL",
@@ -20356,23 +20456,23 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "from_call_id": {
-                    "description": "Identifier of one-to-one call from which the group call was created; 0 if unknown",
-                    "is_optional": false,
-                    "type": "int32"
-                },
                 "title": {
-                    "description": "Group call title",
+                    "description": "Group call title; for video chats only",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "invite_link": {
+                    "description": "Invite link for the group call; for group calls that aren't bound to a chat. For video chats call getVideoChatInviteLink to get the link",
                     "is_optional": false,
                     "type": "string"
                 },
                 "scheduled_start_date": {
-                    "description": "Point in time (Unix timestamp) when the group call is expected to be started by an administrator; 0 if it is already active or was ended",
+                    "description": "Point in time (Unix timestamp) when the group call is expected to be started by an administrator; 0 if it is already active or was ended; for video chats only",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "enabled_start_notification": {
-                    "description": "True, if the group call is scheduled and the current user will receive a notification when the group call starts",
+                    "description": "True, if the group call is scheduled and the current user will receive a notification when the group call starts; for video chats only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -20381,8 +20481,13 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_video_chat": {
+                    "description": "True, if the call is bound to a chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_rtmp_stream": {
-                    "description": "True, if the chat is an RTMP stream instead of an ordinary video chat",
+                    "description": "True, if the call is an RTMP stream instead of an ordinary video chat; for video chats only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -20396,8 +20501,13 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_owned": {
+                    "description": "True, if the user is the owner of the call and can end the call, change volume level of other users, or ban users there; for group calls that aren't bound to a chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_be_managed": {
-                    "description": "True, if the current user can manage the group call",
+                    "description": "True, if the current user can manage the group call; for video chats only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -20407,7 +20517,7 @@
                     "type": "int32"
                 },
                 "has_hidden_listeners": {
-                    "description": "True, if group call participants, which are muted, aren't returned in participant list",
+                    "description": "True, if group call participants, which are muted, aren't returned in participant list; for video chats only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -20437,12 +20547,12 @@
                     "type": "Bool"
                 },
                 "mute_new_participants": {
-                    "description": "True, if only group call administrators can unmute new participants",
+                    "description": "True, if only group call administrators can unmute new participants; for video chats only",
                     "is_optional": false,
                     "type": "Bool"
                 },
                 "can_toggle_mute_new_participants": {
-                    "description": "True, if the current user can enable or disable mute_new_participants setting",
+                    "description": "True, if the current user can enable or disable mute_new_participants setting; for video chats only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -20597,6 +20707,106 @@
             },
             "type": "GroupCallParticipant"
         },
+        "groupCallParticipants": {
+            "description": "Contains identifiers of group call participants",
+            "args": {
+                "total_count": {
+                    "description": "Total number of group call participants",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "participant_ids": {
+                    "description": "Identifiers of the participants",
+                    "is_optional": false,
+                    "type": "vector<MessageSender>"
+                }
+            },
+            "type": "GroupCallParticipants"
+        },
+        "groupCallInfo": {
+            "description": "Contains information about a just created or just joined group call",
+            "args": {
+                "group_call_id": {
+                    "description": "Identifier of the group call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "join_payload": {
+                    "description": "Join response payload for tgcalls; empty if the call isn't joined",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "GroupCallInfo"
+        },
+        "inviteGroupCallParticipantResultUserPrivacyRestricted": {
+            "description": "The user can't be invited due to their privacy settings",
+            "args": {},
+            "type": "InviteGroupCallParticipantResult"
+        },
+        "inviteGroupCallParticipantResultUserAlreadyParticipant": {
+            "description": "The user can't be invited because they are already a participant of the call",
+            "args": {},
+            "type": "InviteGroupCallParticipantResult"
+        },
+        "inviteGroupCallParticipantResultUserWasBanned": {
+            "description": "The user can't be invited because they were banned by the owner of the call and can be invited back only by the owner of the group call",
+            "args": {},
+            "type": "InviteGroupCallParticipantResult"
+        },
+        "inviteGroupCallParticipantResultSuccess": {
+            "description": "The user was invited and a service message of the type messageGroupCall was sent which can be used in declineGroupCallInvitation to cancel the invitation",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the invitation message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "InviteGroupCallParticipantResult"
+        },
+        "groupCallDataChannelMain": {
+            "description": "The main data channel for audio and video data",
+            "args": {},
+            "type": "GroupCallDataChannel"
+        },
+        "groupCallDataChannelScreenSharing": {
+            "description": "The data channel for screen sharing",
+            "args": {},
+            "type": "GroupCallDataChannel"
+        },
+        "inputGroupCallLink": {
+            "description": "The group call is accessible through a link",
+            "args": {
+                "link": {
+                    "description": "The link for the group call",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InputGroupCall"
+        },
+        "inputGroupCallMessage": {
+            "description": "The group call is accessible through a message of the type messageGroupCall",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message of the type messageGroupCall",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "InputGroupCall"
+        },
         "callProblemEcho": {
             "description": "The user heard their own voice",
             "args": {},
@@ -20669,11 +20879,6 @@
                     "description": "Call state",
                     "is_optional": false,
                     "type": "CallState"
-                },
-                "group_call_id": {
-                    "description": "Identifier of the group call associated with the call; 0 if the group call isn't created yet. The group call can be received through the method getGroupCall",
-                    "is_optional": false,
-                    "type": "int32"
                 }
             },
             "type": "Call"
@@ -20733,7 +20938,7 @@
                     "type": "FirebaseAuthenticationSettings"
                 },
                 "authentication_tokens": {
-                    "description": "List of up to 20 authentication tokens, recently received in updateOption(\"authentication_token\") in previously logged out sessions",
+                    "description": "List of up to 20 authentication tokens, recently received in updateOption(\"authentication_token\") in previously logged out sessions; for setAuthenticationPhoneNumber only",
                     "is_optional": false,
                     "type": "vector<string>"
                 }
@@ -23403,18 +23608,18 @@
             "args": {},
             "type": "PremiumLimitType"
         },
-        "premiumLimitTypeWeeklySentStoryCount": {
-            "description": "The maximum number of stories sent per week",
+        "premiumLimitTypeWeeklyPostedStoryCount": {
+            "description": "The maximum number of stories posted per week",
             "args": {},
             "type": "PremiumLimitType"
         },
-        "premiumLimitTypeMonthlySentStoryCount": {
-            "description": "The maximum number of stories sent per month",
+        "premiumLimitTypeMonthlyPostedStoryCount": {
+            "description": "The maximum number of stories posted per month",
             "args": {},
             "type": "PremiumLimitType"
         },
         "premiumLimitTypeStoryCaptionLength": {
-            "description": "The maximum length of captions of sent stories",
+            "description": "The maximum length of captions of posted stories",
             "args": {},
             "type": "PremiumLimitType"
         },
@@ -24582,47 +24787,47 @@
             },
             "type": "Hashtags"
         },
-        "canSendStoryResultOk": {
+        "canPostStoryResultOk": {
             "description": "A story can be sent",
             "args": {},
-            "type": "CanSendStoryResult"
+            "type": "CanPostStoryResult"
         },
-        "canSendStoryResultPremiumNeeded": {
+        "canPostStoryResultPremiumNeeded": {
             "description": "The user must subscribe to Telegram Premium to be able to post stories",
             "args": {},
-            "type": "CanSendStoryResult"
+            "type": "CanPostStoryResult"
         },
-        "canSendStoryResultBoostNeeded": {
+        "canPostStoryResultBoostNeeded": {
             "description": "The chat must be boosted first by Telegram Premium subscribers to post more stories. Call getChatBoostStatus to get current boost status of the chat",
             "args": {},
-            "type": "CanSendStoryResult"
+            "type": "CanPostStoryResult"
         },
-        "canSendStoryResultActiveStoryLimitExceeded": {
+        "canPostStoryResultActiveStoryLimitExceeded": {
             "description": "The limit for the number of active stories exceeded. The user can buy Telegram Premium, delete an active story, or wait for the oldest story to expire",
             "args": {},
-            "type": "CanSendStoryResult"
+            "type": "CanPostStoryResult"
         },
-        "canSendStoryResultWeeklyLimitExceeded": {
+        "canPostStoryResultWeeklyLimitExceeded": {
             "description": "The weekly limit for the number of posted stories exceeded. The user needs to buy Telegram Premium or wait specified time",
             "args": {
                 "retry_after": {
-                    "description": "Time left before the user can send the next story",
+                    "description": "Time left before the user can post the next story",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "CanSendStoryResult"
+            "type": "CanPostStoryResult"
         },
-        "canSendStoryResultMonthlyLimitExceeded": {
+        "canPostStoryResultMonthlyLimitExceeded": {
             "description": "The monthly limit for the number of posted stories exceeded. The user needs to buy Telegram Premium or wait specified time",
             "args": {
                 "retry_after": {
-                    "description": "Time left before the user can send the next story",
+                    "description": "Time left before the user can post the next story",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
-            "type": "CanSendStoryResult"
+            "type": "CanPostStoryResult"
         },
         "canTransferOwnershipResultOk": {
             "description": "The session can be used",
@@ -26528,6 +26733,17 @@
             },
             "type": "InternalLinkType"
         },
+        "internalLinkTypeGroupCall": {
+            "description": "The link is a link to a group call that isn't bound to a chat. Call joinGroupCall with the given invite_link",
+            "args": {
+                "invite_link": {
+                    "description": "Internal representation of the invite link",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeInstantView": {
             "description": "The link must be opened in an Instant View. Call getWebPageInstantView with the given URL to process the link. If Instant View is found, then show it, otherwise, open the fallback URL in an external browser",
             "args": {
@@ -26778,10 +26994,10 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeStory": {
-            "description": "The link is a link to a story. Call searchPublicChat with the given sender username, then call getStory with the received chat identifier and the given story identifier, then show the story if received",
+            "description": "The link is a link to a story. Call searchPublicChat with the given poster username, then call getStory with the received chat identifier and the given story identifier, then show the story if received",
             "args": {
-                "story_sender_username": {
-                    "description": "Username of the sender of the story",
+                "story_poster_username": {
+                    "description": "Username of the poster of the story",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -26869,7 +27085,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeVideoChat": {
-            "description": "The link is a link to a video chat. Call searchPublicChat with the given chat username, and then joinGroupCall with the given invite hash to process the link",
+            "description": "The link is a link to a video chat. Call searchPublicChat with the given chat username, and then joinVideoChat with the given invite hash to process the link",
             "args": {
                 "chat_username": {
                     "description": "Username of the chat with the video chat",
@@ -27008,17 +27224,6 @@
             "description": "The block list that disallows viewing of stories of the current user",
             "args": {},
             "type": "BlockList"
-        },
-        "filePart": {
-            "description": "Contains a part of a file",
-            "args": {
-                "data": {
-                    "description": "File bytes",
-                    "is_optional": false,
-                    "type": "bytes"
-                }
-            },
-            "type": "FilePart"
         },
         "fileTypeNone": {
             "description": "The data is not a file",
@@ -27772,6 +27977,17 @@
             },
             "type": "Text"
         },
+        "data": {
+            "description": "Contains some binary data",
+            "args": {
+                "data": {
+                    "description": "Data",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "Data"
+        },
         "seconds": {
             "description": "Contains a value representing a number of seconds",
             "args": {
@@ -28050,7 +28266,7 @@
             "type": "ChatStatisticsObjectType"
         },
         "chatStatisticsObjectTypeStory": {
-            "description": "Describes a story sent by the chat",
+            "description": "Describes a story posted on behalf of the chat",
             "args": {
                 "story_id": {
                     "description": "Story identifier",
@@ -28061,7 +28277,7 @@
             "type": "ChatStatisticsObjectType"
         },
         "chatStatisticsInteractionInfo": {
-            "description": "Contains statistics about interactions with a message sent in the chat or a story sent by the chat",
+            "description": "Contains statistics about interactions with a message sent in the chat or a story posted on behalf of the chat",
             "args": {
                 "object_type": {
                     "description": "Type of the object",
@@ -28264,17 +28480,17 @@
                     "type": "statisticalValue"
                 },
                 "mean_story_view_count": {
-                    "description": "Mean number of times the recently sent stories were viewed",
+                    "description": "Mean number of times the recently posted stories were viewed",
                     "is_optional": false,
                     "type": "statisticalValue"
                 },
                 "mean_story_share_count": {
-                    "description": "Mean number of times the recently sent stories were shared",
+                    "description": "Mean number of times the recently posted stories were shared",
                     "is_optional": false,
                     "type": "statisticalValue"
                 },
                 "mean_story_reaction_count": {
-                    "description": "Mean number of times reactions were added to the recently sent stories",
+                    "description": "Mean number of times reactions were added to the recently posted stories",
                     "is_optional": false,
                     "type": "statisticalValue"
                 },
@@ -28344,7 +28560,7 @@
                     "type": "StatisticalGraph"
                 },
                 "recent_interactions": {
-                    "description": "Detailed statistics about number of views and shares of recently sent messages and stories",
+                    "description": "Detailed statistics about number of views and shares of recently sent messages and posted stories",
                     "is_optional": false,
                     "type": "vector<chatStatisticsInteractionInfo>"
                 }
@@ -29858,6 +30074,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "last_read_inbox_message_id": {
+                    "description": "Identifier of the last read incoming message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "last_read_outbox_message_id": {
                     "description": "Identifier of the last read outgoing message",
                     "is_optional": false,
@@ -30347,7 +30568,7 @@
             "description": "Information about a group call was updated",
             "args": {
                 "group_call": {
-                    "description": "New data about a group call",
+                    "description": "New data about the group call",
                     "is_optional": false,
                     "type": "groupCall"
                 }
@@ -30358,14 +30579,51 @@
             "description": "Information about a group call participant was changed. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined",
             "args": {
                 "group_call_id": {
-                    "description": "Identifier of group call",
+                    "description": "Identifier of the group call",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "participant": {
-                    "description": "New data about a participant",
+                    "description": "New data about the participant",
                     "is_optional": false,
                     "type": "groupCallParticipant"
+                }
+            },
+            "type": "Update"
+        },
+        "updateGroupCallParticipants": {
+            "description": "The list of group call participants that can send and receive encrypted call data has changed; for group calls not bound to a chat only",
+            "args": {
+                "group_call_id": {
+                    "description": "Identifier of the group call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "participant_user_ids": {
+                    "description": "New list of group call participant user identifiers. The identifiers may be invalid or the corresponding users may be unknown. The participants must be shown in the list of group call participants even there is no information about them",
+                    "is_optional": false,
+                    "type": "vector<int64>"
+                }
+            },
+            "type": "Update"
+        },
+        "updateGroupCallVerificationState": {
+            "description": "The verification state of an encrypted group call has changed; for group calls not bound to a chat only",
+            "args": {
+                "group_call_id": {
+                    "description": "Identifier of the group call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "generation": {
+                    "description": "The call state generation to which the emoji corresponds. If generation is different for two users, then their emoji may be also different",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "emojis": {
+                    "description": "Group call state fingerprint represented as 4 emoji; may be empty if the state isn't verified yet",
+                    "is_optional": true,
+                    "type": "vector<string>"
                 }
             },
             "type": "Update"
@@ -30473,7 +30731,7 @@
         "updateStoryDeleted": {
             "description": "A story became inaccessible",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -30486,11 +30744,11 @@
             },
             "type": "Update"
         },
-        "updateStorySendSucceeded": {
-            "description": "A story has been successfully sent",
+        "updateStoryPostSucceeded": {
+            "description": "A story has been successfully posted",
             "args": {
                 "story": {
-                    "description": "The sent story",
+                    "description": "The posted story",
                     "is_optional": false,
                     "type": "story"
                 },
@@ -30502,23 +30760,23 @@
             },
             "type": "Update"
         },
-        "updateStorySendFailed": {
-            "description": "A story failed to send. If the story sending is canceled, then updateStoryDeleted will be received instead of this update",
+        "updateStoryPostFailed": {
+            "description": "A story failed to post. If the story posting is canceled, then updateStoryDeleted will be received instead of this update",
             "args": {
                 "story": {
-                    "description": "The failed to send story",
+                    "description": "The failed to post story",
                     "is_optional": false,
                     "type": "story"
                 },
                 "error": {
-                    "description": "The cause of the story sending failure",
+                    "description": "The cause of the story posting failure",
                     "is_optional": false,
                     "type": "error"
                 },
                 "error_type": {
                     "description": "Type of the error; may be null if unknown",
                     "is_optional": true,
-                    "type": "CanSendStoryResult"
+                    "type": "CanPostStoryResult"
                 }
             },
             "type": "Update"
@@ -33141,7 +33399,7 @@
             "type": "FoundChatMessages"
         },
         "searchCallMessages": {
-            "description": "Searches for call messages. Returns the results in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib",
+            "description": "Searches for call and group call messages. Returns the results in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib",
             "args": {
                 "offset": {
                     "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
@@ -33201,7 +33459,7 @@
         "searchPublicStoriesByTag": {
             "description": "Searches for public stories containing the given hashtag or cashtag. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the stories to search for; pass 0 to search stories in all chats",
                     "is_optional": false,
                     "type": "int53"
@@ -34745,9 +35003,9 @@
             "type": "Ok"
         },
         "editBusinessStory": {
-            "description": "Changes a story sent by the bot on behalf of a business account; for bots only",
+            "description": "Changes a story posted by the bot on behalf of a business account; for bots only",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -34781,7 +35039,7 @@
             "type": "Story"
         },
         "deleteBusinessStory": {
-            "description": "Deletes a story sent by the bot on behalf of a business account; for bots only",
+            "description": "Deletes a story posted by the bot on behalf of a business account; for bots only",
             "args": {
                 "business_connection_id": {
                     "description": "Unique identifier of business connection",
@@ -38036,7 +38294,7 @@
         "getStory": {
             "description": "Returns a story",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -38054,13 +38312,13 @@
             },
             "type": "Story"
         },
-        "getChatsToSendStories": {
-            "description": "Returns supergroup and channel chats in which the current user has the right to post stories. The chats must be rechecked with canSendStory before actually trying to post a story there",
+        "getChatsToPostStories": {
+            "description": "Returns supergroup and channel chats in which the current user has the right to post stories. The chats must be rechecked with canPostStory before actually trying to post a story there",
             "args": {},
             "type": "Chats"
         },
-        "canSendStory": {
-            "description": "Checks whether the current user can send a story on behalf of a chat; requires can_post_stories right for supergroup and channel chats",
+        "canPostStory": {
+            "description": "Checks whether the current user can post a story on behalf of a chat; requires can_post_stories right for supergroup and channel chats",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier. Pass Saved Messages chat identifier when posting a story on behalf of the current user",
@@ -38068,10 +38326,10 @@
                     "type": "int53"
                 }
             },
-            "type": "CanSendStoryResult"
+            "type": "CanPostStoryResult"
         },
-        "sendStory": {
-            "description": "Sends a new story to a chat; requires can_post_stories right for supergroup and channel chats. Returns a temporary story",
+        "postStory": {
+            "description": "Posts a new story on behalf of a chat; requires can_post_stories right for supergroup and channel chats. Returns a temporary story",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat that will post the story. Pass Saved Messages chat identifier when posting a story on behalf of the current user",
@@ -38094,7 +38352,7 @@
                     "type": "formattedText"
                 },
                 "privacy_settings": {
-                    "description": "The privacy settings for the story; ignored for stories sent to supergroup and channel chats",
+                    "description": "The privacy settings for the story; ignored for stories posted on behalf of supergroup and channel chats",
                     "is_optional": false,
                     "type": "StoryPrivacySettings"
                 },
@@ -38124,7 +38382,7 @@
         "editStory": {
             "description": "Changes content and caption of a story. Can be called only if story.can_be_edited == true",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -38155,7 +38413,7 @@
         "editStoryCover": {
             "description": "Changes cover of a video story. Can be called only if story.can_be_edited == true and the story isn't being edited now",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -38192,7 +38450,7 @@
         "toggleStoryIsPostedToChatPage": {
             "description": "Toggles whether a story is accessible after expiration. Can be called only if story.can_toggle_is_posted_to_chat_page == true",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -38211,9 +38469,9 @@
             "type": "Ok"
         },
         "deleteStory": {
-            "description": "Deletes a previously sent story. Can be called only if story.can_be_deleted == true",
+            "description": "Deletes a previously posted story. Can be called only if story.can_be_deleted == true",
             "args": {
-                "story_sender_chat_id": {
+                "story_poster_chat_id": {
                     "description": "Identifier of the chat that posted the story",
                     "is_optional": false,
                     "type": "int53"
@@ -38232,7 +38490,7 @@
             "type": "Chats"
         },
         "loadActiveStories": {
-            "description": "Loads more active stories from a story list. The loaded stories will be sent through updates. Active stories are sorted by the pair (active_stories.order, active_stories.story_sender_chat_id) in descending order. Returns a 404 error if all active stories have been loaded",
+            "description": "Loads more active stories from a story list. The loaded stories will be sent through updates. Active stories are sorted by the pair (active_stories.order, active_stories.story_poster_chat_id) in descending order. Returns a 404 error if all active stories have been loaded",
             "args": {
                 "story_list": {
                     "description": "The story list in which to load active stories",
@@ -38330,8 +38588,8 @@
         "openStory": {
             "description": "Informs TDLib that a story is opened and is being viewed by the user",
             "args": {
-                "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the opened story",
+                "story_poster_chat_id": {
+                    "description": "The identifier of the chat that posted the opened story",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -38346,8 +38604,8 @@
         "closeStory": {
             "description": "Informs TDLib that a story is closed by the user",
             "args": {
-                "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the story to close",
+                "story_poster_chat_id": {
+                    "description": "The identifier of the poster of the story to close",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -38373,8 +38631,8 @@
         "setStoryReaction": {
             "description": "Changes chosen reaction on a story that has already been sent",
             "args": {
-                "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the story",
+                "story_poster_chat_id": {
+                    "description": "The identifier of the poster of the story",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -38440,8 +38698,8 @@
         "getChatStoryInteractions": {
             "description": "Returns interactions with a story posted in a chat. Can be used only if story is posted on behalf of a chat and the user is an administrator in the chat",
             "args": {
-                "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the story",
+                "story_poster_chat_id": {
+                    "description": "The identifier of the poster of the story",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -38476,8 +38734,8 @@
         "reportStory": {
             "description": "Reports a story to the Telegram moderators",
             "args": {
-                "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the story to report",
+                "story_poster_chat_id": {
+                    "description": "The identifier of the poster of the story to report",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -38507,8 +38765,8 @@
         "getStoryPublicForwards": {
             "description": "Returns forwards of a story as a message to public chats and reposts by public channels. Can be used only if the story is posted on behalf of the current user or story.can_get_statistics == true. For optimal performance, the number of returned messages and stories is chosen by TDLib",
             "args": {
-                "story_sender_chat_id": {
-                    "description": "The identifier of the sender of the story",
+                "story_poster_chat_id": {
+                    "description": "The identifier of the poster of the story",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -38913,7 +39171,7 @@
                     "type": "int53"
                 }
             },
-            "type": "FilePart"
+            "type": "Data"
         },
         "deleteFile": {
             "description": "Deletes a file from the TDLib file cache",
@@ -39480,11 +39738,6 @@
                     "description": "Pass true to create a video call",
                     "is_optional": false,
                     "type": "Bool"
-                },
-                "group_call_id": {
-                    "description": "Identifier of the group call to which the user will be added after exchanging private key via the call; pass 0 if none",
-                    "is_optional": false,
-                    "type": "int32"
                 }
             },
             "type": "CallId"
@@ -39533,6 +39786,11 @@
                     "description": "Pass true if the user was disconnected",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "invite_link": {
+                    "description": "If the call was upgraded to a group call, pass invite link to the group call",
+                    "is_optional": false,
+                    "type": "string"
                 },
                 "duration": {
                     "description": "The call duration, in seconds",
@@ -39664,18 +39922,18 @@
             "type": "GroupCallId"
         },
         "createGroupCall": {
-            "description": "Creates a group call from a one-to-one call",
+            "description": "Creates a new group call that isn't bound to a chat",
             "args": {
-                "call_id": {
-                    "description": "Call identifier",
-                    "is_optional": false,
-                    "type": "int32"
+                "join_parameters": {
+                    "description": "Parameters to join the call; pass null to only create call link without joining the call",
+                    "is_optional": true,
+                    "type": "groupCallJoinParameters"
                 }
             },
-            "type": "Ok"
+            "type": "GroupCallInfo"
         },
         "getVideoChatRtmpUrl": {
-            "description": "Returns RTMP URL for streaming to the chat; requires can_manage_video_chats administrator right",
+            "description": "Returns RTMP URL for streaming to the video chat of a chat; requires can_manage_video_chats administrator right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -39686,7 +39944,7 @@
             "type": "RtmpUrl"
         },
         "replaceVideoChatRtmpUrl": {
-            "description": "Replaces the current RTMP URL for streaming to the chat; requires owner privileges",
+            "description": "Replaces the current RTMP URL for streaming to the video chat of a chat; requires owner privileges in the chat",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -39707,19 +39965,19 @@
             },
             "type": "GroupCall"
         },
-        "startScheduledGroupCall": {
-            "description": "Starts a scheduled group call",
+        "startScheduledVideoChat": {
+            "description": "Starts a scheduled video chat",
             "args": {
                 "group_call_id": {
-                    "description": "Group call identifier",
+                    "description": "Group call identifier of the video chat",
                     "is_optional": false,
                     "type": "int32"
                 }
             },
             "type": "Ok"
         },
-        "toggleGroupCallEnabledStartNotification": {
-            "description": "Toggles whether the current user will receive a notification when the group call starts; scheduled group calls only",
+        "toggleVideoChatEnabledStartNotification": {
+            "description": "Toggles whether the current user will receive a notification when the video chat starts; for scheduled video chats only",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -39735,7 +39993,23 @@
             "type": "Ok"
         },
         "joinGroupCall": {
-            "description": "Joins an active group call. Returns join response payload for tgcalls",
+            "description": "Joins a group call that is not bound to a chat",
+            "args": {
+                "input_group_call": {
+                    "description": "The group call to join",
+                    "is_optional": false,
+                    "type": "InputGroupCall"
+                },
+                "join_parameters": {
+                    "description": "Parameters to join the call",
+                    "is_optional": false,
+                    "type": "groupCallJoinParameters"
+                }
+            },
+            "type": "GroupCallInfo"
+        },
+        "joinVideoChat": {
+            "description": "Joins an active video chat. Returns join response payload for tgcalls",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -39747,35 +40021,15 @@
                     "is_optional": true,
                     "type": "MessageSender"
                 },
-                "audio_source_id": {
-                    "description": "Caller audio channel synchronization source identifier; received from tgcalls",
+                "join_parameters": {
+                    "description": "Parameters to join the call",
                     "is_optional": false,
-                    "type": "int32"
-                },
-                "payload": {
-                    "description": "Group call join payload; received from tgcalls",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "is_muted": {
-                    "description": "Pass true to join the call with muted microphone",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "is_my_video_enabled": {
-                    "description": "Pass true if the user's video is enabled",
-                    "is_optional": false,
-                    "type": "Bool"
+                    "type": "groupCallJoinParameters"
                 },
                 "invite_hash": {
-                    "description": "If non-empty, invite hash to be used to join the group call without being muted by administrators",
-                    "is_optional": true,
-                    "type": "string"
-                },
-                "key_fingerprint": {
-                    "description": "Fingerprint of the encryption key for E2E group calls not bound to a chat; pass 0 for voice chats",
+                    "description": "Invite hash as received from internalLinkTypeVideoChat",
                     "is_optional": false,
-                    "type": "int64"
+                    "type": "string"
                 }
             },
             "type": "Text"
@@ -39828,8 +40082,8 @@
             },
             "type": "Ok"
         },
-        "setGroupCallTitle": {
-            "description": "Sets group call title. Requires groupCall.can_be_managed group call flag",
+        "setVideoChatTitle": {
+            "description": "Sets title of a video chat; requires groupCall.can_be_managed right",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -39844,8 +40098,8 @@
             },
             "type": "Ok"
         },
-        "toggleGroupCallMuteNewParticipants": {
-            "description": "Toggles whether new participants of a group call can be unmuted only by administrators of the group call. Requires groupCall.can_toggle_mute_new_participants group call flag",
+        "toggleVideoChatMuteNewParticipants": {
+            "description": "Toggles whether new participants of a video chat can be unmuted only by administrators of the video chat. Requires groupCall.can_toggle_mute_new_participants right",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -39860,8 +40114,61 @@
             },
             "type": "Ok"
         },
-        "inviteGroupCallParticipants": {
-            "description": "Invites users to an active group call. Sends a service message of type messageInviteVideoChatParticipants for video chats",
+        "inviteGroupCallParticipant": {
+            "description": "Invites a user to an active group call; for group calls not bound to a chat only. Sends a service message of the type messageGroupCall. The group call can have at most getOption(\"group_call_participant_count_max\") participants",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_video": {
+                    "description": "Pass true if the group call is a video call",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "InviteGroupCallParticipantResult"
+        },
+        "declineGroupCallInvitation": {
+            "description": "Declines an invitation to an active group call via messageGroupCall. Can be called both by the sender and the receiver of the invitation",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message of the type messageGroupCall",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "banGroupCallParticipants": {
+            "description": "Bans users from a group call not bound to a chat; requires groupCall.is_owned. Only the owner of the group call can invite the banned users back",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "user_ids": {
+                    "description": "Identifiers of group call participants to ban; identifiers of unknown users from the update updateGroupCallParticipants can be also passed to the method",
+                    "is_optional": false,
+                    "type": "vector<int64>"
+                }
+            },
+            "type": "Ok"
+        },
+        "inviteVideoChatParticipants": {
+            "description": "Invites users to an active video chat. Sends a service message of the type messageInviteVideoChatParticipants to the chat bound to the group call",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -39876,7 +40183,7 @@
             },
             "type": "Ok"
         },
-        "getGroupCallInviteLink": {
+        "getVideoChatInviteLink": {
             "description": "Returns invite link to a video chat in a public chat",
             "args": {
                 "group_call_id": {
@@ -39885,7 +40192,7 @@
                     "type": "int32"
                 },
                 "can_self_unmute": {
-                    "description": "Pass true if the invite link needs to contain an invite hash, passing which to joinGroupCall would allow the invited user to unmute themselves. Requires groupCall.can_be_managed group call flag",
+                    "description": "Pass true if the invite link needs to contain an invite hash, passing which to joinVideoChat would allow the invited user to unmute themselves. Requires groupCall.can_be_managed right",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -39893,7 +40200,7 @@
             "type": "HttpUrl"
         },
         "revokeGroupCallInviteLink": {
-            "description": "Revokes invite link for a group call. Requires groupCall.can_be_managed group call flag",
+            "description": "Revokes invite link for a group call. Requires groupCall.can_be_managed right for video chats or groupCall.is_owned otherwise",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -39904,7 +40211,7 @@
             "type": "Ok"
         },
         "startGroupCallRecording": {
-            "description": "Starts recording of an active group call. Requires groupCall.can_be_managed group call flag",
+            "description": "Starts recording of an active group call; for video chats only. Requires groupCall.can_be_managed right",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -39930,7 +40237,7 @@
             "type": "Ok"
         },
         "endGroupCallRecording": {
-            "description": "Ends recording of an active group call. Requires groupCall.can_be_managed group call flag",
+            "description": "Ends recording of an active group call; for video chats only. Requires groupCall.can_be_managed right",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -39973,7 +40280,7 @@
             "type": "Ok"
         },
         "setGroupCallParticipantIsSpeaking": {
-            "description": "Informs TDLib that speaking state of a participant of an active group has changed",
+            "description": "Informs TDLib that speaking state of a participant of an active group call has changed",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -40015,7 +40322,7 @@
             "type": "Ok"
         },
         "setGroupCallParticipantVolumeLevel": {
-            "description": "Changes volume level of a participant of an active group call. If the current user can manage the group call, then the participant's volume level will be changed for all users with the default volume level",
+            "description": "Changes volume level of a participant of an active group call. If the current user can manage the group call or is the owner of the group call, then the participant's volume level will be changed for all users with the default volume level",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -40036,7 +40343,7 @@
             "type": "Ok"
         },
         "toggleGroupCallParticipantIsHandRaised": {
-            "description": "Toggles whether a group call participant hand is rased",
+            "description": "Toggles whether a group call participant hand is rased; for video chats only",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -40049,12 +40356,28 @@
                     "type": "MessageSender"
                 },
                 "is_hand_raised": {
-                    "description": "Pass true if the user's hand needs to be raised. Only self hand can be raised. Requires groupCall.can_be_managed group call flag to lower other's hand",
+                    "description": "Pass true if the user's hand needs to be raised. Only self hand can be raised. Requires groupCall.can_be_managed right to lower other's hand",
                     "is_optional": false,
                     "type": "Bool"
                 }
             },
             "type": "Ok"
+        },
+        "getGroupCallParticipants": {
+            "description": "Returns information about participants of a non-joined group call that is not bound to a chat",
+            "args": {
+                "input_group_call": {
+                    "description": "The group call which participants will be returned",
+                    "is_optional": false,
+                    "type": "InputGroupCall"
+                },
+                "limit": {
+                    "description": "The maximum number of participants to return; must be positive",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "GroupCallParticipants"
         },
         "loadGroupCallParticipants": {
             "description": "Loads more participants of a group call. The loaded participants will be received through updates. Use the field groupCall.loaded_all_participants to check whether all participants have already been loaded",
@@ -40084,7 +40407,7 @@
             "type": "Ok"
         },
         "endGroupCall": {
-            "description": "Ends a group call. Requires groupCall.can_be_managed",
+            "description": "Ends a group call. Requires groupCall.can_be_managed right for video chats or groupCall.is_owned otherwise",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -40094,8 +40417,8 @@
             },
             "type": "Ok"
         },
-        "getGroupCallStreams": {
-            "description": "Returns information about available group call streams",
+        "getVideoChatStreams": {
+            "description": "Returns information about available video chat streams",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -40103,10 +40426,10 @@
                     "type": "int32"
                 }
             },
-            "type": "GroupCallStreams"
+            "type": "VideoChatStreams"
         },
-        "getGroupCallStreamSegment": {
-            "description": "Returns a file with a segment of a group call stream in a modified OGG format for audio or MPEG-4 format for video",
+        "getVideoChatStreamSegment": {
+            "description": "Returns a file with a segment of a video chat stream in a modified OGG format for audio or MPEG-4 format for video",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -40134,7 +40457,59 @@
                     "type": "GroupCallVideoQuality"
                 }
             },
-            "type": "FilePart"
+            "type": "Data"
+        },
+        "encryptGroupCallData": {
+            "description": "Encrypts group call data before sending them over network using tgcalls",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier. The call must not be a video chat",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "data_channel": {
+                    "description": "Data channel for which data is encrypted",
+                    "is_optional": false,
+                    "type": "GroupCallDataChannel"
+                },
+                "data": {
+                    "description": "Data to encrypt",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "unencrypted_prefix_size": {
+                    "description": "Size of data prefix that must be kept unencrypted",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Data"
+        },
+        "decryptGroupCallData": {
+            "description": "Decrypts group call data received by tgcalls",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier. The call must not be a video chat",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "participant_id": {
+                    "description": "Identifier of the group call participant, which sent the data",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "data_channel": {
+                    "description": "Data channel for which data was encrypted; pass null if unknown",
+                    "is_optional": true,
+                    "type": "GroupCallDataChannel"
+                },
+                "data": {
+                    "description": "Data to decrypt",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "Data"
         },
         "setMessageSenderBlockList": {
             "description": "Changes the block list of a message sender. Currently, only users and supergroup chats can be blocked",
