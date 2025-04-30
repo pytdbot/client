@@ -19,9 +19,9 @@ def bold(text: str, html: bool = True, escape: bool = True) -> str:
     """
 
     if html:
-        return f"<b>{text if escape is False else escape_html(text)}</b>"
-    else:
-        return f"*{text if escape is False else escape_markdown(text)}*"
+        return f"<b>{text if escape is False else escape_html(f'{text}')}</b>"
+
+    return f"*{text if escape is False else escape_markdown(f'{text}')}*"
 
 
 def italic(text: str, html: bool = True, escape: bool = True) -> str:
@@ -42,9 +42,9 @@ def italic(text: str, html: bool = True, escape: bool = True) -> str:
     """
 
     if html:
-        return f"<i>{text if escape is False else escape_html(text)}</i>"
-    else:
-        return f"_{text if escape is False else escape_markdown(text)}_"
+        return f"<i>{text if escape is False else escape_html(f'{text}')}</i>"
+
+    return f"_{text if escape is False else escape_markdown(f'{text}')}_"
 
 
 def underline(text: str, html: bool = True, escape: bool = True) -> str:
@@ -65,9 +65,9 @@ def underline(text: str, html: bool = True, escape: bool = True) -> str:
     """
 
     if html:
-        return f"<u>{text if escape is False else escape_html(text)}</u>"
-    else:
-        return f"__{text if escape is False else escape_markdown(text)}__"
+        return f"<u>{text if escape is False else escape_html(f'{text}')}</u>"
+
+    return f"__{text if escape is False else escape_markdown(f'{text}')}__"
 
 
 def strikethrough(text: str, html: bool = True, escape: bool = True) -> str:
@@ -88,9 +88,9 @@ def strikethrough(text: str, html: bool = True, escape: bool = True) -> str:
     """
 
     if html:
-        return f"<s>{text if escape is False else escape_html(text)}</s>"
-    else:
-        return f"~{text if escape is False else escape_markdown(text)}~"
+        return f"<s>{text if escape is False else escape_html(f'{text}')}</s>"
+
+    return f"~{text if escape is False else escape_markdown(f'{text}')}~"
 
 
 def spoiler(text: str, html: bool = True, escape: bool = True) -> str:
@@ -111,9 +111,9 @@ def spoiler(text: str, html: bool = True, escape: bool = True) -> str:
     """
 
     if html:
-        return f'<span class="tg-spoiler">{text if escape is False else escape_html(text)}</span>'
-    else:
-        return f"||{text if escape is False else escape_markdown(text)}||"
+        return f'<span class="tg-spoiler">{text if escape is False else escape_html(f"{text}")}</span>'
+
+    return f"||{text if escape is False else escape_markdown(f'{text}')}||"
 
 
 def hyperlink(text: str, url: str, html: bool = True, escape: bool = True) -> str:
@@ -139,9 +139,11 @@ def hyperlink(text: str, url: str, html: bool = True, escape: bool = True) -> st
     assert isinstance(url, str), "url must be str"
 
     if html:
-        return f'<a href="{url}">{text if escape is False else escape_html(text)}</a>'
-    else:
-        return f"[{text if escape is False else escape_markdown(text)}]({url})"
+        return (
+            f'<a href="{url}">{text if escape is False else escape_html(f"{text}")}</a>'
+        )
+
+    return f"[{text if escape is False else escape_markdown(f'{text}')}]({url})"
 
 
 def mention(text: str, user_id: str, html: bool = True, escape: bool = True) -> str:
@@ -165,9 +167,9 @@ def mention(text: str, user_id: str, html: bool = True, escape: bool = True) -> 
     """
 
     if html:
-        return f'<a href="tg://user?id={user_id}">{text if escape is False else escape_html(text)}</a>'
-    else:
-        return f"[{text if escape is False else escape_markdown(text)}](tg://user?id={user_id})"
+        return f'<a href="tg://user?id={user_id}">{text if escape is False else escape_html(f"{text}")}</a>'
+
+    return f"[{text if escape is False else escape_markdown(f'{text}')}](tg://user?id={user_id})"
 
 
 def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = True) -> str:
@@ -189,8 +191,8 @@ def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = True) -> str:
 
     if html:
         return f'<tg-emoji emoji-id="{custom_emoji_id}">{emoji}</tg-emoji>'
-    else:
-        return f"![{emoji}](tg://emoji?id={custom_emoji_id})"
+
+    return f"![{emoji}](tg://emoji?id={custom_emoji_id})"
 
 
 def code(text: str, html: bool = True, escape: bool = True) -> str:
@@ -211,9 +213,9 @@ def code(text: str, html: bool = True, escape: bool = True) -> str:
     """
 
     if html:
-        return f"<code>{text if escape is False else escape_html(text)}</code>"
-    else:
-        return f"`{text if escape is False else escape_markdown(text)}`"
+        return f"<code>{text if escape is False else escape_html(f'{text}')}</code>"
+
+    return f"`{text if escape is False else escape_markdown(f'{text}')}`"
 
 
 def pre(text: str, html: bool = True, escape: bool = True) -> str:
@@ -234,9 +236,9 @@ def pre(text: str, html: bool = True, escape: bool = True) -> str:
     """
 
     if html:
-        return f"<pre>{text if escape is False else escape_html(text)}</pre>"
-    else:
-        return f"```\n{text if escape is False else escape_markdown(text)}\n```"
+        return f"<pre>{text if escape is False else escape_html(f'{text}')}</pre>"
+
+    return f"```\n{text if escape is False else escape_markdown(f'{text}')}\n```"
 
 
 def pre_code(text: str, language: str, html: bool = True, escape: bool = True) -> str:
@@ -262,11 +264,11 @@ def pre_code(text: str, language: str, html: bool = True, escape: bool = True) -
     assert isinstance(language, str), "text must be str"
 
     if html:
-        return f'<pre><code class="language-{language}">{text if escape is False else escape_html(text)}</code></pre>'
-    else:
-        return (
-            f"```{language}\n{text if escape is False else escape_markdown(text)}\n```"
-        )
+        return f'<pre><code class="language-{language}">{text if escape is False else escape_html(f"{text}")}</code></pre>'
+
+    return (
+        f"```{language}\n{text if escape is False else escape_markdown(f'{text}')}\n```"
+    )
 
 
 def quote(text: str, expandable: bool = False, html: bool = True, escape: bool = True):
@@ -290,6 +292,6 @@ def quote(text: str, expandable: bool = False, html: bool = True, escape: bool =
     """
 
     if html:
-        return f"<blockquote{' expandable' if expandable else ''}>{text if escape is False else escape_html(text)}</blockquote>"
-    else:
-        return f"{'**' if expandable else ''}>{text if escape is False else escape_markdown(text)}"
+        return f"<blockquote{' expandable' if expandable else ''}>{text if escape is False else escape_html(f'{text}')}</blockquote>"
+
+    return f"{'**' if expandable else ''}>{text if escape is False else escape_markdown(f'{text}')}"
