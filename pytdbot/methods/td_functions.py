@@ -15387,6 +15387,30 @@ class TDLibFunctions:
             }
         )
 
+    async def toggleSupergroupHasAutomaticTranslation(
+        self, supergroup_id: int = 0, has_automatic_translation: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Toggles whether messages are automatically translated in the channel chat; requires can\_change\_info administrator right in the channel\. The chat must have at least chatBoostFeatures\.min\_automatic\_translation\_boost\_level boost level to enable automatic translation
+
+        Parameters:
+            supergroup_id (:class:`int`):
+                The identifier of the channel
+
+            has_automatic_translation (:class:`bool`):
+                The new value of has\_automatic\_translation
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "toggleSupergroupHasAutomaticTranslation",
+                "supergroup_id": supergroup_id,
+                "has_automatic_translation": has_automatic_translation,
+            }
+        )
+
     async def toggleSupergroupHasHiddenMembers(
         self, supergroup_id: int = 0, has_hidden_members: bool = False
     ) -> Union["types.Error", "types.Ok"]:
@@ -15812,11 +15836,11 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "setGiftSettings", "settings": settings})
 
-    async def getAvailableGifts(self) -> Union["types.Error", "types.Gifts"]:
+    async def getAvailableGifts(self) -> Union["types.Error", "types.AvailableGifts"]:
         r"""Returns gifts that can be sent to other users and channel chats
 
         Returns:
-            :class:`~pytdbot.types.Gifts`
+            :class:`~pytdbot.types.AvailableGifts`
         """
 
         return await self.invoke(
@@ -16051,6 +16075,37 @@ class TDLibFunctions:
             }
         )
 
+    async def sendResoldGift(
+        self,
+        gift_name: str = "",
+        owner_id: "types.MessageSender" = None,
+        star_count: int = 0,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Sends an upgraded gift that is available for resale to another user or channel chat; gifts already owned by the current user must be transferred using transferGift and can't be passed to the method
+
+        Parameters:
+            gift_name (:class:`str`):
+                Name of the upgraded gift to send
+
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that will receive the gift
+
+            star_count (:class:`int`):
+                The amount of Telegram Stars required to pay for the gift
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sendResoldGift",
+                "gift_name": gift_name,
+                "owner_id": owner_id,
+                "star_count": star_count,
+            }
+        )
+
     async def getReceivedGifts(
         self,
         business_connection_id: str = "",
@@ -16170,6 +16225,71 @@ class TDLibFunctions:
                 "@type": "getUpgradedGiftWithdrawalUrl",
                 "received_gift_id": received_gift_id,
                 "password": password,
+            }
+        )
+
+    async def setGiftResalePrice(
+        self, received_gift_id: str = "", resale_star_count: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes resale price of a unique gift owned by the current user
+
+        Parameters:
+            received_gift_id (:class:`str`):
+                Identifier of the unique gift
+
+            resale_star_count (:class:`int`):
+                The new price for the unique gift; 0 or getOption\(\"gift\_resale\_star\_count\_min\"\)\-getOption\(\"gift\_resale\_star\_count\_max\"\)\. Pass 0 to disallow gift resale\. The current user will receive getOption\(\"gift\_resale\_earnings\_per\_mille\"\) Telegram Stars for each 1000 Telegram Stars paid for the gift
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setGiftResalePrice",
+                "received_gift_id": received_gift_id,
+                "resale_star_count": resale_star_count,
+            }
+        )
+
+    async def searchGiftsForResale(
+        self,
+        gift_id: int = 0,
+        order: "types.GiftForResaleOrder" = None,
+        attributes: List["types.UpgradedGiftAttributeId"] = None,
+        offset: str = "",
+        limit: int = 0,
+    ) -> Union["types.Error", "types.GiftsForResale"]:
+        r"""Returns upgraded gifts that can be bought from other owners
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the regular gift that was upgraded to a unique gift
+
+            order (:class:`"types.GiftForResaleOrder"`):
+                Order in which the results will be sorted
+
+            attributes (:class:`List["types.UpgradedGiftAttributeId"]`):
+                Attributes used to filter received gifts\. If multiple attributes of the same type are specified, then all of them are allowed\. If none attributes of specific type are specified, then all values for this attribute type are allowed
+
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request with the same order and attributes; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of gifts to return
+
+        Returns:
+            :class:`~pytdbot.types.GiftsForResale`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "searchGiftsForResale",
+                "gift_id": gift_id,
+                "order": order,
+                "attributes": attributes,
+                "offset": offset,
+                "limit": limit,
             }
         )
 
