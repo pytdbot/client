@@ -174,6 +174,7 @@ class Client(Decorators, Methods):
         self.is_authenticated = False
         self.is_rabbitmq = True if rabbitmq_url else False
         self.options = {}
+        self.allow_outgoing_message_types: tuple = (types.MessagePaymentRefunded,)
 
         self._check_init_args()
 
@@ -732,6 +733,9 @@ class Client(Decorators, Methods):
             if (
                 not self.user_bot
                 and isinstance(update, types.UpdateNewMessage)
+                and not isinstance(
+                    update.message.content, self.allow_outgoing_message_types
+                )
                 and update.message.is_outgoing
             ):
                 return
