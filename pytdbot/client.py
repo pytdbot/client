@@ -746,7 +746,7 @@ class Client(Decorators, Methods):
                 await handler(self, handler_value)
             except StopHandlers as e:
                 raise e
-            except Exception as e:
+            except Exception:
                 self.logger.exception(f"Exception in {handler}")
 
     async def __run_finalizers(self, update):
