@@ -1,6 +1,6 @@
 import asyncio
 import signal
-from importlib import import_module
+from importlib import import_module, reload as reload_module
 from json import dumps
 from logging import DEBUG, getLogger
 from os.path import join as join_path
@@ -172,6 +172,7 @@ class Client(Decorators, Methods):
         self.is_running = None
         self.me: types.User = None
         self.is_authenticated = False
+        self.is_reloading_plugins = False
         self.is_rabbitmq = True if rabbitmq_url else False
         self.options = {}
         self.allow_outgoing_message_types: tuple = (types.MessagePaymentRefunded,)
@@ -179,6 +180,7 @@ class Client(Decorators, Methods):
         self._check_init_args()
 
         self._handlers = {"initializer": [], "finalizer": []}
+        self._current_handlers = {}
         self._results: Dict[str, asyncio.Future] = {}
         self._workers_tasks = None
         self.__authorization_state = None
@@ -269,6 +271,7 @@ class Client(Decorators, Methods):
         filters: pytdbot.filters.Filter = None,
         position: int = None,
         inner_object: bool = False,
+        is_from_plugin: bool = False,
     ) -> None:
         r"""Add an update handler
 
@@ -288,6 +291,9 @@ class Client(Decorators, Methods):
             inner_object (``bool``, *optional*):
                 Wether to pass an inner object of update or not; for example ``UpdateNewMessage.message``. Default is ``False``
 
+            is_from_plugin (``bool``, *optional*):
+                Wether this handler is from a loaded plugin (this can help reloading plugin during runtime; for development only). Default is ``False``
+
         Raises:
             TypeError
         """
@@ -299,14 +305,38 @@ class Client(Decorators, Methods):
         elif filters is not None and not isinstance(filters, Filter):
             raise TypeError("filters must be instance of pytdbot.filters.Filter")
         else:
-            func = Handler(func, update_type, filters, position, inner_object)
+            handler = Handler(
+                func, update_type, filters, position, inner_object, is_from_plugin
+            )
+
             if update_type not in self._handlers:
                 self._handlers[update_type] = []
+
             if isinstance(position, int):
-                self._handlers[update_type].insert(position, func)
+                self._handlers[update_type].insert(position, handler)
             else:
-                self._handlers[update_type].append(func)
-        self._handlers[update_type].sort(key=lambda x: (x.position is None, x.position))
+                self._handlers[update_type].append(handler)
+
+        self._update_handlers()
+
+    def reload_plugins(self):
+        """Reload all plugins, non-plugin handlers are not ``reloaded``
+        .. note::
+            This is for ``development purposes only`` and should not be used
+            in production environments
+        """
+
+        if self.is_reloading_plugins:
+            return
+
+        self.is_reloading_plugins = True
+        for _, handlers in self._handlers.items():
+            for handler in handlers.copy():
+                if handler.is_from_plugin:
+                    self.remove_handler(handler.func)
+
+        self._load_plugins(reload_plugins=True)
+        self.is_reloading_plugins = False
 
     def remove_handler(self, func: Callable) -> bool:
         r"""Remove an update handler
@@ -324,13 +354,17 @@ class Client(Decorators, Methods):
 
         if not isinstance(func, Callable):
             raise TypeError("func must be callable")
-        for _, handlers in self._handlers.items():
+
+        removed = False
+        for handlers in self._handlers.values():
             for handler in handlers.copy():
                 if handler.func == func:
                     handlers.remove(handler)
-                    handlers.sort(key=lambda x: (x.position is None, x.position))
-                    return True
-        return False
+                    removed = True
+
+        if removed:
+            self._update_handlers()
+        return removed
 
     async def invoke(
         self,
@@ -555,7 +589,13 @@ class Client(Decorators, Methods):
         if isinstance(self.workers, int) and self.workers < 1:
             raise ValueError("workers must be greater than 0")
 
-    def _load_plugins(self):
+    def _update_handlers(self):
+        self._current_handlers = {
+            k: tuple(sorted(v, key=lambda x: (x.position is None, x.position)))
+            for k, v in self._handlers.items()
+        }
+
+    def _load_plugins(self, reload_plugins: bool = False):
         count = 0
         handlers = 0
         plugin_paths = sorted(Path(self.plugins.folder).rglob("*.py"))
@@ -579,6 +619,8 @@ class Client(Decorators, Methods):
 
             try:
                 module = import_module(module_path)
+                if reload_plugins:
+                    reload_module(module)
             except Exception:
                 self.logger.exception(f"Failed to import plugin {module_path}")
                 continue
@@ -601,6 +643,7 @@ class Client(Decorators, Methods):
                         handler.filter,
                         handler.position,
                         handler.inner_object,
+                        True,
                     )
                     handlers += 1
                     plugin_handlers_count += 1
@@ -666,7 +709,7 @@ class Client(Decorators, Methods):
     async def __run_initializers(self, update):
         inner_object = self.get_inner_object(update)
 
-        for initializer in self._handlers["initializer"]:
+        for initializer in self._current_handlers["initializer"]:
             try:
                 handler_value = inner_object if initializer.inner_object else update
 
@@ -688,7 +731,7 @@ class Client(Decorators, Methods):
     async def __run_handlers(self, update):
         inner_object = self.get_inner_object(update)
 
-        for handler in self._handlers[update.getType()]:
+        for handler in self._current_handlers[update.getType()]:
             try:
                 handler_value = inner_object if handler.inner_object else update
 
@@ -703,13 +746,13 @@ class Client(Decorators, Methods):
                 await handler(self, handler_value)
             except StopHandlers as e:
                 raise e
-            except Exception:
+            except Exception as e:
                 self.logger.exception(f"Exception in {handler}")
 
     async def __run_finalizers(self, update):
         inner_object = self.get_inner_object(update)
 
-        for finalizer in self._handlers["finalizer"]:
+        for finalizer in self._current_handlers["finalizer"]:
             try:
                 handler_value = inner_object if finalizer.inner_object else update
 
@@ -729,7 +772,7 @@ class Client(Decorators, Methods):
                 self.logger.exception(f"Finalizer {finalizer} failed")
 
     async def _handle_update(self, update):
-        if update.getType() in self._handlers:
+        if update.getType() in self._current_handlers:
             if (
                 not self.user_bot
                 and isinstance(update, types.UpdateNewMessage)
