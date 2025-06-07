@@ -330,7 +330,7 @@ class Client(Decorators, Methods):
             return
 
         self.is_reloading_plugins = True
-        for _, handlers in self._handlers.items():
+        for handlers in self._handlers.values():
             for handler in handlers.copy():
                 if handler.is_from_plugin:
                     self.remove_handler(handler.func)
