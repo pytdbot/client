@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.49",
-    "commit_hash": "4a967f7a633d3c98184806650607b1746020a6a8",
+    "version": "1.8.50",
+    "commit_hash": "e78c346a6b5bf8a2cee97987000e11c8ce9968f3",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -370,7 +370,9 @@
                 "messageSenderUser",
                 "messageSenderChat"
             ],
-            "functions": []
+            "functions": [
+                "setGroupCallParticipantIsSpeaking"
+            ]
         },
         "MessageReadDate": {
             "description": "Describes read date of a recent outgoing message in a private chat",
@@ -413,6 +415,15 @@
             ],
             "functions": []
         },
+        "MessageTopic": {
+            "description": "Describes a topic of messages in a chat",
+            "types": [
+                "messageTopicForum",
+                "messageTopicDirectMessages",
+                "messageTopicSavedMessages"
+            ],
+            "functions": []
+        },
         "MessageEffectType": {
             "description": "Describes type of emoji effect",
             "types": [
@@ -452,6 +463,7 @@
                 "messageSourceChatHistory",
                 "messageSourceMessageThreadHistory",
                 "messageSourceForumTopicHistory",
+                "messageSourceDirectMessagesChatTopicHistory",
                 "messageSourceHistoryPreview",
                 "messageSourceChatList",
                 "messageSourceSearch",
@@ -965,6 +977,7 @@
                 "messageRefundedUpgradedGift",
                 "messagePaidMessagesRefunded",
                 "messagePaidMessagePriceChanged",
+                "messageDirectMessagePriceChanged",
                 "messageContactRegistered",
                 "messageUsersShared",
                 "messageChatShared",
@@ -2283,6 +2296,8 @@
                 "updateChatOnlineMemberCount",
                 "updateSavedMessagesTopic",
                 "updateSavedMessagesTopicCount",
+                "updateDirectMessagesChatTopic",
+                "updateTopicMessageCount",
                 "updateQuickReplyShortcut",
                 "updateQuickReplyShortcutDeleted",
                 "updateQuickReplyShortcuts",
@@ -5091,7 +5106,7 @@
             "description": "Describes rights of the administrator",
             "args": {
                 "can_manage_chat": {
-                    "description": "True, if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report supergroup spam messages and ignore slow mode. Implied by any other privilege; applicable to supergroups and channels only",
+                    "description": "True, if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report supergroup spam messages, ignore slow mode, and send messages to the chat without paying Telegram Stars. Implied by any other privilege; applicable to supergroups and channels only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -5101,7 +5116,7 @@
                     "type": "Bool"
                 },
                 "can_post_messages": {
-                    "description": "True, if the administrator can create channel posts or view channel statistics; applicable to channels only",
+                    "description": "True, if the administrator can create channel posts, answer to channel direct messages, or view channel statistics; applicable to channels only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -7006,7 +7021,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypePaidMessageReceive": {
-            "description": "The transaction is a receiving of a paid message; for regular users and supergroup chats only",
+            "description": "The transaction is a receiving of a paid message; for regular users, supergroup and channel chats only",
             "args": {
                 "sender_id": {
                     "description": "Identifier of the sender of the message",
@@ -8638,10 +8653,30 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_direct_messages_group": {
+                    "description": "True, if the supergroup is a direct message group for a channel chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_administered_direct_messages_group": {
+                    "description": "True, if the supergroup is a direct messages group for a channel chat that is administered by the current user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "verification_status": {
                     "description": "Information about verification status of the supergroup or channel; may be null if none",
                     "is_optional": true,
                     "type": "verificationStatus"
+                },
+                "has_direct_messages_group": {
+                    "description": "True, if the channel has direct messages group",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_forum_tabs": {
+                    "description": "True, if the supergroup is a forum, which topics are shown in the same way as in channel direct messages groups",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "has_sensitive_content": {
                     "description": "True, if content of media messages in the supergroup or channel chat must be hidden with 18+ spoiler",
@@ -8706,6 +8741,11 @@
                 },
                 "linked_chat_id": {
                     "description": "Chat identifier of a discussion group for the channel, or a channel, for which the supergroup is the designated discussion group; 0 if none or unknown",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "direct_messages_chat_id": {
+                    "description": "Chat identifier of a direct messages group for the channel, or a channel, for which the supergroup is the designated direct messages group; 0 if none",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -9387,6 +9427,39 @@
             },
             "type": "UnreadReaction"
         },
+        "messageTopicForum": {
+            "description": "A topic in a forum supergroup chat",
+            "args": {
+                "forum_topic_id": {
+                    "description": "Unique identifier of the forum topic; all messages in a non-forum supergroup chats belongs to the General topic",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "MessageTopic"
+        },
+        "messageTopicDirectMessages": {
+            "description": "A topic in a channel direct messages chat administered by the current user",
+            "args": {
+                "direct_messages_chat_topic_id": {
+                    "description": "Unique identifier of the topic",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "MessageTopic"
+        },
+        "messageTopicSavedMessages": {
+            "description": "A topic in Saved Messages chat",
+            "args": {
+                "saved_messages_topic_id": {
+                    "description": "Unique identifier of the Saved Messages topic",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "MessageTopic"
+        },
         "messageEffectTypeEmojiReaction": {
             "description": "An effect from an emoji reaction",
             "args": {
@@ -9699,7 +9772,7 @@
                     "type": "Bool"
                 },
                 "can_be_saved": {
-                    "description": "True, if content of the message can be saved locally or copied using inputMessageForwarded or forwardMessages with copy options",
+                    "description": "True, if content of the message can be saved locally",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -9710,11 +9783,6 @@
                 },
                 "is_channel_post": {
                     "description": "True, if the message is a channel post. All messages to channels are channel posts, all other messages are not channel posts",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "is_topic_message": {
-                    "description": "True, if the message is a forum topic message",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -9768,10 +9836,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "saved_messages_topic_id": {
-                    "description": "Identifier of the Saved Messages topic for the message; 0 for messages not from Saved Messages",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Identifier of the topic within the chat to which the message belongs; may be null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "self_destruct_type": {
                     "description": "The message's self-destruct type; may be null if none",
@@ -10006,12 +10074,17 @@
             "type": "MessageSource"
         },
         "messageSourceMessageThreadHistory": {
-            "description": "The message is from a message thread history",
+            "description": "The message is from history of a message thread",
             "args": {},
             "type": "MessageSource"
         },
         "messageSourceForumTopicHistory": {
-            "description": "The message is from a forum topic history",
+            "description": "The message is from history of a forum topic",
+            "args": {},
+            "type": "MessageSource"
+        },
+        "messageSourceDirectMessagesChatTopicHistory": {
+            "description": "The message is from history of a topic in a channel direct messages chat administered by the current user",
             "args": {},
             "type": "MessageSource"
         },
@@ -12075,6 +12148,67 @@
             },
             "type": "SavedMessagesTopic"
         },
+        "directMessagesChatTopic": {
+            "description": "Contains information about a topic in a channel direct messages chat administered by the current user",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the topic belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "id": {
+                    "description": "Unique topic identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "sender_id": {
+                    "description": "Identifier of the user or chat that sends the messages to the topic",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "order": {
+                    "description": "A parameter used to determine order of the topic in the topic list. Topics must be sorted by the order in descending order",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "is_marked_as_unread": {
+                    "description": "True, if the forum topic is marked as unread",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "unread_count": {
+                    "description": "Number of unread messages in the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "last_read_inbox_message_id": {
+                    "description": "Identifier of the last read incoming message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "last_read_outbox_message_id": {
+                    "description": "Identifier of the last read outgoing message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "unread_reaction_count": {
+                    "description": "Number of messages with unread reactions in the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "last_message": {
+                    "description": "Last message in the topic; may be null if none or unknown",
+                    "is_optional": true,
+                    "type": "message"
+                },
+                "draft_message": {
+                    "description": "A draft of a message in the topic; may be null if none",
+                    "is_optional": true,
+                    "type": "draftMessage"
+                }
+            },
+            "type": "DirectMessagesChatTopic"
+        },
         "forumTopicIcon": {
             "description": "Describes a forum topic icon",
             "args": {
@@ -12096,6 +12230,11 @@
             "args": {
                 "chat_id": {
                     "description": "Identifier of the forum chat to which the topic belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "forum_topic_id": {
+                    "description": "Forum topic identifier of the topic",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -16077,7 +16216,7 @@
             "type": "MessageContent"
         },
         "messageGroupCall": {
-            "description": "A message with information about a group call not bound to a chat. If the message is incoming, the call isn't active, isn't missed, and has no duration, and getOption(\"can_accept_calls\") is true, then incoming call screen must be shown to the user. Use joinGroupCall to accept the call or declineGroupCallInvitation to decline it. If the call become active or missed, then the call screen must be hidden",
+            "description": "A message with information about a group call not bound to a chat. If the message is incoming, the call isn't active, isn't missed, and has no duration, and getOption(\"can_accept_calls\") is true, then incoming call screen must be shown to the user. Use getGroupCallParticipants to show current group call participants on the screen. Use joinGroupCall to accept the call or declineGroupCallInvitation to decline it. If the call become active or missed, then the call screen must be hidden",
             "args": {
                 "is_active": {
                     "description": "True, if the call is active, i.e. the called user joined the call",
@@ -16925,6 +17064,11 @@
                     "is_optional": false,
                     "type": "MessageSender"
                 },
+                "receiver_id": {
+                    "description": "Receiver of the gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
                 "received_gift_id": {
                     "description": "Unique identifier of the received gift for the current user; only for the receiver of the gift",
                     "is_optional": false,
@@ -16996,6 +17140,11 @@
                     "is_optional": true,
                     "type": "MessageSender"
                 },
+                "receiver_id": {
+                    "description": "Receiver of the gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
                 "received_gift_id": {
                     "description": "Unique identifier of the received gift for the current user; only for the receiver of the gift",
                     "is_optional": false,
@@ -17062,6 +17211,11 @@
                     "is_optional": false,
                     "type": "MessageSender"
                 },
+                "receiver_id": {
+                    "description": "Receiver of the gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
                 "is_upgrade": {
                     "description": "True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred or resold gift",
                     "is_optional": false,
@@ -17091,6 +17245,22 @@
             "args": {
                 "paid_message_star_count": {
                     "description": "The new number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageDirectMessagePriceChanged": {
+            "description": "A price for direct messages was changed in the channel chat",
+            "args": {
+                "is_enabled": {
+                    "description": "True, if direct messages group was enabled for the channel; false otherwise",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "paid_message_star_count": {
+                    "description": "The new number of Telegram Stars that must be paid by non-administrator users of the channel chat for each message sent to the direct messages group; 0 if the direct messages group was disabled or the messages are free",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -17499,6 +17669,11 @@
         "messageSendOptions": {
             "description": "Options to be used when a message is sent",
             "args": {
+                "direct_messages_chat_topic_id": {
+                    "description": "Unique identifier of the topic in a channel direct messages chat administered by the current user; pass 0 if the chat isn't a channel direct messages chat administered by the current user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "disable_notification": {
                     "description": "Pass true to disable notification for the message",
                     "is_optional": false,
@@ -17530,7 +17705,7 @@
                     "type": "Bool"
                 },
                 "scheduling_state": {
-                    "description": "Message scheduling state; pass null to send message immediately. Messages sent to a secret chat, to a chat with paid messages, live location messages and self-destructing messages can't be scheduled",
+                    "description": "Message scheduling state; pass null to send message immediately. Messages sent to a secret chat, to a chat with paid messages, to a channel direct messages chat, live location messages and self-destructing messages can't be scheduled",
                     "is_optional": true,
                     "type": "MessageSchedulingState"
                 },
@@ -17556,7 +17731,7 @@
             "description": "Options to be used when a message content is copied without reference to the original sender. Service messages, messages with messageInvoice, messagePaidMedia, messageGiveaway, or messageGiveawayWinners content can't be copied",
             "args": {
                 "send_copy": {
-                    "description": "True, if content of the message needs to be copied without reference to the original sender. Always true if the message is forwarded to a secret chat or is local. Use messageProperties.can_be_saved and messageProperties.can_be_copied_to_secret_chat to check whether the message is suitable",
+                    "description": "True, if content of the message needs to be copied without reference to the original sender. Always true if the message is forwarded to a secret chat or is local. Use messageProperties.can_be_copied and messageProperties.can_be_copied_to_secret_chat to check whether the message is suitable",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -18110,7 +18285,7 @@
             "type": "InputMessageContent"
         },
         "inputMessagePoll": {
-            "description": "A message with a poll. Polls can't be sent to secret chats. Polls can be sent only to a private chat with a bot",
+            "description": "A message with a poll. Polls can't be sent to secret chats and channel direct messages chats. Polls can be sent to a private chat only if the chat is a chat with a bot or the Saved Messages chat",
             "args": {
                 "question": {
                     "description": "Poll question; 1-255 characters (up to 300 characters for bots). Only custom emoji entities are allowed to be added and only by Premium users",
@@ -18118,7 +18293,7 @@
                     "type": "formattedText"
                 },
                 "options": {
-                    "description": "List of poll answer options, 2-10 strings 1-100 characters each. Only custom emoji entities are allowed to be added and only by Premium users",
+                    "description": "List of poll answer options, 2-getOption(\"poll_answer_count_max\") strings 1-100 characters each. Only custom emoji entities are allowed to be added and only by Premium users",
                     "is_optional": false,
                     "type": "vector<formattedText>"
                 },
@@ -18205,6 +18380,11 @@
         "messageProperties": {
             "description": "Contains properties of a message and describes actions that can be done with the message right now",
             "args": {
+                "can_be_copied": {
+                    "description": "True, if content of the message can be copied using inputMessageForwarded or forwardMessages with copy options",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_be_copied_to_secret_chat": {
                     "description": "True, if content of the message can be copied to a secret chat using inputMessageForwarded or forwardMessages with copy options",
                     "is_optional": false,
@@ -18226,7 +18406,7 @@
                     "type": "Bool"
                 },
                 "can_be_forwarded": {
-                    "description": "True, if the message can be forwarded using inputMessageForwarded or forwardMessages",
+                    "description": "True, if the message can be forwarded using inputMessageForwarded or forwardMessages without copy options",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -18251,7 +18431,7 @@
                     "type": "Bool"
                 },
                 "can_be_saved": {
-                    "description": "True, if content of the message can be saved locally or copied using inputMessageForwarded or forwardMessages with copy options",
+                    "description": "True, if content of the message can be saved locally",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -18267,6 +18447,11 @@
                 },
                 "can_edit_scheduling_state": {
                     "description": "True, if scheduling state of the message can be edited",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_get_author": {
+                    "description": "True, if author of the message sent on behalf of a chat can be received through getMessageAuthor",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -20359,7 +20544,7 @@
             "description": "The code is re-sent, because device verification has failed",
             "args": {
                 "error_message": {
-                    "description": "Cause of the verification failure, for example, PLAY_SERVICES_NOT_AVAILABLE, APNS_RECEIVE_TIMEOUT, or APNS_INIT_FAILED",
+                    "description": "Cause of the verification failure, for example, \"PLAY_SERVICES_NOT_AVAILABLE\", \"APNS_RECEIVE_TIMEOUT\", or \"APNS_INIT_FAILED\"",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -27045,7 +27230,7 @@
             "type": "InternalLinkType"
         },
         "internalLinkTypeGroupCall": {
-            "description": "The link is a link to a group call that isn't bound to a chat. Call joinGroupCall with the given invite_link",
+            "description": "The link is a link to a group call that isn't bound to a chat. Use getGroupCallParticipants to get the list of group call participants and show them on the join group call screen. Call joinGroupCall with the given invite_link to join the call",
             "args": {
                 "invite_link": {
                     "description": "Internal representation of the invite link",
@@ -30338,6 +30523,38 @@
             },
             "type": "Update"
         },
+        "updateDirectMessagesChatTopic": {
+            "description": "Basic information about a topic in a channel direct messages chat administered by the current user has changed. This update is guaranteed to come before the topic identifier is returned to the application",
+            "args": {
+                "topic": {
+                    "description": "New data about the topic",
+                    "is_optional": false,
+                    "type": "directMessagesChatTopic"
+                }
+            },
+            "type": "Update"
+        },
+        "updateTopicMessageCount": {
+            "description": "Number of messages in a topic has changed; for Saved Messages and channel direct messages chat topics only",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat in topic of which the number of messages has changed",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Identifier of the topic",
+                    "is_optional": false,
+                    "type": "MessageTopic"
+                },
+                "message_count": {
+                    "description": "Approximate number of messages in the topics",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Update"
+        },
         "updateQuickReplyShortcut": {
             "description": "Basic information about a quick reply shortcut has changed. This update is guaranteed to come before the quick shortcut name is returned to the application",
             "args": {
@@ -30425,6 +30642,16 @@
                     "description": "Identifier of the last read outgoing message",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "unread_mention_count": {
+                    "description": "Number of unread messages with a mention/reply in the topic",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "unread_reaction_count": {
+                    "description": "Number of messages with unread reactions in the topic",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "notification_settings": {
                     "description": "Notification settings for the topic",
@@ -33006,6 +33233,22 @@
             },
             "type": "MessageViewers"
         },
+        "getMessageAuthor": {
+            "description": "Returns information about actual author of a message sent on behalf of a channel. The method can be called if messageProperties.can_get_author == true",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "User"
+        },
         "getFile": {
             "description": "Returns information about a file. This is an offline method",
             "args": {
@@ -33340,7 +33583,7 @@
             "type": "Chats"
         },
         "getInactiveSupergroupChats": {
-            "description": "Returns a list of recently inactive supergroups and channels. Can be used when user reaches limit on the number of joined supergroups and channels and receives CHANNELS_TOO_MUCH error. Also, the limit can be increased with Telegram Premium",
+            "description": "Returns a list of recently inactive supergroups and channels. Can be used when user reaches limit on the number of joined supergroups and channels and receives the error \"CHANNELS_TOO_MUCH\". Also, the limit can be increased with Telegram Premium",
             "args": {},
             "type": "Chats"
         },
@@ -33348,6 +33591,206 @@
             "description": "Returns a list of channel chats, which can be used as a personal chat",
             "args": {},
             "type": "Chats"
+        },
+        "loadDirectMessagesChatTopics": {
+            "description": "Loads more topics in a channel direct messages chat administered by the current user. The loaded topics will be sent through updateDirectMessagesChatTopic. Topics are sorted by their topic.order in descending order. Returns a 404 error if all topics have been loaded",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the channel direct messages chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "limit": {
+                    "description": "The maximum number of topics to be loaded. For optimal performance, the number of loaded topics is chosen by TDLib and can be smaller than the specified limit, even if the end of the list is not reached",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "getDirectMessagesChatTopic": {
+            "description": "Returns information about the topic in a channel direct messages chat administered by the current user",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the channel direct messages chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Identifier of the topic to get",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "DirectMessagesChatTopic"
+        },
+        "getDirectMessagesChatTopicHistory": {
+            "description": "Returns messages in the topic in a channel direct messages chat administered by the current user. The messages are returned in reverse chronological order (i.e., in order of decreasing message_id)",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the channel direct messages chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Identifier of the topic which messages will be fetched",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "from_message_id": {
+                    "description": "Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset": {
+                    "description": "Specify 0 to get results from exactly the message from_message_id or a negative offset up to 99 to get additionally some newer messages",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "limit": {
+                    "description": "The maximum number of messages to be returned; must be positive and can't be greater than 100. If the offset is negative, the limit must be greater than or equal to -offset. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Messages"
+        },
+        "getDirectMessagesChatTopicMessageByDate": {
+            "description": "Returns the last message sent in the topic in a channel direct messages chat administered by the current user no later than the specified date",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the channel direct messages chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Identifier of the topic which messages will be fetched",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) relative to which to search for messages",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Message"
+        },
+        "deleteDirectMessagesChatTopicHistory": {
+            "description": "Deletes all messages in the topic in a channel direct messages chat administered by the current user",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the channel direct messages chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Identifier of the topic which messages will be deleted",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteDirectMessagesChatTopicMessagesByDate": {
+            "description": "Deletes all messages between the specified dates in the topic in a channel direct messages chat administered by the current user. Messages sent in the last 30 seconds will not be deleted",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the channel direct messages chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Identifier of the topic which messages will be deleted",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "min_date": {
+                    "description": "The minimum date of the messages to delete",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "max_date": {
+                    "description": "The maximum date of the messages to delete",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "setDirectMessagesChatTopicIsMarkedAsUnread": {
+            "description": "Changes the marked as unread state of the topic in a channel direct messages chat administered by the current user",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the channel direct messages chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Topic identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_marked_as_unread": {
+                    "description": "New value of is_marked_as_unread",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "setDirectMessagesChatTopicDraftMessage": {
+            "description": "Changes the draft message in the topic in a channel direct messages chat administered by the current user",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Topic identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "draft_message": {
+                    "description": "New draft message; pass null to remove the draft. All files in draft message content must be of the type inputFileLocal. Media thumbnails and captions are ignored",
+                    "is_optional": true,
+                    "type": "draftMessage"
+                }
+            },
+            "type": "Ok"
+        },
+        "unpinAllDirectMessagesChatTopicMessages": {
+            "description": "Removes all pinned messages from the topic in a channel direct messages chat administered by the current user",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Topic identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "readAllDirectMessagesChatTopicReactions": {
+            "description": "Removes all unread reactions in the topic in a channel direct messages chat administered by the current user",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Topic identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
         },
         "loadSavedMessagesTopics": {
             "description": "Loads more Saved Messages topics. The loaded topics will be sent through updateSavedMessagesTopic. Topics are sorted by their topic.order in descending order. Returns a 404 error if all topics have been loaded",
@@ -33577,12 +34020,17 @@
             "type": "Ok"
         },
         "searchChatMessages": {
-            "description": "Searches for messages with given words in the chat. Returns the results in reverse chronological order, i.e. in order of decreasing message_id. Cannot be used in secret chats with a non-empty query (searchSecretMessages must be used instead), or without an enabled message database. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit. A combination of query, sender_id, filter and message_thread_id search criteria is expected to be supported, only if it is required for Telegram official application implementation",
+            "description": "Searches for messages with given words in the chat. Returns the results in reverse chronological order, i.e. in order of decreasing message_id. Cannot be used in secret chats with a non-empty query (searchSecretMessages must be used instead), or without an enabled message database. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit. A combination of query, sender_id, filter and topic_id search criteria is expected to be supported, only if it is required for Telegram official application implementation",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat in which to search messages",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Pass topic identifier to search messages only in specific topic; pass null to search for messages in all topics",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "query": {
                     "description": "Query to search for",
@@ -33613,16 +34061,6 @@
                     "description": "Additional filter for messages to search; pass null to search for all messages",
                     "is_optional": true,
                     "type": "SearchMessagesFilter"
-                },
-                "message_thread_id": {
-                    "description": "If not 0, only messages in the specified thread will be returned; supergroups only",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "saved_messages_topic_id": {
-                    "description": "If not 0, only messages in the specified Saved Messages topic will be returned; pass 0 to return all messages, or for chats other than Saved Messages",
-                    "is_optional": false,
-                    "type": "int53"
                 }
             },
             "type": "FoundChatMessages"
@@ -33991,6 +34429,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "topic_id": {
+                    "description": "Pass topic identifier to get the result only in specific topic; pass null to get the result in all topics; forum topics aren't supported",
+                    "is_optional": true,
+                    "type": "MessageTopic"
+                },
                 "filter": {
                     "description": "Filter for message content. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, and searchMessagesFilterUnreadReaction are unsupported in this function",
                     "is_optional": false,
@@ -34000,32 +34443,27 @@
                     "description": "The message identifier from which to return information about messages; use 0 to get results from the last message",
                     "is_optional": false,
                     "type": "int53"
-                },
-                "saved_messages_topic_id": {
-                    "description": "If not0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages, or for chats other than Saved Messages",
-                    "is_optional": false,
-                    "type": "int53"
                 }
             },
             "type": "MessageCalendar"
         },
         "getChatMessageCount": {
-            "description": "Returns approximate number of messages of the specified type in the chat",
+            "description": "Returns approximate number of messages of the specified type in the chat or its topic",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat in which to count messages",
                     "is_optional": false,
                     "type": "int53"
                 },
+                "topic_id": {
+                    "description": "Pass topic identifier to get number of messages only in specific topic; pass null to get number of messages in all topics",
+                    "is_optional": true,
+                    "type": "MessageTopic"
+                },
                 "filter": {
                     "description": "Filter for message content; searchMessagesFilterEmpty is unsupported in this function",
                     "is_optional": false,
                     "type": "SearchMessagesFilter"
-                },
-                "saved_messages_topic_id": {
-                    "description": "If not 0, only messages in the specified Saved Messages topic will be counted; pass 0 to count all messages, or for chats other than Saved Messages",
-                    "is_optional": false,
-                    "type": "int53"
                 },
                 "return_local": {
                     "description": "Pass true to get the number of messages without sending network requests, or -1 if the number of messages is unknown locally",
@@ -34036,30 +34474,25 @@
             "type": "Count"
         },
         "getChatMessagePosition": {
-            "description": "Returns approximate 1-based position of a message among messages, which can be found by the specified filter in the chat. Cannot be used in secret chats",
+            "description": "Returns approximate 1-based position of a message among messages, which can be found by the specified filter in the chat and topic. Cannot be used in secret chats",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat in which to find message position",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_id": {
-                    "description": "Message identifier",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Pass topic identifier to get position among messages only in specific topic; pass null to get position among all chat messages",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "filter": {
                     "description": "Filter for message content; searchMessagesFilterEmpty, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterFailedToSend are unsupported in this function",
                     "is_optional": false,
                     "type": "SearchMessagesFilter"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, only messages in the specified thread will be considered; supergroups only",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "saved_messages_topic_id": {
-                    "description": "If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all relevant messages, or for chats other than Saved Messages",
+                "message_id": {
+                    "description": "Message identifier",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -34538,7 +34971,7 @@
                     "type": "messageSendOptions"
                 },
                 "send_copy": {
-                    "description": "Pass true to copy content of the messages without reference to the original sender. Always true if the messages are forwarded to a secret chat or are local. Use messageProperties.can_be_saved and messageProperties.can_be_copied_to_secret_chat to check whether the message is suitable",
+                    "description": "Pass true to copy content of the messages without reference to the original sender. Always true if the messages are forwarded to a secret chat or are local. Use messageProperties.can_be_copied and messageProperties.can_be_copied_to_secret_chat to check whether the message is suitable",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -34601,7 +35034,7 @@
             "description": "Adds a local message to a chat. The message is persistent across application restarts only if the message database is used. Returns the added message",
             "args": {
                 "chat_id": {
-                    "description": "Target chat",
+                    "description": "Target chat; channel direct messages chats aren't supported",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -36882,7 +37315,12 @@
                     "type": "string"
                 },
                 "message_thread_id": {
-                    "description": "If not 0, the message thread identifier in which the message will be sent",
+                    "description": "If not 0, the message thread identifier to which the message will be sent",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "direct_messages_chat_topic_id": {
+                    "description": "If not 0, unique identifier of the topic of channel direct messages chat to which the message will be sent",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -38174,6 +38612,27 @@
                 },
                 "discussion_chat_id": {
                     "description": "Identifier of a new channel's discussion group. Use 0 to remove the discussion group. Use the method getSuitableDiscussionChats to find all suitable groups. Basic group chats must be first upgraded to supergroup chats. If new chat members don't have access to old messages in the supergroup, then toggleSupergroupIsAllHistoryAvailable must be used first to change that",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "setChatDirectMessagesGroup": {
+            "description": "Changes direct messages group settings for a channel chat; requires owner privileges in the chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the channel chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_enabled": {
+                    "description": "Pass true if the direct messages group is enabled for the channel chat; pass false otherwise",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "paid_message_star_count": {
+                    "description": "The new number of Telegram Stars that must be paid for each message that is sent to the direct messages chat unless the sender is an administrator of the channel chat; 0-getOption(\"paid_message_star_count_max\"). The channel will receive getOption(\"paid_message_earnings_per_mille\") Telegram Stars for each 1000 Telegram Stars paid for message sending. Requires supergroupFullInfo.can_enable_paid_messages for positive amounts",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -39656,7 +40115,7 @@
                     "type": "int53"
                 },
                 "token": {
-                    "description": "Play Integrity API token for the Android application, or secret from push notification for the iOS application for application verification, or reCAPTCHA token for reCAPTCHA verifications; pass an empty string to abort verification and receive error VERIFICATION_FAILED for the request",
+                    "description": "Play Integrity API token for the Android application, or secret from push notification for the iOS application for application verification, or reCAPTCHA token for reCAPTCHA verifications; pass an empty string to abort verification and receive the error \"VERIFICATION_FAILED\" for the request",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -40622,7 +41081,7 @@
             "type": "Ok"
         },
         "setGroupCallParticipantIsSpeaking": {
-            "description": "Informs TDLib that speaking state of a participant of an active group call has changed",
+            "description": "Informs TDLib that speaking state of a participant of an active group call has changed. Returns identifier of the participant if it is found",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -40640,7 +41099,7 @@
                     "type": "Bool"
                 }
             },
-            "type": "Ok"
+            "type": "MessageSender"
         },
         "toggleGroupCallParticipantIsMuted": {
             "description": "Toggles whether a participant of an active group call is muted, unmuted, or allowed to unmute themselves",
@@ -42940,6 +43399,11 @@
                 },
                 "is_forum": {
                     "description": "New value of is_forum",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_forum_tabs": {
+                    "description": "New value of has_forum_tabs; ignored if is_forum is false",
                     "is_optional": false,
                     "type": "Bool"
                 }
