@@ -1947,6 +1947,82 @@ class Updates:
 
         return decorator
 
+    def on_updateDirectMessagesChatTopic(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        r"""Basic information about a topic in a channel direct messages chat administered by the current user has changed\. This update is guaranteed to come before the topic identifier is returned to the application
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateDirectMessagesChatTopic", func, filters, position
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateDirectMessagesChatTopic", self, position
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateDirectMessagesChatTopic", filters, position
+                )
+            return func
+
+        return decorator
+
+    def on_updateTopicMessageCount(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+    ) -> Callable:
+        r"""Number of messages in a topic has changed; for Saved Messages and channel direct messages chat topics only
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler("updateTopicMessageCount", func, filters, position)
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(func, "updateTopicMessageCount", self, position)
+            else:
+                func._handler = Handler(
+                    func, "updateTopicMessageCount", filters, position
+                )
+            return func
+
+        return decorator
+
     def on_updateQuickReplyShortcut(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,

@@ -1207,6 +1207,26 @@ class TDLibFunctions:
             {"@type": "getMessageViewers", "chat_id": chat_id, "message_id": message_id}
         )
 
+    async def getMessageAuthor(
+        self, chat_id: int = 0, message_id: int = 0
+    ) -> Union["types.Error", "types.User"]:
+        r"""Returns information about actual author of a message sent on behalf of a channel\. The method can be called if messageProperties\.can\_get\_author \=\= true
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+        Returns:
+            :class:`~pytdbot.types.User`
+        """
+
+        return await self.invoke(
+            {"@type": "getMessageAuthor", "chat_id": chat_id, "message_id": message_id}
+        )
+
     async def getFile(self, file_id: int = 0) -> Union["types.Error", "types.File"]:
         r"""Returns information about a file\. This is an offline method
 
@@ -1681,7 +1701,7 @@ class TDLibFunctions:
         )
 
     async def getInactiveSupergroupChats(self) -> Union["types.Error", "types.Chats"]:
-        r"""Returns a list of recently inactive supergroups and channels\. Can be used when user reaches limit on the number of joined supergroups and channels and receives CHANNELS\_TOO\_MUCH error\. Also, the limit can be increased with Telegram Premium
+        r"""Returns a list of recently inactive supergroups and channels\. Can be used when user reaches limit on the number of joined supergroups and channels and receives the error \"CHANNELS\_TOO\_MUCH\"\. Also, the limit can be increased with Telegram Premium
 
         Returns:
             :class:`~pytdbot.types.Chats`
@@ -1703,6 +1723,286 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "getSuitablePersonalChats",
+            }
+        )
+
+    async def loadDirectMessagesChatTopics(
+        self, chat_id: int = 0, limit: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Loads more topics in a channel direct messages chat administered by the current user\. The loaded topics will be sent through updateDirectMessagesChatTopic\. Topics are sorted by their topic\.order in descending order\. Returns a 404 error if all topics have been loaded
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat
+
+            limit (:class:`int`):
+                The maximum number of topics to be loaded\. For optimal performance, the number of loaded topics is chosen by TDLib and can be smaller than the specified limit, even if the end of the list is not reached
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "loadDirectMessagesChatTopics",
+                "chat_id": chat_id,
+                "limit": limit,
+            }
+        )
+
+    async def getDirectMessagesChatTopic(
+        self, chat_id: int = 0, topic_id: int = 0
+    ) -> Union["types.Error", "types.DirectMessagesChatTopic"]:
+        r"""Returns information about the topic in a channel direct messages chat administered by the current user
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat
+
+            topic_id (:class:`int`):
+                Identifier of the topic to get
+
+        Returns:
+            :class:`~pytdbot.types.DirectMessagesChatTopic`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getDirectMessagesChatTopic",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+            }
+        )
+
+    async def getDirectMessagesChatTopicHistory(
+        self,
+        chat_id: int = 0,
+        topic_id: int = 0,
+        from_message_id: int = 0,
+        offset: int = 0,
+        limit: int = 0,
+    ) -> Union["types.Error", "types.Messages"]:
+        r"""Returns messages in the topic in a channel direct messages chat administered by the current user\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat
+
+            topic_id (:class:`int`):
+                Identifier of the topic which messages will be fetched
+
+            from_message_id (:class:`int`):
+                Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message
+
+            offset (:class:`int`):
+                Specify 0 to get results from exactly the message from\_message\_id or a negative offset up to 99 to get additionally some newer messages
+
+            limit (:class:`int`):
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+        Returns:
+            :class:`~pytdbot.types.Messages`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getDirectMessagesChatTopicHistory",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+                "from_message_id": from_message_id,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def getDirectMessagesChatTopicMessageByDate(
+        self, chat_id: int = 0, topic_id: int = 0, date: int = 0
+    ) -> Union["types.Error", "types.Message"]:
+        r"""Returns the last message sent in the topic in a channel direct messages chat administered by the current user no later than the specified date
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat
+
+            topic_id (:class:`int`):
+                Identifier of the topic which messages will be fetched
+
+            date (:class:`int`):
+                Point in time \(Unix timestamp\) relative to which to search for messages
+
+        Returns:
+            :class:`~pytdbot.types.Message`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getDirectMessagesChatTopicMessageByDate",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+                "date": date,
+            }
+        )
+
+    async def deleteDirectMessagesChatTopicHistory(
+        self, chat_id: int = 0, topic_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Deletes all messages in the topic in a channel direct messages chat administered by the current user
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat
+
+            topic_id (:class:`int`):
+                Identifier of the topic which messages will be deleted
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteDirectMessagesChatTopicHistory",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+            }
+        )
+
+    async def deleteDirectMessagesChatTopicMessagesByDate(
+        self, chat_id: int = 0, topic_id: int = 0, min_date: int = 0, max_date: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Deletes all messages between the specified dates in the topic in a channel direct messages chat administered by the current user\. Messages sent in the last 30 seconds will not be deleted
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat
+
+            topic_id (:class:`int`):
+                Identifier of the topic which messages will be deleted
+
+            min_date (:class:`int`):
+                The minimum date of the messages to delete
+
+            max_date (:class:`int`):
+                The maximum date of the messages to delete
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteDirectMessagesChatTopicMessagesByDate",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+                "min_date": min_date,
+                "max_date": max_date,
+            }
+        )
+
+    async def setDirectMessagesChatTopicIsMarkedAsUnread(
+        self, chat_id: int = 0, topic_id: int = 0, is_marked_as_unread: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the marked as unread state of the topic in a channel direct messages chat administered by the current user
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat
+
+            topic_id (:class:`int`):
+                Topic identifier
+
+            is_marked_as_unread (:class:`bool`):
+                New value of is\_marked\_as\_unread
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setDirectMessagesChatTopicIsMarkedAsUnread",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+                "is_marked_as_unread": is_marked_as_unread,
+            }
+        )
+
+    async def setDirectMessagesChatTopicDraftMessage(
+        self,
+        chat_id: int = 0,
+        topic_id: int = 0,
+        draft_message: "types.DraftMessage" = None,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the draft message in the topic in a channel direct messages chat administered by the current user
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            topic_id (:class:`int`):
+                Topic identifier
+
+            draft_message (:class:`"types.DraftMessage"`):
+                New draft message; pass null to remove the draft\. All files in draft message content must be of the type inputFileLocal\. Media thumbnails and captions are ignored
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setDirectMessagesChatTopicDraftMessage",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+                "draft_message": draft_message,
+            }
+        )
+
+    async def unpinAllDirectMessagesChatTopicMessages(
+        self, chat_id: int = 0, topic_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Removes all pinned messages from the topic in a channel direct messages chat administered by the current user
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat
+
+            topic_id (:class:`int`):
+                Topic identifier
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "unpinAllDirectMessagesChatTopicMessages",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+            }
+        )
+
+    async def readAllDirectMessagesChatTopicReactions(
+        self, chat_id: int = 0, topic_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Removes all unread reactions in the topic in a channel direct messages chat administered by the current user
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat
+
+            topic_id (:class:`int`):
+                Topic identifier
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "readAllDirectMessagesChatTopicReactions",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
             }
         )
 
@@ -2030,20 +2330,22 @@ class TDLibFunctions:
     async def searchChatMessages(
         self,
         chat_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         query: str = "",
         sender_id: "types.MessageSender" = None,
         from_message_id: int = 0,
         offset: int = 0,
         limit: int = 0,
         filter: "types.SearchMessagesFilter" = None,
-        message_thread_id: int = 0,
-        saved_messages_topic_id: int = 0,
     ) -> Union["types.Error", "types.FoundChatMessages"]:
-        r"""Searches for messages with given words in the chat\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. Cannot be used in secret chats with a non\-empty query \(searchSecretMessages must be used instead\), or without an enabled message database\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit\. A combination of query, sender\_id, filter and message\_thread\_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
+        r"""Searches for messages with given words in the chat\. Returns the results in reverse chronological order, i\.e\. in order of decreasing message\_id\. Cannot be used in secret chats with a non\-empty query \(searchSecretMessages must be used instead\), or without an enabled message database\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit\. A combination of query, sender\_id, filter and topic\_id search criteria is expected to be supported, only if it is required for Telegram official application implementation
 
         Parameters:
             chat_id (:class:`int`):
                 Identifier of the chat in which to search messages
+
+            topic_id (:class:`"types.MessageTopic"`):
+                Pass topic identifier to search messages only in specific topic; pass null to search for messages in all topics
 
             query (:class:`str`):
                 Query to search for
@@ -2063,12 +2365,6 @@ class TDLibFunctions:
             filter (:class:`"types.SearchMessagesFilter"`):
                 Additional filter for messages to search; pass null to search for all messages
 
-            message_thread_id (:class:`int`):
-                If not 0, only messages in the specified thread will be returned; supergroups only
-
-            saved_messages_topic_id (:class:`int`):
-                If not 0, only messages in the specified Saved Messages topic will be returned; pass 0 to return all messages, or for chats other than Saved Messages
-
         Returns:
             :class:`~pytdbot.types.FoundChatMessages`
         """
@@ -2077,14 +2373,13 @@ class TDLibFunctions:
             {
                 "@type": "searchChatMessages",
                 "chat_id": chat_id,
+                "topic_id": topic_id,
                 "query": query,
                 "sender_id": sender_id,
                 "from_message_id": from_message_id,
                 "offset": offset,
                 "limit": limit,
                 "filter": filter,
-                "message_thread_id": message_thread_id,
-                "saved_messages_topic_id": saved_messages_topic_id,
             }
         )
 
@@ -2562,9 +2857,9 @@ class TDLibFunctions:
     async def getChatMessageCalendar(
         self,
         chat_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         filter: "types.SearchMessagesFilter" = None,
         from_message_id: int = 0,
-        saved_messages_topic_id: int = 0,
     ) -> Union["types.Error", "types.MessageCalendar"]:
         r"""Returns information about the next messages of the specified type in the chat split by days\. Returns the results in reverse chronological order\. Can return partial result for the last returned day\. Behavior of this method depends on the value of the option \"utc\_time\_offset\"
 
@@ -2572,14 +2867,14 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Identifier of the chat in which to return information about messages
 
+            topic_id (:class:`"types.MessageTopic"`):
+                Pass topic identifier to get the result only in specific topic; pass null to get the result in all topics; forum topics aren't supported
+
             filter (:class:`"types.SearchMessagesFilter"`):
                 Filter for message content\. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, and searchMessagesFilterUnreadReaction are unsupported in this function
 
             from_message_id (:class:`int`):
                 The message identifier from which to return information about messages; use 0 to get results from the last message
-
-            saved_messages_topic_id (:class:`int`):
-                If not0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all messages, or for chats other than Saved Messages
 
         Returns:
             :class:`~pytdbot.types.MessageCalendar`
@@ -2589,30 +2884,30 @@ class TDLibFunctions:
             {
                 "@type": "getChatMessageCalendar",
                 "chat_id": chat_id,
+                "topic_id": topic_id,
                 "filter": filter,
                 "from_message_id": from_message_id,
-                "saved_messages_topic_id": saved_messages_topic_id,
             }
         )
 
     async def getChatMessageCount(
         self,
         chat_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         filter: "types.SearchMessagesFilter" = None,
-        saved_messages_topic_id: int = 0,
         return_local: bool = False,
     ) -> Union["types.Error", "types.Count"]:
-        r"""Returns approximate number of messages of the specified type in the chat
+        r"""Returns approximate number of messages of the specified type in the chat or its topic
 
         Parameters:
             chat_id (:class:`int`):
                 Identifier of the chat in which to count messages
 
+            topic_id (:class:`"types.MessageTopic"`):
+                Pass topic identifier to get number of messages only in specific topic; pass null to get number of messages in all topics
+
             filter (:class:`"types.SearchMessagesFilter"`):
                 Filter for message content; searchMessagesFilterEmpty is unsupported in this function
-
-            saved_messages_topic_id (:class:`int`):
-                If not 0, only messages in the specified Saved Messages topic will be counted; pass 0 to count all messages, or for chats other than Saved Messages
 
             return_local (:class:`bool`):
                 Pass true to get the number of messages without sending network requests, or \-1 if the number of messages is unknown locally
@@ -2625,8 +2920,8 @@ class TDLibFunctions:
             {
                 "@type": "getChatMessageCount",
                 "chat_id": chat_id,
+                "topic_id": topic_id,
                 "filter": filter,
-                "saved_messages_topic_id": saved_messages_topic_id,
                 "return_local": return_local,
             }
         )
@@ -2634,28 +2929,24 @@ class TDLibFunctions:
     async def getChatMessagePosition(
         self,
         chat_id: int = 0,
-        message_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         filter: "types.SearchMessagesFilter" = None,
-        message_thread_id: int = 0,
-        saved_messages_topic_id: int = 0,
+        message_id: int = 0,
     ) -> Union["types.Error", "types.Count"]:
-        r"""Returns approximate 1\-based position of a message among messages, which can be found by the specified filter in the chat\. Cannot be used in secret chats
+        r"""Returns approximate 1\-based position of a message among messages, which can be found by the specified filter in the chat and topic\. Cannot be used in secret chats
 
         Parameters:
             chat_id (:class:`int`):
                 Identifier of the chat in which to find message position
 
-            message_id (:class:`int`):
-                Message identifier
+            topic_id (:class:`"types.MessageTopic"`):
+                Pass topic identifier to get position among messages only in specific topic; pass null to get position among all chat messages
 
             filter (:class:`"types.SearchMessagesFilter"`):
                 Filter for message content; searchMessagesFilterEmpty, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterFailedToSend are unsupported in this function
 
-            message_thread_id (:class:`int`):
-                If not 0, only messages in the specified thread will be considered; supergroups only
-
-            saved_messages_topic_id (:class:`int`):
-                If not 0, only messages in the specified Saved Messages topic will be considered; pass 0 to consider all relevant messages, or for chats other than Saved Messages
+            message_id (:class:`int`):
+                Message identifier
 
         Returns:
             :class:`~pytdbot.types.Count`
@@ -2665,10 +2956,9 @@ class TDLibFunctions:
             {
                 "@type": "getChatMessagePosition",
                 "chat_id": chat_id,
-                "message_id": message_id,
+                "topic_id": topic_id,
                 "filter": filter,
-                "message_thread_id": message_thread_id,
-                "saved_messages_topic_id": saved_messages_topic_id,
+                "message_id": message_id,
             }
         )
 
@@ -3317,7 +3607,7 @@ class TDLibFunctions:
                 Options to be used to send the messages; pass null to use default options
 
             send_copy (:class:`bool`):
-                Pass true to copy content of the messages without reference to the original sender\. Always true if the messages are forwarded to a secret chat or are local\. Use messageProperties\.can\_be\_saved and messageProperties\.can\_be\_copied\_to\_secret\_chat to check whether the message is suitable
+                Pass true to copy content of the messages without reference to the original sender\. Always true if the messages are forwarded to a secret chat or are local\. Use messageProperties\.can\_be\_copied and messageProperties\.can\_be\_copied\_to\_secret\_chat to check whether the message is suitable
 
             remove_caption (:class:`bool`):
                 Pass true to remove media captions of message copies\. Ignored if send\_copy is false
@@ -3415,7 +3705,7 @@ class TDLibFunctions:
 
         Parameters:
             chat_id (:class:`int`):
-                Target chat
+                Target chat; channel direct messages chats aren't supported
 
             sender_id (:class:`"types.MessageSender"`):
                 Identifier of the sender of the message
@@ -6579,6 +6869,7 @@ class TDLibFunctions:
         bot_user_id: int = 0,
         url: str = "",
         message_thread_id: int = 0,
+        direct_messages_chat_topic_id: int = 0,
         reply_to: "types.InputMessageReplyTo" = None,
         parameters: "types.WebAppOpenParameters" = None,
     ) -> Union["types.Error", "types.WebAppInfo"]:
@@ -6595,7 +6886,10 @@ class TDLibFunctions:
                 The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
 
             message_thread_id (:class:`int`):
-                If not 0, the message thread identifier in which the message will be sent
+                If not 0, the message thread identifier to which the message will be sent
+
+            direct_messages_chat_topic_id (:class:`int`):
+                If not 0, unique identifier of the topic of channel direct messages chat to which the message will be sent
 
             reply_to (:class:`"types.InputMessageReplyTo"`):
                 Information about the message or story to be replied in the message sent by the Web App; pass null if none
@@ -6614,6 +6908,7 @@ class TDLibFunctions:
                 "bot_user_id": bot_user_id,
                 "url": url,
                 "message_thread_id": message_thread_id,
+                "direct_messages_chat_topic_id": direct_messages_chat_topic_id,
                 "reply_to": reply_to,
                 "parameters": parameters,
             }
@@ -8465,6 +8760,37 @@ class TDLibFunctions:
                 "@type": "setChatDiscussionGroup",
                 "chat_id": chat_id,
                 "discussion_chat_id": discussion_chat_id,
+            }
+        )
+
+    async def setChatDirectMessagesGroup(
+        self,
+        chat_id: int = 0,
+        is_enabled: bool = False,
+        paid_message_star_count: int = 0,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes direct messages group settings for a channel chat; requires owner privileges in the chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the channel chat
+
+            is_enabled (:class:`bool`):
+                Pass true if the direct messages group is enabled for the channel chat; pass false otherwise
+
+            paid_message_star_count (:class:`int`):
+                The new number of Telegram Stars that must be paid for each message that is sent to the direct messages chat unless the sender is an administrator of the channel chat; 0\-getOption\(\"paid\_message\_star\_count\_max\"\)\. The channel will receive getOption\(\"paid\_message\_earnings\_per\_mille\"\) Telegram Stars for each 1000 Telegram Stars paid for message sending\. Requires supergroupFullInfo\.can\_enable\_paid\_messages for positive amounts
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setChatDirectMessagesGroup",
+                "chat_id": chat_id,
+                "is_enabled": is_enabled,
+                "paid_message_star_count": paid_message_star_count,
             }
         )
 
@@ -10641,7 +10967,7 @@ class TDLibFunctions:
                 Unique identifier for the verification process as received from updateApplicationVerificationRequired or updateApplicationRecaptchaVerificationRequired
 
             token (:class:`str`):
-                Play Integrity API token for the Android application, or secret from push notification for the iOS application for application verification, or reCAPTCHA token for reCAPTCHA verifications; pass an empty string to abort verification and receive error VERIFICATION\_FAILED for the request
+                Play Integrity API token for the Android application, or secret from push notification for the iOS application for application verification, or reCAPTCHA token for reCAPTCHA verifications; pass an empty string to abort verification and receive the error \"VERIFICATION\_FAILED\" for the request
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -12018,8 +12344,8 @@ class TDLibFunctions:
 
     async def setGroupCallParticipantIsSpeaking(
         self, group_call_id: int = 0, audio_source: int = 0, is_speaking: bool = False
-    ) -> Union["types.Error", "types.Ok"]:
-        r"""Informs TDLib that speaking state of a participant of an active group call has changed
+    ) -> Union["types.Error", "types.MessageSender"]:
+        r"""Informs TDLib that speaking state of a participant of an active group call has changed\. Returns identifier of the participant if it is found
 
         Parameters:
             group_call_id (:class:`int`):
@@ -12032,7 +12358,7 @@ class TDLibFunctions:
                 Pass true if the user is speaking
 
         Returns:
-            :class:`~pytdbot.types.Ok`
+            :class:`~pytdbot.types.MessageSender`
         """
 
         return await self.invoke(
@@ -15460,7 +15786,10 @@ class TDLibFunctions:
         )
 
     async def toggleSupergroupIsForum(
-        self, supergroup_id: int = 0, is_forum: bool = False
+        self,
+        supergroup_id: int = 0,
+        is_forum: bool = False,
+        has_forum_tabs: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
         r"""Toggles whether the supergroup is a forum; requires owner privileges in the supergroup\. Discussion supergroups can't be converted to forums
 
@@ -15471,6 +15800,9 @@ class TDLibFunctions:
             is_forum (:class:`bool`):
                 New value of is\_forum
 
+            has_forum_tabs (:class:`bool`):
+                New value of has\_forum\_tabs; ignored if is\_forum is false
+
         Returns:
             :class:`~pytdbot.types.Ok`
         """
@@ -15480,6 +15812,7 @@ class TDLibFunctions:
                 "@type": "toggleSupergroupIsForum",
                 "supergroup_id": supergroup_id,
                 "is_forum": is_forum,
+                "has_forum_tabs": has_forum_tabs,
             }
         )
 

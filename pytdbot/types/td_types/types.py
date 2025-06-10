@@ -2,8 +2,8 @@ from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
     MessageBoundMethods,
-    FileBoundMethods,
     CallbackQueryBoundMethods,
+    FileBoundMethods,
 )
 import pytdbot
 
@@ -272,6 +272,12 @@ class ReactionType:
 
 class PaidReactionType:
     r"""Describes type of paid message reaction"""
+
+    pass
+
+
+class MessageTopic:
+    r"""Describes a topic of messages in a chat"""
 
     pass
 
@@ -8257,13 +8263,13 @@ class ChatAdministratorRights(TlObject):
 
     Parameters:
         can_manage_chat (:class:`bool`):
-            True, if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report supergroup spam messages and ignore slow mode\. Implied by any other privilege; applicable to supergroups and channels only
+            True, if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report supergroup spam messages, ignore slow mode, and send messages to the chat without paying Telegram Stars\. Implied by any other privilege; applicable to supergroups and channels only
 
         can_change_info (:class:`bool`):
             True, if the administrator can change the chat title, photo, and other settings
 
         can_post_messages (:class:`bool`):
-            True, if the administrator can create channel posts or view channel statistics; applicable to channels only
+            True, if the administrator can create channel posts, answer to channel direct messages, or view channel statistics; applicable to channels only
 
         can_edit_messages (:class:`bool`):
             True, if the administrator can edit messages of other users and pin messages; applicable to channels only
@@ -8322,11 +8328,11 @@ class ChatAdministratorRights(TlObject):
         is_anonymous: bool = False,
     ) -> None:
         self.can_manage_chat: bool = bool(can_manage_chat)
-        r"""True, if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report supergroup spam messages and ignore slow mode\. Implied by any other privilege; applicable to supergroups and channels only"""
+        r"""True, if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report supergroup spam messages, ignore slow mode, and send messages to the chat without paying Telegram Stars\. Implied by any other privilege; applicable to supergroups and channels only"""
         self.can_change_info: bool = bool(can_change_info)
         r"""True, if the administrator can change the chat title, photo, and other settings"""
         self.can_post_messages: bool = bool(can_post_messages)
-        r"""True, if the administrator can create channel posts or view channel statistics; applicable to channels only"""
+        r"""True, if the administrator can create channel posts, answer to channel direct messages, or view channel statistics; applicable to channels only"""
         self.can_edit_messages: bool = bool(can_edit_messages)
         r"""True, if the administrator can edit messages of other users and pin messages; applicable to channels only"""
         self.can_delete_messages: bool = bool(can_delete_messages)
@@ -13221,7 +13227,7 @@ class StarTransactionTypePaidMessageSend(TlObject, StarTransactionType):
 
 
 class StarTransactionTypePaidMessageReceive(TlObject, StarTransactionType):
-    r"""The transaction is a receiving of a paid message; for regular users and supergroup chats only
+    r"""The transaction is a receiving of a paid message; for regular users, supergroup and channel chats only
 
     Parameters:
         sender_id (:class:`"types.MessageSender"`):
@@ -17496,8 +17502,20 @@ class Supergroup(TlObject):
         is_forum (:class:`bool`):
             True, if the supergroup is a forum with topics
 
+        is_direct_messages_group (:class:`bool`):
+            True, if the supergroup is a direct message group for a channel chat
+
+        is_administered_direct_messages_group (:class:`bool`):
+            True, if the supergroup is a direct messages group for a channel chat that is administered by the current user
+
         verification_status (:class:`"types.VerificationStatus"`):
             Information about verification status of the supergroup or channel; may be null if none
+
+        has_direct_messages_group (:class:`bool`):
+            True, if the channel has direct messages group
+
+        has_forum_tabs (:class:`bool`):
+            True, if the supergroup is a forum, which topics are shown in the same way as in channel direct messages groups
 
         has_sensitive_content (:class:`bool`):
             True, if content of media messages in the supergroup or channel chat must be hidden with 18\+ spoiler
@@ -17535,7 +17553,11 @@ class Supergroup(TlObject):
         is_channel: bool = False,
         is_broadcast_group: bool = False,
         is_forum: bool = False,
+        is_direct_messages_group: bool = False,
+        is_administered_direct_messages_group: bool = False,
         verification_status: VerificationStatus = None,
+        has_direct_messages_group: bool = False,
+        has_forum_tabs: bool = False,
         has_sensitive_content: bool = False,
         restriction_reason: str = "",
         paid_message_star_count: int = 0,
@@ -17584,8 +17606,18 @@ class Supergroup(TlObject):
         r"""True, if the supergroup is a broadcast group, i\.e\. only administrators can send messages and there is no limit on the number of members"""
         self.is_forum: bool = bool(is_forum)
         r"""True, if the supergroup is a forum with topics"""
+        self.is_direct_messages_group: bool = bool(is_direct_messages_group)
+        r"""True, if the supergroup is a direct message group for a channel chat"""
+        self.is_administered_direct_messages_group: bool = bool(
+            is_administered_direct_messages_group
+        )
+        r"""True, if the supergroup is a direct messages group for a channel chat that is administered by the current user"""
         self.verification_status: Union[VerificationStatus, None] = verification_status
         r"""Information about verification status of the supergroup or channel; may be null if none"""
+        self.has_direct_messages_group: bool = bool(has_direct_messages_group)
+        r"""True, if the channel has direct messages group"""
+        self.has_forum_tabs: bool = bool(has_forum_tabs)
+        r"""True, if the supergroup is a forum, which topics are shown in the same way as in channel direct messages groups"""
         self.has_sensitive_content: bool = bool(has_sensitive_content)
         r"""True, if content of media messages in the supergroup or channel chat must be hidden with 18\+ spoiler"""
         self.restriction_reason: Union[str, None] = restriction_reason
@@ -17626,7 +17658,11 @@ class Supergroup(TlObject):
             "is_channel": self.is_channel,
             "is_broadcast_group": self.is_broadcast_group,
             "is_forum": self.is_forum,
+            "is_direct_messages_group": self.is_direct_messages_group,
+            "is_administered_direct_messages_group": self.is_administered_direct_messages_group,
             "verification_status": self.verification_status,
+            "has_direct_messages_group": self.has_direct_messages_group,
+            "has_forum_tabs": self.has_forum_tabs,
             "has_sensitive_content": self.has_sensitive_content,
             "restriction_reason": self.restriction_reason,
             "paid_message_star_count": self.paid_message_star_count,
@@ -17657,7 +17693,17 @@ class Supergroup(TlObject):
             data_class.is_channel = data.get("is_channel", False)
             data_class.is_broadcast_group = data.get("is_broadcast_group", False)
             data_class.is_forum = data.get("is_forum", False)
+            data_class.is_direct_messages_group = data.get(
+                "is_direct_messages_group", False
+            )
+            data_class.is_administered_direct_messages_group = data.get(
+                "is_administered_direct_messages_group", False
+            )
             data_class.verification_status = data.get("verification_status", None)
+            data_class.has_direct_messages_group = data.get(
+                "has_direct_messages_group", False
+            )
+            data_class.has_forum_tabs = data.get("has_forum_tabs", False)
             data_class.has_sensitive_content = data.get("has_sensitive_content", False)
             data_class.restriction_reason = data.get("restriction_reason", "")
             data_class.paid_message_star_count = int(
@@ -17695,6 +17741,9 @@ class SupergroupFullInfo(TlObject):
 
         linked_chat_id (:class:`int`):
             Chat identifier of a discussion group for the channel, or a channel, for which the supergroup is the designated discussion group; 0 if none or unknown
+
+        direct_messages_chat_id (:class:`int`):
+            Chat identifier of a direct messages group for the channel, or a channel, for which the supergroup is the designated direct messages group; 0 if none
 
         slow_mode_delay (:class:`int`):
             Delay between consecutive sent messages for non\-administrator supergroup members, in seconds
@@ -17797,6 +17846,7 @@ class SupergroupFullInfo(TlObject):
         restricted_count: int = 0,
         banned_count: int = 0,
         linked_chat_id: int = 0,
+        direct_messages_chat_id: int = 0,
         slow_mode_delay: int = 0,
         slow_mode_delay_expires_in: float = 0.0,
         can_enable_paid_messages: bool = False,
@@ -17842,6 +17892,8 @@ class SupergroupFullInfo(TlObject):
         r"""Number of users banned from chat; 0 if unknown"""
         self.linked_chat_id: int = int(linked_chat_id)
         r"""Chat identifier of a discussion group for the channel, or a channel, for which the supergroup is the designated discussion group; 0 if none or unknown"""
+        self.direct_messages_chat_id: int = int(direct_messages_chat_id)
+        r"""Chat identifier of a direct messages group for the channel, or a channel, for which the supergroup is the designated direct messages group; 0 if none"""
         self.slow_mode_delay: int = int(slow_mode_delay)
         r"""Delay between consecutive sent messages for non\-administrator supergroup members, in seconds"""
         self.slow_mode_delay_expires_in: float = float(slow_mode_delay_expires_in)
@@ -17928,6 +17980,7 @@ class SupergroupFullInfo(TlObject):
             "restricted_count": self.restricted_count,
             "banned_count": self.banned_count,
             "linked_chat_id": self.linked_chat_id,
+            "direct_messages_chat_id": self.direct_messages_chat_id,
             "slow_mode_delay": self.slow_mode_delay,
             "slow_mode_delay_expires_in": self.slow_mode_delay_expires_in,
             "can_enable_paid_messages": self.can_enable_paid_messages,
@@ -17971,6 +18024,9 @@ class SupergroupFullInfo(TlObject):
             data_class.restricted_count = int(data.get("restricted_count", 0))
             data_class.banned_count = int(data.get("banned_count", 0))
             data_class.linked_chat_id = int(data.get("linked_chat_id", 0))
+            data_class.direct_messages_chat_id = int(
+                data.get("direct_messages_chat_id", 0)
+            )
             data_class.slow_mode_delay = int(data.get("slow_mode_delay", 0))
             data_class.slow_mode_delay_expires_in = data.get(
                 "slow_mode_delay_expires_in", 0.0
@@ -19560,6 +19616,118 @@ class UnreadReaction(TlObject):
         return data_class
 
 
+class MessageTopicForum(TlObject, MessageTopic):
+    r"""A topic in a forum supergroup chat
+
+    Parameters:
+        forum_topic_id (:class:`int`):
+            Unique identifier of the forum topic; all messages in a non\-forum supergroup chats belongs to the General topic
+
+    """
+
+    def __init__(self, forum_topic_id: int = 0) -> None:
+        self.forum_topic_id: int = int(forum_topic_id)
+        r"""Unique identifier of the forum topic; all messages in a non\-forum supergroup chats belongs to the General topic"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageTopicForum"]:
+        return "messageTopicForum"
+
+    def getClass(self) -> Literal["MessageTopic"]:
+        return "MessageTopic"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "forum_topic_id": self.forum_topic_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageTopicForum", None]:
+        if data:
+            data_class = cls()
+            data_class.forum_topic_id = int(data.get("forum_topic_id", 0))
+
+        return data_class
+
+
+class MessageTopicDirectMessages(TlObject, MessageTopic):
+    r"""A topic in a channel direct messages chat administered by the current user
+
+    Parameters:
+        direct_messages_chat_topic_id (:class:`int`):
+            Unique identifier of the topic
+
+    """
+
+    def __init__(self, direct_messages_chat_topic_id: int = 0) -> None:
+        self.direct_messages_chat_topic_id: int = int(direct_messages_chat_topic_id)
+        r"""Unique identifier of the topic"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageTopicDirectMessages"]:
+        return "messageTopicDirectMessages"
+
+    def getClass(self) -> Literal["MessageTopic"]:
+        return "MessageTopic"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "direct_messages_chat_topic_id": self.direct_messages_chat_topic_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageTopicDirectMessages", None]:
+        if data:
+            data_class = cls()
+            data_class.direct_messages_chat_topic_id = int(
+                data.get("direct_messages_chat_topic_id", 0)
+            )
+
+        return data_class
+
+
+class MessageTopicSavedMessages(TlObject, MessageTopic):
+    r"""A topic in Saved Messages chat
+
+    Parameters:
+        saved_messages_topic_id (:class:`int`):
+            Unique identifier of the Saved Messages topic
+
+    """
+
+    def __init__(self, saved_messages_topic_id: int = 0) -> None:
+        self.saved_messages_topic_id: int = int(saved_messages_topic_id)
+        r"""Unique identifier of the Saved Messages topic"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageTopicSavedMessages"]:
+        return "messageTopicSavedMessages"
+
+    def getClass(self) -> Literal["MessageTopic"]:
+        return "MessageTopic"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "saved_messages_topic_id": self.saved_messages_topic_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageTopicSavedMessages", None]:
+        if data:
+            data_class = cls()
+            data_class.saved_messages_topic_id = int(
+                data.get("saved_messages_topic_id", 0)
+            )
+
+        return data_class
+
+
 class MessageEffectTypeEmojiReaction(TlObject, MessageEffectType):
     r"""An effect from an emoji reaction
 
@@ -20054,6 +20222,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageRefundedUpgradedGift,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
+            MessageDirectMessagePriceChanged,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -20360,16 +20529,13 @@ class Message(TlObject, MessageBoundMethods):
             True, if the message was sent because of a scheduled action by the message sender, for example, as away, or greeting service message
 
         can_be_saved (:class:`bool`):
-            True, if content of the message can be saved locally or copied using inputMessageForwarded or forwardMessages with copy options
+            True, if content of the message can be saved locally
 
         has_timestamped_media (:class:`bool`):
             True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message
 
         is_channel_post (:class:`bool`):
             True, if the message is a channel post\. All messages to channels are channel posts, all other messages are not channel posts
-
-        is_topic_message (:class:`bool`):
-            True, if the message is a forum topic message
 
         contains_unread_mention (:class:`bool`):
             True, if the message contains an unread mention for the current user
@@ -20401,8 +20567,8 @@ class Message(TlObject, MessageBoundMethods):
         message_thread_id (:class:`int`):
             If non\-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs
 
-        saved_messages_topic_id (:class:`int`):
-            Identifier of the Saved Messages topic for the message; 0 for messages not from Saved Messages
+        topic_id (:class:`"types.MessageTopic"`):
+            Identifier of the topic within the chat to which the message belongs; may be null if none
 
         self_destruct_type (:class:`"types.MessageSelfDestructType"`):
             The message's self\-destruct type; may be null if none
@@ -20461,7 +20627,6 @@ class Message(TlObject, MessageBoundMethods):
         can_be_saved: bool = False,
         has_timestamped_media: bool = False,
         is_channel_post: bool = False,
-        is_topic_message: bool = False,
         contains_unread_mention: bool = False,
         date: int = 0,
         edit_date: int = 0,
@@ -20472,7 +20637,7 @@ class Message(TlObject, MessageBoundMethods):
         fact_check: FactCheck = None,
         reply_to: MessageReplyTo = None,
         message_thread_id: int = 0,
-        saved_messages_topic_id: int = 0,
+        topic_id: MessageTopic = None,
         self_destruct_type: MessageSelfDestructType = None,
         self_destruct_in: float = 0.0,
         auto_delete_in: float = 0.0,
@@ -20512,13 +20677,11 @@ class Message(TlObject, MessageBoundMethods):
         self.is_from_offline: bool = bool(is_from_offline)
         r"""True, if the message was sent because of a scheduled action by the message sender, for example, as away, or greeting service message"""
         self.can_be_saved: bool = bool(can_be_saved)
-        r"""True, if content of the message can be saved locally or copied using inputMessageForwarded or forwardMessages with copy options"""
+        r"""True, if content of the message can be saved locally"""
         self.has_timestamped_media: bool = bool(has_timestamped_media)
         r"""True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message"""
         self.is_channel_post: bool = bool(is_channel_post)
         r"""True, if the message is a channel post\. All messages to channels are channel posts, all other messages are not channel posts"""
-        self.is_topic_message: bool = bool(is_topic_message)
-        r"""True, if the message is a forum topic message"""
         self.contains_unread_mention: bool = bool(contains_unread_mention)
         r"""True, if the message contains an unread mention for the current user"""
         self.date: int = int(date)
@@ -20541,8 +20704,13 @@ class Message(TlObject, MessageBoundMethods):
         r"""Information about the message or the story this message is replying to; may be null if none"""
         self.message_thread_id: int = int(message_thread_id)
         r"""If non\-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs"""
-        self.saved_messages_topic_id: int = int(saved_messages_topic_id)
-        r"""Identifier of the Saved Messages topic for the message; 0 for messages not from Saved Messages"""
+        self.topic_id: Union[
+            MessageTopicForum,
+            MessageTopicDirectMessages,
+            MessageTopicSavedMessages,
+            None,
+        ] = topic_id
+        r"""Identifier of the topic within the chat to which the message belongs; may be null if none"""
         self.self_destruct_type: Union[
             MessageSelfDestructTypeTimer, MessageSelfDestructTypeImmediately, None
         ] = self_destruct_type
@@ -20639,6 +20807,7 @@ class Message(TlObject, MessageBoundMethods):
             MessageRefundedUpgradedGift,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
+            MessageDirectMessagePriceChanged,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -20684,7 +20853,6 @@ class Message(TlObject, MessageBoundMethods):
             "can_be_saved": self.can_be_saved,
             "has_timestamped_media": self.has_timestamped_media,
             "is_channel_post": self.is_channel_post,
-            "is_topic_message": self.is_topic_message,
             "contains_unread_mention": self.contains_unread_mention,
             "date": self.date,
             "edit_date": self.edit_date,
@@ -20695,7 +20863,7 @@ class Message(TlObject, MessageBoundMethods):
             "fact_check": self.fact_check,
             "reply_to": self.reply_to,
             "message_thread_id": self.message_thread_id,
-            "saved_messages_topic_id": self.saved_messages_topic_id,
+            "topic_id": self.topic_id,
             "self_destruct_type": self.self_destruct_type,
             "self_destruct_in": self.self_destruct_in,
             "auto_delete_in": self.auto_delete_in,
@@ -20727,7 +20895,6 @@ class Message(TlObject, MessageBoundMethods):
             data_class.can_be_saved = data.get("can_be_saved", False)
             data_class.has_timestamped_media = data.get("has_timestamped_media", False)
             data_class.is_channel_post = data.get("is_channel_post", False)
-            data_class.is_topic_message = data.get("is_topic_message", False)
             data_class.contains_unread_mention = data.get(
                 "contains_unread_mention", False
             )
@@ -20740,9 +20907,7 @@ class Message(TlObject, MessageBoundMethods):
             data_class.fact_check = data.get("fact_check", None)
             data_class.reply_to = data.get("reply_to", None)
             data_class.message_thread_id = int(data.get("message_thread_id", 0))
-            data_class.saved_messages_topic_id = int(
-                data.get("saved_messages_topic_id", 0)
-            )
+            data_class.topic_id = data.get("topic_id", None)
             data_class.self_destruct_type = data.get("self_destruct_type", None)
             data_class.self_destruct_in = data.get("self_destruct_in", 0.0)
             data_class.auto_delete_in = data.get("auto_delete_in", 0.0)
@@ -21215,7 +21380,7 @@ class MessageSourceChatHistory(TlObject, MessageSource):
 
 
 class MessageSourceMessageThreadHistory(TlObject, MessageSource):
-    r"""The message is from a message thread history"""
+    r"""The message is from history of a message thread"""
 
     def __init__(self) -> None:
         pass
@@ -21241,7 +21406,7 @@ class MessageSourceMessageThreadHistory(TlObject, MessageSource):
 
 
 class MessageSourceForumTopicHistory(TlObject, MessageSource):
-    r"""The message is from a forum topic history"""
+    r"""The message is from history of a forum topic"""
 
     def __init__(self) -> None:
         pass
@@ -21260,6 +21425,34 @@ class MessageSourceForumTopicHistory(TlObject, MessageSource):
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["MessageSourceForumTopicHistory", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class MessageSourceDirectMessagesChatTopicHistory(TlObject, MessageSource):
+    r"""The message is from history of a topic in a channel direct messages chat administered by the current user"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageSourceDirectMessagesChatTopicHistory"]:
+        return "messageSourceDirectMessagesChatTopicHistory"
+
+    def getClass(self) -> Literal["MessageSource"]:
+        return "MessageSource"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["MessageSourceDirectMessagesChatTopicHistory", None]:
         if data:
             data_class = cls()
 
@@ -21624,6 +21817,7 @@ class SponsoredMessage(TlObject):
             MessageRefundedUpgradedGift,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
+            MessageDirectMessagePriceChanged,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -26944,6 +27138,130 @@ class SavedMessagesTopic(TlObject):
         return data_class
 
 
+class DirectMessagesChatTopic(TlObject):
+    r"""Contains information about a topic in a channel direct messages chat administered by the current user
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat to which the topic belongs
+
+        id (:class:`int`):
+            Unique topic identifier
+
+        sender_id (:class:`"types.MessageSender"`):
+            Identifier of the user or chat that sends the messages to the topic
+
+        order (:class:`int`):
+            A parameter used to determine order of the topic in the topic list\. Topics must be sorted by the order in descending order
+
+        is_marked_as_unread (:class:`bool`):
+            True, if the forum topic is marked as unread
+
+        unread_count (:class:`int`):
+            Number of unread messages in the chat
+
+        last_read_inbox_message_id (:class:`int`):
+            Identifier of the last read incoming message
+
+        last_read_outbox_message_id (:class:`int`):
+            Identifier of the last read outgoing message
+
+        unread_reaction_count (:class:`int`):
+            Number of messages with unread reactions in the chat
+
+        last_message (:class:`"types.Message"`):
+            Last message in the topic; may be null if none or unknown
+
+        draft_message (:class:`"types.DraftMessage"`):
+            A draft of a message in the topic; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        chat_id: int = 0,
+        id: int = 0,
+        sender_id: MessageSender = None,
+        order: int = 0,
+        is_marked_as_unread: bool = False,
+        unread_count: int = 0,
+        last_read_inbox_message_id: int = 0,
+        last_read_outbox_message_id: int = 0,
+        unread_reaction_count: int = 0,
+        last_message: Message = None,
+        draft_message: DraftMessage = None,
+    ) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat to which the topic belongs"""
+        self.id: int = int(id)
+        r"""Unique topic identifier"""
+        self.sender_id: Union[MessageSenderUser, MessageSenderChat, None] = sender_id
+        r"""Identifier of the user or chat that sends the messages to the topic"""
+        self.order: int = int(order)
+        r"""A parameter used to determine order of the topic in the topic list\. Topics must be sorted by the order in descending order"""
+        self.is_marked_as_unread: bool = bool(is_marked_as_unread)
+        r"""True, if the forum topic is marked as unread"""
+        self.unread_count: int = int(unread_count)
+        r"""Number of unread messages in the chat"""
+        self.last_read_inbox_message_id: int = int(last_read_inbox_message_id)
+        r"""Identifier of the last read incoming message"""
+        self.last_read_outbox_message_id: int = int(last_read_outbox_message_id)
+        r"""Identifier of the last read outgoing message"""
+        self.unread_reaction_count: int = int(unread_reaction_count)
+        r"""Number of messages with unread reactions in the chat"""
+        self.last_message: Union[Message, None] = last_message
+        r"""Last message in the topic; may be null if none or unknown"""
+        self.draft_message: Union[DraftMessage, None] = draft_message
+        r"""A draft of a message in the topic; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["directMessagesChatTopic"]:
+        return "directMessagesChatTopic"
+
+    def getClass(self) -> Literal["DirectMessagesChatTopic"]:
+        return "DirectMessagesChatTopic"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "id": self.id,
+            "sender_id": self.sender_id,
+            "order": self.order,
+            "is_marked_as_unread": self.is_marked_as_unread,
+            "unread_count": self.unread_count,
+            "last_read_inbox_message_id": self.last_read_inbox_message_id,
+            "last_read_outbox_message_id": self.last_read_outbox_message_id,
+            "unread_reaction_count": self.unread_reaction_count,
+            "last_message": self.last_message,
+            "draft_message": self.draft_message,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["DirectMessagesChatTopic", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.id = int(data.get("id", 0))
+            data_class.sender_id = data.get("sender_id", None)
+            data_class.order = int(data.get("order", 0))
+            data_class.is_marked_as_unread = data.get("is_marked_as_unread", False)
+            data_class.unread_count = int(data.get("unread_count", 0))
+            data_class.last_read_inbox_message_id = int(
+                data.get("last_read_inbox_message_id", 0)
+            )
+            data_class.last_read_outbox_message_id = int(
+                data.get("last_read_outbox_message_id", 0)
+            )
+            data_class.unread_reaction_count = int(data.get("unread_reaction_count", 0))
+            data_class.last_message = data.get("last_message", None)
+            data_class.draft_message = data.get("draft_message", None)
+
+        return data_class
+
+
 class ForumTopicIcon(TlObject):
     r"""Describes a forum topic icon
 
@@ -26995,6 +27313,9 @@ class ForumTopicInfo(TlObject):
         chat_id (:class:`int`):
             Identifier of the forum chat to which the topic belongs
 
+        forum_topic_id (:class:`int`):
+            Forum topic identifier of the topic
+
         message_thread_id (:class:`int`):
             Message thread identifier of the topic
 
@@ -27027,6 +27348,7 @@ class ForumTopicInfo(TlObject):
     def __init__(
         self,
         chat_id: int = 0,
+        forum_topic_id: int = 0,
         message_thread_id: int = 0,
         name: str = "",
         icon: ForumTopicIcon = None,
@@ -27039,6 +27361,8 @@ class ForumTopicInfo(TlObject):
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the forum chat to which the topic belongs"""
+        self.forum_topic_id: int = int(forum_topic_id)
+        r"""Forum topic identifier of the topic"""
         self.message_thread_id: int = int(message_thread_id)
         r"""Message thread identifier of the topic"""
         self.name: Union[str, None] = name
@@ -27071,6 +27395,7 @@ class ForumTopicInfo(TlObject):
         return {
             "@type": self.getType(),
             "chat_id": self.chat_id,
+            "forum_topic_id": self.forum_topic_id,
             "message_thread_id": self.message_thread_id,
             "name": self.name,
             "icon": self.icon,
@@ -27087,6 +27412,7 @@ class ForumTopicInfo(TlObject):
         if data:
             data_class = cls()
             data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.forum_topic_id = int(data.get("forum_topic_id", 0))
             data_class.message_thread_id = int(data.get("message_thread_id", 0))
             data_class.name = data.get("name", "")
             data_class.icon = data.get("icon", None)
@@ -38743,7 +39069,7 @@ class MessageCall(TlObject, MessageContent):
 
 
 class MessageGroupCall(TlObject, MessageContent):
-    r"""A message with information about a group call not bound to a chat\. If the message is incoming, the call isn't active, isn't missed, and has no duration, and getOption\(\"can\_accept\_calls\"\) is true, then incoming call screen must be shown to the user\. Use joinGroupCall to accept the call or declineGroupCallInvitation to decline it\. If the call become active or missed, then the call screen must be hidden
+    r"""A message with information about a group call not bound to a chat\. If the message is incoming, the call isn't active, isn't missed, and has no duration, and getOption\(\"can\_accept\_calls\"\) is true, then incoming call screen must be shown to the user\. Use getGroupCallParticipants to show current group call participants on the screen\. Use joinGroupCall to accept the call or declineGroupCallInvitation to decline it\. If the call become active or missed, then the call screen must be hidden
 
     Parameters:
         is_active (:class:`bool`):
@@ -40865,6 +41191,9 @@ class MessageGift(TlObject, MessageContent):
         sender_id (:class:`"types.MessageSender"`):
             Sender of the gift
 
+        receiver_id (:class:`"types.MessageSender"`):
+            Receiver of the gift
+
         received_gift_id (:class:`str`):
             Unique identifier of the received gift for the current user; only for the receiver of the gift
 
@@ -40904,6 +41233,7 @@ class MessageGift(TlObject, MessageContent):
         self,
         gift: Gift = None,
         sender_id: MessageSender = None,
+        receiver_id: MessageSender = None,
         received_gift_id: str = "",
         text: FormattedText = None,
         sell_star_count: int = 0,
@@ -40920,6 +41250,10 @@ class MessageGift(TlObject, MessageContent):
         r"""The gift"""
         self.sender_id: Union[MessageSenderUser, MessageSenderChat, None] = sender_id
         r"""Sender of the gift"""
+        self.receiver_id: Union[MessageSenderUser, MessageSenderChat, None] = (
+            receiver_id
+        )
+        r"""Receiver of the gift"""
         self.received_gift_id: Union[str, None] = received_gift_id
         r"""Unique identifier of the received gift for the current user; only for the receiver of the gift"""
         self.text: Union[FormattedText, None] = text
@@ -40957,6 +41291,7 @@ class MessageGift(TlObject, MessageContent):
             "@type": self.getType(),
             "gift": self.gift,
             "sender_id": self.sender_id,
+            "receiver_id": self.receiver_id,
             "received_gift_id": self.received_gift_id,
             "text": self.text,
             "sell_star_count": self.sell_star_count,
@@ -40976,6 +41311,7 @@ class MessageGift(TlObject, MessageContent):
             data_class = cls()
             data_class.gift = data.get("gift", None)
             data_class.sender_id = data.get("sender_id", None)
+            data_class.receiver_id = data.get("receiver_id", None)
             data_class.received_gift_id = data.get("received_gift_id", "")
             data_class.text = data.get("text", None)
             data_class.sell_star_count = int(data.get("sell_star_count", 0))
@@ -41004,6 +41340,9 @@ class MessageUpgradedGift(TlObject, MessageContent):
 
         sender_id (:class:`"types.MessageSender"`):
             Sender of the gift; may be null for anonymous gifts
+
+        receiver_id (:class:`"types.MessageSender"`):
+            Receiver of the gift
 
         received_gift_id (:class:`str`):
             Unique identifier of the received gift for the current user; only for the receiver of the gift
@@ -41041,6 +41380,7 @@ class MessageUpgradedGift(TlObject, MessageContent):
         self,
         gift: UpgradedGift = None,
         sender_id: MessageSender = None,
+        receiver_id: MessageSender = None,
         received_gift_id: str = "",
         is_upgrade: bool = False,
         is_saved: bool = False,
@@ -41056,6 +41396,10 @@ class MessageUpgradedGift(TlObject, MessageContent):
         r"""The gift"""
         self.sender_id: Union[MessageSenderUser, MessageSenderChat, None] = sender_id
         r"""Sender of the gift; may be null for anonymous gifts"""
+        self.receiver_id: Union[MessageSenderUser, MessageSenderChat, None] = (
+            receiver_id
+        )
+        r"""Receiver of the gift"""
         self.received_gift_id: Union[str, None] = received_gift_id
         r"""Unique identifier of the received gift for the current user; only for the receiver of the gift"""
         self.is_upgrade: bool = bool(is_upgrade)
@@ -41091,6 +41435,7 @@ class MessageUpgradedGift(TlObject, MessageContent):
             "@type": self.getType(),
             "gift": self.gift,
             "sender_id": self.sender_id,
+            "receiver_id": self.receiver_id,
             "received_gift_id": self.received_gift_id,
             "is_upgrade": self.is_upgrade,
             "is_saved": self.is_saved,
@@ -41109,6 +41454,7 @@ class MessageUpgradedGift(TlObject, MessageContent):
             data_class = cls()
             data_class.gift = data.get("gift", None)
             data_class.sender_id = data.get("sender_id", None)
+            data_class.receiver_id = data.get("receiver_id", None)
             data_class.received_gift_id = data.get("received_gift_id", "")
             data_class.is_upgrade = data.get("is_upgrade", False)
             data_class.is_saved = data.get("is_saved", False)
@@ -41135,6 +41481,9 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
         sender_id (:class:`"types.MessageSender"`):
             Sender of the gift
 
+        receiver_id (:class:`"types.MessageSender"`):
+            Receiver of the gift
+
         is_upgrade (:class:`bool`):
             True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred or resold gift
 
@@ -41144,12 +41493,17 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
         self,
         gift: Gift = None,
         sender_id: MessageSender = None,
+        receiver_id: MessageSender = None,
         is_upgrade: bool = False,
     ) -> None:
         self.gift: Union[Gift, None] = gift
         r"""The gift"""
         self.sender_id: Union[MessageSenderUser, MessageSenderChat, None] = sender_id
         r"""Sender of the gift"""
+        self.receiver_id: Union[MessageSenderUser, MessageSenderChat, None] = (
+            receiver_id
+        )
+        r"""Receiver of the gift"""
         self.is_upgrade: bool = bool(is_upgrade)
         r"""True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred or resold gift"""
 
@@ -41167,6 +41521,7 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
             "@type": self.getType(),
             "gift": self.gift,
             "sender_id": self.sender_id,
+            "receiver_id": self.receiver_id,
             "is_upgrade": self.is_upgrade,
         }
 
@@ -41176,6 +41531,7 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
             data_class = cls()
             data_class.gift = data.get("gift", None)
             data_class.sender_id = data.get("sender_id", None)
+            data_class.receiver_id = data.get("receiver_id", None)
             data_class.is_upgrade = data.get("is_upgrade", False)
 
         return data_class
@@ -41257,6 +41613,54 @@ class MessagePaidMessagePriceChanged(TlObject, MessageContent):
     def from_dict(cls, data: dict) -> Union["MessagePaidMessagePriceChanged", None]:
         if data:
             data_class = cls()
+            data_class.paid_message_star_count = int(
+                data.get("paid_message_star_count", 0)
+            )
+
+        return data_class
+
+
+class MessageDirectMessagePriceChanged(TlObject, MessageContent):
+    r"""A price for direct messages was changed in the channel chat
+
+    Parameters:
+        is_enabled (:class:`bool`):
+            True, if direct messages group was enabled for the channel; false otherwise
+
+        paid_message_star_count (:class:`int`):
+            The new number of Telegram Stars that must be paid by non\-administrator users of the channel chat for each message sent to the direct messages group; 0 if the direct messages group was disabled or the messages are free
+
+    """
+
+    def __init__(
+        self, is_enabled: bool = False, paid_message_star_count: int = 0
+    ) -> None:
+        self.is_enabled: bool = bool(is_enabled)
+        r"""True, if direct messages group was enabled for the channel; false otherwise"""
+        self.paid_message_star_count: int = int(paid_message_star_count)
+        r"""The new number of Telegram Stars that must be paid by non\-administrator users of the channel chat for each message sent to the direct messages group; 0 if the direct messages group was disabled or the messages are free"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageDirectMessagePriceChanged"]:
+        return "messageDirectMessagePriceChanged"
+
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "is_enabled": self.is_enabled,
+            "paid_message_star_count": self.paid_message_star_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageDirectMessagePriceChanged", None]:
+        if data:
+            data_class = cls()
+            data_class.is_enabled = data.get("is_enabled", False)
             data_class.paid_message_star_count = int(
                 data.get("paid_message_star_count", 0)
             )
@@ -42661,6 +43065,9 @@ class MessageSendOptions(TlObject):
     r"""Options to be used when a message is sent
 
     Parameters:
+        direct_messages_chat_topic_id (:class:`int`):
+            Unique identifier of the topic in a channel direct messages chat administered by the current user; pass 0 if the chat isn't a channel direct messages chat administered by the current user
+
         disable_notification (:class:`bool`):
             Pass true to disable notification for the message
 
@@ -42680,7 +43087,7 @@ class MessageSendOptions(TlObject):
             Pass true if the user explicitly chosen a sticker or a custom emoji from an installed sticker set; applicable only to sendMessage and sendMessageAlbum
 
         scheduling_state (:class:`"types.MessageSchedulingState"`):
-            Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, to a chat with paid messages, live location messages and self\-destructing messages can't be scheduled
+            Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, to a chat with paid messages, to a channel direct messages chat, live location messages and self\-destructing messages can't be scheduled
 
         effect_id (:class:`int`):
             Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage and sendMessageAlbum in private chats
@@ -42695,6 +43102,7 @@ class MessageSendOptions(TlObject):
 
     def __init__(
         self,
+        direct_messages_chat_topic_id: int = 0,
         disable_notification: bool = False,
         from_background: bool = False,
         protect_content: bool = False,
@@ -42706,6 +43114,8 @@ class MessageSendOptions(TlObject):
         sending_id: int = 0,
         only_preview: bool = False,
     ) -> None:
+        self.direct_messages_chat_topic_id: int = int(direct_messages_chat_topic_id)
+        r"""Unique identifier of the topic in a channel direct messages chat administered by the current user; pass 0 if the chat isn't a channel direct messages chat administered by the current user"""
         self.disable_notification: bool = bool(disable_notification)
         r"""Pass true to disable notification for the message"""
         self.from_background: bool = bool(from_background)
@@ -42726,7 +43136,7 @@ class MessageSendOptions(TlObject):
             MessageSchedulingStateSendWhenVideoProcessed,
             None,
         ] = scheduling_state
-        r"""Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, to a chat with paid messages, live location messages and self\-destructing messages can't be scheduled"""
+        r"""Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, to a chat with paid messages, to a channel direct messages chat, live location messages and self\-destructing messages can't be scheduled"""
         self.effect_id: int = int(effect_id)
         r"""Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage and sendMessageAlbum in private chats"""
         self.sending_id: int = int(sending_id)
@@ -42746,6 +43156,7 @@ class MessageSendOptions(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
+            "direct_messages_chat_topic_id": self.direct_messages_chat_topic_id,
             "disable_notification": self.disable_notification,
             "from_background": self.from_background,
             "protect_content": self.protect_content,
@@ -42762,6 +43173,9 @@ class MessageSendOptions(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageSendOptions", None]:
         if data:
             data_class = cls()
+            data_class.direct_messages_chat_topic_id = int(
+                data.get("direct_messages_chat_topic_id", 0)
+            )
             data_class.disable_notification = data.get("disable_notification", False)
             data_class.from_background = data.get("from_background", False)
             data_class.protect_content = data.get("protect_content", False)
@@ -42785,7 +43199,7 @@ class MessageCopyOptions(TlObject):
 
     Parameters:
         send_copy (:class:`bool`):
-            True, if content of the message needs to be copied without reference to the original sender\. Always true if the message is forwarded to a secret chat or is local\. Use messageProperties\.can\_be\_saved and messageProperties\.can\_be\_copied\_to\_secret\_chat to check whether the message is suitable
+            True, if content of the message needs to be copied without reference to the original sender\. Always true if the message is forwarded to a secret chat or is local\. Use messageProperties\.can\_be\_copied and messageProperties\.can\_be\_copied\_to\_secret\_chat to check whether the message is suitable
 
         replace_caption (:class:`bool`):
             True, if media caption of the message copy needs to be replaced\. Ignored if send\_copy is false
@@ -42806,7 +43220,7 @@ class MessageCopyOptions(TlObject):
         new_show_caption_above_media: bool = False,
     ) -> None:
         self.send_copy: bool = bool(send_copy)
-        r"""True, if content of the message needs to be copied without reference to the original sender\. Always true if the message is forwarded to a secret chat or is local\. Use messageProperties\.can\_be\_saved and messageProperties\.can\_be\_copied\_to\_secret\_chat to check whether the message is suitable"""
+        r"""True, if content of the message needs to be copied without reference to the original sender\. Always true if the message is forwarded to a secret chat or is local\. Use messageProperties\.can\_be\_copied and messageProperties\.can\_be\_copied\_to\_secret\_chat to check whether the message is suitable"""
         self.replace_caption: bool = bool(replace_caption)
         r"""True, if media caption of the message copy needs to be replaced\. Ignored if send\_copy is false"""
         self.new_caption: Union[FormattedText, None] = new_caption
@@ -44075,14 +44489,14 @@ class InputMessageInvoice(TlObject, InputMessageContent):
 
 
 class InputMessagePoll(TlObject, InputMessageContent):
-    r"""A message with a poll\. Polls can't be sent to secret chats\. Polls can be sent only to a private chat with a bot
+    r"""A message with a poll\. Polls can't be sent to secret chats and channel direct messages chats\. Polls can be sent to a private chat only if the chat is a chat with a bot or the Saved Messages chat
 
     Parameters:
         question (:class:`"types.FormattedText"`):
             Poll question; 1\-255 characters \(up to 300 characters for bots\)\. Only custom emoji entities are allowed to be added and only by Premium users
 
         options (:class:`List["types.FormattedText"]`):
-            List of poll answer options, 2\-10 strings 1\-100 characters each\. Only custom emoji entities are allowed to be added and only by Premium users
+            List of poll answer options, 2\-getOption\(\"poll\_answer\_count\_max\"\) strings 1\-100 characters each\. Only custom emoji entities are allowed to be added and only by Premium users
 
         is_anonymous (:class:`bool`):
             True, if the poll voters are anonymous\. Non\-anonymous polls can't be sent or forwarded to channels
@@ -44114,7 +44528,7 @@ class InputMessagePoll(TlObject, InputMessageContent):
         self.question: Union[FormattedText, None] = question
         r"""Poll question; 1\-255 characters \(up to 300 characters for bots\)\. Only custom emoji entities are allowed to be added and only by Premium users"""
         self.options: List[FormattedText] = options or []
-        r"""List of poll answer options, 2\-10 strings 1\-100 characters each\. Only custom emoji entities are allowed to be added and only by Premium users"""
+        r"""List of poll answer options, 2\-getOption\(\"poll\_answer\_count\_max\"\) strings 1\-100 characters each\. Only custom emoji entities are allowed to be added and only by Premium users"""
         self.is_anonymous: bool = bool(is_anonymous)
         r"""True, if the poll voters are anonymous\. Non\-anonymous polls can't be sent or forwarded to channels"""
         self.type: Union[PollTypeRegular, PollTypeQuiz, None] = type
@@ -44294,6 +44708,9 @@ class MessageProperties(TlObject):
     r"""Contains properties of a message and describes actions that can be done with the message right now
 
     Parameters:
+        can_be_copied (:class:`bool`):
+            True, if content of the message can be copied using inputMessageForwarded or forwardMessages with copy options
+
         can_be_copied_to_secret_chat (:class:`bool`):
             True, if content of the message can be copied to a secret chat using inputMessageForwarded or forwardMessages with copy options
 
@@ -44307,7 +44724,7 @@ class MessageProperties(TlObject):
             True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message
 
         can_be_forwarded (:class:`bool`):
-            True, if the message can be forwarded using inputMessageForwarded or forwardMessages
+            True, if the message can be forwarded using inputMessageForwarded or forwardMessages without copy options
 
         can_be_paid (:class:`bool`):
             True, if the message can be paid using inputInvoiceMessage
@@ -44322,7 +44739,7 @@ class MessageProperties(TlObject):
             True, if the message can be replied in another chat or forum topic using inputMessageReplyToExternalMessage
 
         can_be_saved (:class:`bool`):
-            True, if content of the message can be saved locally or copied using inputMessageForwarded or forwardMessages with copy options
+            True, if content of the message can be saved locally
 
         can_be_shared_in_story (:class:`bool`):
             True, if the message can be shared in a story using inputStoryAreaTypeMessage
@@ -44332,6 +44749,9 @@ class MessageProperties(TlObject):
 
         can_edit_scheduling_state (:class:`bool`):
             True, if scheduling state of the message can be edited
+
+        can_get_author (:class:`bool`):
+            True, if author of the message sent on behalf of a chat can be received through getMessageAuthor
 
         can_get_embedding_code (:class:`bool`):
             True, if code for message embedding can be received using getMessageEmbeddingCode
@@ -44376,6 +44796,7 @@ class MessageProperties(TlObject):
 
     def __init__(
         self,
+        can_be_copied: bool = False,
         can_be_copied_to_secret_chat: bool = False,
         can_be_deleted_only_for_self: bool = False,
         can_be_deleted_for_all_users: bool = False,
@@ -44389,6 +44810,7 @@ class MessageProperties(TlObject):
         can_be_shared_in_story: bool = False,
         can_edit_media: bool = False,
         can_edit_scheduling_state: bool = False,
+        can_get_author: bool = False,
         can_get_embedding_code: bool = False,
         can_get_link: bool = False,
         can_get_media_timestamp_links: bool = False,
@@ -44403,6 +44825,8 @@ class MessageProperties(TlObject):
         can_set_fact_check: bool = False,
         need_show_statistics: bool = False,
     ) -> None:
+        self.can_be_copied: bool = bool(can_be_copied)
+        r"""True, if content of the message can be copied using inputMessageForwarded or forwardMessages with copy options"""
         self.can_be_copied_to_secret_chat: bool = bool(can_be_copied_to_secret_chat)
         r"""True, if content of the message can be copied to a secret chat using inputMessageForwarded or forwardMessages with copy options"""
         self.can_be_deleted_only_for_self: bool = bool(can_be_deleted_only_for_self)
@@ -44412,7 +44836,7 @@ class MessageProperties(TlObject):
         self.can_be_edited: bool = bool(can_be_edited)
         r"""True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message"""
         self.can_be_forwarded: bool = bool(can_be_forwarded)
-        r"""True, if the message can be forwarded using inputMessageForwarded or forwardMessages"""
+        r"""True, if the message can be forwarded using inputMessageForwarded or forwardMessages without copy options"""
         self.can_be_paid: bool = bool(can_be_paid)
         r"""True, if the message can be paid using inputInvoiceMessage"""
         self.can_be_pinned: bool = bool(can_be_pinned)
@@ -44422,13 +44846,15 @@ class MessageProperties(TlObject):
         self.can_be_replied_in_another_chat: bool = bool(can_be_replied_in_another_chat)
         r"""True, if the message can be replied in another chat or forum topic using inputMessageReplyToExternalMessage"""
         self.can_be_saved: bool = bool(can_be_saved)
-        r"""True, if content of the message can be saved locally or copied using inputMessageForwarded or forwardMessages with copy options"""
+        r"""True, if content of the message can be saved locally"""
         self.can_be_shared_in_story: bool = bool(can_be_shared_in_story)
         r"""True, if the message can be shared in a story using inputStoryAreaTypeMessage"""
         self.can_edit_media: bool = bool(can_edit_media)
         r"""True, if the message can be edited using the method editMessageMedia"""
         self.can_edit_scheduling_state: bool = bool(can_edit_scheduling_state)
         r"""True, if scheduling state of the message can be edited"""
+        self.can_get_author: bool = bool(can_get_author)
+        r"""True, if author of the message sent on behalf of a chat can be received through getMessageAuthor"""
         self.can_get_embedding_code: bool = bool(can_get_embedding_code)
         r"""True, if code for message embedding can be received using getMessageEmbeddingCode"""
         self.can_get_link: bool = bool(can_get_link)
@@ -44468,6 +44894,7 @@ class MessageProperties(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
+            "can_be_copied": self.can_be_copied,
             "can_be_copied_to_secret_chat": self.can_be_copied_to_secret_chat,
             "can_be_deleted_only_for_self": self.can_be_deleted_only_for_self,
             "can_be_deleted_for_all_users": self.can_be_deleted_for_all_users,
@@ -44481,6 +44908,7 @@ class MessageProperties(TlObject):
             "can_be_shared_in_story": self.can_be_shared_in_story,
             "can_edit_media": self.can_edit_media,
             "can_edit_scheduling_state": self.can_edit_scheduling_state,
+            "can_get_author": self.can_get_author,
             "can_get_embedding_code": self.can_get_embedding_code,
             "can_get_link": self.can_get_link,
             "can_get_media_timestamp_links": self.can_get_media_timestamp_links,
@@ -44500,6 +44928,7 @@ class MessageProperties(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageProperties", None]:
         if data:
             data_class = cls()
+            data_class.can_be_copied = data.get("can_be_copied", False)
             data_class.can_be_copied_to_secret_chat = data.get(
                 "can_be_copied_to_secret_chat", False
             )
@@ -44525,6 +44954,7 @@ class MessageProperties(TlObject):
             data_class.can_edit_scheduling_state = data.get(
                 "can_edit_scheduling_state", False
             )
+            data_class.can_get_author = data.get("can_get_author", False)
             data_class.can_get_embedding_code = data.get(
                 "can_get_embedding_code", False
             )
@@ -48953,6 +49383,7 @@ class QuickReplyMessage(TlObject):
             MessageRefundedUpgradedGift,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
+            MessageDirectMessagePriceChanged,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -50293,13 +50724,13 @@ class ResendCodeReasonVerificationFailed(TlObject, ResendCodeReason):
 
     Parameters:
         error_message (:class:`str`):
-            Cause of the verification failure, for example, PLAY\_SERVICES\_NOT\_AVAILABLE, APNS\_RECEIVE\_TIMEOUT, or APNS\_INIT\_FAILED
+            Cause of the verification failure, for example, \"PLAY\_SERVICES\_NOT\_AVAILABLE\", \"APNS\_RECEIVE\_TIMEOUT\", or \"APNS\_INIT\_FAILED\"
 
     """
 
     def __init__(self, error_message: str = "") -> None:
         self.error_message: Union[str, None] = error_message
-        r"""Cause of the verification failure, for example, PLAY\_SERVICES\_NOT\_AVAILABLE, APNS\_RECEIVE\_TIMEOUT, or APNS\_INIT\_FAILED"""
+        r"""Cause of the verification failure, for example, \"PLAY\_SERVICES\_NOT\_AVAILABLE\", \"APNS\_RECEIVE\_TIMEOUT\", or \"APNS\_INIT\_FAILED\""""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -70954,7 +71385,7 @@ class InternalLinkTypeGame(TlObject, InternalLinkType):
 
 
 class InternalLinkTypeGroupCall(TlObject, InternalLinkType):
-    r"""The link is a link to a group call that isn't bound to a chat\. Call joinGroupCall with the given invite\_link
+    r"""The link is a link to a group call that isn't bound to a chat\. Use getGroupCallParticipants to get the list of group call participants and show them on the join group call screen\. Call joinGroupCall with the given invite\_link to join the call
 
     Parameters:
         invite_link (:class:`str`):
@@ -78771,6 +79202,7 @@ class UpdateMessageContent(TlObject, Update):
             MessageRefundedUpgradedGift,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
+            MessageDirectMessagePriceChanged,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -81020,6 +81452,98 @@ class UpdateSavedMessagesTopicCount(TlObject, Update):
         return data_class
 
 
+class UpdateDirectMessagesChatTopic(TlObject, Update):
+    r"""Basic information about a topic in a channel direct messages chat administered by the current user has changed\. This update is guaranteed to come before the topic identifier is returned to the application
+
+    Parameters:
+        topic (:class:`"types.DirectMessagesChatTopic"`):
+            New data about the topic
+
+    """
+
+    def __init__(self, topic: DirectMessagesChatTopic = None) -> None:
+        self.topic: Union[DirectMessagesChatTopic, None] = topic
+        r"""New data about the topic"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateDirectMessagesChatTopic"]:
+        return "updateDirectMessagesChatTopic"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "topic": self.topic}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateDirectMessagesChatTopic", None]:
+        if data:
+            data_class = cls()
+            data_class.topic = data.get("topic", None)
+
+        return data_class
+
+
+class UpdateTopicMessageCount(TlObject, Update):
+    r"""Number of messages in a topic has changed; for Saved Messages and channel direct messages chat topics only
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the chat in topic of which the number of messages has changed
+
+        topic_id (:class:`"types.MessageTopic"`):
+            Identifier of the topic
+
+        message_count (:class:`int`):
+            Approximate number of messages in the topics
+
+    """
+
+    def __init__(
+        self, chat_id: int = 0, topic_id: MessageTopic = None, message_count: int = 0
+    ) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat in topic of which the number of messages has changed"""
+        self.topic_id: Union[
+            MessageTopicForum,
+            MessageTopicDirectMessages,
+            MessageTopicSavedMessages,
+            None,
+        ] = topic_id
+        r"""Identifier of the topic"""
+        self.message_count: int = int(message_count)
+        r"""Approximate number of messages in the topics"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["updateTopicMessageCount"]:
+        return "updateTopicMessageCount"
+
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "topic_id": self.topic_id,
+            "message_count": self.message_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateTopicMessageCount", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.topic_id = data.get("topic_id", None)
+            data_class.message_count = int(data.get("message_count", 0))
+
+        return data_class
+
+
 class UpdateQuickReplyShortcut(TlObject, Update):
     r"""Basic information about a quick reply shortcut has changed\. This update is guaranteed to come before the quick shortcut name is returned to the application
 
@@ -81221,6 +81745,12 @@ class UpdateForumTopic(TlObject, Update):
         last_read_outbox_message_id (:class:`int`):
             Identifier of the last read outgoing message
 
+        unread_mention_count (:class:`int`):
+            Number of unread messages with a mention/reply in the topic
+
+        unread_reaction_count (:class:`int`):
+            Number of messages with unread reactions in the topic
+
         notification_settings (:class:`"types.ChatNotificationSettings"`):
             Notification settings for the topic
 
@@ -81233,6 +81763,8 @@ class UpdateForumTopic(TlObject, Update):
         is_pinned: bool = False,
         last_read_inbox_message_id: int = 0,
         last_read_outbox_message_id: int = 0,
+        unread_mention_count: int = 0,
+        unread_reaction_count: int = 0,
         notification_settings: ChatNotificationSettings = None,
     ) -> None:
         self.chat_id: int = int(chat_id)
@@ -81245,6 +81777,10 @@ class UpdateForumTopic(TlObject, Update):
         r"""Identifier of the last read incoming message"""
         self.last_read_outbox_message_id: int = int(last_read_outbox_message_id)
         r"""Identifier of the last read outgoing message"""
+        self.unread_mention_count: int = int(unread_mention_count)
+        r"""Number of unread messages with a mention/reply in the topic"""
+        self.unread_reaction_count: int = int(unread_reaction_count)
+        r"""Number of messages with unread reactions in the topic"""
         self.notification_settings: Union[ChatNotificationSettings, None] = (
             notification_settings
         )
@@ -81267,6 +81803,8 @@ class UpdateForumTopic(TlObject, Update):
             "is_pinned": self.is_pinned,
             "last_read_inbox_message_id": self.last_read_inbox_message_id,
             "last_read_outbox_message_id": self.last_read_outbox_message_id,
+            "unread_mention_count": self.unread_mention_count,
+            "unread_reaction_count": self.unread_reaction_count,
             "notification_settings": self.notification_settings,
         }
 
@@ -81283,6 +81821,8 @@ class UpdateForumTopic(TlObject, Update):
             data_class.last_read_outbox_message_id = int(
                 data.get("last_read_outbox_message_id", 0)
             )
+            data_class.unread_mention_count = int(data.get("unread_mention_count", 0))
+            data_class.unread_reaction_count = int(data.get("unread_reaction_count", 0))
             data_class.notification_settings = data.get("notification_settings", None)
 
         return data_class
@@ -82176,6 +82716,7 @@ class UpdateServiceNotification(TlObject, Update):
             MessageRefundedUpgradedGift,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
+            MessageDirectMessagePriceChanged,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
