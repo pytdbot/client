@@ -288,10 +288,42 @@ def quote(text: str, expandable: bool = False, html: bool = True, escape: bool =
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
         return f"<blockquote{' expandable' if expandable else ''}>{text if escape is False else escape_html(str(text))}</blockquote>"
 
     return f"{'**' if expandable else ''}>{text if escape is False else escape_markdown(str(text))}"
+
+
+rtl_mark = "\u200f"
+ltr_mark = "\u200e"
+
+
+def rtl(text: str) -> str:
+    r"""Add RTL (Right-to-Left) mark to the given text
+
+    Parameters:
+        text (``str``):
+            The text to convert
+
+    Returns:
+        :py:class:`str`: The formated text
+    """
+
+    return f"{rtl_mark}{text}"
+
+
+def ltr(text: str) -> str:
+    r"""Add LTR (Left-to-Right) mark to the given text
+
+    Parameters:
+        text (``str``):
+            The text to convert
+
+    Returns:
+        :py:class:`str`: The formated text
+    """
+
+    return f"{ltr_mark}{text}"

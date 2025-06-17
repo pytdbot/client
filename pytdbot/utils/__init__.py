@@ -26,6 +26,8 @@ __all__ = [
     "pre",
     "pre_code",
     "quote",
+    "rtl",
+    "ltr",
 ]
 
 from .asyncio_utils import get_running_loop
@@ -52,4 +54,6 @@ from .text_format import (
     pre,
     pre_code,
     quote,
+    rtl,
+    ltr,
 )
