@@ -15,7 +15,7 @@ def bold(text: str, html: bool = True, escape: bool = True) -> str:
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
@@ -38,7 +38,7 @@ def italic(text: str, html: bool = True, escape: bool = True) -> str:
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
@@ -61,7 +61,7 @@ def underline(text: str, html: bool = True, escape: bool = True) -> str:
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
@@ -84,7 +84,7 @@ def strikethrough(text: str, html: bool = True, escape: bool = True) -> str:
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
@@ -107,7 +107,7 @@ def spoiler(text: str, html: bool = True, escape: bool = True) -> str:
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
@@ -133,7 +133,7 @@ def hyperlink(text: str, url: str, html: bool = True, escape: bool = True) -> st
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     assert isinstance(url, str), "url must be str"
@@ -163,7 +163,7 @@ def mention(text: str, user_id: str, html: bool = True, escape: bool = True) -> 
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
@@ -186,7 +186,7 @@ def custom_emoji(emoji: str, custom_emoji_id: int, html: bool = True) -> str:
             If ``True``, returns HTML format, if ``False`` returns MarkdownV2. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
@@ -209,7 +209,7 @@ def code(text: str, html: bool = True, escape: bool = True) -> str:
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
@@ -232,7 +232,7 @@ def pre(text: str, html: bool = True, escape: bool = True) -> str:
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     if html:
@@ -258,7 +258,7 @@ def pre_code(text: str, language: str, html: bool = True, escape: bool = True) -
             Whether escape special characters to the given text or not. Default is ``True``
 
     Returns:
-        py:class:`str`: The formated text
+        :py:class:`str`: The formated text
     """
 
     assert isinstance(language, str), "text must be str"
