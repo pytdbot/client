@@ -232,11 +232,14 @@ class Client(Decorators, Methods):
         if not self.is_running:
             self.logger.info("Starting pytdbot client...")
 
-            if not self.client_manager:
+            if self.is_rabbitmq:
+                await self.__start_rabbitmq()
+            elif not self.client_manager:
                 self.client_manager = ClientManager(
                     self, self.lib_path, self.td_verbosity, loop=self.loop
                 )
                 await self.client_manager.start()
+                self.is_running = True
 
             if isinstance(self.td_log, LogStream) and not self.is_rabbitmq:
                 await self.__send(
@@ -254,11 +257,6 @@ class Client(Decorators, Methods):
             else:
                 self.__is_queue_worker = False
                 self.logger.info("Started with unlimited updates processes")
-
-            if self.is_rabbitmq:
-                await self.__start_rabbitmq()
-            else:  # client_manager
-                self.is_running = True
 
         self.loop.create_task(
             self.getOption("version")
@@ -535,7 +533,7 @@ class Client(Decorators, Methods):
 
         self.__stop_client()
 
-        if not self.client_manager.start_clients_on_add:
+        if self.client_manager and not self.client_manager.start_clients_on_add:
             await self.client_manager.close()
 
         self.logger.info("Instance closed")
@@ -954,6 +952,8 @@ class Client(Decorators, Methods):
             },
         )
         self.__rchannel = await self.__rconnection.channel()
+
+        self.logger.info("Connected to TDLib server via RabbitMQ")
 
         updates_queue = await self.__get_updates_queue()
 
