@@ -263,6 +263,25 @@ class Client(Decorators, Methods):
             {"@type": "scheduleEvent", "data": data, "send_at": send_at}
         )
 
+    async def cancelScheduledEvent(
+        self, event_id: str
+    ) -> Union["pytdbot.types.Ok", "pytdbot.types.Error"]:
+        """Cancel a scheduled event
+
+        Parameters:
+            event_id (:class:`str`):
+                Event ID to cancel
+        """
+
+        self._check_rabbitmq()
+
+        if not isinstance(event_id, str):
+            raise ValueError("event_id must be str")
+
+        return await self.invoke(
+            {"@type": "cancelScheduledEvent", "event_id": event_id}
+        )
+
     async def start(self) -> None:
         r"""Start pytdbot client"""
 
