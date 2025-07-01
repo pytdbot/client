@@ -1039,7 +1039,7 @@ class TDLibFunctions:
     async def getRepliedMessage(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non\-bundled replied message respectively\. Returns a 404 error if the message doesn't exist
+        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, the checklist message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted, messageChecklistTasksDone and messageChecklistTasksAdded, and topic messages without non\-bundled replied message respectively\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -2003,6 +2003,66 @@ class TDLibFunctions:
                 "@type": "readAllDirectMessagesChatTopicReactions",
                 "chat_id": chat_id,
                 "topic_id": topic_id,
+            }
+        )
+
+    async def getDirectMessagesChatTopicRevenue(
+        self, chat_id: int = 0, topic_id: int = 0
+    ) -> Union["types.Error", "types.StarCount"]:
+        r"""Returns the total number of Telegram Stars received by the channel chat for direct messages from the given topic
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat administered by the current user
+
+            topic_id (:class:`int`):
+                Identifier of the topic
+
+        Returns:
+            :class:`~pytdbot.types.StarCount`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getDirectMessagesChatTopicRevenue",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+            }
+        )
+
+    async def toggleDirectMessagesChatTopicCanSendUnpaidMessages(
+        self,
+        chat_id: int = 0,
+        topic_id: int = 0,
+        can_send_unpaid_messages: bool = False,
+        refund_payments: bool = False,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Allows to send unpaid messages to the given topic of the channel direct messages chat administered by the current user
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            topic_id (:class:`int`):
+                Identifier of the topic
+
+            can_send_unpaid_messages (:class:`bool`):
+                Pass true to allow unpaid messages; pass false to disallow unpaid messages
+
+            refund_payments (:class:`bool`):
+                Pass true to refund the user previously paid messages
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "toggleDirectMessagesChatTopicCanSendUnpaidMessages",
+                "chat_id": chat_id,
+                "topic_id": topic_id,
+                "can_send_unpaid_messages": can_send_unpaid_messages,
+                "refund_payments": refund_payments,
             }
         )
 
@@ -3139,6 +3199,94 @@ class TDLibFunctions:
             }
         )
 
+    async def getVideoMessageAdvertisements(
+        self, chat_id: int = 0, message_id: int = 0
+    ) -> Union["types.Error", "types.VideoMessageAdvertisements"]:
+        r"""Returns advertisements to be shown while a video from a message is watched\. Available only if messageProperties\.can\_get\_video\_advertisements
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat with the message
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+        Returns:
+            :class:`~pytdbot.types.VideoMessageAdvertisements`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getVideoMessageAdvertisements",
+                "chat_id": chat_id,
+                "message_id": message_id,
+            }
+        )
+
+    async def viewVideoMessageAdvertisement(
+        self, advertisement_unique_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Informs TDLib that the user viewed a video message advertisement
+
+        Parameters:
+            advertisement_unique_id (:class:`int`):
+                Unique identifier of the advertisement
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "viewVideoMessageAdvertisement",
+                "advertisement_unique_id": advertisement_unique_id,
+            }
+        )
+
+    async def clickVideoMessageAdvertisement(
+        self, advertisement_unique_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Informs TDLib that the user clicked a video message advertisement
+
+        Parameters:
+            advertisement_unique_id (:class:`int`):
+                Unique identifier of the advertisement
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "clickVideoMessageAdvertisement",
+                "advertisement_unique_id": advertisement_unique_id,
+            }
+        )
+
+    async def reportVideoMessageAdvertisement(
+        self, advertisement_unique_id: int = 0, option_id: bytes = b""
+    ) -> Union["types.Error", "types.ReportSponsoredResult"]:
+        r"""Reports a video message advertisement to Telegram moderators
+
+        Parameters:
+            advertisement_unique_id (:class:`int`):
+                Unique identifier of the advertisement
+
+            option_id (:class:`bytes`):
+                Option identifier chosen by the user; leave empty for the initial request
+
+        Returns:
+            :class:`~pytdbot.types.ReportSponsoredResult`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "reportVideoMessageAdvertisement",
+                "advertisement_unique_id": advertisement_unique_id,
+                "option_id": option_id,
+            }
+        )
+
     async def removeNotification(
         self, notification_group_id: int = 0, notification_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
@@ -3909,6 +4057,42 @@ class TDLibFunctions:
             }
         )
 
+    async def editMessageChecklist(
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        reply_markup: "types.ReplyMarkup" = None,
+        checklist: "types.InputChecklist" = None,
+    ) -> Union["types.Error", "types.Message"]:
+        r"""Edits the message content of a checklist\. Returns the edited message after the edit is completed on the server side
+
+        Parameters:
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message\. Use messageProperties\.can\_be\_edited to check whether the message can be edited
+
+            reply_markup (:class:`"types.ReplyMarkup"`):
+                The new message reply markup; pass null if none; for bots only
+
+            checklist (:class:`"types.InputChecklist"`):
+                The new checklist\. If some tasks were completed, this information will be kept
+
+        Returns:
+            :class:`~pytdbot.types.Message`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editMessageChecklist",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "reply_markup": reply_markup,
+                "checklist": checklist,
+            }
+        )
+
     async def editMessageMedia(
         self,
         chat_id: int = 0,
@@ -4445,6 +4629,47 @@ class TDLibFunctions:
                 "live_period": live_period,
                 "heading": heading,
                 "proximity_alert_radius": proximity_alert_radius,
+            }
+        )
+
+    async def editBusinessMessageChecklist(
+        self,
+        business_connection_id: str = "",
+        chat_id: int = 0,
+        message_id: int = 0,
+        reply_markup: "types.ReplyMarkup" = None,
+        checklist: "types.InputChecklist" = None,
+    ) -> Union["types.Error", "types.BusinessMessage"]:
+        r"""Edits the content of a checklist in a message sent on behalf of a business account; for bots only
+
+        Parameters:
+            business_connection_id (:class:`str`):
+                Unique identifier of business connection on behalf of which the message was sent
+
+            chat_id (:class:`int`):
+                The chat the message belongs to
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            reply_markup (:class:`"types.ReplyMarkup"`):
+                The new message reply markup; pass null if none
+
+            checklist (:class:`"types.InputChecklist"`):
+                The new checklist\. If some tasks were completed, this information will be kept
+
+        Returns:
+            :class:`~pytdbot.types.BusinessMessage`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "editBusinessMessageChecklist",
+                "business_connection_id": business_connection_id,
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "reply_markup": reply_markup,
+                "checklist": checklist,
             }
         )
 
@@ -5086,7 +5311,7 @@ class TDLibFunctions:
                 Identifier of a quick reply message in the same shortcut to be replied; pass 0 if none
 
             input_message_content (:class:`"types.InputMessageContent"`):
-                The content of the message to be added; inputMessagePoll, inputMessageForwarded and inputMessageLocation with live\_period aren't supported
+                The content of the message to be added; inputMessagePaidMedia, inputMessageForwarded and inputMessageLocation with live\_period aren't supported
 
         Returns:
             :class:`~pytdbot.types.QuickReplyMessage`
@@ -5203,7 +5428,7 @@ class TDLibFunctions:
         message_id: int = 0,
         input_message_content: "types.InputMessageContent" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Asynchronously edits the text, media or caption of a quick reply message\. Use quickReplyMessage\.can\_be\_edited to check whether a message can be edited\. Media message can be edited only to a media message\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa
+        r"""Asynchronously edits the text, media or caption of a quick reply message\. Use quickReplyMessage\.can\_be\_edited to check whether a message can be edited\. Media message can be edited only to a media message\. Checklist messages can be edited only to a checklist message\. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa
 
         Parameters:
             shortcut_id (:class:`int`):
@@ -5213,7 +5438,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             input_message_content (:class:`"types.InputMessageContent"`):
-                New content of the message\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo
+                New content of the message\. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageChecklist, inputMessageDocument, inputMessagePhoto, inputMessageText, or inputMessageVideo
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -6325,6 +6550,73 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "message_id": message_id,
                 "reply_markup": reply_markup,
+            }
+        )
+
+    async def addChecklistTasks(
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        tasks: List["types.InputChecklistTask"] = None,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Adds tasks to a checklist in a message
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat with the message
+
+            message_id (:class:`int`):
+                Identifier of the message containing the checklist\. Use messageProperties\.can\_add\_tasks to check whether the tasks can be added
+
+            tasks (:class:`List["types.InputChecklistTask"]`):
+                List of added tasks
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addChecklistTasks",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "tasks": tasks,
+            }
+        )
+
+    async def markChecklistTasksAsDone(
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        marked_as_done_task_ids: List[int] = None,
+        marked_as_not_done_task_ids: List[int] = None,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Adds tasks of a checklist in a message as done or not done
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat with the message
+
+            message_id (:class:`int`):
+                Identifier of the message containing the checklist\. Use messageProperties\.can\_mark\_tasks\_as\_done to check whether the tasks can be marked as done or not done
+
+            marked_as_done_task_ids (:class:`List[int]`):
+                Identifiers of tasks that were marked as done
+
+            marked_as_not_done_task_ids (:class:`List[int]`):
+                Identifiers of tasks that were marked as not done
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "markChecklistTasksAsDone",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "marked_as_done_task_ids": marked_as_done_task_ids,
+                "marked_as_not_done_task_ids": marked_as_not_done_task_ids,
             }
         )
 

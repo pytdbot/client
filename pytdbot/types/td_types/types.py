@@ -4243,6 +4243,260 @@ class PollTypeQuiz(TlObject, PollType):
         return data_class
 
 
+class ChecklistTask(TlObject):
+    r"""Describes a task in a checklist
+
+    Parameters:
+        id (:class:`int`):
+            Unique identifier of the task
+
+        text (:class:`"types.FormattedText"`):
+            Text of the task; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Url, EmailAddress, Mention, Hashtag, Cashtag and PhoneNumber entities
+
+        completed_by_user_id (:class:`int`):
+            Identifier of the user that completed the task; 0 if the task isn't completed
+
+        completion_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the task was completed; 0 if the task isn't completed
+
+    """
+
+    def __init__(
+        self,
+        id: int = 0,
+        text: FormattedText = None,
+        completed_by_user_id: int = 0,
+        completion_date: int = 0,
+    ) -> None:
+        self.id: int = int(id)
+        r"""Unique identifier of the task"""
+        self.text: Union[FormattedText, None] = text
+        r"""Text of the task; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Url, EmailAddress, Mention, Hashtag, Cashtag and PhoneNumber entities"""
+        self.completed_by_user_id: int = int(completed_by_user_id)
+        r"""Identifier of the user that completed the task; 0 if the task isn't completed"""
+        self.completion_date: int = int(completion_date)
+        r"""Point in time \(Unix timestamp\) when the task was completed; 0 if the task isn't completed"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["checklistTask"]:
+        return "checklistTask"
+
+    def getClass(self) -> Literal["ChecklistTask"]:
+        return "ChecklistTask"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "text": self.text,
+            "completed_by_user_id": self.completed_by_user_id,
+            "completion_date": self.completion_date,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChecklistTask", None]:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.text = data.get("text", None)
+            data_class.completed_by_user_id = int(data.get("completed_by_user_id", 0))
+            data_class.completion_date = int(data.get("completion_date", 0))
+
+        return data_class
+
+
+class InputChecklistTask(TlObject):
+    r"""Describes a task in a checklist to be sent
+
+    Parameters:
+        id (:class:`int`):
+            Unique identifier of the task; must be positive
+
+        text (:class:`"types.FormattedText"`):
+            Text of the task; 1\-getOption\(\"checklist\_task\_text\_length\_max\"\) characters without line feeds\. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities
+
+    """
+
+    def __init__(self, id: int = 0, text: FormattedText = None) -> None:
+        self.id: int = int(id)
+        r"""Unique identifier of the task; must be positive"""
+        self.text: Union[FormattedText, None] = text
+        r"""Text of the task; 1\-getOption\(\"checklist\_task\_text\_length\_max\"\) characters without line feeds\. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputChecklistTask"]:
+        return "inputChecklistTask"
+
+    def getClass(self) -> Literal["InputChecklistTask"]:
+        return "InputChecklistTask"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "id": self.id, "text": self.text}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputChecklistTask", None]:
+        if data:
+            data_class = cls()
+            data_class.id = int(data.get("id", 0))
+            data_class.text = data.get("text", None)
+
+        return data_class
+
+
+class Checklist(TlObject):
+    r"""Describes a checklist
+
+    Parameters:
+        title (:class:`"types.FormattedText"`):
+            Title of the checklist; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities
+
+        tasks (:class:`List["types.ChecklistTask"]`):
+            List of tasks in the checklist
+
+        others_can_add_tasks (:class:`bool`):
+            True, if users other than creator of the list can add tasks to the list
+
+        can_add_tasks (:class:`bool`):
+            True, if the current user can add tasks to the list if they have Telegram Premium subscription
+
+        others_can_mark_tasks_as_done (:class:`bool`):
+            True, if users other than creator of the list can mark tasks as done or not done\. If true, then the checklist is called \"group checklist\"
+
+        can_mark_tasks_as_done (:class:`bool`):
+            True, if the current user can mark tasks as done or not done if they have Telegram Premium subscription
+
+    """
+
+    def __init__(
+        self,
+        title: FormattedText = None,
+        tasks: List[ChecklistTask] = None,
+        others_can_add_tasks: bool = False,
+        can_add_tasks: bool = False,
+        others_can_mark_tasks_as_done: bool = False,
+        can_mark_tasks_as_done: bool = False,
+    ) -> None:
+        self.title: Union[FormattedText, None] = title
+        r"""Title of the checklist; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities"""
+        self.tasks: List[ChecklistTask] = tasks or []
+        r"""List of tasks in the checklist"""
+        self.others_can_add_tasks: bool = bool(others_can_add_tasks)
+        r"""True, if users other than creator of the list can add tasks to the list"""
+        self.can_add_tasks: bool = bool(can_add_tasks)
+        r"""True, if the current user can add tasks to the list if they have Telegram Premium subscription"""
+        self.others_can_mark_tasks_as_done: bool = bool(others_can_mark_tasks_as_done)
+        r"""True, if users other than creator of the list can mark tasks as done or not done\. If true, then the checklist is called \"group checklist\""""
+        self.can_mark_tasks_as_done: bool = bool(can_mark_tasks_as_done)
+        r"""True, if the current user can mark tasks as done or not done if they have Telegram Premium subscription"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["checklist"]:
+        return "checklist"
+
+    def getClass(self) -> Literal["Checklist"]:
+        return "Checklist"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "title": self.title,
+            "tasks": self.tasks,
+            "others_can_add_tasks": self.others_can_add_tasks,
+            "can_add_tasks": self.can_add_tasks,
+            "others_can_mark_tasks_as_done": self.others_can_mark_tasks_as_done,
+            "can_mark_tasks_as_done": self.can_mark_tasks_as_done,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["Checklist", None]:
+        if data:
+            data_class = cls()
+            data_class.title = data.get("title", None)
+            data_class.tasks = data.get("tasks", None)
+            data_class.others_can_add_tasks = data.get("others_can_add_tasks", False)
+            data_class.can_add_tasks = data.get("can_add_tasks", False)
+            data_class.others_can_mark_tasks_as_done = data.get(
+                "others_can_mark_tasks_as_done", False
+            )
+            data_class.can_mark_tasks_as_done = data.get(
+                "can_mark_tasks_as_done", False
+            )
+
+        return data_class
+
+
+class InputChecklist(TlObject):
+    r"""Describes a checklist to be sent
+
+    Parameters:
+        title (:class:`"types.FormattedText"`):
+            Title of the checklist; 1\-getOption\(\"checklist\_title\_length\_max\"\) characters\. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities
+
+        tasks (:class:`List["types.InputChecklistTask"]`):
+            List of tasks in the checklist; 1\-getOption\(\"checklist\_task\_count\_max\"\) tasks
+
+        others_can_add_tasks (:class:`bool`):
+            True, if other users can add tasks to the list
+
+        others_can_mark_tasks_as_done (:class:`bool`):
+            True, if other users can mark tasks as done or not done
+
+    """
+
+    def __init__(
+        self,
+        title: FormattedText = None,
+        tasks: List[InputChecklistTask] = None,
+        others_can_add_tasks: bool = False,
+        others_can_mark_tasks_as_done: bool = False,
+    ) -> None:
+        self.title: Union[FormattedText, None] = title
+        r"""Title of the checklist; 1\-getOption\(\"checklist\_title\_length\_max\"\) characters\. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities"""
+        self.tasks: List[InputChecklistTask] = tasks or []
+        r"""List of tasks in the checklist; 1\-getOption\(\"checklist\_task\_count\_max\"\) tasks"""
+        self.others_can_add_tasks: bool = bool(others_can_add_tasks)
+        r"""True, if other users can add tasks to the list"""
+        self.others_can_mark_tasks_as_done: bool = bool(others_can_mark_tasks_as_done)
+        r"""True, if other users can mark tasks as done or not done"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputChecklist"]:
+        return "inputChecklist"
+
+    def getClass(self) -> Literal["InputChecklist"]:
+        return "InputChecklist"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "title": self.title,
+            "tasks": self.tasks,
+            "others_can_add_tasks": self.others_can_add_tasks,
+            "others_can_mark_tasks_as_done": self.others_can_mark_tasks_as_done,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputChecklist", None]:
+        if data:
+            data_class = cls()
+            data_class.title = data.get("title", None)
+            data_class.tasks = data.get("tasks", None)
+            data_class.others_can_add_tasks = data.get("others_can_add_tasks", False)
+            data_class.others_can_mark_tasks_as_done = data.get(
+                "others_can_mark_tasks_as_done", False
+            )
+
+        return data_class
+
+
 class Animation(TlObject):
     r"""Describes an animation file\. The animation must be encoded in GIF or MPEG4 format
 
@@ -5608,6 +5862,70 @@ class AlternativeVideo(TlObject):
             data_class.codec = data.get("codec", "")
             data_class.hls_file = data.get("hls_file", None)
             data_class.video = data.get("video", None)
+
+        return data_class
+
+
+class VideoStoryboard(TlObject):
+    r"""Describes a storyboard for a video
+
+    Parameters:
+        storyboard_file (:class:`"types.File"`):
+            A JPEG file that contains tiled previews of video
+
+        width (:class:`int`):
+            Width of a tile
+
+        height (:class:`int`):
+            Height of a tile
+
+        map_file (:class:`"types.File"`):
+            File that describes mapping of position in the video to a tile in the JPEG file
+
+    """
+
+    def __init__(
+        self,
+        storyboard_file: File = None,
+        width: int = 0,
+        height: int = 0,
+        map_file: File = None,
+    ) -> None:
+        self.storyboard_file: Union[File, None] = storyboard_file
+        r"""A JPEG file that contains tiled previews of video"""
+        self.width: int = int(width)
+        r"""Width of a tile"""
+        self.height: int = int(height)
+        r"""Height of a tile"""
+        self.map_file: Union[File, None] = map_file
+        r"""File that describes mapping of position in the video to a tile in the JPEG file"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["videoStoryboard"]:
+        return "videoStoryboard"
+
+    def getClass(self) -> Literal["VideoStoryboard"]:
+        return "VideoStoryboard"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "storyboard_file": self.storyboard_file,
+            "width": self.width,
+            "height": self.height,
+            "map_file": self.map_file,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["VideoStoryboard", None]:
+        if data:
+            data_class = cls()
+            data_class.storyboard_file = data.get("storyboard_file", None)
+            data_class.width = int(data.get("width", 0))
+            data_class.height = int(data.get("height", 0))
+            data_class.map_file = data.get("map_file", None)
 
         return data_class
 
@@ -8136,7 +8454,7 @@ class ChatPermissions(TlObject):
             True, if the user can send voice notes
 
         can_send_polls (:class:`bool`):
-            True, if the user can send polls
+            True, if the user can send polls and checklists
 
         can_send_other_messages (:class:`bool`):
             True, if the user can send animations, games, stickers, and dice and use inline bots
@@ -8190,7 +8508,7 @@ class ChatPermissions(TlObject):
         self.can_send_voice_notes: bool = bool(can_send_voice_notes)
         r"""True, if the user can send voice notes"""
         self.can_send_polls: bool = bool(can_send_polls)
-        r"""True, if the user can send polls"""
+        r"""True, if the user can send polls and checklists"""
         self.can_send_other_messages: bool = bool(can_send_other_messages)
         r"""True, if the user can send animations, games, stickers, and dice and use inline bots"""
         self.can_add_link_previews: bool = bool(can_add_link_previews)
@@ -17811,6 +18129,9 @@ class SupergroupFullInfo(TlObject):
         unrestrict_boost_count (:class:`int`):
             Number of times the supergroup must be boosted by a user to ignore slow mode and chat permission restrictions; 0 if unspecified
 
+        outgoing_paid_message_star_count (:class:`int`):
+            Number of Telegram Stars that must be paid by the current user for each sent message to the supergroup
+
         sticker_set_id (:class:`int`):
             Identifier of the supergroup sticker set that must be shown before user sticker sets; 0 if none
 
@@ -17869,6 +18190,7 @@ class SupergroupFullInfo(TlObject):
         gift_count: int = 0,
         my_boost_count: int = 0,
         unrestrict_boost_count: int = 0,
+        outgoing_paid_message_star_count: int = 0,
         sticker_set_id: int = 0,
         custom_emoji_sticker_set_id: int = 0,
         location: ChatLocation = None,
@@ -17944,6 +18266,10 @@ class SupergroupFullInfo(TlObject):
         r"""Number of times the current user boosted the supergroup or channel"""
         self.unrestrict_boost_count: int = int(unrestrict_boost_count)
         r"""Number of times the supergroup must be boosted by a user to ignore slow mode and chat permission restrictions; 0 if unspecified"""
+        self.outgoing_paid_message_star_count: int = int(
+            outgoing_paid_message_star_count
+        )
+        r"""Number of Telegram Stars that must be paid by the current user for each sent message to the supergroup"""
         self.sticker_set_id: int = int(sticker_set_id)
         r"""Identifier of the supergroup sticker set that must be shown before user sticker sets; 0 if none"""
         self.custom_emoji_sticker_set_id: int = int(custom_emoji_sticker_set_id)
@@ -18003,6 +18329,7 @@ class SupergroupFullInfo(TlObject):
             "gift_count": self.gift_count,
             "my_boost_count": self.my_boost_count,
             "unrestrict_boost_count": self.unrestrict_boost_count,
+            "outgoing_paid_message_star_count": self.outgoing_paid_message_star_count,
             "sticker_set_id": self.sticker_set_id,
             "custom_emoji_sticker_set_id": self.custom_emoji_sticker_set_id,
             "location": self.location,
@@ -18070,6 +18397,9 @@ class SupergroupFullInfo(TlObject):
             data_class.my_boost_count = int(data.get("my_boost_count", 0))
             data_class.unrestrict_boost_count = int(
                 data.get("unrestrict_boost_count", 0)
+            )
+            data_class.outgoing_paid_message_star_count = int(
+                data.get("outgoing_paid_message_star_count", 0)
             )
             data_class.sticker_set_id = int(data.get("sticker_set_id", 0))
             data_class.custom_emoji_sticker_set_id = int(
@@ -20123,7 +20453,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             Point in time \(Unix timestamp\) when the message was sent if the message was from another chat or topic; 0 for messages from the same chat
 
         content (:class:`"types.MessageContent"`):
-            Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote
+            Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote
 
     """
 
@@ -20175,6 +20505,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageGame,
             MessagePoll,
             MessageStory,
+            MessageChecklist,
             MessageInvoice,
             MessageCall,
             MessageGroupCall,
@@ -20223,6 +20554,8 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
+            MessageChecklistTasksDone,
+            MessageChecklistTasksAdded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -20235,7 +20568,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageUnsupported,
             None,
         ] = content
-        r"""Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote"""
+        r"""Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -20760,6 +21093,7 @@ class Message(TlObject, MessageBoundMethods):
             MessageGame,
             MessagePoll,
             MessageStory,
+            MessageChecklist,
             MessageInvoice,
             MessageCall,
             MessageGroupCall,
@@ -20808,6 +21142,8 @@ class Message(TlObject, MessageBoundMethods):
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
+            MessageChecklistTasksDone,
+            MessageChecklistTasksAdded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -21641,37 +21977,37 @@ class MessageSourceOther(TlObject, MessageSource):
         return data_class
 
 
-class MessageSponsor(TlObject):
-    r"""Information about the sponsor of a message
+class AdvertisementSponsor(TlObject):
+    r"""Information about the sponsor of an advertisement
 
     Parameters:
         url (:class:`str`):
-            URL of the sponsor to be opened when the message is clicked
+            URL of the sponsor to be opened when the advertisement is clicked
 
         photo (:class:`"types.Photo"`):
             Photo of the sponsor; may be null if must not be shown
 
         info (:class:`str`):
-            Additional optional information about the sponsor to be shown along with the message
+            Additional optional information about the sponsor to be shown along with the advertisement
 
     """
 
     def __init__(self, url: str = "", photo: Photo = None, info: str = "") -> None:
         self.url: Union[str, None] = url
-        r"""URL of the sponsor to be opened when the message is clicked"""
+        r"""URL of the sponsor to be opened when the advertisement is clicked"""
         self.photo: Union[Photo, None] = photo
         r"""Photo of the sponsor; may be null if must not be shown"""
         self.info: Union[str, None] = info
-        r"""Additional optional information about the sponsor to be shown along with the message"""
+        r"""Additional optional information about the sponsor to be shown along with the advertisement"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
-    def getType(self) -> Literal["messageSponsor"]:
-        return "messageSponsor"
+    def getType(self) -> Literal["advertisementSponsor"]:
+        return "advertisementSponsor"
 
-    def getClass(self) -> Literal["MessageSponsor"]:
-        return "MessageSponsor"
+    def getClass(self) -> Literal["AdvertisementSponsor"]:
+        return "AdvertisementSponsor"
 
     def to_dict(self) -> dict:
         return {
@@ -21682,7 +22018,7 @@ class MessageSponsor(TlObject):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["MessageSponsor", None]:
+    def from_dict(cls, data: dict) -> Union["AdvertisementSponsor", None]:
         if data:
             data_class = cls()
             data_class.url = data.get("url", "")
@@ -21708,7 +22044,7 @@ class SponsoredMessage(TlObject):
         content (:class:`"types.MessageContent"`):
             Content of the message\. Currently, can be only of the types messageText, messageAnimation, messagePhoto, or messageVideo\. Video messages can be viewed fullscreen
 
-        sponsor (:class:`"types.MessageSponsor"`):
+        sponsor (:class:`"types.AdvertisementSponsor"`):
             Information about the sponsor of the message
 
         title (:class:`str`):
@@ -21734,7 +22070,7 @@ class SponsoredMessage(TlObject):
         is_recommended: bool = False,
         can_be_reported: bool = False,
         content: MessageContent = None,
-        sponsor: MessageSponsor = None,
+        sponsor: AdvertisementSponsor = None,
         title: str = "",
         button_text: str = "",
         accent_color_id: int = 0,
@@ -21770,6 +22106,7 @@ class SponsoredMessage(TlObject):
             MessageGame,
             MessagePoll,
             MessageStory,
+            MessageChecklist,
             MessageInvoice,
             MessageCall,
             MessageGroupCall,
@@ -21818,6 +22155,8 @@ class SponsoredMessage(TlObject):
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
+            MessageChecklistTasksDone,
+            MessageChecklistTasksAdded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -21831,7 +22170,7 @@ class SponsoredMessage(TlObject):
             None,
         ] = content
         r"""Content of the message\. Currently, can be only of the types messageText, messageAnimation, messagePhoto, or messageVideo\. Video messages can be viewed fullscreen"""
-        self.sponsor: Union[MessageSponsor, None] = sponsor
+        self.sponsor: Union[AdvertisementSponsor, None] = sponsor
         r"""Information about the sponsor of the message"""
         self.title: Union[str, None] = title
         r"""Title of the sponsored message"""
@@ -22028,6 +22367,158 @@ class SponsoredChats(TlObject):
         if data:
             data_class = cls()
             data_class.chats = data.get("chats", None)
+
+        return data_class
+
+
+class VideoMessageAdvertisement(TlObject):
+    r"""Describes an advertisent to be shown while a video from a message is watched
+
+    Parameters:
+        unique_id (:class:`int`):
+            Unique identifier of this result
+
+        text (:class:`str`):
+            Text of the advertisement
+
+        min_display_duration (:class:`int`):
+            The minimum amount of time the advertisement must be dispalyed before it can be hidden by the user, in seconds
+
+        max_display_duration (:class:`int`):
+            The maximum amount of time the advertisement must be dispalyed before it must be automatically hidden, in seconds
+
+        can_be_reported (:class:`bool`):
+            True, if the advertisement can be reported to Telegram moderators through reportVideoMessageAdvertisement
+
+        sponsor (:class:`"types.AdvertisementSponsor"`):
+            Information about the sponsor of the advertisement
+
+        title (:class:`str`):
+            Title of the sponsored message
+
+        additional_info (:class:`str`):
+            If non\-empty, additional information about the sponsored message to be shown along with the message
+
+    """
+
+    def __init__(
+        self,
+        unique_id: int = 0,
+        text: str = "",
+        min_display_duration: int = 0,
+        max_display_duration: int = 0,
+        can_be_reported: bool = False,
+        sponsor: AdvertisementSponsor = None,
+        title: str = "",
+        additional_info: str = "",
+    ) -> None:
+        self.unique_id: int = int(unique_id)
+        r"""Unique identifier of this result"""
+        self.text: Union[str, None] = text
+        r"""Text of the advertisement"""
+        self.min_display_duration: int = int(min_display_duration)
+        r"""The minimum amount of time the advertisement must be dispalyed before it can be hidden by the user, in seconds"""
+        self.max_display_duration: int = int(max_display_duration)
+        r"""The maximum amount of time the advertisement must be dispalyed before it must be automatically hidden, in seconds"""
+        self.can_be_reported: bool = bool(can_be_reported)
+        r"""True, if the advertisement can be reported to Telegram moderators through reportVideoMessageAdvertisement"""
+        self.sponsor: Union[AdvertisementSponsor, None] = sponsor
+        r"""Information about the sponsor of the advertisement"""
+        self.title: Union[str, None] = title
+        r"""Title of the sponsored message"""
+        self.additional_info: Union[str, None] = additional_info
+        r"""If non\-empty, additional information about the sponsored message to be shown along with the message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["videoMessageAdvertisement"]:
+        return "videoMessageAdvertisement"
+
+    def getClass(self) -> Literal["VideoMessageAdvertisement"]:
+        return "VideoMessageAdvertisement"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "unique_id": self.unique_id,
+            "text": self.text,
+            "min_display_duration": self.min_display_duration,
+            "max_display_duration": self.max_display_duration,
+            "can_be_reported": self.can_be_reported,
+            "sponsor": self.sponsor,
+            "title": self.title,
+            "additional_info": self.additional_info,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["VideoMessageAdvertisement", None]:
+        if data:
+            data_class = cls()
+            data_class.unique_id = int(data.get("unique_id", 0))
+            data_class.text = data.get("text", "")
+            data_class.min_display_duration = int(data.get("min_display_duration", 0))
+            data_class.max_display_duration = int(data.get("max_display_duration", 0))
+            data_class.can_be_reported = data.get("can_be_reported", False)
+            data_class.sponsor = data.get("sponsor", None)
+            data_class.title = data.get("title", "")
+            data_class.additional_info = data.get("additional_info", "")
+
+        return data_class
+
+
+class VideoMessageAdvertisements(TlObject):
+    r"""Contains a list of advertisements to be shown while a video from a message is watched
+
+    Parameters:
+        advertisements (:class:`List["types.VideoMessageAdvertisement"]`):
+            List of advertisements
+
+        start_delay (:class:`int`):
+            Delay before the first advertisement is shown, in seconds
+
+        between_delay (:class:`int`):
+            Delay between consecutive advertisements, in seconds
+
+    """
+
+    def __init__(
+        self,
+        advertisements: List[VideoMessageAdvertisement] = None,
+        start_delay: int = 0,
+        between_delay: int = 0,
+    ) -> None:
+        self.advertisements: List[VideoMessageAdvertisement] = advertisements or []
+        r"""List of advertisements"""
+        self.start_delay: int = int(start_delay)
+        r"""Delay before the first advertisement is shown, in seconds"""
+        self.between_delay: int = int(between_delay)
+        r"""Delay between consecutive advertisements, in seconds"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["videoMessageAdvertisements"]:
+        return "videoMessageAdvertisements"
+
+    def getClass(self) -> Literal["VideoMessageAdvertisements"]:
+        return "VideoMessageAdvertisements"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "advertisements": self.advertisements,
+            "start_delay": self.start_delay,
+            "between_delay": self.between_delay,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["VideoMessageAdvertisements", None]:
+        if data:
+            data_class = cls()
+            data_class.advertisements = data.get("advertisements", None)
+            data_class.start_delay = int(data.get("start_delay", 0))
+            data_class.between_delay = int(data.get("between_delay", 0))
 
         return data_class
 
@@ -22986,6 +23477,7 @@ class DraftMessage(TlObject):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_text
@@ -27154,6 +27646,9 @@ class DirectMessagesChatTopic(TlObject):
         order (:class:`int`):
             A parameter used to determine order of the topic in the topic list\. Topics must be sorted by the order in descending order
 
+        can_send_unpaid_messages (:class:`bool`):
+            True, if the other party can send unpaid messages even if the chat has paid messages enabled
+
         is_marked_as_unread (:class:`bool`):
             True, if the forum topic is marked as unread
 
@@ -27183,6 +27678,7 @@ class DirectMessagesChatTopic(TlObject):
         id: int = 0,
         sender_id: MessageSender = None,
         order: int = 0,
+        can_send_unpaid_messages: bool = False,
         is_marked_as_unread: bool = False,
         unread_count: int = 0,
         last_read_inbox_message_id: int = 0,
@@ -27199,6 +27695,8 @@ class DirectMessagesChatTopic(TlObject):
         r"""Identifier of the user or chat that sends the messages to the topic"""
         self.order: int = int(order)
         r"""A parameter used to determine order of the topic in the topic list\. Topics must be sorted by the order in descending order"""
+        self.can_send_unpaid_messages: bool = bool(can_send_unpaid_messages)
+        r"""True, if the other party can send unpaid messages even if the chat has paid messages enabled"""
         self.is_marked_as_unread: bool = bool(is_marked_as_unread)
         r"""True, if the forum topic is marked as unread"""
         self.unread_count: int = int(unread_count)
@@ -27230,6 +27728,7 @@ class DirectMessagesChatTopic(TlObject):
             "id": self.id,
             "sender_id": self.sender_id,
             "order": self.order,
+            "can_send_unpaid_messages": self.can_send_unpaid_messages,
             "is_marked_as_unread": self.is_marked_as_unread,
             "unread_count": self.unread_count,
             "last_read_inbox_message_id": self.last_read_inbox_message_id,
@@ -27247,6 +27746,9 @@ class DirectMessagesChatTopic(TlObject):
             data_class.id = int(data.get("id", 0))
             data_class.sender_id = data.get("sender_id", None)
             data_class.order = int(data.get("order", 0))
+            data_class.can_send_unpaid_messages = data.get(
+                "can_send_unpaid_messages", False
+            )
             data_class.is_marked_as_unread = data.get("is_marked_as_unread", False)
             data_class.unread_count = int(data.get("unread_count", 0))
             data_class.last_read_inbox_message_id = int(
@@ -38206,6 +38708,9 @@ class MessageVideo(TlObject, MessageContent):
         alternative_videos (:class:`List["types.AlternativeVideo"]`):
             Alternative qualities of the video
 
+        storyboards (:class:`List["types.VideoStoryboard"]`):
+            Available storyboards for the video
+
         cover (:class:`"types.Photo"`):
             Cover of the video; may be null if none
 
@@ -38230,6 +38735,7 @@ class MessageVideo(TlObject, MessageContent):
         self,
         video: Video = None,
         alternative_videos: List[AlternativeVideo] = None,
+        storyboards: List[VideoStoryboard] = None,
         cover: Photo = None,
         start_timestamp: int = 0,
         caption: FormattedText = None,
@@ -38241,6 +38747,8 @@ class MessageVideo(TlObject, MessageContent):
         r"""The video description"""
         self.alternative_videos: List[AlternativeVideo] = alternative_videos or []
         r"""Alternative qualities of the video"""
+        self.storyboards: List[VideoStoryboard] = storyboards or []
+        r"""Available storyboards for the video"""
         self.cover: Union[Photo, None] = cover
         r"""Cover of the video; may be null if none"""
         self.start_timestamp: int = int(start_timestamp)
@@ -38268,6 +38776,7 @@ class MessageVideo(TlObject, MessageContent):
             "@type": self.getType(),
             "video": self.video,
             "alternative_videos": self.alternative_videos,
+            "storyboards": self.storyboards,
             "cover": self.cover,
             "start_timestamp": self.start_timestamp,
             "caption": self.caption,
@@ -38282,6 +38791,7 @@ class MessageVideo(TlObject, MessageContent):
             data_class = cls()
             data_class.video = data.get("video", None)
             data_class.alternative_videos = data.get("alternative_videos", None)
+            data_class.storyboards = data.get("storyboards", None)
             data_class.cover = data.get("cover", None)
             data_class.start_timestamp = int(data.get("start_timestamp", 0))
             data_class.caption = data.get("caption", None)
@@ -38894,6 +39404,40 @@ class MessageStory(TlObject, MessageContent):
             data_class.story_poster_chat_id = int(data.get("story_poster_chat_id", 0))
             data_class.story_id = int(data.get("story_id", 0))
             data_class.via_mention = data.get("via_mention", False)
+
+        return data_class
+
+
+class MessageChecklist(TlObject, MessageContent):
+    r"""A message with a checklist
+
+    Parameters:
+        list (:class:`"types.Checklist"`):
+            The checklist description
+
+    """
+
+    def __init__(self, list: Checklist = None) -> None:
+        self.list: Union[Checklist, None] = list
+        r"""The checklist description"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageChecklist"]:
+        return "messageChecklist"
+
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "list": self.list}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageChecklist", None]:
+        if data:
+            data_class = cls()
+            data_class.list = data.get("list", None)
 
         return data_class
 
@@ -41664,6 +42208,112 @@ class MessageDirectMessagePriceChanged(TlObject, MessageContent):
             data_class.paid_message_star_count = int(
                 data.get("paid_message_star_count", 0)
             )
+
+        return data_class
+
+
+class MessageChecklistTasksDone(TlObject, MessageContent):
+    r"""Some tasks from a checklist were marked as done or not done
+
+    Parameters:
+        checklist_message_id (:class:`int`):
+            Identifier of the message with the checklist; can be 0 if the message was deleted
+
+        marked_as_done_task_ids (:class:`List[int]`):
+            Identifiers of tasks that were marked as done
+
+        marked_as_not_done_task_ids (:class:`List[int]`):
+            Identifiers of tasks that were marked as not done
+
+    """
+
+    def __init__(
+        self,
+        checklist_message_id: int = 0,
+        marked_as_done_task_ids: List[int] = None,
+        marked_as_not_done_task_ids: List[int] = None,
+    ) -> None:
+        self.checklist_message_id: int = int(checklist_message_id)
+        r"""Identifier of the message with the checklist; can be 0 if the message was deleted"""
+        self.marked_as_done_task_ids: List[int] = marked_as_done_task_ids or []
+        r"""Identifiers of tasks that were marked as done"""
+        self.marked_as_not_done_task_ids: List[int] = marked_as_not_done_task_ids or []
+        r"""Identifiers of tasks that were marked as not done"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageChecklistTasksDone"]:
+        return "messageChecklistTasksDone"
+
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "checklist_message_id": self.checklist_message_id,
+            "marked_as_done_task_ids": self.marked_as_done_task_ids,
+            "marked_as_not_done_task_ids": self.marked_as_not_done_task_ids,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageChecklistTasksDone", None]:
+        if data:
+            data_class = cls()
+            data_class.checklist_message_id = int(data.get("checklist_message_id", 0))
+            data_class.marked_as_done_task_ids = data.get(
+                "marked_as_done_task_ids", None
+            )
+            data_class.marked_as_not_done_task_ids = data.get(
+                "marked_as_not_done_task_ids", None
+            )
+
+        return data_class
+
+
+class MessageChecklistTasksAdded(TlObject, MessageContent):
+    r"""Some tasks were added to a checklist
+
+    Parameters:
+        checklist_message_id (:class:`int`):
+            Identifier of the message with the checklist; can be 0 if the message was deleted
+
+        tasks (:class:`List["types.ChecklistTask"]`):
+            List of tasks added to the checklist
+
+    """
+
+    def __init__(
+        self, checklist_message_id: int = 0, tasks: List[ChecklistTask] = None
+    ) -> None:
+        self.checklist_message_id: int = int(checklist_message_id)
+        r"""Identifier of the message with the checklist; can be 0 if the message was deleted"""
+        self.tasks: List[ChecklistTask] = tasks or []
+        r"""List of tasks added to the checklist"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["messageChecklistTasksAdded"]:
+        return "messageChecklistTasksAdded"
+
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "checklist_message_id": self.checklist_message_id,
+            "tasks": self.tasks,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageChecklistTasksAdded", None]:
+        if data:
+            data_class = cls()
+            data_class.checklist_message_id = int(data.get("checklist_message_id", 0))
+            data_class.tasks = data.get("tasks", None)
 
         return data_class
 
@@ -44620,6 +45270,40 @@ class InputMessageStory(TlObject, InputMessageContent):
         return data_class
 
 
+class InputMessageChecklist(TlObject, InputMessageContent):
+    r"""A message with a checklist\. Checklists can't be sent to secret chats, channel chats and channel direct messages chats; for Telegram Premium users only
+
+    Parameters:
+        checklist (:class:`"types.InputChecklist"`):
+            The checklist to send
+
+    """
+
+    def __init__(self, checklist: InputChecklist = None) -> None:
+        self.checklist: Union[InputChecklist, None] = checklist
+        r"""The checklist to send"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["inputMessageChecklist"]:
+        return "inputMessageChecklist"
+
+    def getClass(self) -> Literal["InputMessageContent"]:
+        return "InputMessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "checklist": self.checklist}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputMessageChecklist", None]:
+        if data:
+            data_class = cls()
+            data_class.checklist = data.get("checklist", None)
+
+        return data_class
+
+
 class InputMessageForwarded(TlObject, InputMessageContent):
     r"""A forwarded message
 
@@ -44708,6 +45392,9 @@ class MessageProperties(TlObject):
     r"""Contains properties of a message and describes actions that can be done with the message right now
 
     Parameters:
+        can_add_tasks (:class:`bool`):
+            True, if tasks can be added to the message's checklist using addChecklistTasks if the current user has Telegram Premium subscription
+
         can_be_copied (:class:`bool`):
             True, if content of the message can be copied using inputMessageForwarded or forwardMessages with copy options
 
@@ -44721,7 +45408,7 @@ class MessageProperties(TlObject):
             True, if the message can be deleted for all users using the method deleteMessages with revoke \=\= true
 
         can_be_edited (:class:`bool`):
-            True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message
+            True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location, poll, and checklist messages this fields shows whether editMessageLiveLocation, stopPoll, or editMessageChecklist respectively can be used with this message
 
         can_be_forwarded (:class:`bool`):
             True, if the message can be forwarded using inputMessageForwarded or forwardMessages without copy options
@@ -44771,8 +45458,14 @@ class MessageProperties(TlObject):
         can_get_statistics (:class:`bool`):
             True, if message statistics are available through getMessageStatistics and message forwards can be received using getMessagePublicForwards
 
+        can_get_video_advertisements (:class:`bool`):
+            True, if advertisements for video of the message can be received though getVideoMessageAdvertisements
+
         can_get_viewers (:class:`bool`):
             True, if chat members already viewed the message can be received through getMessageViewers
+
+        can_mark_tasks_as_done (:class:`bool`):
+            True, if tasks can be marked as done or not done in the message's checklist using markChecklistTasksAsDone if the current user has Telegram Premium subscription
 
         can_recognize_speech (:class:`bool`):
             True, if speech can be recognized for the message through recognizeSpeech
@@ -44796,6 +45489,7 @@ class MessageProperties(TlObject):
 
     def __init__(
         self,
+        can_add_tasks: bool = False,
         can_be_copied: bool = False,
         can_be_copied_to_secret_chat: bool = False,
         can_be_deleted_only_for_self: bool = False,
@@ -44817,7 +45511,9 @@ class MessageProperties(TlObject):
         can_get_message_thread: bool = False,
         can_get_read_date: bool = False,
         can_get_statistics: bool = False,
+        can_get_video_advertisements: bool = False,
         can_get_viewers: bool = False,
+        can_mark_tasks_as_done: bool = False,
         can_recognize_speech: bool = False,
         can_report_chat: bool = False,
         can_report_reactions: bool = False,
@@ -44825,6 +45521,8 @@ class MessageProperties(TlObject):
         can_set_fact_check: bool = False,
         need_show_statistics: bool = False,
     ) -> None:
+        self.can_add_tasks: bool = bool(can_add_tasks)
+        r"""True, if tasks can be added to the message's checklist using addChecklistTasks if the current user has Telegram Premium subscription"""
         self.can_be_copied: bool = bool(can_be_copied)
         r"""True, if content of the message can be copied using inputMessageForwarded or forwardMessages with copy options"""
         self.can_be_copied_to_secret_chat: bool = bool(can_be_copied_to_secret_chat)
@@ -44834,7 +45532,7 @@ class MessageProperties(TlObject):
         self.can_be_deleted_for_all_users: bool = bool(can_be_deleted_for_all_users)
         r"""True, if the message can be deleted for all users using the method deleteMessages with revoke \=\= true"""
         self.can_be_edited: bool = bool(can_be_edited)
-        r"""True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message"""
+        r"""True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup\. For live location, poll, and checklist messages this fields shows whether editMessageLiveLocation, stopPoll, or editMessageChecklist respectively can be used with this message"""
         self.can_be_forwarded: bool = bool(can_be_forwarded)
         r"""True, if the message can be forwarded using inputMessageForwarded or forwardMessages without copy options"""
         self.can_be_paid: bool = bool(can_be_paid)
@@ -44867,8 +45565,12 @@ class MessageProperties(TlObject):
         r"""True, if read date of the message can be received through getMessageReadDate"""
         self.can_get_statistics: bool = bool(can_get_statistics)
         r"""True, if message statistics are available through getMessageStatistics and message forwards can be received using getMessagePublicForwards"""
+        self.can_get_video_advertisements: bool = bool(can_get_video_advertisements)
+        r"""True, if advertisements for video of the message can be received though getVideoMessageAdvertisements"""
         self.can_get_viewers: bool = bool(can_get_viewers)
         r"""True, if chat members already viewed the message can be received through getMessageViewers"""
+        self.can_mark_tasks_as_done: bool = bool(can_mark_tasks_as_done)
+        r"""True, if tasks can be marked as done or not done in the message's checklist using markChecklistTasksAsDone if the current user has Telegram Premium subscription"""
         self.can_recognize_speech: bool = bool(can_recognize_speech)
         r"""True, if speech can be recognized for the message through recognizeSpeech"""
         self.can_report_chat: bool = bool(can_report_chat)
@@ -44894,6 +45596,7 @@ class MessageProperties(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
+            "can_add_tasks": self.can_add_tasks,
             "can_be_copied": self.can_be_copied,
             "can_be_copied_to_secret_chat": self.can_be_copied_to_secret_chat,
             "can_be_deleted_only_for_self": self.can_be_deleted_only_for_self,
@@ -44915,7 +45618,9 @@ class MessageProperties(TlObject):
             "can_get_message_thread": self.can_get_message_thread,
             "can_get_read_date": self.can_get_read_date,
             "can_get_statistics": self.can_get_statistics,
+            "can_get_video_advertisements": self.can_get_video_advertisements,
             "can_get_viewers": self.can_get_viewers,
+            "can_mark_tasks_as_done": self.can_mark_tasks_as_done,
             "can_recognize_speech": self.can_recognize_speech,
             "can_report_chat": self.can_report_chat,
             "can_report_reactions": self.can_report_reactions,
@@ -44928,6 +45633,7 @@ class MessageProperties(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageProperties", None]:
         if data:
             data_class = cls()
+            data_class.can_add_tasks = data.get("can_add_tasks", False)
             data_class.can_be_copied = data.get("can_be_copied", False)
             data_class.can_be_copied_to_secret_chat = data.get(
                 "can_be_copied_to_secret_chat", False
@@ -44967,7 +45673,13 @@ class MessageProperties(TlObject):
             )
             data_class.can_get_read_date = data.get("can_get_read_date", False)
             data_class.can_get_statistics = data.get("can_get_statistics", False)
+            data_class.can_get_video_advertisements = data.get(
+                "can_get_video_advertisements", False
+            )
             data_class.can_get_viewers = data.get("can_get_viewers", False)
+            data_class.can_mark_tasks_as_done = data.get(
+                "can_mark_tasks_as_done", False
+            )
             data_class.can_recognize_speech = data.get("can_recognize_speech", False)
             data_class.can_report_chat = data.get("can_report_chat", False)
             data_class.can_report_reactions = data.get("can_report_reactions", False)
@@ -49336,6 +50048,7 @@ class QuickReplyMessage(TlObject):
             MessageGame,
             MessagePoll,
             MessageStory,
+            MessageChecklist,
             MessageInvoice,
             MessageCall,
             MessageGroupCall,
@@ -49384,6 +50097,8 @@ class QuickReplyMessage(TlObject):
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
+            MessageChecklistTasksDone,
+            MessageChecklistTasksAdded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -54837,6 +55552,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -54972,6 +55688,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -55091,6 +55808,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -55206,6 +55924,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -55339,6 +56058,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -55531,6 +56251,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -55662,6 +56383,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -55781,6 +56503,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -55896,6 +56619,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -56035,6 +56759,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -56152,6 +56877,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
             InputMessageInvoice,
             InputMessagePoll,
             InputMessageStory,
+            InputMessageChecklist,
             InputMessageForwarded,
             None,
         ] = input_message_content
@@ -61576,6 +62302,32 @@ class PremiumFeatureMessageEffects(TlObject, PremiumFeature):
         return data_class
 
 
+class PremiumFeatureChecklists(TlObject, PremiumFeature):
+    r"""The ability to create and use checklist messages"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["premiumFeatureChecklists"]:
+        return "premiumFeatureChecklists"
+
+    def getClass(self) -> Literal["PremiumFeature"]:
+        return "PremiumFeature"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PremiumFeatureChecklists", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class BusinessFeatureLocation(TlObject, BusinessFeature):
     r"""The ability to set location"""
 
@@ -62358,6 +63110,7 @@ class PremiumSourceFeature(TlObject, PremiumSource):
             PremiumFeatureLastSeenTimes,
             PremiumFeatureBusiness,
             PremiumFeatureMessageEffects,
+            PremiumFeatureChecklists,
             None,
         ] = feature
         r"""The used feature"""
@@ -62573,6 +63326,7 @@ class PremiumFeaturePromotionAnimation(TlObject):
             PremiumFeatureLastSeenTimes,
             PremiumFeatureBusiness,
             PremiumFeatureMessageEffects,
+            PremiumFeatureChecklists,
             None,
         ] = feature
         r"""Premium feature"""
@@ -66438,6 +67192,50 @@ class PushMessageContentText(TlObject, PushMessageContent):
         return data_class
 
 
+class PushMessageContentChecklist(TlObject, PushMessageContent):
+    r"""A message with a checklist
+
+    Parameters:
+        title (:class:`str`):
+            Checklist title
+
+        is_pinned (:class:`bool`):
+            True, if the message is a pinned message with the specified content
+
+    """
+
+    def __init__(self, title: str = "", is_pinned: bool = False) -> None:
+        self.title: Union[str, None] = title
+        r"""Checklist title"""
+        self.is_pinned: bool = bool(is_pinned)
+        r"""True, if the message is a pinned message with the specified content"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["pushMessageContentChecklist"]:
+        return "pushMessageContentChecklist"
+
+    def getClass(self) -> Literal["PushMessageContent"]:
+        return "PushMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "title": self.title,
+            "is_pinned": self.is_pinned,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PushMessageContentChecklist", None]:
+        if data:
+            data_class = cls()
+            data_class.title = data.get("title", "")
+            data_class.is_pinned = data.get("is_pinned", False)
+
+        return data_class
+
+
 class PushMessageContentVideo(TlObject, PushMessageContent):
     r"""A video message
 
@@ -67100,6 +67898,78 @@ class PushMessageContentProximityAlertTriggered(TlObject, PushMessageContent):
         return data_class
 
 
+class PushMessageContentChecklistTasksAdded(TlObject, PushMessageContent):
+    r"""Some tasks were added to a checklist
+
+    Parameters:
+        task_count (:class:`int`):
+            Number of added tasks
+
+    """
+
+    def __init__(self, task_count: int = 0) -> None:
+        self.task_count: int = int(task_count)
+        r"""Number of added tasks"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["pushMessageContentChecklistTasksAdded"]:
+        return "pushMessageContentChecklistTasksAdded"
+
+    def getClass(self) -> Literal["PushMessageContent"]:
+        return "PushMessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "task_count": self.task_count}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["PushMessageContentChecklistTasksAdded", None]:
+        if data:
+            data_class = cls()
+            data_class.task_count = int(data.get("task_count", 0))
+
+        return data_class
+
+
+class PushMessageContentChecklistTasksDone(TlObject, PushMessageContent):
+    r"""Some tasks from a checklist were marked as done or not done
+
+    Parameters:
+        task_count (:class:`int`):
+            Number of changed tasks
+
+    """
+
+    def __init__(self, task_count: int = 0) -> None:
+        self.task_count: int = int(task_count)
+        r"""Number of changed tasks"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    def getType(self) -> Literal["pushMessageContentChecklistTasksDone"]:
+        return "pushMessageContentChecklistTasksDone"
+
+    def getClass(self) -> Literal["PushMessageContent"]:
+        return "PushMessageContent"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "task_count": self.task_count}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["PushMessageContentChecklistTasksDone", None]:
+        if data:
+            data_class = cls()
+            data_class.task_count = int(data.get("task_count", 0))
+
+        return data_class
+
+
 class PushMessageContentMessageForwards(TlObject, PushMessageContent):
     r"""A forwarded messages
 
@@ -67369,6 +68239,7 @@ class NotificationTypeNewPushMessage(TlObject, NotificationType):
             PushMessageContentSticker,
             PushMessageContentStory,
             PushMessageContentText,
+            PushMessageContentChecklist,
             PushMessageContentVideo,
             PushMessageContentVideoNote,
             PushMessageContentVoiceNote,
@@ -67387,6 +68258,8 @@ class NotificationTypeNewPushMessage(TlObject, NotificationType):
             PushMessageContentRecurringPayment,
             PushMessageContentSuggestProfilePhoto,
             PushMessageContentProximityAlertTriggered,
+            PushMessageContentChecklistTasksAdded,
+            PushMessageContentChecklistTasksDone,
             PushMessageContentMessageForwards,
             PushMessageContentMediaAlbum,
             None,
@@ -79155,6 +80028,7 @@ class UpdateMessageContent(TlObject, Update):
             MessageGame,
             MessagePoll,
             MessageStory,
+            MessageChecklist,
             MessageInvoice,
             MessageCall,
             MessageGroupCall,
@@ -79203,6 +80077,8 @@ class UpdateMessageContent(TlObject, Update):
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
+            MessageChecklistTasksDone,
+            MessageChecklistTasksAdded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -82669,6 +83545,7 @@ class UpdateServiceNotification(TlObject, Update):
             MessageGame,
             MessagePoll,
             MessageStory,
+            MessageChecklist,
             MessageInvoice,
             MessageCall,
             MessageGroupCall,
@@ -82717,6 +83594,8 @@ class UpdateServiceNotification(TlObject, Update):
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
+            MessageChecklistTasksDone,
+            MessageChecklistTasksAdded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
