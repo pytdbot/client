@@ -183,6 +183,7 @@ class Client(Decorators, Methods):
         self._current_handlers = {}
         self._results: Dict[str, asyncio.Future] = {}
         self._workers_tasks = None
+        self.__rabbitmq_iterator_task = None
         self.__authorization_state = None
         self.__cache = {"is_coro_filter": {}}
         self.__local_handlers = {
@@ -248,12 +249,18 @@ class Client(Decorators, Methods):
 
             if isinstance(self.workers, int):
                 self._workers_tasks = [
-                    self.loop.create_task(self._queue_update_worker())
+                    self.loop.create_task(
+                        self._queue_update_worker()
+                        if not self.is_rabbitmq
+                        else self.__rabbitmq_worker()
+                    )
                     for _ in range(self.workers)
                 ]
                 self.__is_queue_worker = True
 
                 self.logger.info(f"Started with {self.workers} workers")
+            elif self.is_rabbitmq:
+                raise ValueError("workers must be an int when using TDLib Server")
             else:
                 self.__is_queue_worker = False
                 self.logger.info("Started with unlimited updates processes")
@@ -694,7 +701,7 @@ class Client(Decorators, Methods):
             if update_handler:
                 self.loop.create_task(update_handler(update))
 
-            if self.__is_queue_worker:
+            if not self.is_rabbitmq and self.__is_queue_worker:
                 self.queue.put_nowait(update)
             else:
                 await self._handle_update(update)
@@ -882,7 +889,9 @@ class Client(Decorators, Methods):
                 f"{str(self.me.id) if not self.me.usernames else '@' + self.me.usernames.editable_username}"
             )
 
-        if (
+        if self.authorization_state == "authorizationStateClosing":
+            self.__is_closing = True
+        elif (
             self.authorization_state == "authorizationStateClosed"
             and self.__is_closing is False
         ):
@@ -968,7 +977,7 @@ class Client(Decorators, Methods):
 
         self.__rqueues = {
             "updates": updates_queue,
-            "requests": await self.__rchannel.get_queue(self.my_id + "_requests"),
+            "requests": await self.__rchannel.get_queue(f"{self.my_id}_requests"),
             "notify": notify_queue,
             "responses": responses_queue,
         }
@@ -986,9 +995,34 @@ class Client(Decorators, Methods):
             await self.process_update(obj_to_dict(update))
 
         if not self.no_updates:
-            await self.__rqueues["updates"].consume(self.__on_update, no_ack=True)
+            self.__rabbitmq_iterator_task = self.loop.create_task(
+                self.__rabbitmq_iterator()
+            )
 
         await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
+
+    async def __rabbitmq_iterator(self):
+        async with self.__rqueues["updates"].iterator() as iterator:
+            async for message in iterator:
+                await self.queue.put(message)
+
+    async def __rabbitmq_worker(self):
+        while self.is_running:
+            message: aio_pika.IncomingMessage = await self.queue.get()
+
+            try:
+                update = json_loads(message.body)
+                if self.__is_closing and not isinstance(
+                    update, types.UpdateAuthorizationState
+                ):
+                    await message.nack(requeue=True)
+                    continue
+
+                await self.process_update(update)
+            except Exception:
+                self.logger.exception("Error processing message")
+
+            await message.ack()  # ack after processing
 
     async def __handle_rabbitmq_message(self, message: aio_pika.IncomingMessage):
         await self.process_update(json_loads(message.body))
@@ -1025,6 +1059,9 @@ class Client(Decorators, Methods):
     def __stop_client(self) -> None:
         self.is_authenticated = False
         self.is_running = False
+
+        if self.__rabbitmq_iterator_task:
+            self.__rabbitmq_iterator_task.cancel()
 
         if self.__is_queue_worker:
             for worker_task in self._workers_tasks:
