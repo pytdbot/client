@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.50",
-    "commit_hash": "e78c346a6b5bf8a2cee97987000e11c8ce9968f3",
+    "version": "1.8.51",
+    "commit_hash": "bb474a201baa798784d696d2d9d762a9d2807f96",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -485,7 +485,8 @@
             ],
             "functions": [
                 "reportChatSponsoredMessage",
-                "reportSponsoredChat"
+                "reportSponsoredChat",
+                "reportVideoMessageAdvertisement"
             ]
         },
         "NotificationSettingsScope": {
@@ -930,6 +931,7 @@
                 "messageGame",
                 "messagePoll",
                 "messageStory",
+                "messageChecklist",
                 "messageInvoice",
                 "messageCall",
                 "messageGroupCall",
@@ -978,6 +980,8 @@
                 "messagePaidMessagesRefunded",
                 "messagePaidMessagePriceChanged",
                 "messageDirectMessagePriceChanged",
+                "messageChecklistTasksDone",
+                "messageChecklistTasksAdded",
                 "messageContactRegistered",
                 "messageUsersShared",
                 "messageChatShared",
@@ -1065,6 +1069,7 @@
                 "inputMessageInvoice",
                 "inputMessagePoll",
                 "inputMessageStory",
+                "inputMessageChecklist",
                 "inputMessageForwarded"
             ],
             "functions": []
@@ -1555,7 +1560,8 @@
                 "premiumFeatureMessagePrivacy",
                 "premiumFeatureLastSeenTimes",
                 "premiumFeatureBusiness",
-                "premiumFeatureMessageEffects"
+                "premiumFeatureMessageEffects",
+                "premiumFeatureChecklists"
             ],
             "functions": []
         },
@@ -1778,6 +1784,7 @@
                 "pushMessageContentSticker",
                 "pushMessageContentStory",
                 "pushMessageContentText",
+                "pushMessageContentChecklist",
                 "pushMessageContentVideo",
                 "pushMessageContentVideoNote",
                 "pushMessageContentVoiceNote",
@@ -1796,6 +1803,8 @@
                 "pushMessageContentRecurringPayment",
                 "pushMessageContentSuggestProfilePhoto",
                 "pushMessageContentProximityAlertTriggered",
+                "pushMessageContentChecklistTasksAdded",
+                "pushMessageContentChecklistTasksDone",
                 "pushMessageContentMessageForwards",
                 "pushMessageContentMediaAlbum"
             ],
@@ -3449,6 +3458,110 @@
             },
             "type": "PollType"
         },
+        "checklistTask": {
+            "description": "Describes a task in a checklist",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the task",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "text": {
+                    "description": "Text of the task; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Url, EmailAddress, Mention, Hashtag, Cashtag and PhoneNumber entities",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "completed_by_user_id": {
+                    "description": "Identifier of the user that completed the task; 0 if the task isn't completed",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "completion_date": {
+                    "description": "Point in time (Unix timestamp) when the task was completed; 0 if the task isn't completed",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChecklistTask"
+        },
+        "inputChecklistTask": {
+            "description": "Describes a task in a checklist to be sent",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the task; must be positive",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "text": {
+                    "description": "Text of the task; 1-getOption(\"checklist_task_text_length_max\") characters without line feeds. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "InputChecklistTask"
+        },
+        "checklist": {
+            "description": "Describes a checklist",
+            "args": {
+                "title": {
+                    "description": "Title of the checklist; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "tasks": {
+                    "description": "List of tasks in the checklist",
+                    "is_optional": false,
+                    "type": "vector<checklistTask>"
+                },
+                "others_can_add_tasks": {
+                    "description": "True, if users other than creator of the list can add tasks to the list",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_add_tasks": {
+                    "description": "True, if the current user can add tasks to the list if they have Telegram Premium subscription",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "others_can_mark_tasks_as_done": {
+                    "description": "True, if users other than creator of the list can mark tasks as done or not done. If true, then the checklist is called \"group checklist\"",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_mark_tasks_as_done": {
+                    "description": "True, if the current user can mark tasks as done or not done if they have Telegram Premium subscription",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Checklist"
+        },
+        "inputChecklist": {
+            "description": "Describes a checklist to be sent",
+            "args": {
+                "title": {
+                    "description": "Title of the checklist; 1-getOption(\"checklist_title_length_max\") characters. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "tasks": {
+                    "description": "List of tasks in the checklist; 1-getOption(\"checklist_task_count_max\") tasks",
+                    "is_optional": false,
+                    "type": "vector<inputChecklistTask>"
+                },
+                "others_can_add_tasks": {
+                    "description": "True, if other users can add tasks to the list",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "others_can_mark_tasks_as_done": {
+                    "description": "True, if other users can mark tasks as done or not done",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "InputChecklist"
+        },
         "animation": {
             "description": "Describes an animation file. The animation must be encoded in GIF or MPEG4 format",
             "args": {
@@ -4064,6 +4177,32 @@
                 }
             },
             "type": "AlternativeVideo"
+        },
+        "videoStoryboard": {
+            "description": "Describes a storyboard for a video",
+            "args": {
+                "storyboard_file": {
+                    "description": "A JPEG file that contains tiled previews of video",
+                    "is_optional": false,
+                    "type": "file"
+                },
+                "width": {
+                    "description": "Width of a tile",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "height": {
+                    "description": "Height of a tile",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "map_file": {
+                    "description": "File that describes mapping of position in the video to a tile in the JPEG file",
+                    "is_optional": false,
+                    "type": "file"
+                }
+            },
+            "type": "VideoStoryboard"
         },
         "background": {
             "description": "Describes a chat background",
@@ -5065,7 +5204,7 @@
                     "type": "Bool"
                 },
                 "can_send_polls": {
-                    "description": "True, if the user can send polls",
+                    "description": "True, if the user can send polls and checklists",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -8859,6 +8998,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "outgoing_paid_message_star_count": {
+                    "description": "Number of Telegram Stars that must be paid by the current user for each sent message to the supergroup",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "sticker_set_id": {
                     "description": "Identifier of the supergroup sticker set that must be shown before user sticker sets; 0 if none",
                     "is_optional": false,
@@ -9636,7 +9780,7 @@
                     "type": "int32"
                 },
                 "content": {
-                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
+                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
                     "is_optional": true,
                     "type": "MessageContent"
                 }
@@ -10123,11 +10267,11 @@
             "args": {},
             "type": "MessageSource"
         },
-        "messageSponsor": {
-            "description": "Information about the sponsor of a message",
+        "advertisementSponsor": {
+            "description": "Information about the sponsor of an advertisement",
             "args": {
                 "url": {
-                    "description": "URL of the sponsor to be opened when the message is clicked",
+                    "description": "URL of the sponsor to be opened when the advertisement is clicked",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -10137,12 +10281,12 @@
                     "type": "photo"
                 },
                 "info": {
-                    "description": "Additional optional information about the sponsor to be shown along with the message",
+                    "description": "Additional optional information about the sponsor to be shown along with the advertisement",
                     "is_optional": false,
                     "type": "string"
                 }
             },
-            "type": "MessageSponsor"
+            "type": "AdvertisementSponsor"
         },
         "sponsoredMessage": {
             "description": "Describes a sponsored message",
@@ -10170,7 +10314,7 @@
                 "sponsor": {
                     "description": "Information about the sponsor of the message",
                     "is_optional": false,
-                    "type": "messageSponsor"
+                    "type": "advertisementSponsor"
                 },
                 "title": {
                     "description": "Title of the sponsored message",
@@ -10252,6 +10396,73 @@
                 }
             },
             "type": "SponsoredChats"
+        },
+        "videoMessageAdvertisement": {
+            "description": "Describes an advertisent to be shown while a video from a message is watched",
+            "args": {
+                "unique_id": {
+                    "description": "Unique identifier of this result",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "text": {
+                    "description": "Text of the advertisement",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "min_display_duration": {
+                    "description": "The minimum amount of time the advertisement must be dispalyed before it can be hidden by the user, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "max_display_duration": {
+                    "description": "The maximum amount of time the advertisement must be dispalyed before it must be automatically hidden, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "can_be_reported": {
+                    "description": "True, if the advertisement can be reported to Telegram moderators through reportVideoMessageAdvertisement",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "sponsor": {
+                    "description": "Information about the sponsor of the advertisement",
+                    "is_optional": false,
+                    "type": "advertisementSponsor"
+                },
+                "title": {
+                    "description": "Title of the sponsored message",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "additional_info": {
+                    "description": "If non-empty, additional information about the sponsored message to be shown along with the message",
+                    "is_optional": true,
+                    "type": "string"
+                }
+            },
+            "type": "VideoMessageAdvertisement"
+        },
+        "videoMessageAdvertisements": {
+            "description": "Contains a list of advertisements to be shown while a video from a message is watched",
+            "args": {
+                "advertisements": {
+                    "description": "List of advertisements",
+                    "is_optional": false,
+                    "type": "vector<videoMessageAdvertisement>"
+                },
+                "start_delay": {
+                    "description": "Delay before the first advertisement is shown, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "between_delay": {
+                    "description": "Delay between consecutive advertisements, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "VideoMessageAdvertisements"
         },
         "reportOption": {
             "description": "Describes an option to report an entity to Telegram",
@@ -12170,6 +12381,11 @@
                     "description": "A parameter used to determine order of the topic in the topic list. Topics must be sorted by the order in descending order",
                     "is_optional": false,
                     "type": "int64"
+                },
+                "can_send_unpaid_messages": {
+                    "description": "True, if the other party can send unpaid messages even if the chat has paid messages enabled",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "is_marked_as_unread": {
                     "description": "True, if the forum topic is marked as unread",
@@ -15905,6 +16121,11 @@
                     "is_optional": false,
                     "type": "vector<alternativeVideo>"
                 },
+                "storyboards": {
+                    "description": "Available storyboards for the video",
+                    "is_optional": false,
+                    "type": "vector<videoStoryboard>"
+                },
                 "cover": {
                     "description": "Cover of the video; may be null if none",
                     "is_optional": true,
@@ -16139,6 +16360,17 @@
                     "description": "True, if the story was automatically forwarded because of a mention of the user",
                     "is_optional": false,
                     "type": "Bool"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageChecklist": {
+            "description": "A message with a checklist",
+            "args": {
+                "list": {
+                    "description": "The checklist description",
+                    "is_optional": false,
+                    "type": "checklist"
                 }
             },
             "type": "MessageContent"
@@ -17267,6 +17499,43 @@
             },
             "type": "MessageContent"
         },
+        "messageChecklistTasksDone": {
+            "description": "Some tasks from a checklist were marked as done or not done",
+            "args": {
+                "checklist_message_id": {
+                    "description": "Identifier of the message with the checklist; can be 0 if the message was deleted",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "marked_as_done_task_ids": {
+                    "description": "Identifiers of tasks that were marked as done",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                },
+                "marked_as_not_done_task_ids": {
+                    "description": "Identifiers of tasks that were marked as not done",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageChecklistTasksAdded": {
+            "description": "Some tasks were added to a checklist",
+            "args": {
+                "checklist_message_id": {
+                    "description": "Identifier of the message with the checklist; can be 0 if the message was deleted",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "tasks": {
+                    "description": "List of tasks added to the checklist",
+                    "is_optional": false,
+                    "type": "vector<checklistTask>"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messageContactRegistered": {
             "description": "A contact has registered with Telegram",
             "args": {},
@@ -18341,6 +18610,17 @@
             },
             "type": "InputMessageContent"
         },
+        "inputMessageChecklist": {
+            "description": "A message with a checklist. Checklists can't be sent to secret chats, channel chats and channel direct messages chats; for Telegram Premium users only",
+            "args": {
+                "checklist": {
+                    "description": "The checklist to send",
+                    "is_optional": false,
+                    "type": "inputChecklist"
+                }
+            },
+            "type": "InputMessageContent"
+        },
         "inputMessageForwarded": {
             "description": "A forwarded message",
             "args": {
@@ -18380,6 +18660,11 @@
         "messageProperties": {
             "description": "Contains properties of a message and describes actions that can be done with the message right now",
             "args": {
+                "can_add_tasks": {
+                    "description": "True, if tasks can be added to the message's checklist using addChecklistTasks if the current user has Telegram Premium subscription",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_be_copied": {
                     "description": "True, if content of the message can be copied using inputMessageForwarded or forwardMessages with copy options",
                     "is_optional": false,
@@ -18401,7 +18686,7 @@
                     "type": "Bool"
                 },
                 "can_be_edited": {
-                    "description": "True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message",
+                    "description": "True, if the message can be edited using the methods editMessageText, editMessageCaption, or editMessageReplyMarkup. For live location, poll, and checklist messages this fields shows whether editMessageLiveLocation, stopPoll, or editMessageChecklist respectively can be used with this message",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -18485,8 +18770,18 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_get_video_advertisements": {
+                    "description": "True, if advertisements for video of the message can be received though getVideoMessageAdvertisements",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_get_viewers": {
                     "description": "True, if chat members already viewed the message can be received through getMessageViewers",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_mark_tasks_as_done": {
+                    "description": "True, if tasks can be marked as done or not done in the message's checklist using markChecklistTasksAsDone if the current user has Telegram Premium subscription",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -24243,6 +24538,11 @@
             "args": {},
             "type": "PremiumFeature"
         },
+        "premiumFeatureChecklists": {
+            "description": "The ability to create and use checklist messages",
+            "args": {},
+            "type": "PremiumFeature"
+        },
         "businessFeatureLocation": {
             "description": "The ability to set location",
             "args": {},
@@ -25785,6 +26085,22 @@
             },
             "type": "PushMessageContent"
         },
+        "pushMessageContentChecklist": {
+            "description": "A message with a checklist",
+            "args": {
+                "title": {
+                    "description": "Checklist title",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "is_pinned": {
+                    "description": "True, if the message is a pinned message with the specified content",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "PushMessageContent"
+        },
         "pushMessageContentVideo": {
             "description": "A video message",
             "args": {
@@ -25980,6 +26296,28 @@
             "args": {
                 "distance": {
                     "description": "The distance to the user",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "PushMessageContent"
+        },
+        "pushMessageContentChecklistTasksAdded": {
+            "description": "Some tasks were added to a checklist",
+            "args": {
+                "task_count": {
+                    "description": "Number of added tasks",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "PushMessageContent"
+        },
+        "pushMessageContentChecklistTasksDone": {
+            "description": "Some tasks from a checklist were marked as done or not done",
+            "args": {
+                "task_count": {
+                    "description": "Number of changed tasks",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -33106,7 +33444,7 @@
             "type": "Message"
         },
         "getRepliedMessage": {
-            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages without non-bundled replied message respectively. Returns a 404 error if the message doesn't exist",
+            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, the checklist message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted, messageChecklistTasksDone and messageChecklistTasksAdded, and topic messages without non-bundled replied message respectively. Returns a 404 error if the message doesn't exist",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat the message belongs to",
@@ -33788,6 +34126,48 @@
                     "description": "Topic identifier",
                     "is_optional": false,
                     "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "getDirectMessagesChatTopicRevenue": {
+            "description": "Returns the total number of Telegram Stars received by the channel chat for direct messages from the given topic",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier of the channel direct messages chat administered by the current user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Identifier of the topic",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StarCount"
+        },
+        "toggleDirectMessagesChatTopicCanSendUnpaidMessages": {
+            "description": "Allows to send unpaid messages to the given topic of the channel direct messages chat administered by the current user",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "topic_id": {
+                    "description": "Identifier of the topic",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "can_send_unpaid_messages": {
+                    "description": "Pass true to allow unpaid messages; pass false to disallow unpaid messages",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "refund_payments": {
+                    "description": "Pass true to refund the user previously paid messages",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "Ok"
@@ -34617,6 +34997,60 @@
             },
             "type": "ReportSponsoredResult"
         },
+        "getVideoMessageAdvertisements": {
+            "description": "Returns advertisements to be shown while a video from a message is watched. Available only if messageProperties.can_get_video_advertisements",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "VideoMessageAdvertisements"
+        },
+        "viewVideoMessageAdvertisement": {
+            "description": "Informs TDLib that the user viewed a video message advertisement",
+            "args": {
+                "advertisement_unique_id": {
+                    "description": "Unique identifier of the advertisement",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "clickVideoMessageAdvertisement": {
+            "description": "Informs TDLib that the user clicked a video message advertisement",
+            "args": {
+                "advertisement_unique_id": {
+                    "description": "Unique identifier of the advertisement",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "reportVideoMessageAdvertisement": {
+            "description": "Reports a video message advertisement to Telegram moderators",
+            "args": {
+                "advertisement_unique_id": {
+                    "description": "Unique identifier of the advertisement",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "option_id": {
+                    "description": "Option identifier chosen by the user; leave empty for the initial request",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "ReportSponsoredResult"
+        },
         "removeNotification": {
             "description": "Removes an active notification from notification list. Needs to be called only if the notification is removed by the current user",
             "args": {
@@ -35191,6 +35625,32 @@
             },
             "type": "Message"
         },
+        "editMessageChecklist": {
+            "description": "Edits the message content of a checklist. Returns the edited message after the edit is completed on the server side",
+            "args": {
+                "chat_id": {
+                    "description": "The chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message. Use messageProperties.can_be_edited to check whether the message can be edited",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_markup": {
+                    "description": "The new message reply markup; pass null if none; for bots only",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                },
+                "checklist": {
+                    "description": "The new checklist. If some tasks were completed, this information will be kept",
+                    "is_optional": false,
+                    "type": "inputChecklist"
+                }
+            },
+            "type": "Message"
+        },
         "editMessageMedia": {
             "description": "Edits the media content of a message, including message caption. If only the caption needs to be edited, use editMessageCaption instead. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa. Returns the edited message after the edit is completed on the server side",
             "args": {
@@ -35591,6 +36051,37 @@
                     "description": "The new maximum distance for proximity alerts, in meters (0-100000). Pass 0 if the notification is disabled",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "BusinessMessage"
+        },
+        "editBusinessMessageChecklist": {
+            "description": "Edits the content of a checklist in a message sent on behalf of a business account; for bots only",
+            "args": {
+                "business_connection_id": {
+                    "description": "Unique identifier of business connection on behalf of which the message was sent",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "chat_id": {
+                    "description": "The chat the message belongs to",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "reply_markup": {
+                    "description": "The new message reply markup; pass null if none",
+                    "is_optional": true,
+                    "type": "ReplyMarkup"
+                },
+                "checklist": {
+                    "description": "The new checklist. If some tasks were completed, this information will be kept",
+                    "is_optional": false,
+                    "type": "inputChecklist"
                 }
             },
             "type": "BusinessMessage"
@@ -36041,7 +36532,7 @@
                     "type": "int53"
                 },
                 "input_message_content": {
-                    "description": "The content of the message to be added; inputMessagePoll, inputMessageForwarded and inputMessageLocation with live_period aren't supported",
+                    "description": "The content of the message to be added; inputMessagePaidMedia, inputMessageForwarded and inputMessageLocation with live_period aren't supported",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -36117,7 +36608,7 @@
             "type": "QuickReplyMessages"
         },
         "editQuickReplyMessage": {
-            "description": "Asynchronously edits the text, media or caption of a quick reply message. Use quickReplyMessage.can_be_edited to check whether a message can be edited. Media message can be edited only to a media message. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa",
+            "description": "Asynchronously edits the text, media or caption of a quick reply message. Use quickReplyMessage.can_be_edited to check whether a message can be edited. Media message can be edited only to a media message. Checklist messages can be edited only to a checklist message. The type of message content in an album can't be changed with exception of replacing a photo with a video or vice versa",
             "args": {
                 "shortcut_id": {
                     "description": "Unique identifier of the quick reply shortcut with the message",
@@ -36130,7 +36621,7 @@
                     "type": "int53"
                 },
                 "input_message_content": {
-                    "description": "New content of the message. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageAudio, inputMessageDocument, inputMessagePhoto or inputMessageVideo",
+                    "description": "New content of the message. Must be one of the following types: inputMessageAnimation, inputMessageAudio, inputMessageChecklist, inputMessageDocument, inputMessagePhoto, inputMessageText, or inputMessageVideo",
                     "is_optional": false,
                     "type": "InputMessageContent"
                 }
@@ -36905,6 +37396,53 @@
                     "description": "The new message reply markup; pass null if none; for bots only",
                     "is_optional": true,
                     "type": "ReplyMarkup"
+                }
+            },
+            "type": "Ok"
+        },
+        "addChecklistTasks": {
+            "description": "Adds tasks to a checklist in a message",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message containing the checklist. Use messageProperties.can_add_tasks to check whether the tasks can be added",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "tasks": {
+                    "description": "List of added tasks",
+                    "is_optional": false,
+                    "type": "vector<inputChecklistTask>"
+                }
+            },
+            "type": "Ok"
+        },
+        "markChecklistTasksAsDone": {
+            "description": "Adds tasks of a checklist in a message as done or not done",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat with the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message containing the checklist. Use messageProperties.can_mark_tasks_as_done to check whether the tasks can be marked as done or not done",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "marked_as_done_task_ids": {
+                    "description": "Identifiers of tasks that were marked as done",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                },
+                "marked_as_not_done_task_ids": {
+                    "description": "Identifiers of tasks that were marked as not done",
+                    "is_optional": false,
+                    "type": "vector<int32>"
                 }
             },
             "type": "Ok"
