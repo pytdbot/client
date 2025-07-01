@@ -13,7 +13,7 @@ __all__ = [
     "Client",
 ]
 
-__version__ = "0.9.4"
+__version__ = "0.9.5.dev0"
 __copyright__ = "Copyright (c) 2022-2025 Pytdbot, AYMENJD"
 __license__ = "MIT License"
 
