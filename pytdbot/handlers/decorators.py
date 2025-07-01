@@ -134,3 +134,48 @@ class Decorators(Updates):
             return func
 
         return decorator
+
+    def on_updateScheduledEvent(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+        inner_object: bool = False,
+    ) -> None:
+        r"""A scheduled event has been triggered
+
+        Parameters:
+            filters (:class:`~pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            inner_object (``bool``, *optional*):
+                Wether to pass an inner object of update or not; for example ``UpdateNewMessage.message``. Default is ``False``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        "updateScheduledEvent", func, filters, position, inner_object
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func, "updateScheduledEvent", self, position, inner_object
+                )
+            else:
+                func._handler = Handler(
+                    func, "updateScheduledEvent", filters, position, inner_object
+                )
+
+            return func
+
+        return decorator

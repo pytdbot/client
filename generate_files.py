@@ -437,13 +437,13 @@ if __name__ == "__main__":
         ]
 
         all_classes = (
-            '__all__ = ["TlObject", "Plugins", '
+            '__all__ = ["TlObject", "Plugins", "ServerStats", "ScheduledEvent", "UpdateScheduledEvent", '
             + ", ".join(f'"{name}"' for name in types_names)
             + "]\n\n"
         )
         types_init_file.write(all_classes)
 
-        classes_import = f"from .td_types import TlObject, {', '.join(types_names)}\nfrom .plugins import Plugins"
+        classes_import = f"from .td_types import TlObject, {', '.join(types_names)}\nfrom .plugins import Plugins\nfrom .tdserver import ServerStats, ScheduledEvent, UpdateScheduledEvent"
         types_init_file.write(classes_import)
         types_init_file.write('\n\nTDLIB_VERSION = "{}"'.format(tl_json["version"]))
 

@@ -102,6 +102,9 @@ class Client(Decorators, Methods):
 
         td_log (:class:`~pytdbot.types.LogStream`, *optional*):
             Log stream. Default is ``None`` (Log to ``stdout``)
+
+        user_bot (``bool``, *optional*):
+            Pass ``True`` if this is a user-bot. Default is ``False``
     """
 
     def __init__(
@@ -226,6 +229,39 @@ class Client(Decorators, Methods):
         r"""Current authorization state"""
 
         return self.__authorization_state
+
+    async def getServerStats(
+        self,
+    ) -> Union["pytdbot.types.ServerStats", "pytdbot.types.Error"]:
+        """Returns TDLib Server stats"""
+
+        self._check_rabbitmq()
+
+        return await self.invoke({"@type": "getServerStats"})
+
+    async def scheduleEvent(
+        self, data: dict, send_at: int
+    ) -> Union["pytdbot.types.scheduledEvent", "pytdbot.types.Error"]:
+        """Schedule an event
+
+        Parameters:
+            data (:class:`dict`):
+                The event data to be scheduled
+
+            send_at (:class:`int`):
+                Unix timestamp when the event should be sent
+        """
+
+        self._check_rabbitmq()
+
+        if not isinstance(data, dict):
+            raise ValueError("data must be dict")
+        if not isinstance(send_at, (int, float)):
+            raise ValueError("send_at must be int")
+
+        return await self.invoke(
+            {"@type": "scheduleEvent", "data": data, "send_at": send_at}
+        )
 
     async def start(self) -> None:
         r"""Start pytdbot client"""
@@ -571,6 +607,9 @@ class Client(Decorators, Methods):
             )
         else:
             self.client_manager.send(self.client_id, request)
+
+    def _check_rabbitmq(self):
+        assert self.is_rabbitmq, "This method is only available for TDLib Server"
 
     def _check_init_args(self):
         if self.user_bot:
