@@ -241,7 +241,7 @@ class Client(Decorators, Methods):
 
     async def scheduleEvent(
         self, data: dict, send_at: int
-    ) -> Union["pytdbot.types.scheduledEvent", "pytdbot.types.Error"]:
+    ) -> Union["pytdbot.types.ScheduledEvent", "pytdbot.types.Error"]:
         """Schedule an event
 
         Parameters:
