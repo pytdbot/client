@@ -246,9 +246,11 @@ types_template = """class {class_name}({inherited_class}):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["{type_name}"]:
         return "{type_name}"
 
+    @classmethod
     def getClass(self) -> Literal["{class_type_name}"]:
         return "{class_type_name}"
 
@@ -410,10 +412,12 @@ if __name__ == "__main__":
         else:
             return 0
 
-    def getType(self):
+    @classmethod
+    def getType(cls):
         raise NotImplementedError
 
-    def getClass(self):
+    @classmethod
+    def getClass(cls):
         raise NotImplementedError
 
     def to_dict(self) -> dict:

@@ -2,8 +2,8 @@ from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
     MessageBoundMethods,
-    CallbackQueryBoundMethods,
     FileBoundMethods,
+    CallbackQueryBoundMethods,
 )
 import pytdbot
 
@@ -34,10 +34,12 @@ class TlObject:
         else:
             return 0
 
-    def getType(self):
+    @classmethod
+    def getType(cls):
         raise NotImplementedError
 
-    def getClass(self):
+    @classmethod
+    def getClass(cls):
         raise NotImplementedError
 
     def to_dict(self) -> dict:
@@ -1101,9 +1103,11 @@ class Error(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["error"]:
         return "error"
 
+    @classmethod
     def getClass(self) -> Literal["Error"]:
         return "Error"
 
@@ -1129,9 +1133,11 @@ class Ok(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["ok"]:
         return "ok"
 
+    @classmethod
     def getClass(self) -> Literal["Ok"]:
         return "Ok"
 
@@ -1162,9 +1168,11 @@ class AuthenticationCodeTypeTelegramMessage(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeTelegramMessage"]:
         return "authenticationCodeTypeTelegramMessage"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1198,9 +1206,11 @@ class AuthenticationCodeTypeSms(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeSms"]:
         return "authenticationCodeTypeSms"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1232,9 +1242,11 @@ class AuthenticationCodeTypeSmsWord(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeSmsWord"]:
         return "authenticationCodeTypeSmsWord"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1266,9 +1278,11 @@ class AuthenticationCodeTypeSmsPhrase(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeSmsPhrase"]:
         return "authenticationCodeTypeSmsPhrase"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1300,9 +1314,11 @@ class AuthenticationCodeTypeCall(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeCall"]:
         return "authenticationCodeTypeCall"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1334,9 +1350,11 @@ class AuthenticationCodeTypeFlashCall(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeFlashCall"]:
         return "authenticationCodeTypeFlashCall"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1373,9 +1391,11 @@ class AuthenticationCodeTypeMissedCall(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeMissedCall"]:
         return "authenticationCodeTypeMissedCall"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1417,9 +1437,11 @@ class AuthenticationCodeTypeFragment(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeFragment"]:
         return "authenticationCodeTypeFragment"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1465,9 +1487,11 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeFirebaseAndroid"]:
         return "authenticationCodeTypeFirebaseAndroid"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1520,9 +1544,11 @@ class AuthenticationCodeTypeFirebaseIos(TlObject, AuthenticationCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeTypeFirebaseIos"]:
         return "authenticationCodeTypeFirebaseIos"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeType"]:
         return "AuthenticationCodeType"
 
@@ -1606,9 +1632,11 @@ class AuthenticationCodeInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authenticationCodeInfo"]:
         return "authenticationCodeInfo"
 
+    @classmethod
     def getClass(self) -> Literal["AuthenticationCodeInfo"]:
         return "AuthenticationCodeInfo"
 
@@ -1654,9 +1682,11 @@ class EmailAddressAuthenticationCodeInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emailAddressAuthenticationCodeInfo"]:
         return "emailAddressAuthenticationCodeInfo"
 
+    @classmethod
     def getClass(self) -> Literal["EmailAddressAuthenticationCodeInfo"]:
         return "EmailAddressAuthenticationCodeInfo"
 
@@ -1693,9 +1723,11 @@ class EmailAddressAuthenticationCode(TlObject, EmailAddressAuthentication):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emailAddressAuthenticationCode"]:
         return "emailAddressAuthenticationCode"
 
+    @classmethod
     def getClass(self) -> Literal["EmailAddressAuthentication"]:
         return "EmailAddressAuthentication"
 
@@ -1727,9 +1759,11 @@ class EmailAddressAuthenticationAppleId(TlObject, EmailAddressAuthentication):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emailAddressAuthenticationAppleId"]:
         return "emailAddressAuthenticationAppleId"
 
+    @classmethod
     def getClass(self) -> Literal["EmailAddressAuthentication"]:
         return "EmailAddressAuthentication"
 
@@ -1761,9 +1795,11 @@ class EmailAddressAuthenticationGoogleId(TlObject, EmailAddressAuthentication):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emailAddressAuthenticationGoogleId"]:
         return "emailAddressAuthenticationGoogleId"
 
+    @classmethod
     def getClass(self) -> Literal["EmailAddressAuthentication"]:
         return "EmailAddressAuthentication"
 
@@ -1795,9 +1831,11 @@ class EmailAddressResetStateAvailable(TlObject, EmailAddressResetState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emailAddressResetStateAvailable"]:
         return "emailAddressResetStateAvailable"
 
+    @classmethod
     def getClass(self) -> Literal["EmailAddressResetState"]:
         return "EmailAddressResetState"
 
@@ -1829,9 +1867,11 @@ class EmailAddressResetStatePending(TlObject, EmailAddressResetState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emailAddressResetStatePending"]:
         return "emailAddressResetStatePending"
 
+    @classmethod
     def getClass(self) -> Literal["EmailAddressResetState"]:
         return "EmailAddressResetState"
 
@@ -1899,9 +1939,11 @@ class TextEntity(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntity"]:
         return "textEntity"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntity"]:
         return "TextEntity"
 
@@ -1940,9 +1982,11 @@ class TextEntities(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntities"]:
         return "textEntities"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntities"]:
         return "TextEntities"
 
@@ -1979,9 +2023,11 @@ class FormattedText(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["formattedText"]:
         return "formattedText"
 
+    @classmethod
     def getClass(self) -> Literal["FormattedText"]:
         return "FormattedText"
 
@@ -2029,9 +2075,11 @@ class TermsOfService(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["termsOfService"]:
         return "termsOfService"
 
+    @classmethod
     def getClass(self) -> Literal["TermsOfService"]:
         return "TermsOfService"
 
@@ -2063,9 +2111,11 @@ class AuthorizationStateWaitTdlibParameters(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateWaitTdlibParameters"]:
         return "authorizationStateWaitTdlibParameters"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2091,9 +2141,11 @@ class AuthorizationStateWaitPhoneNumber(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateWaitPhoneNumber"]:
         return "authorizationStateWaitPhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2124,9 +2176,11 @@ class AuthorizationStateWaitPremiumPurchase(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateWaitPremiumPurchase"]:
         return "authorizationStateWaitPremiumPurchase"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2167,9 +2221,11 @@ class AuthorizationStateWaitEmailAddress(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateWaitEmailAddress"]:
         return "authorizationStateWaitEmailAddress"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2229,9 +2285,11 @@ class AuthorizationStateWaitEmailCode(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateWaitEmailCode"]:
         return "authorizationStateWaitEmailCode"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2274,9 +2332,11 @@ class AuthorizationStateWaitCode(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateWaitCode"]:
         return "authorizationStateWaitCode"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2308,9 +2368,11 @@ class AuthorizationStateWaitOtherDeviceConfirmation(TlObject, AuthorizationState
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateWaitOtherDeviceConfirmation"]:
         return "authorizationStateWaitOtherDeviceConfirmation"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2344,9 +2406,11 @@ class AuthorizationStateWaitRegistration(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateWaitRegistration"]:
         return "authorizationStateWaitRegistration"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2401,9 +2465,11 @@ class AuthorizationStateWaitPassword(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateWaitPassword"]:
         return "authorizationStateWaitPassword"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2441,9 +2507,11 @@ class AuthorizationStateReady(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateReady"]:
         return "authorizationStateReady"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2467,9 +2535,11 @@ class AuthorizationStateLoggingOut(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateLoggingOut"]:
         return "authorizationStateLoggingOut"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2493,9 +2563,11 @@ class AuthorizationStateClosing(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateClosing"]:
         return "authorizationStateClosing"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2519,9 +2591,11 @@ class AuthorizationStateClosed(TlObject, AuthorizationState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["authorizationStateClosed"]:
         return "authorizationStateClosed"
 
+    @classmethod
     def getClass(self) -> Literal["AuthorizationState"]:
         return "AuthorizationState"
 
@@ -2554,9 +2628,11 @@ class FirebaseDeviceVerificationParametersSafetyNet(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["firebaseDeviceVerificationParametersSafetyNet"]:
         return "firebaseDeviceVerificationParametersSafetyNet"
 
+    @classmethod
     def getClass(self) -> Literal["FirebaseDeviceVerificationParameters"]:
         return "FirebaseDeviceVerificationParameters"
 
@@ -2597,9 +2673,11 @@ class FirebaseDeviceVerificationParametersPlayIntegrity(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["firebaseDeviceVerificationParametersPlayIntegrity"]:
         return "firebaseDeviceVerificationParametersPlayIntegrity"
 
+    @classmethod
     def getClass(self) -> Literal["FirebaseDeviceVerificationParameters"]:
         return "FirebaseDeviceVerificationParameters"
 
@@ -2679,9 +2757,11 @@ class PasswordState(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passwordState"]:
         return "passwordState"
 
+    @classmethod
     def getClass(self) -> Literal["PasswordState"]:
         return "PasswordState"
 
@@ -2734,9 +2814,11 @@ class RecoveryEmailAddress(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["recoveryEmailAddress"]:
         return "recoveryEmailAddress"
 
+    @classmethod
     def getClass(self) -> Literal["RecoveryEmailAddress"]:
         return "RecoveryEmailAddress"
 
@@ -2776,9 +2858,11 @@ class TemporaryPasswordState(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["temporaryPasswordState"]:
         return "temporaryPasswordState"
 
+    @classmethod
     def getClass(self) -> Literal["TemporaryPasswordState"]:
         return "TemporaryPasswordState"
 
@@ -2860,9 +2944,11 @@ class LocalFile(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["localFile"]:
         return "localFile"
 
+    @classmethod
     def getClass(self) -> Literal["LocalFile"]:
         return "LocalFile"
 
@@ -2942,9 +3028,11 @@ class RemoteFile(TlObject, FileBoundMethods):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["remoteFile"]:
         return "remoteFile"
 
+    @classmethod
     def getClass(self) -> Literal["RemoteFile"]:
         return "RemoteFile"
 
@@ -3016,9 +3104,11 @@ class File(TlObject, FileBoundMethods):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["file"]:
         return "file"
 
+    @classmethod
     def getClass(self) -> Literal["File"]:
         return "File"
 
@@ -3061,9 +3151,11 @@ class InputFileId(TlObject, InputFile):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputFileId"]:
         return "inputFileId"
 
+    @classmethod
     def getClass(self) -> Literal["InputFile"]:
         return "InputFile"
 
@@ -3095,9 +3187,11 @@ class InputFileRemote(TlObject, InputFile):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputFileRemote"]:
         return "inputFileRemote"
 
+    @classmethod
     def getClass(self) -> Literal["InputFile"]:
         return "InputFile"
 
@@ -3129,9 +3223,11 @@ class InputFileLocal(TlObject, InputFile):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputFileLocal"]:
         return "inputFileLocal"
 
+    @classmethod
     def getClass(self) -> Literal["InputFile"]:
         return "InputFile"
 
@@ -3175,9 +3271,11 @@ class InputFileGenerated(TlObject, InputFile):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputFileGenerated"]:
         return "inputFileGenerated"
 
+    @classmethod
     def getClass(self) -> Literal["InputFile"]:
         return "InputFile"
 
@@ -3243,9 +3341,11 @@ class PhotoSize(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["photoSize"]:
         return "photoSize"
 
+    @classmethod
     def getClass(self) -> Literal["PhotoSize"]:
         return "PhotoSize"
 
@@ -3298,9 +3398,11 @@ class Minithumbnail(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["minithumbnail"]:
         return "minithumbnail"
 
+    @classmethod
     def getClass(self) -> Literal["Minithumbnail"]:
         return "Minithumbnail"
 
@@ -3332,9 +3434,11 @@ class ThumbnailFormatJpeg(TlObject, ThumbnailFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["thumbnailFormatJpeg"]:
         return "thumbnailFormatJpeg"
 
+    @classmethod
     def getClass(self) -> Literal["ThumbnailFormat"]:
         return "ThumbnailFormat"
 
@@ -3358,9 +3462,11 @@ class ThumbnailFormatGif(TlObject, ThumbnailFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["thumbnailFormatGif"]:
         return "thumbnailFormatGif"
 
+    @classmethod
     def getClass(self) -> Literal["ThumbnailFormat"]:
         return "ThumbnailFormat"
 
@@ -3384,9 +3490,11 @@ class ThumbnailFormatMpeg4(TlObject, ThumbnailFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["thumbnailFormatMpeg4"]:
         return "thumbnailFormatMpeg4"
 
+    @classmethod
     def getClass(self) -> Literal["ThumbnailFormat"]:
         return "ThumbnailFormat"
 
@@ -3410,9 +3518,11 @@ class ThumbnailFormatPng(TlObject, ThumbnailFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["thumbnailFormatPng"]:
         return "thumbnailFormatPng"
 
+    @classmethod
     def getClass(self) -> Literal["ThumbnailFormat"]:
         return "ThumbnailFormat"
 
@@ -3436,9 +3546,11 @@ class ThumbnailFormatTgs(TlObject, ThumbnailFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["thumbnailFormatTgs"]:
         return "thumbnailFormatTgs"
 
+    @classmethod
     def getClass(self) -> Literal["ThumbnailFormat"]:
         return "ThumbnailFormat"
 
@@ -3462,9 +3574,11 @@ class ThumbnailFormatWebm(TlObject, ThumbnailFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["thumbnailFormatWebm"]:
         return "thumbnailFormatWebm"
 
+    @classmethod
     def getClass(self) -> Literal["ThumbnailFormat"]:
         return "ThumbnailFormat"
 
@@ -3488,9 +3602,11 @@ class ThumbnailFormatWebp(TlObject, ThumbnailFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["thumbnailFormatWebp"]:
         return "thumbnailFormatWebp"
 
+    @classmethod
     def getClass(self) -> Literal["ThumbnailFormat"]:
         return "ThumbnailFormat"
 
@@ -3551,9 +3667,11 @@ class Thumbnail(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["thumbnail"]:
         return "thumbnail"
 
+    @classmethod
     def getClass(self) -> Literal["Thumbnail"]:
         return "Thumbnail"
 
@@ -3587,9 +3705,11 @@ class MaskPointForehead(TlObject, MaskPoint):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["maskPointForehead"]:
         return "maskPointForehead"
 
+    @classmethod
     def getClass(self) -> Literal["MaskPoint"]:
         return "MaskPoint"
 
@@ -3613,9 +3733,11 @@ class MaskPointEyes(TlObject, MaskPoint):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["maskPointEyes"]:
         return "maskPointEyes"
 
+    @classmethod
     def getClass(self) -> Literal["MaskPoint"]:
         return "MaskPoint"
 
@@ -3639,9 +3761,11 @@ class MaskPointMouth(TlObject, MaskPoint):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["maskPointMouth"]:
         return "maskPointMouth"
 
+    @classmethod
     def getClass(self) -> Literal["MaskPoint"]:
         return "MaskPoint"
 
@@ -3665,9 +3789,11 @@ class MaskPointChin(TlObject, MaskPoint):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["maskPointChin"]:
         return "maskPointChin"
 
+    @classmethod
     def getClass(self) -> Literal["MaskPoint"]:
         return "MaskPoint"
 
@@ -3721,9 +3847,11 @@ class MaskPosition(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["maskPosition"]:
         return "maskPosition"
 
+    @classmethod
     def getClass(self) -> Literal["MaskPosition"]:
         return "MaskPosition"
 
@@ -3757,9 +3885,11 @@ class StickerFormatWebp(TlObject, StickerFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerFormatWebp"]:
         return "stickerFormatWebp"
 
+    @classmethod
     def getClass(self) -> Literal["StickerFormat"]:
         return "StickerFormat"
 
@@ -3783,9 +3913,11 @@ class StickerFormatTgs(TlObject, StickerFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerFormatTgs"]:
         return "stickerFormatTgs"
 
+    @classmethod
     def getClass(self) -> Literal["StickerFormat"]:
         return "StickerFormat"
 
@@ -3809,9 +3941,11 @@ class StickerFormatWebm(TlObject, StickerFormat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerFormatWebm"]:
         return "stickerFormatWebm"
 
+    @classmethod
     def getClass(self) -> Literal["StickerFormat"]:
         return "StickerFormat"
 
@@ -3835,9 +3969,11 @@ class StickerTypeRegular(TlObject, StickerType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerTypeRegular"]:
         return "stickerTypeRegular"
 
+    @classmethod
     def getClass(self) -> Literal["StickerType"]:
         return "StickerType"
 
@@ -3861,9 +3997,11 @@ class StickerTypeMask(TlObject, StickerType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerTypeMask"]:
         return "stickerTypeMask"
 
+    @classmethod
     def getClass(self) -> Literal["StickerType"]:
         return "StickerType"
 
@@ -3887,9 +4025,11 @@ class StickerTypeCustomEmoji(TlObject, StickerType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerTypeCustomEmoji"]:
         return "stickerTypeCustomEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["StickerType"]:
         return "StickerType"
 
@@ -3920,9 +4060,11 @@ class StickerFullTypeRegular(TlObject, StickerFullType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerFullTypeRegular"]:
         return "stickerFullTypeRegular"
 
+    @classmethod
     def getClass(self) -> Literal["StickerFullType"]:
         return "StickerFullType"
 
@@ -3954,9 +4096,11 @@ class StickerFullTypeMask(TlObject, StickerFullType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerFullTypeMask"]:
         return "stickerFullTypeMask"
 
+    @classmethod
     def getClass(self) -> Literal["StickerFullType"]:
         return "StickerFullType"
 
@@ -3995,9 +4139,11 @@ class StickerFullTypeCustomEmoji(TlObject, StickerFullType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerFullTypeCustomEmoji"]:
         return "stickerFullTypeCustomEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["StickerFullType"]:
         return "StickerFullType"
 
@@ -4034,9 +4180,11 @@ class ClosedVectorPath(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["closedVectorPath"]:
         return "closedVectorPath"
 
+    @classmethod
     def getClass(self) -> Literal["ClosedVectorPath"]:
         return "ClosedVectorPath"
 
@@ -4068,9 +4216,11 @@ class Outline(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["outline"]:
         return "outline"
 
+    @classmethod
     def getClass(self) -> Literal["Outline"]:
         return "Outline"
 
@@ -4129,9 +4279,11 @@ class PollOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pollOption"]:
         return "pollOption"
 
+    @classmethod
     def getClass(self) -> Literal["PollOption"]:
         return "PollOption"
 
@@ -4174,9 +4326,11 @@ class PollTypeRegular(TlObject, PollType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pollTypeRegular"]:
         return "pollTypeRegular"
 
+    @classmethod
     def getClass(self) -> Literal["PollType"]:
         return "PollType"
 
@@ -4220,9 +4374,11 @@ class PollTypeQuiz(TlObject, PollType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pollTypeQuiz"]:
         return "pollTypeQuiz"
 
+    @classmethod
     def getClass(self) -> Literal["PollType"]:
         return "PollType"
 
@@ -4280,9 +4436,11 @@ class ChecklistTask(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checklistTask"]:
         return "checklistTask"
 
+    @classmethod
     def getClass(self) -> Literal["ChecklistTask"]:
         return "ChecklistTask"
 
@@ -4328,9 +4486,11 @@ class InputChecklistTask(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputChecklistTask"]:
         return "inputChecklistTask"
 
+    @classmethod
     def getClass(self) -> Literal["InputChecklistTask"]:
         return "InputChecklistTask"
 
@@ -4396,9 +4556,11 @@ class Checklist(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checklist"]:
         return "checklist"
 
+    @classmethod
     def getClass(self) -> Literal["Checklist"]:
         return "Checklist"
 
@@ -4468,9 +4630,11 @@ class InputChecklist(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputChecklist"]:
         return "inputChecklist"
 
+    @classmethod
     def getClass(self) -> Literal["InputChecklist"]:
         return "InputChecklist"
 
@@ -4564,9 +4728,11 @@ class Animation(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["animation"]:
         return "animation"
 
+    @classmethod
     def getClass(self) -> Literal["Animation"]:
         return "Animation"
 
@@ -4670,9 +4836,11 @@ class Audio(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["audio"]:
         return "audio"
 
+    @classmethod
     def getClass(self) -> Literal["Audio"]:
         return "Audio"
 
@@ -4752,9 +4920,11 @@ class Document(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["document"]:
         return "document"
 
+    @classmethod
     def getClass(self) -> Literal["Document"]:
         return "Document"
 
@@ -4812,9 +4982,11 @@ class Photo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["photo"]:
         return "photo"
 
+    @classmethod
     def getClass(self) -> Literal["Photo"]:
         return "Photo"
 
@@ -4911,9 +5083,11 @@ class Sticker(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sticker"]:
         return "sticker"
 
+    @classmethod
     def getClass(self) -> Literal["Sticker"]:
         return "Sticker"
 
@@ -5021,9 +5195,11 @@ class Video(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["video"]:
         return "video"
 
+    @classmethod
     def getClass(self) -> Literal["Video"]:
         return "Video"
 
@@ -5120,9 +5296,11 @@ class VideoNote(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["videoNote"]:
         return "videoNote"
 
+    @classmethod
     def getClass(self) -> Literal["VideoNote"]:
         return "VideoNote"
 
@@ -5203,9 +5381,11 @@ class VoiceNote(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["voiceNote"]:
         return "voiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["VoiceNote"]:
         return "VoiceNote"
 
@@ -5277,9 +5457,11 @@ class AnimatedEmoji(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["animatedEmoji"]:
         return "animatedEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["AnimatedEmoji"]:
         return "AnimatedEmoji"
 
@@ -5349,9 +5531,11 @@ class Contact(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["contact"]:
         return "contact"
 
+    @classmethod
     def getClass(self) -> Literal["Contact"]:
         return "Contact"
 
@@ -5409,9 +5593,11 @@ class Location(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["location"]:
         return "location"
 
+    @classmethod
     def getClass(self) -> Literal["Location"]:
         return "Location"
 
@@ -5483,9 +5669,11 @@ class Venue(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["venue"]:
         return "venue"
 
+    @classmethod
     def getClass(self) -> Literal["Venue"]:
         return "Venue"
 
@@ -5569,9 +5757,11 @@ class Game(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["game"]:
         return "game"
 
+    @classmethod
     def getClass(self) -> Literal["Game"]:
         return "Game"
 
@@ -5645,9 +5835,11 @@ class WebApp(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["webApp"]:
         return "webApp"
 
+    @classmethod
     def getClass(self) -> Literal["WebApp"]:
         return "WebApp"
 
@@ -5747,9 +5939,11 @@ class Poll(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["poll"]:
         return "poll"
 
+    @classmethod
     def getClass(self) -> Literal["Poll"]:
         return "Poll"
 
@@ -5835,9 +6029,11 @@ class AlternativeVideo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["alternativeVideo"]:
         return "alternativeVideo"
 
+    @classmethod
     def getClass(self) -> Literal["AlternativeVideo"]:
         return "AlternativeVideo"
 
@@ -5903,9 +6099,11 @@ class VideoStoryboard(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["videoStoryboard"]:
         return "videoStoryboard"
 
+    @classmethod
     def getClass(self) -> Literal["VideoStoryboard"]:
         return "VideoStoryboard"
 
@@ -5985,9 +6183,11 @@ class Background(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["background"]:
         return "background"
 
+    @classmethod
     def getClass(self) -> Literal["Background"]:
         return "Background"
 
@@ -6032,9 +6232,11 @@ class Backgrounds(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["backgrounds"]:
         return "backgrounds"
 
+    @classmethod
     def getClass(self) -> Literal["Backgrounds"]:
         return "Backgrounds"
 
@@ -6073,9 +6275,11 @@ class ChatBackground(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBackground"]:
         return "chatBackground"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBackground"]:
         return "ChatBackground"
 
@@ -6145,9 +6349,11 @@ class ProfilePhoto(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["profilePhoto"]:
         return "profilePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["ProfilePhoto"]:
         return "ProfilePhoto"
 
@@ -6219,9 +6425,11 @@ class ChatPhotoInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatPhotoInfo"]:
         return "chatPhotoInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatPhotoInfo"]:
         return "ChatPhotoInfo"
 
@@ -6257,9 +6465,11 @@ class UserTypeRegular(TlObject, UserType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userTypeRegular"]:
         return "userTypeRegular"
 
+    @classmethod
     def getClass(self) -> Literal["UserType"]:
         return "UserType"
 
@@ -6283,9 +6493,11 @@ class UserTypeDeleted(TlObject, UserType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userTypeDeleted"]:
         return "userTypeDeleted"
 
+    @classmethod
     def getClass(self) -> Literal["UserType"]:
         return "UserType"
 
@@ -6375,9 +6587,11 @@ class UserTypeBot(TlObject, UserType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userTypeBot"]:
         return "userTypeBot"
 
+    @classmethod
     def getClass(self) -> Literal["UserType"]:
         return "UserType"
 
@@ -6431,9 +6645,11 @@ class UserTypeUnknown(TlObject, UserType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userTypeUnknown"]:
         return "userTypeUnknown"
 
+    @classmethod
     def getClass(self) -> Literal["UserType"]:
         return "UserType"
 
@@ -6469,9 +6685,11 @@ class BotCommand(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botCommand"]:
         return "botCommand"
 
+    @classmethod
     def getClass(self) -> Literal["BotCommand"]:
         return "BotCommand"
 
@@ -6513,9 +6731,11 @@ class BotCommands(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botCommands"]:
         return "botCommands"
 
+    @classmethod
     def getClass(self) -> Literal["BotCommands"]:
         return "BotCommands"
 
@@ -6557,9 +6777,11 @@ class BotMenuButton(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botMenuButton"]:
         return "botMenuButton"
 
+    @classmethod
     def getClass(self) -> Literal["BotMenuButton"]:
         return "BotMenuButton"
 
@@ -6615,9 +6837,11 @@ class BotVerificationParameters(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botVerificationParameters"]:
         return "botVerificationParameters"
 
+    @classmethod
     def getClass(self) -> Literal["BotVerificationParameters"]:
         return "BotVerificationParameters"
 
@@ -6677,9 +6901,11 @@ class BotVerification(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botVerification"]:
         return "botVerification"
 
+    @classmethod
     def getClass(self) -> Literal["BotVerification"]:
         return "BotVerification"
 
@@ -6741,9 +6967,11 @@ class VerificationStatus(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["verificationStatus"]:
         return "verificationStatus"
 
+    @classmethod
     def getClass(self) -> Literal["VerificationStatus"]:
         return "VerificationStatus"
 
@@ -6791,9 +7019,11 @@ class ChatLocation(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatLocation"]:
         return "chatLocation"
 
+    @classmethod
     def getClass(self) -> Literal["ChatLocation"]:
         return "ChatLocation"
 
@@ -6840,9 +7070,11 @@ class Birthdate(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["birthdate"]:
         return "birthdate"
 
+    @classmethod
     def getClass(self) -> Literal["Birthdate"]:
         return "Birthdate"
 
@@ -6886,9 +7118,11 @@ class CloseBirthdayUser(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["closeBirthdayUser"]:
         return "closeBirthdayUser"
 
+    @classmethod
     def getClass(self) -> Literal["CloseBirthdayUser"]:
         return "CloseBirthdayUser"
 
@@ -6918,9 +7152,11 @@ class BusinessAwayMessageScheduleAlways(TlObject, BusinessAwayMessageSchedule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessAwayMessageScheduleAlways"]:
         return "businessAwayMessageScheduleAlways"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessAwayMessageSchedule"]:
         return "BusinessAwayMessageSchedule"
 
@@ -6946,9 +7182,11 @@ class BusinessAwayMessageScheduleOutsideOfOpeningHours(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessAwayMessageScheduleOutsideOfOpeningHours"]:
         return "businessAwayMessageScheduleOutsideOfOpeningHours"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessAwayMessageSchedule"]:
         return "BusinessAwayMessageSchedule"
 
@@ -6986,9 +7224,11 @@ class BusinessAwayMessageScheduleCustom(TlObject, BusinessAwayMessageSchedule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessAwayMessageScheduleCustom"]:
         return "businessAwayMessageScheduleCustom"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessAwayMessageSchedule"]:
         return "BusinessAwayMessageSchedule"
 
@@ -7030,9 +7270,11 @@ class BusinessLocation(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessLocation"]:
         return "businessLocation"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessLocation"]:
         return "BusinessLocation"
 
@@ -7108,9 +7350,11 @@ class BusinessRecipients(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessRecipients"]:
         return "businessRecipients"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessRecipients"]:
         return "BusinessRecipients"
 
@@ -7183,9 +7427,11 @@ class BusinessAwayMessageSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessAwayMessageSettings"]:
         return "businessAwayMessageSettings"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessAwayMessageSettings"]:
         return "BusinessAwayMessageSettings"
 
@@ -7241,9 +7487,11 @@ class BusinessGreetingMessageSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessGreetingMessageSettings"]:
         return "businessGreetingMessageSettings"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessGreetingMessageSettings"]:
         return "BusinessGreetingMessageSettings"
 
@@ -7363,9 +7611,11 @@ class BusinessBotRights(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessBotRights"]:
         return "businessBotRights"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessBotRights"]:
         return "BusinessBotRights"
 
@@ -7453,9 +7703,11 @@ class BusinessConnectedBot(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessConnectedBot"]:
         return "businessConnectedBot"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessConnectedBot"]:
         return "BusinessConnectedBot"
 
@@ -7506,9 +7758,11 @@ class BusinessStartPage(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessStartPage"]:
         return "businessStartPage"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessStartPage"]:
         return "BusinessStartPage"
 
@@ -7561,9 +7815,11 @@ class InputBusinessStartPage(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputBusinessStartPage"]:
         return "inputBusinessStartPage"
 
+    @classmethod
     def getClass(self) -> Literal["InputBusinessStartPage"]:
         return "InputBusinessStartPage"
 
@@ -7607,9 +7863,11 @@ class BusinessOpeningHoursInterval(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessOpeningHoursInterval"]:
         return "businessOpeningHoursInterval"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessOpeningHoursInterval"]:
         return "BusinessOpeningHoursInterval"
 
@@ -7655,9 +7913,11 @@ class BusinessOpeningHours(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessOpeningHours"]:
         return "businessOpeningHours"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessOpeningHours"]:
         return "BusinessOpeningHours"
 
@@ -7745,9 +8005,11 @@ class BusinessInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessInfo"]:
         return "businessInfo"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessInfo"]:
         return "BusinessInfo"
 
@@ -7819,9 +8081,11 @@ class BusinessChatLink(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessChatLink"]:
         return "businessChatLink"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessChatLink"]:
         return "BusinessChatLink"
 
@@ -7862,9 +8126,11 @@ class BusinessChatLinks(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessChatLinks"]:
         return "businessChatLinks"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessChatLinks"]:
         return "BusinessChatLinks"
 
@@ -7901,9 +8167,11 @@ class InputBusinessChatLink(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputBusinessChatLink"]:
         return "inputBusinessChatLink"
 
+    @classmethod
     def getClass(self) -> Literal["InputBusinessChatLink"]:
         return "InputBusinessChatLink"
 
@@ -7941,9 +8209,11 @@ class BusinessChatLinkInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessChatLinkInfo"]:
         return "businessChatLinkInfo"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessChatLinkInfo"]:
         return "BusinessChatLinkInfo"
 
@@ -7981,9 +8251,11 @@ class ChatPhotoStickerTypeRegularOrMask(TlObject, ChatPhotoStickerType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatPhotoStickerTypeRegularOrMask"]:
         return "chatPhotoStickerTypeRegularOrMask"
 
+    @classmethod
     def getClass(self) -> Literal["ChatPhotoStickerType"]:
         return "ChatPhotoStickerType"
 
@@ -8020,9 +8292,11 @@ class ChatPhotoStickerTypeCustomEmoji(TlObject, ChatPhotoStickerType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatPhotoStickerTypeCustomEmoji"]:
         return "chatPhotoStickerTypeCustomEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["ChatPhotoStickerType"]:
         return "ChatPhotoStickerType"
 
@@ -8068,9 +8342,11 @@ class ChatPhotoSticker(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatPhotoSticker"]:
         return "chatPhotoSticker"
 
+    @classmethod
     def getClass(self) -> Literal["ChatPhotoSticker"]:
         return "ChatPhotoSticker"
 
@@ -8119,9 +8395,11 @@ class AnimatedChatPhoto(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["animatedChatPhoto"]:
         return "animatedChatPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["AnimatedChatPhoto"]:
         return "AnimatedChatPhoto"
 
@@ -8199,9 +8477,11 @@ class ChatPhoto(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatPhoto"]:
         return "chatPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["ChatPhoto"]:
         return "ChatPhoto"
 
@@ -8253,9 +8533,11 @@ class ChatPhotos(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatPhotos"]:
         return "chatPhotos"
 
+    @classmethod
     def getClass(self) -> Literal["ChatPhotos"]:
         return "ChatPhotos"
 
@@ -8292,9 +8574,11 @@ class InputChatPhotoPrevious(TlObject, InputChatPhoto):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputChatPhotoPrevious"]:
         return "inputChatPhotoPrevious"
 
+    @classmethod
     def getClass(self) -> Literal["InputChatPhoto"]:
         return "InputChatPhoto"
 
@@ -8328,9 +8612,11 @@ class InputChatPhotoStatic(TlObject, InputChatPhoto):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputChatPhotoStatic"]:
         return "inputChatPhotoStatic"
 
+    @classmethod
     def getClass(self) -> Literal["InputChatPhoto"]:
         return "InputChatPhoto"
 
@@ -8371,9 +8657,11 @@ class InputChatPhotoAnimation(TlObject, InputChatPhoto):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputChatPhotoAnimation"]:
         return "inputChatPhotoAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["InputChatPhoto"]:
         return "InputChatPhoto"
 
@@ -8410,9 +8698,11 @@ class InputChatPhotoSticker(TlObject, InputChatPhoto):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputChatPhotoSticker"]:
         return "inputChatPhotoSticker"
 
+    @classmethod
     def getClass(self) -> Literal["InputChatPhoto"]:
         return "InputChatPhoto"
 
@@ -8525,9 +8815,11 @@ class ChatPermissions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatPermissions"]:
         return "chatPermissions"
 
+    @classmethod
     def getClass(self) -> Literal["ChatPermissions"]:
         return "ChatPermissions"
 
@@ -8679,9 +8971,11 @@ class ChatAdministratorRights(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatAdministratorRights"]:
         return "chatAdministratorRights"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAdministratorRights"]:
         return "ChatAdministratorRights"
 
@@ -8751,9 +9045,11 @@ class StarAmount(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starAmount"]:
         return "starAmount"
 
+    @classmethod
     def getClass(self) -> Literal["StarAmount"]:
         return "StarAmount"
 
@@ -8795,9 +9091,11 @@ class StarSubscriptionTypeChannel(TlObject, StarSubscriptionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starSubscriptionTypeChannel"]:
         return "starSubscriptionTypeChannel"
 
+    @classmethod
     def getClass(self) -> Literal["StarSubscriptionType"]:
         return "StarSubscriptionType"
 
@@ -8855,9 +9153,11 @@ class StarSubscriptionTypeBot(TlObject, StarSubscriptionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starSubscriptionTypeBot"]:
         return "starSubscriptionTypeBot"
 
+    @classmethod
     def getClass(self) -> Literal["StarSubscriptionType"]:
         return "StarSubscriptionType"
 
@@ -8903,9 +9203,11 @@ class StarSubscriptionPricing(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starSubscriptionPricing"]:
         return "starSubscriptionPricing"
 
+    @classmethod
     def getClass(self) -> Literal["StarSubscriptionPricing"]:
         return "StarSubscriptionPricing"
 
@@ -8983,9 +9285,11 @@ class StarSubscription(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starSubscription"]:
         return "starSubscription"
 
+    @classmethod
     def getClass(self) -> Literal["StarSubscription"]:
         return "StarSubscription"
 
@@ -9053,9 +9357,11 @@ class StarSubscriptions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starSubscriptions"]:
         return "starSubscriptions"
 
+    @classmethod
     def getClass(self) -> Literal["StarSubscriptions"]:
         return "StarSubscriptions"
 
@@ -9089,9 +9395,11 @@ class AffiliateTypeCurrentUser(TlObject, AffiliateType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["affiliateTypeCurrentUser"]:
         return "affiliateTypeCurrentUser"
 
+    @classmethod
     def getClass(self) -> Literal["AffiliateType"]:
         return "AffiliateType"
 
@@ -9122,9 +9430,11 @@ class AffiliateTypeBot(TlObject, AffiliateType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["affiliateTypeBot"]:
         return "affiliateTypeBot"
 
+    @classmethod
     def getClass(self) -> Literal["AffiliateType"]:
         return "AffiliateType"
 
@@ -9156,9 +9466,11 @@ class AffiliateTypeChannel(TlObject, AffiliateType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["affiliateTypeChannel"]:
         return "affiliateTypeChannel"
 
+    @classmethod
     def getClass(self) -> Literal["AffiliateType"]:
         return "AffiliateType"
 
@@ -9183,9 +9495,11 @@ class AffiliateProgramSortOrderProfitability(TlObject, AffiliateProgramSortOrder
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["affiliateProgramSortOrderProfitability"]:
         return "affiliateProgramSortOrderProfitability"
 
+    @classmethod
     def getClass(self) -> Literal["AffiliateProgramSortOrder"]:
         return "AffiliateProgramSortOrder"
 
@@ -9211,9 +9525,11 @@ class AffiliateProgramSortOrderCreationDate(TlObject, AffiliateProgramSortOrder)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["affiliateProgramSortOrderCreationDate"]:
         return "affiliateProgramSortOrderCreationDate"
 
+    @classmethod
     def getClass(self) -> Literal["AffiliateProgramSortOrder"]:
         return "AffiliateProgramSortOrder"
 
@@ -9239,9 +9555,11 @@ class AffiliateProgramSortOrderRevenue(TlObject, AffiliateProgramSortOrder):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["affiliateProgramSortOrderRevenue"]:
         return "affiliateProgramSortOrderRevenue"
 
+    @classmethod
     def getClass(self) -> Literal["AffiliateProgramSortOrder"]:
         return "AffiliateProgramSortOrder"
 
@@ -9277,9 +9595,11 @@ class AffiliateProgramParameters(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["affiliateProgramParameters"]:
         return "affiliateProgramParameters"
 
+    @classmethod
     def getClass(self) -> Literal["AffiliateProgramParameters"]:
         return "AffiliateProgramParameters"
 
@@ -9333,9 +9653,11 @@ class AffiliateProgramInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["affiliateProgramInfo"]:
         return "affiliateProgramInfo"
 
+    @classmethod
     def getClass(self) -> Literal["AffiliateProgramInfo"]:
         return "AffiliateProgramInfo"
 
@@ -9391,9 +9713,11 @@ class AffiliateInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["affiliateInfo"]:
         return "affiliateInfo"
 
+    @classmethod
     def getClass(self) -> Literal["AffiliateInfo"]:
         return "AffiliateInfo"
 
@@ -9437,9 +9761,11 @@ class FoundAffiliateProgram(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundAffiliateProgram"]:
         return "foundAffiliateProgram"
 
+    @classmethod
     def getClass(self) -> Literal["FoundAffiliateProgram"]:
         return "FoundAffiliateProgram"
 
@@ -9491,9 +9817,11 @@ class FoundAffiliatePrograms(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundAffiliatePrograms"]:
         return "foundAffiliatePrograms"
 
+    @classmethod
     def getClass(self) -> Literal["FoundAffiliatePrograms"]:
         return "FoundAffiliatePrograms"
 
@@ -9571,9 +9899,11 @@ class ConnectedAffiliateProgram(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["connectedAffiliateProgram"]:
         return "connectedAffiliateProgram"
 
+    @classmethod
     def getClass(self) -> Literal["ConnectedAffiliateProgram"]:
         return "ConnectedAffiliateProgram"
 
@@ -9635,9 +9965,11 @@ class ConnectedAffiliatePrograms(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["connectedAffiliatePrograms"]:
         return "connectedAffiliatePrograms"
 
+    @classmethod
     def getClass(self) -> Literal["ConnectedAffiliatePrograms"]:
         return "ConnectedAffiliatePrograms"
 
@@ -9688,9 +10020,11 @@ class ProductInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["productInfo"]:
         return "productInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ProductInfo"]:
         return "ProductInfo"
 
@@ -9813,9 +10147,11 @@ class PremiumPaymentOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumPaymentOption"]:
         return "premiumPaymentOption"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumPaymentOption"]:
         return "PremiumPaymentOption"
 
@@ -9881,9 +10217,11 @@ class PremiumStatePaymentOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumStatePaymentOption"]:
         return "premiumStatePaymentOption"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumStatePaymentOption"]:
         return "PremiumStatePaymentOption"
 
@@ -9963,9 +10301,11 @@ class PremiumGiftPaymentOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumGiftPaymentOption"]:
         return "premiumGiftPaymentOption"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumGiftPaymentOption"]:
         return "PremiumGiftPaymentOption"
 
@@ -10012,9 +10352,11 @@ class PremiumGiftPaymentOptions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumGiftPaymentOptions"]:
         return "premiumGiftPaymentOptions"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumGiftPaymentOptions"]:
         return "PremiumGiftPaymentOptions"
 
@@ -10079,9 +10421,11 @@ class PremiumGiveawayPaymentOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumGiveawayPaymentOption"]:
         return "premiumGiveawayPaymentOption"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumGiveawayPaymentOption"]:
         return "PremiumGiveawayPaymentOption"
 
@@ -10128,9 +10472,11 @@ class PremiumGiveawayPaymentOptions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumGiveawayPaymentOptions"]:
         return "premiumGiveawayPaymentOptions"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumGiveawayPaymentOptions"]:
         return "PremiumGiveawayPaymentOptions"
 
@@ -10201,9 +10547,11 @@ class PremiumGiftCodeInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumGiftCodeInfo"]:
         return "premiumGiftCodeInfo"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumGiftCodeInfo"]:
         return "PremiumGiftCodeInfo"
 
@@ -10277,9 +10625,11 @@ class StarPaymentOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starPaymentOption"]:
         return "starPaymentOption"
 
+    @classmethod
     def getClass(self) -> Literal["StarPaymentOption"]:
         return "StarPaymentOption"
 
@@ -10322,9 +10672,11 @@ class StarPaymentOptions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starPaymentOptions"]:
         return "starPaymentOptions"
 
+    @classmethod
     def getClass(self) -> Literal["StarPaymentOptions"]:
         return "StarPaymentOptions"
 
@@ -10368,9 +10720,11 @@ class StarGiveawayWinnerOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starGiveawayWinnerOption"]:
         return "starGiveawayWinnerOption"
 
+    @classmethod
     def getClass(self) -> Literal["StarGiveawayWinnerOption"]:
         return "StarGiveawayWinnerOption"
 
@@ -10454,9 +10808,11 @@ class StarGiveawayPaymentOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starGiveawayPaymentOption"]:
         return "starGiveawayPaymentOption"
 
+    @classmethod
     def getClass(self) -> Literal["StarGiveawayPaymentOption"]:
         return "StarGiveawayPaymentOption"
 
@@ -10505,9 +10861,11 @@ class StarGiveawayPaymentOptions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starGiveawayPaymentOptions"]:
         return "starGiveawayPaymentOptions"
 
+    @classmethod
     def getClass(self) -> Literal["StarGiveawayPaymentOptions"]:
         return "StarGiveawayPaymentOptions"
 
@@ -10560,9 +10918,11 @@ class AcceptedGiftTypes(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["acceptedGiftTypes"]:
         return "acceptedGiftTypes"
 
+    @classmethod
     def getClass(self) -> Literal["AcceptedGiftTypes"]:
         return "AcceptedGiftTypes"
 
@@ -10612,9 +10972,11 @@ class GiftSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giftSettings"]:
         return "giftSettings"
 
+    @classmethod
     def getClass(self) -> Literal["GiftSettings"]:
         return "GiftSettings"
 
@@ -10663,9 +11025,11 @@ class UpgradedGiftModel(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftModel"]:
         return "upgradedGiftModel"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftModel"]:
         return "UpgradedGiftModel"
 
@@ -10716,9 +11080,11 @@ class UpgradedGiftSymbol(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftSymbol"]:
         return "upgradedGiftSymbol"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftSymbol"]:
         return "UpgradedGiftSymbol"
 
@@ -10778,9 +11144,11 @@ class UpgradedGiftBackdropColors(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftBackdropColors"]:
         return "upgradedGiftBackdropColors"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftBackdropColors"]:
         return "UpgradedGiftBackdropColors"
 
@@ -10842,9 +11210,11 @@ class UpgradedGiftBackdrop(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftBackdrop"]:
         return "upgradedGiftBackdrop"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftBackdrop"]:
         return "UpgradedGiftBackdrop"
 
@@ -10908,9 +11278,11 @@ class UpgradedGiftOriginalDetails(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftOriginalDetails"]:
         return "upgradedGiftOriginalDetails"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftOriginalDetails"]:
         return "UpgradedGiftOriginalDetails"
 
@@ -11008,9 +11380,11 @@ class Gift(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["gift"]:
         return "gift"
 
+    @classmethod
     def getClass(self) -> Literal["Gift"]:
         return "Gift"
 
@@ -11154,9 +11528,11 @@ class UpgradedGift(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGift"]:
         return "upgradedGift"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGift"]:
         return "UpgradedGift"
 
@@ -11264,9 +11640,11 @@ class UpgradeGiftResult(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradeGiftResult"]:
         return "upgradeGiftResult"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradeGiftResult"]:
         return "UpgradeGiftResult"
 
@@ -11336,9 +11714,11 @@ class AvailableGift(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["availableGift"]:
         return "availableGift"
 
+    @classmethod
     def getClass(self) -> Literal["AvailableGift"]:
         return "AvailableGift"
 
@@ -11379,9 +11759,11 @@ class AvailableGifts(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["availableGifts"]:
         return "availableGifts"
 
+    @classmethod
     def getClass(self) -> Literal["AvailableGifts"]:
         return "AvailableGifts"
 
@@ -11413,9 +11795,11 @@ class UpgradedGiftAttributeIdModel(TlObject, UpgradedGiftAttributeId):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftAttributeIdModel"]:
         return "upgradedGiftAttributeIdModel"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftAttributeId"]:
         return "UpgradedGiftAttributeId"
 
@@ -11447,9 +11831,11 @@ class UpgradedGiftAttributeIdSymbol(TlObject, UpgradedGiftAttributeId):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftAttributeIdSymbol"]:
         return "upgradedGiftAttributeIdSymbol"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftAttributeId"]:
         return "UpgradedGiftAttributeId"
 
@@ -11481,9 +11867,11 @@ class UpgradedGiftAttributeIdBackdrop(TlObject, UpgradedGiftAttributeId):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftAttributeIdBackdrop"]:
         return "upgradedGiftAttributeIdBackdrop"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftAttributeId"]:
         return "UpgradedGiftAttributeId"
 
@@ -11520,9 +11908,11 @@ class UpgradedGiftModelCount(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftModelCount"]:
         return "upgradedGiftModelCount"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftModelCount"]:
         return "UpgradedGiftModelCount"
 
@@ -11564,9 +11954,11 @@ class UpgradedGiftSymbolCount(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftSymbolCount"]:
         return "upgradedGiftSymbolCount"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftSymbolCount"]:
         return "UpgradedGiftSymbolCount"
 
@@ -11610,9 +12002,11 @@ class UpgradedGiftBackdropCount(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["upgradedGiftBackdropCount"]:
         return "upgradedGiftBackdropCount"
 
+    @classmethod
     def getClass(self) -> Literal["UpgradedGiftBackdropCount"]:
         return "UpgradedGiftBackdropCount"
 
@@ -11642,9 +12036,11 @@ class GiftForResaleOrderPrice(TlObject, GiftForResaleOrder):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giftForResaleOrderPrice"]:
         return "giftForResaleOrderPrice"
 
+    @classmethod
     def getClass(self) -> Literal["GiftForResaleOrder"]:
         return "GiftForResaleOrder"
 
@@ -11668,9 +12064,11 @@ class GiftForResaleOrderPriceChangeDate(TlObject, GiftForResaleOrder):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giftForResaleOrderPriceChangeDate"]:
         return "giftForResaleOrderPriceChangeDate"
 
+    @classmethod
     def getClass(self) -> Literal["GiftForResaleOrder"]:
         return "GiftForResaleOrder"
 
@@ -11694,9 +12092,11 @@ class GiftForResaleOrderNumber(TlObject, GiftForResaleOrder):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giftForResaleOrderNumber"]:
         return "giftForResaleOrderNumber"
 
+    @classmethod
     def getClass(self) -> Literal["GiftForResaleOrder"]:
         return "GiftForResaleOrder"
 
@@ -11732,9 +12132,11 @@ class GiftForResale(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giftForResale"]:
         return "giftForResale"
 
+    @classmethod
     def getClass(self) -> Literal["GiftForResale"]:
         return "GiftForResale"
 
@@ -11804,9 +12206,11 @@ class GiftsForResale(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giftsForResale"]:
         return "giftsForResale"
 
+    @classmethod
     def getClass(self) -> Literal["GiftsForResale"]:
         return "GiftsForResale"
 
@@ -11851,9 +12255,11 @@ class SentGiftRegular(TlObject, SentGift):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sentGiftRegular"]:
         return "sentGiftRegular"
 
+    @classmethod
     def getClass(self) -> Literal["SentGift"]:
         return "SentGift"
 
@@ -11885,9 +12291,11 @@ class SentGiftUpgraded(TlObject, SentGift):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sentGiftUpgraded"]:
         return "sentGiftUpgraded"
 
+    @classmethod
     def getClass(self) -> Literal["SentGift"]:
         return "SentGift"
 
@@ -12018,9 +12426,11 @@ class ReceivedGift(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["receivedGift"]:
         return "receivedGift"
 
+    @classmethod
     def getClass(self) -> Literal["ReceivedGift"]:
         return "ReceivedGift"
 
@@ -12110,9 +12520,11 @@ class ReceivedGifts(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["receivedGifts"]:
         return "receivedGifts"
 
+    @classmethod
     def getClass(self) -> Literal["ReceivedGifts"]:
         return "ReceivedGifts"
 
@@ -12170,9 +12582,11 @@ class GiftUpgradePreview(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giftUpgradePreview"]:
         return "giftUpgradePreview"
 
+    @classmethod
     def getClass(self) -> Literal["GiftUpgradePreview"]:
         return "GiftUpgradePreview"
 
@@ -12204,9 +12618,11 @@ class StarTransactionDirectionIncoming(TlObject, StarTransactionDirection):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionDirectionIncoming"]:
         return "starTransactionDirectionIncoming"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionDirection"]:
         return "StarTransactionDirection"
 
@@ -12230,9 +12646,11 @@ class StarTransactionDirectionOutgoing(TlObject, StarTransactionDirection):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionDirectionOutgoing"]:
         return "starTransactionDirectionOutgoing"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionDirection"]:
         return "StarTransactionDirection"
 
@@ -12256,9 +12674,11 @@ class StarTransactionTypePremiumBotDeposit(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypePremiumBotDeposit"]:
         return "starTransactionTypePremiumBotDeposit"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12284,9 +12704,11 @@ class StarTransactionTypeAppStoreDeposit(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeAppStoreDeposit"]:
         return "starTransactionTypeAppStoreDeposit"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12310,9 +12732,11 @@ class StarTransactionTypeGooglePlayDeposit(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeGooglePlayDeposit"]:
         return "starTransactionTypeGooglePlayDeposit"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12338,9 +12762,11 @@ class StarTransactionTypeFragmentDeposit(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeFragmentDeposit"]:
         return "starTransactionTypeFragmentDeposit"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12376,9 +12802,11 @@ class StarTransactionTypeUserDeposit(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeUserDeposit"]:
         return "starTransactionTypeUserDeposit"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12420,9 +12848,11 @@ class StarTransactionTypeGiveawayDeposit(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeGiveawayDeposit"]:
         return "starTransactionTypeGiveawayDeposit"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12464,9 +12894,11 @@ class StarTransactionTypeFragmentWithdrawal(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeFragmentWithdrawal"]:
         return "starTransactionTypeFragmentWithdrawal"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12493,9 +12925,11 @@ class StarTransactionTypeTelegramAdsWithdrawal(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeTelegramAdsWithdrawal"]:
         return "starTransactionTypeTelegramAdsWithdrawal"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12528,9 +12962,11 @@ class StarTransactionTypeTelegramApiUsage(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeTelegramApiUsage"]:
         return "starTransactionTypeTelegramApiUsage"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12569,9 +13005,11 @@ class StarTransactionTypeBotPaidMediaPurchase(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeBotPaidMediaPurchase"]:
         return "starTransactionTypeBotPaidMediaPurchase"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12627,9 +13065,11 @@ class StarTransactionTypeBotPaidMediaSale(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeBotPaidMediaSale"]:
         return "starTransactionTypeBotPaidMediaSale"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12684,9 +13124,11 @@ class StarTransactionTypeChannelPaidMediaPurchase(TlObject, StarTransactionType)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeChannelPaidMediaPurchase"]:
         return "starTransactionTypeChannelPaidMediaPurchase"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12739,9 +13181,11 @@ class StarTransactionTypeChannelPaidMediaSale(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeChannelPaidMediaSale"]:
         return "starTransactionTypeChannelPaidMediaSale"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12787,9 +13231,11 @@ class StarTransactionTypeBotInvoicePurchase(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeBotInvoicePurchase"]:
         return "starTransactionTypeBotInvoicePurchase"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12849,9 +13295,11 @@ class StarTransactionTypeBotInvoiceSale(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeBotInvoiceSale"]:
         return "starTransactionTypeBotInvoiceSale"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12907,9 +13355,11 @@ class StarTransactionTypeBotSubscriptionPurchase(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeBotSubscriptionPurchase"]:
         return "starTransactionTypeBotSubscriptionPurchase"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -12977,9 +13427,11 @@ class StarTransactionTypeBotSubscriptionSale(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeBotSubscriptionSale"]:
         return "starTransactionTypeBotSubscriptionSale"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13029,9 +13481,11 @@ class StarTransactionTypeChannelSubscriptionPurchase(TlObject, StarTransactionTy
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeChannelSubscriptionPurchase"]:
         return "starTransactionTypeChannelSubscriptionPurchase"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13075,9 +13529,11 @@ class StarTransactionTypeChannelSubscriptionSale(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeChannelSubscriptionSale"]:
         return "starTransactionTypeChannelSubscriptionSale"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13121,9 +13577,11 @@ class StarTransactionTypeGiftPurchase(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeGiftPurchase"]:
         return "starTransactionTypeGiftPurchase"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13163,9 +13621,11 @@ class StarTransactionTypeGiftTransfer(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeGiftTransfer"]:
         return "starTransactionTypeGiftTransfer"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13203,9 +13663,11 @@ class StarTransactionTypeGiftSale(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeGiftSale"]:
         return "starTransactionTypeGiftSale"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13243,9 +13705,11 @@ class StarTransactionTypeGiftUpgrade(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeGiftUpgrade"]:
         return "starTransactionTypeGiftUpgrade"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13283,9 +13747,11 @@ class StarTransactionTypeUpgradedGiftPurchase(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeUpgradedGiftPurchase"]:
         return "starTransactionTypeUpgradedGiftPurchase"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13335,9 +13801,11 @@ class StarTransactionTypeUpgradedGiftSale(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeUpgradedGiftSale"]:
         return "starTransactionTypeUpgradedGiftSale"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13383,9 +13851,11 @@ class StarTransactionTypeChannelPaidReactionSend(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeChannelPaidReactionSend"]:
         return "starTransactionTypeChannelPaidReactionSend"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13429,9 +13899,11 @@ class StarTransactionTypeChannelPaidReactionReceive(TlObject, StarTransactionTyp
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeChannelPaidReactionReceive"]:
         return "starTransactionTypeChannelPaidReactionReceive"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13475,9 +13947,11 @@ class StarTransactionTypeAffiliateProgramCommission(TlObject, StarTransactionTyp
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeAffiliateProgramCommission"]:
         return "starTransactionTypeAffiliateProgramCommission"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13521,9 +13995,11 @@ class StarTransactionTypePaidMessageSend(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypePaidMessageSend"]:
         return "starTransactionTypePaidMessageSend"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13581,9 +14057,11 @@ class StarTransactionTypePaidMessageReceive(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypePaidMessageReceive"]:
         return "starTransactionTypePaidMessageReceive"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13638,9 +14116,11 @@ class StarTransactionTypePremiumPurchase(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypePremiumPurchase"]:
         return "starTransactionTypePremiumPurchase"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13679,9 +14159,11 @@ class StarTransactionTypeBusinessBotTransferSend(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeBusinessBotTransferSend"]:
         return "starTransactionTypeBusinessBotTransferSend"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13715,9 +14197,11 @@ class StarTransactionTypeBusinessBotTransferReceive(TlObject, StarTransactionTyp
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeBusinessBotTransferReceive"]:
         return "starTransactionTypeBusinessBotTransferReceive"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13744,9 +14228,11 @@ class StarTransactionTypeUnsupported(TlObject, StarTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactionTypeUnsupported"]:
         return "starTransactionTypeUnsupported"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactionType"]:
         return "StarTransactionType"
 
@@ -13840,9 +14326,11 @@ class StarTransaction(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransaction"]:
         return "starTransaction"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransaction"]:
         return "StarTransaction"
 
@@ -13900,9 +14388,11 @@ class StarTransactions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starTransactions"]:
         return "starTransactions"
 
+    @classmethod
     def getClass(self) -> Literal["StarTransactions"]:
         return "StarTransactions"
 
@@ -13934,9 +14424,11 @@ class GiveawayParticipantStatusEligible(TlObject, GiveawayParticipantStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayParticipantStatusEligible"]:
         return "giveawayParticipantStatusEligible"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayParticipantStatus"]:
         return "GiveawayParticipantStatus"
 
@@ -13960,9 +14452,11 @@ class GiveawayParticipantStatusParticipating(TlObject, GiveawayParticipantStatus
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayParticipantStatusParticipating"]:
         return "giveawayParticipantStatusParticipating"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayParticipantStatus"]:
         return "GiveawayParticipantStatus"
 
@@ -13995,9 +14489,11 @@ class GiveawayParticipantStatusAlreadyWasMember(TlObject, GiveawayParticipantSta
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayParticipantStatusAlreadyWasMember"]:
         return "giveawayParticipantStatusAlreadyWasMember"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayParticipantStatus"]:
         return "GiveawayParticipantStatus"
 
@@ -14031,9 +14527,11 @@ class GiveawayParticipantStatusAdministrator(TlObject, GiveawayParticipantStatus
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayParticipantStatusAdministrator"]:
         return "giveawayParticipantStatusAdministrator"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayParticipantStatus"]:
         return "GiveawayParticipantStatus"
 
@@ -14067,9 +14565,11 @@ class GiveawayParticipantStatusDisallowedCountry(TlObject, GiveawayParticipantSt
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayParticipantStatusDisallowedCountry"]:
         return "giveawayParticipantStatusDisallowedCountry"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayParticipantStatus"]:
         return "GiveawayParticipantStatus"
 
@@ -14125,9 +14625,11 @@ class GiveawayInfoOngoing(TlObject, GiveawayInfo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayInfoOngoing"]:
         return "giveawayInfoOngoing"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayInfo"]:
         return "GiveawayInfo"
 
@@ -14211,9 +14713,11 @@ class GiveawayInfoCompleted(TlObject, GiveawayInfo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayInfoCompleted"]:
         return "giveawayInfoCompleted"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayInfo"]:
         return "GiveawayInfo"
 
@@ -14264,9 +14768,11 @@ class GiveawayPrizePremium(TlObject, GiveawayPrize):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayPrizePremium"]:
         return "giveawayPrizePremium"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayPrize"]:
         return "GiveawayPrize"
 
@@ -14298,9 +14804,11 @@ class GiveawayPrizeStars(TlObject, GiveawayPrize):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayPrizeStars"]:
         return "giveawayPrizeStars"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayPrize"]:
         return "GiveawayPrize"
 
@@ -14359,9 +14867,11 @@ class AccentColor(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["accentColor"]:
         return "accentColor"
 
+    @classmethod
     def getClass(self) -> Literal["AccentColor"]:
         return "AccentColor"
 
@@ -14423,9 +14933,11 @@ class ProfileAccentColors(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["profileAccentColors"]:
         return "profileAccentColors"
 
+    @classmethod
     def getClass(self) -> Literal["ProfileAccentColors"]:
         return "ProfileAccentColors"
 
@@ -14491,9 +15003,11 @@ class ProfileAccentColor(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["profileAccentColor"]:
         return "profileAccentColor"
 
+    @classmethod
     def getClass(self) -> Literal["ProfileAccentColor"]:
         return "ProfileAccentColor"
 
@@ -14540,9 +15054,11 @@ class EmojiStatusTypeCustomEmoji(TlObject, EmojiStatusType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiStatusTypeCustomEmoji"]:
         return "emojiStatusTypeCustomEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiStatusType"]:
         return "EmojiStatusType"
 
@@ -14607,9 +15123,11 @@ class EmojiStatusTypeUpgradedGift(TlObject, EmojiStatusType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiStatusTypeUpgradedGift"]:
         return "emojiStatusTypeUpgradedGift"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiStatusType"]:
         return "EmojiStatusType"
 
@@ -14663,9 +15181,11 @@ class EmojiStatus(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiStatus"]:
         return "emojiStatus"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiStatus"]:
         return "EmojiStatus"
 
@@ -14702,9 +15222,11 @@ class EmojiStatuses(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiStatuses"]:
         return "emojiStatuses"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiStatuses"]:
         return "EmojiStatuses"
 
@@ -14736,9 +15258,11 @@ class EmojiStatusCustomEmojis(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiStatusCustomEmojis"]:
         return "emojiStatusCustomEmojis"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiStatusCustomEmojis"]:
         return "EmojiStatusCustomEmojis"
 
@@ -14785,9 +15309,11 @@ class Usernames(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["usernames"]:
         return "usernames"
 
+    @classmethod
     def getClass(self) -> Literal["Usernames"]:
         return "Usernames"
 
@@ -14997,9 +15523,11 @@ class User(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["user"]:
         return "user"
 
+    @classmethod
     def getClass(self) -> Literal["User"]:
         return "User"
 
@@ -15437,9 +15965,11 @@ class BotInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botInfo"]:
         return "botInfo"
 
+    @classmethod
     def getClass(self) -> Literal["BotInfo"]:
         return "BotInfo"
 
@@ -15685,9 +16215,11 @@ class UserFullInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userFullInfo"]:
         return "userFullInfo"
 
+    @classmethod
     def getClass(self) -> Literal["UserFullInfo"]:
         return "UserFullInfo"
 
@@ -15785,9 +16317,11 @@ class Users(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["users"]:
         return "users"
 
+    @classmethod
     def getClass(self) -> Literal["Users"]:
         return "Users"
 
@@ -15829,9 +16363,11 @@ class FoundUsers(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundUsers"]:
         return "foundUsers"
 
+    @classmethod
     def getClass(self) -> Literal["FoundUsers"]:
         return "FoundUsers"
 
@@ -15880,9 +16416,11 @@ class ChatAdministrator(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatAdministrator"]:
         return "chatAdministrator"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAdministrator"]:
         return "ChatAdministrator"
 
@@ -15921,9 +16459,11 @@ class ChatAdministrators(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatAdministrators"]:
         return "chatAdministrators"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAdministrators"]:
         return "ChatAdministrators"
 
@@ -15970,9 +16510,11 @@ class ChatMemberStatusCreator(TlObject, ChatMemberStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMemberStatusCreator"]:
         return "chatMemberStatusCreator"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMemberStatus"]:
         return "ChatMemberStatus"
 
@@ -16026,9 +16568,11 @@ class ChatMemberStatusAdministrator(TlObject, ChatMemberStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMemberStatusAdministrator"]:
         return "chatMemberStatusAdministrator"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMemberStatus"]:
         return "ChatMemberStatus"
 
@@ -16067,9 +16611,11 @@ class ChatMemberStatusMember(TlObject, ChatMemberStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMemberStatusMember"]:
         return "chatMemberStatusMember"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMemberStatus"]:
         return "ChatMemberStatus"
 
@@ -16116,9 +16662,11 @@ class ChatMemberStatusRestricted(TlObject, ChatMemberStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMemberStatusRestricted"]:
         return "chatMemberStatusRestricted"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMemberStatus"]:
         return "ChatMemberStatus"
 
@@ -16150,9 +16698,11 @@ class ChatMemberStatusLeft(TlObject, ChatMemberStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMemberStatusLeft"]:
         return "chatMemberStatusLeft"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMemberStatus"]:
         return "ChatMemberStatus"
 
@@ -16183,9 +16733,11 @@ class ChatMemberStatusBanned(TlObject, ChatMemberStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMemberStatusBanned"]:
         return "chatMemberStatusBanned"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMemberStatus"]:
         return "ChatMemberStatus"
 
@@ -16246,9 +16798,11 @@ class ChatMember(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMember"]:
         return "chatMember"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMember"]:
         return "ChatMember"
 
@@ -16294,9 +16848,11 @@ class ChatMembers(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMembers"]:
         return "chatMembers"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMembers"]:
         return "ChatMembers"
 
@@ -16326,9 +16882,11 @@ class ChatMembersFilterContacts(TlObject, ChatMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMembersFilterContacts"]:
         return "chatMembersFilterContacts"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMembersFilter"]:
         return "ChatMembersFilter"
 
@@ -16352,9 +16910,11 @@ class ChatMembersFilterAdministrators(TlObject, ChatMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMembersFilterAdministrators"]:
         return "chatMembersFilterAdministrators"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMembersFilter"]:
         return "ChatMembersFilter"
 
@@ -16378,9 +16938,11 @@ class ChatMembersFilterMembers(TlObject, ChatMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMembersFilterMembers"]:
         return "chatMembersFilterMembers"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMembersFilter"]:
         return "ChatMembersFilter"
 
@@ -16411,9 +16973,11 @@ class ChatMembersFilterMention(TlObject, ChatMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMembersFilterMention"]:
         return "chatMembersFilterMention"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMembersFilter"]:
         return "ChatMembersFilter"
 
@@ -16438,9 +17002,11 @@ class ChatMembersFilterRestricted(TlObject, ChatMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMembersFilterRestricted"]:
         return "chatMembersFilterRestricted"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMembersFilter"]:
         return "ChatMembersFilter"
 
@@ -16464,9 +17030,11 @@ class ChatMembersFilterBanned(TlObject, ChatMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMembersFilterBanned"]:
         return "chatMembersFilterBanned"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMembersFilter"]:
         return "ChatMembersFilter"
 
@@ -16490,9 +17058,11 @@ class ChatMembersFilterBots(TlObject, ChatMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMembersFilterBots"]:
         return "chatMembersFilterBots"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMembersFilter"]:
         return "ChatMembersFilter"
 
@@ -16516,9 +17086,11 @@ class SupergroupMembersFilterRecent(TlObject, SupergroupMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroupMembersFilterRecent"]:
         return "supergroupMembersFilterRecent"
 
+    @classmethod
     def getClass(self) -> Literal["SupergroupMembersFilter"]:
         return "SupergroupMembersFilter"
 
@@ -16549,9 +17121,11 @@ class SupergroupMembersFilterContacts(TlObject, SupergroupMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroupMembersFilterContacts"]:
         return "supergroupMembersFilterContacts"
 
+    @classmethod
     def getClass(self) -> Literal["SupergroupMembersFilter"]:
         return "SupergroupMembersFilter"
 
@@ -16576,9 +17150,11 @@ class SupergroupMembersFilterAdministrators(TlObject, SupergroupMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroupMembersFilterAdministrators"]:
         return "supergroupMembersFilterAdministrators"
 
+    @classmethod
     def getClass(self) -> Literal["SupergroupMembersFilter"]:
         return "SupergroupMembersFilter"
 
@@ -16611,9 +17187,11 @@ class SupergroupMembersFilterSearch(TlObject, SupergroupMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroupMembersFilterSearch"]:
         return "supergroupMembersFilterSearch"
 
+    @classmethod
     def getClass(self) -> Literal["SupergroupMembersFilter"]:
         return "SupergroupMembersFilter"
 
@@ -16645,9 +17223,11 @@ class SupergroupMembersFilterRestricted(TlObject, SupergroupMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroupMembersFilterRestricted"]:
         return "supergroupMembersFilterRestricted"
 
+    @classmethod
     def getClass(self) -> Literal["SupergroupMembersFilter"]:
         return "SupergroupMembersFilter"
 
@@ -16679,9 +17259,11 @@ class SupergroupMembersFilterBanned(TlObject, SupergroupMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroupMembersFilterBanned"]:
         return "supergroupMembersFilterBanned"
 
+    @classmethod
     def getClass(self) -> Literal["SupergroupMembersFilter"]:
         return "SupergroupMembersFilter"
 
@@ -16718,9 +17300,11 @@ class SupergroupMembersFilterMention(TlObject, SupergroupMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroupMembersFilterMention"]:
         return "supergroupMembersFilterMention"
 
+    @classmethod
     def getClass(self) -> Literal["SupergroupMembersFilter"]:
         return "SupergroupMembersFilter"
 
@@ -16750,9 +17334,11 @@ class SupergroupMembersFilterBots(TlObject, SupergroupMembersFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroupMembersFilterBots"]:
         return "supergroupMembersFilterBots"
 
+    @classmethod
     def getClass(self) -> Literal["SupergroupMembersFilter"]:
         return "SupergroupMembersFilter"
 
@@ -16866,9 +17452,11 @@ class ChatInviteLink(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatInviteLink"]:
         return "chatInviteLink"
 
+    @classmethod
     def getClass(self) -> Literal["ChatInviteLink"]:
         return "ChatInviteLink"
 
@@ -16938,9 +17526,11 @@ class ChatInviteLinks(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatInviteLinks"]:
         return "chatInviteLinks"
 
+    @classmethod
     def getClass(self) -> Literal["ChatInviteLinks"]:
         return "ChatInviteLinks"
 
@@ -16992,9 +17582,11 @@ class ChatInviteLinkCount(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatInviteLinkCount"]:
         return "chatInviteLinkCount"
 
+    @classmethod
     def getClass(self) -> Literal["ChatInviteLinkCount"]:
         return "ChatInviteLinkCount"
 
@@ -17035,9 +17627,11 @@ class ChatInviteLinkCounts(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatInviteLinkCounts"]:
         return "chatInviteLinkCounts"
 
+    @classmethod
     def getClass(self) -> Literal["ChatInviteLinkCounts"]:
         return "ChatInviteLinkCounts"
 
@@ -17090,9 +17684,11 @@ class ChatInviteLinkMember(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatInviteLinkMember"]:
         return "chatInviteLinkMember"
 
+    @classmethod
     def getClass(self) -> Literal["ChatInviteLinkMember"]:
         return "ChatInviteLinkMember"
 
@@ -17142,9 +17738,11 @@ class ChatInviteLinkMembers(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatInviteLinkMembers"]:
         return "chatInviteLinkMembers"
 
+    @classmethod
     def getClass(self) -> Literal["ChatInviteLinkMembers"]:
         return "ChatInviteLinkMembers"
 
@@ -17174,9 +17772,11 @@ class InviteLinkChatTypeBasicGroup(TlObject, InviteLinkChatType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inviteLinkChatTypeBasicGroup"]:
         return "inviteLinkChatTypeBasicGroup"
 
+    @classmethod
     def getClass(self) -> Literal["InviteLinkChatType"]:
         return "InviteLinkChatType"
 
@@ -17200,9 +17800,11 @@ class InviteLinkChatTypeSupergroup(TlObject, InviteLinkChatType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inviteLinkChatTypeSupergroup"]:
         return "inviteLinkChatTypeSupergroup"
 
+    @classmethod
     def getClass(self) -> Literal["InviteLinkChatType"]:
         return "InviteLinkChatType"
 
@@ -17226,9 +17828,11 @@ class InviteLinkChatTypeChannel(TlObject, InviteLinkChatType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inviteLinkChatTypeChannel"]:
         return "inviteLinkChatTypeChannel"
 
+    @classmethod
     def getClass(self) -> Literal["InviteLinkChatType"]:
         return "InviteLinkChatType"
 
@@ -17274,9 +17878,11 @@ class ChatInviteLinkSubscriptionInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatInviteLinkSubscriptionInfo"]:
         return "chatInviteLinkSubscriptionInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatInviteLinkSubscriptionInfo"]:
         return "ChatInviteLinkSubscriptionInfo"
 
@@ -17397,9 +18003,11 @@ class ChatInviteLinkInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatInviteLinkInfo"]:
         return "chatInviteLinkInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatInviteLinkInfo"]:
         return "ChatInviteLinkInfo"
 
@@ -17468,9 +18076,11 @@ class ChatJoinRequest(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatJoinRequest"]:
         return "chatJoinRequest"
 
+    @classmethod
     def getClass(self) -> Literal["ChatJoinRequest"]:
         return "ChatJoinRequest"
 
@@ -17516,9 +18126,11 @@ class ChatJoinRequests(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatJoinRequests"]:
         return "chatJoinRequests"
 
+    @classmethod
     def getClass(self) -> Literal["ChatJoinRequests"]:
         return "ChatJoinRequests"
 
@@ -17560,9 +18172,11 @@ class ChatJoinRequestsInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatJoinRequestsInfo"]:
         return "chatJoinRequestsInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatJoinRequestsInfo"]:
         return "ChatJoinRequestsInfo"
 
@@ -17634,9 +18248,11 @@ class BasicGroup(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["basicGroup"]:
         return "basicGroup"
 
+    @classmethod
     def getClass(self) -> Literal["BasicGroup"]:
         return "BasicGroup"
 
@@ -17728,9 +18344,11 @@ class BasicGroupFullInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["basicGroupFullInfo"]:
         return "basicGroupFullInfo"
 
+    @classmethod
     def getClass(self) -> Literal["BasicGroupFullInfo"]:
         return "BasicGroupFullInfo"
 
@@ -17950,9 +18568,11 @@ class Supergroup(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroup"]:
         return "supergroup"
 
+    @classmethod
     def getClass(self) -> Literal["Supergroup"]:
         return "Supergroup"
 
@@ -18290,9 +18910,11 @@ class SupergroupFullInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["supergroupFullInfo"]:
         return "supergroupFullInfo"
 
+    @classmethod
     def getClass(self) -> Literal["SupergroupFullInfo"]:
         return "SupergroupFullInfo"
 
@@ -18428,9 +19050,11 @@ class SecretChatStatePending(TlObject, SecretChatState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["secretChatStatePending"]:
         return "secretChatStatePending"
 
+    @classmethod
     def getClass(self) -> Literal["SecretChatState"]:
         return "SecretChatState"
 
@@ -18454,9 +19078,11 @@ class SecretChatStateReady(TlObject, SecretChatState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["secretChatStateReady"]:
         return "secretChatStateReady"
 
+    @classmethod
     def getClass(self) -> Literal["SecretChatState"]:
         return "SecretChatState"
 
@@ -18480,9 +19106,11 @@ class SecretChatStateClosed(TlObject, SecretChatState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["secretChatStateClosed"]:
         return "secretChatStateClosed"
 
+    @classmethod
     def getClass(self) -> Literal["SecretChatState"]:
         return "SecretChatState"
 
@@ -18548,9 +19176,11 @@ class SecretChat(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["secretChat"]:
         return "secretChat"
 
+    @classmethod
     def getClass(self) -> Literal["SecretChat"]:
         return "SecretChat"
 
@@ -18595,9 +19225,11 @@ class MessageSenderUser(TlObject, MessageSender):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSenderUser"]:
         return "messageSenderUser"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSender"]:
         return "MessageSender"
 
@@ -18629,9 +19261,11 @@ class MessageSenderChat(TlObject, MessageSender):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSenderChat"]:
         return "messageSenderChat"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSender"]:
         return "MessageSender"
 
@@ -18670,9 +19304,11 @@ class MessageSenders(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSenders"]:
         return "messageSenders"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSenders"]:
         return "MessageSenders"
 
@@ -18716,9 +19352,11 @@ class ChatMessageSender(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMessageSender"]:
         return "chatMessageSender"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMessageSender"]:
         return "ChatMessageSender"
 
@@ -18755,9 +19393,11 @@ class ChatMessageSenders(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatMessageSenders"]:
         return "chatMessageSenders"
 
+    @classmethod
     def getClass(self) -> Literal["ChatMessageSenders"]:
         return "ChatMessageSenders"
 
@@ -18789,9 +19429,11 @@ class MessageReadDateRead(TlObject, MessageReadDate):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReadDateRead"]:
         return "messageReadDateRead"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReadDate"]:
         return "MessageReadDate"
 
@@ -18816,9 +19458,11 @@ class MessageReadDateUnread(TlObject, MessageReadDate):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReadDateUnread"]:
         return "messageReadDateUnread"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReadDate"]:
         return "MessageReadDate"
 
@@ -18842,9 +19486,11 @@ class MessageReadDateTooOld(TlObject, MessageReadDate):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReadDateTooOld"]:
         return "messageReadDateTooOld"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReadDate"]:
         return "MessageReadDate"
 
@@ -18868,9 +19514,11 @@ class MessageReadDateUserPrivacyRestricted(TlObject, MessageReadDate):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReadDateUserPrivacyRestricted"]:
         return "messageReadDateUserPrivacyRestricted"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReadDate"]:
         return "MessageReadDate"
 
@@ -18896,9 +19544,11 @@ class MessageReadDateMyPrivacyRestricted(TlObject, MessageReadDate):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReadDateMyPrivacyRestricted"]:
         return "messageReadDateMyPrivacyRestricted"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReadDate"]:
         return "MessageReadDate"
 
@@ -18934,9 +19584,11 @@ class MessageViewer(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageViewer"]:
         return "messageViewer"
 
+    @classmethod
     def getClass(self) -> Literal["MessageViewer"]:
         return "MessageViewer"
 
@@ -18973,9 +19625,11 @@ class MessageViewers(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageViewers"]:
         return "messageViewers"
 
+    @classmethod
     def getClass(self) -> Literal["MessageViewers"]:
         return "MessageViewers"
 
@@ -19007,9 +19661,11 @@ class MessageOriginUser(TlObject, MessageOrigin):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageOriginUser"]:
         return "messageOriginUser"
 
+    @classmethod
     def getClass(self) -> Literal["MessageOrigin"]:
         return "MessageOrigin"
 
@@ -19041,9 +19697,11 @@ class MessageOriginHiddenUser(TlObject, MessageOrigin):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageOriginHiddenUser"]:
         return "messageOriginHiddenUser"
 
+    @classmethod
     def getClass(self) -> Literal["MessageOrigin"]:
         return "MessageOrigin"
 
@@ -19080,9 +19738,11 @@ class MessageOriginChat(TlObject, MessageOrigin):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageOriginChat"]:
         return "messageOriginChat"
 
+    @classmethod
     def getClass(self) -> Literal["MessageOrigin"]:
         return "MessageOrigin"
 
@@ -19131,9 +19791,11 @@ class MessageOriginChannel(TlObject, MessageOrigin):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageOriginChannel"]:
         return "messageOriginChannel"
 
+    @classmethod
     def getClass(self) -> Literal["MessageOrigin"]:
         return "MessageOrigin"
 
@@ -19205,9 +19867,11 @@ class ForwardSource(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["forwardSource"]:
         return "forwardSource"
 
+    @classmethod
     def getClass(self) -> Literal["ForwardSource"]:
         return "ForwardSource"
 
@@ -19252,9 +19916,11 @@ class ReactionTypeEmoji(TlObject, ReactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reactionTypeEmoji"]:
         return "reactionTypeEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["ReactionType"]:
         return "ReactionType"
 
@@ -19286,9 +19952,11 @@ class ReactionTypeCustomEmoji(TlObject, ReactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reactionTypeCustomEmoji"]:
         return "reactionTypeCustomEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["ReactionType"]:
         return "ReactionType"
 
@@ -19313,9 +19981,11 @@ class ReactionTypePaid(TlObject, ReactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reactionTypePaid"]:
         return "reactionTypePaid"
 
+    @classmethod
     def getClass(self) -> Literal["ReactionType"]:
         return "ReactionType"
 
@@ -19339,9 +20009,11 @@ class PaidReactionTypeRegular(TlObject, PaidReactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paidReactionTypeRegular"]:
         return "paidReactionTypeRegular"
 
+    @classmethod
     def getClass(self) -> Literal["PaidReactionType"]:
         return "PaidReactionType"
 
@@ -19365,9 +20037,11 @@ class PaidReactionTypeAnonymous(TlObject, PaidReactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paidReactionTypeAnonymous"]:
         return "paidReactionTypeAnonymous"
 
+    @classmethod
     def getClass(self) -> Literal["PaidReactionType"]:
         return "PaidReactionType"
 
@@ -19398,9 +20072,11 @@ class PaidReactionTypeChat(TlObject, PaidReactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paidReactionTypeChat"]:
         return "paidReactionTypeChat"
 
+    @classmethod
     def getClass(self) -> Literal["PaidReactionType"]:
         return "PaidReactionType"
 
@@ -19459,9 +20135,11 @@ class PaidReactor(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paidReactor"]:
         return "paidReactor"
 
+    @classmethod
     def getClass(self) -> Literal["PaidReactor"]:
         return "PaidReactor"
 
@@ -19533,9 +20211,11 @@ class MessageForwardInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageForwardInfo"]:
         return "messageForwardInfo"
 
+    @classmethod
     def getClass(self) -> Literal["MessageForwardInfo"]:
         return "MessageForwardInfo"
 
@@ -19583,9 +20263,11 @@ class MessageImportInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageImportInfo"]:
         return "messageImportInfo"
 
+    @classmethod
     def getClass(self) -> Literal["MessageImportInfo"]:
         return "MessageImportInfo"
 
@@ -19649,9 +20331,11 @@ class MessageReplyInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReplyInfo"]:
         return "messageReplyInfo"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReplyInfo"]:
         return "MessageReplyInfo"
 
@@ -19729,9 +20413,11 @@ class MessageReaction(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReaction"]:
         return "messageReaction"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReaction"]:
         return "MessageReaction"
 
@@ -19795,9 +20481,11 @@ class MessageReactions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReactions"]:
         return "messageReactions"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReactions"]:
         return "MessageReactions"
 
@@ -19861,9 +20549,11 @@ class MessageInteractionInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageInteractionInfo"]:
         return "messageInteractionInfo"
 
+    @classmethod
     def getClass(self) -> Literal["MessageInteractionInfo"]:
         return "MessageInteractionInfo"
 
@@ -19921,9 +20611,11 @@ class UnreadReaction(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["unreadReaction"]:
         return "unreadReaction"
 
+    @classmethod
     def getClass(self) -> Literal["UnreadReaction"]:
         return "UnreadReaction"
 
@@ -19962,9 +20654,11 @@ class MessageTopicForum(TlObject, MessageTopic):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageTopicForum"]:
         return "messageTopicForum"
 
+    @classmethod
     def getClass(self) -> Literal["MessageTopic"]:
         return "MessageTopic"
 
@@ -19996,9 +20690,11 @@ class MessageTopicDirectMessages(TlObject, MessageTopic):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageTopicDirectMessages"]:
         return "messageTopicDirectMessages"
 
+    @classmethod
     def getClass(self) -> Literal["MessageTopic"]:
         return "MessageTopic"
 
@@ -20035,9 +20731,11 @@ class MessageTopicSavedMessages(TlObject, MessageTopic):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageTopicSavedMessages"]:
         return "messageTopicSavedMessages"
 
+    @classmethod
     def getClass(self) -> Literal["MessageTopic"]:
         return "MessageTopic"
 
@@ -20081,9 +20779,11 @@ class MessageEffectTypeEmojiReaction(TlObject, MessageEffectType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageEffectTypeEmojiReaction"]:
         return "messageEffectTypeEmojiReaction"
 
+    @classmethod
     def getClass(self) -> Literal["MessageEffectType"]:
         return "MessageEffectType"
 
@@ -20120,9 +20820,11 @@ class MessageEffectTypePremiumSticker(TlObject, MessageEffectType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageEffectTypePremiumSticker"]:
         return "messageEffectTypePremiumSticker"
 
+    @classmethod
     def getClass(self) -> Literal["MessageEffectType"]:
         return "MessageEffectType"
 
@@ -20183,9 +20885,11 @@ class MessageEffect(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageEffect"]:
         return "messageEffect"
 
+    @classmethod
     def getClass(self) -> Literal["MessageEffect"]:
         return "MessageEffect"
 
@@ -20228,9 +20932,11 @@ class MessageSendingStatePending(TlObject, MessageSendingState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSendingStatePending"]:
         return "messageSendingStatePending"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSendingState"]:
         return "MessageSendingState"
 
@@ -20303,9 +21009,11 @@ class MessageSendingStateFailed(TlObject, MessageSendingState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSendingStateFailed"]:
         return "messageSendingStateFailed"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSendingState"]:
         return "MessageSendingState"
 
@@ -20368,9 +21076,11 @@ class TextQuote(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textQuote"]:
         return "textQuote"
 
+    @classmethod
     def getClass(self) -> Literal["TextQuote"]:
         return "TextQuote"
 
@@ -20414,9 +21124,11 @@ class InputTextQuote(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputTextQuote"]:
         return "inputTextQuote"
 
+    @classmethod
     def getClass(self) -> Literal["InputTextQuote"]:
         return "InputTextQuote"
 
@@ -20573,9 +21285,11 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReplyToMessage"]:
         return "messageReplyToMessage"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReplyTo"]:
         return "MessageReplyTo"
 
@@ -20625,9 +21339,11 @@ class MessageReplyToStory(TlObject, MessageReplyTo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageReplyToStory"]:
         return "messageReplyToStory"
 
+    @classmethod
     def getClass(self) -> Literal["MessageReplyTo"]:
         return "MessageReplyTo"
 
@@ -20669,9 +21385,11 @@ class InputMessageReplyToMessage(TlObject, InputMessageReplyTo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageReplyToMessage"]:
         return "inputMessageReplyToMessage"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageReplyTo"]:
         return "InputMessageReplyTo"
 
@@ -20720,9 +21438,11 @@ class InputMessageReplyToExternalMessage(TlObject, InputMessageReplyTo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageReplyToExternalMessage"]:
         return "inputMessageReplyToExternalMessage"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageReplyTo"]:
         return "InputMessageReplyTo"
 
@@ -20766,9 +21486,11 @@ class InputMessageReplyToStory(TlObject, InputMessageReplyTo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageReplyToStory"]:
         return "inputMessageReplyToStory"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageReplyTo"]:
         return "InputMessageReplyTo"
 
@@ -20810,9 +21532,11 @@ class FactCheck(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["factCheck"]:
         return "factCheck"
 
+    @classmethod
     def getClass(self) -> Literal["FactCheck"]:
         return "FactCheck"
 
@@ -21169,9 +21893,11 @@ class Message(TlObject, MessageBoundMethods):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["message"]:
         return "message"
 
+    @classmethod
     def getClass(self) -> Literal["Message"]:
         return "Message"
 
@@ -21287,9 +22013,11 @@ class Messages(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messages"]:
         return "messages"
 
+    @classmethod
     def getClass(self) -> Literal["Messages"]:
         return "Messages"
 
@@ -21341,9 +22069,11 @@ class FoundMessages(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundMessages"]:
         return "foundMessages"
 
+    @classmethod
     def getClass(self) -> Literal["FoundMessages"]:
         return "FoundMessages"
 
@@ -21397,9 +22127,11 @@ class FoundChatMessages(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundChatMessages"]:
         return "foundChatMessages"
 
+    @classmethod
     def getClass(self) -> Literal["FoundChatMessages"]:
         return "FoundChatMessages"
 
@@ -21448,9 +22180,11 @@ class MessagePosition(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePosition"]:
         return "messagePosition"
 
+    @classmethod
     def getClass(self) -> Literal["MessagePosition"]:
         return "MessagePosition"
 
@@ -21496,9 +22230,11 @@ class MessagePositions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePositions"]:
         return "messagePositions"
 
+    @classmethod
     def getClass(self) -> Literal["MessagePositions"]:
         return "MessagePositions"
 
@@ -21540,9 +22276,11 @@ class MessageCalendarDay(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageCalendarDay"]:
         return "messageCalendarDay"
 
+    @classmethod
     def getClass(self) -> Literal["MessageCalendarDay"]:
         return "MessageCalendarDay"
 
@@ -21586,9 +22324,11 @@ class MessageCalendar(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageCalendar"]:
         return "messageCalendar"
 
+    @classmethod
     def getClass(self) -> Literal["MessageCalendar"]:
         return "MessageCalendar"
 
@@ -21632,9 +22372,11 @@ class BusinessMessage(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessMessage"]:
         return "businessMessage"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessMessage"]:
         return "BusinessMessage"
 
@@ -21671,9 +22413,11 @@ class BusinessMessages(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessMessages"]:
         return "businessMessages"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessMessages"]:
         return "BusinessMessages"
 
@@ -21698,9 +22442,11 @@ class MessageSourceChatHistory(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceChatHistory"]:
         return "messageSourceChatHistory"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21724,9 +22470,11 @@ class MessageSourceMessageThreadHistory(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceMessageThreadHistory"]:
         return "messageSourceMessageThreadHistory"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21750,9 +22498,11 @@ class MessageSourceForumTopicHistory(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceForumTopicHistory"]:
         return "messageSourceForumTopicHistory"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21776,9 +22526,11 @@ class MessageSourceDirectMessagesChatTopicHistory(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceDirectMessagesChatTopicHistory"]:
         return "messageSourceDirectMessagesChatTopicHistory"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21804,9 +22556,11 @@ class MessageSourceHistoryPreview(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceHistoryPreview"]:
         return "messageSourceHistoryPreview"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21830,9 +22584,11 @@ class MessageSourceChatList(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceChatList"]:
         return "messageSourceChatList"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21856,9 +22612,11 @@ class MessageSourceSearch(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceSearch"]:
         return "messageSourceSearch"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21882,9 +22640,11 @@ class MessageSourceChatEventLog(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceChatEventLog"]:
         return "messageSourceChatEventLog"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21908,9 +22668,11 @@ class MessageSourceNotification(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceNotification"]:
         return "messageSourceNotification"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21934,9 +22696,11 @@ class MessageSourceScreenshot(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceScreenshot"]:
         return "messageSourceScreenshot"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -21960,9 +22724,11 @@ class MessageSourceOther(TlObject, MessageSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSourceOther"]:
         return "messageSourceOther"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSource"]:
         return "MessageSource"
 
@@ -22003,9 +22769,11 @@ class AdvertisementSponsor(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["advertisementSponsor"]:
         return "advertisementSponsor"
 
+    @classmethod
     def getClass(self) -> Literal["AdvertisementSponsor"]:
         return "AdvertisementSponsor"
 
@@ -22186,9 +22954,11 @@ class SponsoredMessage(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sponsoredMessage"]:
         return "sponsoredMessage"
 
+    @classmethod
     def getClass(self) -> Literal["SponsoredMessage"]:
         return "SponsoredMessage"
 
@@ -22250,9 +23020,11 @@ class SponsoredMessages(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sponsoredMessages"]:
         return "sponsoredMessages"
 
+    @classmethod
     def getClass(self) -> Literal["SponsoredMessages"]:
         return "SponsoredMessages"
 
@@ -22310,9 +23082,11 @@ class SponsoredChat(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sponsoredChat"]:
         return "sponsoredChat"
 
+    @classmethod
     def getClass(self) -> Literal["SponsoredChat"]:
         return "SponsoredChat"
 
@@ -22353,9 +23127,11 @@ class SponsoredChats(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sponsoredChats"]:
         return "sponsoredChats"
 
+    @classmethod
     def getClass(self) -> Literal["SponsoredChats"]:
         return "SponsoredChats"
 
@@ -22432,9 +23208,11 @@ class VideoMessageAdvertisement(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["videoMessageAdvertisement"]:
         return "videoMessageAdvertisement"
 
+    @classmethod
     def getClass(self) -> Literal["VideoMessageAdvertisement"]:
         return "VideoMessageAdvertisement"
 
@@ -22498,9 +23276,11 @@ class VideoMessageAdvertisements(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["videoMessageAdvertisements"]:
         return "videoMessageAdvertisements"
 
+    @classmethod
     def getClass(self) -> Literal["VideoMessageAdvertisements"]:
         return "VideoMessageAdvertisements"
 
@@ -22544,9 +23324,11 @@ class ReportOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportOption"]:
         return "reportOption"
 
+    @classmethod
     def getClass(self) -> Literal["ReportOption"]:
         return "ReportOption"
 
@@ -22572,9 +23354,11 @@ class ReportSponsoredResultOk(TlObject, ReportSponsoredResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportSponsoredResultOk"]:
         return "reportSponsoredResultOk"
 
+    @classmethod
     def getClass(self) -> Literal["ReportSponsoredResult"]:
         return "ReportSponsoredResult"
 
@@ -22598,9 +23382,11 @@ class ReportSponsoredResultFailed(TlObject, ReportSponsoredResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportSponsoredResultFailed"]:
         return "reportSponsoredResultFailed"
 
+    @classmethod
     def getClass(self) -> Literal["ReportSponsoredResult"]:
         return "ReportSponsoredResult"
 
@@ -22636,9 +23422,11 @@ class ReportSponsoredResultOptionRequired(TlObject, ReportSponsoredResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportSponsoredResultOptionRequired"]:
         return "reportSponsoredResultOptionRequired"
 
+    @classmethod
     def getClass(self) -> Literal["ReportSponsoredResult"]:
         return "ReportSponsoredResult"
 
@@ -22666,9 +23454,11 @@ class ReportSponsoredResultAdsHidden(TlObject, ReportSponsoredResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportSponsoredResultAdsHidden"]:
         return "reportSponsoredResultAdsHidden"
 
+    @classmethod
     def getClass(self) -> Literal["ReportSponsoredResult"]:
         return "ReportSponsoredResult"
 
@@ -22692,9 +23482,11 @@ class ReportSponsoredResultPremiumRequired(TlObject, ReportSponsoredResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportSponsoredResultPremiumRequired"]:
         return "reportSponsoredResultPremiumRequired"
 
+    @classmethod
     def getClass(self) -> Literal["ReportSponsoredResult"]:
         return "ReportSponsoredResult"
 
@@ -22754,9 +23546,11 @@ class FileDownload(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileDownload"]:
         return "fileDownload"
 
+    @classmethod
     def getClass(self) -> Literal["FileDownload"]:
         return "FileDownload"
 
@@ -22811,9 +23605,11 @@ class DownloadedFileCounts(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["downloadedFileCounts"]:
         return "downloadedFileCounts"
 
+    @classmethod
     def getClass(self) -> Literal["DownloadedFileCounts"]:
         return "DownloadedFileCounts"
 
@@ -22867,9 +23663,11 @@ class FoundFileDownloads(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundFileDownloads"]:
         return "foundFileDownloads"
 
+    @classmethod
     def getClass(self) -> Literal["FoundFileDownloads"]:
         return "FoundFileDownloads"
 
@@ -22901,9 +23699,11 @@ class NotificationSettingsScopePrivateChats(TlObject, NotificationSettingsScope)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationSettingsScopePrivateChats"]:
         return "notificationSettingsScopePrivateChats"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationSettingsScope"]:
         return "NotificationSettingsScope"
 
@@ -22929,9 +23729,11 @@ class NotificationSettingsScopeGroupChats(TlObject, NotificationSettingsScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationSettingsScopeGroupChats"]:
         return "notificationSettingsScopeGroupChats"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationSettingsScope"]:
         return "NotificationSettingsScope"
 
@@ -22957,9 +23759,11 @@ class NotificationSettingsScopeChannelChats(TlObject, NotificationSettingsScope)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationSettingsScopeChannelChats"]:
         return "notificationSettingsScopeChannelChats"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationSettingsScope"]:
         return "NotificationSettingsScope"
 
@@ -23091,9 +23895,11 @@ class ChatNotificationSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatNotificationSettings"]:
         return "chatNotificationSettings"
 
+    @classmethod
     def getClass(self) -> Literal["ChatNotificationSettings"]:
         return "ChatNotificationSettings"
 
@@ -23227,9 +24033,11 @@ class ScopeNotificationSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["scopeNotificationSettings"]:
         return "scopeNotificationSettings"
 
+    @classmethod
     def getClass(self) -> Literal["ScopeNotificationSettings"]:
         return "ScopeNotificationSettings"
 
@@ -23279,9 +24087,11 @@ class ReactionNotificationSourceNone(TlObject, ReactionNotificationSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reactionNotificationSourceNone"]:
         return "reactionNotificationSourceNone"
 
+    @classmethod
     def getClass(self) -> Literal["ReactionNotificationSource"]:
         return "ReactionNotificationSource"
 
@@ -23305,9 +24115,11 @@ class ReactionNotificationSourceContacts(TlObject, ReactionNotificationSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reactionNotificationSourceContacts"]:
         return "reactionNotificationSourceContacts"
 
+    @classmethod
     def getClass(self) -> Literal["ReactionNotificationSource"]:
         return "ReactionNotificationSource"
 
@@ -23331,9 +24143,11 @@ class ReactionNotificationSourceAll(TlObject, ReactionNotificationSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reactionNotificationSourceAll"]:
         return "reactionNotificationSourceAll"
 
+    @classmethod
     def getClass(self) -> Literal["ReactionNotificationSource"]:
         return "ReactionNotificationSource"
 
@@ -23395,9 +24209,11 @@ class ReactionNotificationSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reactionNotificationSettings"]:
         return "reactionNotificationSettings"
 
+    @classmethod
     def getClass(self) -> Literal["ReactionNotificationSettings"]:
         return "ReactionNotificationSettings"
 
@@ -23488,9 +24304,11 @@ class DraftMessage(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["draftMessage"]:
         return "draftMessage"
 
+    @classmethod
     def getClass(self) -> Literal["DraftMessage"]:
         return "DraftMessage"
 
@@ -23531,9 +24349,11 @@ class ChatTypePrivate(TlObject, ChatType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatTypePrivate"]:
         return "chatTypePrivate"
 
+    @classmethod
     def getClass(self) -> Literal["ChatType"]:
         return "ChatType"
 
@@ -23565,9 +24385,11 @@ class ChatTypeBasicGroup(TlObject, ChatType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatTypeBasicGroup"]:
         return "chatTypeBasicGroup"
 
+    @classmethod
     def getClass(self) -> Literal["ChatType"]:
         return "ChatType"
 
@@ -23604,9 +24426,11 @@ class ChatTypeSupergroup(TlObject, ChatType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatTypeSupergroup"]:
         return "chatTypeSupergroup"
 
+    @classmethod
     def getClass(self) -> Literal["ChatType"]:
         return "ChatType"
 
@@ -23648,9 +24472,11 @@ class ChatTypeSecret(TlObject, ChatType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatTypeSecret"]:
         return "chatTypeSecret"
 
+    @classmethod
     def getClass(self) -> Literal["ChatType"]:
         return "ChatType"
 
@@ -23687,9 +24513,11 @@ class ChatFolderIcon(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatFolderIcon"]:
         return "chatFolderIcon"
 
+    @classmethod
     def getClass(self) -> Literal["ChatFolderIcon"]:
         return "ChatFolderIcon"
 
@@ -23728,9 +24556,11 @@ class ChatFolderName(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatFolderName"]:
         return "chatFolderName"
 
+    @classmethod
     def getClass(self) -> Literal["ChatFolderName"]:
         return "ChatFolderName"
 
@@ -23854,9 +24684,11 @@ class ChatFolder(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatFolder"]:
         return "chatFolder"
 
+    @classmethod
     def getClass(self) -> Literal["ChatFolder"]:
         return "ChatFolder"
 
@@ -23952,9 +24784,11 @@ class ChatFolderInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatFolderInfo"]:
         return "chatFolderInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatFolderInfo"]:
         return "ChatFolderInfo"
 
@@ -24011,9 +24845,11 @@ class ChatFolderInviteLink(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatFolderInviteLink"]:
         return "chatFolderInviteLink"
 
+    @classmethod
     def getClass(self) -> Literal["ChatFolderInviteLink"]:
         return "ChatFolderInviteLink"
 
@@ -24052,9 +24888,11 @@ class ChatFolderInviteLinks(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatFolderInviteLinks"]:
         return "chatFolderInviteLinks"
 
+    @classmethod
     def getClass(self) -> Literal["ChatFolderInviteLinks"]:
         return "ChatFolderInviteLinks"
 
@@ -24101,9 +24939,11 @@ class ChatFolderInviteLinkInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatFolderInviteLinkInfo"]:
         return "chatFolderInviteLinkInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatFolderInviteLinkInfo"]:
         return "ChatFolderInviteLinkInfo"
 
@@ -24147,9 +24987,11 @@ class RecommendedChatFolder(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["recommendedChatFolder"]:
         return "recommendedChatFolder"
 
+    @classmethod
     def getClass(self) -> Literal["RecommendedChatFolder"]:
         return "RecommendedChatFolder"
 
@@ -24186,9 +25028,11 @@ class RecommendedChatFolders(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["recommendedChatFolders"]:
         return "recommendedChatFolders"
 
+    @classmethod
     def getClass(self) -> Literal["RecommendedChatFolders"]:
         return "RecommendedChatFolders"
 
@@ -24239,9 +25083,11 @@ class ArchiveChatListSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["archiveChatListSettings"]:
         return "archiveChatListSettings"
 
+    @classmethod
     def getClass(self) -> Literal["ArchiveChatListSettings"]:
         return "ArchiveChatListSettings"
 
@@ -24279,9 +25125,11 @@ class ChatListMain(TlObject, ChatList):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatListMain"]:
         return "chatListMain"
 
+    @classmethod
     def getClass(self) -> Literal["ChatList"]:
         return "ChatList"
 
@@ -24305,9 +25153,11 @@ class ChatListArchive(TlObject, ChatList):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatListArchive"]:
         return "chatListArchive"
 
+    @classmethod
     def getClass(self) -> Literal["ChatList"]:
         return "ChatList"
 
@@ -24338,9 +25188,11 @@ class ChatListFolder(TlObject, ChatList):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatListFolder"]:
         return "chatListFolder"
 
+    @classmethod
     def getClass(self) -> Literal["ChatList"]:
         return "ChatList"
 
@@ -24372,9 +25224,11 @@ class ChatLists(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatLists"]:
         return "chatLists"
 
+    @classmethod
     def getClass(self) -> Literal["ChatLists"]:
         return "ChatLists"
 
@@ -24399,9 +25253,11 @@ class ChatSourceMtprotoProxy(TlObject, ChatSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatSourceMtprotoProxy"]:
         return "chatSourceMtprotoProxy"
 
+    @classmethod
     def getClass(self) -> Literal["ChatSource"]:
         return "ChatSource"
 
@@ -24437,9 +25293,11 @@ class ChatSourcePublicServiceAnnouncement(TlObject, ChatSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatSourcePublicServiceAnnouncement"]:
         return "chatSourcePublicServiceAnnouncement"
 
+    @classmethod
     def getClass(self) -> Literal["ChatSource"]:
         return "ChatSource"
 
@@ -24497,9 +25355,11 @@ class ChatPosition(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatPosition"]:
         return "chatPosition"
 
+    @classmethod
     def getClass(self) -> Literal["ChatPosition"]:
         return "ChatPosition"
 
@@ -24540,9 +25400,11 @@ class ChatAvailableReactionsAll(TlObject, ChatAvailableReactions):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatAvailableReactionsAll"]:
         return "chatAvailableReactionsAll"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAvailableReactions"]:
         return "ChatAvailableReactions"
 
@@ -24581,9 +25443,11 @@ class ChatAvailableReactionsSome(TlObject, ChatAvailableReactions):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatAvailableReactionsSome"]:
         return "chatAvailableReactionsSome"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAvailableReactions"]:
         return "ChatAvailableReactions"
 
@@ -24634,9 +25498,11 @@ class SavedMessagesTag(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["savedMessagesTag"]:
         return "savedMessagesTag"
 
+    @classmethod
     def getClass(self) -> Literal["SavedMessagesTag"]:
         return "SavedMessagesTag"
 
@@ -24675,9 +25541,11 @@ class SavedMessagesTags(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["savedMessagesTags"]:
         return "savedMessagesTags"
 
+    @classmethod
     def getClass(self) -> Literal["SavedMessagesTags"]:
         return "SavedMessagesTags"
 
@@ -24730,9 +25598,11 @@ class BusinessBotManageBar(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessBotManageBar"]:
         return "businessBotManageBar"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessBotManageBar"]:
         return "BusinessBotManageBar"
 
@@ -24790,9 +25660,11 @@ class VideoChat(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["videoChat"]:
         return "videoChat"
 
+    @classmethod
     def getClass(self) -> Literal["VideoChat"]:
         return "VideoChat"
 
@@ -25100,9 +25972,11 @@ class Chat(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chat"]:
         return "chat"
 
+    @classmethod
     def getClass(self) -> Literal["Chat"]:
         return "Chat"
 
@@ -25246,9 +26120,11 @@ class Chats(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chats"]:
         return "chats"
 
+    @classmethod
     def getClass(self) -> Literal["Chats"]:
         return "Chats"
 
@@ -25302,9 +26178,11 @@ class FailedToAddMember(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["failedToAddMember"]:
         return "failedToAddMember"
 
+    @classmethod
     def getClass(self) -> Literal["FailedToAddMember"]:
         return "FailedToAddMember"
 
@@ -25349,9 +26227,11 @@ class FailedToAddMembers(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["failedToAddMembers"]:
         return "failedToAddMembers"
 
+    @classmethod
     def getClass(self) -> Literal["FailedToAddMembers"]:
         return "FailedToAddMembers"
 
@@ -25395,9 +26275,11 @@ class CreatedBasicGroupChat(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["createdBasicGroupChat"]:
         return "createdBasicGroupChat"
 
+    @classmethod
     def getClass(self) -> Literal["CreatedBasicGroupChat"]:
         return "CreatedBasicGroupChat"
 
@@ -25427,9 +26309,11 @@ class PublicChatTypeHasUsername(TlObject, PublicChatType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["publicChatTypeHasUsername"]:
         return "publicChatTypeHasUsername"
 
+    @classmethod
     def getClass(self) -> Literal["PublicChatType"]:
         return "PublicChatType"
 
@@ -25453,9 +26337,11 @@ class PublicChatTypeIsLocationBased(TlObject, PublicChatType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["publicChatTypeIsLocationBased"]:
         return "publicChatTypeIsLocationBased"
 
+    @classmethod
     def getClass(self) -> Literal["PublicChatType"]:
         return "PublicChatType"
 
@@ -25513,9 +26399,11 @@ class AccountInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["accountInfo"]:
         return "accountInfo"
 
+    @classmethod
     def getClass(self) -> Literal["AccountInfo"]:
         return "AccountInfo"
 
@@ -25562,9 +26450,11 @@ class ChatActionBarReportSpam(TlObject, ChatActionBar):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionBarReportSpam"]:
         return "chatActionBarReportSpam"
 
+    @classmethod
     def getClass(self) -> Literal["ChatActionBar"]:
         return "ChatActionBar"
 
@@ -25589,9 +26479,11 @@ class ChatActionBarInviteMembers(TlObject, ChatActionBar):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionBarInviteMembers"]:
         return "chatActionBarInviteMembers"
 
+    @classmethod
     def getClass(self) -> Literal["ChatActionBar"]:
         return "ChatActionBar"
 
@@ -25629,9 +26521,11 @@ class ChatActionBarReportAddBlock(TlObject, ChatActionBar):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionBarReportAddBlock"]:
         return "chatActionBarReportAddBlock"
 
+    @classmethod
     def getClass(self) -> Literal["ChatActionBar"]:
         return "ChatActionBar"
 
@@ -25661,9 +26555,11 @@ class ChatActionBarAddContact(TlObject, ChatActionBar):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionBarAddContact"]:
         return "chatActionBarAddContact"
 
+    @classmethod
     def getClass(self) -> Literal["ChatActionBar"]:
         return "ChatActionBar"
 
@@ -25687,9 +26583,11 @@ class ChatActionBarSharePhoneNumber(TlObject, ChatActionBar):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionBarSharePhoneNumber"]:
         return "chatActionBarSharePhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["ChatActionBar"]:
         return "ChatActionBar"
 
@@ -25732,9 +26630,11 @@ class ChatActionBarJoinRequest(TlObject, ChatActionBar):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionBarJoinRequest"]:
         return "chatActionBarJoinRequest"
 
+    @classmethod
     def getClass(self) -> Literal["ChatActionBar"]:
         return "ChatActionBar"
 
@@ -25766,9 +26666,11 @@ class KeyboardButtonTypeText(TlObject, KeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["keyboardButtonTypeText"]:
         return "keyboardButtonTypeText"
 
+    @classmethod
     def getClass(self) -> Literal["KeyboardButtonType"]:
         return "KeyboardButtonType"
 
@@ -25792,9 +26694,11 @@ class KeyboardButtonTypeRequestPhoneNumber(TlObject, KeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["keyboardButtonTypeRequestPhoneNumber"]:
         return "keyboardButtonTypeRequestPhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["KeyboardButtonType"]:
         return "KeyboardButtonType"
 
@@ -25820,9 +26724,11 @@ class KeyboardButtonTypeRequestLocation(TlObject, KeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["keyboardButtonTypeRequestLocation"]:
         return "keyboardButtonTypeRequestLocation"
 
+    @classmethod
     def getClass(self) -> Literal["KeyboardButtonType"]:
         return "KeyboardButtonType"
 
@@ -25858,9 +26764,11 @@ class KeyboardButtonTypeRequestPoll(TlObject, KeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["keyboardButtonTypeRequestPoll"]:
         return "keyboardButtonTypeRequestPoll"
 
+    @classmethod
     def getClass(self) -> Literal["KeyboardButtonType"]:
         return "KeyboardButtonType"
 
@@ -25948,9 +26856,11 @@ class KeyboardButtonTypeRequestUsers(TlObject, KeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["keyboardButtonTypeRequestUsers"]:
         return "keyboardButtonTypeRequestUsers"
 
+    @classmethod
     def getClass(self) -> Literal["KeyboardButtonType"]:
         return "KeyboardButtonType"
 
@@ -26082,9 +26992,11 @@ class KeyboardButtonTypeRequestChat(TlObject, KeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["keyboardButtonTypeRequestChat"]:
         return "keyboardButtonTypeRequestChat"
 
+    @classmethod
     def getClass(self) -> Literal["KeyboardButtonType"]:
         return "KeyboardButtonType"
 
@@ -26151,9 +27063,11 @@ class KeyboardButtonTypeWebApp(TlObject, KeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["keyboardButtonTypeWebApp"]:
         return "keyboardButtonTypeWebApp"
 
+    @classmethod
     def getClass(self) -> Literal["KeyboardButtonType"]:
         return "KeyboardButtonType"
 
@@ -26199,9 +27113,11 @@ class KeyboardButton(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["keyboardButton"]:
         return "keyboardButton"
 
+    @classmethod
     def getClass(self) -> Literal["KeyboardButton"]:
         return "KeyboardButton"
 
@@ -26234,9 +27150,11 @@ class InlineKeyboardButtonTypeUrl(TlObject, InlineKeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeUrl"]:
         return "inlineKeyboardButtonTypeUrl"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26278,9 +27196,11 @@ class InlineKeyboardButtonTypeLoginUrl(TlObject, InlineKeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeLoginUrl"]:
         return "inlineKeyboardButtonTypeLoginUrl"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26319,9 +27239,11 @@ class InlineKeyboardButtonTypeWebApp(TlObject, InlineKeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeWebApp"]:
         return "inlineKeyboardButtonTypeWebApp"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26353,9 +27275,11 @@ class InlineKeyboardButtonTypeCallback(TlObject, InlineKeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeCallback"]:
         return "inlineKeyboardButtonTypeCallback"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26387,9 +27311,11 @@ class InlineKeyboardButtonTypeCallbackWithPassword(TlObject, InlineKeyboardButto
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeCallbackWithPassword"]:
         return "inlineKeyboardButtonTypeCallbackWithPassword"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26416,9 +27342,11 @@ class InlineKeyboardButtonTypeCallbackGame(TlObject, InlineKeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeCallbackGame"]:
         return "inlineKeyboardButtonTypeCallbackGame"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26458,9 +27386,11 @@ class InlineKeyboardButtonTypeSwitchInline(TlObject, InlineKeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeSwitchInline"]:
         return "inlineKeyboardButtonTypeSwitchInline"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26492,9 +27422,11 @@ class InlineKeyboardButtonTypeBuy(TlObject, InlineKeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeBuy"]:
         return "inlineKeyboardButtonTypeBuy"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26525,9 +27457,11 @@ class InlineKeyboardButtonTypeUser(TlObject, InlineKeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeUser"]:
         return "inlineKeyboardButtonTypeUser"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26559,9 +27493,11 @@ class InlineKeyboardButtonTypeCopyText(TlObject, InlineKeyboardButtonType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButtonTypeCopyText"]:
         return "inlineKeyboardButtonTypeCopyText"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButtonType"]:
         return "InlineKeyboardButtonType"
 
@@ -26610,9 +27546,11 @@ class InlineKeyboardButton(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineKeyboardButton"]:
         return "inlineKeyboardButton"
 
+    @classmethod
     def getClass(self) -> Literal["InlineKeyboardButton"]:
         return "InlineKeyboardButton"
 
@@ -26645,9 +27583,11 @@ class ReplyMarkupRemoveKeyboard(TlObject, ReplyMarkup):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["replyMarkupRemoveKeyboard"]:
         return "replyMarkupRemoveKeyboard"
 
+    @classmethod
     def getClass(self) -> Literal["ReplyMarkup"]:
         return "ReplyMarkup"
 
@@ -26686,9 +27626,11 @@ class ReplyMarkupForceReply(TlObject, ReplyMarkup):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["replyMarkupForceReply"]:
         return "replyMarkupForceReply"
 
+    @classmethod
     def getClass(self) -> Literal["ReplyMarkup"]:
         return "ReplyMarkup"
 
@@ -26758,9 +27700,11 @@ class ReplyMarkupShowKeyboard(TlObject, ReplyMarkup):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["replyMarkupShowKeyboard"]:
         return "replyMarkupShowKeyboard"
 
+    @classmethod
     def getClass(self) -> Literal["ReplyMarkup"]:
         return "ReplyMarkup"
 
@@ -26805,9 +27749,11 @@ class ReplyMarkupInlineKeyboard(TlObject, ReplyMarkup):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["replyMarkupInlineKeyboard"]:
         return "replyMarkupInlineKeyboard"
 
+    @classmethod
     def getClass(self) -> Literal["ReplyMarkup"]:
         return "ReplyMarkup"
 
@@ -26844,9 +27790,11 @@ class LoginUrlInfoOpen(TlObject, LoginUrlInfo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["loginUrlInfoOpen"]:
         return "loginUrlInfoOpen"
 
+    @classmethod
     def getClass(self) -> Literal["LoginUrlInfo"]:
         return "LoginUrlInfo"
 
@@ -26904,9 +27852,11 @@ class LoginUrlInfoRequestConfirmation(TlObject, LoginUrlInfo):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["loginUrlInfoRequestConfirmation"]:
         return "loginUrlInfoRequestConfirmation"
 
+    @classmethod
     def getClass(self) -> Literal["LoginUrlInfo"]:
         return "LoginUrlInfo"
 
@@ -27034,9 +27984,11 @@ class ThemeParameters(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["themeParameters"]:
         return "themeParameters"
 
+    @classmethod
     def getClass(self) -> Literal["ThemeParameters"]:
         return "ThemeParameters"
 
@@ -27106,9 +28058,11 @@ class WebAppOpenModeCompact(TlObject, WebAppOpenMode):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["webAppOpenModeCompact"]:
         return "webAppOpenModeCompact"
 
+    @classmethod
     def getClass(self) -> Literal["WebAppOpenMode"]:
         return "WebAppOpenMode"
 
@@ -27132,9 +28086,11 @@ class WebAppOpenModeFullSize(TlObject, WebAppOpenMode):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["webAppOpenModeFullSize"]:
         return "webAppOpenModeFullSize"
 
+    @classmethod
     def getClass(self) -> Literal["WebAppOpenMode"]:
         return "WebAppOpenMode"
 
@@ -27158,9 +28114,11 @@ class WebAppOpenModeFullScreen(TlObject, WebAppOpenMode):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["webAppOpenModeFullScreen"]:
         return "webAppOpenModeFullScreen"
 
+    @classmethod
     def getClass(self) -> Literal["WebAppOpenMode"]:
         return "WebAppOpenMode"
 
@@ -27206,9 +28164,11 @@ class FoundWebApp(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundWebApp"]:
         return "foundWebApp"
 
+    @classmethod
     def getClass(self) -> Literal["FoundWebApp"]:
         return "FoundWebApp"
 
@@ -27252,9 +28212,11 @@ class WebAppInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["webAppInfo"]:
         return "webAppInfo"
 
+    @classmethod
     def getClass(self) -> Literal["WebAppInfo"]:
         return "WebAppInfo"
 
@@ -27297,9 +28259,11 @@ class MainWebApp(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["mainWebApp"]:
         return "mainWebApp"
 
+    @classmethod
     def getClass(self) -> Literal["MainWebApp"]:
         return "MainWebApp"
 
@@ -27352,9 +28316,11 @@ class WebAppOpenParameters(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["webAppOpenParameters"]:
         return "webAppOpenParameters"
 
+    @classmethod
     def getClass(self) -> Literal["WebAppOpenParameters"]:
         return "WebAppOpenParameters"
 
@@ -27426,9 +28392,11 @@ class MessageThreadInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageThreadInfo"]:
         return "messageThreadInfo"
 
+    @classmethod
     def getClass(self) -> Literal["MessageThreadInfo"]:
         return "MessageThreadInfo"
 
@@ -27466,9 +28434,11 @@ class SavedMessagesTopicTypeMyNotes(TlObject, SavedMessagesTopicType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["savedMessagesTopicTypeMyNotes"]:
         return "savedMessagesTopicTypeMyNotes"
 
+    @classmethod
     def getClass(self) -> Literal["SavedMessagesTopicType"]:
         return "SavedMessagesTopicType"
 
@@ -27492,9 +28462,11 @@ class SavedMessagesTopicTypeAuthorHidden(TlObject, SavedMessagesTopicType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["savedMessagesTopicTypeAuthorHidden"]:
         return "savedMessagesTopicTypeAuthorHidden"
 
+    @classmethod
     def getClass(self) -> Literal["SavedMessagesTopicType"]:
         return "SavedMessagesTopicType"
 
@@ -27525,9 +28497,11 @@ class SavedMessagesTopicTypeSavedFromChat(TlObject, SavedMessagesTopicType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["savedMessagesTopicTypeSavedFromChat"]:
         return "savedMessagesTopicTypeSavedFromChat"
 
+    @classmethod
     def getClass(self) -> Literal["SavedMessagesTopicType"]:
         return "SavedMessagesTopicType"
 
@@ -27599,9 +28573,11 @@ class SavedMessagesTopic(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["savedMessagesTopic"]:
         return "savedMessagesTopic"
 
+    @classmethod
     def getClass(self) -> Literal["SavedMessagesTopic"]:
         return "SavedMessagesTopic"
 
@@ -27715,9 +28691,11 @@ class DirectMessagesChatTopic(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["directMessagesChatTopic"]:
         return "directMessagesChatTopic"
 
+    @classmethod
     def getClass(self) -> Literal["DirectMessagesChatTopic"]:
         return "DirectMessagesChatTopic"
 
@@ -27785,9 +28763,11 @@ class ForumTopicIcon(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["forumTopicIcon"]:
         return "forumTopicIcon"
 
+    @classmethod
     def getClass(self) -> Literal["ForumTopicIcon"]:
         return "ForumTopicIcon"
 
@@ -27887,9 +28867,11 @@ class ForumTopicInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["forumTopicInfo"]:
         return "forumTopicInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ForumTopicInfo"]:
         return "ForumTopicInfo"
 
@@ -28009,9 +28991,11 @@ class ForumTopic(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["forumTopic"]:
         return "forumTopic"
 
+    @classmethod
     def getClass(self) -> Literal["ForumTopic"]:
         return "ForumTopic"
 
@@ -28097,9 +29081,11 @@ class ForumTopics(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["forumTopics"]:
         return "forumTopics"
 
+    @classmethod
     def getClass(self) -> Literal["ForumTopics"]:
         return "ForumTopics"
 
@@ -28173,9 +29159,11 @@ class LinkPreviewOptions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewOptions"]:
         return "linkPreviewOptions"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewOptions"]:
         return "LinkPreviewOptions"
 
@@ -28245,9 +29233,11 @@ class SharedUser(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sharedUser"]:
         return "sharedUser"
 
+    @classmethod
     def getClass(self) -> Literal["SharedUser"]:
         return "SharedUser"
 
@@ -28307,9 +29297,11 @@ class SharedChat(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sharedChat"]:
         return "sharedChat"
 
+    @classmethod
     def getClass(self) -> Literal["SharedChat"]:
         return "SharedChat"
 
@@ -28382,9 +29374,11 @@ class ThemeSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["themeSettings"]:
         return "themeSettings"
 
+    @classmethod
     def getClass(self) -> Literal["ThemeSettings"]:
         return "ThemeSettings"
 
@@ -28431,9 +29425,11 @@ class RichTextPlain(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextPlain"]:
         return "richTextPlain"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28484,9 +29480,11 @@ class RichTextBold(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextBold"]:
         return "richTextBold"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28537,9 +29535,11 @@ class RichTextItalic(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextItalic"]:
         return "richTextItalic"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28590,9 +29590,11 @@ class RichTextUnderline(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextUnderline"]:
         return "richTextUnderline"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28643,9 +29645,11 @@ class RichTextStrikethrough(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextStrikethrough"]:
         return "richTextStrikethrough"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28696,9 +29700,11 @@ class RichTextFixed(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextFixed"]:
         return "richTextFixed"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28761,9 +29767,11 @@ class RichTextUrl(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextUrl"]:
         return "richTextUrl"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28826,9 +29834,11 @@ class RichTextEmailAddress(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextEmailAddress"]:
         return "richTextEmailAddress"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28884,9 +29894,11 @@ class RichTextSubscript(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextSubscript"]:
         return "richTextSubscript"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28937,9 +29949,11 @@ class RichTextSuperscript(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextSuperscript"]:
         return "richTextSuperscript"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -28990,9 +30004,11 @@ class RichTextMarked(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextMarked"]:
         return "richTextMarked"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -29048,9 +30064,11 @@ class RichTextPhoneNumber(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextPhoneNumber"]:
         return "richTextPhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -29099,9 +30117,11 @@ class RichTextIcon(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextIcon"]:
         return "richTextIcon"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -29171,9 +30191,11 @@ class RichTextReference(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextReference"]:
         return "richTextReference"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -29212,9 +30234,11 @@ class RichTextAnchor(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextAnchor"]:
         return "richTextAnchor"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -29277,9 +30301,11 @@ class RichTextAnchorLink(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTextAnchorLink"]:
         return "richTextAnchorLink"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -29318,9 +30344,11 @@ class RichTexts(TlObject, RichText):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["richTexts"]:
         return "richTexts"
 
+    @classmethod
     def getClass(self) -> Literal["RichText"]:
         return "RichText"
 
@@ -29395,9 +30423,11 @@ class PageBlockCaption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockCaption"]:
         return "pageBlockCaption"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockCaption"]:
         return "PageBlockCaption"
 
@@ -29435,9 +30465,11 @@ class PageBlockListItem(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockListItem"]:
         return "pageBlockListItem"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockListItem"]:
         return "PageBlockListItem"
 
@@ -29467,9 +30499,11 @@ class PageBlockHorizontalAlignmentLeft(TlObject, PageBlockHorizontalAlignment):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockHorizontalAlignmentLeft"]:
         return "pageBlockHorizontalAlignmentLeft"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockHorizontalAlignment"]:
         return "PageBlockHorizontalAlignment"
 
@@ -29493,9 +30527,11 @@ class PageBlockHorizontalAlignmentCenter(TlObject, PageBlockHorizontalAlignment)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockHorizontalAlignmentCenter"]:
         return "pageBlockHorizontalAlignmentCenter"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockHorizontalAlignment"]:
         return "PageBlockHorizontalAlignment"
 
@@ -29519,9 +30555,11 @@ class PageBlockHorizontalAlignmentRight(TlObject, PageBlockHorizontalAlignment):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockHorizontalAlignmentRight"]:
         return "pageBlockHorizontalAlignmentRight"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockHorizontalAlignment"]:
         return "PageBlockHorizontalAlignment"
 
@@ -29545,9 +30583,11 @@ class PageBlockVerticalAlignmentTop(TlObject, PageBlockVerticalAlignment):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockVerticalAlignmentTop"]:
         return "pageBlockVerticalAlignmentTop"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockVerticalAlignment"]:
         return "PageBlockVerticalAlignment"
 
@@ -29571,9 +30611,11 @@ class PageBlockVerticalAlignmentMiddle(TlObject, PageBlockVerticalAlignment):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockVerticalAlignmentMiddle"]:
         return "pageBlockVerticalAlignmentMiddle"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockVerticalAlignment"]:
         return "PageBlockVerticalAlignment"
 
@@ -29597,9 +30639,11 @@ class PageBlockVerticalAlignmentBottom(TlObject, PageBlockVerticalAlignment):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockVerticalAlignmentBottom"]:
         return "pageBlockVerticalAlignmentBottom"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockVerticalAlignment"]:
         return "PageBlockVerticalAlignment"
 
@@ -29692,9 +30736,11 @@ class PageBlockTableCell(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockTableCell"]:
         return "pageBlockTableCell"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockTableCell"]:
         return "PageBlockTableCell"
 
@@ -29772,9 +30818,11 @@ class PageBlockRelatedArticle(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockRelatedArticle"]:
         return "pageBlockRelatedArticle"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlockRelatedArticle"]:
         return "PageBlockRelatedArticle"
 
@@ -29838,9 +30886,11 @@ class PageBlockTitle(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockTitle"]:
         return "pageBlockTitle"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -29891,9 +30941,11 @@ class PageBlockSubtitle(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockSubtitle"]:
         return "pageBlockSubtitle"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -29949,9 +31001,11 @@ class PageBlockAuthorDate(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockAuthorDate"]:
         return "pageBlockAuthorDate"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30007,9 +31061,11 @@ class PageBlockHeader(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockHeader"]:
         return "pageBlockHeader"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30060,9 +31116,11 @@ class PageBlockSubheader(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockSubheader"]:
         return "pageBlockSubheader"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30113,9 +31171,11 @@ class PageBlockKicker(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockKicker"]:
         return "pageBlockKicker"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30166,9 +31226,11 @@ class PageBlockParagraph(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockParagraph"]:
         return "pageBlockParagraph"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30224,9 +31286,11 @@ class PageBlockPreformatted(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockPreformatted"]:
         return "pageBlockPreformatted"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30278,9 +31342,11 @@ class PageBlockFooter(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockFooter"]:
         return "pageBlockFooter"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30305,9 +31371,11 @@ class PageBlockDivider(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockDivider"]:
         return "pageBlockDivider"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30338,9 +31406,11 @@ class PageBlockAnchor(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockAnchor"]:
         return "pageBlockAnchor"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30372,9 +31442,11 @@ class PageBlockList(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockList"]:
         return "pageBlockList"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30449,9 +31521,11 @@ class PageBlockBlockQuote(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockBlockQuote"]:
         return "pageBlockBlockQuote"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30527,9 +31601,11 @@ class PageBlockPullQuote(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockPullQuote"]:
         return "pageBlockPullQuote"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30577,9 +31653,11 @@ class PageBlockAnimation(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockAnimation"]:
         return "pageBlockAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30623,9 +31701,11 @@ class PageBlockAudio(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockAudio"]:
         return "pageBlockAudio"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30670,9 +31750,11 @@ class PageBlockPhoto(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockPhoto"]:
         return "pageBlockPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30732,9 +31814,11 @@ class PageBlockVideo(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockVideo"]:
         return "pageBlockVideo"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30782,9 +31866,11 @@ class PageBlockVoiceNote(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockVoiceNote"]:
         return "pageBlockVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30852,9 +31938,11 @@ class PageBlockCover(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockCover"]:
         return "pageBlockCover"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -30931,9 +32019,11 @@ class PageBlockEmbedded(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockEmbedded"]:
         return "pageBlockEmbedded"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -31015,9 +32105,11 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockEmbeddedPost"]:
         return "pageBlockEmbeddedPost"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -31069,9 +32161,11 @@ class PageBlockCollage(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockCollage"]:
         return "pageBlockCollage"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -31115,9 +32209,11 @@ class PageBlockSlideshow(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockSlideshow"]:
         return "pageBlockSlideshow"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -31175,9 +32271,11 @@ class PageBlockChatLink(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockChatLink"]:
         return "pageBlockChatLink"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -31258,9 +32356,11 @@ class PageBlockTable(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockTable"]:
         return "pageBlockTable"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -31335,9 +32435,11 @@ class PageBlockDetails(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockDetails"]:
         return "pageBlockDetails"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -31402,9 +32504,11 @@ class PageBlockRelatedArticles(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockRelatedArticles"]:
         return "pageBlockRelatedArticles"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -31468,9 +32572,11 @@ class PageBlockMap(TlObject, PageBlock):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pageBlockMap"]:
         return "pageBlockMap"
 
+    @classmethod
     def getClass(self) -> Literal["PageBlock"]:
         return "PageBlock"
 
@@ -31597,9 +32703,11 @@ class WebPageInstantView(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["webPageInstantView"]:
         return "webPageInstantView"
 
+    @classmethod
     def getClass(self) -> Literal["WebPageInstantView"]:
         return "WebPageInstantView"
 
@@ -31644,9 +32752,11 @@ class LinkPreviewAlbumMediaPhoto(TlObject, LinkPreviewAlbumMedia):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewAlbumMediaPhoto"]:
         return "linkPreviewAlbumMediaPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewAlbumMedia"]:
         return "LinkPreviewAlbumMedia"
 
@@ -31678,9 +32788,11 @@ class LinkPreviewAlbumMediaVideo(TlObject, LinkPreviewAlbumMedia):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewAlbumMediaVideo"]:
         return "linkPreviewAlbumMediaVideo"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewAlbumMedia"]:
         return "LinkPreviewAlbumMedia"
 
@@ -31719,9 +32831,11 @@ class LinkPreviewTypeAlbum(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeAlbum"]:
         return "linkPreviewTypeAlbum"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -31754,9 +32868,11 @@ class LinkPreviewTypeAnimation(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeAnimation"]:
         return "linkPreviewTypeAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -31788,9 +32904,11 @@ class LinkPreviewTypeApp(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeApp"]:
         return "linkPreviewTypeApp"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -31822,9 +32940,11 @@ class LinkPreviewTypeArticle(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeArticle"]:
         return "linkPreviewTypeArticle"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -31856,9 +32976,11 @@ class LinkPreviewTypeAudio(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeAudio"]:
         return "linkPreviewTypeAudio"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -31903,9 +33025,11 @@ class LinkPreviewTypeBackground(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeBackground"]:
         return "linkPreviewTypeBackground"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -31942,9 +33066,11 @@ class LinkPreviewTypeChannelBoost(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeChannelBoost"]:
         return "linkPreviewTypeChannelBoost"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -31996,9 +33122,11 @@ class LinkPreviewTypeChat(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeChat"]:
         return "linkPreviewTypeChat"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32037,9 +33165,11 @@ class LinkPreviewTypeDocument(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeDocument"]:
         return "linkPreviewTypeDocument"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32098,9 +33228,11 @@ class LinkPreviewTypeEmbeddedAnimationPlayer(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeEmbeddedAnimationPlayer"]:
         return "linkPreviewTypeEmbeddedAnimationPlayer"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32172,9 +33304,11 @@ class LinkPreviewTypeEmbeddedAudioPlayer(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeEmbeddedAudioPlayer"]:
         return "linkPreviewTypeEmbeddedAudioPlayer"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32244,9 +33378,11 @@ class LinkPreviewTypeEmbeddedVideoPlayer(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeEmbeddedVideoPlayer"]:
         return "linkPreviewTypeEmbeddedVideoPlayer"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32299,9 +33435,11 @@ class LinkPreviewTypeExternalAudio(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeExternalAudio"]:
         return "linkPreviewTypeExternalAudio"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32367,9 +33505,11 @@ class LinkPreviewTypeExternalVideo(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeExternalVideo"]:
         return "linkPreviewTypeExternalVideo"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32405,9 +33545,11 @@ class LinkPreviewTypeGroupCall(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeGroupCall"]:
         return "linkPreviewTypeGroupCall"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32431,9 +33573,11 @@ class LinkPreviewTypeInvoice(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeInvoice"]:
         return "linkPreviewTypeInvoice"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32457,9 +33601,11 @@ class LinkPreviewTypeMessage(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeMessage"]:
         return "linkPreviewTypeMessage"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32490,9 +33636,11 @@ class LinkPreviewTypePhoto(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypePhoto"]:
         return "linkPreviewTypePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32517,9 +33665,11 @@ class LinkPreviewTypePremiumGiftCode(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypePremiumGiftCode"]:
         return "linkPreviewTypePremiumGiftCode"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32543,9 +33693,11 @@ class LinkPreviewTypeShareableChatFolder(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeShareableChatFolder"]:
         return "linkPreviewTypeShareableChatFolder"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32576,9 +33728,11 @@ class LinkPreviewTypeSticker(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeSticker"]:
         return "linkPreviewTypeSticker"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32610,9 +33764,11 @@ class LinkPreviewTypeStickerSet(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeStickerSet"]:
         return "linkPreviewTypeStickerSet"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32649,9 +33805,11 @@ class LinkPreviewTypeStory(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeStory"]:
         return "linkPreviewTypeStory"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32688,9 +33846,11 @@ class LinkPreviewTypeSupergroupBoost(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeSupergroupBoost"]:
         return "linkPreviewTypeSupergroupBoost"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32729,9 +33889,11 @@ class LinkPreviewTypeTheme(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeTheme"]:
         return "linkPreviewTypeTheme"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32761,9 +33923,11 @@ class LinkPreviewTypeUnsupported(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeUnsupported"]:
         return "linkPreviewTypeUnsupported"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32794,9 +33958,11 @@ class LinkPreviewTypeUpgradedGift(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeUpgradedGift"]:
         return "linkPreviewTypeUpgradedGift"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32833,9 +33999,11 @@ class LinkPreviewTypeUser(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeUser"]:
         return "linkPreviewTypeUser"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32880,9 +34048,11 @@ class LinkPreviewTypeVideo(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeVideo"]:
         return "linkPreviewTypeVideo"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32926,9 +34096,11 @@ class LinkPreviewTypeVideoChat(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeVideoChat"]:
         return "linkPreviewTypeVideoChat"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32965,9 +34137,11 @@ class LinkPreviewTypeVideoNote(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeVideoNote"]:
         return "linkPreviewTypeVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -32999,9 +34173,11 @@ class LinkPreviewTypeVoiceNote(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeVoiceNote"]:
         return "linkPreviewTypeVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -33033,9 +34209,11 @@ class LinkPreviewTypeWebApp(TlObject, LinkPreviewType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreviewTypeWebApp"]:
         return "linkPreviewTypeWebApp"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreviewType"]:
         return "LinkPreviewType"
 
@@ -33177,9 +34355,11 @@ class LinkPreview(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["linkPreview"]:
         return "linkPreview"
 
+    @classmethod
     def getClass(self) -> Literal["LinkPreview"]:
         return "LinkPreview"
 
@@ -33267,9 +34447,11 @@ class CountryInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["countryInfo"]:
         return "countryInfo"
 
+    @classmethod
     def getClass(self) -> Literal["CountryInfo"]:
         return "CountryInfo"
 
@@ -33312,9 +34494,11 @@ class Countries(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["countries"]:
         return "countries"
 
+    @classmethod
     def getClass(self) -> Literal["Countries"]:
         return "Countries"
 
@@ -33367,9 +34551,11 @@ class PhoneNumberInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["phoneNumberInfo"]:
         return "phoneNumberInfo"
 
+    @classmethod
     def getClass(self) -> Literal["PhoneNumberInfo"]:
         return "PhoneNumberInfo"
 
@@ -33410,9 +34596,11 @@ class CollectibleItemTypeUsername(TlObject, CollectibleItemType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["collectibleItemTypeUsername"]:
         return "collectibleItemTypeUsername"
 
+    @classmethod
     def getClass(self) -> Literal["CollectibleItemType"]:
         return "CollectibleItemType"
 
@@ -33444,9 +34632,11 @@ class CollectibleItemTypePhoneNumber(TlObject, CollectibleItemType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["collectibleItemTypePhoneNumber"]:
         return "collectibleItemTypePhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["CollectibleItemType"]:
         return "CollectibleItemType"
 
@@ -33511,9 +34701,11 @@ class CollectibleItemInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["collectibleItemInfo"]:
         return "collectibleItemInfo"
 
+    @classmethod
     def getClass(self) -> Literal["CollectibleItemInfo"]:
         return "CollectibleItemInfo"
 
@@ -33563,9 +34755,11 @@ class BankCardActionOpenUrl(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["bankCardActionOpenUrl"]:
         return "bankCardActionOpenUrl"
 
+    @classmethod
     def getClass(self) -> Literal["BankCardActionOpenUrl"]:
         return "BankCardActionOpenUrl"
 
@@ -33605,9 +34799,11 @@ class BankCardInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["bankCardInfo"]:
         return "bankCardInfo"
 
+    @classmethod
     def getClass(self) -> Literal["BankCardInfo"]:
         return "BankCardInfo"
 
@@ -33673,9 +34869,11 @@ class Address(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["address"]:
         return "address"
 
+    @classmethod
     def getClass(self) -> Literal["Address"]:
         return "Address"
 
@@ -33737,9 +34935,11 @@ class LocationAddress(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["locationAddress"]:
         return "locationAddress"
 
+    @classmethod
     def getClass(self) -> Literal["LocationAddress"]:
         return "LocationAddress"
 
@@ -33785,9 +34985,11 @@ class LabeledPricePart(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["labeledPricePart"]:
         return "labeledPricePart"
 
+    @classmethod
     def getClass(self) -> Literal["LabeledPricePart"]:
         return "LabeledPricePart"
 
@@ -33909,9 +35111,11 @@ class Invoice(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["invoice"]:
         return "invoice"
 
+    @classmethod
     def getClass(self) -> Literal["Invoice"]:
         return "Invoice"
 
@@ -34001,9 +35205,11 @@ class OrderInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["orderInfo"]:
         return "orderInfo"
 
+    @classmethod
     def getClass(self) -> Literal["OrderInfo"]:
         return "OrderInfo"
 
@@ -34056,9 +35262,11 @@ class ShippingOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["shippingOption"]:
         return "shippingOption"
 
+    @classmethod
     def getClass(self) -> Literal["ShippingOption"]:
         return "ShippingOption"
 
@@ -34102,9 +35310,11 @@ class SavedCredentials(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["savedCredentials"]:
         return "savedCredentials"
 
+    @classmethod
     def getClass(self) -> Literal["SavedCredentials"]:
         return "SavedCredentials"
 
@@ -34137,9 +35347,11 @@ class InputCredentialsSaved(TlObject, InputCredentials):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputCredentialsSaved"]:
         return "inputCredentialsSaved"
 
+    @classmethod
     def getClass(self) -> Literal["InputCredentials"]:
         return "InputCredentials"
 
@@ -34179,9 +35391,11 @@ class InputCredentialsNew(TlObject, InputCredentials):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputCredentialsNew"]:
         return "inputCredentialsNew"
 
+    @classmethod
     def getClass(self) -> Literal["InputCredentials"]:
         return "InputCredentials"
 
@@ -34218,9 +35432,11 @@ class InputCredentialsApplePay(TlObject, InputCredentials):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputCredentialsApplePay"]:
         return "inputCredentialsApplePay"
 
+    @classmethod
     def getClass(self) -> Literal["InputCredentials"]:
         return "InputCredentials"
 
@@ -34252,9 +35468,11 @@ class InputCredentialsGooglePay(TlObject, InputCredentials):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputCredentialsGooglePay"]:
         return "inputCredentialsGooglePay"
 
+    @classmethod
     def getClass(self) -> Literal["InputCredentials"]:
         return "InputCredentials"
 
@@ -34291,9 +35509,11 @@ class PaymentProviderSmartGlocal(TlObject, PaymentProvider):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentProviderSmartGlocal"]:
         return "paymentProviderSmartGlocal"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentProvider"]:
         return "PaymentProvider"
 
@@ -34351,9 +35571,11 @@ class PaymentProviderStripe(TlObject, PaymentProvider):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentProviderStripe"]:
         return "paymentProviderStripe"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentProvider"]:
         return "PaymentProvider"
 
@@ -34394,9 +35616,11 @@ class PaymentProviderOther(TlObject, PaymentProvider):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentProviderOther"]:
         return "paymentProviderOther"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentProvider"]:
         return "PaymentProvider"
 
@@ -34433,9 +35657,11 @@ class PaymentOption(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentOption"]:
         return "paymentOption"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentOption"]:
         return "PaymentOption"
 
@@ -34520,9 +35746,11 @@ class PaymentFormTypeRegular(TlObject, PaymentFormType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentFormTypeRegular"]:
         return "paymentFormTypeRegular"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentFormType"]:
         return "PaymentFormType"
 
@@ -34575,9 +35803,11 @@ class PaymentFormTypeStars(TlObject, PaymentFormType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentFormTypeStars"]:
         return "paymentFormTypeStars"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentFormType"]:
         return "PaymentFormType"
 
@@ -34609,9 +35839,11 @@ class PaymentFormTypeStarSubscription(TlObject, PaymentFormType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentFormTypeStarSubscription"]:
         return "paymentFormTypeStarSubscription"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentFormType"]:
         return "PaymentFormType"
 
@@ -34669,9 +35901,11 @@ class PaymentForm(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentForm"]:
         return "paymentForm"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentForm"]:
         return "PaymentForm"
 
@@ -34719,9 +35953,11 @@ class ValidatedOrderInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["validatedOrderInfo"]:
         return "validatedOrderInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ValidatedOrderInfo"]:
         return "ValidatedOrderInfo"
 
@@ -34763,9 +35999,11 @@ class PaymentResult(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentResult"]:
         return "paymentResult"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentResult"]:
         return "PaymentResult"
 
@@ -34835,9 +36073,11 @@ class PaymentReceiptTypeRegular(TlObject, PaymentReceiptType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentReceiptTypeRegular"]:
         return "paymentReceiptTypeRegular"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentReceiptType"]:
         return "PaymentReceiptType"
 
@@ -34889,9 +36129,11 @@ class PaymentReceiptTypeStars(TlObject, PaymentReceiptType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentReceiptTypeStars"]:
         return "paymentReceiptTypeStars"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentReceiptType"]:
         return "PaymentReceiptType"
 
@@ -34951,9 +36193,11 @@ class PaymentReceipt(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paymentReceipt"]:
         return "paymentReceipt"
 
+    @classmethod
     def getClass(self) -> Literal["PaymentReceipt"]:
         return "PaymentReceipt"
 
@@ -34999,9 +36243,11 @@ class InputInvoiceMessage(TlObject, InputInvoice):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInvoiceMessage"]:
         return "inputInvoiceMessage"
 
+    @classmethod
     def getClass(self) -> Literal["InputInvoice"]:
         return "InputInvoice"
 
@@ -35038,9 +36284,11 @@ class InputInvoiceName(TlObject, InputInvoice):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInvoiceName"]:
         return "inputInvoiceName"
 
+    @classmethod
     def getClass(self) -> Literal["InputInvoice"]:
         return "InputInvoice"
 
@@ -35081,9 +36329,11 @@ class InputInvoiceTelegram(TlObject, InputInvoice):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInvoiceTelegram"]:
         return "inputInvoiceTelegram"
 
+    @classmethod
     def getClass(self) -> Literal["InputInvoice"]:
         return "InputInvoice"
 
@@ -35136,9 +36386,11 @@ class PaidMediaPreview(TlObject, PaidMedia):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paidMediaPreview"]:
         return "paidMediaPreview"
 
+    @classmethod
     def getClass(self) -> Literal["PaidMedia"]:
         return "PaidMedia"
 
@@ -35179,9 +36431,11 @@ class PaidMediaPhoto(TlObject, PaidMedia):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paidMediaPhoto"]:
         return "paidMediaPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["PaidMedia"]:
         return "PaidMedia"
 
@@ -35225,9 +36479,11 @@ class PaidMediaVideo(TlObject, PaidMedia):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paidMediaVideo"]:
         return "paidMediaVideo"
 
+    @classmethod
     def getClass(self) -> Literal["PaidMedia"]:
         return "PaidMedia"
 
@@ -35259,9 +36515,11 @@ class PaidMediaUnsupported(TlObject, PaidMedia):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["paidMediaUnsupported"]:
         return "paidMediaUnsupported"
 
+    @classmethod
     def getClass(self) -> Literal["PaidMedia"]:
         return "PaidMedia"
 
@@ -35331,9 +36589,11 @@ class GiveawayParameters(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["giveawayParameters"]:
         return "giveawayParameters"
 
+    @classmethod
     def getClass(self) -> Literal["GiveawayParameters"]:
         return "GiveawayParameters"
 
@@ -35387,9 +36647,11 @@ class DatedFile(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["datedFile"]:
         return "datedFile"
 
+    @classmethod
     def getClass(self) -> Literal["DatedFile"]:
         return "DatedFile"
 
@@ -35415,9 +36677,11 @@ class PassportElementTypePersonalDetails(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypePersonalDetails"]:
         return "passportElementTypePersonalDetails"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35441,9 +36705,11 @@ class PassportElementTypePassport(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypePassport"]:
         return "passportElementTypePassport"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35467,9 +36733,11 @@ class PassportElementTypeDriverLicense(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypeDriverLicense"]:
         return "passportElementTypeDriverLicense"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35493,9 +36761,11 @@ class PassportElementTypeIdentityCard(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypeIdentityCard"]:
         return "passportElementTypeIdentityCard"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35519,9 +36789,11 @@ class PassportElementTypeInternalPassport(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypeInternalPassport"]:
         return "passportElementTypeInternalPassport"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35547,9 +36819,11 @@ class PassportElementTypeAddress(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypeAddress"]:
         return "passportElementTypeAddress"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35573,9 +36847,11 @@ class PassportElementTypeUtilityBill(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypeUtilityBill"]:
         return "passportElementTypeUtilityBill"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35599,9 +36875,11 @@ class PassportElementTypeBankStatement(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypeBankStatement"]:
         return "passportElementTypeBankStatement"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35625,9 +36903,11 @@ class PassportElementTypeRentalAgreement(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypeRentalAgreement"]:
         return "passportElementTypeRentalAgreement"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35651,9 +36931,11 @@ class PassportElementTypePassportRegistration(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypePassportRegistration"]:
         return "passportElementTypePassportRegistration"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35679,9 +36961,11 @@ class PassportElementTypeTemporaryRegistration(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypeTemporaryRegistration"]:
         return "passportElementTypeTemporaryRegistration"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35707,9 +36991,11 @@ class PassportElementTypePhoneNumber(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypePhoneNumber"]:
         return "passportElementTypePhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35733,9 +37019,11 @@ class PassportElementTypeEmailAddress(TlObject, PassportElementType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTypeEmailAddress"]:
         return "passportElementTypeEmailAddress"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementType"]:
         return "PassportElementType"
 
@@ -35776,9 +37064,11 @@ class Date(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["date"]:
         return "date"
 
+    @classmethod
     def getClass(self) -> Literal["Date"]:
         return "Date"
 
@@ -35874,9 +37164,11 @@ class PersonalDetails(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["personalDetails"]:
         return "personalDetails"
 
+    @classmethod
     def getClass(self) -> Literal["PersonalDetails"]:
         return "PersonalDetails"
 
@@ -35962,9 +37254,11 @@ class IdentityDocument(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["identityDocument"]:
         return "identityDocument"
 
+    @classmethod
     def getClass(self) -> Literal["IdentityDocument"]:
         return "IdentityDocument"
 
@@ -36048,9 +37342,11 @@ class InputIdentityDocument(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputIdentityDocument"]:
         return "inputIdentityDocument"
 
+    @classmethod
     def getClass(self) -> Literal["InputIdentityDocument"]:
         return "InputIdentityDocument"
 
@@ -36102,9 +37398,11 @@ class PersonalDocument(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["personalDocument"]:
         return "personalDocument"
 
+    @classmethod
     def getClass(self) -> Literal["PersonalDocument"]:
         return "PersonalDocument"
 
@@ -36148,9 +37446,11 @@ class InputPersonalDocument(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPersonalDocument"]:
         return "inputPersonalDocument"
 
+    @classmethod
     def getClass(self) -> Literal["InputPersonalDocument"]:
         return "InputPersonalDocument"
 
@@ -36187,9 +37487,11 @@ class PassportElementPersonalDetails(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementPersonalDetails"]:
         return "passportElementPersonalDetails"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36221,9 +37523,11 @@ class PassportElementPassport(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementPassport"]:
         return "passportElementPassport"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36255,9 +37559,11 @@ class PassportElementDriverLicense(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementDriverLicense"]:
         return "passportElementDriverLicense"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36289,9 +37595,11 @@ class PassportElementIdentityCard(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementIdentityCard"]:
         return "passportElementIdentityCard"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36323,9 +37631,11 @@ class PassportElementInternalPassport(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementInternalPassport"]:
         return "passportElementInternalPassport"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36357,9 +37667,11 @@ class PassportElementAddress(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementAddress"]:
         return "passportElementAddress"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36391,9 +37703,11 @@ class PassportElementUtilityBill(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementUtilityBill"]:
         return "passportElementUtilityBill"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36425,9 +37739,11 @@ class PassportElementBankStatement(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementBankStatement"]:
         return "passportElementBankStatement"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36459,9 +37775,11 @@ class PassportElementRentalAgreement(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementRentalAgreement"]:
         return "passportElementRentalAgreement"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36495,9 +37813,11 @@ class PassportElementPassportRegistration(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementPassportRegistration"]:
         return "passportElementPassportRegistration"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36536,9 +37856,11 @@ class PassportElementTemporaryRegistration(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementTemporaryRegistration"]:
         return "passportElementTemporaryRegistration"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36575,9 +37897,11 @@ class PassportElementPhoneNumber(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementPhoneNumber"]:
         return "passportElementPhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36609,9 +37933,11 @@ class PassportElementEmailAddress(TlObject, PassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementEmailAddress"]:
         return "passportElementEmailAddress"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElement"]:
         return "PassportElement"
 
@@ -36643,9 +37969,11 @@ class InputPassportElementPersonalDetails(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementPersonalDetails"]:
         return "inputPassportElementPersonalDetails"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36679,9 +38007,11 @@ class InputPassportElementPassport(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementPassport"]:
         return "inputPassportElementPassport"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36713,9 +38043,11 @@ class InputPassportElementDriverLicense(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementDriverLicense"]:
         return "inputPassportElementDriverLicense"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36747,9 +38079,11 @@ class InputPassportElementIdentityCard(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementIdentityCard"]:
         return "inputPassportElementIdentityCard"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36781,9 +38115,11 @@ class InputPassportElementInternalPassport(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementInternalPassport"]:
         return "inputPassportElementInternalPassport"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36817,9 +38153,11 @@ class InputPassportElementAddress(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementAddress"]:
         return "inputPassportElementAddress"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36851,9 +38189,11 @@ class InputPassportElementUtilityBill(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementUtilityBill"]:
         return "inputPassportElementUtilityBill"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36885,9 +38225,11 @@ class InputPassportElementBankStatement(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementBankStatement"]:
         return "inputPassportElementBankStatement"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36919,9 +38261,11 @@ class InputPassportElementRentalAgreement(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementRentalAgreement"]:
         return "inputPassportElementRentalAgreement"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36957,9 +38301,11 @@ class InputPassportElementPassportRegistration(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementPassportRegistration"]:
         return "inputPassportElementPassportRegistration"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -36998,9 +38344,11 @@ class InputPassportElementTemporaryRegistration(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementTemporaryRegistration"]:
         return "inputPassportElementTemporaryRegistration"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -37037,9 +38385,11 @@ class InputPassportElementPhoneNumber(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementPhoneNumber"]:
         return "inputPassportElementPhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -37071,9 +38421,11 @@ class InputPassportElementEmailAddress(TlObject, InputPassportElement):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementEmailAddress"]:
         return "inputPassportElementEmailAddress"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElement"]:
         return "InputPassportElement"
 
@@ -37105,9 +38457,11 @@ class PassportElements(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElements"]:
         return "passportElements"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElements"]:
         return "PassportElements"
 
@@ -37132,9 +38486,11 @@ class PassportElementErrorSourceUnspecified(TlObject, PassportElementErrorSource
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementErrorSourceUnspecified"]:
         return "passportElementErrorSourceUnspecified"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementErrorSource"]:
         return "PassportElementErrorSource"
 
@@ -37167,9 +38523,11 @@ class PassportElementErrorSourceDataField(TlObject, PassportElementErrorSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementErrorSourceDataField"]:
         return "passportElementErrorSourceDataField"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementErrorSource"]:
         return "PassportElementErrorSource"
 
@@ -37196,9 +38554,11 @@ class PassportElementErrorSourceFrontSide(TlObject, PassportElementErrorSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementErrorSourceFrontSide"]:
         return "passportElementErrorSourceFrontSide"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementErrorSource"]:
         return "PassportElementErrorSource"
 
@@ -37224,9 +38584,11 @@ class PassportElementErrorSourceReverseSide(TlObject, PassportElementErrorSource
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementErrorSourceReverseSide"]:
         return "passportElementErrorSourceReverseSide"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementErrorSource"]:
         return "PassportElementErrorSource"
 
@@ -37252,9 +38614,11 @@ class PassportElementErrorSourceSelfie(TlObject, PassportElementErrorSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementErrorSourceSelfie"]:
         return "passportElementErrorSourceSelfie"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementErrorSource"]:
         return "PassportElementErrorSource"
 
@@ -37285,9 +38649,11 @@ class PassportElementErrorSourceTranslationFile(TlObject, PassportElementErrorSo
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementErrorSourceTranslationFile"]:
         return "passportElementErrorSourceTranslationFile"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementErrorSource"]:
         return "PassportElementErrorSource"
 
@@ -37314,9 +38680,11 @@ class PassportElementErrorSourceTranslationFiles(TlObject, PassportElementErrorS
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementErrorSourceTranslationFiles"]:
         return "passportElementErrorSourceTranslationFiles"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementErrorSource"]:
         return "PassportElementErrorSource"
 
@@ -37349,9 +38717,11 @@ class PassportElementErrorSourceFile(TlObject, PassportElementErrorSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementErrorSourceFile"]:
         return "passportElementErrorSourceFile"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementErrorSource"]:
         return "PassportElementErrorSource"
 
@@ -37376,9 +38746,11 @@ class PassportElementErrorSourceFiles(TlObject, PassportElementErrorSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementErrorSourceFiles"]:
         return "passportElementErrorSourceFiles"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementErrorSource"]:
         return "PassportElementErrorSource"
 
@@ -37450,9 +38822,11 @@ class PassportElementError(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementError"]:
         return "passportElementError"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementError"]:
         return "PassportElementError"
 
@@ -37527,9 +38901,11 @@ class PassportSuitableElement(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportSuitableElement"]:
         return "passportSuitableElement"
 
+    @classmethod
     def getClass(self) -> Literal["PassportSuitableElement"]:
         return "PassportSuitableElement"
 
@@ -37574,9 +38950,11 @@ class PassportRequiredElement(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportRequiredElement"]:
         return "passportRequiredElement"
 
+    @classmethod
     def getClass(self) -> Literal["PassportRequiredElement"]:
         return "PassportRequiredElement"
 
@@ -37623,9 +39001,11 @@ class PassportAuthorizationForm(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportAuthorizationForm"]:
         return "passportAuthorizationForm"
 
+    @classmethod
     def getClass(self) -> Literal["PassportAuthorizationForm"]:
         return "PassportAuthorizationForm"
 
@@ -37673,9 +39053,11 @@ class PassportElementsWithErrors(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["passportElementsWithErrors"]:
         return "passportElementsWithErrors"
 
+    @classmethod
     def getClass(self) -> Literal["PassportElementsWithErrors"]:
         return "PassportElementsWithErrors"
 
@@ -37724,9 +39106,11 @@ class EncryptedCredentials(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["encryptedCredentials"]:
         return "encryptedCredentials"
 
+    @classmethod
     def getClass(self) -> Literal["EncryptedCredentials"]:
         return "EncryptedCredentials"
 
@@ -37831,9 +39215,11 @@ class EncryptedPassportElement(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["encryptedPassportElement"]:
         return "encryptedPassportElement"
 
+    @classmethod
     def getClass(self) -> Literal["EncryptedPassportElement"]:
         return "EncryptedPassportElement"
 
@@ -37886,9 +39272,11 @@ class InputPassportElementErrorSourceUnspecified(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementErrorSourceUnspecified"]:
         return "inputPassportElementErrorSourceUnspecified"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementErrorSource"]:
         return "InputPassportElementErrorSource"
 
@@ -37929,9 +39317,11 @@ class InputPassportElementErrorSourceDataField(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementErrorSourceDataField"]:
         return "inputPassportElementErrorSourceDataField"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementErrorSource"]:
         return "InputPassportElementErrorSource"
 
@@ -37972,9 +39362,11 @@ class InputPassportElementErrorSourceFrontSide(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementErrorSourceFrontSide"]:
         return "inputPassportElementErrorSourceFrontSide"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementErrorSource"]:
         return "InputPassportElementErrorSource"
 
@@ -38010,9 +39402,11 @@ class InputPassportElementErrorSourceReverseSide(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementErrorSourceReverseSide"]:
         return "inputPassportElementErrorSourceReverseSide"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementErrorSource"]:
         return "InputPassportElementErrorSource"
 
@@ -38046,9 +39440,11 @@ class InputPassportElementErrorSourceSelfie(TlObject, InputPassportElementErrorS
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementErrorSourceSelfie"]:
         return "inputPassportElementErrorSourceSelfie"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementErrorSource"]:
         return "InputPassportElementErrorSource"
 
@@ -38084,9 +39480,11 @@ class InputPassportElementErrorSourceTranslationFile(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementErrorSourceTranslationFile"]:
         return "inputPassportElementErrorSourceTranslationFile"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementErrorSource"]:
         return "InputPassportElementErrorSource"
 
@@ -38122,9 +39520,11 @@ class InputPassportElementErrorSourceTranslationFiles(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementErrorSourceTranslationFiles"]:
         return "inputPassportElementErrorSourceTranslationFiles"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementErrorSource"]:
         return "InputPassportElementErrorSource"
 
@@ -38158,9 +39558,11 @@ class InputPassportElementErrorSourceFile(TlObject, InputPassportElementErrorSou
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementErrorSourceFile"]:
         return "inputPassportElementErrorSourceFile"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementErrorSource"]:
         return "InputPassportElementErrorSource"
 
@@ -38194,9 +39596,11 @@ class InputPassportElementErrorSourceFiles(TlObject, InputPassportElementErrorSo
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementErrorSourceFiles"]:
         return "inputPassportElementErrorSourceFiles"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementErrorSource"]:
         return "InputPassportElementErrorSource"
 
@@ -38271,9 +39675,11 @@ class InputPassportElementError(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPassportElementError"]:
         return "inputPassportElementError"
 
+    @classmethod
     def getClass(self) -> Literal["InputPassportElementError"]:
         return "InputPassportElementError"
 
@@ -38329,9 +39735,11 @@ class MessageText(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageText"]:
         return "messageText"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38397,9 +39805,11 @@ class MessageAnimation(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageAnimation"]:
         return "messageAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38449,9 +39859,11 @@ class MessageAudio(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageAudio"]:
         return "messageAudio"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38491,9 +39903,11 @@ class MessageDocument(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageDocument"]:
         return "messageDocument"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38551,9 +39965,11 @@ class MessagePaidMedia(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePaidMedia"]:
         return "messagePaidMedia"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38623,9 +40039,11 @@ class MessagePhoto(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePhoto"]:
         return "messagePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38675,9 +40093,11 @@ class MessageSticker(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSticker"]:
         return "messageSticker"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38765,9 +40185,11 @@ class MessageVideo(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageVideo"]:
         return "messageVideo"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38835,9 +40257,11 @@ class MessageVideoNote(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageVideoNote"]:
         return "messageVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38891,9 +40315,11 @@ class MessageVoiceNote(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageVoiceNote"]:
         return "messageVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38925,9 +40351,11 @@ class MessageExpiredPhoto(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageExpiredPhoto"]:
         return "messageExpiredPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38951,9 +40379,11 @@ class MessageExpiredVideo(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageExpiredVideo"]:
         return "messageExpiredVideo"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -38977,9 +40407,11 @@ class MessageExpiredVideoNote(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageExpiredVideoNote"]:
         return "messageExpiredVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39003,9 +40435,11 @@ class MessageExpiredVoiceNote(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageExpiredVoiceNote"]:
         return "messageExpiredVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39063,9 +40497,11 @@ class MessageLocation(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageLocation"]:
         return "messageLocation"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39110,9 +40546,11 @@ class MessageVenue(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageVenue"]:
         return "messageVenue"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39144,9 +40582,11 @@ class MessageContact(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageContact"]:
         return "messageContact"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39183,9 +40623,11 @@ class MessageAnimatedEmoji(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageAnimatedEmoji"]:
         return "messageAnimatedEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39253,9 +40695,11 @@ class MessageDice(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageDice"]:
         return "messageDice"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39300,9 +40744,11 @@ class MessageGame(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGame"]:
         return "messageGame"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39334,9 +40780,11 @@ class MessagePoll(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePoll"]:
         return "messagePoll"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39383,9 +40831,11 @@ class MessageStory(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageStory"]:
         return "messageStory"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39424,9 +40874,11 @@ class MessageChecklist(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChecklist"]:
         return "messageChecklist"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39511,9 +40963,11 @@ class MessageInvoice(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageInvoice"]:
         return "messageInvoice"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39587,9 +41041,11 @@ class MessageCall(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageCall"]:
         return "messageCall"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39655,9 +41111,11 @@ class MessageGroupCall(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGroupCall"]:
         return "messageGroupCall"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39705,9 +41163,11 @@ class MessageVideoChatScheduled(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageVideoChatScheduled"]:
         return "messageVideoChatScheduled"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39744,9 +41204,11 @@ class MessageVideoChatStarted(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageVideoChatStarted"]:
         return "messageVideoChatStarted"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39778,9 +41240,11 @@ class MessageVideoChatEnded(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageVideoChatEnded"]:
         return "messageVideoChatEnded"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39817,9 +41281,11 @@ class MessageInviteVideoChatParticipants(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageInviteVideoChatParticipants"]:
         return "messageInviteVideoChatParticipants"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39861,9 +41327,11 @@ class MessageBasicGroupChatCreate(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageBasicGroupChatCreate"]:
         return "messageBasicGroupChatCreate"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39900,9 +41368,11 @@ class MessageSupergroupChatCreate(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSupergroupChatCreate"]:
         return "messageSupergroupChatCreate"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39934,9 +41404,11 @@ class MessageChatChangeTitle(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatChangeTitle"]:
         return "messageChatChangeTitle"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39968,9 +41440,11 @@ class MessageChatChangePhoto(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatChangePhoto"]:
         return "messageChatChangePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -39995,9 +41469,11 @@ class MessageChatDeletePhoto(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatDeletePhoto"]:
         return "messageChatDeletePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40028,9 +41504,11 @@ class MessageChatAddMembers(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatAddMembers"]:
         return "messageChatAddMembers"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40055,9 +41533,11 @@ class MessageChatJoinByLink(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatJoinByLink"]:
         return "messageChatJoinByLink"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40081,9 +41561,11 @@ class MessageChatJoinByRequest(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatJoinByRequest"]:
         return "messageChatJoinByRequest"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40114,9 +41596,11 @@ class MessageChatDeleteMember(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatDeleteMember"]:
         return "messageChatDeleteMember"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40148,9 +41632,11 @@ class MessageChatUpgradeTo(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatUpgradeTo"]:
         return "messageChatUpgradeTo"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40187,9 +41673,11 @@ class MessageChatUpgradeFrom(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatUpgradeFrom"]:
         return "messageChatUpgradeFrom"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40226,9 +41714,11 @@ class MessagePinMessage(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePinMessage"]:
         return "messagePinMessage"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40253,9 +41743,11 @@ class MessageScreenshotTaken(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageScreenshotTaken"]:
         return "messageScreenshotTaken"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40301,9 +41793,11 @@ class MessageChatSetBackground(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatSetBackground"]:
         return "messageChatSetBackground"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40344,9 +41838,11 @@ class MessageChatSetTheme(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatSetTheme"]:
         return "messageChatSetTheme"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40385,9 +41881,11 @@ class MessageChatSetMessageAutoDeleteTime(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatSetMessageAutoDeleteTime"]:
         return "messageChatSetMessageAutoDeleteTime"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40428,9 +41926,11 @@ class MessageChatBoost(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatBoost"]:
         return "messageChatBoost"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40467,9 +41967,11 @@ class MessageForumTopicCreated(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageForumTopicCreated"]:
         return "messageForumTopicCreated"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40517,9 +42019,11 @@ class MessageForumTopicEdited(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageForumTopicEdited"]:
         return "messageForumTopicEdited"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40560,9 +42064,11 @@ class MessageForumTopicIsClosedToggled(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageForumTopicIsClosedToggled"]:
         return "messageForumTopicIsClosedToggled"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40594,9 +42100,11 @@ class MessageForumTopicIsHiddenToggled(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageForumTopicIsHiddenToggled"]:
         return "messageForumTopicIsHiddenToggled"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40628,9 +42136,11 @@ class MessageSuggestProfilePhoto(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSuggestProfilePhoto"]:
         return "messageSuggestProfilePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40662,9 +42172,11 @@ class MessageCustomServiceAction(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageCustomServiceAction"]:
         return "messageCustomServiceAction"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40708,9 +42220,11 @@ class MessageGameScore(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGameScore"]:
         return "messageGameScore"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40794,9 +42308,11 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePaymentSuccessful"]:
         return "messagePaymentSuccessful"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40904,9 +42420,11 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePaymentSuccessfulBot"]:
         return "messagePaymentSuccessfulBot"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -40998,9 +42516,11 @@ class MessagePaymentRefunded(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePaymentRefunded"]:
         return "messagePaymentRefunded"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41100,9 +42620,11 @@ class MessageGiftedPremium(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGiftedPremium"]:
         return "messageGiftedPremium"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41216,9 +42738,11 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePremiumGiftCode"]:
         return "messagePremiumGiftCode"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41273,9 +42797,11 @@ class MessageGiveawayCreated(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGiveawayCreated"]:
         return "messageGiveawayCreated"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41328,9 +42854,11 @@ class MessageGiveaway(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGiveaway"]:
         return "messageGiveaway"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41392,9 +42920,11 @@ class MessageGiveawayCompleted(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGiveawayCompleted"]:
         return "messageGiveawayCompleted"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41498,9 +43028,11 @@ class MessageGiveawayWinners(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGiveawayWinners"]:
         return "messageGiveawayWinners"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41608,9 +43140,11 @@ class MessageGiftedStars(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGiftedStars"]:
         return "messageGiftedStars"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41694,9 +43228,11 @@ class MessageGiveawayPrizeStars(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGiveawayPrizeStars"]:
         return "messageGiveawayPrizeStars"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41824,9 +43360,11 @@ class MessageGift(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageGift"]:
         return "messageGift"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -41968,9 +43506,11 @@ class MessageUpgradedGift(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageUpgradedGift"]:
         return "messageUpgradedGift"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42054,9 +43594,11 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageRefundedUpgradedGift"]:
         return "messageRefundedUpgradedGift"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42102,9 +43644,11 @@ class MessagePaidMessagesRefunded(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePaidMessagesRefunded"]:
         return "messagePaidMessagesRefunded"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42141,9 +43685,11 @@ class MessagePaidMessagePriceChanged(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePaidMessagePriceChanged"]:
         return "messagePaidMessagePriceChanged"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42187,9 +43733,11 @@ class MessageDirectMessagePriceChanged(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageDirectMessagePriceChanged"]:
         return "messageDirectMessagePriceChanged"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42243,9 +43791,11 @@ class MessageChecklistTasksDone(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChecklistTasksDone"]:
         return "messageChecklistTasksDone"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42295,9 +43845,11 @@ class MessageChecklistTasksAdded(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChecklistTasksAdded"]:
         return "messageChecklistTasksAdded"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42327,9 +43879,11 @@ class MessageContactRegistered(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageContactRegistered"]:
         return "messageContactRegistered"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42365,9 +43919,11 @@ class MessageUsersShared(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageUsersShared"]:
         return "messageUsersShared"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42409,9 +43965,11 @@ class MessageChatShared(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageChatShared"]:
         return "messageChatShared"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42450,9 +44008,11 @@ class MessageBotWriteAccessAllowed(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageBotWriteAccessAllowed"]:
         return "messageBotWriteAccessAllowed"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42484,9 +44044,11 @@ class MessageWebAppDataSent(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageWebAppDataSent"]:
         return "messageWebAppDataSent"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42523,9 +44085,11 @@ class MessageWebAppDataReceived(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageWebAppDataReceived"]:
         return "messageWebAppDataReceived"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42562,9 +44126,11 @@ class MessagePassportDataSent(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePassportDataSent"]:
         return "messagePassportDataSent"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42605,9 +44171,11 @@ class MessagePassportDataReceived(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messagePassportDataReceived"]:
         return "messagePassportDataReceived"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42661,9 +44229,11 @@ class MessageProximityAlertTriggered(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageProximityAlertTriggered"]:
         return "messageProximityAlertTriggered"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42695,9 +44265,11 @@ class MessageUnsupported(TlObject, MessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageUnsupported"]:
         return "messageUnsupported"
 
+    @classmethod
     def getClass(self) -> Literal["MessageContent"]:
         return "MessageContent"
 
@@ -42721,9 +44293,11 @@ class TextEntityTypeMention(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeMention"]:
         return "textEntityTypeMention"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42747,9 +44321,11 @@ class TextEntityTypeHashtag(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeHashtag"]:
         return "textEntityTypeHashtag"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42773,9 +44349,11 @@ class TextEntityTypeCashtag(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeCashtag"]:
         return "textEntityTypeCashtag"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42799,9 +44377,11 @@ class TextEntityTypeBotCommand(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeBotCommand"]:
         return "textEntityTypeBotCommand"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42825,9 +44405,11 @@ class TextEntityTypeUrl(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeUrl"]:
         return "textEntityTypeUrl"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42851,9 +44433,11 @@ class TextEntityTypeEmailAddress(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeEmailAddress"]:
         return "textEntityTypeEmailAddress"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42877,9 +44461,11 @@ class TextEntityTypePhoneNumber(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypePhoneNumber"]:
         return "textEntityTypePhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42903,9 +44489,11 @@ class TextEntityTypeBankCardNumber(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeBankCardNumber"]:
         return "textEntityTypeBankCardNumber"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42929,9 +44517,11 @@ class TextEntityTypeBold(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeBold"]:
         return "textEntityTypeBold"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42955,9 +44545,11 @@ class TextEntityTypeItalic(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeItalic"]:
         return "textEntityTypeItalic"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -42981,9 +44573,11 @@ class TextEntityTypeUnderline(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeUnderline"]:
         return "textEntityTypeUnderline"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43007,9 +44601,11 @@ class TextEntityTypeStrikethrough(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeStrikethrough"]:
         return "textEntityTypeStrikethrough"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43033,9 +44629,11 @@ class TextEntityTypeSpoiler(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeSpoiler"]:
         return "textEntityTypeSpoiler"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43059,9 +44657,11 @@ class TextEntityTypeCode(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeCode"]:
         return "textEntityTypeCode"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43085,9 +44685,11 @@ class TextEntityTypePre(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypePre"]:
         return "textEntityTypePre"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43118,9 +44720,11 @@ class TextEntityTypePreCode(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypePreCode"]:
         return "textEntityTypePreCode"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43145,9 +44749,11 @@ class TextEntityTypeBlockQuote(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeBlockQuote"]:
         return "textEntityTypeBlockQuote"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43171,9 +44777,11 @@ class TextEntityTypeExpandableBlockQuote(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeExpandableBlockQuote"]:
         return "textEntityTypeExpandableBlockQuote"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43204,9 +44812,11 @@ class TextEntityTypeTextUrl(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeTextUrl"]:
         return "textEntityTypeTextUrl"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43238,9 +44848,11 @@ class TextEntityTypeMentionName(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeMentionName"]:
         return "textEntityTypeMentionName"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43272,9 +44884,11 @@ class TextEntityTypeCustomEmoji(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeCustomEmoji"]:
         return "textEntityTypeCustomEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43306,9 +44920,11 @@ class TextEntityTypeMediaTimestamp(TlObject, TextEntityType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textEntityTypeMediaTimestamp"]:
         return "textEntityTypeMediaTimestamp"
 
+    @classmethod
     def getClass(self) -> Literal["TextEntityType"]:
         return "TextEntityType"
 
@@ -43354,9 +44970,11 @@ class InputThumbnail(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputThumbnail"]:
         return "inputThumbnail"
 
+    @classmethod
     def getClass(self) -> Literal["InputThumbnail"]:
         return "InputThumbnail"
 
@@ -43388,9 +45006,11 @@ class InputPaidMediaTypePhoto(TlObject, InputPaidMediaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPaidMediaTypePhoto"]:
         return "inputPaidMediaTypePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["InputPaidMediaType"]:
         return "InputPaidMediaType"
 
@@ -43444,9 +45064,11 @@ class InputPaidMediaTypeVideo(TlObject, InputPaidMediaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPaidMediaTypeVideo"]:
         return "inputPaidMediaTypeVideo"
 
+    @classmethod
     def getClass(self) -> Literal["InputPaidMediaType"]:
         return "InputPaidMediaType"
 
@@ -43522,9 +45144,11 @@ class InputPaidMedia(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputPaidMedia"]:
         return "inputPaidMedia"
 
+    @classmethod
     def getClass(self) -> Literal["InputPaidMedia"]:
         return "InputPaidMedia"
 
@@ -43569,9 +45193,11 @@ class MessageSchedulingStateSendAtDate(TlObject, MessageSchedulingState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSchedulingStateSendAtDate"]:
         return "messageSchedulingStateSendAtDate"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSchedulingState"]:
         return "MessageSchedulingState"
 
@@ -43596,9 +45222,11 @@ class MessageSchedulingStateSendWhenOnline(TlObject, MessageSchedulingState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSchedulingStateSendWhenOnline"]:
         return "messageSchedulingStateSendWhenOnline"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSchedulingState"]:
         return "MessageSchedulingState"
 
@@ -43631,9 +45259,11 @@ class MessageSchedulingStateSendWhenVideoProcessed(TlObject, MessageSchedulingSt
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSchedulingStateSendWhenVideoProcessed"]:
         return "messageSchedulingStateSendWhenVideoProcessed"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSchedulingState"]:
         return "MessageSchedulingState"
 
@@ -43667,9 +45297,11 @@ class MessageSelfDestructTypeTimer(TlObject, MessageSelfDestructType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSelfDestructTypeTimer"]:
         return "messageSelfDestructTypeTimer"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSelfDestructType"]:
         return "MessageSelfDestructType"
 
@@ -43694,9 +45326,11 @@ class MessageSelfDestructTypeImmediately(TlObject, MessageSelfDestructType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSelfDestructTypeImmediately"]:
         return "messageSelfDestructTypeImmediately"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSelfDestructType"]:
         return "MessageSelfDestructType"
 
@@ -43797,9 +45431,11 @@ class MessageSendOptions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageSendOptions"]:
         return "messageSendOptions"
 
+    @classmethod
     def getClass(self) -> Literal["MessageSendOptions"]:
         return "MessageSendOptions"
 
@@ -43881,9 +45517,11 @@ class MessageCopyOptions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageCopyOptions"]:
         return "messageCopyOptions"
 
+    @classmethod
     def getClass(self) -> Literal["MessageCopyOptions"]:
         return "MessageCopyOptions"
 
@@ -43943,9 +45581,11 @@ class InputMessageText(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageText"]:
         return "inputMessageText"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44037,9 +45677,11 @@ class InputMessageAnimation(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageAnimation"]:
         return "inputMessageAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44127,9 +45769,11 @@ class InputMessageAudio(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageAudio"]:
         return "inputMessageAudio"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44197,9 +45841,11 @@ class InputMessageDocument(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageDocument"]:
         return "inputMessageDocument"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44269,9 +45915,11 @@ class InputMessagePaidMedia(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessagePaidMedia"]:
         return "inputMessagePaidMedia"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44371,9 +46019,11 @@ class InputMessagePhoto(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessagePhoto"]:
         return "inputMessagePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44455,9 +46105,11 @@ class InputMessageSticker(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageSticker"]:
         return "inputMessageSticker"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44581,9 +46233,11 @@ class InputMessageVideo(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageVideo"]:
         return "inputMessageVideo"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44675,9 +46329,11 @@ class InputMessageVideoNote(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageVideoNote"]:
         return "inputMessageVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44751,9 +46407,11 @@ class InputMessageVoiceNote(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageVoiceNote"]:
         return "inputMessageVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44817,9 +46475,11 @@ class InputMessageLocation(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageLocation"]:
         return "inputMessageLocation"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44862,9 +46522,11 @@ class InputMessageVenue(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageVenue"]:
         return "inputMessageVenue"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44896,9 +46558,11 @@ class InputMessageContact(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageContact"]:
         return "inputMessageContact"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44935,9 +46599,11 @@ class InputMessageDice(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageDice"]:
         return "inputMessageDice"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -44979,9 +46645,11 @@ class InputMessageGame(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageGame"]:
         return "inputMessageGame"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -45093,9 +46761,11 @@ class InputMessageInvoice(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageInvoice"]:
         return "inputMessageInvoice"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -45193,9 +46863,11 @@ class InputMessagePoll(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessagePoll"]:
         return "inputMessagePoll"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -45247,9 +46919,11 @@ class InputMessageStory(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageStory"]:
         return "inputMessageStory"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -45286,9 +46960,11 @@ class InputMessageChecklist(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageChecklist"]:
         return "inputMessageChecklist"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -45353,9 +47029,11 @@ class InputMessageForwarded(TlObject, InputMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputMessageForwarded"]:
         return "inputMessageForwarded"
 
+    @classmethod
     def getClass(self) -> Literal["InputMessageContent"]:
         return "InputMessageContent"
 
@@ -45587,9 +47265,11 @@ class MessageProperties(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageProperties"]:
         return "messageProperties"
 
+    @classmethod
     def getClass(self) -> Literal["MessageProperties"]:
         return "MessageProperties"
 
@@ -45701,9 +47381,11 @@ class SearchMessagesFilterEmpty(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterEmpty"]:
         return "searchMessagesFilterEmpty"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45727,9 +47409,11 @@ class SearchMessagesFilterAnimation(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterAnimation"]:
         return "searchMessagesFilterAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45753,9 +47437,11 @@ class SearchMessagesFilterAudio(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterAudio"]:
         return "searchMessagesFilterAudio"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45779,9 +47465,11 @@ class SearchMessagesFilterDocument(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterDocument"]:
         return "searchMessagesFilterDocument"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45805,9 +47493,11 @@ class SearchMessagesFilterPhoto(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterPhoto"]:
         return "searchMessagesFilterPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45831,9 +47521,11 @@ class SearchMessagesFilterVideo(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterVideo"]:
         return "searchMessagesFilterVideo"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45857,9 +47549,11 @@ class SearchMessagesFilterVoiceNote(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterVoiceNote"]:
         return "searchMessagesFilterVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45883,9 +47577,11 @@ class SearchMessagesFilterPhotoAndVideo(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterPhotoAndVideo"]:
         return "searchMessagesFilterPhotoAndVideo"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45909,9 +47605,11 @@ class SearchMessagesFilterUrl(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterUrl"]:
         return "searchMessagesFilterUrl"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45935,9 +47633,11 @@ class SearchMessagesFilterChatPhoto(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterChatPhoto"]:
         return "searchMessagesFilterChatPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45961,9 +47661,11 @@ class SearchMessagesFilterVideoNote(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterVideoNote"]:
         return "searchMessagesFilterVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -45987,9 +47689,11 @@ class SearchMessagesFilterVoiceAndVideoNote(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterVoiceAndVideoNote"]:
         return "searchMessagesFilterVoiceAndVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -46015,9 +47719,11 @@ class SearchMessagesFilterMention(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterMention"]:
         return "searchMessagesFilterMention"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -46041,9 +47747,11 @@ class SearchMessagesFilterUnreadMention(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterUnreadMention"]:
         return "searchMessagesFilterUnreadMention"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -46067,9 +47775,11 @@ class SearchMessagesFilterUnreadReaction(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterUnreadReaction"]:
         return "searchMessagesFilterUnreadReaction"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -46093,9 +47803,11 @@ class SearchMessagesFilterFailedToSend(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterFailedToSend"]:
         return "searchMessagesFilterFailedToSend"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -46119,9 +47831,11 @@ class SearchMessagesFilterPinned(TlObject, SearchMessagesFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesFilterPinned"]:
         return "searchMessagesFilterPinned"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesFilter"]:
         return "SearchMessagesFilter"
 
@@ -46145,9 +47859,11 @@ class SearchMessagesChatTypeFilterPrivate(TlObject, SearchMessagesChatTypeFilter
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesChatTypeFilterPrivate"]:
         return "searchMessagesChatTypeFilterPrivate"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesChatTypeFilter"]:
         return "SearchMessagesChatTypeFilter"
 
@@ -46173,9 +47889,11 @@ class SearchMessagesChatTypeFilterGroup(TlObject, SearchMessagesChatTypeFilter):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesChatTypeFilterGroup"]:
         return "searchMessagesChatTypeFilterGroup"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesChatTypeFilter"]:
         return "SearchMessagesChatTypeFilter"
 
@@ -46199,9 +47917,11 @@ class SearchMessagesChatTypeFilterChannel(TlObject, SearchMessagesChatTypeFilter
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["searchMessagesChatTypeFilterChannel"]:
         return "searchMessagesChatTypeFilterChannel"
 
+    @classmethod
     def getClass(self) -> Literal["SearchMessagesChatTypeFilter"]:
         return "SearchMessagesChatTypeFilter"
 
@@ -46227,9 +47947,11 @@ class ChatActionTyping(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionTyping"]:
         return "chatActionTyping"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46253,9 +47975,11 @@ class ChatActionRecordingVideo(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionRecordingVideo"]:
         return "chatActionRecordingVideo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46286,9 +48010,11 @@ class ChatActionUploadingVideo(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionUploadingVideo"]:
         return "chatActionUploadingVideo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46313,9 +48039,11 @@ class ChatActionRecordingVoiceNote(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionRecordingVoiceNote"]:
         return "chatActionRecordingVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46346,9 +48074,11 @@ class ChatActionUploadingVoiceNote(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionUploadingVoiceNote"]:
         return "chatActionUploadingVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46380,9 +48110,11 @@ class ChatActionUploadingPhoto(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionUploadingPhoto"]:
         return "chatActionUploadingPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46414,9 +48146,11 @@ class ChatActionUploadingDocument(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionUploadingDocument"]:
         return "chatActionUploadingDocument"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46441,9 +48175,11 @@ class ChatActionChoosingSticker(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionChoosingSticker"]:
         return "chatActionChoosingSticker"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46467,9 +48203,11 @@ class ChatActionChoosingLocation(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionChoosingLocation"]:
         return "chatActionChoosingLocation"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46493,9 +48231,11 @@ class ChatActionChoosingContact(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionChoosingContact"]:
         return "chatActionChoosingContact"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46519,9 +48259,11 @@ class ChatActionStartPlayingGame(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionStartPlayingGame"]:
         return "chatActionStartPlayingGame"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46545,9 +48287,11 @@ class ChatActionRecordingVideoNote(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionRecordingVideoNote"]:
         return "chatActionRecordingVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46578,9 +48322,11 @@ class ChatActionUploadingVideoNote(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionUploadingVideoNote"]:
         return "chatActionUploadingVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46612,9 +48358,11 @@ class ChatActionWatchingAnimations(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionWatchingAnimations"]:
         return "chatActionWatchingAnimations"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46639,9 +48387,11 @@ class ChatActionCancel(TlObject, ChatAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActionCancel"]:
         return "chatActionCancel"
 
+    @classmethod
     def getClass(self) -> Literal["ChatAction"]:
         return "ChatAction"
 
@@ -46665,9 +48415,11 @@ class UserStatusEmpty(TlObject, UserStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userStatusEmpty"]:
         return "userStatusEmpty"
 
+    @classmethod
     def getClass(self) -> Literal["UserStatus"]:
         return "UserStatus"
 
@@ -46698,9 +48450,11 @@ class UserStatusOnline(TlObject, UserStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userStatusOnline"]:
         return "userStatusOnline"
 
+    @classmethod
     def getClass(self) -> Literal["UserStatus"]:
         return "UserStatus"
 
@@ -46732,9 +48486,11 @@ class UserStatusOffline(TlObject, UserStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userStatusOffline"]:
         return "userStatusOffline"
 
+    @classmethod
     def getClass(self) -> Literal["UserStatus"]:
         return "UserStatus"
 
@@ -46766,9 +48522,11 @@ class UserStatusRecently(TlObject, UserStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userStatusRecently"]:
         return "userStatusRecently"
 
+    @classmethod
     def getClass(self) -> Literal["UserStatus"]:
         return "UserStatus"
 
@@ -46805,9 +48563,11 @@ class UserStatusLastWeek(TlObject, UserStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userStatusLastWeek"]:
         return "userStatusLastWeek"
 
+    @classmethod
     def getClass(self) -> Literal["UserStatus"]:
         return "UserStatus"
 
@@ -46844,9 +48604,11 @@ class UserStatusLastMonth(TlObject, UserStatus):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userStatusLastMonth"]:
         return "userStatusLastMonth"
 
+    @classmethod
     def getClass(self) -> Literal["UserStatus"]:
         return "UserStatus"
 
@@ -46888,9 +48650,11 @@ class EmojiKeyword(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiKeyword"]:
         return "emojiKeyword"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiKeyword"]:
         return "EmojiKeyword"
 
@@ -46923,9 +48687,11 @@ class EmojiKeywords(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiKeywords"]:
         return "emojiKeywords"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiKeywords"]:
         return "EmojiKeywords"
 
@@ -46957,9 +48723,11 @@ class Stickers(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickers"]:
         return "stickers"
 
+    @classmethod
     def getClass(self) -> Literal["Stickers"]:
         return "Stickers"
 
@@ -46991,9 +48759,11 @@ class Emojis(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojis"]:
         return "emojis"
 
+    @classmethod
     def getClass(self) -> Literal["Emojis"]:
         return "Emojis"
 
@@ -47116,9 +48886,11 @@ class StickerSet(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerSet"]:
         return "stickerSet"
 
+    @classmethod
     def getClass(self) -> Literal["StickerSet"]:
         return "StickerSet"
 
@@ -47274,9 +49046,11 @@ class StickerSetInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerSetInfo"]:
         return "stickerSetInfo"
 
+    @classmethod
     def getClass(self) -> Literal["StickerSetInfo"]:
         return "StickerSetInfo"
 
@@ -47346,9 +49120,11 @@ class StickerSets(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stickerSets"]:
         return "stickerSets"
 
+    @classmethod
     def getClass(self) -> Literal["StickerSets"]:
         return "StickerSets"
 
@@ -47400,9 +49176,11 @@ class TrendingStickerSets(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["trendingStickerSets"]:
         return "trendingStickerSets"
 
+    @classmethod
     def getClass(self) -> Literal["TrendingStickerSets"]:
         return "TrendingStickerSets"
 
@@ -47441,9 +49219,11 @@ class EmojiCategorySourceSearch(TlObject, EmojiCategorySource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiCategorySourceSearch"]:
         return "emojiCategorySourceSearch"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiCategorySource"]:
         return "EmojiCategorySource"
 
@@ -47468,9 +49248,11 @@ class EmojiCategorySourcePremium(TlObject, EmojiCategorySource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiCategorySourcePremium"]:
         return "emojiCategorySourcePremium"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiCategorySource"]:
         return "EmojiCategorySource"
 
@@ -47524,9 +49306,11 @@ class EmojiCategory(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiCategory"]:
         return "emojiCategory"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiCategory"]:
         return "EmojiCategory"
 
@@ -47567,9 +49351,11 @@ class EmojiCategories(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiCategories"]:
         return "emojiCategories"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiCategories"]:
         return "EmojiCategories"
 
@@ -47594,9 +49380,11 @@ class EmojiCategoryTypeDefault(TlObject, EmojiCategoryType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiCategoryTypeDefault"]:
         return "emojiCategoryTypeDefault"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiCategoryType"]:
         return "EmojiCategoryType"
 
@@ -47620,9 +49408,11 @@ class EmojiCategoryTypeRegularStickers(TlObject, EmojiCategoryType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiCategoryTypeRegularStickers"]:
         return "emojiCategoryTypeRegularStickers"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiCategoryType"]:
         return "EmojiCategoryType"
 
@@ -47646,9 +49436,11 @@ class EmojiCategoryTypeEmojiStatus(TlObject, EmojiCategoryType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiCategoryTypeEmojiStatus"]:
         return "emojiCategoryTypeEmojiStatus"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiCategoryType"]:
         return "EmojiCategoryType"
 
@@ -47672,9 +49464,11 @@ class EmojiCategoryTypeChatPhoto(TlObject, EmojiCategoryType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiCategoryTypeChatPhoto"]:
         return "emojiCategoryTypeChatPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiCategoryType"]:
         return "EmojiCategoryType"
 
@@ -47710,9 +49504,11 @@ class CurrentWeather(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["currentWeather"]:
         return "currentWeather"
 
+    @classmethod
     def getClass(self) -> Literal["CurrentWeather"]:
         return "CurrentWeather"
 
@@ -47782,9 +49578,11 @@ class StoryAreaPosition(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyAreaPosition"]:
         return "storyAreaPosition"
 
+    @classmethod
     def getClass(self) -> Literal["StoryAreaPosition"]:
         return "StoryAreaPosition"
 
@@ -47838,9 +49636,11 @@ class StoryAreaTypeLocation(TlObject, StoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyAreaTypeLocation"]:
         return "storyAreaTypeLocation"
 
+    @classmethod
     def getClass(self) -> Literal["StoryAreaType"]:
         return "StoryAreaType"
 
@@ -47877,9 +49677,11 @@ class StoryAreaTypeVenue(TlObject, StoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyAreaTypeVenue"]:
         return "storyAreaTypeVenue"
 
+    @classmethod
     def getClass(self) -> Literal["StoryAreaType"]:
         return "StoryAreaType"
 
@@ -47934,9 +49736,11 @@ class StoryAreaTypeSuggestedReaction(TlObject, StoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyAreaTypeSuggestedReaction"]:
         return "storyAreaTypeSuggestedReaction"
 
+    @classmethod
     def getClass(self) -> Literal["StoryAreaType"]:
         return "StoryAreaType"
 
@@ -47982,9 +49786,11 @@ class StoryAreaTypeMessage(TlObject, StoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyAreaTypeMessage"]:
         return "storyAreaTypeMessage"
 
+    @classmethod
     def getClass(self) -> Literal["StoryAreaType"]:
         return "StoryAreaType"
 
@@ -48021,9 +49827,11 @@ class StoryAreaTypeLink(TlObject, StoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyAreaTypeLink"]:
         return "storyAreaTypeLink"
 
+    @classmethod
     def getClass(self) -> Literal["StoryAreaType"]:
         return "StoryAreaType"
 
@@ -48067,9 +49875,11 @@ class StoryAreaTypeWeather(TlObject, StoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyAreaTypeWeather"]:
         return "storyAreaTypeWeather"
 
+    @classmethod
     def getClass(self) -> Literal["StoryAreaType"]:
         return "StoryAreaType"
 
@@ -48108,9 +49918,11 @@ class StoryAreaTypeUpgradedGift(TlObject, StoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyAreaTypeUpgradedGift"]:
         return "storyAreaTypeUpgradedGift"
 
+    @classmethod
     def getClass(self) -> Literal["StoryAreaType"]:
         return "StoryAreaType"
 
@@ -48158,9 +49970,11 @@ class StoryArea(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyArea"]:
         return "storyArea"
 
+    @classmethod
     def getClass(self) -> Literal["StoryArea"]:
         return "StoryArea"
 
@@ -48200,9 +50014,11 @@ class InputStoryAreaTypeLocation(TlObject, InputStoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryAreaTypeLocation"]:
         return "inputStoryAreaTypeLocation"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryAreaType"]:
         return "InputStoryAreaType"
 
@@ -48244,9 +50060,11 @@ class InputStoryAreaTypeFoundVenue(TlObject, InputStoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryAreaTypeFoundVenue"]:
         return "inputStoryAreaTypeFoundVenue"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryAreaType"]:
         return "InputStoryAreaType"
 
@@ -48288,9 +50106,11 @@ class InputStoryAreaTypePreviousVenue(TlObject, InputStoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryAreaTypePreviousVenue"]:
         return "inputStoryAreaTypePreviousVenue"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryAreaType"]:
         return "InputStoryAreaType"
 
@@ -48344,9 +50164,11 @@ class InputStoryAreaTypeSuggestedReaction(TlObject, InputStoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryAreaTypeSuggestedReaction"]:
         return "inputStoryAreaTypeSuggestedReaction"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryAreaType"]:
         return "InputStoryAreaType"
 
@@ -48392,9 +50214,11 @@ class InputStoryAreaTypeMessage(TlObject, InputStoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryAreaTypeMessage"]:
         return "inputStoryAreaTypeMessage"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryAreaType"]:
         return "InputStoryAreaType"
 
@@ -48431,9 +50255,11 @@ class InputStoryAreaTypeLink(TlObject, InputStoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryAreaTypeLink"]:
         return "inputStoryAreaTypeLink"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryAreaType"]:
         return "InputStoryAreaType"
 
@@ -48477,9 +50303,11 @@ class InputStoryAreaTypeWeather(TlObject, InputStoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryAreaTypeWeather"]:
         return "inputStoryAreaTypeWeather"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryAreaType"]:
         return "InputStoryAreaType"
 
@@ -48518,9 +50346,11 @@ class InputStoryAreaTypeUpgradedGift(TlObject, InputStoryAreaType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryAreaTypeUpgradedGift"]:
         return "inputStoryAreaTypeUpgradedGift"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryAreaType"]:
         return "InputStoryAreaType"
 
@@ -48569,9 +50399,11 @@ class InputStoryArea(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryArea"]:
         return "inputStoryArea"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryArea"]:
         return "InputStoryArea"
 
@@ -48604,9 +50436,11 @@ class InputStoryAreas(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryAreas"]:
         return "inputStoryAreas"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryAreas"]:
         return "InputStoryAreas"
 
@@ -48695,9 +50529,11 @@ class StoryVideo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyVideo"]:
         return "storyVideo"
 
+    @classmethod
     def getClass(self) -> Literal["StoryVideo"]:
         return "StoryVideo"
 
@@ -48750,9 +50586,11 @@ class StoryContentPhoto(TlObject, StoryContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyContentPhoto"]:
         return "storyContentPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["StoryContent"]:
         return "StoryContent"
 
@@ -48791,9 +50629,11 @@ class StoryContentVideo(TlObject, StoryContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyContentVideo"]:
         return "storyContentVideo"
 
+    @classmethod
     def getClass(self) -> Literal["StoryContent"]:
         return "StoryContent"
 
@@ -48823,9 +50663,11 @@ class StoryContentUnsupported(TlObject, StoryContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyContentUnsupported"]:
         return "storyContentUnsupported"
 
+    @classmethod
     def getClass(self) -> Literal["StoryContent"]:
         return "StoryContent"
 
@@ -48865,9 +50707,11 @@ class InputStoryContentPhoto(TlObject, InputStoryContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryContentPhoto"]:
         return "inputStoryContentPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryContent"]:
         return "InputStoryContent"
 
@@ -48933,9 +50777,11 @@ class InputStoryContentVideo(TlObject, InputStoryContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputStoryContentVideo"]:
         return "inputStoryContentVideo"
 
+    @classmethod
     def getClass(self) -> Literal["InputStoryContent"]:
         return "InputStoryContent"
 
@@ -48971,9 +50817,11 @@ class StoryListMain(TlObject, StoryList):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyListMain"]:
         return "storyListMain"
 
+    @classmethod
     def getClass(self) -> Literal["StoryList"]:
         return "StoryList"
 
@@ -48997,9 +50845,11 @@ class StoryListArchive(TlObject, StoryList):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyListArchive"]:
         return "storyListArchive"
 
+    @classmethod
     def getClass(self) -> Literal["StoryList"]:
         return "StoryList"
 
@@ -49035,9 +50885,11 @@ class StoryOriginPublicStory(TlObject, StoryOrigin):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyOriginPublicStory"]:
         return "storyOriginPublicStory"
 
+    @classmethod
     def getClass(self) -> Literal["StoryOrigin"]:
         return "StoryOrigin"
 
@@ -49074,9 +50926,11 @@ class StoryOriginHiddenUser(TlObject, StoryOrigin):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyOriginHiddenUser"]:
         return "storyOriginHiddenUser"
 
+    @classmethod
     def getClass(self) -> Literal["StoryOrigin"]:
         return "StoryOrigin"
 
@@ -49115,9 +50969,11 @@ class StoryRepostInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyRepostInfo"]:
         return "storyRepostInfo"
 
+    @classmethod
     def getClass(self) -> Literal["StoryRepostInfo"]:
         return "StoryRepostInfo"
 
@@ -49175,9 +51031,11 @@ class StoryInteractionInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyInteractionInfo"]:
         return "storyInteractionInfo"
 
+    @classmethod
     def getClass(self) -> Literal["StoryInteractionInfo"]:
         return "StoryInteractionInfo"
 
@@ -49371,9 +51229,11 @@ class Story(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["story"]:
         return "story"
 
+    @classmethod
     def getClass(self) -> Literal["Story"]:
         return "Story"
 
@@ -49475,9 +51335,11 @@ class Stories(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["stories"]:
         return "stories"
 
+    @classmethod
     def getClass(self) -> Literal["Stories"]:
         return "Stories"
 
@@ -49528,9 +51390,11 @@ class FoundStories(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundStories"]:
         return "foundStories"
 
+    @classmethod
     def getClass(self) -> Literal["FoundStories"]:
         return "FoundStories"
 
@@ -49574,9 +51438,11 @@ class StoryFullId(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyFullId"]:
         return "storyFullId"
 
+    @classmethod
     def getClass(self) -> Literal["StoryFullId"]:
         return "StoryFullId"
 
@@ -49625,9 +51491,11 @@ class StoryInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyInfo"]:
         return "storyInfo"
 
+    @classmethod
     def getClass(self) -> Literal["StoryInfo"]:
         return "StoryInfo"
 
@@ -49693,9 +51561,11 @@ class ChatActiveStories(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatActiveStories"]:
         return "chatActiveStories"
 
+    @classmethod
     def getClass(self) -> Literal["ChatActiveStories"]:
         return "ChatActiveStories"
 
@@ -49740,9 +51610,11 @@ class StoryInteractionTypeView(TlObject, StoryInteractionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyInteractionTypeView"]:
         return "storyInteractionTypeView"
 
+    @classmethod
     def getClass(self) -> Literal["StoryInteractionType"]:
         return "StoryInteractionType"
 
@@ -49777,9 +51649,11 @@ class StoryInteractionTypeForward(TlObject, StoryInteractionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyInteractionTypeForward"]:
         return "storyInteractionTypeForward"
 
+    @classmethod
     def getClass(self) -> Literal["StoryInteractionType"]:
         return "StoryInteractionType"
 
@@ -49811,9 +51685,11 @@ class StoryInteractionTypeRepost(TlObject, StoryInteractionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyInteractionTypeRepost"]:
         return "storyInteractionTypeRepost"
 
+    @classmethod
     def getClass(self) -> Literal["StoryInteractionType"]:
         return "StoryInteractionType"
 
@@ -49871,9 +51747,11 @@ class StoryInteraction(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyInteraction"]:
         return "storyInteraction"
 
+    @classmethod
     def getClass(self) -> Literal["StoryInteraction"]:
         return "StoryInteraction"
 
@@ -49941,9 +51819,11 @@ class StoryInteractions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyInteractions"]:
         return "storyInteractions"
 
+    @classmethod
     def getClass(self) -> Literal["StoryInteractions"]:
         return "StoryInteractions"
 
@@ -50124,9 +52004,11 @@ class QuickReplyMessage(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["quickReplyMessage"]:
         return "quickReplyMessage"
 
+    @classmethod
     def getClass(self) -> Literal["QuickReplyMessage"]:
         return "QuickReplyMessage"
 
@@ -50175,9 +52057,11 @@ class QuickReplyMessages(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["quickReplyMessages"]:
         return "quickReplyMessages"
 
+    @classmethod
     def getClass(self) -> Literal["QuickReplyMessages"]:
         return "QuickReplyMessages"
 
@@ -50230,9 +52114,11 @@ class QuickReplyShortcut(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["quickReplyShortcut"]:
         return "quickReplyShortcut"
 
+    @classmethod
     def getClass(self) -> Literal["QuickReplyShortcut"]:
         return "QuickReplyShortcut"
 
@@ -50273,9 +52159,11 @@ class PublicForwardMessage(TlObject, PublicForward):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["publicForwardMessage"]:
         return "publicForwardMessage"
 
+    @classmethod
     def getClass(self) -> Literal["PublicForward"]:
         return "PublicForward"
 
@@ -50307,9 +52195,11 @@ class PublicForwardStory(TlObject, PublicForward):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["publicForwardStory"]:
         return "publicForwardStory"
 
+    @classmethod
     def getClass(self) -> Literal["PublicForward"]:
         return "PublicForward"
 
@@ -50356,9 +52246,11 @@ class PublicForwards(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["publicForwards"]:
         return "publicForwards"
 
+    @classmethod
     def getClass(self) -> Literal["PublicForwards"]:
         return "PublicForwards"
 
@@ -50404,9 +52296,11 @@ class BotMediaPreview(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botMediaPreview"]:
         return "botMediaPreview"
 
+    @classmethod
     def getClass(self) -> Literal["BotMediaPreview"]:
         return "BotMediaPreview"
 
@@ -50439,9 +52333,11 @@ class BotMediaPreviews(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botMediaPreviews"]:
         return "botMediaPreviews"
 
+    @classmethod
     def getClass(self) -> Literal["BotMediaPreviews"]:
         return "BotMediaPreviews"
 
@@ -50480,9 +52376,11 @@ class BotMediaPreviewInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botMediaPreviewInfo"]:
         return "botMediaPreviewInfo"
 
+    @classmethod
     def getClass(self) -> Literal["BotMediaPreviewInfo"]:
         return "BotMediaPreviewInfo"
 
@@ -50614,9 +52512,11 @@ class ChatBoostLevelFeatures(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostLevelFeatures"]:
         return "chatBoostLevelFeatures"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostLevelFeatures"]:
         return "ChatBoostLevelFeatures"
 
@@ -50770,9 +52670,11 @@ class ChatBoostFeatures(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostFeatures"]:
         return "chatBoostFeatures"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostFeatures"]:
         return "ChatBoostFeatures"
 
@@ -50848,9 +52750,11 @@ class ChatBoostSourceGiftCode(TlObject, ChatBoostSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostSourceGiftCode"]:
         return "chatBoostSourceGiftCode"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostSource"]:
         return "ChatBoostSource"
 
@@ -50914,9 +52818,11 @@ class ChatBoostSourceGiveaway(TlObject, ChatBoostSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostSourceGiveaway"]:
         return "chatBoostSourceGiveaway"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostSource"]:
         return "ChatBoostSource"
 
@@ -50959,9 +52865,11 @@ class ChatBoostSourcePremium(TlObject, ChatBoostSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostSourcePremium"]:
         return "chatBoostSourcePremium"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostSource"]:
         return "ChatBoostSource"
 
@@ -51020,9 +52928,11 @@ class PrepaidGiveaway(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["prepaidGiveaway"]:
         return "prepaidGiveaway"
 
+    @classmethod
     def getClass(self) -> Literal["PrepaidGiveaway"]:
         return "PrepaidGiveaway"
 
@@ -51122,9 +53032,11 @@ class ChatBoostStatus(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostStatus"]:
         return "chatBoostStatus"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostStatus"]:
         return "ChatBoostStatus"
 
@@ -51215,9 +53127,11 @@ class ChatBoost(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoost"]:
         return "chatBoost"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoost"]:
         return "ChatBoost"
 
@@ -51275,9 +53189,11 @@ class FoundChatBoosts(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundChatBoosts"]:
         return "foundChatBoosts"
 
+    @classmethod
     def getClass(self) -> Literal["FoundChatBoosts"]:
         return "FoundChatBoosts"
 
@@ -51343,9 +53259,11 @@ class ChatBoostSlot(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostSlot"]:
         return "chatBoostSlot"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostSlot"]:
         return "ChatBoostSlot"
 
@@ -51390,9 +53308,11 @@ class ChatBoostSlots(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostSlots"]:
         return "chatBoostSlots"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostSlots"]:
         return "ChatBoostSlots"
 
@@ -51417,9 +53337,11 @@ class ResendCodeReasonUserRequest(TlObject, ResendCodeReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["resendCodeReasonUserRequest"]:
         return "resendCodeReasonUserRequest"
 
+    @classmethod
     def getClass(self) -> Literal["ResendCodeReason"]:
         return "ResendCodeReason"
 
@@ -51450,9 +53372,11 @@ class ResendCodeReasonVerificationFailed(TlObject, ResendCodeReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["resendCodeReasonVerificationFailed"]:
         return "resendCodeReasonVerificationFailed"
 
+    @classmethod
     def getClass(self) -> Literal["ResendCodeReason"]:
         return "ResendCodeReason"
 
@@ -51477,9 +53401,11 @@ class CallDiscardReasonEmpty(TlObject, CallDiscardReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callDiscardReasonEmpty"]:
         return "callDiscardReasonEmpty"
 
+    @classmethod
     def getClass(self) -> Literal["CallDiscardReason"]:
         return "CallDiscardReason"
 
@@ -51503,9 +53429,11 @@ class CallDiscardReasonMissed(TlObject, CallDiscardReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callDiscardReasonMissed"]:
         return "callDiscardReasonMissed"
 
+    @classmethod
     def getClass(self) -> Literal["CallDiscardReason"]:
         return "CallDiscardReason"
 
@@ -51529,9 +53457,11 @@ class CallDiscardReasonDeclined(TlObject, CallDiscardReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callDiscardReasonDeclined"]:
         return "callDiscardReasonDeclined"
 
+    @classmethod
     def getClass(self) -> Literal["CallDiscardReason"]:
         return "CallDiscardReason"
 
@@ -51555,9 +53485,11 @@ class CallDiscardReasonDisconnected(TlObject, CallDiscardReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callDiscardReasonDisconnected"]:
         return "callDiscardReasonDisconnected"
 
+    @classmethod
     def getClass(self) -> Literal["CallDiscardReason"]:
         return "CallDiscardReason"
 
@@ -51581,9 +53513,11 @@ class CallDiscardReasonHungUp(TlObject, CallDiscardReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callDiscardReasonHungUp"]:
         return "callDiscardReasonHungUp"
 
+    @classmethod
     def getClass(self) -> Literal["CallDiscardReason"]:
         return "CallDiscardReason"
 
@@ -51614,9 +53548,11 @@ class CallDiscardReasonUpgradeToGroupCall(TlObject, CallDiscardReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callDiscardReasonUpgradeToGroupCall"]:
         return "callDiscardReasonUpgradeToGroupCall"
 
+    @classmethod
     def getClass(self) -> Literal["CallDiscardReason"]:
         return "CallDiscardReason"
 
@@ -51677,9 +53613,11 @@ class CallProtocol(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProtocol"]:
         return "callProtocol"
 
+    @classmethod
     def getClass(self) -> Literal["CallProtocol"]:
         return "CallProtocol"
 
@@ -51727,9 +53665,11 @@ class CallServerTypeTelegramReflector(TlObject, CallServerType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callServerTypeTelegramReflector"]:
         return "callServerTypeTelegramReflector"
 
+    @classmethod
     def getClass(self) -> Literal["CallServerType"]:
         return "CallServerType"
 
@@ -51787,9 +53727,11 @@ class CallServerTypeWebrtc(TlObject, CallServerType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callServerTypeWebrtc"]:
         return "callServerTypeWebrtc"
 
+    @classmethod
     def getClass(self) -> Literal["CallServerType"]:
         return "CallServerType"
 
@@ -51859,9 +53801,11 @@ class CallServer(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callServer"]:
         return "callServer"
 
+    @classmethod
     def getClass(self) -> Literal["CallServer"]:
         return "CallServer"
 
@@ -51904,9 +53848,11 @@ class CallId(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callId"]:
         return "callId"
 
+    @classmethod
     def getClass(self) -> Literal["CallId"]:
         return "CallId"
 
@@ -51938,9 +53884,11 @@ class GroupCallId(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallId"]:
         return "groupCallId"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallId"]:
         return "GroupCallId"
 
@@ -51977,9 +53925,11 @@ class CallStatePending(TlObject, CallState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callStatePending"]:
         return "callStatePending"
 
+    @classmethod
     def getClass(self) -> Literal["CallState"]:
         return "CallState"
 
@@ -52009,9 +53959,11 @@ class CallStateExchangingKeys(TlObject, CallState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callStateExchangingKeys"]:
         return "callStateExchangingKeys"
 
+    @classmethod
     def getClass(self) -> Literal["CallState"]:
         return "CallState"
 
@@ -52087,9 +54039,11 @@ class CallStateReady(TlObject, CallState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callStateReady"]:
         return "callStateReady"
 
+    @classmethod
     def getClass(self) -> Literal["CallState"]:
         return "CallState"
 
@@ -52133,9 +54087,11 @@ class CallStateHangingUp(TlObject, CallState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callStateHangingUp"]:
         return "callStateHangingUp"
 
+    @classmethod
     def getClass(self) -> Literal["CallState"]:
         return "CallState"
 
@@ -52195,9 +54151,11 @@ class CallStateDiscarded(TlObject, CallState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callStateDiscarded"]:
         return "callStateDiscarded"
 
+    @classmethod
     def getClass(self) -> Literal["CallState"]:
         return "CallState"
 
@@ -52240,9 +54198,11 @@ class CallStateError(TlObject, CallState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callStateError"]:
         return "callStateError"
 
+    @classmethod
     def getClass(self) -> Literal["CallState"]:
         return "CallState"
 
@@ -52295,9 +54255,11 @@ class GroupCallJoinParameters(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallJoinParameters"]:
         return "groupCallJoinParameters"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallJoinParameters"]:
         return "GroupCallJoinParameters"
 
@@ -52331,9 +54293,11 @@ class GroupCallVideoQualityThumbnail(TlObject, GroupCallVideoQuality):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallVideoQualityThumbnail"]:
         return "groupCallVideoQualityThumbnail"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallVideoQuality"]:
         return "GroupCallVideoQuality"
 
@@ -52357,9 +54321,11 @@ class GroupCallVideoQualityMedium(TlObject, GroupCallVideoQuality):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallVideoQualityMedium"]:
         return "groupCallVideoQualityMedium"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallVideoQuality"]:
         return "GroupCallVideoQuality"
 
@@ -52383,9 +54349,11 @@ class GroupCallVideoQualityFull(TlObject, GroupCallVideoQuality):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallVideoQualityFull"]:
         return "groupCallVideoQualityFull"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallVideoQuality"]:
         return "GroupCallVideoQuality"
 
@@ -52428,9 +54396,11 @@ class VideoChatStream(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["videoChatStream"]:
         return "videoChatStream"
 
+    @classmethod
     def getClass(self) -> Literal["VideoChatStream"]:
         return "VideoChatStream"
 
@@ -52469,9 +54439,11 @@ class VideoChatStreams(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["videoChatStreams"]:
         return "videoChatStreams"
 
+    @classmethod
     def getClass(self) -> Literal["VideoChatStreams"]:
         return "VideoChatStreams"
 
@@ -52508,9 +54480,11 @@ class RtmpUrl(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["rtmpUrl"]:
         return "rtmpUrl"
 
+    @classmethod
     def getClass(self) -> Literal["RtmpUrl"]:
         return "RtmpUrl"
 
@@ -52552,9 +54526,11 @@ class GroupCallRecentSpeaker(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallRecentSpeaker"]:
         return "groupCallRecentSpeaker"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallRecentSpeaker"]:
         return "GroupCallRecentSpeaker"
 
@@ -52734,9 +54710,11 @@ class GroupCall(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCall"]:
         return "groupCall"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCall"]:
         return "GroupCall"
 
@@ -52828,9 +54806,11 @@ class GroupCallVideoSourceGroup(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallVideoSourceGroup"]:
         return "groupCallVideoSourceGroup"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallVideoSourceGroup"]:
         return "GroupCallVideoSourceGroup"
 
@@ -52882,9 +54862,11 @@ class GroupCallParticipantVideoInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallParticipantVideoInfo"]:
         return "groupCallParticipantVideoInfo"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallParticipantVideoInfo"]:
         return "GroupCallParticipantVideoInfo"
 
@@ -53034,9 +55016,11 @@ class GroupCallParticipant(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallParticipant"]:
         return "groupCallParticipant"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallParticipant"]:
         return "GroupCallParticipant"
 
@@ -53128,9 +55112,11 @@ class GroupCallParticipants(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallParticipants"]:
         return "groupCallParticipants"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallParticipants"]:
         return "GroupCallParticipants"
 
@@ -53172,9 +55158,11 @@ class GroupCallInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallInfo"]:
         return "groupCallInfo"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallInfo"]:
         return "GroupCallInfo"
 
@@ -53206,11 +55194,13 @@ class InviteGroupCallParticipantResultUserPrivacyRestricted(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(
         self,
     ) -> Literal["inviteGroupCallParticipantResultUserPrivacyRestricted"]:
         return "inviteGroupCallParticipantResultUserPrivacyRestricted"
 
+    @classmethod
     def getClass(self) -> Literal["InviteGroupCallParticipantResult"]:
         return "InviteGroupCallParticipantResult"
 
@@ -53238,11 +55228,13 @@ class InviteGroupCallParticipantResultUserAlreadyParticipant(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(
         self,
     ) -> Literal["inviteGroupCallParticipantResultUserAlreadyParticipant"]:
         return "inviteGroupCallParticipantResultUserAlreadyParticipant"
 
+    @classmethod
     def getClass(self) -> Literal["InviteGroupCallParticipantResult"]:
         return "InviteGroupCallParticipantResult"
 
@@ -53270,9 +55262,11 @@ class InviteGroupCallParticipantResultUserWasBanned(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inviteGroupCallParticipantResultUserWasBanned"]:
         return "inviteGroupCallParticipantResultUserWasBanned"
 
+    @classmethod
     def getClass(self) -> Literal["InviteGroupCallParticipantResult"]:
         return "InviteGroupCallParticipantResult"
 
@@ -53312,9 +55306,11 @@ class InviteGroupCallParticipantResultSuccess(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inviteGroupCallParticipantResultSuccess"]:
         return "inviteGroupCallParticipantResultSuccess"
 
+    @classmethod
     def getClass(self) -> Literal["InviteGroupCallParticipantResult"]:
         return "InviteGroupCallParticipantResult"
 
@@ -53346,9 +55342,11 @@ class GroupCallDataChannelMain(TlObject, GroupCallDataChannel):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallDataChannelMain"]:
         return "groupCallDataChannelMain"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallDataChannel"]:
         return "GroupCallDataChannel"
 
@@ -53372,9 +55370,11 @@ class GroupCallDataChannelScreenSharing(TlObject, GroupCallDataChannel):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["groupCallDataChannelScreenSharing"]:
         return "groupCallDataChannelScreenSharing"
 
+    @classmethod
     def getClass(self) -> Literal["GroupCallDataChannel"]:
         return "GroupCallDataChannel"
 
@@ -53405,9 +55405,11 @@ class InputGroupCallLink(TlObject, InputGroupCall):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputGroupCallLink"]:
         return "inputGroupCallLink"
 
+    @classmethod
     def getClass(self) -> Literal["InputGroupCall"]:
         return "InputGroupCall"
 
@@ -53444,9 +55446,11 @@ class InputGroupCallMessage(TlObject, InputGroupCall):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputGroupCallMessage"]:
         return "inputGroupCallMessage"
 
+    @classmethod
     def getClass(self) -> Literal["InputGroupCall"]:
         return "InputGroupCall"
 
@@ -53476,9 +55480,11 @@ class CallProblemEcho(TlObject, CallProblem):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProblemEcho"]:
         return "callProblemEcho"
 
+    @classmethod
     def getClass(self) -> Literal["CallProblem"]:
         return "CallProblem"
 
@@ -53502,9 +55508,11 @@ class CallProblemNoise(TlObject, CallProblem):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProblemNoise"]:
         return "callProblemNoise"
 
+    @classmethod
     def getClass(self) -> Literal["CallProblem"]:
         return "CallProblem"
 
@@ -53528,9 +55536,11 @@ class CallProblemInterruptions(TlObject, CallProblem):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProblemInterruptions"]:
         return "callProblemInterruptions"
 
+    @classmethod
     def getClass(self) -> Literal["CallProblem"]:
         return "CallProblem"
 
@@ -53554,9 +55564,11 @@ class CallProblemDistortedSpeech(TlObject, CallProblem):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProblemDistortedSpeech"]:
         return "callProblemDistortedSpeech"
 
+    @classmethod
     def getClass(self) -> Literal["CallProblem"]:
         return "CallProblem"
 
@@ -53580,9 +55592,11 @@ class CallProblemSilentLocal(TlObject, CallProblem):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProblemSilentLocal"]:
         return "callProblemSilentLocal"
 
+    @classmethod
     def getClass(self) -> Literal["CallProblem"]:
         return "CallProblem"
 
@@ -53606,9 +55620,11 @@ class CallProblemSilentRemote(TlObject, CallProblem):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProblemSilentRemote"]:
         return "callProblemSilentRemote"
 
+    @classmethod
     def getClass(self) -> Literal["CallProblem"]:
         return "CallProblem"
 
@@ -53632,9 +55648,11 @@ class CallProblemDropped(TlObject, CallProblem):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProblemDropped"]:
         return "callProblemDropped"
 
+    @classmethod
     def getClass(self) -> Literal["CallProblem"]:
         return "CallProblem"
 
@@ -53658,9 +55676,11 @@ class CallProblemDistortedVideo(TlObject, CallProblem):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProblemDistortedVideo"]:
         return "callProblemDistortedVideo"
 
+    @classmethod
     def getClass(self) -> Literal["CallProblem"]:
         return "CallProblem"
 
@@ -53684,9 +55704,11 @@ class CallProblemPixelatedVideo(TlObject, CallProblem):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callProblemPixelatedVideo"]:
         return "callProblemPixelatedVideo"
 
+    @classmethod
     def getClass(self) -> Literal["CallProblem"]:
         return "CallProblem"
 
@@ -53752,9 +55774,11 @@ class Call(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["call"]:
         return "call"
 
+    @classmethod
     def getClass(self) -> Literal["Call"]:
         return "Call"
 
@@ -53790,9 +55814,11 @@ class FirebaseAuthenticationSettingsAndroid(TlObject, FirebaseAuthenticationSett
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["firebaseAuthenticationSettingsAndroid"]:
         return "firebaseAuthenticationSettingsAndroid"
 
+    @classmethod
     def getClass(self) -> Literal["FirebaseAuthenticationSettings"]:
         return "FirebaseAuthenticationSettings"
 
@@ -53830,9 +55856,11 @@ class FirebaseAuthenticationSettingsIos(TlObject, FirebaseAuthenticationSettings
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["firebaseAuthenticationSettingsIos"]:
         return "firebaseAuthenticationSettingsIos"
 
+    @classmethod
     def getClass(self) -> Literal["FirebaseAuthenticationSettings"]:
         return "FirebaseAuthenticationSettings"
 
@@ -53912,9 +55940,11 @@ class PhoneNumberAuthenticationSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["phoneNumberAuthenticationSettings"]:
         return "phoneNumberAuthenticationSettings"
 
+    @classmethod
     def getClass(self) -> Literal["PhoneNumberAuthenticationSettings"]:
         return "PhoneNumberAuthenticationSettings"
 
@@ -53992,9 +56022,11 @@ class AddedReaction(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["addedReaction"]:
         return "addedReaction"
 
+    @classmethod
     def getClass(self) -> Literal["AddedReaction"]:
         return "AddedReaction"
 
@@ -54050,9 +56082,11 @@ class AddedReactions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["addedReactions"]:
         return "addedReactions"
 
+    @classmethod
     def getClass(self) -> Literal["AddedReactions"]:
         return "AddedReactions"
 
@@ -54098,9 +56132,11 @@ class AvailableReaction(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["availableReaction"]:
         return "availableReaction"
 
+    @classmethod
     def getClass(self) -> Literal["AvailableReaction"]:
         return "AvailableReaction"
 
@@ -54174,9 +56210,11 @@ class AvailableReactions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["availableReactions"]:
         return "availableReactions"
 
+    @classmethod
     def getClass(self) -> Literal["AvailableReactions"]:
         return "AvailableReactions"
 
@@ -54278,9 +56316,11 @@ class EmojiReaction(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["emojiReaction"]:
         return "emojiReaction"
 
+    @classmethod
     def getClass(self) -> Literal["EmojiReaction"]:
         return "EmojiReaction"
 
@@ -54328,9 +56368,11 @@ class ReactionUnavailabilityReasonAnonymousAdministrator(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reactionUnavailabilityReasonAnonymousAdministrator"]:
         return "reactionUnavailabilityReasonAnonymousAdministrator"
 
+    @classmethod
     def getClass(self) -> Literal["ReactionUnavailabilityReason"]:
         return "ReactionUnavailabilityReason"
 
@@ -54356,9 +56398,11 @@ class ReactionUnavailabilityReasonGuest(TlObject, ReactionUnavailabilityReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reactionUnavailabilityReasonGuest"]:
         return "reactionUnavailabilityReasonGuest"
 
+    @classmethod
     def getClass(self) -> Literal["ReactionUnavailabilityReason"]:
         return "ReactionUnavailabilityReason"
 
@@ -54389,9 +56433,11 @@ class Animations(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["animations"]:
         return "animations"
 
+    @classmethod
     def getClass(self) -> Literal["Animations"]:
         return "Animations"
 
@@ -54423,9 +56469,11 @@ class DiceStickersRegular(TlObject, DiceStickers):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["diceStickersRegular"]:
         return "diceStickersRegular"
 
+    @classmethod
     def getClass(self) -> Literal["DiceStickers"]:
         return "DiceStickers"
 
@@ -54484,9 +56532,11 @@ class DiceStickersSlotMachine(TlObject, DiceStickers):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["diceStickersSlotMachine"]:
         return "diceStickersSlotMachine"
 
+    @classmethod
     def getClass(self) -> Literal["DiceStickers"]:
         return "DiceStickers"
 
@@ -54536,9 +56586,11 @@ class ImportedContacts(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["importedContacts"]:
         return "importedContacts"
 
+    @classmethod
     def getClass(self) -> Literal["ImportedContacts"]:
         return "ImportedContacts"
 
@@ -54575,9 +56627,11 @@ class SpeechRecognitionResultPending(TlObject, SpeechRecognitionResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["speechRecognitionResultPending"]:
         return "speechRecognitionResultPending"
 
+    @classmethod
     def getClass(self) -> Literal["SpeechRecognitionResult"]:
         return "SpeechRecognitionResult"
 
@@ -54609,9 +56663,11 @@ class SpeechRecognitionResultText(TlObject, SpeechRecognitionResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["speechRecognitionResultText"]:
         return "speechRecognitionResultText"
 
+    @classmethod
     def getClass(self) -> Literal["SpeechRecognitionResult"]:
         return "SpeechRecognitionResult"
 
@@ -54643,9 +56699,11 @@ class SpeechRecognitionResultError(TlObject, SpeechRecognitionResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["speechRecognitionResultError"]:
         return "speechRecognitionResultError"
 
+    @classmethod
     def getClass(self) -> Literal["SpeechRecognitionResult"]:
         return "SpeechRecognitionResult"
 
@@ -54710,9 +56768,11 @@ class BusinessConnection(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessConnection"]:
         return "businessConnection"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessConnection"]:
         return "BusinessConnection"
 
@@ -54762,9 +56822,11 @@ class AttachmentMenuBotColor(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["attachmentMenuBotColor"]:
         return "attachmentMenuBotColor"
 
+    @classmethod
     def getClass(self) -> Literal["AttachmentMenuBotColor"]:
         return "AttachmentMenuBotColor"
 
@@ -54936,9 +56998,11 @@ class AttachmentMenuBot(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["attachmentMenuBot"]:
         return "attachmentMenuBot"
 
+    @classmethod
     def getClass(self) -> Literal["AttachmentMenuBot"]:
         return "AttachmentMenuBot"
 
@@ -55023,9 +57087,11 @@ class SentWebAppMessage(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sentWebAppMessage"]:
         return "sentWebAppMessage"
 
+    @classmethod
     def getClass(self) -> Literal["SentWebAppMessage"]:
         return "SentWebAppMessage"
 
@@ -55057,9 +57123,11 @@ class BotWriteAccessAllowReasonConnectedWebsite(TlObject, BotWriteAccessAllowRea
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botWriteAccessAllowReasonConnectedWebsite"]:
         return "botWriteAccessAllowReasonConnectedWebsite"
 
+    @classmethod
     def getClass(self) -> Literal["BotWriteAccessAllowReason"]:
         return "BotWriteAccessAllowReason"
 
@@ -55088,9 +57156,11 @@ class BotWriteAccessAllowReasonAddedToAttachmentMenu(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botWriteAccessAllowReasonAddedToAttachmentMenu"]:
         return "botWriteAccessAllowReasonAddedToAttachmentMenu"
 
+    @classmethod
     def getClass(self) -> Literal["BotWriteAccessAllowReason"]:
         return "BotWriteAccessAllowReason"
 
@@ -55123,9 +57193,11 @@ class BotWriteAccessAllowReasonLaunchedWebApp(TlObject, BotWriteAccessAllowReaso
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botWriteAccessAllowReasonLaunchedWebApp"]:
         return "botWriteAccessAllowReasonLaunchedWebApp"
 
+    @classmethod
     def getClass(self) -> Literal["BotWriteAccessAllowReason"]:
         return "BotWriteAccessAllowReason"
 
@@ -55152,9 +57224,11 @@ class BotWriteAccessAllowReasonAcceptedRequest(TlObject, BotWriteAccessAllowReas
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botWriteAccessAllowReasonAcceptedRequest"]:
         return "botWriteAccessAllowReasonAcceptedRequest"
 
+    @classmethod
     def getClass(self) -> Literal["BotWriteAccessAllowReason"]:
         return "BotWriteAccessAllowReason"
 
@@ -55187,9 +57261,11 @@ class HttpUrl(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["httpUrl"]:
         return "httpUrl"
 
+    @classmethod
     def getClass(self) -> Literal["HttpUrl"]:
         return "HttpUrl"
 
@@ -55226,9 +57302,11 @@ class UserLink(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userLink"]:
         return "userLink"
 
+    @classmethod
     def getClass(self) -> Literal["UserLink"]:
         return "UserLink"
 
@@ -55282,9 +57360,11 @@ class TargetChatTypes(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["targetChatTypes"]:
         return "targetChatTypes"
 
+    @classmethod
     def getClass(self) -> Literal["TargetChatTypes"]:
         return "TargetChatTypes"
 
@@ -55318,9 +57398,11 @@ class TargetChatCurrent(TlObject, TargetChat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["targetChatCurrent"]:
         return "targetChatCurrent"
 
+    @classmethod
     def getClass(self) -> Literal["TargetChat"]:
         return "TargetChat"
 
@@ -55351,9 +57433,11 @@ class TargetChatChosen(TlObject, TargetChat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["targetChatChosen"]:
         return "targetChatChosen"
 
+    @classmethod
     def getClass(self) -> Literal["TargetChat"]:
         return "TargetChat"
 
@@ -55436,9 +57520,11 @@ class TargetChatInternalLink(TlObject, TargetChat):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["targetChatInternalLink"]:
         return "targetChatInternalLink"
 
+    @classmethod
     def getClass(self) -> Literal["TargetChat"]:
         return "TargetChat"
 
@@ -55561,9 +57647,11 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultAnimation"]:
         return "inputInlineQueryResultAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -55697,9 +57785,11 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultArticle"]:
         return "inputInlineQueryResultArticle"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -55817,9 +57907,11 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultAudio"]:
         return "inputInlineQueryResultAudio"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -55933,9 +58025,11 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultContact"]:
         return "inputInlineQueryResultContact"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -56067,9 +58161,11 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultDocument"]:
         return "inputInlineQueryResultDocument"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -56140,9 +58236,11 @@ class InputInlineQueryResultGame(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultGame"]:
         return "inputInlineQueryResultGame"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -56260,9 +58358,11 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultLocation"]:
         return "inputInlineQueryResultLocation"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -56392,9 +58492,11 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultPhoto"]:
         return "inputInlineQueryResultPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -56512,9 +58614,11 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultSticker"]:
         return "inputInlineQueryResultSticker"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -56628,9 +58732,11 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultVenue"]:
         return "inputInlineQueryResultVenue"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -56768,9 +58874,11 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultVideo"]:
         return "inputInlineQueryResultVideo"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -56886,9 +58994,11 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputInlineQueryResultVoiceNote"]:
         return "inputInlineQueryResultVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["InputInlineQueryResult"]:
         return "InputInlineQueryResult"
 
@@ -56960,9 +59070,11 @@ class InlineQueryResultArticle(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultArticle"]:
         return "inlineQueryResultArticle"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57017,9 +59129,11 @@ class InlineQueryResultContact(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultContact"]:
         return "inlineQueryResultContact"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57079,9 +59193,11 @@ class InlineQueryResultLocation(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultLocation"]:
         return "inlineQueryResultLocation"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57134,9 +59250,11 @@ class InlineQueryResultVenue(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultVenue"]:
         return "inlineQueryResultVenue"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57180,9 +59298,11 @@ class InlineQueryResultGame(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultGame"]:
         return "inlineQueryResultGame"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57227,9 +59347,11 @@ class InlineQueryResultAnimation(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultAnimation"]:
         return "inlineQueryResultAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57273,9 +59395,11 @@ class InlineQueryResultAudio(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultAudio"]:
         return "inlineQueryResultAudio"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57329,9 +59453,11 @@ class InlineQueryResultDocument(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultDocument"]:
         return "inlineQueryResultDocument"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57389,9 +59515,11 @@ class InlineQueryResultPhoto(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultPhoto"]:
         return "inlineQueryResultPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57437,9 +59565,11 @@ class InlineQueryResultSticker(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultSticker"]:
         return "inlineQueryResultSticker"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57489,9 +59619,11 @@ class InlineQueryResultVideo(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultVideo"]:
         return "inlineQueryResultVideo"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57544,9 +59676,11 @@ class InlineQueryResultVoiceNote(TlObject, InlineQueryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultVoiceNote"]:
         return "inlineQueryResultVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResult"]:
         return "InlineQueryResult"
 
@@ -57585,9 +59719,11 @@ class InlineQueryResultsButtonTypeStartBot(TlObject, InlineQueryResultsButtonTyp
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultsButtonTypeStartBot"]:
         return "inlineQueryResultsButtonTypeStartBot"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResultsButtonType"]:
         return "InlineQueryResultsButtonType"
 
@@ -57621,9 +59757,11 @@ class InlineQueryResultsButtonTypeWebApp(TlObject, InlineQueryResultsButtonType)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultsButtonTypeWebApp"]:
         return "inlineQueryResultsButtonTypeWebApp"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResultsButtonType"]:
         return "InlineQueryResultsButtonType"
 
@@ -57666,9 +59804,11 @@ class InlineQueryResultsButton(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResultsButton"]:
         return "inlineQueryResultsButton"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResultsButton"]:
         return "InlineQueryResultsButton"
 
@@ -57722,9 +59862,11 @@ class InlineQueryResults(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inlineQueryResults"]:
         return "inlineQueryResults"
 
+    @classmethod
     def getClass(self) -> Literal["InlineQueryResults"]:
         return "InlineQueryResults"
 
@@ -57770,9 +59912,11 @@ class PreparedInlineMessageId(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["preparedInlineMessageId"]:
         return "preparedInlineMessageId"
 
+    @classmethod
     def getClass(self) -> Literal["PreparedInlineMessageId"]:
         return "PreparedInlineMessageId"
 
@@ -57838,9 +59982,11 @@ class PreparedInlineMessage(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["preparedInlineMessage"]:
         return "preparedInlineMessage"
 
+    @classmethod
     def getClass(self) -> Literal["PreparedInlineMessage"]:
         return "PreparedInlineMessage"
 
@@ -57879,9 +60025,11 @@ class CallbackQueryPayloadData(TlObject, CallbackQueryPayload):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callbackQueryPayloadData"]:
         return "callbackQueryPayloadData"
 
+    @classmethod
     def getClass(self) -> Literal["CallbackQueryPayload"]:
         return "CallbackQueryPayload"
 
@@ -57918,9 +60066,11 @@ class CallbackQueryPayloadDataWithPassword(TlObject, CallbackQueryPayload):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callbackQueryPayloadDataWithPassword"]:
         return "callbackQueryPayloadDataWithPassword"
 
+    @classmethod
     def getClass(self) -> Literal["CallbackQueryPayload"]:
         return "CallbackQueryPayload"
 
@@ -57955,9 +60105,11 @@ class CallbackQueryPayloadGame(TlObject, CallbackQueryPayload):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callbackQueryPayloadGame"]:
         return "callbackQueryPayloadGame"
 
+    @classmethod
     def getClass(self) -> Literal["CallbackQueryPayload"]:
         return "CallbackQueryPayload"
 
@@ -57999,9 +60151,11 @@ class CallbackQueryAnswer(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["callbackQueryAnswer"]:
         return "callbackQueryAnswer"
 
+    @classmethod
     def getClass(self) -> Literal["CallbackQueryAnswer"]:
         return "CallbackQueryAnswer"
 
@@ -58040,9 +60194,11 @@ class CustomRequestResult(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["customRequestResult"]:
         return "customRequestResult"
 
+    @classmethod
     def getClass(self) -> Literal["CustomRequestResult"]:
         return "CustomRequestResult"
 
@@ -58084,9 +60240,11 @@ class GameHighScore(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["gameHighScore"]:
         return "gameHighScore"
 
+    @classmethod
     def getClass(self) -> Literal["GameHighScore"]:
         return "GameHighScore"
 
@@ -58125,9 +60283,11 @@ class GameHighScores(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["gameHighScores"]:
         return "gameHighScores"
 
+    @classmethod
     def getClass(self) -> Literal["GameHighScores"]:
         return "GameHighScores"
 
@@ -58166,9 +60326,11 @@ class ChatEventMessageEdited(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMessageEdited"]:
         return "chatEventMessageEdited"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58214,9 +60376,11 @@ class ChatEventMessageDeleted(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMessageDeleted"]:
         return "chatEventMessageDeleted"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58255,9 +60419,11 @@ class ChatEventMessagePinned(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMessagePinned"]:
         return "chatEventMessagePinned"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58289,9 +60455,11 @@ class ChatEventMessageUnpinned(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMessageUnpinned"]:
         return "chatEventMessageUnpinned"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58323,9 +60491,11 @@ class ChatEventPollStopped(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventPollStopped"]:
         return "chatEventPollStopped"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58350,9 +60520,11 @@ class ChatEventMemberJoined(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMemberJoined"]:
         return "chatEventMemberJoined"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58392,9 +60564,11 @@ class ChatEventMemberJoinedByInviteLink(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMemberJoinedByInviteLink"]:
         return "chatEventMemberJoinedByInviteLink"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58440,9 +60614,11 @@ class ChatEventMemberJoinedByRequest(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMemberJoinedByRequest"]:
         return "chatEventMemberJoinedByRequest"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58492,9 +60668,11 @@ class ChatEventMemberInvited(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMemberInvited"]:
         return "chatEventMemberInvited"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58520,9 +60698,11 @@ class ChatEventMemberLeft(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMemberLeft"]:
         return "chatEventMemberLeft"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58584,9 +60764,11 @@ class ChatEventMemberPromoted(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMemberPromoted"]:
         return "chatEventMemberPromoted"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58656,9 +60838,11 @@ class ChatEventMemberRestricted(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMemberRestricted"]:
         return "chatEventMemberRestricted"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58728,9 +60912,11 @@ class ChatEventMemberSubscriptionExtended(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMemberSubscriptionExtended"]:
         return "chatEventMemberSubscriptionExtended"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58784,9 +60970,11 @@ class ChatEventAvailableReactionsChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventAvailableReactionsChanged"]:
         return "chatEventAvailableReactionsChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58836,9 +61024,11 @@ class ChatEventBackgroundChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventBackgroundChanged"]:
         return "chatEventBackgroundChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58880,9 +61070,11 @@ class ChatEventDescriptionChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventDescriptionChanged"]:
         return "chatEventDescriptionChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58926,9 +61118,11 @@ class ChatEventEmojiStatusChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventEmojiStatusChanged"]:
         return "chatEventEmojiStatusChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -58972,9 +61166,11 @@ class ChatEventLinkedChatChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventLinkedChatChanged"]:
         return "chatEventLinkedChatChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59018,9 +61214,11 @@ class ChatEventLocationChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventLocationChanged"]:
         return "chatEventLocationChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59066,9 +61264,11 @@ class ChatEventMessageAutoDeleteTimeChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventMessageAutoDeleteTimeChanged"]:
         return "chatEventMessageAutoDeleteTimeChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59120,9 +61320,11 @@ class ChatEventPermissionsChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventPermissionsChanged"]:
         return "chatEventPermissionsChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59166,9 +61368,11 @@ class ChatEventPhotoChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventPhotoChanged"]:
         return "chatEventPhotoChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59212,9 +61416,11 @@ class ChatEventSlowModeDelayChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventSlowModeDelayChanged"]:
         return "chatEventSlowModeDelayChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59258,9 +61464,11 @@ class ChatEventStickerSetChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventStickerSetChanged"]:
         return "chatEventStickerSetChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59304,9 +61512,11 @@ class ChatEventCustomEmojiStickerSetChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventCustomEmojiStickerSetChanged"]:
         return "chatEventCustomEmojiStickerSetChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59350,9 +61560,11 @@ class ChatEventTitleChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventTitleChanged"]:
         return "chatEventTitleChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59394,9 +61606,11 @@ class ChatEventUsernameChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventUsernameChanged"]:
         return "chatEventUsernameChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59440,9 +61654,11 @@ class ChatEventActiveUsernamesChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventActiveUsernamesChanged"]:
         return "chatEventActiveUsernamesChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59500,9 +61716,11 @@ class ChatEventAccentColorChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventAccentColorChanged"]:
         return "chatEventAccentColorChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59572,9 +61790,11 @@ class ChatEventProfileAccentColorChanged(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventProfileAccentColorChanged"]:
         return "chatEventProfileAccentColorChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59623,9 +61843,11 @@ class ChatEventHasProtectedContentToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventHasProtectedContentToggled"]:
         return "chatEventHasProtectedContentToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59662,9 +61884,11 @@ class ChatEventInvitesToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventInvitesToggled"]:
         return "chatEventInvitesToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59696,9 +61920,11 @@ class ChatEventIsAllHistoryAvailableToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventIsAllHistoryAvailableToggled"]:
         return "chatEventIsAllHistoryAvailableToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59739,9 +61965,11 @@ class ChatEventHasAggressiveAntiSpamEnabledToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventHasAggressiveAntiSpamEnabledToggled"]:
         return "chatEventHasAggressiveAntiSpamEnabledToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59780,9 +62008,11 @@ class ChatEventSignMessagesToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventSignMessagesToggled"]:
         return "chatEventSignMessagesToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59814,9 +62044,11 @@ class ChatEventShowMessageSenderToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventShowMessageSenderToggled"]:
         return "chatEventShowMessageSenderToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59851,9 +62083,11 @@ class ChatEventAutomaticTranslationToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventAutomaticTranslationToggled"]:
         return "chatEventAutomaticTranslationToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59901,9 +62135,11 @@ class ChatEventInviteLinkEdited(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventInviteLinkEdited"]:
         return "chatEventInviteLinkEdited"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59940,9 +62176,11 @@ class ChatEventInviteLinkRevoked(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventInviteLinkRevoked"]:
         return "chatEventInviteLinkRevoked"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -59974,9 +62212,11 @@ class ChatEventInviteLinkDeleted(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventInviteLinkDeleted"]:
         return "chatEventInviteLinkDeleted"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60008,9 +62248,11 @@ class ChatEventVideoChatCreated(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventVideoChatCreated"]:
         return "chatEventVideoChatCreated"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60042,9 +62284,11 @@ class ChatEventVideoChatEnded(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventVideoChatEnded"]:
         return "chatEventVideoChatEnded"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60076,9 +62320,11 @@ class ChatEventVideoChatMuteNewParticipantsToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventVideoChatMuteNewParticipantsToggled"]:
         return "chatEventVideoChatMuteNewParticipantsToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60124,9 +62370,11 @@ class ChatEventVideoChatParticipantIsMutedToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventVideoChatParticipantIsMutedToggled"]:
         return "chatEventVideoChatParticipantIsMutedToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60174,9 +62422,11 @@ class ChatEventVideoChatParticipantVolumeLevelChanged(TlObject, ChatEventAction)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventVideoChatParticipantVolumeLevelChanged"]:
         return "chatEventVideoChatParticipantVolumeLevelChanged"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60215,9 +62465,11 @@ class ChatEventIsForumToggled(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventIsForumToggled"]:
         return "chatEventIsForumToggled"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60249,9 +62501,11 @@ class ChatEventForumTopicCreated(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventForumTopicCreated"]:
         return "chatEventForumTopicCreated"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60292,9 +62546,11 @@ class ChatEventForumTopicEdited(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventForumTopicEdited"]:
         return "chatEventForumTopicEdited"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60331,9 +62587,11 @@ class ChatEventForumTopicToggleIsClosed(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventForumTopicToggleIsClosed"]:
         return "chatEventForumTopicToggleIsClosed"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60365,9 +62623,11 @@ class ChatEventForumTopicToggleIsHidden(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventForumTopicToggleIsHidden"]:
         return "chatEventForumTopicToggleIsHidden"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60399,9 +62659,11 @@ class ChatEventForumTopicDeleted(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventForumTopicDeleted"]:
         return "chatEventForumTopicDeleted"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60442,9 +62704,11 @@ class ChatEventForumTopicPinned(TlObject, ChatEventAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventForumTopicPinned"]:
         return "chatEventForumTopicPinned"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventAction"]:
         return "ChatEventAction"
 
@@ -60556,9 +62820,11 @@ class ChatEvent(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEvent"]:
         return "chatEvent"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEvent"]:
         return "ChatEvent"
 
@@ -60599,9 +62865,11 @@ class ChatEvents(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEvents"]:
         return "chatEvents"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEvents"]:
         return "ChatEvents"
 
@@ -60714,9 +62982,11 @@ class ChatEventLogFilters(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatEventLogFilters"]:
         return "chatEventLogFilters"
 
+    @classmethod
     def getClass(self) -> Literal["ChatEventLogFilters"]:
         return "ChatEventLogFilters"
 
@@ -60779,9 +63049,11 @@ class LanguagePackStringValueOrdinary(TlObject, LanguagePackStringValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["languagePackStringValueOrdinary"]:
         return "languagePackStringValueOrdinary"
 
+    @classmethod
     def getClass(self) -> Literal["LanguagePackStringValue"]:
         return "LanguagePackStringValue"
 
@@ -60846,9 +63118,11 @@ class LanguagePackStringValuePluralized(TlObject, LanguagePackStringValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["languagePackStringValuePluralized"]:
         return "languagePackStringValuePluralized"
 
+    @classmethod
     def getClass(self) -> Literal["LanguagePackStringValue"]:
         return "LanguagePackStringValue"
 
@@ -60886,9 +63160,11 @@ class LanguagePackStringValueDeleted(TlObject, LanguagePackStringValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["languagePackStringValueDeleted"]:
         return "languagePackStringValueDeleted"
 
+    @classmethod
     def getClass(self) -> Literal["LanguagePackStringValue"]:
         return "LanguagePackStringValue"
 
@@ -60929,9 +63205,11 @@ class LanguagePackString(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["languagePackString"]:
         return "languagePackString"
 
+    @classmethod
     def getClass(self) -> Literal["LanguagePackString"]:
         return "LanguagePackString"
 
@@ -60964,9 +63242,11 @@ class LanguagePackStrings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["languagePackStrings"]:
         return "languagePackStrings"
 
+    @classmethod
     def getClass(self) -> Literal["LanguagePackStrings"]:
         return "LanguagePackStrings"
 
@@ -61073,9 +63353,11 @@ class LanguagePackInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["languagePackInfo"]:
         return "languagePackInfo"
 
+    @classmethod
     def getClass(self) -> Literal["LanguagePackInfo"]:
         return "LanguagePackInfo"
 
@@ -61136,9 +63418,11 @@ class LocalizationTargetInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["localizationTargetInfo"]:
         return "localizationTargetInfo"
 
+    @classmethod
     def getClass(self) -> Literal["LocalizationTargetInfo"]:
         return "LocalizationTargetInfo"
 
@@ -61163,9 +63447,11 @@ class PremiumLimitTypeSupergroupCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeSupergroupCount"]:
         return "premiumLimitTypeSupergroupCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61189,9 +63475,11 @@ class PremiumLimitTypePinnedChatCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypePinnedChatCount"]:
         return "premiumLimitTypePinnedChatCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61215,9 +63503,11 @@ class PremiumLimitTypeCreatedPublicChatCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeCreatedPublicChatCount"]:
         return "premiumLimitTypeCreatedPublicChatCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61243,9 +63533,11 @@ class PremiumLimitTypeSavedAnimationCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeSavedAnimationCount"]:
         return "premiumLimitTypeSavedAnimationCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61271,9 +63563,11 @@ class PremiumLimitTypeFavoriteStickerCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeFavoriteStickerCount"]:
         return "premiumLimitTypeFavoriteStickerCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61299,9 +63593,11 @@ class PremiumLimitTypeChatFolderCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeChatFolderCount"]:
         return "premiumLimitTypeChatFolderCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61325,9 +63621,11 @@ class PremiumLimitTypeChatFolderChosenChatCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeChatFolderChosenChatCount"]:
         return "premiumLimitTypeChatFolderChosenChatCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61353,9 +63651,11 @@ class PremiumLimitTypePinnedArchivedChatCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypePinnedArchivedChatCount"]:
         return "premiumLimitTypePinnedArchivedChatCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61381,9 +63681,11 @@ class PremiumLimitTypePinnedSavedMessagesTopicCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypePinnedSavedMessagesTopicCount"]:
         return "premiumLimitTypePinnedSavedMessagesTopicCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61409,9 +63711,11 @@ class PremiumLimitTypeCaptionLength(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeCaptionLength"]:
         return "premiumLimitTypeCaptionLength"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61435,9 +63739,11 @@ class PremiumLimitTypeBioLength(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeBioLength"]:
         return "premiumLimitTypeBioLength"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61461,9 +63767,11 @@ class PremiumLimitTypeChatFolderInviteLinkCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeChatFolderInviteLinkCount"]:
         return "premiumLimitTypeChatFolderInviteLinkCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61489,9 +63797,11 @@ class PremiumLimitTypeShareableChatFolderCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeShareableChatFolderCount"]:
         return "premiumLimitTypeShareableChatFolderCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61517,9 +63827,11 @@ class PremiumLimitTypeActiveStoryCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeActiveStoryCount"]:
         return "premiumLimitTypeActiveStoryCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61543,9 +63855,11 @@ class PremiumLimitTypeWeeklyPostedStoryCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeWeeklyPostedStoryCount"]:
         return "premiumLimitTypeWeeklyPostedStoryCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61571,9 +63885,11 @@ class PremiumLimitTypeMonthlyPostedStoryCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeMonthlyPostedStoryCount"]:
         return "premiumLimitTypeMonthlyPostedStoryCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61599,9 +63915,11 @@ class PremiumLimitTypeStoryCaptionLength(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeStoryCaptionLength"]:
         return "premiumLimitTypeStoryCaptionLength"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61625,9 +63943,11 @@ class PremiumLimitTypeStorySuggestedReactionAreaCount(TlObject, PremiumLimitType
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeStorySuggestedReactionAreaCount"]:
         return "premiumLimitTypeStorySuggestedReactionAreaCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61653,9 +63973,11 @@ class PremiumLimitTypeSimilarChatCount(TlObject, PremiumLimitType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimitTypeSimilarChatCount"]:
         return "premiumLimitTypeSimilarChatCount"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimitType"]:
         return "PremiumLimitType"
 
@@ -61679,9 +64001,11 @@ class PremiumFeatureIncreasedLimits(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureIncreasedLimits"]:
         return "premiumFeatureIncreasedLimits"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61705,9 +64029,11 @@ class PremiumFeatureIncreasedUploadFileSize(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureIncreasedUploadFileSize"]:
         return "premiumFeatureIncreasedUploadFileSize"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61733,9 +64059,11 @@ class PremiumFeatureImprovedDownloadSpeed(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureImprovedDownloadSpeed"]:
         return "premiumFeatureImprovedDownloadSpeed"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61761,9 +64089,11 @@ class PremiumFeatureVoiceRecognition(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureVoiceRecognition"]:
         return "premiumFeatureVoiceRecognition"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61787,9 +64117,11 @@ class PremiumFeatureDisabledAds(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureDisabledAds"]:
         return "premiumFeatureDisabledAds"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61813,9 +64145,11 @@ class PremiumFeatureUniqueReactions(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureUniqueReactions"]:
         return "premiumFeatureUniqueReactions"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61839,9 +64173,11 @@ class PremiumFeatureUniqueStickers(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureUniqueStickers"]:
         return "premiumFeatureUniqueStickers"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61865,9 +64201,11 @@ class PremiumFeatureCustomEmoji(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureCustomEmoji"]:
         return "premiumFeatureCustomEmoji"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61891,9 +64229,11 @@ class PremiumFeatureAdvancedChatManagement(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureAdvancedChatManagement"]:
         return "premiumFeatureAdvancedChatManagement"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61919,9 +64259,11 @@ class PremiumFeatureProfileBadge(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureProfileBadge"]:
         return "premiumFeatureProfileBadge"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61945,9 +64287,11 @@ class PremiumFeatureEmojiStatus(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureEmojiStatus"]:
         return "premiumFeatureEmojiStatus"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61971,9 +64315,11 @@ class PremiumFeatureAnimatedProfilePhoto(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureAnimatedProfilePhoto"]:
         return "premiumFeatureAnimatedProfilePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -61997,9 +64343,11 @@ class PremiumFeatureForumTopicIcon(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureForumTopicIcon"]:
         return "premiumFeatureForumTopicIcon"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62023,9 +64371,11 @@ class PremiumFeatureAppIcons(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureAppIcons"]:
         return "premiumFeatureAppIcons"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62049,9 +64399,11 @@ class PremiumFeatureRealTimeChatTranslation(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureRealTimeChatTranslation"]:
         return "premiumFeatureRealTimeChatTranslation"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62077,9 +64429,11 @@ class PremiumFeatureUpgradedStories(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureUpgradedStories"]:
         return "premiumFeatureUpgradedStories"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62103,9 +64457,11 @@ class PremiumFeatureChatBoost(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureChatBoost"]:
         return "premiumFeatureChatBoost"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62129,9 +64485,11 @@ class PremiumFeatureAccentColor(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureAccentColor"]:
         return "premiumFeatureAccentColor"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62155,9 +64513,11 @@ class PremiumFeatureBackgroundForBoth(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureBackgroundForBoth"]:
         return "premiumFeatureBackgroundForBoth"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62181,9 +64541,11 @@ class PremiumFeatureSavedMessagesTags(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureSavedMessagesTags"]:
         return "premiumFeatureSavedMessagesTags"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62207,9 +64569,11 @@ class PremiumFeatureMessagePrivacy(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureMessagePrivacy"]:
         return "premiumFeatureMessagePrivacy"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62233,9 +64597,11 @@ class PremiumFeatureLastSeenTimes(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureLastSeenTimes"]:
         return "premiumFeatureLastSeenTimes"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62259,9 +64625,11 @@ class PremiumFeatureBusiness(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureBusiness"]:
         return "premiumFeatureBusiness"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62285,9 +64653,11 @@ class PremiumFeatureMessageEffects(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureMessageEffects"]:
         return "premiumFeatureMessageEffects"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62311,9 +64681,11 @@ class PremiumFeatureChecklists(TlObject, PremiumFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatureChecklists"]:
         return "premiumFeatureChecklists"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeature"]:
         return "PremiumFeature"
 
@@ -62337,9 +64709,11 @@ class BusinessFeatureLocation(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureLocation"]:
         return "businessFeatureLocation"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62363,9 +64737,11 @@ class BusinessFeatureOpeningHours(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureOpeningHours"]:
         return "businessFeatureOpeningHours"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62389,9 +64765,11 @@ class BusinessFeatureQuickReplies(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureQuickReplies"]:
         return "businessFeatureQuickReplies"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62415,9 +64793,11 @@ class BusinessFeatureGreetingMessage(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureGreetingMessage"]:
         return "businessFeatureGreetingMessage"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62441,9 +64821,11 @@ class BusinessFeatureAwayMessage(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureAwayMessage"]:
         return "businessFeatureAwayMessage"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62467,9 +64849,11 @@ class BusinessFeatureAccountLinks(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureAccountLinks"]:
         return "businessFeatureAccountLinks"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62493,9 +64877,11 @@ class BusinessFeatureStartPage(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureStartPage"]:
         return "businessFeatureStartPage"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62519,9 +64905,11 @@ class BusinessFeatureBots(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureBots"]:
         return "businessFeatureBots"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62545,9 +64933,11 @@ class BusinessFeatureEmojiStatus(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureEmojiStatus"]:
         return "businessFeatureEmojiStatus"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62571,9 +64961,11 @@ class BusinessFeatureChatFolderTags(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureChatFolderTags"]:
         return "businessFeatureChatFolderTags"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62597,9 +64989,11 @@ class BusinessFeatureUpgradedStories(TlObject, BusinessFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatureUpgradedStories"]:
         return "businessFeatureUpgradedStories"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeature"]:
         return "BusinessFeature"
 
@@ -62623,9 +65017,11 @@ class PremiumStoryFeaturePriorityOrder(TlObject, PremiumStoryFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumStoryFeaturePriorityOrder"]:
         return "premiumStoryFeaturePriorityOrder"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumStoryFeature"]:
         return "PremiumStoryFeature"
 
@@ -62649,9 +65045,11 @@ class PremiumStoryFeatureStealthMode(TlObject, PremiumStoryFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumStoryFeatureStealthMode"]:
         return "premiumStoryFeatureStealthMode"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumStoryFeature"]:
         return "PremiumStoryFeature"
 
@@ -62675,9 +65073,11 @@ class PremiumStoryFeaturePermanentViewsHistory(TlObject, PremiumStoryFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumStoryFeaturePermanentViewsHistory"]:
         return "premiumStoryFeaturePermanentViewsHistory"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumStoryFeature"]:
         return "PremiumStoryFeature"
 
@@ -62703,9 +65103,11 @@ class PremiumStoryFeatureCustomExpirationDuration(TlObject, PremiumStoryFeature)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumStoryFeatureCustomExpirationDuration"]:
         return "premiumStoryFeatureCustomExpirationDuration"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumStoryFeature"]:
         return "PremiumStoryFeature"
 
@@ -62731,9 +65133,11 @@ class PremiumStoryFeatureSaveStories(TlObject, PremiumStoryFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumStoryFeatureSaveStories"]:
         return "premiumStoryFeatureSaveStories"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumStoryFeature"]:
         return "PremiumStoryFeature"
 
@@ -62757,9 +65161,11 @@ class PremiumStoryFeatureLinksAndFormatting(TlObject, PremiumStoryFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumStoryFeatureLinksAndFormatting"]:
         return "premiumStoryFeatureLinksAndFormatting"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumStoryFeature"]:
         return "PremiumStoryFeature"
 
@@ -62785,9 +65191,11 @@ class PremiumStoryFeatureVideoQuality(TlObject, PremiumStoryFeature):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumStoryFeatureVideoQuality"]:
         return "premiumStoryFeatureVideoQuality"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumStoryFeature"]:
         return "PremiumStoryFeature"
 
@@ -62854,9 +65262,11 @@ class PremiumLimit(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumLimit"]:
         return "premiumLimit"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumLimit"]:
         return "PremiumLimit"
 
@@ -62961,9 +65371,11 @@ class PremiumFeatures(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeatures"]:
         return "premiumFeatures"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeatures"]:
         return "PremiumFeatures"
 
@@ -63002,9 +65414,11 @@ class BusinessFeatures(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeatures"]:
         return "businessFeatures"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeatures"]:
         return "BusinessFeatures"
 
@@ -63057,9 +65471,11 @@ class PremiumSourceLimitExceeded(TlObject, PremiumSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumSourceLimitExceeded"]:
         return "premiumSourceLimitExceeded"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumSource"]:
         return "PremiumSource"
 
@@ -63118,9 +65534,11 @@ class PremiumSourceFeature(TlObject, PremiumSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumSourceFeature"]:
         return "premiumSourceFeature"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumSource"]:
         return "PremiumSource"
 
@@ -63165,9 +65583,11 @@ class PremiumSourceBusinessFeature(TlObject, PremiumSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumSourceBusinessFeature"]:
         return "premiumSourceBusinessFeature"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumSource"]:
         return "PremiumSource"
 
@@ -63208,9 +65628,11 @@ class PremiumSourceStoryFeature(TlObject, PremiumSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumSourceStoryFeature"]:
         return "premiumSourceStoryFeature"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumSource"]:
         return "PremiumSource"
 
@@ -63242,9 +65664,11 @@ class PremiumSourceLink(TlObject, PremiumSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumSourceLink"]:
         return "premiumSourceLink"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumSource"]:
         return "PremiumSource"
 
@@ -63269,9 +65693,11 @@ class PremiumSourceSettings(TlObject, PremiumSource):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumSourceSettings"]:
         return "premiumSourceSettings"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumSource"]:
         return "PremiumSource"
 
@@ -63336,9 +65762,11 @@ class PremiumFeaturePromotionAnimation(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumFeaturePromotionAnimation"]:
         return "premiumFeaturePromotionAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumFeaturePromotionAnimation"]:
         return "PremiumFeaturePromotionAnimation"
 
@@ -63395,9 +65823,11 @@ class BusinessFeaturePromotionAnimation(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["businessFeaturePromotionAnimation"]:
         return "businessFeaturePromotionAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["BusinessFeaturePromotionAnimation"]:
         return "BusinessFeaturePromotionAnimation"
 
@@ -63457,9 +65887,11 @@ class PremiumState(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["premiumState"]:
         return "premiumState"
 
+    @classmethod
     def getClass(self) -> Literal["PremiumState"]:
         return "PremiumState"
 
@@ -63505,9 +65937,11 @@ class StorePaymentPurposePremiumSubscription(TlObject, StorePaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storePaymentPurposePremiumSubscription"]:
         return "storePaymentPurposePremiumSubscription"
 
+    @classmethod
     def getClass(self) -> Literal["StorePaymentPurpose"]:
         return "StorePaymentPurpose"
 
@@ -63567,9 +66001,11 @@ class StorePaymentPurposePremiumGift(TlObject, StorePaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storePaymentPurposePremiumGift"]:
         return "storePaymentPurposePremiumGift"
 
+    @classmethod
     def getClass(self) -> Literal["StorePaymentPurpose"]:
         return "StorePaymentPurpose"
 
@@ -63637,9 +66073,11 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storePaymentPurposePremiumGiftCodes"]:
         return "storePaymentPurposePremiumGiftCodes"
 
+    @classmethod
     def getClass(self) -> Literal["StorePaymentPurpose"]:
         return "StorePaymentPurpose"
 
@@ -63696,9 +66134,11 @@ class StorePaymentPurposePremiumGiveaway(TlObject, StorePaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storePaymentPurposePremiumGiveaway"]:
         return "storePaymentPurposePremiumGiveaway"
 
+    @classmethod
     def getClass(self) -> Literal["StorePaymentPurpose"]:
         return "StorePaymentPurpose"
 
@@ -63764,9 +66204,11 @@ class StorePaymentPurposeStarGiveaway(TlObject, StorePaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storePaymentPurposeStarGiveaway"]:
         return "storePaymentPurposeStarGiveaway"
 
+    @classmethod
     def getClass(self) -> Literal["StorePaymentPurpose"]:
         return "StorePaymentPurpose"
 
@@ -63821,9 +66263,11 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storePaymentPurposeStars"]:
         return "storePaymentPurposeStars"
 
+    @classmethod
     def getClass(self) -> Literal["StorePaymentPurpose"]:
         return "StorePaymentPurpose"
 
@@ -63879,9 +66323,11 @@ class StorePaymentPurposeGiftedStars(TlObject, StorePaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storePaymentPurposeGiftedStars"]:
         return "storePaymentPurposeGiftedStars"
 
+    @classmethod
     def getClass(self) -> Literal["StorePaymentPurpose"]:
         return "StorePaymentPurpose"
 
@@ -63922,9 +66368,11 @@ class StoreTransactionAppStore(TlObject, StoreTransaction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storeTransactionAppStore"]:
         return "storeTransactionAppStore"
 
+    @classmethod
     def getClass(self) -> Literal["StoreTransaction"]:
         return "StoreTransaction"
 
@@ -63971,9 +66419,11 @@ class StoreTransactionGooglePlay(TlObject, StoreTransaction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storeTransactionGooglePlay"]:
         return "storeTransactionGooglePlay"
 
+    @classmethod
     def getClass(self) -> Literal["StoreTransaction"]:
         return "StoreTransaction"
 
@@ -64039,9 +66489,11 @@ class TelegramPaymentPurposePremiumGift(TlObject, TelegramPaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["telegramPaymentPurposePremiumGift"]:
         return "telegramPaymentPurposePremiumGift"
 
+    @classmethod
     def getClass(self) -> Literal["TelegramPaymentPurpose"]:
         return "TelegramPaymentPurpose"
 
@@ -64117,9 +66569,11 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["telegramPaymentPurposePremiumGiftCodes"]:
         return "telegramPaymentPurposePremiumGiftCodes"
 
+    @classmethod
     def getClass(self) -> Literal["TelegramPaymentPurpose"]:
         return "TelegramPaymentPurpose"
 
@@ -64193,9 +66647,11 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["telegramPaymentPurposePremiumGiveaway"]:
         return "telegramPaymentPurposePremiumGiveaway"
 
+    @classmethod
     def getClass(self) -> Literal["TelegramPaymentPurpose"]:
         return "TelegramPaymentPurpose"
 
@@ -64252,9 +66708,11 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["telegramPaymentPurposeStars"]:
         return "telegramPaymentPurposeStars"
 
+    @classmethod
     def getClass(self) -> Literal["TelegramPaymentPurpose"]:
         return "TelegramPaymentPurpose"
 
@@ -64310,9 +66768,11 @@ class TelegramPaymentPurposeGiftedStars(TlObject, TelegramPaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["telegramPaymentPurposeGiftedStars"]:
         return "telegramPaymentPurposeGiftedStars"
 
+    @classmethod
     def getClass(self) -> Literal["TelegramPaymentPurpose"]:
         return "TelegramPaymentPurpose"
 
@@ -64380,9 +66840,11 @@ class TelegramPaymentPurposeStarGiveaway(TlObject, TelegramPaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["telegramPaymentPurposeStarGiveaway"]:
         return "telegramPaymentPurposeStarGiveaway"
 
+    @classmethod
     def getClass(self) -> Literal["TelegramPaymentPurpose"]:
         return "TelegramPaymentPurpose"
 
@@ -64425,9 +66887,11 @@ class TelegramPaymentPurposeJoinChat(TlObject, TelegramPaymentPurpose):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["telegramPaymentPurposeJoinChat"]:
         return "telegramPaymentPurposeJoinChat"
 
+    @classmethod
     def getClass(self) -> Literal["TelegramPaymentPurpose"]:
         return "TelegramPaymentPurpose"
 
@@ -64464,9 +66928,11 @@ class DeviceTokenFirebaseCloudMessaging(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenFirebaseCloudMessaging"]:
         return "deviceTokenFirebaseCloudMessaging"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64504,9 +66970,11 @@ class DeviceTokenApplePush(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenApplePush"]:
         return "deviceTokenApplePush"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64558,9 +67026,11 @@ class DeviceTokenApplePushVoIP(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenApplePushVoIP"]:
         return "deviceTokenApplePushVoIP"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64599,9 +67069,11 @@ class DeviceTokenWindowsPush(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenWindowsPush"]:
         return "deviceTokenWindowsPush"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64633,9 +67105,11 @@ class DeviceTokenMicrosoftPush(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenMicrosoftPush"]:
         return "deviceTokenMicrosoftPush"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64667,9 +67141,11 @@ class DeviceTokenMicrosoftPushVoIP(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenMicrosoftPushVoIP"]:
         return "deviceTokenMicrosoftPushVoIP"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64713,9 +67189,11 @@ class DeviceTokenWebPush(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenWebPush"]:
         return "deviceTokenWebPush"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64754,9 +67232,11 @@ class DeviceTokenSimplePush(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenSimplePush"]:
         return "deviceTokenSimplePush"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64788,9 +67268,11 @@ class DeviceTokenUbuntuPush(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenUbuntuPush"]:
         return "deviceTokenUbuntuPush"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64822,9 +67304,11 @@ class DeviceTokenBlackBerryPush(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenBlackBerryPush"]:
         return "deviceTokenBlackBerryPush"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64856,9 +67340,11 @@ class DeviceTokenTizenPush(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenTizenPush"]:
         return "deviceTokenTizenPush"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64895,9 +67381,11 @@ class DeviceTokenHuaweiPush(TlObject, DeviceToken):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deviceTokenHuaweiPush"]:
         return "deviceTokenHuaweiPush"
 
+    @classmethod
     def getClass(self) -> Literal["DeviceToken"]:
         return "DeviceToken"
 
@@ -64930,9 +67418,11 @@ class PushReceiverId(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushReceiverId"]:
         return "pushReceiverId"
 
+    @classmethod
     def getClass(self) -> Literal["PushReceiverId"]:
         return "PushReceiverId"
 
@@ -64964,9 +67454,11 @@ class BackgroundFillSolid(TlObject, BackgroundFill):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["backgroundFillSolid"]:
         return "backgroundFillSolid"
 
+    @classmethod
     def getClass(self) -> Literal["BackgroundFill"]:
         return "BackgroundFill"
 
@@ -65010,9 +67502,11 @@ class BackgroundFillGradient(TlObject, BackgroundFill):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["backgroundFillGradient"]:
         return "backgroundFillGradient"
 
+    @classmethod
     def getClass(self) -> Literal["BackgroundFill"]:
         return "BackgroundFill"
 
@@ -65051,9 +67545,11 @@ class BackgroundFillFreeformGradient(TlObject, BackgroundFill):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["backgroundFillFreeformGradient"]:
         return "backgroundFillFreeformGradient"
 
+    @classmethod
     def getClass(self) -> Literal["BackgroundFill"]:
         return "BackgroundFill"
 
@@ -65090,9 +67586,11 @@ class BackgroundTypeWallpaper(TlObject, BackgroundType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["backgroundTypeWallpaper"]:
         return "backgroundTypeWallpaper"
 
+    @classmethod
     def getClass(self) -> Literal["BackgroundType"]:
         return "BackgroundType"
 
@@ -65155,9 +67653,11 @@ class BackgroundTypePattern(TlObject, BackgroundType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["backgroundTypePattern"]:
         return "backgroundTypePattern"
 
+    @classmethod
     def getClass(self) -> Literal["BackgroundType"]:
         return "BackgroundType"
 
@@ -65203,9 +67703,11 @@ class BackgroundTypeFill(TlObject, BackgroundType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["backgroundTypeFill"]:
         return "backgroundTypeFill"
 
+    @classmethod
     def getClass(self) -> Literal["BackgroundType"]:
         return "BackgroundType"
 
@@ -65237,9 +67739,11 @@ class BackgroundTypeChatTheme(TlObject, BackgroundType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["backgroundTypeChatTheme"]:
         return "backgroundTypeChatTheme"
 
+    @classmethod
     def getClass(self) -> Literal["BackgroundType"]:
         return "BackgroundType"
 
@@ -65273,9 +67777,11 @@ class InputBackgroundLocal(TlObject, InputBackground):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputBackgroundLocal"]:
         return "inputBackgroundLocal"
 
+    @classmethod
     def getClass(self) -> Literal["InputBackground"]:
         return "InputBackground"
 
@@ -65307,9 +67813,11 @@ class InputBackgroundRemote(TlObject, InputBackground):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputBackgroundRemote"]:
         return "inputBackgroundRemote"
 
+    @classmethod
     def getClass(self) -> Literal["InputBackground"]:
         return "InputBackground"
 
@@ -65341,9 +67849,11 @@ class InputBackgroundPrevious(TlObject, InputBackground):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputBackgroundPrevious"]:
         return "inputBackgroundPrevious"
 
+    @classmethod
     def getClass(self) -> Literal["InputBackground"]:
         return "InputBackground"
 
@@ -65390,9 +67900,11 @@ class ChatTheme(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatTheme"]:
         return "chatTheme"
 
+    @classmethod
     def getClass(self) -> Literal["ChatTheme"]:
         return "ChatTheme"
 
@@ -65441,9 +67953,11 @@ class TimeZone(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["timeZone"]:
         return "timeZone"
 
+    @classmethod
     def getClass(self) -> Literal["TimeZone"]:
         return "TimeZone"
 
@@ -65482,9 +67996,11 @@ class TimeZones(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["timeZones"]:
         return "timeZones"
 
+    @classmethod
     def getClass(self) -> Literal["TimeZones"]:
         return "TimeZones"
 
@@ -65516,9 +68032,11 @@ class Hashtags(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["hashtags"]:
         return "hashtags"
 
+    @classmethod
     def getClass(self) -> Literal["Hashtags"]:
         return "Hashtags"
 
@@ -65550,9 +68068,11 @@ class CanPostStoryResultOk(TlObject, CanPostStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canPostStoryResultOk"]:
         return "canPostStoryResultOk"
 
+    @classmethod
     def getClass(self) -> Literal["CanPostStoryResult"]:
         return "CanPostStoryResult"
 
@@ -65577,9 +68097,11 @@ class CanPostStoryResultPremiumNeeded(TlObject, CanPostStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canPostStoryResultPremiumNeeded"]:
         return "canPostStoryResultPremiumNeeded"
 
+    @classmethod
     def getClass(self) -> Literal["CanPostStoryResult"]:
         return "CanPostStoryResult"
 
@@ -65603,9 +68125,11 @@ class CanPostStoryResultBoostNeeded(TlObject, CanPostStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canPostStoryResultBoostNeeded"]:
         return "canPostStoryResultBoostNeeded"
 
+    @classmethod
     def getClass(self) -> Literal["CanPostStoryResult"]:
         return "CanPostStoryResult"
 
@@ -65629,9 +68153,11 @@ class CanPostStoryResultActiveStoryLimitExceeded(TlObject, CanPostStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canPostStoryResultActiveStoryLimitExceeded"]:
         return "canPostStoryResultActiveStoryLimitExceeded"
 
+    @classmethod
     def getClass(self) -> Literal["CanPostStoryResult"]:
         return "CanPostStoryResult"
 
@@ -65664,9 +68190,11 @@ class CanPostStoryResultWeeklyLimitExceeded(TlObject, CanPostStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canPostStoryResultWeeklyLimitExceeded"]:
         return "canPostStoryResultWeeklyLimitExceeded"
 
+    @classmethod
     def getClass(self) -> Literal["CanPostStoryResult"]:
         return "CanPostStoryResult"
 
@@ -65700,9 +68228,11 @@ class CanPostStoryResultMonthlyLimitExceeded(TlObject, CanPostStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canPostStoryResultMonthlyLimitExceeded"]:
         return "canPostStoryResultMonthlyLimitExceeded"
 
+    @classmethod
     def getClass(self) -> Literal["CanPostStoryResult"]:
         return "CanPostStoryResult"
 
@@ -65729,9 +68259,11 @@ class CanTransferOwnershipResultOk(TlObject, CanTransferOwnershipResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canTransferOwnershipResultOk"]:
         return "canTransferOwnershipResultOk"
 
+    @classmethod
     def getClass(self) -> Literal["CanTransferOwnershipResult"]:
         return "CanTransferOwnershipResult"
 
@@ -65755,9 +68287,11 @@ class CanTransferOwnershipResultPasswordNeeded(TlObject, CanTransferOwnershipRes
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canTransferOwnershipResultPasswordNeeded"]:
         return "canTransferOwnershipResultPasswordNeeded"
 
+    @classmethod
     def getClass(self) -> Literal["CanTransferOwnershipResult"]:
         return "CanTransferOwnershipResult"
 
@@ -65790,9 +68324,11 @@ class CanTransferOwnershipResultPasswordTooFresh(TlObject, CanTransferOwnershipR
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canTransferOwnershipResultPasswordTooFresh"]:
         return "canTransferOwnershipResultPasswordTooFresh"
 
+    @classmethod
     def getClass(self) -> Literal["CanTransferOwnershipResult"]:
         return "CanTransferOwnershipResult"
 
@@ -65826,9 +68362,11 @@ class CanTransferOwnershipResultSessionTooFresh(TlObject, CanTransferOwnershipRe
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canTransferOwnershipResultSessionTooFresh"]:
         return "canTransferOwnershipResultSessionTooFresh"
 
+    @classmethod
     def getClass(self) -> Literal["CanTransferOwnershipResult"]:
         return "CanTransferOwnershipResult"
 
@@ -65855,9 +68393,11 @@ class CheckChatUsernameResultOk(TlObject, CheckChatUsernameResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checkChatUsernameResultOk"]:
         return "checkChatUsernameResultOk"
 
+    @classmethod
     def getClass(self) -> Literal["CheckChatUsernameResult"]:
         return "CheckChatUsernameResult"
 
@@ -65881,9 +68421,11 @@ class CheckChatUsernameResultUsernameInvalid(TlObject, CheckChatUsernameResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checkChatUsernameResultUsernameInvalid"]:
         return "checkChatUsernameResultUsernameInvalid"
 
+    @classmethod
     def getClass(self) -> Literal["CheckChatUsernameResult"]:
         return "CheckChatUsernameResult"
 
@@ -65909,9 +68451,11 @@ class CheckChatUsernameResultUsernameOccupied(TlObject, CheckChatUsernameResult)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checkChatUsernameResultUsernameOccupied"]:
         return "checkChatUsernameResultUsernameOccupied"
 
+    @classmethod
     def getClass(self) -> Literal["CheckChatUsernameResult"]:
         return "CheckChatUsernameResult"
 
@@ -65937,9 +68481,11 @@ class CheckChatUsernameResultUsernamePurchasable(TlObject, CheckChatUsernameResu
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checkChatUsernameResultUsernamePurchasable"]:
         return "checkChatUsernameResultUsernamePurchasable"
 
+    @classmethod
     def getClass(self) -> Literal["CheckChatUsernameResult"]:
         return "CheckChatUsernameResult"
 
@@ -65965,9 +68511,11 @@ class CheckChatUsernameResultPublicChatsTooMany(TlObject, CheckChatUsernameResul
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checkChatUsernameResultPublicChatsTooMany"]:
         return "checkChatUsernameResultPublicChatsTooMany"
 
+    @classmethod
     def getClass(self) -> Literal["CheckChatUsernameResult"]:
         return "CheckChatUsernameResult"
 
@@ -65993,9 +68541,11 @@ class CheckChatUsernameResultPublicGroupsUnavailable(TlObject, CheckChatUsername
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checkChatUsernameResultPublicGroupsUnavailable"]:
         return "checkChatUsernameResultPublicGroupsUnavailable"
 
+    @classmethod
     def getClass(self) -> Literal["CheckChatUsernameResult"]:
         return "CheckChatUsernameResult"
 
@@ -66021,9 +68571,11 @@ class CheckStickerSetNameResultOk(TlObject, CheckStickerSetNameResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checkStickerSetNameResultOk"]:
         return "checkStickerSetNameResultOk"
 
+    @classmethod
     def getClass(self) -> Literal["CheckStickerSetNameResult"]:
         return "CheckStickerSetNameResult"
 
@@ -66047,9 +68599,11 @@ class CheckStickerSetNameResultNameInvalid(TlObject, CheckStickerSetNameResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checkStickerSetNameResultNameInvalid"]:
         return "checkStickerSetNameResultNameInvalid"
 
+    @classmethod
     def getClass(self) -> Literal["CheckStickerSetNameResult"]:
         return "CheckStickerSetNameResult"
 
@@ -66075,9 +68629,11 @@ class CheckStickerSetNameResultNameOccupied(TlObject, CheckStickerSetNameResult)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["checkStickerSetNameResultNameOccupied"]:
         return "checkStickerSetNameResultNameOccupied"
 
+    @classmethod
     def getClass(self) -> Literal["CheckStickerSetNameResult"]:
         return "CheckStickerSetNameResult"
 
@@ -66103,9 +68659,11 @@ class ResetPasswordResultOk(TlObject, ResetPasswordResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["resetPasswordResultOk"]:
         return "resetPasswordResultOk"
 
+    @classmethod
     def getClass(self) -> Literal["ResetPasswordResult"]:
         return "ResetPasswordResult"
 
@@ -66136,9 +68694,11 @@ class ResetPasswordResultPending(TlObject, ResetPasswordResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["resetPasswordResultPending"]:
         return "resetPasswordResultPending"
 
+    @classmethod
     def getClass(self) -> Literal["ResetPasswordResult"]:
         return "ResetPasswordResult"
 
@@ -66170,9 +68730,11 @@ class ResetPasswordResultDeclined(TlObject, ResetPasswordResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["resetPasswordResultDeclined"]:
         return "resetPasswordResultDeclined"
 
+    @classmethod
     def getClass(self) -> Literal["ResetPasswordResult"]:
         return "ResetPasswordResult"
 
@@ -66204,9 +68766,11 @@ class MessageFileTypePrivate(TlObject, MessageFileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageFileTypePrivate"]:
         return "messageFileTypePrivate"
 
+    @classmethod
     def getClass(self) -> Literal["MessageFileType"]:
         return "MessageFileType"
 
@@ -66238,9 +68802,11 @@ class MessageFileTypeGroup(TlObject, MessageFileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageFileTypeGroup"]:
         return "messageFileTypeGroup"
 
+    @classmethod
     def getClass(self) -> Literal["MessageFileType"]:
         return "MessageFileType"
 
@@ -66265,9 +68831,11 @@ class MessageFileTypeUnknown(TlObject, MessageFileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageFileTypeUnknown"]:
         return "messageFileTypeUnknown"
 
+    @classmethod
     def getClass(self) -> Literal["MessageFileType"]:
         return "MessageFileType"
 
@@ -66298,9 +68866,11 @@ class PushMessageContentHidden(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentHidden"]:
         return "pushMessageContentHidden"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66344,9 +68914,11 @@ class PushMessageContentAnimation(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentAnimation"]:
         return "pushMessageContentAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66390,9 +68962,11 @@ class PushMessageContentAudio(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentAudio"]:
         return "pushMessageContentAudio"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66434,9 +69008,11 @@ class PushMessageContentContact(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentContact"]:
         return "pushMessageContentContact"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66462,9 +69038,11 @@ class PushMessageContentContactRegistered(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentContactRegistered"]:
         return "pushMessageContentContactRegistered"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66502,9 +69080,11 @@ class PushMessageContentDocument(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentDocument"]:
         return "pushMessageContentDocument"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66546,9 +69126,11 @@ class PushMessageContentGame(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentGame"]:
         return "pushMessageContentGame"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66597,9 +69179,11 @@ class PushMessageContentGameScore(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentGameScore"]:
         return "pushMessageContentGameScore"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66643,9 +69227,11 @@ class PushMessageContentInvoice(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentInvoice"]:
         return "pushMessageContentInvoice"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66687,9 +69273,11 @@ class PushMessageContentLocation(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentLocation"]:
         return "pushMessageContentLocation"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66731,9 +69319,11 @@ class PushMessageContentPaidMedia(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentPaidMedia"]:
         return "pushMessageContentPaidMedia"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66791,9 +69381,11 @@ class PushMessageContentPhoto(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentPhoto"]:
         return "pushMessageContentPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66846,9 +69438,11 @@ class PushMessageContentPoll(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentPoll"]:
         return "pushMessageContentPoll"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66887,9 +69481,11 @@ class PushMessageContentPremiumGiftCode(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentPremiumGiftCode"]:
         return "pushMessageContentPremiumGiftCode"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66936,9 +69532,11 @@ class PushMessageContentGiveaway(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentGiveaway"]:
         return "pushMessageContentGiveaway"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -66977,9 +69575,11 @@ class PushMessageContentGift(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentGift"]:
         return "pushMessageContentGift"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67011,9 +69611,11 @@ class PushMessageContentUpgradedGift(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentUpgradedGift"]:
         return "pushMessageContentUpgradedGift"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67038,9 +69640,11 @@ class PushMessageContentScreenshotTaken(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentScreenshotTaken"]:
         return "pushMessageContentScreenshotTaken"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67083,9 +69687,11 @@ class PushMessageContentSticker(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentSticker"]:
         return "pushMessageContentSticker"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67129,9 +69735,11 @@ class PushMessageContentStory(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentStory"]:
         return "pushMessageContentStory"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67173,9 +69781,11 @@ class PushMessageContentText(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentText"]:
         return "pushMessageContentText"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67213,9 +69823,11 @@ class PushMessageContentChecklist(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChecklist"]:
         return "pushMessageContentChecklist"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67273,9 +69885,11 @@ class PushMessageContentVideo(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentVideo"]:
         return "pushMessageContentVideo"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67321,9 +69935,11 @@ class PushMessageContentVideoNote(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentVideoNote"]:
         return "pushMessageContentVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67365,9 +69981,11 @@ class PushMessageContentVoiceNote(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentVoiceNote"]:
         return "pushMessageContentVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67397,9 +70015,11 @@ class PushMessageContentBasicGroupChatCreate(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentBasicGroupChatCreate"]:
         return "pushMessageContentBasicGroupChatCreate"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67425,9 +70045,11 @@ class PushMessageContentVideoChatStarted(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentVideoChatStarted"]:
         return "pushMessageContentVideoChatStarted"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67451,9 +70073,11 @@ class PushMessageContentVideoChatEnded(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentVideoChatEnded"]:
         return "pushMessageContentVideoChatEnded"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67484,9 +70108,11 @@ class PushMessageContentInviteVideoChatParticipants(TlObject, PushMessageContent
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentInviteVideoChatParticipants"]:
         return "pushMessageContentInviteVideoChatParticipants"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67535,9 +70161,11 @@ class PushMessageContentChatAddMembers(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChatAddMembers"]:
         return "pushMessageContentChatAddMembers"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67569,9 +70197,11 @@ class PushMessageContentChatChangePhoto(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChatChangePhoto"]:
         return "pushMessageContentChatChangePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67602,9 +70232,11 @@ class PushMessageContentChatChangeTitle(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChatChangeTitle"]:
         return "pushMessageContentChatChangeTitle"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67636,9 +70268,11 @@ class PushMessageContentChatSetBackground(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChatSetBackground"]:
         return "pushMessageContentChatSetBackground"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67672,9 +70306,11 @@ class PushMessageContentChatSetTheme(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChatSetTheme"]:
         return "pushMessageContentChatSetTheme"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67721,9 +70357,11 @@ class PushMessageContentChatDeleteMember(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChatDeleteMember"]:
         return "pushMessageContentChatDeleteMember"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67755,9 +70393,11 @@ class PushMessageContentChatJoinByLink(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChatJoinByLink"]:
         return "pushMessageContentChatJoinByLink"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67781,9 +70421,11 @@ class PushMessageContentChatJoinByRequest(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChatJoinByRequest"]:
         return "pushMessageContentChatJoinByRequest"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67816,9 +70458,11 @@ class PushMessageContentRecurringPayment(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentRecurringPayment"]:
         return "pushMessageContentRecurringPayment"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67843,9 +70487,11 @@ class PushMessageContentSuggestProfilePhoto(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentSuggestProfilePhoto"]:
         return "pushMessageContentSuggestProfilePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67878,9 +70524,11 @@ class PushMessageContentProximityAlertTriggered(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentProximityAlertTriggered"]:
         return "pushMessageContentProximityAlertTriggered"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67914,9 +70562,11 @@ class PushMessageContentChecklistTasksAdded(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChecklistTasksAdded"]:
         return "pushMessageContentChecklistTasksAdded"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67950,9 +70600,11 @@ class PushMessageContentChecklistTasksDone(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentChecklistTasksDone"]:
         return "pushMessageContentChecklistTasksDone"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -67986,9 +70638,11 @@ class PushMessageContentMessageForwards(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentMessageForwards"]:
         return "pushMessageContentMessageForwards"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -68047,9 +70701,11 @@ class PushMessageContentMediaAlbum(TlObject, PushMessageContent):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["pushMessageContentMediaAlbum"]:
         return "pushMessageContentMediaAlbum"
 
+    @classmethod
     def getClass(self) -> Literal["PushMessageContent"]:
         return "PushMessageContent"
 
@@ -68097,9 +70753,11 @@ class NotificationTypeNewMessage(TlObject, NotificationType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationTypeNewMessage"]:
         return "notificationTypeNewMessage"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationType"]:
         return "NotificationType"
 
@@ -68129,9 +70787,11 @@ class NotificationTypeNewSecretChat(TlObject, NotificationType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationTypeNewSecretChat"]:
         return "notificationTypeNewSecretChat"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationType"]:
         return "NotificationType"
 
@@ -68162,9 +70822,11 @@ class NotificationTypeNewCall(TlObject, NotificationType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationTypeNewCall"]:
         return "notificationTypeNewCall"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationType"]:
         return "NotificationType"
 
@@ -68269,9 +70931,11 @@ class NotificationTypeNewPushMessage(TlObject, NotificationType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationTypeNewPushMessage"]:
         return "notificationTypeNewPushMessage"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationType"]:
         return "NotificationType"
 
@@ -68307,9 +70971,11 @@ class NotificationGroupTypeMessages(TlObject, NotificationGroupType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationGroupTypeMessages"]:
         return "notificationGroupTypeMessages"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationGroupType"]:
         return "NotificationGroupType"
 
@@ -68333,9 +70999,11 @@ class NotificationGroupTypeMentions(TlObject, NotificationGroupType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationGroupTypeMentions"]:
         return "notificationGroupTypeMentions"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationGroupType"]:
         return "NotificationGroupType"
 
@@ -68359,9 +71027,11 @@ class NotificationGroupTypeSecretChat(TlObject, NotificationGroupType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationGroupTypeSecretChat"]:
         return "notificationGroupTypeSecretChat"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationGroupType"]:
         return "NotificationGroupType"
 
@@ -68385,9 +71055,11 @@ class NotificationGroupTypeCalls(TlObject, NotificationGroupType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationGroupTypeCalls"]:
         return "notificationGroupTypeCalls"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationGroupType"]:
         return "NotificationGroupType"
 
@@ -68451,9 +71123,11 @@ class NotificationSound(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationSound"]:
         return "notificationSound"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationSound"]:
         return "NotificationSound"
 
@@ -68498,9 +71172,11 @@ class NotificationSounds(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationSounds"]:
         return "notificationSounds"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationSounds"]:
         return "NotificationSounds"
 
@@ -68562,9 +71238,11 @@ class Notification(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notification"]:
         return "notification"
 
+    @classmethod
     def getClass(self) -> Literal["Notification"]:
         return "Notification"
 
@@ -68638,9 +71316,11 @@ class NotificationGroup(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["notificationGroup"]:
         return "notificationGroup"
 
+    @classmethod
     def getClass(self) -> Literal["NotificationGroup"]:
         return "NotificationGroup"
 
@@ -68683,9 +71363,11 @@ class OptionValueBoolean(TlObject, OptionValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["optionValueBoolean"]:
         return "optionValueBoolean"
 
+    @classmethod
     def getClass(self) -> Literal["OptionValue"]:
         return "OptionValue"
 
@@ -68710,9 +71392,11 @@ class OptionValueEmpty(TlObject, OptionValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["optionValueEmpty"]:
         return "optionValueEmpty"
 
+    @classmethod
     def getClass(self) -> Literal["OptionValue"]:
         return "OptionValue"
 
@@ -68743,9 +71427,11 @@ class OptionValueInteger(TlObject, OptionValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["optionValueInteger"]:
         return "optionValueInteger"
 
+    @classmethod
     def getClass(self) -> Literal["OptionValue"]:
         return "OptionValue"
 
@@ -68777,9 +71463,11 @@ class OptionValueString(TlObject, OptionValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["optionValueString"]:
         return "optionValueString"
 
+    @classmethod
     def getClass(self) -> Literal["OptionValue"]:
         return "OptionValue"
 
@@ -68824,9 +71512,11 @@ class JsonObjectMember(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["jsonObjectMember"]:
         return "jsonObjectMember"
 
+    @classmethod
     def getClass(self) -> Literal["JsonObjectMember"]:
         return "JsonObjectMember"
 
@@ -68852,9 +71542,11 @@ class JsonValueNull(TlObject, JsonValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["jsonValueNull"]:
         return "jsonValueNull"
 
+    @classmethod
     def getClass(self) -> Literal["JsonValue"]:
         return "JsonValue"
 
@@ -68885,9 +71577,11 @@ class JsonValueBoolean(TlObject, JsonValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["jsonValueBoolean"]:
         return "jsonValueBoolean"
 
+    @classmethod
     def getClass(self) -> Literal["JsonValue"]:
         return "JsonValue"
 
@@ -68919,9 +71613,11 @@ class JsonValueNumber(TlObject, JsonValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["jsonValueNumber"]:
         return "jsonValueNumber"
 
+    @classmethod
     def getClass(self) -> Literal["JsonValue"]:
         return "JsonValue"
 
@@ -68953,9 +71649,11 @@ class JsonValueString(TlObject, JsonValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["jsonValueString"]:
         return "jsonValueString"
 
+    @classmethod
     def getClass(self) -> Literal["JsonValue"]:
         return "JsonValue"
 
@@ -68987,9 +71685,11 @@ class JsonValueArray(TlObject, JsonValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["jsonValueArray"]:
         return "jsonValueArray"
 
+    @classmethod
     def getClass(self) -> Literal["JsonValue"]:
         return "JsonValue"
 
@@ -69021,9 +71721,11 @@ class JsonValueObject(TlObject, JsonValue):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["jsonValueObject"]:
         return "jsonValueObject"
 
+    @classmethod
     def getClass(self) -> Literal["JsonValue"]:
         return "JsonValue"
 
@@ -69055,9 +71757,11 @@ class StoryPrivacySettingsEveryone(TlObject, StoryPrivacySettings):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyPrivacySettingsEveryone"]:
         return "storyPrivacySettingsEveryone"
 
+    @classmethod
     def getClass(self) -> Literal["StoryPrivacySettings"]:
         return "StoryPrivacySettings"
 
@@ -69089,9 +71793,11 @@ class StoryPrivacySettingsContacts(TlObject, StoryPrivacySettings):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyPrivacySettingsContacts"]:
         return "storyPrivacySettingsContacts"
 
+    @classmethod
     def getClass(self) -> Literal["StoryPrivacySettings"]:
         return "StoryPrivacySettings"
 
@@ -69116,9 +71822,11 @@ class StoryPrivacySettingsCloseFriends(TlObject, StoryPrivacySettings):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyPrivacySettingsCloseFriends"]:
         return "storyPrivacySettingsCloseFriends"
 
+    @classmethod
     def getClass(self) -> Literal["StoryPrivacySettings"]:
         return "StoryPrivacySettings"
 
@@ -69149,9 +71857,11 @@ class StoryPrivacySettingsSelectedUsers(TlObject, StoryPrivacySettings):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyPrivacySettingsSelectedUsers"]:
         return "storyPrivacySettingsSelectedUsers"
 
+    @classmethod
     def getClass(self) -> Literal["StoryPrivacySettings"]:
         return "StoryPrivacySettings"
 
@@ -69176,9 +71886,11 @@ class UserPrivacySettingRuleAllowAll(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleAllowAll"]:
         return "userPrivacySettingRuleAllowAll"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69202,9 +71914,11 @@ class UserPrivacySettingRuleAllowContacts(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleAllowContacts"]:
         return "userPrivacySettingRuleAllowContacts"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69230,9 +71944,11 @@ class UserPrivacySettingRuleAllowBots(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleAllowBots"]:
         return "userPrivacySettingRuleAllowBots"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69256,9 +71972,11 @@ class UserPrivacySettingRuleAllowPremiumUsers(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleAllowPremiumUsers"]:
         return "userPrivacySettingRuleAllowPremiumUsers"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69291,9 +72009,11 @@ class UserPrivacySettingRuleAllowUsers(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleAllowUsers"]:
         return "userPrivacySettingRuleAllowUsers"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69325,9 +72045,11 @@ class UserPrivacySettingRuleAllowChatMembers(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleAllowChatMembers"]:
         return "userPrivacySettingRuleAllowChatMembers"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69354,9 +72076,11 @@ class UserPrivacySettingRuleRestrictAll(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleRestrictAll"]:
         return "userPrivacySettingRuleRestrictAll"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69380,9 +72104,11 @@ class UserPrivacySettingRuleRestrictContacts(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleRestrictContacts"]:
         return "userPrivacySettingRuleRestrictContacts"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69408,9 +72134,11 @@ class UserPrivacySettingRuleRestrictBots(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleRestrictBots"]:
         return "userPrivacySettingRuleRestrictBots"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69441,9 +72169,11 @@ class UserPrivacySettingRuleRestrictUsers(TlObject, UserPrivacySettingRule):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleRestrictUsers"]:
         return "userPrivacySettingRuleRestrictUsers"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69477,9 +72207,11 @@ class UserPrivacySettingRuleRestrictChatMembers(TlObject, UserPrivacySettingRule
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRuleRestrictChatMembers"]:
         return "userPrivacySettingRuleRestrictChatMembers"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRule"]:
         return "UserPrivacySettingRule"
 
@@ -69513,9 +72245,11 @@ class UserPrivacySettingRules(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingRules"]:
         return "userPrivacySettingRules"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySettingRules"]:
         return "UserPrivacySettingRules"
 
@@ -69540,9 +72274,11 @@ class UserPrivacySettingShowStatus(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingShowStatus"]:
         return "userPrivacySettingShowStatus"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69566,9 +72302,11 @@ class UserPrivacySettingShowProfilePhoto(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingShowProfilePhoto"]:
         return "userPrivacySettingShowProfilePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69592,9 +72330,11 @@ class UserPrivacySettingShowLinkInForwardedMessages(TlObject, UserPrivacySetting
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingShowLinkInForwardedMessages"]:
         return "userPrivacySettingShowLinkInForwardedMessages"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69620,9 +72360,11 @@ class UserPrivacySettingShowPhoneNumber(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingShowPhoneNumber"]:
         return "userPrivacySettingShowPhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69646,9 +72388,11 @@ class UserPrivacySettingShowBio(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingShowBio"]:
         return "userPrivacySettingShowBio"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69672,9 +72416,11 @@ class UserPrivacySettingShowBirthdate(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingShowBirthdate"]:
         return "userPrivacySettingShowBirthdate"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69698,9 +72444,11 @@ class UserPrivacySettingAllowChatInvites(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingAllowChatInvites"]:
         return "userPrivacySettingAllowChatInvites"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69724,9 +72472,11 @@ class UserPrivacySettingAllowCalls(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingAllowCalls"]:
         return "userPrivacySettingAllowCalls"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69750,9 +72500,11 @@ class UserPrivacySettingAllowPeerToPeerCalls(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingAllowPeerToPeerCalls"]:
         return "userPrivacySettingAllowPeerToPeerCalls"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69778,9 +72530,11 @@ class UserPrivacySettingAllowFindingByPhoneNumber(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingAllowFindingByPhoneNumber"]:
         return "userPrivacySettingAllowFindingByPhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69808,11 +72562,13 @@ class UserPrivacySettingAllowPrivateVoiceAndVideoNoteMessages(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(
         self,
     ) -> Literal["userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages"]:
         return "userPrivacySettingAllowPrivateVoiceAndVideoNoteMessages"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69838,9 +72594,11 @@ class UserPrivacySettingAutosaveGifts(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingAutosaveGifts"]:
         return "userPrivacySettingAutosaveGifts"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69864,9 +72622,11 @@ class UserPrivacySettingAllowUnpaidMessages(TlObject, UserPrivacySetting):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userPrivacySettingAllowUnpaidMessages"]:
         return "userPrivacySettingAllowUnpaidMessages"
 
+    @classmethod
     def getClass(self) -> Literal["UserPrivacySetting"]:
         return "UserPrivacySetting"
 
@@ -69899,9 +72659,11 @@ class ReadDatePrivacySettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["readDatePrivacySettings"]:
         return "readDatePrivacySettings"
 
+    @classmethod
     def getClass(self) -> Literal["ReadDatePrivacySettings"]:
         return "ReadDatePrivacySettings"
 
@@ -69946,9 +72708,11 @@ class NewChatPrivacySettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["newChatPrivacySettings"]:
         return "newChatPrivacySettings"
 
+    @classmethod
     def getClass(self) -> Literal["NewChatPrivacySettings"]:
         return "NewChatPrivacySettings"
 
@@ -69982,9 +72746,11 @@ class CanSendMessageToUserResultOk(TlObject, CanSendMessageToUserResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canSendMessageToUserResultOk"]:
         return "canSendMessageToUserResultOk"
 
+    @classmethod
     def getClass(self) -> Literal["CanSendMessageToUserResult"]:
         return "CanSendMessageToUserResult"
 
@@ -70019,9 +72785,11 @@ class CanSendMessageToUserResultUserHasPaidMessages(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canSendMessageToUserResultUserHasPaidMessages"]:
         return "canSendMessageToUserResultUserHasPaidMessages"
 
+    @classmethod
     def getClass(self) -> Literal["CanSendMessageToUserResult"]:
         return "CanSendMessageToUserResult"
 
@@ -70053,9 +72821,11 @@ class CanSendMessageToUserResultUserIsDeleted(TlObject, CanSendMessageToUserResu
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canSendMessageToUserResultUserIsDeleted"]:
         return "canSendMessageToUserResultUserIsDeleted"
 
+    @classmethod
     def getClass(self) -> Literal["CanSendMessageToUserResult"]:
         return "CanSendMessageToUserResult"
 
@@ -70083,9 +72853,11 @@ class CanSendMessageToUserResultUserRestrictsNewChats(
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["canSendMessageToUserResultUserRestrictsNewChats"]:
         return "canSendMessageToUserResultUserRestrictsNewChats"
 
+    @classmethod
     def getClass(self) -> Literal["CanSendMessageToUserResult"]:
         return "CanSendMessageToUserResult"
 
@@ -70118,9 +72890,11 @@ class AccountTtl(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["accountTtl"]:
         return "accountTtl"
 
+    @classmethod
     def getClass(self) -> Literal["AccountTtl"]:
         return "AccountTtl"
 
@@ -70152,9 +72926,11 @@ class MessageAutoDeleteTime(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageAutoDeleteTime"]:
         return "messageAutoDeleteTime"
 
+    @classmethod
     def getClass(self) -> Literal["MessageAutoDeleteTime"]:
         return "MessageAutoDeleteTime"
 
@@ -70179,9 +72955,11 @@ class SessionTypeAndroid(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeAndroid"]:
         return "sessionTypeAndroid"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70205,9 +72983,11 @@ class SessionTypeApple(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeApple"]:
         return "sessionTypeApple"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70231,9 +73011,11 @@ class SessionTypeBrave(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeBrave"]:
         return "sessionTypeBrave"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70257,9 +73039,11 @@ class SessionTypeChrome(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeChrome"]:
         return "sessionTypeChrome"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70283,9 +73067,11 @@ class SessionTypeEdge(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeEdge"]:
         return "sessionTypeEdge"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70309,9 +73095,11 @@ class SessionTypeFirefox(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeFirefox"]:
         return "sessionTypeFirefox"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70335,9 +73123,11 @@ class SessionTypeIpad(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeIpad"]:
         return "sessionTypeIpad"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70361,9 +73151,11 @@ class SessionTypeIphone(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeIphone"]:
         return "sessionTypeIphone"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70387,9 +73179,11 @@ class SessionTypeLinux(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeLinux"]:
         return "sessionTypeLinux"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70413,9 +73207,11 @@ class SessionTypeMac(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeMac"]:
         return "sessionTypeMac"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70439,9 +73235,11 @@ class SessionTypeOpera(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeOpera"]:
         return "sessionTypeOpera"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70465,9 +73263,11 @@ class SessionTypeSafari(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeSafari"]:
         return "sessionTypeSafari"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70491,9 +73291,11 @@ class SessionTypeUbuntu(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeUbuntu"]:
         return "sessionTypeUbuntu"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70517,9 +73319,11 @@ class SessionTypeUnknown(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeUnknown"]:
         return "sessionTypeUnknown"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70543,9 +73347,11 @@ class SessionTypeVivaldi(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeVivaldi"]:
         return "sessionTypeVivaldi"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70569,9 +73375,11 @@ class SessionTypeWindows(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeWindows"]:
         return "sessionTypeWindows"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70595,9 +73403,11 @@ class SessionTypeXbox(TlObject, SessionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessionTypeXbox"]:
         return "sessionTypeXbox"
 
+    @classmethod
     def getClass(self) -> Literal["SessionType"]:
         return "SessionType"
 
@@ -70752,9 +73562,11 @@ class Session(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["session"]:
         return "session"
 
+    @classmethod
     def getClass(self) -> Literal["Session"]:
         return "Session"
 
@@ -70834,9 +73646,11 @@ class Sessions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["sessions"]:
         return "sessions"
 
+    @classmethod
     def getClass(self) -> Literal["Sessions"]:
         return "Sessions"
 
@@ -70896,9 +73710,11 @@ class UnconfirmedSession(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["unconfirmedSession"]:
         return "unconfirmedSession"
 
+    @classmethod
     def getClass(self) -> Literal["UnconfirmedSession"]:
         return "UnconfirmedSession"
 
@@ -70990,9 +73806,11 @@ class ConnectedWebsite(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["connectedWebsite"]:
         return "connectedWebsite"
 
+    @classmethod
     def getClass(self) -> Literal["ConnectedWebsite"]:
         return "ConnectedWebsite"
 
@@ -71043,9 +73861,11 @@ class ConnectedWebsites(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["connectedWebsites"]:
         return "connectedWebsites"
 
+    @classmethod
     def getClass(self) -> Literal["ConnectedWebsites"]:
         return "ConnectedWebsites"
 
@@ -71070,9 +73890,11 @@ class ReportReasonSpam(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonSpam"]:
         return "reportReasonSpam"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71096,9 +73918,11 @@ class ReportReasonViolence(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonViolence"]:
         return "reportReasonViolence"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71122,9 +73946,11 @@ class ReportReasonPornography(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonPornography"]:
         return "reportReasonPornography"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71148,9 +73974,11 @@ class ReportReasonChildAbuse(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonChildAbuse"]:
         return "reportReasonChildAbuse"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71174,9 +74002,11 @@ class ReportReasonCopyright(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonCopyright"]:
         return "reportReasonCopyright"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71200,9 +74030,11 @@ class ReportReasonUnrelatedLocation(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonUnrelatedLocation"]:
         return "reportReasonUnrelatedLocation"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71226,9 +74058,11 @@ class ReportReasonFake(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonFake"]:
         return "reportReasonFake"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71252,9 +74086,11 @@ class ReportReasonIllegalDrugs(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonIllegalDrugs"]:
         return "reportReasonIllegalDrugs"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71278,9 +74114,11 @@ class ReportReasonPersonalDetails(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonPersonalDetails"]:
         return "reportReasonPersonalDetails"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71304,9 +74142,11 @@ class ReportReasonCustom(TlObject, ReportReason):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportReasonCustom"]:
         return "reportReasonCustom"
 
+    @classmethod
     def getClass(self) -> Literal["ReportReason"]:
         return "ReportReason"
 
@@ -71330,9 +74170,11 @@ class ReportChatResultOk(TlObject, ReportChatResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportChatResultOk"]:
         return "reportChatResultOk"
 
+    @classmethod
     def getClass(self) -> Literal["ReportChatResult"]:
         return "ReportChatResult"
 
@@ -71368,9 +74210,11 @@ class ReportChatResultOptionRequired(TlObject, ReportChatResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportChatResultOptionRequired"]:
         return "reportChatResultOptionRequired"
 
+    @classmethod
     def getClass(self) -> Literal["ReportChatResult"]:
         return "ReportChatResult"
 
@@ -71408,9 +74252,11 @@ class ReportChatResultTextRequired(TlObject, ReportChatResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportChatResultTextRequired"]:
         return "reportChatResultTextRequired"
 
+    @classmethod
     def getClass(self) -> Literal["ReportChatResult"]:
         return "ReportChatResult"
 
@@ -71440,9 +74286,11 @@ class ReportChatResultMessagesRequired(TlObject, ReportChatResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportChatResultMessagesRequired"]:
         return "reportChatResultMessagesRequired"
 
+    @classmethod
     def getClass(self) -> Literal["ReportChatResult"]:
         return "ReportChatResult"
 
@@ -71466,9 +74314,11 @@ class ReportStoryResultOk(TlObject, ReportStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportStoryResultOk"]:
         return "reportStoryResultOk"
 
+    @classmethod
     def getClass(self) -> Literal["ReportStoryResult"]:
         return "ReportStoryResult"
 
@@ -71504,9 +74354,11 @@ class ReportStoryResultOptionRequired(TlObject, ReportStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportStoryResultOptionRequired"]:
         return "reportStoryResultOptionRequired"
 
+    @classmethod
     def getClass(self) -> Literal["ReportStoryResult"]:
         return "ReportStoryResult"
 
@@ -71544,9 +74396,11 @@ class ReportStoryResultTextRequired(TlObject, ReportStoryResult):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["reportStoryResultTextRequired"]:
         return "reportStoryResultTextRequired"
 
+    @classmethod
     def getClass(self) -> Literal["ReportStoryResult"]:
         return "ReportStoryResult"
 
@@ -71576,9 +74430,11 @@ class InternalLinkTypeActiveSessions(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeActiveSessions"]:
         return "internalLinkTypeActiveSessions"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -71623,9 +74479,11 @@ class InternalLinkTypeAttachmentMenuBot(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeAttachmentMenuBot"]:
         return "internalLinkTypeAttachmentMenuBot"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -71664,9 +74522,11 @@ class InternalLinkTypeAuthenticationCode(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeAuthenticationCode"]:
         return "internalLinkTypeAuthenticationCode"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -71698,9 +74558,11 @@ class InternalLinkTypeBackground(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeBackground"]:
         return "internalLinkTypeBackground"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -71743,9 +74605,11 @@ class InternalLinkTypeBotAddToChannel(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeBotAddToChannel"]:
         return "internalLinkTypeBotAddToChannel"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -71794,9 +74658,11 @@ class InternalLinkTypeBotStart(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeBotStart"]:
         return "internalLinkTypeBotStart"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -71852,9 +74718,11 @@ class InternalLinkTypeBotStartInGroup(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeBotStartInGroup"]:
         return "internalLinkTypeBotStartInGroup"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -71893,9 +74761,11 @@ class InternalLinkTypeBusinessChat(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeBusinessChat"]:
         return "internalLinkTypeBusinessChat"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -71932,9 +74802,11 @@ class InternalLinkTypeBuyStars(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeBuyStars"]:
         return "internalLinkTypeBuyStars"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -71964,9 +74836,11 @@ class InternalLinkTypeChangePhoneNumber(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeChangePhoneNumber"]:
         return "internalLinkTypeChangePhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72002,9 +74876,11 @@ class InternalLinkTypeChatAffiliateProgram(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeChatAffiliateProgram"]:
         return "internalLinkTypeChatAffiliateProgram"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72043,9 +74919,11 @@ class InternalLinkTypeChatBoost(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeChatBoost"]:
         return "internalLinkTypeChatBoost"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72077,9 +74955,11 @@ class InternalLinkTypeChatFolderInvite(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeChatFolderInvite"]:
         return "internalLinkTypeChatFolderInvite"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72104,9 +74984,11 @@ class InternalLinkTypeChatFolderSettings(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeChatFolderSettings"]:
         return "internalLinkTypeChatFolderSettings"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72137,9 +75019,11 @@ class InternalLinkTypeChatInvite(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeChatInvite"]:
         return "internalLinkTypeChatInvite"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72164,11 +75048,13 @@ class InternalLinkTypeDefaultMessageAutoDeleteTimerSettings(TlObject, InternalLi
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(
         self,
     ) -> Literal["internalLinkTypeDefaultMessageAutoDeleteTimerSettings"]:
         return "internalLinkTypeDefaultMessageAutoDeleteTimerSettings"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72194,9 +75080,11 @@ class InternalLinkTypeEditProfileSettings(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeEditProfileSettings"]:
         return "internalLinkTypeEditProfileSettings"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72234,9 +75122,11 @@ class InternalLinkTypeGame(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeGame"]:
         return "internalLinkTypeGame"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72273,9 +75163,11 @@ class InternalLinkTypeGroupCall(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeGroupCall"]:
         return "internalLinkTypeGroupCall"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72312,9 +75204,11 @@ class InternalLinkTypeInstantView(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeInstantView"]:
         return "internalLinkTypeInstantView"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72351,9 +75245,11 @@ class InternalLinkTypeInvoice(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeInvoice"]:
         return "internalLinkTypeInvoice"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72385,9 +75281,11 @@ class InternalLinkTypeLanguagePack(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeLanguagePack"]:
         return "internalLinkTypeLanguagePack"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72412,9 +75310,11 @@ class InternalLinkTypeLanguageSettings(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeLanguageSettings"]:
         return "internalLinkTypeLanguageSettings"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72465,9 +75365,11 @@ class InternalLinkTypeMainWebApp(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeMainWebApp"]:
         return "internalLinkTypeMainWebApp"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72506,9 +75408,11 @@ class InternalLinkTypeMessage(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeMessage"]:
         return "internalLinkTypeMessage"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72545,9 +75449,11 @@ class InternalLinkTypeMessageDraft(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeMessageDraft"]:
         return "internalLinkTypeMessageDraft"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72577,9 +75483,11 @@ class InternalLinkTypeMyStars(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeMyStars"]:
         return "internalLinkTypeMyStars"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72637,9 +75545,11 @@ class InternalLinkTypePassportDataRequest(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypePassportDataRequest"]:
         return "internalLinkTypePassportDataRequest"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72689,9 +75599,11 @@ class InternalLinkTypePhoneNumberConfirmation(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypePhoneNumberConfirmation"]:
         return "internalLinkTypePhoneNumberConfirmation"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72730,9 +75642,11 @@ class InternalLinkTypePremiumFeatures(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypePremiumFeatures"]:
         return "internalLinkTypePremiumFeatures"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72764,9 +75678,11 @@ class InternalLinkTypePremiumGift(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypePremiumGift"]:
         return "internalLinkTypePremiumGift"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72798,9 +75714,11 @@ class InternalLinkTypePremiumGiftCode(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypePremiumGiftCode"]:
         return "internalLinkTypePremiumGiftCode"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72825,9 +75743,11 @@ class InternalLinkTypePrivacyAndSecuritySettings(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypePrivacyAndSecuritySettings"]:
         return "internalLinkTypePrivacyAndSecuritySettings"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72870,9 +75790,11 @@ class InternalLinkTypeProxy(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeProxy"]:
         return "internalLinkTypeProxy"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72923,9 +75845,11 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypePublicChat"]:
         return "internalLinkTypePublicChat"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72957,9 +75881,11 @@ class InternalLinkTypeQrCodeAuthentication(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeQrCodeAuthentication"]:
         return "internalLinkTypeQrCodeAuthentication"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -72985,9 +75911,11 @@ class InternalLinkTypeRestorePurchases(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeRestorePurchases"]:
         return "internalLinkTypeRestorePurchases"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73011,9 +75939,11 @@ class InternalLinkTypeSettings(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeSettings"]:
         return "internalLinkTypeSettings"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73051,9 +75981,11 @@ class InternalLinkTypeStickerSet(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeStickerSet"]:
         return "internalLinkTypeStickerSet"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73095,9 +76027,11 @@ class InternalLinkTypeStory(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeStory"]:
         return "internalLinkTypeStory"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73134,9 +76068,11 @@ class InternalLinkTypeTheme(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeTheme"]:
         return "internalLinkTypeTheme"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73161,9 +76097,11 @@ class InternalLinkTypeThemeSettings(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeThemeSettings"]:
         return "internalLinkTypeThemeSettings"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73194,9 +76132,11 @@ class InternalLinkTypeUnknownDeepLink(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeUnknownDeepLink"]:
         return "internalLinkTypeUnknownDeepLink"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73221,9 +76161,11 @@ class InternalLinkTypeUnsupportedProxy(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeUnsupportedProxy"]:
         return "internalLinkTypeUnsupportedProxy"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73254,9 +76196,11 @@ class InternalLinkTypeUpgradedGift(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeUpgradedGift"]:
         return "internalLinkTypeUpgradedGift"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73300,9 +76244,11 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeUserPhoneNumber"]:
         return "internalLinkTypeUserPhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73341,9 +76287,11 @@ class InternalLinkTypeUserToken(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeUserToken"]:
         return "internalLinkTypeUserToken"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73390,9 +76338,11 @@ class InternalLinkTypeVideoChat(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeVideoChat"]:
         return "internalLinkTypeVideoChat"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73457,9 +76407,11 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["internalLinkTypeWebApp"]:
         return "internalLinkTypeWebApp"
 
+    @classmethod
     def getClass(self) -> Literal["InternalLinkType"]:
         return "InternalLinkType"
 
@@ -73505,9 +76457,11 @@ class MessageLink(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageLink"]:
         return "messageLink"
 
+    @classmethod
     def getClass(self) -> Literal["MessageLink"]:
         return "MessageLink"
 
@@ -73573,9 +76527,11 @@ class MessageLinkInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageLinkInfo"]:
         return "messageLinkInfo"
 
+    @classmethod
     def getClass(self) -> Literal["MessageLinkInfo"]:
         return "MessageLinkInfo"
 
@@ -73625,9 +76581,11 @@ class ChatBoostLink(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostLink"]:
         return "chatBoostLink"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostLink"]:
         return "ChatBoostLink"
 
@@ -73665,9 +76623,11 @@ class ChatBoostLinkInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatBoostLinkInfo"]:
         return "chatBoostLinkInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatBoostLinkInfo"]:
         return "ChatBoostLinkInfo"
 
@@ -73697,9 +76657,11 @@ class BlockListMain(TlObject, BlockList):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["blockListMain"]:
         return "blockListMain"
 
+    @classmethod
     def getClass(self) -> Literal["BlockList"]:
         return "BlockList"
 
@@ -73723,9 +76685,11 @@ class BlockListStories(TlObject, BlockList):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["blockListStories"]:
         return "blockListStories"
 
+    @classmethod
     def getClass(self) -> Literal["BlockList"]:
         return "BlockList"
 
@@ -73749,9 +76713,11 @@ class FileTypeNone(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeNone"]:
         return "fileTypeNone"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -73775,9 +76741,11 @@ class FileTypeAnimation(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeAnimation"]:
         return "fileTypeAnimation"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -73801,9 +76769,11 @@ class FileTypeAudio(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeAudio"]:
         return "fileTypeAudio"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -73827,9 +76797,11 @@ class FileTypeDocument(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeDocument"]:
         return "fileTypeDocument"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -73853,9 +76825,11 @@ class FileTypeNotificationSound(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeNotificationSound"]:
         return "fileTypeNotificationSound"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -73879,9 +76853,11 @@ class FileTypePhoto(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypePhoto"]:
         return "fileTypePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -73905,9 +76881,11 @@ class FileTypePhotoStory(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypePhotoStory"]:
         return "fileTypePhotoStory"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -73931,9 +76909,11 @@ class FileTypeProfilePhoto(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeProfilePhoto"]:
         return "fileTypeProfilePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -73957,9 +76937,11 @@ class FileTypeSecret(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeSecret"]:
         return "fileTypeSecret"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -73983,9 +76965,11 @@ class FileTypeSecretThumbnail(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeSecretThumbnail"]:
         return "fileTypeSecretThumbnail"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74009,9 +76993,11 @@ class FileTypeSecure(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeSecure"]:
         return "fileTypeSecure"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74035,9 +77021,11 @@ class FileTypeSelfDestructingPhoto(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeSelfDestructingPhoto"]:
         return "fileTypeSelfDestructingPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74061,9 +77049,11 @@ class FileTypeSelfDestructingVideo(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeSelfDestructingVideo"]:
         return "fileTypeSelfDestructingVideo"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74087,9 +77077,11 @@ class FileTypeSelfDestructingVideoNote(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeSelfDestructingVideoNote"]:
         return "fileTypeSelfDestructingVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74113,9 +77105,11 @@ class FileTypeSelfDestructingVoiceNote(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeSelfDestructingVoiceNote"]:
         return "fileTypeSelfDestructingVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74139,9 +77133,11 @@ class FileTypeSticker(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeSticker"]:
         return "fileTypeSticker"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74165,9 +77161,11 @@ class FileTypeThumbnail(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeThumbnail"]:
         return "fileTypeThumbnail"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74191,9 +77189,11 @@ class FileTypeUnknown(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeUnknown"]:
         return "fileTypeUnknown"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74217,9 +77217,11 @@ class FileTypeVideo(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeVideo"]:
         return "fileTypeVideo"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74243,9 +77245,11 @@ class FileTypeVideoNote(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeVideoNote"]:
         return "fileTypeVideoNote"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74269,9 +77273,11 @@ class FileTypeVideoStory(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeVideoStory"]:
         return "fileTypeVideoStory"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74295,9 +77301,11 @@ class FileTypeVoiceNote(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeVoiceNote"]:
         return "fileTypeVoiceNote"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74321,9 +77329,11 @@ class FileTypeWallpaper(TlObject, FileType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileTypeWallpaper"]:
         return "fileTypeWallpaper"
 
+    @classmethod
     def getClass(self) -> Literal["FileType"]:
         return "FileType"
 
@@ -74391,9 +77401,11 @@ class StorageStatisticsByFileType(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storageStatisticsByFileType"]:
         return "storageStatisticsByFileType"
 
+    @classmethod
     def getClass(self) -> Literal["StorageStatisticsByFileType"]:
         return "StorageStatisticsByFileType"
 
@@ -74453,9 +77465,11 @@ class StorageStatisticsByChat(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storageStatisticsByChat"]:
         return "storageStatisticsByChat"
 
+    @classmethod
     def getClass(self) -> Literal["StorageStatisticsByChat"]:
         return "StorageStatisticsByChat"
 
@@ -74511,9 +77525,11 @@ class StorageStatistics(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storageStatistics"]:
         return "storageStatistics"
 
+    @classmethod
     def getClass(self) -> Literal["StorageStatistics"]:
         return "StorageStatistics"
 
@@ -74579,9 +77595,11 @@ class StorageStatisticsFast(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storageStatisticsFast"]:
         return "storageStatisticsFast"
 
+    @classmethod
     def getClass(self) -> Literal["StorageStatisticsFast"]:
         return "StorageStatisticsFast"
 
@@ -74626,9 +77644,11 @@ class DatabaseStatistics(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["databaseStatistics"]:
         return "databaseStatistics"
 
+    @classmethod
     def getClass(self) -> Literal["DatabaseStatistics"]:
         return "DatabaseStatistics"
 
@@ -74653,9 +77673,11 @@ class NetworkTypeNone(TlObject, NetworkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["networkTypeNone"]:
         return "networkTypeNone"
 
+    @classmethod
     def getClass(self) -> Literal["NetworkType"]:
         return "NetworkType"
 
@@ -74679,9 +77701,11 @@ class NetworkTypeMobile(TlObject, NetworkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["networkTypeMobile"]:
         return "networkTypeMobile"
 
+    @classmethod
     def getClass(self) -> Literal["NetworkType"]:
         return "NetworkType"
 
@@ -74705,9 +77729,11 @@ class NetworkTypeMobileRoaming(TlObject, NetworkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["networkTypeMobileRoaming"]:
         return "networkTypeMobileRoaming"
 
+    @classmethod
     def getClass(self) -> Literal["NetworkType"]:
         return "NetworkType"
 
@@ -74731,9 +77757,11 @@ class NetworkTypeWiFi(TlObject, NetworkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["networkTypeWiFi"]:
         return "networkTypeWiFi"
 
+    @classmethod
     def getClass(self) -> Literal["NetworkType"]:
         return "NetworkType"
 
@@ -74757,9 +77785,11 @@ class NetworkTypeOther(TlObject, NetworkType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["networkTypeOther"]:
         return "networkTypeOther"
 
+    @classmethod
     def getClass(self) -> Literal["NetworkType"]:
         return "NetworkType"
 
@@ -74843,9 +77873,11 @@ class NetworkStatisticsEntryFile(TlObject, NetworkStatisticsEntry):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["networkStatisticsEntryFile"]:
         return "networkStatisticsEntryFile"
 
+    @classmethod
     def getClass(self) -> Literal["NetworkStatisticsEntry"]:
         return "NetworkStatisticsEntry"
 
@@ -74914,9 +77946,11 @@ class NetworkStatisticsEntryCall(TlObject, NetworkStatisticsEntry):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["networkStatisticsEntryCall"]:
         return "networkStatisticsEntryCall"
 
+    @classmethod
     def getClass(self) -> Literal["NetworkStatisticsEntry"]:
         return "NetworkStatisticsEntry"
 
@@ -74964,9 +77998,11 @@ class NetworkStatistics(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["networkStatistics"]:
         return "networkStatistics"
 
+    @classmethod
     def getClass(self) -> Literal["NetworkStatistics"]:
         return "NetworkStatistics"
 
@@ -75054,9 +78090,11 @@ class AutoDownloadSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["autoDownloadSettings"]:
         return "autoDownloadSettings"
 
+    @classmethod
     def getClass(self) -> Literal["AutoDownloadSettings"]:
         return "AutoDownloadSettings"
 
@@ -75126,9 +78164,11 @@ class AutoDownloadSettingsPresets(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["autoDownloadSettingsPresets"]:
         return "autoDownloadSettingsPresets"
 
+    @classmethod
     def getClass(self) -> Literal["AutoDownloadSettingsPresets"]:
         return "AutoDownloadSettingsPresets"
 
@@ -75160,9 +78200,11 @@ class AutosaveSettingsScopePrivateChats(TlObject, AutosaveSettingsScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["autosaveSettingsScopePrivateChats"]:
         return "autosaveSettingsScopePrivateChats"
 
+    @classmethod
     def getClass(self) -> Literal["AutosaveSettingsScope"]:
         return "AutosaveSettingsScope"
 
@@ -75186,9 +78228,11 @@ class AutosaveSettingsScopeGroupChats(TlObject, AutosaveSettingsScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["autosaveSettingsScopeGroupChats"]:
         return "autosaveSettingsScopeGroupChats"
 
+    @classmethod
     def getClass(self) -> Literal["AutosaveSettingsScope"]:
         return "AutosaveSettingsScope"
 
@@ -75212,9 +78256,11 @@ class AutosaveSettingsScopeChannelChats(TlObject, AutosaveSettingsScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["autosaveSettingsScopeChannelChats"]:
         return "autosaveSettingsScopeChannelChats"
 
+    @classmethod
     def getClass(self) -> Literal["AutosaveSettingsScope"]:
         return "AutosaveSettingsScope"
 
@@ -75245,9 +78291,11 @@ class AutosaveSettingsScopeChat(TlObject, AutosaveSettingsScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["autosaveSettingsScopeChat"]:
         return "autosaveSettingsScopeChat"
 
+    @classmethod
     def getClass(self) -> Literal["AutosaveSettingsScope"]:
         return "AutosaveSettingsScope"
 
@@ -75294,9 +78342,11 @@ class ScopeAutosaveSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["scopeAutosaveSettings"]:
         return "scopeAutosaveSettings"
 
+    @classmethod
     def getClass(self) -> Literal["ScopeAutosaveSettings"]:
         return "ScopeAutosaveSettings"
 
@@ -75342,9 +78392,11 @@ class AutosaveSettingsException(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["autosaveSettingsException"]:
         return "autosaveSettingsException"
 
+    @classmethod
     def getClass(self) -> Literal["AutosaveSettingsException"]:
         return "AutosaveSettingsException"
 
@@ -75404,9 +78456,11 @@ class AutosaveSettings(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["autosaveSettings"]:
         return "autosaveSettings"
 
+    @classmethod
     def getClass(self) -> Literal["AutosaveSettings"]:
         return "AutosaveSettings"
 
@@ -75440,9 +78494,11 @@ class ConnectionStateWaitingForNetwork(TlObject, ConnectionState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["connectionStateWaitingForNetwork"]:
         return "connectionStateWaitingForNetwork"
 
+    @classmethod
     def getClass(self) -> Literal["ConnectionState"]:
         return "ConnectionState"
 
@@ -75466,9 +78522,11 @@ class ConnectionStateConnectingToProxy(TlObject, ConnectionState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["connectionStateConnectingToProxy"]:
         return "connectionStateConnectingToProxy"
 
+    @classmethod
     def getClass(self) -> Literal["ConnectionState"]:
         return "ConnectionState"
 
@@ -75492,9 +78550,11 @@ class ConnectionStateConnecting(TlObject, ConnectionState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["connectionStateConnecting"]:
         return "connectionStateConnecting"
 
+    @classmethod
     def getClass(self) -> Literal["ConnectionState"]:
         return "ConnectionState"
 
@@ -75518,9 +78578,11 @@ class ConnectionStateUpdating(TlObject, ConnectionState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["connectionStateUpdating"]:
         return "connectionStateUpdating"
 
+    @classmethod
     def getClass(self) -> Literal["ConnectionState"]:
         return "ConnectionState"
 
@@ -75544,9 +78606,11 @@ class ConnectionStateReady(TlObject, ConnectionState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["connectionStateReady"]:
         return "connectionStateReady"
 
+    @classmethod
     def getClass(self) -> Literal["ConnectionState"]:
         return "ConnectionState"
 
@@ -75570,9 +78634,11 @@ class TopChatCategoryUsers(TlObject, TopChatCategory):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["topChatCategoryUsers"]:
         return "topChatCategoryUsers"
 
+    @classmethod
     def getClass(self) -> Literal["TopChatCategory"]:
         return "TopChatCategory"
 
@@ -75596,9 +78662,11 @@ class TopChatCategoryBots(TlObject, TopChatCategory):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["topChatCategoryBots"]:
         return "topChatCategoryBots"
 
+    @classmethod
     def getClass(self) -> Literal["TopChatCategory"]:
         return "TopChatCategory"
 
@@ -75622,9 +78690,11 @@ class TopChatCategoryGroups(TlObject, TopChatCategory):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["topChatCategoryGroups"]:
         return "topChatCategoryGroups"
 
+    @classmethod
     def getClass(self) -> Literal["TopChatCategory"]:
         return "TopChatCategory"
 
@@ -75648,9 +78718,11 @@ class TopChatCategoryChannels(TlObject, TopChatCategory):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["topChatCategoryChannels"]:
         return "topChatCategoryChannels"
 
+    @classmethod
     def getClass(self) -> Literal["TopChatCategory"]:
         return "TopChatCategory"
 
@@ -75674,9 +78746,11 @@ class TopChatCategoryInlineBots(TlObject, TopChatCategory):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["topChatCategoryInlineBots"]:
         return "topChatCategoryInlineBots"
 
+    @classmethod
     def getClass(self) -> Literal["TopChatCategory"]:
         return "TopChatCategory"
 
@@ -75700,9 +78774,11 @@ class TopChatCategoryWebAppBots(TlObject, TopChatCategory):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["topChatCategoryWebAppBots"]:
         return "topChatCategoryWebAppBots"
 
+    @classmethod
     def getClass(self) -> Literal["TopChatCategory"]:
         return "TopChatCategory"
 
@@ -75726,9 +78802,11 @@ class TopChatCategoryCalls(TlObject, TopChatCategory):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["topChatCategoryCalls"]:
         return "topChatCategoryCalls"
 
+    @classmethod
     def getClass(self) -> Literal["TopChatCategory"]:
         return "TopChatCategory"
 
@@ -75752,9 +78830,11 @@ class TopChatCategoryForwardChats(TlObject, TopChatCategory):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["topChatCategoryForwardChats"]:
         return "topChatCategoryForwardChats"
 
+    @classmethod
     def getClass(self) -> Literal["TopChatCategory"]:
         return "TopChatCategory"
 
@@ -75785,9 +78865,11 @@ class FoundPosition(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundPosition"]:
         return "foundPosition"
 
+    @classmethod
     def getClass(self) -> Literal["FoundPosition"]:
         return "FoundPosition"
 
@@ -75824,9 +78906,11 @@ class FoundPositions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["foundPositions"]:
         return "foundPositions"
 
+    @classmethod
     def getClass(self) -> Literal["FoundPositions"]:
         return "FoundPositions"
 
@@ -75863,9 +78947,11 @@ class TMeUrlTypeUser(TlObject, TMeUrlType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["tMeUrlTypeUser"]:
         return "tMeUrlTypeUser"
 
+    @classmethod
     def getClass(self) -> Literal["TMeUrlType"]:
         return "TMeUrlType"
 
@@ -75897,9 +78983,11 @@ class TMeUrlTypeSupergroup(TlObject, TMeUrlType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["tMeUrlTypeSupergroup"]:
         return "tMeUrlTypeSupergroup"
 
+    @classmethod
     def getClass(self) -> Literal["TMeUrlType"]:
         return "TMeUrlType"
 
@@ -75931,9 +79019,11 @@ class TMeUrlTypeChatInvite(TlObject, TMeUrlType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["tMeUrlTypeChatInvite"]:
         return "tMeUrlTypeChatInvite"
 
+    @classmethod
     def getClass(self) -> Literal["TMeUrlType"]:
         return "TMeUrlType"
 
@@ -75965,9 +79055,11 @@ class TMeUrlTypeStickerSet(TlObject, TMeUrlType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["tMeUrlTypeStickerSet"]:
         return "tMeUrlTypeStickerSet"
 
+    @classmethod
     def getClass(self) -> Literal["TMeUrlType"]:
         return "TMeUrlType"
 
@@ -76010,9 +79102,11 @@ class TMeUrl(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["tMeUrl"]:
         return "tMeUrl"
 
+    @classmethod
     def getClass(self) -> Literal["TMeUrl"]:
         return "TMeUrl"
 
@@ -76045,9 +79139,11 @@ class TMeUrls(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["tMeUrls"]:
         return "tMeUrls"
 
+    @classmethod
     def getClass(self) -> Literal["TMeUrls"]:
         return "TMeUrls"
 
@@ -76072,9 +79168,11 @@ class SuggestedActionEnableArchiveAndMuteNewChats(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionEnableArchiveAndMuteNewChats"]:
         return "suggestedActionEnableArchiveAndMuteNewChats"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76100,9 +79198,11 @@ class SuggestedActionCheckPassword(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionCheckPassword"]:
         return "suggestedActionCheckPassword"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76126,9 +79226,11 @@ class SuggestedActionCheckPhoneNumber(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionCheckPhoneNumber"]:
         return "suggestedActionCheckPhoneNumber"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76152,9 +79254,11 @@ class SuggestedActionViewChecksHint(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionViewChecksHint"]:
         return "suggestedActionViewChecksHint"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76185,9 +79289,11 @@ class SuggestedActionConvertToBroadcastGroup(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionConvertToBroadcastGroup"]:
         return "suggestedActionConvertToBroadcastGroup"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76221,9 +79327,11 @@ class SuggestedActionSetPassword(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionSetPassword"]:
         return "suggestedActionSetPassword"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76251,9 +79359,11 @@ class SuggestedActionUpgradePremium(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionUpgradePremium"]:
         return "suggestedActionUpgradePremium"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76277,9 +79387,11 @@ class SuggestedActionRestorePremium(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionRestorePremium"]:
         return "suggestedActionRestorePremium"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76303,9 +79415,11 @@ class SuggestedActionSubscribeToAnnualPremium(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionSubscribeToAnnualPremium"]:
         return "suggestedActionSubscribeToAnnualPremium"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76331,9 +79445,11 @@ class SuggestedActionGiftPremiumForChristmas(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionGiftPremiumForChristmas"]:
         return "suggestedActionGiftPremiumForChristmas"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76359,9 +79475,11 @@ class SuggestedActionSetBirthdate(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionSetBirthdate"]:
         return "suggestedActionSetBirthdate"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76385,9 +79503,11 @@ class SuggestedActionSetProfilePhoto(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionSetProfilePhoto"]:
         return "suggestedActionSetProfilePhoto"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76420,9 +79540,11 @@ class SuggestedActionExtendPremium(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionExtendPremium"]:
         return "suggestedActionExtendPremium"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76452,9 +79574,11 @@ class SuggestedActionExtendStarSubscriptions(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionExtendStarSubscriptions"]:
         return "suggestedActionExtendStarSubscriptions"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76508,9 +79632,11 @@ class SuggestedActionCustom(TlObject, SuggestedAction):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["suggestedActionCustom"]:
         return "suggestedActionCustom"
 
+    @classmethod
     def getClass(self) -> Literal["SuggestedAction"]:
         return "SuggestedAction"
 
@@ -76551,9 +79677,11 @@ class Count(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["count"]:
         return "count"
 
+    @classmethod
     def getClass(self) -> Literal["Count"]:
         return "Count"
 
@@ -76585,9 +79713,11 @@ class Text(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["text"]:
         return "text"
 
+    @classmethod
     def getClass(self) -> Literal["Text"]:
         return "Text"
 
@@ -76619,9 +79749,11 @@ class Data(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["data"]:
         return "data"
 
+    @classmethod
     def getClass(self) -> Literal["Data"]:
         return "Data"
 
@@ -76653,9 +79785,11 @@ class Seconds(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["seconds"]:
         return "seconds"
 
+    @classmethod
     def getClass(self) -> Literal["Seconds"]:
         return "Seconds"
 
@@ -76687,9 +79821,11 @@ class FileDownloadedPrefixSize(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["fileDownloadedPrefixSize"]:
         return "fileDownloadedPrefixSize"
 
+    @classmethod
     def getClass(self) -> Literal["FileDownloadedPrefixSize"]:
         return "FileDownloadedPrefixSize"
 
@@ -76721,9 +79857,11 @@ class StarCount(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starCount"]:
         return "starCount"
 
+    @classmethod
     def getClass(self) -> Literal["StarCount"]:
         return "StarCount"
 
@@ -76762,9 +79900,11 @@ class DeepLinkInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["deepLinkInfo"]:
         return "deepLinkInfo"
 
+    @classmethod
     def getClass(self) -> Literal["DeepLinkInfo"]:
         return "DeepLinkInfo"
 
@@ -76803,9 +79943,11 @@ class TextParseModeMarkdown(TlObject, TextParseMode):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textParseModeMarkdown"]:
         return "textParseModeMarkdown"
 
+    @classmethod
     def getClass(self) -> Literal["TextParseMode"]:
         return "TextParseMode"
 
@@ -76830,9 +79972,11 @@ class TextParseModeHTML(TlObject, TextParseMode):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["textParseModeHTML"]:
         return "textParseModeHTML"
 
+    @classmethod
     def getClass(self) -> Literal["TextParseMode"]:
         return "TextParseMode"
 
@@ -76868,9 +80012,11 @@ class ProxyTypeSocks5(TlObject, ProxyType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["proxyTypeSocks5"]:
         return "proxyTypeSocks5"
 
+    @classmethod
     def getClass(self) -> Literal["ProxyType"]:
         return "ProxyType"
 
@@ -76919,9 +80065,11 @@ class ProxyTypeHttp(TlObject, ProxyType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["proxyTypeHttp"]:
         return "proxyTypeHttp"
 
+    @classmethod
     def getClass(self) -> Literal["ProxyType"]:
         return "ProxyType"
 
@@ -76960,9 +80108,11 @@ class ProxyTypeMtproto(TlObject, ProxyType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["proxyTypeMtproto"]:
         return "proxyTypeMtproto"
 
+    @classmethod
     def getClass(self) -> Literal["ProxyType"]:
         return "ProxyType"
 
@@ -77027,9 +80177,11 @@ class Proxy(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["proxy"]:
         return "proxy"
 
+    @classmethod
     def getClass(self) -> Literal["Proxy"]:
         return "Proxy"
 
@@ -77074,9 +80226,11 @@ class Proxies(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["proxies"]:
         return "proxies"
 
+    @classmethod
     def getClass(self) -> Literal["Proxies"]:
         return "Proxies"
 
@@ -77139,9 +80293,11 @@ class InputSticker(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["inputSticker"]:
         return "inputSticker"
 
+    @classmethod
     def getClass(self) -> Literal["InputSticker"]:
         return "InputSticker"
 
@@ -77189,9 +80345,11 @@ class DateRange(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["dateRange"]:
         return "dateRange"
 
+    @classmethod
     def getClass(self) -> Literal["DateRange"]:
         return "DateRange"
 
@@ -77243,9 +80401,11 @@ class StatisticalValue(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["statisticalValue"]:
         return "statisticalValue"
 
+    @classmethod
     def getClass(self) -> Literal["StatisticalValue"]:
         return "StatisticalValue"
 
@@ -77289,9 +80449,11 @@ class StatisticalGraphData(TlObject, StatisticalGraph):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["statisticalGraphData"]:
         return "statisticalGraphData"
 
+    @classmethod
     def getClass(self) -> Literal["StatisticalGraph"]:
         return "StatisticalGraph"
 
@@ -77328,9 +80490,11 @@ class StatisticalGraphAsync(TlObject, StatisticalGraph):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["statisticalGraphAsync"]:
         return "statisticalGraphAsync"
 
+    @classmethod
     def getClass(self) -> Literal["StatisticalGraph"]:
         return "StatisticalGraph"
 
@@ -77362,9 +80526,11 @@ class StatisticalGraphError(TlObject, StatisticalGraph):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["statisticalGraphError"]:
         return "statisticalGraphError"
 
+    @classmethod
     def getClass(self) -> Literal["StatisticalGraph"]:
         return "StatisticalGraph"
 
@@ -77396,9 +80562,11 @@ class ChatStatisticsObjectTypeMessage(TlObject, ChatStatisticsObjectType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatStatisticsObjectTypeMessage"]:
         return "chatStatisticsObjectTypeMessage"
 
+    @classmethod
     def getClass(self) -> Literal["ChatStatisticsObjectType"]:
         return "ChatStatisticsObjectType"
 
@@ -77430,9 +80598,11 @@ class ChatStatisticsObjectTypeStory(TlObject, ChatStatisticsObjectType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatStatisticsObjectTypeStory"]:
         return "chatStatisticsObjectTypeStory"
 
+    @classmethod
     def getClass(self) -> Literal["ChatStatisticsObjectType"]:
         return "ChatStatisticsObjectType"
 
@@ -77487,9 +80657,11 @@ class ChatStatisticsInteractionInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatStatisticsInteractionInfo"]:
         return "chatStatisticsInteractionInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatStatisticsInteractionInfo"]:
         return "ChatStatisticsInteractionInfo"
 
@@ -77545,9 +80717,11 @@ class ChatStatisticsMessageSenderInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatStatisticsMessageSenderInfo"]:
         return "chatStatisticsMessageSenderInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatStatisticsMessageSenderInfo"]:
         return "ChatStatisticsMessageSenderInfo"
 
@@ -77609,9 +80783,11 @@ class ChatStatisticsAdministratorActionsInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatStatisticsAdministratorActionsInfo"]:
         return "chatStatisticsAdministratorActionsInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatStatisticsAdministratorActionsInfo"]:
         return "ChatStatisticsAdministratorActionsInfo"
 
@@ -77659,9 +80835,11 @@ class ChatStatisticsInviterInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatStatisticsInviterInfo"]:
         return "chatStatisticsInviterInfo"
 
+    @classmethod
     def getClass(self) -> Literal["ChatStatisticsInviterInfo"]:
         return "ChatStatisticsInviterInfo"
 
@@ -77809,9 +80987,11 @@ class ChatStatisticsSupergroup(TlObject, ChatStatistics):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatStatisticsSupergroup"]:
         return "chatStatisticsSupergroup"
 
+    @classmethod
     def getClass(self) -> Literal["ChatStatistics"]:
         return "ChatStatistics"
 
@@ -78045,9 +81225,11 @@ class ChatStatisticsChannel(TlObject, ChatStatistics):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatStatisticsChannel"]:
         return "chatStatisticsChannel"
 
+    @classmethod
     def getClass(self) -> Literal["ChatStatistics"]:
         return "ChatStatistics"
 
@@ -78171,9 +81353,11 @@ class ChatRevenueAmount(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatRevenueAmount"]:
         return "chatRevenueAmount"
 
+    @classmethod
     def getClass(self) -> Literal["ChatRevenueAmount"]:
         return "ChatRevenueAmount"
 
@@ -78241,9 +81425,11 @@ class ChatRevenueStatistics(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatRevenueStatistics"]:
         return "chatRevenueStatistics"
 
+    @classmethod
     def getClass(self) -> Literal["ChatRevenueStatistics"]:
         return "ChatRevenueStatistics"
 
@@ -78297,9 +81483,11 @@ class MessageStatistics(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["messageStatistics"]:
         return "messageStatistics"
 
+    @classmethod
     def getClass(self) -> Literal["MessageStatistics"]:
         return "MessageStatistics"
 
@@ -78351,9 +81539,11 @@ class StoryStatistics(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["storyStatistics"]:
         return "storyStatistics"
 
+    @classmethod
     def getClass(self) -> Literal["StoryStatistics"]:
         return "StoryStatistics"
 
@@ -78385,9 +81575,11 @@ class RevenueWithdrawalStatePending(TlObject, RevenueWithdrawalState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["revenueWithdrawalStatePending"]:
         return "revenueWithdrawalStatePending"
 
+    @classmethod
     def getClass(self) -> Literal["RevenueWithdrawalState"]:
         return "RevenueWithdrawalState"
 
@@ -78423,9 +81615,11 @@ class RevenueWithdrawalStateSucceeded(TlObject, RevenueWithdrawalState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["revenueWithdrawalStateSucceeded"]:
         return "revenueWithdrawalStateSucceeded"
 
+    @classmethod
     def getClass(self) -> Literal["RevenueWithdrawalState"]:
         return "RevenueWithdrawalState"
 
@@ -78451,9 +81645,11 @@ class RevenueWithdrawalStateFailed(TlObject, RevenueWithdrawalState):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["revenueWithdrawalStateFailed"]:
         return "revenueWithdrawalStateFailed"
 
+    @classmethod
     def getClass(self) -> Literal["RevenueWithdrawalState"]:
         return "RevenueWithdrawalState"
 
@@ -78489,9 +81685,11 @@ class ChatRevenueTransactionTypeEarnings(TlObject, ChatRevenueTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatRevenueTransactionTypeEarnings"]:
         return "chatRevenueTransactionTypeEarnings"
 
+    @classmethod
     def getClass(self) -> Literal["ChatRevenueTransactionType"]:
         return "ChatRevenueTransactionType"
 
@@ -78548,9 +81746,11 @@ class ChatRevenueTransactionTypeWithdrawal(TlObject, ChatRevenueTransactionType)
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatRevenueTransactionTypeWithdrawal"]:
         return "chatRevenueTransactionTypeWithdrawal"
 
+    @classmethod
     def getClass(self) -> Literal["ChatRevenueTransactionType"]:
         return "ChatRevenueTransactionType"
 
@@ -78596,9 +81796,11 @@ class ChatRevenueTransactionTypeRefund(TlObject, ChatRevenueTransactionType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatRevenueTransactionTypeRefund"]:
         return "chatRevenueTransactionTypeRefund"
 
+    @classmethod
     def getClass(self) -> Literal["ChatRevenueTransactionType"]:
         return "ChatRevenueTransactionType"
 
@@ -78655,9 +81857,11 @@ class ChatRevenueTransaction(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatRevenueTransaction"]:
         return "chatRevenueTransaction"
 
+    @classmethod
     def getClass(self) -> Literal["ChatRevenueTransaction"]:
         return "ChatRevenueTransaction"
 
@@ -78703,9 +81907,11 @@ class ChatRevenueTransactions(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["chatRevenueTransactions"]:
         return "chatRevenueTransactions"
 
+    @classmethod
     def getClass(self) -> Literal["ChatRevenueTransactions"]:
         return "ChatRevenueTransactions"
 
@@ -78769,9 +81975,11 @@ class StarRevenueStatus(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starRevenueStatus"]:
         return "starRevenueStatus"
 
+    @classmethod
     def getClass(self) -> Literal["StarRevenueStatus"]:
         return "StarRevenueStatus"
 
@@ -78831,9 +82039,11 @@ class StarRevenueStatistics(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["starRevenueStatistics"]:
         return "starRevenueStatistics"
 
+    @classmethod
     def getClass(self) -> Literal["StarRevenueStatistics"]:
         return "StarRevenueStatistics"
 
@@ -78877,9 +82087,11 @@ class Point(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["point"]:
         return "point"
 
+    @classmethod
     def getClass(self) -> Literal["Point"]:
         return "Point"
 
@@ -78912,9 +82124,11 @@ class VectorPathCommandLine(TlObject, VectorPathCommand):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["vectorPathCommandLine"]:
         return "vectorPathCommandLine"
 
+    @classmethod
     def getClass(self) -> Literal["VectorPathCommand"]:
         return "VectorPathCommand"
 
@@ -78961,9 +82175,11 @@ class VectorPathCommandCubicBezierCurve(TlObject, VectorPathCommand):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["vectorPathCommandCubicBezierCurve"]:
         return "vectorPathCommandCubicBezierCurve"
 
+    @classmethod
     def getClass(self) -> Literal["VectorPathCommand"]:
         return "VectorPathCommand"
 
@@ -78995,9 +82211,11 @@ class BotCommandScopeDefault(TlObject, BotCommandScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botCommandScopeDefault"]:
         return "botCommandScopeDefault"
 
+    @classmethod
     def getClass(self) -> Literal["BotCommandScope"]:
         return "BotCommandScope"
 
@@ -79021,9 +82239,11 @@ class BotCommandScopeAllPrivateChats(TlObject, BotCommandScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botCommandScopeAllPrivateChats"]:
         return "botCommandScopeAllPrivateChats"
 
+    @classmethod
     def getClass(self) -> Literal["BotCommandScope"]:
         return "BotCommandScope"
 
@@ -79047,9 +82267,11 @@ class BotCommandScopeAllGroupChats(TlObject, BotCommandScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botCommandScopeAllGroupChats"]:
         return "botCommandScopeAllGroupChats"
 
+    @classmethod
     def getClass(self) -> Literal["BotCommandScope"]:
         return "BotCommandScope"
 
@@ -79073,9 +82295,11 @@ class BotCommandScopeAllChatAdministrators(TlObject, BotCommandScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botCommandScopeAllChatAdministrators"]:
         return "botCommandScopeAllChatAdministrators"
 
+    @classmethod
     def getClass(self) -> Literal["BotCommandScope"]:
         return "BotCommandScope"
 
@@ -79108,9 +82332,11 @@ class BotCommandScopeChat(TlObject, BotCommandScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botCommandScopeChat"]:
         return "botCommandScopeChat"
 
+    @classmethod
     def getClass(self) -> Literal["BotCommandScope"]:
         return "BotCommandScope"
 
@@ -79142,9 +82368,11 @@ class BotCommandScopeChatAdministrators(TlObject, BotCommandScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botCommandScopeChatAdministrators"]:
         return "botCommandScopeChatAdministrators"
 
+    @classmethod
     def getClass(self) -> Literal["BotCommandScope"]:
         return "BotCommandScope"
 
@@ -79181,9 +82409,11 @@ class BotCommandScopeChatMember(TlObject, BotCommandScope):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["botCommandScopeChatMember"]:
         return "botCommandScopeChatMember"
 
+    @classmethod
     def getClass(self) -> Literal["BotCommandScope"]:
         return "BotCommandScope"
 
@@ -79213,9 +82443,11 @@ class PhoneNumberCodeTypeChange(TlObject, PhoneNumberCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["phoneNumberCodeTypeChange"]:
         return "phoneNumberCodeTypeChange"
 
+    @classmethod
     def getClass(self) -> Literal["PhoneNumberCodeType"]:
         return "PhoneNumberCodeType"
 
@@ -79239,9 +82471,11 @@ class PhoneNumberCodeTypeVerify(TlObject, PhoneNumberCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["phoneNumberCodeTypeVerify"]:
         return "phoneNumberCodeTypeVerify"
 
+    @classmethod
     def getClass(self) -> Literal["PhoneNumberCodeType"]:
         return "PhoneNumberCodeType"
 
@@ -79272,9 +82506,11 @@ class PhoneNumberCodeTypeConfirmOwnership(TlObject, PhoneNumberCodeType):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["phoneNumberCodeTypeConfirmOwnership"]:
         return "phoneNumberCodeTypeConfirmOwnership"
 
+    @classmethod
     def getClass(self) -> Literal["PhoneNumberCodeType"]:
         return "PhoneNumberCodeType"
 
@@ -79301,9 +82537,11 @@ class LogStreamDefault(TlObject, LogStream):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["logStreamDefault"]:
         return "logStreamDefault"
 
+    @classmethod
     def getClass(self) -> Literal["LogStream"]:
         return "LogStream"
 
@@ -79346,9 +82584,11 @@ class LogStreamFile(TlObject, LogStream):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["logStreamFile"]:
         return "logStreamFile"
 
+    @classmethod
     def getClass(self) -> Literal["LogStream"]:
         return "LogStream"
 
@@ -79380,9 +82620,11 @@ class LogStreamEmpty(TlObject, LogStream):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["logStreamEmpty"]:
         return "logStreamEmpty"
 
+    @classmethod
     def getClass(self) -> Literal["LogStream"]:
         return "LogStream"
 
@@ -79413,9 +82655,11 @@ class LogVerbosityLevel(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["logVerbosityLevel"]:
         return "logVerbosityLevel"
 
+    @classmethod
     def getClass(self) -> Literal["LogVerbosityLevel"]:
         return "LogVerbosityLevel"
 
@@ -79447,9 +82691,11 @@ class LogTags(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["logTags"]:
         return "logTags"
 
+    @classmethod
     def getClass(self) -> Literal["LogTags"]:
         return "LogTags"
 
@@ -79493,9 +82739,11 @@ class UserSupportInfo(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["userSupportInfo"]:
         return "userSupportInfo"
 
+    @classmethod
     def getClass(self) -> Literal["UserSupportInfo"]:
         return "UserSupportInfo"
 
@@ -79534,9 +82782,11 @@ class TestInt(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["testInt"]:
         return "testInt"
 
+    @classmethod
     def getClass(self) -> Literal["TestInt"]:
         return "TestInt"
 
@@ -79568,9 +82818,11 @@ class TestString(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["testString"]:
         return "testString"
 
+    @classmethod
     def getClass(self) -> Literal["TestString"]:
         return "TestString"
 
@@ -79602,9 +82854,11 @@ class TestBytes(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["testBytes"]:
         return "testBytes"
 
+    @classmethod
     def getClass(self) -> Literal["TestBytes"]:
         return "TestBytes"
 
@@ -79636,9 +82890,11 @@ class TestVectorInt(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["testVectorInt"]:
         return "testVectorInt"
 
+    @classmethod
     def getClass(self) -> Literal["TestVectorInt"]:
         return "TestVectorInt"
 
@@ -79670,9 +82926,11 @@ class TestVectorIntObject(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["testVectorIntObject"]:
         return "testVectorIntObject"
 
+    @classmethod
     def getClass(self) -> Literal["TestVectorIntObject"]:
         return "TestVectorIntObject"
 
@@ -79704,9 +82962,11 @@ class TestVectorString(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["testVectorString"]:
         return "testVectorString"
 
+    @classmethod
     def getClass(self) -> Literal["TestVectorString"]:
         return "TestVectorString"
 
@@ -79738,9 +82998,11 @@ class TestVectorStringObject(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["testVectorStringObject"]:
         return "testVectorStringObject"
 
+    @classmethod
     def getClass(self) -> Literal["TestVectorStringObject"]:
         return "TestVectorStringObject"
 
@@ -79787,9 +83049,11 @@ class UpdateAuthorizationState(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateAuthorizationState"]:
         return "updateAuthorizationState"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -79824,9 +83088,11 @@ class UpdateNewMessage(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewMessage"]:
         return "updateNewMessage"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -79863,9 +83129,11 @@ class UpdateMessageSendAcknowledged(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageSendAcknowledged"]:
         return "updateMessageSendAcknowledged"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -79907,9 +83175,11 @@ class UpdateMessageSendSucceeded(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageSendSucceeded"]:
         return "updateMessageSendSucceeded"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -79958,9 +83228,11 @@ class UpdateMessageSendFailed(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageSendFailed"]:
         return "updateMessageSendFailed"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80096,9 +83368,11 @@ class UpdateMessageContent(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageContent"]:
         return "updateMessageContent"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80164,9 +83438,11 @@ class UpdateMessageEdited(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageEdited"]:
         return "updateMessageEdited"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80219,9 +83495,11 @@ class UpdateMessageIsPinned(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageIsPinned"]:
         return "updateMessageIsPinned"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80275,9 +83553,11 @@ class UpdateMessageInteractionInfo(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageInteractionInfo"]:
         return "updateMessageInteractionInfo"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80321,9 +83601,11 @@ class UpdateMessageContentOpened(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageContentOpened"]:
         return "updateMessageContentOpened"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80372,9 +83654,11 @@ class UpdateMessageMentionRead(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageMentionRead"]:
         return "updateMessageMentionRead"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80434,9 +83718,11 @@ class UpdateMessageUnreadReactions(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageUnreadReactions"]:
         return "updateMessageUnreadReactions"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80489,9 +83775,11 @@ class UpdateMessageFactCheck(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageFactCheck"]:
         return "updateMessageFactCheck"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80535,9 +83823,11 @@ class UpdateMessageLiveLocationViewed(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageLiveLocationViewed"]:
         return "updateMessageLiveLocationViewed"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80579,9 +83869,11 @@ class UpdateVideoPublished(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateVideoPublished"]:
         return "updateVideoPublished"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80618,9 +83910,11 @@ class UpdateNewChat(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewChat"]:
         return "updateNewChat"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80657,9 +83951,11 @@ class UpdateChatTitle(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatTitle"]:
         return "updateChatTitle"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80697,9 +83993,11 @@ class UpdateChatPhoto(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatPhoto"]:
         return "updateChatPhoto"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80761,9 +84059,11 @@ class UpdateChatAccentColors(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatAccentColors"]:
         return "updateChatAccentColors"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80817,9 +84117,11 @@ class UpdateChatPermissions(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatPermissions"]:
         return "updateChatPermissions"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80871,9 +84173,11 @@ class UpdateChatLastMessage(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatLastMessage"]:
         return "updateChatLastMessage"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80917,9 +84221,11 @@ class UpdateChatPosition(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatPosition"]:
         return "updateChatPosition"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -80963,9 +84269,11 @@ class UpdateChatAddedToList(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatAddedToList"]:
         return "updateChatAddedToList"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81009,9 +84317,11 @@ class UpdateChatRemovedFromList(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatRemovedFromList"]:
         return "updateChatRemovedFromList"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81063,9 +84373,11 @@ class UpdateChatReadInbox(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatReadInbox"]:
         return "updateChatReadInbox"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81111,9 +84423,11 @@ class UpdateChatReadOutbox(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatReadOutbox"]:
         return "updateChatReadOutbox"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81165,9 +84479,11 @@ class UpdateChatActionBar(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatActionBar"]:
         return "updateChatActionBar"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81213,9 +84529,11 @@ class UpdateChatBusinessBotManageBar(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatBusinessBotManageBar"]:
         return "updateChatBusinessBotManageBar"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81263,9 +84581,11 @@ class UpdateChatAvailableReactions(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatAvailableReactions"]:
         return "updateChatAvailableReactions"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81317,9 +84637,11 @@ class UpdateChatDraftMessage(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatDraftMessage"]:
         return "updateChatDraftMessage"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81363,9 +84685,11 @@ class UpdateChatEmojiStatus(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatEmojiStatus"]:
         return "updateChatEmojiStatus"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81411,9 +84735,11 @@ class UpdateChatMessageSender(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatMessageSender"]:
         return "updateChatMessageSender"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81455,9 +84781,11 @@ class UpdateChatMessageAutoDeleteTime(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatMessageAutoDeleteTime"]:
         return "updateChatMessageAutoDeleteTime"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81505,9 +84833,11 @@ class UpdateChatNotificationSettings(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatNotificationSettings"]:
         return "updateChatNotificationSettings"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81553,9 +84883,11 @@ class UpdateChatPendingJoinRequests(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatPendingJoinRequests"]:
         return "updateChatPendingJoinRequests"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81597,9 +84929,11 @@ class UpdateChatReplyMarkup(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatReplyMarkup"]:
         return "updateChatReplyMarkup"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81643,9 +84977,11 @@ class UpdateChatBackground(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatBackground"]:
         return "updateChatBackground"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81687,9 +85023,11 @@ class UpdateChatTheme(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatTheme"]:
         return "updateChatTheme"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81731,9 +85069,11 @@ class UpdateChatUnreadMentionCount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatUnreadMentionCount"]:
         return "updateChatUnreadMentionCount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81775,9 +85115,11 @@ class UpdateChatUnreadReactionCount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatUnreadReactionCount"]:
         return "updateChatUnreadReactionCount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81819,9 +85161,11 @@ class UpdateChatVideoChat(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatVideoChat"]:
         return "updateChatVideoChat"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81865,9 +85209,11 @@ class UpdateChatDefaultDisableNotification(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatDefaultDisableNotification"]:
         return "updateChatDefaultDisableNotification"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81913,9 +85259,11 @@ class UpdateChatHasProtectedContent(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatHasProtectedContent"]:
         return "updateChatHasProtectedContent"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -81957,9 +85305,11 @@ class UpdateChatIsTranslatable(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatIsTranslatable"]:
         return "updateChatIsTranslatable"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82001,9 +85351,11 @@ class UpdateChatIsMarkedAsUnread(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatIsMarkedAsUnread"]:
         return "updateChatIsMarkedAsUnread"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82045,9 +85397,11 @@ class UpdateChatViewAsTopics(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatViewAsTopics"]:
         return "updateChatViewAsTopics"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82089,9 +85443,11 @@ class UpdateChatBlockList(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatBlockList"]:
         return "updateChatBlockList"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82133,9 +85489,11 @@ class UpdateChatHasScheduledMessages(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatHasScheduledMessages"]:
         return "updateChatHasScheduledMessages"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82189,9 +85547,11 @@ class UpdateChatFolders(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatFolders"]:
         return "updateChatFolders"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82237,9 +85597,11 @@ class UpdateChatOnlineMemberCount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatOnlineMemberCount"]:
         return "updateChatOnlineMemberCount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82276,9 +85638,11 @@ class UpdateSavedMessagesTopic(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSavedMessagesTopic"]:
         return "updateSavedMessagesTopic"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82310,9 +85674,11 @@ class UpdateSavedMessagesTopicCount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSavedMessagesTopicCount"]:
         return "updateSavedMessagesTopicCount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82344,9 +85710,11 @@ class UpdateDirectMessagesChatTopic(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateDirectMessagesChatTopic"]:
         return "updateDirectMessagesChatTopic"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82395,9 +85763,11 @@ class UpdateTopicMessageCount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateTopicMessageCount"]:
         return "updateTopicMessageCount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82436,9 +85806,11 @@ class UpdateQuickReplyShortcut(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateQuickReplyShortcut"]:
         return "updateQuickReplyShortcut"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82470,9 +85842,11 @@ class UpdateQuickReplyShortcutDeleted(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateQuickReplyShortcutDeleted"]:
         return "updateQuickReplyShortcutDeleted"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82504,9 +85878,11 @@ class UpdateQuickReplyShortcuts(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateQuickReplyShortcuts"]:
         return "updateQuickReplyShortcuts"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82545,9 +85921,11 @@ class UpdateQuickReplyShortcutMessages(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateQuickReplyShortcutMessages"]:
         return "updateQuickReplyShortcutMessages"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82584,9 +85962,11 @@ class UpdateForumTopicInfo(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateForumTopicInfo"]:
         return "updateForumTopicInfo"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82665,9 +86045,11 @@ class UpdateForumTopic(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateForumTopic"]:
         return "updateForumTopic"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82736,9 +86118,11 @@ class UpdateScopeNotificationSettings(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateScopeNotificationSettings"]:
         return "updateScopeNotificationSettings"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82779,9 +86163,11 @@ class UpdateReactionNotificationSettings(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateReactionNotificationSettings"]:
         return "updateReactionNotificationSettings"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82823,9 +86209,11 @@ class UpdateNotification(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNotification"]:
         return "updateNotification"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82913,9 +86301,11 @@ class UpdateNotificationGroup(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNotificationGroup"]:
         return "updateNotificationGroup"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -82968,9 +86358,11 @@ class UpdateActiveNotifications(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateActiveNotifications"]:
         return "updateActiveNotifications"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83011,9 +86403,11 @@ class UpdateHavePendingNotifications(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateHavePendingNotifications"]:
         return "updateHavePendingNotifications"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83075,9 +86469,11 @@ class UpdateDeleteMessages(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateDeleteMessages"]:
         return "updateDeleteMessages"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83156,9 +86552,11 @@ class UpdateChatAction(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatAction"]:
         return "updateChatAction"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83212,9 +86610,11 @@ class UpdateUserStatus(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateUserStatus"]:
         return "updateUserStatus"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83247,9 +86647,11 @@ class UpdateUser(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateUser"]:
         return "updateUser"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83281,9 +86683,11 @@ class UpdateBasicGroup(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateBasicGroup"]:
         return "updateBasicGroup"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83315,9 +86719,11 @@ class UpdateSupergroup(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSupergroup"]:
         return "updateSupergroup"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83349,9 +86755,11 @@ class UpdateSecretChat(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSecretChat"]:
         return "updateSecretChat"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83388,9 +86796,11 @@ class UpdateUserFullInfo(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateUserFullInfo"]:
         return "updateUserFullInfo"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83436,9 +86846,11 @@ class UpdateBasicGroupFullInfo(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateBasicGroupFullInfo"]:
         return "updateBasicGroupFullInfo"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83484,9 +86896,11 @@ class UpdateSupergroupFullInfo(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSupergroupFullInfo"]:
         return "updateSupergroupFullInfo"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83613,9 +87027,11 @@ class UpdateServiceNotification(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateServiceNotification"]:
         return "updateServiceNotification"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83648,9 +87064,11 @@ class UpdateFile(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateFile"]:
         return "updateFile"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83703,9 +87121,11 @@ class UpdateFileGenerationStart(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateFileGenerationStart"]:
         return "updateFileGenerationStart"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83746,9 +87166,11 @@ class UpdateFileGenerationStop(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateFileGenerationStop"]:
         return "updateFileGenerationStop"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83792,9 +87214,11 @@ class UpdateFileDownloads(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateFileDownloads"]:
         return "updateFileDownloads"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83840,9 +87264,11 @@ class UpdateFileAddedToDownloads(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateFileAddedToDownloads"]:
         return "updateFileAddedToDownloads"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83900,9 +87326,11 @@ class UpdateFileDownload(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateFileDownload"]:
         return "updateFileDownload"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83948,9 +87376,11 @@ class UpdateFileRemovedFromDownloads(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateFileRemovedFromDownloads"]:
         return "updateFileRemovedFromDownloads"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -83995,9 +87425,11 @@ class UpdateApplicationVerificationRequired(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateApplicationVerificationRequired"]:
         return "updateApplicationVerificationRequired"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84050,9 +87482,11 @@ class UpdateApplicationRecaptchaVerificationRequired(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateApplicationRecaptchaVerificationRequired"]:
         return "updateApplicationRecaptchaVerificationRequired"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84093,9 +87527,11 @@ class UpdateCall(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateCall"]:
         return "updateCall"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84127,9 +87563,11 @@ class UpdateGroupCall(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateGroupCall"]:
         return "updateGroupCall"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84168,9 +87606,11 @@ class UpdateGroupCallParticipant(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateGroupCallParticipant"]:
         return "updateGroupCallParticipant"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84214,9 +87654,11 @@ class UpdateGroupCallParticipants(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateGroupCallParticipants"]:
         return "updateGroupCallParticipants"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84265,9 +87707,11 @@ class UpdateGroupCallVerificationState(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateGroupCallVerificationState"]:
         return "updateGroupCallVerificationState"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84311,9 +87755,11 @@ class UpdateNewCallSignalingData(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewCallSignalingData"]:
         return "updateNewCallSignalingData"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84368,9 +87814,11 @@ class UpdateUserPrivacySettingRules(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateUserPrivacySettingRules"]:
         return "updateUserPrivacySettingRules"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84420,9 +87868,11 @@ class UpdateUnreadMessageCount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateUnreadMessageCount"]:
         return "updateUnreadMessageCount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84496,9 +87946,11 @@ class UpdateUnreadChatCount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateUnreadChatCount"]:
         return "updateUnreadChatCount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84547,9 +87999,11 @@ class UpdateStory(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateStory"]:
         return "updateStory"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84586,9 +88040,11 @@ class UpdateStoryDeleted(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateStoryDeleted"]:
         return "updateStoryDeleted"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84630,9 +88086,11 @@ class UpdateStoryPostSucceeded(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateStoryPostSucceeded"]:
         return "updateStoryPostSucceeded"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84692,9 +88150,11 @@ class UpdateStoryPostFailed(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateStoryPostFailed"]:
         return "updateStoryPostFailed"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84733,9 +88193,11 @@ class UpdateChatActiveStories(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatActiveStories"]:
         return "updateChatActiveStories"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84772,9 +88234,11 @@ class UpdateStoryListChatCount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateStoryListChatCount"]:
         return "updateStoryListChatCount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84818,9 +88282,11 @@ class UpdateStoryStealthMode(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateStoryStealthMode"]:
         return "updateStoryStealthMode"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84868,9 +88334,11 @@ class UpdateOption(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateOption"]:
         return "updateOption"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84903,9 +88371,11 @@ class UpdateStickerSet(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateStickerSet"]:
         return "updateStickerSet"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84946,9 +88416,11 @@ class UpdateInstalledStickerSets(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateInstalledStickerSets"]:
         return "updateInstalledStickerSets"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -84994,9 +88466,11 @@ class UpdateTrendingStickerSets(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateTrendingStickerSets"]:
         return "updateTrendingStickerSets"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85040,9 +88514,11 @@ class UpdateRecentStickers(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateRecentStickers"]:
         return "updateRecentStickers"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85079,9 +88555,11 @@ class UpdateFavoriteStickers(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateFavoriteStickers"]:
         return "updateFavoriteStickers"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85113,9 +88591,11 @@ class UpdateSavedAnimations(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSavedAnimations"]:
         return "updateSavedAnimations"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85147,9 +88627,11 @@ class UpdateSavedNotificationSounds(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSavedNotificationSounds"]:
         return "updateSavedNotificationSounds"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85191,9 +88673,11 @@ class UpdateDefaultBackground(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateDefaultBackground"]:
         return "updateDefaultBackground"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85230,9 +88714,11 @@ class UpdateChatThemes(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatThemes"]:
         return "updateChatThemes"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85273,9 +88759,11 @@ class UpdateAccentColors(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateAccentColors"]:
         return "updateAccentColors"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85323,9 +88811,11 @@ class UpdateProfileAccentColors(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateProfileAccentColors"]:
         return "updateProfileAccentColors"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85379,9 +88869,11 @@ class UpdateLanguagePackStrings(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateLanguagePackStrings"]:
         return "updateLanguagePackStrings"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85427,9 +88919,11 @@ class UpdateConnectionState(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateConnectionState"]:
         return "updateConnectionState"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85482,9 +88976,11 @@ class UpdateFreezeState(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateFreezeState"]:
         return "updateFreezeState"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85532,9 +89028,11 @@ class UpdateTermsOfService(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateTermsOfService"]:
         return "updateTermsOfService"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85571,9 +89069,11 @@ class UpdateUnconfirmedSession(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateUnconfirmedSession"]:
         return "updateUnconfirmedSession"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85605,9 +89105,11 @@ class UpdateAttachmentMenuBots(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateAttachmentMenuBots"]:
         return "updateAttachmentMenuBots"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85639,9 +89141,11 @@ class UpdateWebAppMessageSent(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateWebAppMessageSent"]:
         return "updateWebAppMessageSent"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85673,9 +89177,11 @@ class UpdateActiveEmojiReactions(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateActiveEmojiReactions"]:
         return "updateActiveEmojiReactions"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85716,9 +89222,11 @@ class UpdateAvailableMessageEffects(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateAvailableMessageEffects"]:
         return "updateAvailableMessageEffects"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85757,9 +89265,11 @@ class UpdateDefaultReactionType(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateDefaultReactionType"]:
         return "updateDefaultReactionType"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85796,9 +89306,11 @@ class UpdateDefaultPaidReactionType(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateDefaultPaidReactionType"]:
         return "updateDefaultPaidReactionType"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85837,9 +89349,11 @@ class UpdateSavedMessagesTags(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSavedMessagesTags"]:
         return "updateSavedMessagesTags"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85878,9 +89392,11 @@ class UpdateActiveLiveLocationMessages(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateActiveLiveLocationMessages"]:
         return "updateActiveLiveLocationMessages"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85912,9 +89428,11 @@ class UpdateOwnedStarCount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateOwnedStarCount"]:
         return "updateOwnedStarCount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85953,9 +89471,11 @@ class UpdateChatRevenueAmount(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatRevenueAmount"]:
         return "updateChatRevenueAmount"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -85999,9 +89519,11 @@ class UpdateStarRevenueStatus(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateStarRevenueStatus"]:
         return "updateStarRevenueStatus"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86059,9 +89581,11 @@ class UpdateSpeechRecognitionTrial(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSpeechRecognitionTrial"]:
         return "updateSpeechRecognitionTrial"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86102,9 +89626,11 @@ class UpdateDiceEmojis(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateDiceEmojis"]:
         return "updateDiceEmojis"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86148,9 +89674,11 @@ class UpdateAnimatedEmojiMessageClicked(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateAnimatedEmojiMessageClicked"]:
         return "updateAnimatedEmojiMessageClicked"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86194,9 +89722,11 @@ class UpdateAnimationSearchParameters(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateAnimationSearchParameters"]:
         return "updateAnimationSearchParameters"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86242,9 +89772,11 @@ class UpdateSuggestedActions(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSuggestedActions"]:
         return "updateSuggestedActions"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86281,9 +89813,11 @@ class UpdateSpeedLimitNotification(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateSpeedLimitNotification"]:
         return "updateSpeedLimitNotification"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86315,9 +89849,11 @@ class UpdateContactCloseBirthdays(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateContactCloseBirthdays"]:
         return "updateContactCloseBirthdays"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86367,9 +89903,11 @@ class UpdateAutosaveSettings(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateAutosaveSettings"]:
         return "updateAutosaveSettings"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86402,9 +89940,11 @@ class UpdateBusinessConnection(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateBusinessConnection"]:
         return "updateBusinessConnection"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86443,9 +89983,11 @@ class UpdateNewBusinessMessage(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewBusinessMessage"]:
         return "updateNewBusinessMessage"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86489,9 +90031,11 @@ class UpdateBusinessMessageEdited(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateBusinessMessageEdited"]:
         return "updateBusinessMessageEdited"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86540,9 +90084,11 @@ class UpdateBusinessMessagesDeleted(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateBusinessMessagesDeleted"]:
         return "updateBusinessMessagesDeleted"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86620,9 +90166,11 @@ class UpdateNewInlineQuery(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewInlineQuery"]:
         return "updateNewInlineQuery"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86694,9 +90242,11 @@ class UpdateNewChosenInlineResult(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewChosenInlineResult"]:
         return "updateNewChosenInlineResult"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86777,9 +90327,11 @@ class UpdateNewCallbackQuery(TlObject, Update, CallbackQueryBoundMethods):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewCallbackQuery"]:
         return "updateNewCallbackQuery"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86856,9 +90408,11 @@ class UpdateNewInlineCallbackQuery(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewInlineCallbackQuery"]:
         return "updateNewInlineCallbackQuery"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -86939,9 +90493,11 @@ class UpdateNewBusinessCallbackQuery(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewBusinessCallbackQuery"]:
         return "updateNewBusinessCallbackQuery"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87007,9 +90563,11 @@ class UpdateNewShippingQuery(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewShippingQuery"]:
         return "updateNewShippingQuery"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87089,9 +90647,11 @@ class UpdateNewPreCheckoutQuery(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewPreCheckoutQuery"]:
         return "updateNewPreCheckoutQuery"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87138,9 +90698,11 @@ class UpdateNewCustomEvent(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewCustomEvent"]:
         return "updateNewCustomEvent"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87182,9 +90744,11 @@ class UpdateNewCustomQuery(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewCustomQuery"]:
         return "updateNewCustomQuery"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87223,9 +90787,11 @@ class UpdatePoll(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updatePoll"]:
         return "updatePoll"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87272,9 +90838,11 @@ class UpdatePollAnswer(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updatePollAnswer"]:
         return "updatePollAnswer"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87358,9 +90926,11 @@ class UpdateChatMember(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatMember"]:
         return "updateChatMember"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87432,9 +91002,11 @@ class UpdateNewChatJoinRequest(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateNewChatJoinRequest"]:
         return "updateNewChatJoinRequest"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87480,9 +91052,11 @@ class UpdateChatBoost(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateChatBoost"]:
         return "updateChatBoost"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87548,9 +91122,11 @@ class UpdateMessageReaction(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageReaction"]:
         return "updateMessageReaction"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87616,9 +91192,11 @@ class UpdateMessageReactions(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updateMessageReactions"]:
         return "updateMessageReactions"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87664,9 +91242,11 @@ class UpdatePaidMediaPurchased(TlObject, Update):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updatePaidMediaPurchased"]:
         return "updatePaidMediaPurchased"
 
+    @classmethod
     def getClass(self) -> Literal["Update"]:
         return "Update"
 
@@ -87703,9 +91283,11 @@ class Updates(TlObject):
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
+    @classmethod
     def getType(self) -> Literal["updates"]:
         return "updates"
 
+    @classmethod
     def getClass(self) -> Literal["Updates"]:
         return "Updates"
 
