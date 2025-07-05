@@ -7,7 +7,7 @@ from os.path import join as join_path
 from pathlib import Path
 from platform import python_implementation, python_version
 from threading import current_thread, main_thread
-from typing import Callable, Dict, Union
+from typing import Callable, Dict, Type, Union
 
 import aio_pika
 from deepdiff import DeepDiff
@@ -326,7 +326,7 @@ class Client(Decorators, Methods):
 
     def add_handler(
         self,
-        update_type: str,
+        update_type: Union[Type["pytdbot.types.Update"], str],
         func: Callable,
         filters: pytdbot.filters.Filter = None,
         position: int = None,
@@ -336,7 +336,7 @@ class Client(Decorators, Methods):
         r"""Add an update handler
 
         Parameters:
-            update_type (``str``):
+            update_type (``str`` || :class:`~pytdbot.types.Update`):
                 An update type
 
             func (``Callable``):
@@ -359,23 +359,28 @@ class Client(Decorators, Methods):
         """
 
         if not isinstance(update_type, str):
-            raise TypeError("update_type must be str")
-        elif not isinstance(func, Callable):
-            raise TypeError("func must be callable")
-        elif filters is not None and not isinstance(filters, Filter):
-            raise TypeError("filters must be instance of pytdbot.filters.Filter")
-        else:
-            handler = Handler(
-                func, update_type, filters, position, inner_object, is_from_plugin
-            )
-
-            if update_type not in self._handlers:
-                self._handlers[update_type] = []
-
-            if isinstance(position, int):
-                self._handlers[update_type].insert(position, handler)
+            if isinstance(update_type, types.Update):
+                update_type = update_type.get_type()
             else:
-                self._handlers[update_type].append(handler)
+                raise TypeError(
+                    "update_type must be str or type of pytdbot.types.Update"
+                )
+        if not isinstance(func, Callable):
+            raise TypeError("func must be callable")
+        if filters is not None and not isinstance(filters, Filter):
+            raise TypeError("filters must be instance of pytdbot.filters.Filter")
+
+        handler = Handler(
+            func, update_type, filters, position, inner_object, is_from_plugin
+        )
+
+        if update_type not in self._handlers:
+            self._handlers[update_type] = []
+
+        if isinstance(position, int):
+            self._handlers[update_type].insert(position, handler)
+        else:
+            self._handlers[update_type].append(handler)
 
         self._update_handlers()
 
