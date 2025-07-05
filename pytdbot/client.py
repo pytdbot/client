@@ -359,11 +359,11 @@ class Client(Decorators, Methods):
         """
 
         if not isinstance(update_type, str):
-            if isinstance(update_type, types.Update):
-                update_type = update_type.get_type()
+            if issubclass(update_type, types.Update):
+                update_type = update_type.getType()
             else:
                 raise TypeError(
-                    "update_type must be str or type of pytdbot.types.Update"
+                    "update_type must be str or subclass of pytdbot.types.Update"
                 )
         if not isinstance(func, Callable):
             raise TypeError("func must be callable")
