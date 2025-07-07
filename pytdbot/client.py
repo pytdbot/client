@@ -179,6 +179,12 @@ class Client(Decorators, Methods):
         self.is_rabbitmq = True if rabbitmq_url else False
         self.options = {}
         self.allow_outgoing_message_types: tuple = (types.MessagePaymentRefunded,)
+        self.get_message_methods = {
+            "getmessage",
+            "getmessagelocally",
+            "getrepliedmessage",
+            "getcallbackquerymessage",
+        }  # TODO: improve this
 
         self._check_init_args()
 
@@ -456,56 +462,78 @@ class Client(Decorators, Methods):
         """
 
         request = obj_to_dict(request)
-
         request["@extra"] = {"id": create_extra_id()}
-
-        future = self._create_request_future(request)
+        request_method = request["@type"].lower()
 
         if (
             self.logger.root.level >= DEBUG or self.logger.level >= DEBUG
         ):  # dumping all requests may create performance issues
             self.logger.debug(f"Sending: {dumps(request, indent=4)}")
 
-        is_chat_attempted_load = request["@type"].lower() == "getchat"
+        is_chat_attempted_load = request_method == "getchat"
+        is_message_attempted_load = request_method in self.get_message_methods
 
         while True:
             future = self._create_request_future(request)
             await self.__send(request)
             result = await future
 
-            if isinstance(result, types.Error):
-                if result.code == 400:
-                    if result.message.startswith(
-                        "Failed to parse JSON object as TDLib request:"
-                    ):
-                        raise ValueError(result.message)
+            if not isinstance(result, types.Error):
+                break
 
-                    if not is_chat_attempted_load and (
-                        result.message == "Chat not found" and "chat_id" in request
-                    ):
-                        is_chat_attempted_load = True
+            error_code = result.code
+            error_message = result.message
 
-                        chat_id = request["chat_id"]
+            if error_message.startswith(
+                "Failed to parse JSON object as TDLib request:"
+            ):
+                raise ValueError(error_message)
 
-                        self.logger.debug(f"Attempt to load chat {chat_id}")
+            if error_code != 400:
+                break
 
-                        load_chat = await self.getChat(chat_id)
+            chat_id = request.get("chat_id")
+            message_id = request.get("message_id")
 
-                        if not isinstance(load_chat, types.Error):
-                            self.logger.debug(f"Chat {chat_id} is loaded")
+            if not is_message_attempted_load and (
+                error_message == "Message not found" and (chat_id and message_id)
+            ):
+                is_message_attempted_load = True
 
-                            reply_to_message_id = (request.get("reply_to") or {}).get(
-                                "message_id", 0
-                            )
+                self.logger.debug(f"Attempt to load message {message_id} in {chat_id}")
 
-                            # if the request is a reply to another message
-                            # load the replied message to avoid "Message not found"
-                            if reply_to_message_id > 0:
-                                await self.getMessage(chat_id, reply_to_message_id)
+                message = await self.getMessage(chat_id=chat_id, message_id=message_id)
+                if message:
+                    self.logger.debug(f"Message {message_id} in {chat_id} is loaded")
+                    continue
+                else:
+                    self.logger.debug(
+                        f"Failed to load message {message_id} in {chat_id}"
+                    )
 
-                            continue
+            if not is_chat_attempted_load and (
+                error_message == "Chat not found" and chat_id
+            ):
+                is_chat_attempted_load = True
 
-                        self.logger.error(f"Couldn't load chat {chat_id}")
+                self.logger.debug(f"Attempt to load chat {chat_id}")
+
+                chat = await self.getChat(chat_id)
+                if not isinstance(chat, types.Error):
+                    self.logger.debug(f"Chat {chat_id} is loaded")
+
+                    reply_to_message_id = (request.get("reply_to") or {}).get(
+                        "message_id", 0
+                    )
+
+                    # if the request is a reply to another message
+                    # load the replied message to avoid "Message not found"
+                    if reply_to_message_id > 0:
+                        await self.getMessage(chat_id, reply_to_message_id)
+
+                    continue
+                else:
+                    self.logger.error(f"Couldn't load chat {chat_id}")
 
             break
 
