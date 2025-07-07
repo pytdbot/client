@@ -6,7 +6,7 @@ class ScheduledEvent:
     r"""Describes a scheduled event
 
     Parameters:
-        event_id (:class:`str`):
+        event_id (:class:`int`):
             Unique identifier of the scheduled event
 
         send_at (:class:`int`):
@@ -15,7 +15,7 @@ class ScheduledEvent:
 
     def __init__(
         self,
-        event_id: str = "",
+        event_id: int = 0,
         send_at: int = 0,
     ) -> None:
         self.event_id = event_id
@@ -53,22 +53,22 @@ class UpdateScheduledEvent:
     r"""A scheduled event
 
     Parameters:
-        event_id (:class:`str`):
+        event_id (:class:`int`):
             Unique identifier of the scheduled event
 
-        data (:class:`dict`):
-            Event data
+        payload (:class:`str`):
+            Event payload
     """
 
     def __init__(
         self,
-        event_id: str = "",
-        data: dict = None,
+        event_id: int = 0,
+        payload: str = "",
     ) -> None:
         self.event_id = event_id
         r"""Unique identifier of the scheduled event"""
-        self.data = data
-        r"""Event data"""
+        self.payload = payload
+        r"""Event payload"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -83,7 +83,7 @@ class UpdateScheduledEvent:
         return {
             "@type": self.getType(),
             "event_id": self.event_id,
-            "data": self.data,
+            "payload": self.payload,
         }
 
     @classmethod
@@ -91,6 +91,6 @@ class UpdateScheduledEvent:
         if data:
             data_class = cls()
             data_class.event_id = data.get("event_id", None)
-            data_class.data = data.get("data", None)
+            data_class.payload = data.get("payload", None)
 
         return data_class
