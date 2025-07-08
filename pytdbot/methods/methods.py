@@ -1389,6 +1389,11 @@ class Methods(TDLibFunctions):
                 message_id=reply_to_message_id, quote=quote
             )
 
+        if self.load_messages_before_reply and isinstance(
+            reply_to, InputMessageReplyToMessage
+        ):
+            await self.getMessage(chat_id=chat_id, message_id=reply_to.message_id)
+
         res = await self.sendMessage(
             chat_id=chat_id,
             message_thread_id=message_thread_id,

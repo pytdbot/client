@@ -129,6 +129,7 @@ class Client(Decorators, Methods):
         options: dict = None,
         workers: int = 5,
         no_updates: bool = False,
+        load_messages_before_reply: bool = False,
         td_verbosity: int = 2,
         td_log: LogStream = None,
         user_bot: bool = False,
@@ -159,6 +160,7 @@ class Client(Decorators, Methods):
         self.td_options = options
         self.workers = workers
         self.no_updates = no_updates
+        self.load_messages_before_reply = load_messages_before_reply
         self.queue = asyncio.Queue()
         self.user_bot = user_bot
         self.my_id = (
