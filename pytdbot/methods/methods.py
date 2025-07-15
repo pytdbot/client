@@ -1027,7 +1027,7 @@ class Methods(TDLibFunctions):
         return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageVoiceNote(
-                voice=voice,
+                voice_note=voice,
                 waveform=waveform,
                 duration=duration,
                 caption=caption,
