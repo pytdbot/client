@@ -94,6 +94,9 @@ class Client(Decorators, Methods):
         workers (``int``, *optional*):
             Number of workers to handle updates. Default is ``5``. If set to ``None``, updates will be immediately handled instead of being queued, which can impact performance.
 
+        handlers_timeout (``float``, *optional*):
+            Timeout for handlers. If set, each handler will be awaited with this timeout. Default is ``None`` (no timeout)
+
         no_updates (``bool``, *optional*):
             Whether the client should handle updates or not. Applicable only when using [TDLib Server](https://github.com/pytdbot/tdlib-server). Default is ``False``
 
@@ -128,6 +131,7 @@ class Client(Decorators, Methods):
         loop: asyncio.AbstractEventLoop = None,
         options: dict = None,
         workers: int = 5,
+        handlers_timeout: float = None,
         no_updates: bool = False,
         load_messages_before_reply: bool = False,
         td_verbosity: int = 2,
@@ -159,6 +163,7 @@ class Client(Decorators, Methods):
         self.use_message_database = use_message_database
         self.td_options = options
         self.workers = workers
+        self.handlers_timeout = handlers_timeout
         self.no_updates = no_updates
         self.load_messages_before_reply = load_messages_before_reply
         self.queue = asyncio.Queue()
@@ -820,7 +825,18 @@ class Client(Decorators, Methods):
                     elif not filter_function(self, handler_value):
                         continue
 
-                await initializer(self, handler_value)
+                if self.handlers_timeout is None:
+                    await initializer(self, handler_value)
+                else:
+                    try:
+                        await asyncio.wait_for(
+                            initializer(self, handler_value),
+                            timeout=self.handlers_timeout,
+                        )
+                    except asyncio.TimeoutError:
+                        self.logger.warning(
+                            f"Initializer {initializer} timed out after {self.handlers_timeout} seconds"
+                        )
             except StopHandlers as e:
                 raise e
             except Exception:
@@ -841,7 +857,17 @@ class Client(Decorators, Methods):
                     elif not filter_function(self, handler_value):
                         continue
 
-                await handler(self, handler_value)
+                if self.handlers_timeout is None:
+                    await handler(self, handler_value)
+                else:
+                    try:
+                        await asyncio.wait_for(
+                            handler(self, handler_value), timeout=self.handlers_timeout
+                        )
+                    except asyncio.TimeoutError:
+                        self.logger.warning(
+                            f"Handler {handler} timed out after {self.handlers_timeout} seconds"
+                        )
             except StopHandlers as e:
                 raise e
             except Exception:
@@ -863,7 +889,18 @@ class Client(Decorators, Methods):
                     elif not filter_function(self, handler_value):
                         continue
 
-                await finalizer(self, handler_value)
+                if self.handlers_timeout is None:
+                    await finalizer(self, handler_value)
+                else:
+                    try:
+                        await asyncio.wait_for(
+                            finalizer(self, handler_value),
+                            timeout=self.handlers_timeout,
+                        )
+                    except asyncio.TimeoutError:
+                        self.logger.warning(
+                            f"Finalizer {finalizer} timed out after {self.handlers_timeout} seconds"
+                        )
             except StopHandlers as e:
                 raise e
             except Exception:
