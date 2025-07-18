@@ -142,7 +142,14 @@ class TdJson:
         if client_id is None:
             raise ValueError("client_id is required")
 
-        self._td_send(client_id, json_dumps(data, encode=not self.using_binding))
+        self._td_send(
+            client_id,
+            json_dumps(
+                data,
+                encode=not self.using_binding,
+                null_terminated=not self.using_binding,
+            ),
+        )
 
     def execute(self, data: dict) -> Union[None, dict]:
         """Executes a TDLib request
@@ -154,5 +161,11 @@ class TdJson:
             :py:class:``dict``: The result of the request
         """
 
-        if res := self._td_execute(json_dumps(data, encode=not self.using_binding)):
+        if res := self._td_execute(
+            json_dumps(
+                data,
+                encode=not self.using_binding,
+                null_terminated=not self.using_binding,
+            )
+        ):
             return json_loads(res)
