@@ -4,9 +4,46 @@ from functools import lru_cache
 import pytdbot
 
 
+class CallbackData:
+    def __init__(self, action, data=None):
+        self.action = action
+        self.data = data
+
+
+empty_callback_data = CallbackData("")
+
+
 class CallbackQueryBoundMethods:
     def __init__(self):
         self._client: pytdbot.Client
+
+    @property
+    @lru_cache(1)
+    def callback_data(self) -> CallbackData:
+        r"""Callback data that was set by :func:`~pytdbot.utils.callback_data`
+
+        Args:
+            action (``Any``):
+                Action name
+
+            data (``Any``, *optional*):
+                Callback data
+        """
+
+        if isinstance(self.payload, pytdbot.types.CallbackQueryPayloadData):
+            if not (self.payload.data[0] == 0x5B and self.payload.data[-1] == 0x5D):
+                return empty_callback_data
+
+            try:
+                callback_data = pytdbot.utils.json_loads(self.payload.data)
+                if not isinstance(callback_data, list) or len(callback_data) != 2:
+                    return empty_callback_data
+            except:
+                return empty_callback_data
+
+            return CallbackData(action=callback_data[0], data=callback_data[1])
+
+        return empty_callback_data
 
     @property
     @lru_cache(1)
