@@ -52,7 +52,7 @@ def callback_data(action, data=None) -> bytes:
     d = json_dumps((action, data), encode=True)
     if len(d) > 64:
         raise ValueError(
-            "Callback data must be less than 64 bytes (got {} bytes)".format(len(d))
+            f"Callback data must be less than 64 bytes (got {len(d)} bytes)"
         )
 
     return d
