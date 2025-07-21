@@ -378,7 +378,7 @@ if __name__ == "__main__":
     with open("td_api.json", "r") as f:
         tl_json = json.loads(f.read())
 
-    with open("pytdbot/types/td_types/types.py", "w") as types_file:
+    with open("pytdbot/types/td_types.py", "w") as types_file:
         types_file.write("from typing import Union, Literal, List\n")
         types_file.write("from base64 import b64decode\n")
         types_file.write(
