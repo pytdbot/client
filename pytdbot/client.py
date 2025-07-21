@@ -253,11 +253,14 @@ class Client(Decorators, Methods):
         return await self.invoke({"@type": "getServerStats"})
 
     async def scheduleEvent(
-        self, payload: str, send_at: int
+        self, name: str, payload: str, send_at: int
     ) -> Union["pytdbot.types.ScheduledEvent", "pytdbot.types.Error"]:
         """Schedule an event
 
         Parameters:
+            name (:class:`str`):
+                Event name
+
             payload (:class:`str`):
                 The event payload to be scheduled
 
@@ -267,13 +270,20 @@ class Client(Decorators, Methods):
 
         self._check_rabbitmq()
 
+        if not isinstance(name, str):
+            raise ValueError("name must be str")
         if not isinstance(payload, str):
             raise ValueError("payload must be str")
         if not isinstance(send_at, (int, float)):
             raise ValueError("send_at must be int")
 
         return await self.invoke(
-            {"@type": "scheduleEvent", "payload": payload, "send_at": send_at}
+            {
+                "@type": "scheduleEvent",
+                "name": name,
+                "payload": payload,
+                "send_at": send_at,
+            }
         )
 
     async def cancelScheduledEvent(

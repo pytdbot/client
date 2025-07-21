@@ -53,6 +53,9 @@ class UpdateScheduledEvent:
     r"""A scheduled event
 
     Parameters:
+        name (:class:`str`):
+            Event name
+
         event_id (:class:`int`):
             Unique identifier of the scheduled event
 
@@ -62,9 +65,12 @@ class UpdateScheduledEvent:
 
     def __init__(
         self,
+        name: str = "",
         event_id: int = 0,
         payload: str = "",
     ) -> None:
+        self.name = name
+        r"""Event name"""
         self.event_id = event_id
         r"""Unique identifier of the scheduled event"""
         self.payload = payload
@@ -82,6 +88,7 @@ class UpdateScheduledEvent:
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
+            "name": self.name,
             "event_id": self.event_id,
             "payload": self.payload,
         }
@@ -90,6 +97,7 @@ class UpdateScheduledEvent:
     def from_dict(cls, data: dict) -> Union["UpdateScheduledEvent", None]:
         if data:
             data_class = cls()
+            data_class.name = data.get("name", None)
             data_class.event_id = data.get("event_id", None)
             data_class.payload = data.get("payload", None)
 
