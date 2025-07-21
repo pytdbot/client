@@ -35,6 +35,31 @@ def json_loads(obj):
     return json.loads(obj)
 
 
+class CallbackData:
+    def __init__(self, action, data=None):
+        self.action = action
+        self.data = data
+
+
+empty_callback_data = CallbackData("")
+
+
+def load_callback_data(data: bytes) -> CallbackData:
+    r"""loads already created callback data by :func:`~pytdbot.utils.callback_data`. Returns empty CallbackData on error"""
+
+    if not (data[0] == 0x5B and data[-1] == 0x5D):
+        return empty_callback_data
+
+    try:
+        d = json_loads(data)
+        if not isinstance(d, list) or len(d) != 2:
+            return empty_callback_data
+    except Exception:
+        return empty_callback_data
+    else:
+        return CallbackData(*d)
+
+
 def callback_data(action, data=None) -> bytes:
     r"""Create callback data for inline buttons
 
