@@ -331,6 +331,7 @@ updates_template = """    def on_{update_name}(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r\"\"\"{description}
 
@@ -341,6 +342,9 @@ updates_template = """    def on_{update_name}(
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         \"\"\"
@@ -350,13 +354,13 @@ updates_template = """    def on_{update_name}(
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("{update_name}", func, filters, position)
+                    self.add_handler(update_type="{update_name}", func=func, filters=filters, position=position, inner_object=False, timeout=timeout)
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "{update_name}", self, position)
+                func._handler = Handler(func=func, update_type="{update_name}", filter=self, position=position, inner_object=False, timeout=timeout)
             else:
-                func._handler = Handler(func, "{update_name}", filters, position)
+                func._handler = Handler(func=func, update_type="{update_name}", filter=filters, position=position, inner_object=False, timeout=timeout)
             return func
 
         return decorator

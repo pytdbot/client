@@ -18,6 +18,7 @@ class Decorators(Updates):
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
         inner_object: bool = False,
+        timeout: float = None,
     ) -> None:
         r"""A decorator to initialize an event object before running other handlers
 
@@ -31,6 +32,9 @@ class Decorators(Updates):
             inner_object (``bool``, *optional*):
                 Wether to pass an inner object of update or not; for example ``UpdateNewMessage.message``. Default is ``False``
 
+            timeout (``float``, *optional*):
+                Max execution time for the initializer before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -41,17 +45,32 @@ class Decorators(Updates):
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "initializer", func, filters, position, inner_object
+                        update_type="initializer",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=inner_object,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "initializer", self, position, inner_object
+                    func=func,
+                    update_type="initializer",
+                    filter=self,
+                    position=position,
+                    inner_object=inner_object,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "initializer", filters, position, inner_object
+                    func=func,
+                    update_type="initializer",
+                    filter=filters,
+                    position=position,
+                    inner_object=inner_object,
+                    timeout=timeout,
                 )
 
             return func
@@ -63,6 +82,7 @@ class Decorators(Updates):
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
         inner_object: bool = False,
+        timeout: float = None,
     ) -> None:
         r"""A decorator to finalize an event object after running all handlers
 
@@ -76,82 +96,8 @@ class Decorators(Updates):
             inner_object (``bool``, *optional*):
                 Wether to pass an inner object of update or not; for example ``UpdateNewMessage.message``. Default is ``False``
 
-        Raises:
-            :py:class:`TypeError`
-        """
-
-        def decorator(func: Callable) -> Callable:
-            if hasattr(func, "_handler"):
-                return func
-            elif isinstance(self, pytdbot.Client):
-                if iscoroutinefunction(func):
-                    self.add_handler("finalizer", func, filters, position, inner_object)
-                else:
-                    raise TypeError("Handler must be async")
-            elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "finalizer", self, position, inner_object)
-            else:
-                func._handler = Handler(
-                    func, "finalizer", filters, position, inner_object
-                )
-            return func
-
-        return decorator
-
-    def on_message(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-    ) -> None:
-        r"""A decorator to handle ``updateNewMessage`` but with ``Message`` object.
-
-        Parameters:
-            filters (:class:`~pytdbot.filters.Filter`, *optional*):
-                An update filter
-
-            position (``int``, *optional*):
-                The function position in handlers list. Default is ``None`` (append)
-
-        Raises:
-            :py:class:`TypeError`
-        """
-
-        def decorator(func: Callable) -> Callable:
-            if hasattr(func, "_handler"):
-                return func
-            elif isinstance(self, pytdbot.Client):
-                if iscoroutinefunction(func):
-                    self.add_handler("updateNewMessage", func, filters, position, True)
-                else:
-                    raise TypeError("Handler must be async")
-            elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNewMessage", self, position, True)
-            else:
-                func._handler = Handler(
-                    func, "updateNewMessage", filters, position, True
-                )
-
-            return func
-
-        return decorator
-
-    def on_updateScheduledEvent(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        inner_object: bool = False,
-    ) -> None:
-        r"""A scheduled event has been triggered
-
-        Parameters:
-            filters (:class:`~pytdbot.filters.Filter`, *optional*):
-                An update filter
-
-            position (``int``, *optional*):
-                The function position in handlers list. Default is ``None`` (append)
-
-            inner_object (``bool``, *optional*):
-                Wether to pass an inner object of update or not; for example ``UpdateNewMessage.message``. Default is ``False``
+            timeout (``float``, *optional*):
+                Max execution time for the finalizer before it timeout. Default is ``None``
 
         Raises:
             :py:class:`TypeError`
@@ -163,17 +109,151 @@ class Decorators(Updates):
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateScheduledEvent", func, filters, position, inner_object
+                        update_type="finalizer",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=inner_object,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateScheduledEvent", self, position, inner_object
+                    func=func,
+                    update_type="finalizer",
+                    filter=self,
+                    position=position,
+                    inner_object=inner_object,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateScheduledEvent", filters, position, inner_object
+                    func=func,
+                    update_type="finalizer",
+                    filter=filters,
+                    position=position,
+                    inner_object=inner_object,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_message(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+        timeout: float = None,
+    ) -> None:
+        r"""A decorator to handle ``updateNewMessage`` but with ``Message`` object.
+
+        Parameters:
+            filters (:class:`~pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateNewMessage",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=True,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewMessage",
+                    filter=self,
+                    position=position,
+                    inner_object=True,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewMessage",
+                    filter=filters,
+                    position=position,
+                    inner_object=True,
+                    timeout=timeout,
+                )
+
+            return func
+
+        return decorator
+
+    def on_updateScheduledEvent(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+        timeout: float = None,
+    ) -> None:
+        r"""A scheduled event has been triggered
+
+        Parameters:
+            filters (:class:`~pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateScheduledEvent",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateScheduledEvent",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateScheduledEvent",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
 
             return func

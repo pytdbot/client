@@ -1,9 +1,9 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
+    CallbackQueryBoundMethods,
     MessageBoundMethods,
     FileBoundMethods,
-    CallbackQueryBoundMethods,
 )
 import pytdbot
 

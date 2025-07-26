@@ -15,6 +15,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The user authorization state has changed
 
@@ -25,6 +26,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -35,17 +39,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateAuthorizationState", func, filters, position
+                        update_type="updateAuthorizationState",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateAuthorizationState", self, position
+                    func=func,
+                    update_type="updateAuthorizationState",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateAuthorizationState", filters, position
+                    func=func,
+                    update_type="updateAuthorizationState",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -55,6 +74,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new message was received; can also be an outgoing message
 
@@ -65,6 +85,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -74,13 +97,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateNewMessage", func, filters, position)
+                    self.add_handler(
+                        update_type="updateNewMessage",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNewMessage", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewMessage",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateNewMessage", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewMessage",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -89,6 +133,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A request to send a message has reached the Telegram server\. This doesn't mean that the message will be sent successfully\. This update is sent only if the option \"use\_quick\_ack\" is set to true\. This update may be sent multiple times for the same message
 
@@ -99,6 +144,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -109,17 +157,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateMessageSendAcknowledged", func, filters, position
+                        update_type="updateMessageSendAcknowledged",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateMessageSendAcknowledged", self, position
+                    func=func,
+                    update_type="updateMessageSendAcknowledged",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateMessageSendAcknowledged", filters, position
+                    func=func,
+                    update_type="updateMessageSendAcknowledged",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -129,6 +192,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A message has been successfully sent
 
@@ -139,6 +203,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -149,17 +216,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateMessageSendSucceeded", func, filters, position
+                        update_type="updateMessageSendSucceeded",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateMessageSendSucceeded", self, position
+                    func=func,
+                    update_type="updateMessageSendSucceeded",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateMessageSendSucceeded", filters, position
+                    func=func,
+                    update_type="updateMessageSendSucceeded",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -169,6 +251,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A message failed to send\. Be aware that some messages being sent can be irrecoverably deleted, in which case updateDeleteMessages will be received instead of this update
 
@@ -179,6 +262,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -188,14 +274,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateMessageSendFailed", func, filters, position)
+                    self.add_handler(
+                        update_type="updateMessageSendFailed",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateMessageSendFailed", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageSendFailed",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateMessageSendFailed", filters, position
+                    func=func,
+                    update_type="updateMessageSendFailed",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -205,6 +310,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The message content has changed
 
@@ -215,6 +321,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -224,13 +333,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateMessageContent", func, filters, position)
+                    self.add_handler(
+                        update_type="updateMessageContent",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateMessageContent", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageContent",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateMessageContent", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageContent",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -239,6 +369,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A message was edited\. Changes in the message content will come in a separate updateMessageContent
 
@@ -249,6 +380,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -258,13 +392,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateMessageEdited", func, filters, position)
+                    self.add_handler(
+                        update_type="updateMessageEdited",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateMessageEdited", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageEdited",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateMessageEdited", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageEdited",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -273,6 +428,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The message pinned state was changed
 
@@ -283,6 +439,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -292,14 +451,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateMessageIsPinned", func, filters, position)
+                    self.add_handler(
+                        update_type="updateMessageIsPinned",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateMessageIsPinned", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageIsPinned",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateMessageIsPinned", filters, position
+                    func=func,
+                    update_type="updateMessageIsPinned",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -309,6 +487,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The information about interactions with a message has changed
 
@@ -319,6 +498,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -329,17 +511,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateMessageInteractionInfo", func, filters, position
+                        update_type="updateMessageInteractionInfo",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateMessageInteractionInfo", self, position
+                    func=func,
+                    update_type="updateMessageInteractionInfo",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateMessageInteractionInfo", filters, position
+                    func=func,
+                    update_type="updateMessageInteractionInfo",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -349,6 +546,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The message content was opened\. Updates voice note messages to \"listened\", video note messages to \"viewed\" and starts the self\-destruct timer
 
@@ -359,6 +557,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -369,17 +570,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateMessageContentOpened", func, filters, position
+                        update_type="updateMessageContentOpened",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateMessageContentOpened", self, position
+                    func=func,
+                    update_type="updateMessageContentOpened",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateMessageContentOpened", filters, position
+                    func=func,
+                    update_type="updateMessageContentOpened",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -389,6 +605,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A message with an unread mention was read
 
@@ -399,6 +616,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -409,17 +629,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateMessageMentionRead", func, filters, position
+                        update_type="updateMessageMentionRead",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateMessageMentionRead", self, position
+                    func=func,
+                    update_type="updateMessageMentionRead",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateMessageMentionRead", filters, position
+                    func=func,
+                    update_type="updateMessageMentionRead",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -429,6 +664,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of unread reactions added to a message was changed
 
@@ -439,6 +675,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -449,17 +688,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateMessageUnreadReactions", func, filters, position
+                        update_type="updateMessageUnreadReactions",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateMessageUnreadReactions", self, position
+                    func=func,
+                    update_type="updateMessageUnreadReactions",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateMessageUnreadReactions", filters, position
+                    func=func,
+                    update_type="updateMessageUnreadReactions",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -469,6 +723,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A fact\-check added to a message was changed
 
@@ -479,6 +734,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -488,14 +746,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateMessageFactCheck", func, filters, position)
+                    self.add_handler(
+                        update_type="updateMessageFactCheck",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateMessageFactCheck", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageFactCheck",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateMessageFactCheck", filters, position
+                    func=func,
+                    update_type="updateMessageFactCheck",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -505,6 +782,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A message with a live location was viewed\. When the update is received, the application is expected to update the live location
 
@@ -515,6 +793,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -525,17 +806,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateMessageLiveLocationViewed", func, filters, position
+                        update_type="updateMessageLiveLocationViewed",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateMessageLiveLocationViewed", self, position
+                    func=func,
+                    update_type="updateMessageLiveLocationViewed",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateMessageLiveLocationViewed", filters, position
+                    func=func,
+                    update_type="updateMessageLiveLocationViewed",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -545,6 +841,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""An automatically scheduled message with video has been successfully sent after conversion
 
@@ -555,6 +852,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -564,13 +864,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateVideoPublished", func, filters, position)
+                    self.add_handler(
+                        update_type="updateVideoPublished",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateVideoPublished", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateVideoPublished",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateVideoPublished", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateVideoPublished",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -579,6 +900,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new chat has been loaded/created\. This update is guaranteed to come before the chat identifier is returned to the application\. The chat field changes will be reported through separate updates
 
@@ -589,6 +911,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -598,13 +923,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateNewChat", func, filters, position)
+                    self.add_handler(
+                        update_type="updateNewChat",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNewChat", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewChat",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateNewChat", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewChat",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -613,6 +959,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The title of a chat was changed
 
@@ -623,6 +970,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -632,13 +982,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatTitle", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatTitle",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatTitle", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatTitle",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatTitle", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatTitle",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -647,6 +1018,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat photo was changed
 
@@ -657,6 +1029,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -666,13 +1041,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatPhoto", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatPhoto",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatPhoto", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatPhoto",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatPhoto", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatPhoto",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -681,6 +1077,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Chat accent colors have changed
 
@@ -691,6 +1088,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -700,14 +1100,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatAccentColors", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatAccentColors",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatAccentColors", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatAccentColors",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatAccentColors", filters, position
+                    func=func,
+                    update_type="updateChatAccentColors",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -717,6 +1136,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Chat permissions were changed
 
@@ -727,6 +1147,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -736,14 +1159,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatPermissions", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatPermissions",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatPermissions", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatPermissions",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatPermissions", filters, position
+                    func=func,
+                    update_type="updateChatPermissions",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -753,6 +1195,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The last message of a chat was changed
 
@@ -763,6 +1206,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -772,14 +1218,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatLastMessage", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatLastMessage",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatLastMessage", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatLastMessage",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatLastMessage", filters, position
+                    func=func,
+                    update_type="updateChatLastMessage",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -789,6 +1254,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The position of a chat in a chat list has changed\. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update
 
@@ -799,6 +1265,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -808,13 +1277,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatPosition", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatPosition",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatPosition", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatPosition",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatPosition", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatPosition",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -823,6 +1313,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat was added to a chat list
 
@@ -833,6 +1324,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -842,14 +1336,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatAddedToList", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatAddedToList",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatAddedToList", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatAddedToList",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatAddedToList", filters, position
+                    func=func,
+                    update_type="updateChatAddedToList",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -859,6 +1372,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat was removed from a chat list
 
@@ -869,6 +1383,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -879,17 +1396,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatRemovedFromList", func, filters, position
+                        update_type="updateChatRemovedFromList",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatRemovedFromList", self, position
+                    func=func,
+                    update_type="updateChatRemovedFromList",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatRemovedFromList", filters, position
+                    func=func,
+                    update_type="updateChatRemovedFromList",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -899,6 +1431,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Incoming messages were read or the number of unread messages has been changed
 
@@ -909,6 +1442,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -918,13 +1454,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatReadInbox", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatReadInbox",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatReadInbox", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatReadInbox",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatReadInbox", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatReadInbox",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -933,6 +1490,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Outgoing messages were read
 
@@ -943,6 +1501,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -952,13 +1513,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatReadOutbox", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatReadOutbox",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatReadOutbox", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatReadOutbox",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatReadOutbox", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatReadOutbox",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -967,6 +1549,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The chat action bar was changed
 
@@ -977,6 +1560,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -986,13 +1572,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatActionBar", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatActionBar",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatActionBar", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatActionBar",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatActionBar", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatActionBar",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -1001,6 +1608,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The bar for managing business bot was changed in a chat
 
@@ -1011,6 +1619,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1021,17 +1632,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatBusinessBotManageBar", func, filters, position
+                        update_type="updateChatBusinessBotManageBar",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatBusinessBotManageBar", self, position
+                    func=func,
+                    update_type="updateChatBusinessBotManageBar",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatBusinessBotManageBar", filters, position
+                    func=func,
+                    update_type="updateChatBusinessBotManageBar",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1041,6 +1667,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The chat available reactions were changed
 
@@ -1051,6 +1678,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1061,17 +1691,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatAvailableReactions", func, filters, position
+                        update_type="updateChatAvailableReactions",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatAvailableReactions", self, position
+                    func=func,
+                    update_type="updateChatAvailableReactions",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatAvailableReactions", filters, position
+                    func=func,
+                    update_type="updateChatAvailableReactions",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1081,6 +1726,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat draft has changed\. Be aware that the update may come in the currently opened chat but with old content of the draft\. If the user has changed the content of the draft, this update mustn't be applied
 
@@ -1091,6 +1737,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1100,14 +1749,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatDraftMessage", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatDraftMessage",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatDraftMessage", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatDraftMessage",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatDraftMessage", filters, position
+                    func=func,
+                    update_type="updateChatDraftMessage",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1117,6 +1785,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Chat emoji status has changed
 
@@ -1127,6 +1796,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1136,14 +1808,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatEmojiStatus", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatEmojiStatus",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatEmojiStatus", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatEmojiStatus",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatEmojiStatus", filters, position
+                    func=func,
+                    update_type="updateChatEmojiStatus",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1153,6 +1844,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The message sender that is selected to send messages in a chat has changed
 
@@ -1163,6 +1855,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1172,14 +1867,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatMessageSender", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatMessageSender",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatMessageSender", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatMessageSender",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatMessageSender", filters, position
+                    func=func,
+                    update_type="updateChatMessageSender",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1189,6 +1903,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The message auto\-delete or self\-destruct timer setting for a chat was changed
 
@@ -1199,6 +1914,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1209,17 +1927,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatMessageAutoDeleteTime", func, filters, position
+                        update_type="updateChatMessageAutoDeleteTime",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatMessageAutoDeleteTime", self, position
+                    func=func,
+                    update_type="updateChatMessageAutoDeleteTime",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatMessageAutoDeleteTime", filters, position
+                    func=func,
+                    update_type="updateChatMessageAutoDeleteTime",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1229,6 +1962,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Notification settings for a chat were changed
 
@@ -1239,6 +1973,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1249,17 +1986,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatNotificationSettings", func, filters, position
+                        update_type="updateChatNotificationSettings",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatNotificationSettings", self, position
+                    func=func,
+                    update_type="updateChatNotificationSettings",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatNotificationSettings", filters, position
+                    func=func,
+                    update_type="updateChatNotificationSettings",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1269,6 +2021,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The chat pending join requests were changed
 
@@ -1279,6 +2032,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1289,17 +2045,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatPendingJoinRequests", func, filters, position
+                        update_type="updateChatPendingJoinRequests",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatPendingJoinRequests", self, position
+                    func=func,
+                    update_type="updateChatPendingJoinRequests",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatPendingJoinRequests", filters, position
+                    func=func,
+                    update_type="updateChatPendingJoinRequests",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1309,6 +2080,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The default chat reply markup was changed\. Can occur because new messages with reply markup were received or because an old reply markup was hidden by the user
 
@@ -1319,6 +2091,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1328,14 +2103,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatReplyMarkup", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatReplyMarkup",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatReplyMarkup", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatReplyMarkup",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatReplyMarkup", filters, position
+                    func=func,
+                    update_type="updateChatReplyMarkup",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1345,6 +2139,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The chat background was changed
 
@@ -1355,6 +2150,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1364,13 +2162,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatBackground", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatBackground",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatBackground", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatBackground",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatBackground", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatBackground",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -1379,6 +2198,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The chat theme was changed
 
@@ -1389,6 +2209,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1398,13 +2221,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatTheme", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatTheme",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatTheme", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatTheme",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatTheme", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatTheme",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -1413,6 +2257,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The chat unread\_mention\_count has changed
 
@@ -1423,6 +2268,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1433,17 +2281,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatUnreadMentionCount", func, filters, position
+                        update_type="updateChatUnreadMentionCount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatUnreadMentionCount", self, position
+                    func=func,
+                    update_type="updateChatUnreadMentionCount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatUnreadMentionCount", filters, position
+                    func=func,
+                    update_type="updateChatUnreadMentionCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1453,6 +2316,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The chat unread\_reaction\_count has changed
 
@@ -1463,6 +2327,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1473,17 +2340,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatUnreadReactionCount", func, filters, position
+                        update_type="updateChatUnreadReactionCount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatUnreadReactionCount", self, position
+                    func=func,
+                    update_type="updateChatUnreadReactionCount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatUnreadReactionCount", filters, position
+                    func=func,
+                    update_type="updateChatUnreadReactionCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1493,6 +2375,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat video chat state has changed
 
@@ -1503,6 +2386,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1512,13 +2398,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatVideoChat", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatVideoChat",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatVideoChat", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatVideoChat",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatVideoChat", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatVideoChat",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -1527,6 +2434,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The value of the default disable\_notification parameter, used when a message is sent to the chat, was changed
 
@@ -1537,6 +2445,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1547,17 +2458,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatDefaultDisableNotification", func, filters, position
+                        update_type="updateChatDefaultDisableNotification",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatDefaultDisableNotification", self, position
+                    func=func,
+                    update_type="updateChatDefaultDisableNotification",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatDefaultDisableNotification", filters, position
+                    func=func,
+                    update_type="updateChatDefaultDisableNotification",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1567,6 +2493,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat content was allowed or restricted for saving
 
@@ -1577,6 +2504,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1587,17 +2517,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatHasProtectedContent", func, filters, position
+                        update_type="updateChatHasProtectedContent",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatHasProtectedContent", self, position
+                    func=func,
+                    update_type="updateChatHasProtectedContent",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatHasProtectedContent", filters, position
+                    func=func,
+                    update_type="updateChatHasProtectedContent",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1607,6 +2552,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Translation of chat messages was enabled or disabled
 
@@ -1617,6 +2563,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1627,17 +2576,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatIsTranslatable", func, filters, position
+                        update_type="updateChatIsTranslatable",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatIsTranslatable", self, position
+                    func=func,
+                    update_type="updateChatIsTranslatable",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatIsTranslatable", filters, position
+                    func=func,
+                    update_type="updateChatIsTranslatable",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1647,6 +2611,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat was marked as unread or was read
 
@@ -1657,6 +2622,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1667,17 +2635,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatIsMarkedAsUnread", func, filters, position
+                        update_type="updateChatIsMarkedAsUnread",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatIsMarkedAsUnread", self, position
+                    func=func,
+                    update_type="updateChatIsMarkedAsUnread",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatIsMarkedAsUnread", filters, position
+                    func=func,
+                    update_type="updateChatIsMarkedAsUnread",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1687,6 +2670,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat default appearance has changed
 
@@ -1697,6 +2681,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1706,14 +2693,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatViewAsTopics", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatViewAsTopics",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatViewAsTopics", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatViewAsTopics",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatViewAsTopics", filters, position
+                    func=func,
+                    update_type="updateChatViewAsTopics",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1723,6 +2729,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat was blocked or unblocked
 
@@ -1733,6 +2740,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1742,13 +2752,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatBlockList", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatBlockList",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatBlockList", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatBlockList",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatBlockList", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatBlockList",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -1757,6 +2788,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat's has\_scheduled\_messages field has changed
 
@@ -1767,6 +2799,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1777,17 +2812,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatHasScheduledMessages", func, filters, position
+                        update_type="updateChatHasScheduledMessages",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatHasScheduledMessages", self, position
+                    func=func,
+                    update_type="updateChatHasScheduledMessages",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatHasScheduledMessages", filters, position
+                    func=func,
+                    update_type="updateChatHasScheduledMessages",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1797,6 +2847,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of chat folders or a chat folder has changed
 
@@ -1807,6 +2858,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1816,13 +2870,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatFolders", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatFolders",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatFolders", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatFolders",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatFolders", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatFolders",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -1831,6 +2906,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The number of online group members has changed\. This update with non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it is sent just after the number of online users has changed
 
@@ -1841,6 +2917,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1851,17 +2930,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateChatOnlineMemberCount", func, filters, position
+                        update_type="updateChatOnlineMemberCount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateChatOnlineMemberCount", self, position
+                    func=func,
+                    update_type="updateChatOnlineMemberCount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateChatOnlineMemberCount", filters, position
+                    func=func,
+                    update_type="updateChatOnlineMemberCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1871,6 +2965,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Basic information about a Saved Messages topic has changed\. This update is guaranteed to come before the topic identifier is returned to the application
 
@@ -1881,6 +2976,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1891,17 +2989,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateSavedMessagesTopic", func, filters, position
+                        update_type="updateSavedMessagesTopic",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateSavedMessagesTopic", self, position
+                    func=func,
+                    update_type="updateSavedMessagesTopic",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateSavedMessagesTopic", filters, position
+                    func=func,
+                    update_type="updateSavedMessagesTopic",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1911,6 +3024,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Number of Saved Messages topics has changed
 
@@ -1921,6 +3035,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1931,17 +3048,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateSavedMessagesTopicCount", func, filters, position
+                        update_type="updateSavedMessagesTopicCount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateSavedMessagesTopicCount", self, position
+                    func=func,
+                    update_type="updateSavedMessagesTopicCount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateSavedMessagesTopicCount", filters, position
+                    func=func,
+                    update_type="updateSavedMessagesTopicCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1951,6 +3083,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Basic information about a topic in a channel direct messages chat administered by the current user has changed\. This update is guaranteed to come before the topic identifier is returned to the application
 
@@ -1961,6 +3094,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -1971,17 +3107,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateDirectMessagesChatTopic", func, filters, position
+                        update_type="updateDirectMessagesChatTopic",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateDirectMessagesChatTopic", self, position
+                    func=func,
+                    update_type="updateDirectMessagesChatTopic",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateDirectMessagesChatTopic", filters, position
+                    func=func,
+                    update_type="updateDirectMessagesChatTopic",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -1991,6 +3142,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Number of messages in a topic has changed; for Saved Messages and channel direct messages chat topics only
 
@@ -2001,6 +3153,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2010,14 +3165,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateTopicMessageCount", func, filters, position)
+                    self.add_handler(
+                        update_type="updateTopicMessageCount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateTopicMessageCount", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTopicMessageCount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateTopicMessageCount", filters, position
+                    func=func,
+                    update_type="updateTopicMessageCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2027,6 +3201,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Basic information about a quick reply shortcut has changed\. This update is guaranteed to come before the quick shortcut name is returned to the application
 
@@ -2037,6 +3212,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2047,17 +3225,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateQuickReplyShortcut", func, filters, position
+                        update_type="updateQuickReplyShortcut",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateQuickReplyShortcut", self, position
+                    func=func,
+                    update_type="updateQuickReplyShortcut",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateQuickReplyShortcut", filters, position
+                    func=func,
+                    update_type="updateQuickReplyShortcut",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2067,6 +3260,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A quick reply shortcut and all its messages were deleted
 
@@ -2077,6 +3271,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2087,17 +3284,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateQuickReplyShortcutDeleted", func, filters, position
+                        update_type="updateQuickReplyShortcutDeleted",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateQuickReplyShortcutDeleted", self, position
+                    func=func,
+                    update_type="updateQuickReplyShortcutDeleted",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateQuickReplyShortcutDeleted", filters, position
+                    func=func,
+                    update_type="updateQuickReplyShortcutDeleted",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2107,6 +3319,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of quick reply shortcuts has changed
 
@@ -2117,6 +3330,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2127,17 +3343,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateQuickReplyShortcuts", func, filters, position
+                        update_type="updateQuickReplyShortcuts",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateQuickReplyShortcuts", self, position
+                    func=func,
+                    update_type="updateQuickReplyShortcuts",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateQuickReplyShortcuts", filters, position
+                    func=func,
+                    update_type="updateQuickReplyShortcuts",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2147,6 +3378,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of quick reply shortcut messages has changed
 
@@ -2157,6 +3389,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2167,17 +3402,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateQuickReplyShortcutMessages", func, filters, position
+                        update_type="updateQuickReplyShortcutMessages",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateQuickReplyShortcutMessages", self, position
+                    func=func,
+                    update_type="updateQuickReplyShortcutMessages",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateQuickReplyShortcutMessages", filters, position
+                    func=func,
+                    update_type="updateQuickReplyShortcutMessages",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2187,6 +3437,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Basic information about a topic in a forum chat was changed
 
@@ -2197,6 +3448,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2206,13 +3460,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateForumTopicInfo", func, filters, position)
+                    self.add_handler(
+                        update_type="updateForumTopicInfo",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateForumTopicInfo", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateForumTopicInfo",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateForumTopicInfo", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateForumTopicInfo",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2221,6 +3496,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Information about a topic in a forum chat was changed
 
@@ -2231,6 +3507,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2240,13 +3519,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateForumTopic", func, filters, position)
+                    self.add_handler(
+                        update_type="updateForumTopic",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateForumTopic", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateForumTopic",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateForumTopic", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateForumTopic",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2255,6 +3555,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Notification settings for some type of chats were updated
 
@@ -2265,6 +3566,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2275,17 +3579,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateScopeNotificationSettings", func, filters, position
+                        update_type="updateScopeNotificationSettings",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateScopeNotificationSettings", self, position
+                    func=func,
+                    update_type="updateScopeNotificationSettings",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateScopeNotificationSettings", filters, position
+                    func=func,
+                    update_type="updateScopeNotificationSettings",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2295,6 +3614,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Notification settings for reactions were updated
 
@@ -2305,6 +3625,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2315,17 +3638,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateReactionNotificationSettings", func, filters, position
+                        update_type="updateReactionNotificationSettings",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateReactionNotificationSettings", self, position
+                    func=func,
+                    update_type="updateReactionNotificationSettings",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateReactionNotificationSettings", filters, position
+                    func=func,
+                    update_type="updateReactionNotificationSettings",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2335,6 +3673,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A notification was changed
 
@@ -2345,6 +3684,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2354,13 +3696,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateNotification", func, filters, position)
+                    self.add_handler(
+                        update_type="updateNotification",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNotification", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNotification",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateNotification", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNotification",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2369,6 +3732,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A list of active notifications in a notification group has changed
 
@@ -2379,6 +3743,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2388,14 +3755,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateNotificationGroup", func, filters, position)
+                    self.add_handler(
+                        update_type="updateNotificationGroup",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNotificationGroup", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNotificationGroup",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateNotificationGroup", filters, position
+                    func=func,
+                    update_type="updateNotificationGroup",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2405,6 +3791,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Contains active notifications that were shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
 
@@ -2415,6 +3802,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2425,17 +3815,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateActiveNotifications", func, filters, position
+                        update_type="updateActiveNotifications",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateActiveNotifications", self, position
+                    func=func,
+                    update_type="updateActiveNotifications",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateActiveNotifications", filters, position
+                    func=func,
+                    update_type="updateActiveNotifications",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2445,6 +3850,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Describes whether there are some pending notification updates\. Can be used to prevent application from killing, while there are some pending notifications
 
@@ -2455,6 +3861,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2465,17 +3874,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateHavePendingNotifications", func, filters, position
+                        update_type="updateHavePendingNotifications",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateHavePendingNotifications", self, position
+                    func=func,
+                    update_type="updateHavePendingNotifications",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateHavePendingNotifications", filters, position
+                    func=func,
+                    update_type="updateHavePendingNotifications",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2485,6 +3909,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some messages were deleted
 
@@ -2495,6 +3920,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2504,13 +3932,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateDeleteMessages", func, filters, position)
+                    self.add_handler(
+                        update_type="updateDeleteMessages",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateDeleteMessages", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateDeleteMessages",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateDeleteMessages", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateDeleteMessages",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2519,6 +3968,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A message sender activity in the chat has changed
 
@@ -2529,6 +3979,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2538,13 +3991,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatAction", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatAction",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatAction", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatAction",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatAction", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatAction",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2553,6 +4027,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The user went online or offline
 
@@ -2563,6 +4038,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2572,13 +4050,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateUserStatus", func, filters, position)
+                    self.add_handler(
+                        update_type="updateUserStatus",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateUserStatus", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateUserStatus",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateUserStatus", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateUserStatus",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2587,6 +4086,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some data of a user has changed\. This update is guaranteed to come before the user identifier is returned to the application
 
@@ -2597,6 +4097,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2606,13 +4109,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateUser", func, filters, position)
+                    self.add_handler(
+                        update_type="updateUser",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateUser", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateUser",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateUser", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateUser",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2621,6 +4145,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some data of a basic group has changed\. This update is guaranteed to come before the basic group identifier is returned to the application
 
@@ -2631,6 +4156,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2640,13 +4168,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateBasicGroup", func, filters, position)
+                    self.add_handler(
+                        update_type="updateBasicGroup",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateBasicGroup", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateBasicGroup",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateBasicGroup", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateBasicGroup",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2655,6 +4204,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some data of a supergroup or a channel has changed\. This update is guaranteed to come before the supergroup identifier is returned to the application
 
@@ -2665,6 +4215,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2674,13 +4227,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateSupergroup", func, filters, position)
+                    self.add_handler(
+                        update_type="updateSupergroup",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateSupergroup", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateSupergroup",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateSupergroup", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateSupergroup",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2689,6 +4263,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some data of a secret chat has changed\. This update is guaranteed to come before the secret chat identifier is returned to the application
 
@@ -2699,6 +4274,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2708,13 +4286,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateSecretChat", func, filters, position)
+                    self.add_handler(
+                        update_type="updateSecretChat",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateSecretChat", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateSecretChat",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateSecretChat", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateSecretChat",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2723,6 +4322,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some data in userFullInfo has been changed
 
@@ -2733,6 +4333,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2742,13 +4345,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateUserFullInfo", func, filters, position)
+                    self.add_handler(
+                        update_type="updateUserFullInfo",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateUserFullInfo", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateUserFullInfo",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateUserFullInfo", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateUserFullInfo",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2757,6 +4381,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some data in basicGroupFullInfo has been changed
 
@@ -2767,6 +4392,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2777,17 +4405,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateBasicGroupFullInfo", func, filters, position
+                        update_type="updateBasicGroupFullInfo",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateBasicGroupFullInfo", self, position
+                    func=func,
+                    update_type="updateBasicGroupFullInfo",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateBasicGroupFullInfo", filters, position
+                    func=func,
+                    update_type="updateBasicGroupFullInfo",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2797,6 +4440,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some data in supergroupFullInfo has been changed
 
@@ -2807,6 +4451,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2817,17 +4464,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateSupergroupFullInfo", func, filters, position
+                        update_type="updateSupergroupFullInfo",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateSupergroupFullInfo", self, position
+                    func=func,
+                    update_type="updateSupergroupFullInfo",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateSupergroupFullInfo", filters, position
+                    func=func,
+                    update_type="updateSupergroupFullInfo",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2837,6 +4499,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A service notification from the server was received\. Upon receiving this the application must show a popup with the content of the notification
 
@@ -2847,6 +4510,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2857,17 +4523,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateServiceNotification", func, filters, position
+                        update_type="updateServiceNotification",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateServiceNotification", self, position
+                    func=func,
+                    update_type="updateServiceNotification",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateServiceNotification", filters, position
+                    func=func,
+                    update_type="updateServiceNotification",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2877,6 +4558,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Information about a file was updated
 
@@ -2887,6 +4569,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2896,13 +4581,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateFile", func, filters, position)
+                    self.add_handler(
+                        update_type="updateFile",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateFile", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateFile",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateFile", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateFile",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -2911,6 +4617,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The file generation process needs to be started by the application\. Use setFileGenerationProgress and finishFileGeneration to generate the file
 
@@ -2921,6 +4628,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2931,17 +4641,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateFileGenerationStart", func, filters, position
+                        update_type="updateFileGenerationStart",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateFileGenerationStart", self, position
+                    func=func,
+                    update_type="updateFileGenerationStart",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateFileGenerationStart", filters, position
+                    func=func,
+                    update_type="updateFileGenerationStart",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2951,6 +4676,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""File generation is no longer needed
 
@@ -2961,6 +4687,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -2971,17 +4700,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateFileGenerationStop", func, filters, position
+                        update_type="updateFileGenerationStop",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateFileGenerationStop", self, position
+                    func=func,
+                    update_type="updateFileGenerationStop",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateFileGenerationStop", filters, position
+                    func=func,
+                    update_type="updateFileGenerationStop",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -2991,6 +4735,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The state of the file download list has changed
 
@@ -3001,6 +4746,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3010,13 +4758,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateFileDownloads", func, filters, position)
+                    self.add_handler(
+                        update_type="updateFileDownloads",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateFileDownloads", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateFileDownloads",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateFileDownloads", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateFileDownloads",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -3025,6 +4794,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A file was added to the file download list\. This update is sent only after file download list is loaded for the first time
 
@@ -3035,6 +4805,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3045,17 +4818,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateFileAddedToDownloads", func, filters, position
+                        update_type="updateFileAddedToDownloads",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateFileAddedToDownloads", self, position
+                    func=func,
+                    update_type="updateFileAddedToDownloads",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateFileAddedToDownloads", filters, position
+                    func=func,
+                    update_type="updateFileAddedToDownloads",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3065,6 +4853,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A file download was changed\. This update is sent only after file download list is loaded for the first time
 
@@ -3075,6 +4864,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3084,13 +4876,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateFileDownload", func, filters, position)
+                    self.add_handler(
+                        update_type="updateFileDownload",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateFileDownload", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateFileDownload",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateFileDownload", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateFileDownload",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -3099,6 +4912,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A file was removed from the file download list\. This update is sent only after file download list is loaded for the first time
 
@@ -3109,6 +4923,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3119,17 +4936,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateFileRemovedFromDownloads", func, filters, position
+                        update_type="updateFileRemovedFromDownloads",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateFileRemovedFromDownloads", self, position
+                    func=func,
+                    update_type="updateFileRemovedFromDownloads",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateFileRemovedFromDownloads", filters, position
+                    func=func,
+                    update_type="updateFileRemovedFromDownloads",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3139,6 +4971,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A request can't be completed unless application verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
 
@@ -3149,6 +4982,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3159,17 +4995,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateApplicationVerificationRequired", func, filters, position
+                        update_type="updateApplicationVerificationRequired",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateApplicationVerificationRequired", self, position
+                    func=func,
+                    update_type="updateApplicationVerificationRequired",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateApplicationVerificationRequired", filters, position
+                    func=func,
+                    update_type="updateApplicationVerificationRequired",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3179,6 +5030,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A request can't be completed unless reCAPTCHA verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
 
@@ -3189,6 +5041,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3199,26 +5054,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateApplicationRecaptchaVerificationRequired",
-                        func,
-                        filters,
-                        position,
+                        update_type="updateApplicationRecaptchaVerificationRequired",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func,
-                    "updateApplicationRecaptchaVerificationRequired",
-                    self,
-                    position,
+                    func=func,
+                    update_type="updateApplicationRecaptchaVerificationRequired",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func,
-                    "updateApplicationRecaptchaVerificationRequired",
-                    filters,
-                    position,
+                    func=func,
+                    update_type="updateApplicationRecaptchaVerificationRequired",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3228,6 +5089,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""New call was created or information about a call was updated
 
@@ -3238,6 +5100,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3247,13 +5112,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateCall", func, filters, position)
+                    self.add_handler(
+                        update_type="updateCall",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateCall", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateCall",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateCall", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateCall",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -3262,6 +5148,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Information about a group call was updated
 
@@ -3272,6 +5159,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3281,13 +5171,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateGroupCall", func, filters, position)
+                    self.add_handler(
+                        update_type="updateGroupCall",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateGroupCall", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateGroupCall",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateGroupCall", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateGroupCall",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -3296,6 +5207,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Information about a group call participant was changed\. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined
 
@@ -3306,6 +5218,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3316,17 +5231,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateGroupCallParticipant", func, filters, position
+                        update_type="updateGroupCallParticipant",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateGroupCallParticipant", self, position
+                    func=func,
+                    update_type="updateGroupCallParticipant",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateGroupCallParticipant", filters, position
+                    func=func,
+                    update_type="updateGroupCallParticipant",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3336,6 +5266,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of group call participants that can send and receive encrypted call data has changed; for group calls not bound to a chat only
 
@@ -3346,6 +5277,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3356,17 +5290,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateGroupCallParticipants", func, filters, position
+                        update_type="updateGroupCallParticipants",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateGroupCallParticipants", self, position
+                    func=func,
+                    update_type="updateGroupCallParticipants",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateGroupCallParticipants", filters, position
+                    func=func,
+                    update_type="updateGroupCallParticipants",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3376,6 +5325,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The verification state of an encrypted group call has changed; for group calls not bound to a chat only
 
@@ -3386,6 +5336,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3396,17 +5349,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateGroupCallVerificationState", func, filters, position
+                        update_type="updateGroupCallVerificationState",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateGroupCallVerificationState", self, position
+                    func=func,
+                    update_type="updateGroupCallVerificationState",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateGroupCallVerificationState", filters, position
+                    func=func,
+                    update_type="updateGroupCallVerificationState",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3416,6 +5384,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""New call signaling data arrived
 
@@ -3426,6 +5395,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3436,17 +5408,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateNewCallSignalingData", func, filters, position
+                        update_type="updateNewCallSignalingData",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateNewCallSignalingData", self, position
+                    func=func,
+                    update_type="updateNewCallSignalingData",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateNewCallSignalingData", filters, position
+                    func=func,
+                    update_type="updateNewCallSignalingData",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3456,6 +5443,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some privacy setting rules have been changed
 
@@ -3466,6 +5454,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3476,17 +5467,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateUserPrivacySettingRules", func, filters, position
+                        update_type="updateUserPrivacySettingRules",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateUserPrivacySettingRules", self, position
+                    func=func,
+                    update_type="updateUserPrivacySettingRules",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateUserPrivacySettingRules", filters, position
+                    func=func,
+                    update_type="updateUserPrivacySettingRules",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3496,6 +5502,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Number of unread messages in a chat list has changed\. This update is sent only if the message database is used
 
@@ -3506,6 +5513,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3516,17 +5526,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateUnreadMessageCount", func, filters, position
+                        update_type="updateUnreadMessageCount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateUnreadMessageCount", self, position
+                    func=func,
+                    update_type="updateUnreadMessageCount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateUnreadMessageCount", filters, position
+                    func=func,
+                    update_type="updateUnreadMessageCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3536,6 +5561,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Number of unread chats, i\.e\. with unread messages or marked as unread, has changed\. This update is sent only if the message database is used
 
@@ -3546,6 +5572,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3555,14 +5584,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateUnreadChatCount", func, filters, position)
+                    self.add_handler(
+                        update_type="updateUnreadChatCount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateUnreadChatCount", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateUnreadChatCount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateUnreadChatCount", filters, position
+                    func=func,
+                    update_type="updateUnreadChatCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3572,6 +5620,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A story was changed
 
@@ -3582,6 +5631,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3591,13 +5643,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateStory", func, filters, position)
+                    self.add_handler(
+                        update_type="updateStory",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateStory", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateStory",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateStory", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateStory",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -3606,6 +5679,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A story became inaccessible
 
@@ -3616,6 +5690,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3625,13 +5702,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateStoryDeleted", func, filters, position)
+                    self.add_handler(
+                        update_type="updateStoryDeleted",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateStoryDeleted", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateStoryDeleted",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateStoryDeleted", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateStoryDeleted",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -3640,6 +5738,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A story has been successfully posted
 
@@ -3650,6 +5749,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3660,17 +5762,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateStoryPostSucceeded", func, filters, position
+                        update_type="updateStoryPostSucceeded",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateStoryPostSucceeded", self, position
+                    func=func,
+                    update_type="updateStoryPostSucceeded",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateStoryPostSucceeded", filters, position
+                    func=func,
+                    update_type="updateStoryPostSucceeded",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3680,6 +5797,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A story failed to post\. If the story posting is canceled, then updateStoryDeleted will be received instead of this update
 
@@ -3690,6 +5808,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3699,14 +5820,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateStoryPostFailed", func, filters, position)
+                    self.add_handler(
+                        update_type="updateStoryPostFailed",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateStoryPostFailed", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateStoryPostFailed",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateStoryPostFailed", filters, position
+                    func=func,
+                    update_type="updateStoryPostFailed",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3716,6 +5856,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of active stories posted by a specific chat has changed
 
@@ -3726,6 +5867,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3735,14 +5879,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatActiveStories", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatActiveStories",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatActiveStories", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatActiveStories",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatActiveStories", filters, position
+                    func=func,
+                    update_type="updateChatActiveStories",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3752,6 +5915,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Number of chats in a story list has changed
 
@@ -3762,6 +5926,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3772,17 +5939,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateStoryListChatCount", func, filters, position
+                        update_type="updateStoryListChatCount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateStoryListChatCount", self, position
+                    func=func,
+                    update_type="updateStoryListChatCount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateStoryListChatCount", filters, position
+                    func=func,
+                    update_type="updateStoryListChatCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3792,6 +5974,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Story stealth mode settings have changed
 
@@ -3802,6 +5985,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3811,14 +5997,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateStoryStealthMode", func, filters, position)
+                    self.add_handler(
+                        update_type="updateStoryStealthMode",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateStoryStealthMode", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateStoryStealthMode",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateStoryStealthMode", filters, position
+                    func=func,
+                    update_type="updateStoryStealthMode",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3828,6 +6033,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""An option changed its value
 
@@ -3838,6 +6044,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3847,13 +6056,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateOption", func, filters, position)
+                    self.add_handler(
+                        update_type="updateOption",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateOption", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateOption",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateOption", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateOption",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -3862,6 +6092,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A sticker set has changed
 
@@ -3872,6 +6103,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3881,13 +6115,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateStickerSet", func, filters, position)
+                    self.add_handler(
+                        update_type="updateStickerSet",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateStickerSet", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateStickerSet",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateStickerSet", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateStickerSet",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -3896,6 +6151,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of installed sticker sets was updated
 
@@ -3906,6 +6162,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3916,17 +6175,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateInstalledStickerSets", func, filters, position
+                        update_type="updateInstalledStickerSets",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateInstalledStickerSets", self, position
+                    func=func,
+                    update_type="updateInstalledStickerSets",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateInstalledStickerSets", filters, position
+                    func=func,
+                    update_type="updateInstalledStickerSets",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3936,6 +6210,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of trending sticker sets was updated or some of them were viewed
 
@@ -3946,6 +6221,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3956,17 +6234,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateTrendingStickerSets", func, filters, position
+                        update_type="updateTrendingStickerSets",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateTrendingStickerSets", self, position
+                    func=func,
+                    update_type="updateTrendingStickerSets",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateTrendingStickerSets", filters, position
+                    func=func,
+                    update_type="updateTrendingStickerSets",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -3976,6 +6269,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of recently used stickers was updated
 
@@ -3986,6 +6280,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -3995,13 +6292,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateRecentStickers", func, filters, position)
+                    self.add_handler(
+                        update_type="updateRecentStickers",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateRecentStickers", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateRecentStickers",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateRecentStickers", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateRecentStickers",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -4010,6 +6328,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of favorite stickers was updated
 
@@ -4020,6 +6339,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4029,14 +6351,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateFavoriteStickers", func, filters, position)
+                    self.add_handler(
+                        update_type="updateFavoriteStickers",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateFavoriteStickers", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateFavoriteStickers",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateFavoriteStickers", filters, position
+                    func=func,
+                    update_type="updateFavoriteStickers",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4046,6 +6387,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of saved animations was updated
 
@@ -4056,6 +6398,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4065,14 +6410,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateSavedAnimations", func, filters, position)
+                    self.add_handler(
+                        update_type="updateSavedAnimations",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateSavedAnimations", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateSavedAnimations",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateSavedAnimations", filters, position
+                    func=func,
+                    update_type="updateSavedAnimations",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4082,6 +6446,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of saved notification sounds was updated\. This update may not be sent until information about a notification sound was requested for the first time
 
@@ -4092,6 +6457,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4102,17 +6470,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateSavedNotificationSounds", func, filters, position
+                        update_type="updateSavedNotificationSounds",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateSavedNotificationSounds", self, position
+                    func=func,
+                    update_type="updateSavedNotificationSounds",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateSavedNotificationSounds", filters, position
+                    func=func,
+                    update_type="updateSavedNotificationSounds",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4122,6 +6505,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The default background has changed
 
@@ -4132,6 +6516,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4141,14 +6528,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateDefaultBackground", func, filters, position)
+                    self.add_handler(
+                        update_type="updateDefaultBackground",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateDefaultBackground", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateDefaultBackground",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateDefaultBackground", filters, position
+                    func=func,
+                    update_type="updateDefaultBackground",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4158,6 +6564,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of available chat themes has changed
 
@@ -4168,6 +6575,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4177,13 +6587,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatThemes", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatThemes",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatThemes", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatThemes",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatThemes", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatThemes",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -4192,6 +6623,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of supported accent colors has changed
 
@@ -4202,6 +6634,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4211,13 +6646,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateAccentColors", func, filters, position)
+                    self.add_handler(
+                        update_type="updateAccentColors",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateAccentColors", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateAccentColors",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateAccentColors", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateAccentColors",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -4226,6 +6682,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of supported accent colors for user profiles has changed
 
@@ -4236,6 +6693,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4246,17 +6706,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateProfileAccentColors", func, filters, position
+                        update_type="updateProfileAccentColors",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateProfileAccentColors", self, position
+                    func=func,
+                    update_type="updateProfileAccentColors",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateProfileAccentColors", filters, position
+                    func=func,
+                    update_type="updateProfileAccentColors",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4266,6 +6741,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some language pack strings have been updated
 
@@ -4276,6 +6752,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4286,17 +6765,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateLanguagePackStrings", func, filters, position
+                        update_type="updateLanguagePackStrings",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateLanguagePackStrings", self, position
+                    func=func,
+                    update_type="updateLanguagePackStrings",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateLanguagePackStrings", filters, position
+                    func=func,
+                    update_type="updateLanguagePackStrings",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4306,6 +6800,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The connection state has changed\. This update must be used only to show a human\-readable description of the connection state
 
@@ -4316,6 +6811,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4325,14 +6823,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateConnectionState", func, filters, position)
+                    self.add_handler(
+                        update_type="updateConnectionState",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateConnectionState", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateConnectionState",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateConnectionState", filters, position
+                    func=func,
+                    update_type="updateConnectionState",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4342,6 +6859,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The freeze state of the current user's account has changed
 
@@ -4352,6 +6870,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4361,13 +6882,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateFreezeState", func, filters, position)
+                    self.add_handler(
+                        update_type="updateFreezeState",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateFreezeState", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateFreezeState",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateFreezeState", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateFreezeState",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -4376,6 +6918,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""New terms of service must be accepted by the user\. If the terms of service are declined, then the deleteAccount method must be called with the reason \"Decline ToS update\"
 
@@ -4386,6 +6929,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4395,13 +6941,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateTermsOfService", func, filters, position)
+                    self.add_handler(
+                        update_type="updateTermsOfService",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateTermsOfService", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTermsOfService",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateTermsOfService", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTermsOfService",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -4410,6 +6977,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The first unconfirmed session has changed
 
@@ -4420,6 +6988,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4430,17 +7001,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateUnconfirmedSession", func, filters, position
+                        update_type="updateUnconfirmedSession",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateUnconfirmedSession", self, position
+                    func=func,
+                    update_type="updateUnconfirmedSession",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateUnconfirmedSession", filters, position
+                    func=func,
+                    update_type="updateUnconfirmedSession",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4450,6 +7036,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of bots added to attachment or side menu has changed
 
@@ -4460,6 +7047,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4470,17 +7060,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateAttachmentMenuBots", func, filters, position
+                        update_type="updateAttachmentMenuBots",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateAttachmentMenuBots", self, position
+                    func=func,
+                    update_type="updateAttachmentMenuBots",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateAttachmentMenuBots", filters, position
+                    func=func,
+                    update_type="updateAttachmentMenuBots",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4490,6 +7095,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A message was sent by an opened Web App, so the Web App needs to be closed
 
@@ -4500,6 +7106,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4509,14 +7118,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateWebAppMessageSent", func, filters, position)
+                    self.add_handler(
+                        update_type="updateWebAppMessageSent",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateWebAppMessageSent", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateWebAppMessageSent",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateWebAppMessageSent", filters, position
+                    func=func,
+                    update_type="updateWebAppMessageSent",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4526,6 +7154,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of active emoji reactions has changed
 
@@ -4536,6 +7165,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4546,17 +7178,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateActiveEmojiReactions", func, filters, position
+                        update_type="updateActiveEmojiReactions",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateActiveEmojiReactions", self, position
+                    func=func,
+                    update_type="updateActiveEmojiReactions",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateActiveEmojiReactions", filters, position
+                    func=func,
+                    update_type="updateActiveEmojiReactions",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4566,6 +7213,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of available message effects has changed
 
@@ -4576,6 +7224,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4586,17 +7237,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateAvailableMessageEffects", func, filters, position
+                        update_type="updateAvailableMessageEffects",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateAvailableMessageEffects", self, position
+                    func=func,
+                    update_type="updateAvailableMessageEffects",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateAvailableMessageEffects", filters, position
+                    func=func,
+                    update_type="updateAvailableMessageEffects",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4606,6 +7272,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The type of default reaction has changed
 
@@ -4616,6 +7283,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4626,17 +7296,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateDefaultReactionType", func, filters, position
+                        update_type="updateDefaultReactionType",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateDefaultReactionType", self, position
+                    func=func,
+                    update_type="updateDefaultReactionType",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateDefaultReactionType", filters, position
+                    func=func,
+                    update_type="updateDefaultReactionType",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4646,6 +7331,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The type of default paid reaction has changed
 
@@ -4656,6 +7342,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4666,17 +7355,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateDefaultPaidReactionType", func, filters, position
+                        update_type="updateDefaultPaidReactionType",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateDefaultPaidReactionType", self, position
+                    func=func,
+                    update_type="updateDefaultPaidReactionType",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateDefaultPaidReactionType", filters, position
+                    func=func,
+                    update_type="updateDefaultPaidReactionType",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4686,6 +7390,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Tags used in Saved Messages or a Saved Messages topic have changed
 
@@ -4696,6 +7401,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4705,14 +7413,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateSavedMessagesTags", func, filters, position)
+                    self.add_handler(
+                        update_type="updateSavedMessagesTags",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateSavedMessagesTags", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateSavedMessagesTags",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateSavedMessagesTags", filters, position
+                    func=func,
+                    update_type="updateSavedMessagesTags",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4722,6 +7449,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of messages with active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
 
@@ -4732,6 +7460,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4742,17 +7473,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateActiveLiveLocationMessages", func, filters, position
+                        update_type="updateActiveLiveLocationMessages",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateActiveLiveLocationMessages", self, position
+                    func=func,
+                    update_type="updateActiveLiveLocationMessages",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateActiveLiveLocationMessages", filters, position
+                    func=func,
+                    update_type="updateActiveLiveLocationMessages",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4762,6 +7508,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The number of Telegram Stars owned by the current user has changed
 
@@ -4772,6 +7519,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4781,13 +7531,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateOwnedStarCount", func, filters, position)
+                    self.add_handler(
+                        update_type="updateOwnedStarCount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateOwnedStarCount", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateOwnedStarCount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateOwnedStarCount", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateOwnedStarCount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -4796,6 +7567,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The revenue earned from sponsored messages in a chat has changed\. If chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions
 
@@ -4806,6 +7578,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4815,14 +7590,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatRevenueAmount", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatRevenueAmount",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatRevenueAmount", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatRevenueAmount",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateChatRevenueAmount", filters, position
+                    func=func,
+                    update_type="updateChatRevenueAmount",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4832,6 +7626,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The Telegram Star revenue earned by a bot or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
 
@@ -4842,6 +7637,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4851,14 +7649,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateStarRevenueStatus", func, filters, position)
+                    self.add_handler(
+                        update_type="updateStarRevenueStatus",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateStarRevenueStatus", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateStarRevenueStatus",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateStarRevenueStatus", filters, position
+                    func=func,
+                    update_type="updateStarRevenueStatus",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4868,6 +7685,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The parameters of speech recognition without Telegram Premium subscription has changed
 
@@ -4878,6 +7696,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4888,17 +7709,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateSpeechRecognitionTrial", func, filters, position
+                        update_type="updateSpeechRecognitionTrial",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateSpeechRecognitionTrial", self, position
+                    func=func,
+                    update_type="updateSpeechRecognitionTrial",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateSpeechRecognitionTrial", filters, position
+                    func=func,
+                    update_type="updateSpeechRecognitionTrial",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4908,6 +7744,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of supported dice emojis has changed
 
@@ -4918,6 +7755,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4927,13 +7767,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateDiceEmojis", func, filters, position)
+                    self.add_handler(
+                        update_type="updateDiceEmojis",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateDiceEmojis", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateDiceEmojis",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateDiceEmojis", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateDiceEmojis",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -4942,6 +7803,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen\. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played
 
@@ -4952,6 +7814,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -4962,17 +7827,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateAnimatedEmojiMessageClicked", func, filters, position
+                        update_type="updateAnimatedEmojiMessageClicked",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateAnimatedEmojiMessageClicked", self, position
+                    func=func,
+                    update_type="updateAnimatedEmojiMessageClicked",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateAnimatedEmojiMessageClicked", filters, position
+                    func=func,
+                    update_type="updateAnimatedEmojiMessageClicked",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -4982,6 +7862,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The parameters of animation search through getOption\(\"animation\_search\_bot\_username\"\) bot has changed
 
@@ -4992,6 +7873,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5002,17 +7886,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateAnimationSearchParameters", func, filters, position
+                        update_type="updateAnimationSearchParameters",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateAnimationSearchParameters", self, position
+                    func=func,
+                    update_type="updateAnimationSearchParameters",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateAnimationSearchParameters", filters, position
+                    func=func,
+                    update_type="updateAnimationSearchParameters",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5022,6 +7921,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of suggested to the user actions has changed
 
@@ -5032,6 +7932,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5041,14 +7944,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateSuggestedActions", func, filters, position)
+                    self.add_handler(
+                        update_type="updateSuggestedActions",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateSuggestedActions", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateSuggestedActions",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateSuggestedActions", filters, position
+                    func=func,
+                    update_type="updateSuggestedActions",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5058,6 +7980,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user\. Use getOption\(\"premium\_download\_speedup\"\) or getOption\(\"premium\_upload\_speedup\"\) to get expected speedup after subscription to Telegram Premium
 
@@ -5068,6 +7991,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5078,17 +8004,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateSpeedLimitNotification", func, filters, position
+                        update_type="updateSpeedLimitNotification",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateSpeedLimitNotification", self, position
+                    func=func,
+                    update_type="updateSpeedLimitNotification",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateSpeedLimitNotification", filters, position
+                    func=func,
+                    update_type="updateSpeedLimitNotification",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5098,6 +8039,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The list of contacts that had birthdays recently or will have birthday soon has changed
 
@@ -5108,6 +8050,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5118,17 +8063,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateContactCloseBirthdays", func, filters, position
+                        update_type="updateContactCloseBirthdays",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateContactCloseBirthdays", self, position
+                    func=func,
+                    update_type="updateContactCloseBirthdays",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateContactCloseBirthdays", filters, position
+                    func=func,
+                    update_type="updateContactCloseBirthdays",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5138,6 +8098,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Autosave settings for some type of chats were updated
 
@@ -5148,6 +8109,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5157,14 +8121,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateAutosaveSettings", func, filters, position)
+                    self.add_handler(
+                        update_type="updateAutosaveSettings",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateAutosaveSettings", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateAutosaveSettings",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateAutosaveSettings", filters, position
+                    func=func,
+                    update_type="updateAutosaveSettings",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5174,6 +8157,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A business connection has changed; for bots only
 
@@ -5184,6 +8168,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5194,17 +8181,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateBusinessConnection", func, filters, position
+                        update_type="updateBusinessConnection",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateBusinessConnection", self, position
+                    func=func,
+                    update_type="updateBusinessConnection",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateBusinessConnection", filters, position
+                    func=func,
+                    update_type="updateBusinessConnection",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5214,6 +8216,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new message was added to a business account; for bots only
 
@@ -5224,6 +8227,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5234,17 +8240,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateNewBusinessMessage", func, filters, position
+                        update_type="updateNewBusinessMessage",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateNewBusinessMessage", self, position
+                    func=func,
+                    update_type="updateNewBusinessMessage",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateNewBusinessMessage", filters, position
+                    func=func,
+                    update_type="updateNewBusinessMessage",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5254,6 +8275,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A message in a business account was edited; for bots only
 
@@ -5264,6 +8286,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5274,17 +8299,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateBusinessMessageEdited", func, filters, position
+                        update_type="updateBusinessMessageEdited",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateBusinessMessageEdited", self, position
+                    func=func,
+                    update_type="updateBusinessMessageEdited",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateBusinessMessageEdited", filters, position
+                    func=func,
+                    update_type="updateBusinessMessageEdited",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5294,6 +8334,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""Messages in a business account were deleted; for bots only
 
@@ -5304,6 +8345,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5314,17 +8358,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateBusinessMessagesDeleted", func, filters, position
+                        update_type="updateBusinessMessagesDeleted",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateBusinessMessagesDeleted", self, position
+                    func=func,
+                    update_type="updateBusinessMessagesDeleted",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateBusinessMessagesDeleted", filters, position
+                    func=func,
+                    update_type="updateBusinessMessagesDeleted",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5334,6 +8393,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new incoming inline query; for bots only
 
@@ -5344,6 +8404,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5353,13 +8416,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateNewInlineQuery", func, filters, position)
+                    self.add_handler(
+                        update_type="updateNewInlineQuery",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNewInlineQuery", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewInlineQuery",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateNewInlineQuery", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewInlineQuery",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -5368,6 +8452,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""The user has chosen a result of an inline query; for bots only
 
@@ -5378,6 +8463,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5388,17 +8476,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateNewChosenInlineResult", func, filters, position
+                        update_type="updateNewChosenInlineResult",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateNewChosenInlineResult", self, position
+                    func=func,
+                    update_type="updateNewChosenInlineResult",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateNewChosenInlineResult", filters, position
+                    func=func,
+                    update_type="updateNewChosenInlineResult",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5408,6 +8511,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new incoming callback query; for bots only
 
@@ -5418,6 +8522,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5427,14 +8534,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateNewCallbackQuery", func, filters, position)
+                    self.add_handler(
+                        update_type="updateNewCallbackQuery",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNewCallbackQuery", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewCallbackQuery",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateNewCallbackQuery", filters, position
+                    func=func,
+                    update_type="updateNewCallbackQuery",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5444,6 +8570,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new incoming callback query from a message sent via a bot; for bots only
 
@@ -5454,6 +8581,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5464,17 +8594,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateNewInlineCallbackQuery", func, filters, position
+                        update_type="updateNewInlineCallbackQuery",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateNewInlineCallbackQuery", self, position
+                    func=func,
+                    update_type="updateNewInlineCallbackQuery",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateNewInlineCallbackQuery", filters, position
+                    func=func,
+                    update_type="updateNewInlineCallbackQuery",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5484,6 +8629,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new incoming callback query from a business message; for bots only
 
@@ -5494,6 +8640,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5504,17 +8653,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateNewBusinessCallbackQuery", func, filters, position
+                        update_type="updateNewBusinessCallbackQuery",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateNewBusinessCallbackQuery", self, position
+                    func=func,
+                    update_type="updateNewBusinessCallbackQuery",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateNewBusinessCallbackQuery", filters, position
+                    func=func,
+                    update_type="updateNewBusinessCallbackQuery",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5524,6 +8688,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new incoming shipping query; for bots only\. Only for invoices with flexible price
 
@@ -5534,6 +8699,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5543,14 +8711,33 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateNewShippingQuery", func, filters, position)
+                    self.add_handler(
+                        update_type="updateNewShippingQuery",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNewShippingQuery", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewShippingQuery",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
                 func._handler = Handler(
-                    func, "updateNewShippingQuery", filters, position
+                    func=func,
+                    update_type="updateNewShippingQuery",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5560,6 +8747,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new incoming pre\-checkout query; for bots only\. Contains full information about a checkout
 
@@ -5570,6 +8758,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5580,17 +8771,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateNewPreCheckoutQuery", func, filters, position
+                        update_type="updateNewPreCheckoutQuery",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateNewPreCheckoutQuery", self, position
+                    func=func,
+                    update_type="updateNewPreCheckoutQuery",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateNewPreCheckoutQuery", filters, position
+                    func=func,
+                    update_type="updateNewPreCheckoutQuery",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5600,6 +8806,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new incoming event; for bots only
 
@@ -5610,6 +8817,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5619,13 +8829,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateNewCustomEvent", func, filters, position)
+                    self.add_handler(
+                        update_type="updateNewCustomEvent",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNewCustomEvent", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewCustomEvent",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateNewCustomEvent", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewCustomEvent",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -5634,6 +8865,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A new incoming query; for bots only
 
@@ -5644,6 +8876,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5653,13 +8888,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateNewCustomQuery", func, filters, position)
+                    self.add_handler(
+                        update_type="updateNewCustomQuery",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateNewCustomQuery", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewCustomQuery",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateNewCustomQuery", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateNewCustomQuery",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -5668,6 +8924,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A poll was updated; for bots only
 
@@ -5678,6 +8935,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5687,13 +8947,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updatePoll", func, filters, position)
+                    self.add_handler(
+                        update_type="updatePoll",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updatePoll", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updatePoll",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updatePoll", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updatePoll",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -5702,6 +8983,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A user changed the answer to a poll; for bots only
 
@@ -5712,6 +8994,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5721,13 +9006,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updatePollAnswer", func, filters, position)
+                    self.add_handler(
+                        update_type="updatePollAnswer",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updatePollAnswer", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updatePollAnswer",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updatePollAnswer", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updatePollAnswer",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -5736,6 +9042,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""User rights changed in a chat; for bots only
 
@@ -5746,6 +9053,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5755,13 +9065,34 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updateChatMember", func, filters, position)
+                    self.add_handler(
+                        update_type="updateChatMember",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatMember", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatMember",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updateChatMember", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateChatMember",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
@@ -5770,6 +9101,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A user sent a join request to a chat; for bots only
 
@@ -5780,6 +9112,9 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
         Raises:
             :py:class:`TypeError`
         """
@@ -5790,17 +9125,32 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updateNewChatJoinRequest", func, filters, position
+                        update_type="updateNewChatJoinRequest",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updateNewChatJoinRequest", self, position
+                    func=func,
+                    update_type="updateNewChatJoinRequest",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updateNewChatJoinRequest", filters, position
+                    func=func,
+                    update_type="updateNewChatJoinRequest",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
@@ -5810,6 +9160,7 @@ class Updates:
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
         r"""A chat boost has changed; for bots only
 
@@ -5820,111 +9171,8 @@ class Updates:
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
 
-        Raises:
-            :py:class:`TypeError`
-        """
-
-        def decorator(func: Callable) -> Callable:
-            if hasattr(func, "_handler"):
-                return func
-            elif isinstance(self, pytdbot.Client):
-                if iscoroutinefunction(func):
-                    self.add_handler("updateChatBoost", func, filters, position)
-                else:
-                    raise TypeError("Handler must be async")
-            elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateChatBoost", self, position)
-            else:
-                func._handler = Handler(func, "updateChatBoost", filters, position)
-            return func
-
-        return decorator
-
-    def on_updateMessageReaction(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-    ) -> Callable:
-        r"""User changed its reactions on a message with public reactions; for bots only
-
-        Parameters:
-            filters (:class:`pytdbot.filters.Filter`, *optional*):
-                An update filter
-
-            position (``int``, *optional*):
-                The function position in handlers list. Default is ``None`` (append)
-
-        Raises:
-            :py:class:`TypeError`
-        """
-
-        def decorator(func: Callable) -> Callable:
-            if hasattr(func, "_handler"):
-                return func
-            elif isinstance(self, pytdbot.Client):
-                if iscoroutinefunction(func):
-                    self.add_handler("updateMessageReaction", func, filters, position)
-                else:
-                    raise TypeError("Handler must be async")
-            elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateMessageReaction", self, position)
-            else:
-                func._handler = Handler(
-                    func, "updateMessageReaction", filters, position
-                )
-            return func
-
-        return decorator
-
-    def on_updateMessageReactions(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-    ) -> Callable:
-        r"""Reactions added to a message with anonymous reactions have changed; for bots only
-
-        Parameters:
-            filters (:class:`pytdbot.filters.Filter`, *optional*):
-                An update filter
-
-            position (``int``, *optional*):
-                The function position in handlers list. Default is ``None`` (append)
-
-        Raises:
-            :py:class:`TypeError`
-        """
-
-        def decorator(func: Callable) -> Callable:
-            if hasattr(func, "_handler"):
-                return func
-            elif isinstance(self, pytdbot.Client):
-                if iscoroutinefunction(func):
-                    self.add_handler("updateMessageReactions", func, filters, position)
-                else:
-                    raise TypeError("Handler must be async")
-            elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updateMessageReactions", self, position)
-            else:
-                func._handler = Handler(
-                    func, "updateMessageReactions", filters, position
-                )
-            return func
-
-        return decorator
-
-    def on_updatePaidMediaPurchased(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-    ) -> Callable:
-        r"""Paid media were purchased by a user; for bots only
-
-        Parameters:
-            filters (:class:`pytdbot.filters.Filter`, *optional*):
-                An update filter
-
-            position (``int``, *optional*):
-                The function position in handlers list. Default is ``None`` (append)
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
 
         Raises:
             :py:class:`TypeError`
@@ -5936,28 +9184,44 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        "updatePaidMediaPurchased", func, filters, position
+                        update_type="updateChatBoost",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
                     )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
-                    func, "updatePaidMediaPurchased", self, position
+                    func=func,
+                    update_type="updateChatBoost",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             else:
                 func._handler = Handler(
-                    func, "updatePaidMediaPurchased", filters, position
+                    func=func,
+                    update_type="updateChatBoost",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
                 )
             return func
 
         return decorator
 
-    def on_updates(
+    def on_updateMessageReaction(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
+        timeout: float = None,
     ) -> Callable:
-        r"""Contains a list of updates
+        r"""User changed its reactions on a message with public reactions; for bots only
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -5965,6 +9229,9 @@ class Updates:
 
             position (``int``, *optional*):
                 The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
 
         Raises:
             :py:class:`TypeError`
@@ -5975,13 +9242,211 @@ class Updates:
                 return func
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
-                    self.add_handler("updates", func, filters, position)
+                    self.add_handler(
+                        update_type="updateMessageReaction",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
                 else:
                     raise TypeError("Handler must be async")
             elif isinstance(self, pytdbot.filters.Filter):
-                func._handler = Handler(func, "updates", self, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageReaction",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             else:
-                func._handler = Handler(func, "updates", filters, position)
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageReaction",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updateMessageReactions(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+        timeout: float = None,
+    ) -> Callable:
+        r"""Reactions added to a message with anonymous reactions have changed; for bots only
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateMessageReactions",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageReactions",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateMessageReactions",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updatePaidMediaPurchased(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+        timeout: float = None,
+    ) -> Callable:
+        r"""Paid media were purchased by a user; for bots only
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updatePaidMediaPurchased",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updatePaidMediaPurchased",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updatePaidMediaPurchased",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updates(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+        timeout: float = None,
+    ) -> Callable:
+        r"""Contains a list of updates
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updates",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updates",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updates",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
             return func
 
         return decorator
