@@ -131,6 +131,7 @@ class Client(Decorators, Methods):
         loop: asyncio.AbstractEventLoop = None,
         options: dict = None,
         workers: int = 5,
+        queue_size: int = 1000,
         default_handlers_timeout: float = None,
         no_updates: bool = False,
         load_messages_before_reply: bool = False,
@@ -163,6 +164,7 @@ class Client(Decorators, Methods):
         self.use_message_database = use_message_database
         self.td_options = options
         self.workers = workers
+        self.queue_size = queue_size
         self.default_handlers_timeout = default_handlers_timeout
         self.no_updates = no_updates
         self.load_messages_before_reply = load_messages_before_reply
@@ -1161,7 +1163,11 @@ class Client(Decorators, Methods):
     async def __rabbitmq_iterator(self):
         async with self.__rqueues["updates"].iterator() as iterator:
             async for message in iterator:
-                await self.queue.put(message)
+                if self.queue.qsize() > self.queue_size:
+                    await message.nack(requeue=True)
+                    continue
+
+                self.queue.put_nowait(message)
 
     async def __rabbitmq_worker(self):
         while self.is_running:
