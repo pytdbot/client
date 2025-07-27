@@ -1214,7 +1214,8 @@ class Client(Decorators, Methods):
 
     async def __handle_authorization_state_wait_phone_number(self):
         if (
-            self.authorization_state != "authorizationStateWaitPhoneNumber"
+            self.is_rabbitmq
+            or self.authorization_state != "authorizationStateWaitPhoneNumber"
             or not self.__token
         ):
             return
