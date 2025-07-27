@@ -234,7 +234,7 @@ class MessageBoundMethods:
         return await self._client.leaveChat(self.chat_id)
 
     async def ban(
-        self, banned_until_date: int = None
+        self, banned_until_date: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         r"""Ban the message sender
 
