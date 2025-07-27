@@ -1171,7 +1171,10 @@ class Client(Decorators, Methods):
 
     async def __rabbitmq_worker(self):
         while self.is_running:
-            message: aio_pika.IncomingMessage = await self.queue.get()
+            try:
+                message: aio_pika.IncomingMessage = self.queue.get_nowait()
+            except asyncio.QueueEmpty:
+                message: aio_pika.IncomingMessage = await self.queue.get()
 
             try:
                 update = json_loads(message.body)
