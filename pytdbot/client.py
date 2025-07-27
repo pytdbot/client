@@ -970,6 +970,9 @@ class Client(Decorators, Methods):
             `AuthorizationError`
         """
 
+        if self.is_rabbitmq:
+            return
+
         if isinstance(self.__database_encryption_key, str):
             self.__database_encryption_key = self.__database_encryption_key.encode(
                 "utf-8"
