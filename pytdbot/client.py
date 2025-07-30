@@ -138,6 +138,7 @@ class Client(Decorators, Methods):
         td_verbosity: int = 2,
         td_log: LogStream = None,
         user_bot: bool = False,
+        server_ack: bool = True,
     ) -> None:
         self.__api_id = api_id
         self.__api_hash = api_hash
@@ -170,6 +171,7 @@ class Client(Decorators, Methods):
         self.load_messages_before_reply = load_messages_before_reply
         self.queue = asyncio.Queue()
         self.user_bot = user_bot
+        self.server_ack = server_ack
         self.my_id = (
             get_bot_id_from_token(self.__token)
             if isinstance(self.__token, str)
@@ -1164,7 +1166,9 @@ class Client(Decorators, Methods):
         await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
 
     async def __rabbitmq_iterator(self):
-        async with self.__rqueues["updates"].iterator() as iterator:
+        async with self.__rqueues["updates"].iterator(
+            no_ack=not self.server_ack
+        ) as iterator:
             async for message in iterator:
                 if self.queue.qsize() > self.queue_size:
                     await message.nack(requeue=True)
