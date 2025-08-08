@@ -1039,7 +1039,7 @@ class TDLibFunctions:
     async def getRepliedMessage(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Message"]:
-        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message, the game message, the invoice message, the message with a previously set same background, the giveaway message, the checklist message, and the topic creation message for messages of the types messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted, messageChecklistTasksDone and messageChecklistTasksAdded, and topic messages without non\-bundled replied message respectively\. Returns a 404 error if the message doesn't exist
+        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, and the topic creation message for topic messages without non\-bundled replied message\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -1795,10 +1795,10 @@ class TDLibFunctions:
                 Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message
 
             offset (:class:`int`):
-                Specify 0 to get results from exactly the message from\_message\_id or a negative offset up to 99 to get additionally some newer messages
+                Specify 0 to get results from exactly the message from\_message\_id or a negative number from \-99 to \-1 to get additionally \-offset newer messages
 
             limit (:class:`int`):
-                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, then the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Returns:
             :class:`~pytdbot.types.Messages`
@@ -2098,10 +2098,10 @@ class TDLibFunctions:
                 Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message
 
             offset (:class:`int`):
-                Specify 0 to get results from exactly the message from\_message\_id or a negative offset up to 99 to get additionally some newer messages
+                Specify 0 to get results from exactly the message from\_message\_id or a negative number from \-99 to \-1 to get additionally \-offset newer messages
 
             limit (:class:`int`):
-                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, then the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Returns:
             :class:`~pytdbot.types.Messages`
@@ -2279,10 +2279,10 @@ class TDLibFunctions:
                 Identifier of the message starting from which history must be fetched; use 0 to get results from the last message
 
             offset (:class:`int`):
-                Specify 0 to get results from exactly the message from\_message\_id or a negative offset up to 99 to get additionally some newer messages
+                Specify 0 to get results from exactly the message from\_message\_id or a negative number from \-99 to \-1 to get additionally \-offset newer messages
 
             limit (:class:`int`):
-                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, then the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
             only_local (:class:`bool`):
                 Pass true to get only messages that are available without sending network requests
@@ -2323,10 +2323,10 @@ class TDLibFunctions:
                 Identifier of the message starting from which history must be fetched; use 0 to get results from the last message
 
             offset (:class:`int`):
-                Specify 0 to get results from exactly the message from\_message\_id or a negative offset up to 99 to get additionally some newer messages
+                Specify 0 to get results from exactly the message from\_message\_id or a negative number from \-99 to \-1 to get additionally \-offset newer messages
 
             limit (:class:`int`):
-                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, then the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Returns:
             :class:`~pytdbot.types.Messages`
@@ -2417,10 +2417,10 @@ class TDLibFunctions:
                 Identifier of the message starting from which history must be fetched; use 0 to get results from the last message
 
             offset (:class:`int`):
-                Specify 0 to get results from exactly the message from\_message\_id or a negative offset to get the specified message and some newer messages
+                Specify 0 to get results from exactly the message from\_message\_id or a negative number to get the specified message and some newer messages
 
             limit (:class:`int`):
-                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, then the limit must be greater than \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
             filter (:class:`"types.SearchMessagesFilter"`):
                 Additional filter for messages to search; pass null to search for all messages
@@ -2565,10 +2565,10 @@ class TDLibFunctions:
                 Identifier of the message starting from which messages must be fetched; use 0 to get results from the last message
 
             offset (:class:`int`):
-                Specify 0 to get results from exactly the message from\_message\_id or a negative offset to get the specified message and some newer messages
+                Specify 0 to get results from exactly the message from\_message\_id or a negative number to get the specified message and some newer messages
 
             limit (:class:`int`):
-                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, the limit must be greater than \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, then the limit must be greater than \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
         Returns:
             :class:`~pytdbot.types.FoundChatMessages`
@@ -5061,7 +5061,7 @@ class TDLibFunctions:
                 Profile photo to set; pass null to remove the photo
 
             is_public (:class:`bool`):
-                Pass true to set the public photo, which will be visible even the main photo is hidden by privacy settings
+                Pass true to set the public photo, which will be visible even if the main photo is hidden by privacy settings
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5502,7 +5502,7 @@ class TDLibFunctions:
         edit_icon_custom_emoji: bool = False,
         icon_custom_emoji_id: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Edits title and icon of a topic in a forum supergroup chat; requires can\_manage\_topics right in the supergroup unless the user is creator of the topic
+        r"""Edits title and icon of a topic in a forum supergroup chat; requires can\_manage\_topics administrator right in the supergroup unless the user is creator of the topic
 
         Parameters:
             chat_id (:class:`int`):
@@ -5663,7 +5663,7 @@ class TDLibFunctions:
     async def toggleForumTopicIsClosed(
         self, chat_id: int = 0, message_thread_id: int = 0, is_closed: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Toggles whether a topic is closed in a forum supergroup chat; requires can\_manage\_topics right in the supergroup unless the user is creator of the topic
+        r"""Toggles whether a topic is closed in a forum supergroup chat; requires can\_manage\_topics administrator right in the supergroup unless the user is creator of the topic
 
         Parameters:
             chat_id (:class:`int`):
@@ -5691,7 +5691,7 @@ class TDLibFunctions:
     async def toggleGeneralForumTopicIsHidden(
         self, chat_id: int = 0, is_hidden: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Toggles whether a General topic is hidden in a forum supergroup chat; requires can\_manage\_topics right in the supergroup
+        r"""Toggles whether a General topic is hidden in a forum supergroup chat; requires can\_manage\_topics administrator right in the supergroup
 
         Parameters:
             chat_id (:class:`int`):
@@ -5715,7 +5715,7 @@ class TDLibFunctions:
     async def toggleForumTopicIsPinned(
         self, chat_id: int = 0, message_thread_id: int = 0, is_pinned: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the pinned state of a forum topic; requires can\_manage\_topics right in the supergroup\. There can be up to getOption\(\"pinned\_forum\_topic\_count\_max\"\) pinned forum topics
+        r"""Changes the pinned state of a forum topic; requires can\_manage\_topics administrator right in the supergroup\. There can be up to getOption\(\"pinned\_forum\_topic\_count\_max\"\) pinned forum topics
 
         Parameters:
             chat_id (:class:`int`):
@@ -5743,7 +5743,7 @@ class TDLibFunctions:
     async def setPinnedForumTopics(
         self, chat_id: int = 0, message_thread_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the order of pinned forum topics; requires can\_manage\_topics right in the supergroup
+        r"""Changes the order of pinned forum topics; requires can\_manage\_topics administrator right in the supergroup
 
         Parameters:
             chat_id (:class:`int`):
@@ -7647,7 +7647,7 @@ class TDLibFunctions:
                 Source of the message view; pass null to guess the source based on chat open state
 
             force_read (:class:`bool`):
-                Pass true to mark as read the specified messages even the chat is closed
+                Pass true to mark as read the specified messages even if the chat is closed
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -10786,7 +10786,7 @@ class TDLibFunctions:
     async def getDisallowedChatEmojiStatuses(
         self,
     ) -> Union["types.Error", "types.EmojiStatusCustomEmojis"]:
-        r"""Returns the list of emoji statuses, which can't be used as chat emoji status, even they are from a sticker set with is\_allowed\_as\_chat\_emoji\_status \=\= true
+        r"""Returns the list of emoji statuses, which can't be used as chat emoji status, even if they are from a sticker set with is\_allowed\_as\_chat\_emoji\_status \=\= true
 
         Returns:
             :class:`~pytdbot.types.EmojiStatusCustomEmojis`
@@ -11829,6 +11829,93 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "invite_link": invite_link,
                 "approve": approve,
+            }
+        )
+
+    async def approveSuggestedPost(
+        self, chat_id: int = 0, message_id: int = 0, send_date: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Approves a suggested post in a channel direct messages chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat
+
+            message_id (:class:`int`):
+                Identifier of the message with the suggested post\. Use messageProperties\.can\_be\_approved to check whether the suggested post can be approved
+
+            send_date (:class:`int`):
+                Point in time \(Unix timestamp\) when the post is expected to be published; pass 0 if the date has already been chosen
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "approveSuggestedPost",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "send_date": send_date,
+            }
+        )
+
+    async def declineSuggestedPost(
+        self, chat_id: int = 0, message_id: int = 0, comment: str = ""
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Declines a suggested post in a channel direct messages chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier of the channel direct messages chat
+
+            message_id (:class:`int`):
+                Identifier of the message with the suggested post\. Use messageProperties\.can\_be\_declined to check whether the suggested post can be declined
+
+            comment (:class:`str`):
+                Comment for the creator of the suggested post; 0\-128 characters
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "declineSuggestedPost",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "comment": comment,
+            }
+        )
+
+    async def addOffer(
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        options: "types.MessageSendOptions" = None,
+    ) -> Union["types.Error", "types.Message"]:
+        r"""Sent a suggested post based on a previously sent message in a channel direct messages chat\. Can be also used to suggest price or time change for an existing suggested post\. Returns the sent message
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the channel direct messages chat
+
+            message_id (:class:`int`):
+                Identifier of the message in the chat which will be sent as suggested post\. Use messageProperties\.can\_add\_offer to check whether an offer can be added or messageProperties\.can\_edit\_suggested\_post\_info to check whether price or time of sending of the post can be changed
+
+            options (:class:`"types.MessageSendOptions"`):
+                Options to be used to send the message\. New information about the suggested post must always be specified
+
+        Returns:
+            :class:`~pytdbot.types.Message`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addOffer",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "options": options,
             }
         )
 
@@ -14268,7 +14355,7 @@ class TDLibFunctions:
                 Profile photo to set
 
             is_public (:class:`bool`):
-                Pass true to set the public photo, which will be visible even the main photo is hidden by privacy settings
+                Pass true to set the public photo, which will be visible even if the main photo is hidden by privacy settings
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -16518,7 +16605,7 @@ class TDLibFunctions:
     async def sellGift(
         self, business_connection_id: str = "", received_gift_id: str = ""
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Sells a gift for Telegram Stars
+        r"""Sells a gift for Telegram Stars; requires owner privileges for gifts owned by a chat
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -16885,7 +16972,7 @@ class TDLibFunctions:
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.GiftsForResale"]:
-        r"""Returns upgraded gifts that can be bought from other owners
+        r"""Returns upgraded gifts that can be bought from other owners using sendResoldGift
 
         Parameters:
             gift_id (:class:`int`):
@@ -17830,7 +17917,7 @@ class TDLibFunctions:
         )
 
     async def getChatRevenueTransactions(
-        self, chat_id: int = 0, offset: int = 0, limit: int = 0
+        self, chat_id: int = 0, offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.ChatRevenueTransactions"]:
         r"""Returns the list of revenue transactions for a chat\. Currently, this method can be used only for channels if supergroupFullInfo\.can\_get\_revenue\_statistics \=\= true or bots if userFullInfo\.bot\_info\.can\_get\_revenue\_statistics \=\= true
 
@@ -17838,11 +17925,11 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Chat identifier
 
-            offset (:class:`int`):
-                Number of transactions to skip
+            offset (:class:`str`):
+                Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results
 
             limit (:class:`int`):
-                The maximum number of transactions to be returned; up to 200
+                The maximum number of transactions to be returned; up to 100
 
         Returns:
             :class:`~pytdbot.types.ChatRevenueTransactions`
@@ -17852,6 +17939,37 @@ class TDLibFunctions:
             {
                 "@type": "getChatRevenueTransactions",
                 "chat_id": chat_id,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def getTonTransactions(
+        self,
+        direction: "types.TransactionDirection" = None,
+        offset: str = "",
+        limit: int = 0,
+    ) -> Union["types.Error", "types.TonTransactions"]:
+        r"""Returns the list of Toncoin transactions of the current user
+
+        Parameters:
+            direction (:class:`"types.TransactionDirection"`):
+                Direction of the transactions to receive; pass null to get all transactions
+
+            offset (:class:`str`):
+                Offset of the first transaction to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of transactions to return
+
+        Returns:
+            :class:`~pytdbot.types.TonTransactions`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getTonTransactions",
+                "direction": direction,
                 "offset": offset,
                 "limit": limit,
             }
@@ -17894,7 +18012,7 @@ class TDLibFunctions:
                 Identifier of the owner of the Telegram Stars; can be identifier of the current user, an owned bot, or an owned supergroup or channel chat
 
             star_count (:class:`int`):
-                The number of Telegram Stars to withdraw\. Must be at least getOption\(\"star\_withdrawal\_count\_min\"\)
+                The number of Telegram Stars to withdraw; must be between getOption\(\"star\_withdrawal\_count\_min\"\) and getOption\(\"star\_withdrawal\_count\_max\"\)
 
             password (:class:`str`):
                 The 2\-step verification password of the current user
@@ -19358,7 +19476,7 @@ class TDLibFunctions:
         self,
         owner_id: "types.MessageSender" = None,
         subscription_id: str = "",
-        direction: "types.StarTransactionDirection" = None,
+        direction: "types.TransactionDirection" = None,
         offset: str = "",
         limit: int = 0,
     ) -> Union["types.Error", "types.StarTransactions"]:
@@ -19371,7 +19489,7 @@ class TDLibFunctions:
             subscription_id (:class:`str`):
                 If non\-empty, only transactions related to the Star Subscription will be returned
 
-            direction (:class:`"types.StarTransactionDirection"`):
+            direction (:class:`"types.TransactionDirection"`):
                 Direction of the transactions to receive; pass null to get all transactions
 
             offset (:class:`str`):

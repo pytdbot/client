@@ -146,6 +146,24 @@ class InputChatPhoto:
     pass
 
 
+class SuggestedPostPrice:
+    r"""Describes price of a suggested post"""
+
+    pass
+
+
+class SuggestedPostState:
+    r"""Describes state of a suggested post"""
+
+    pass
+
+
+class SuggestedPostRefundReason:
+    r"""Describes reason for refund of the payment for a suggested post"""
+
+    pass
+
+
 class StarSubscriptionType:
     r"""Describes type of subscription paid in Telegram Stars"""
 
@@ -160,6 +178,12 @@ class AffiliateType:
 
 class AffiliateProgramSortOrder:
     r"""Describes the order of the found affiliate programs"""
+
+    pass
+
+
+class UpgradedGiftOrigin:
+    r"""Describes origin from which the upgraded gift was obtained"""
 
     pass
 
@@ -182,14 +206,20 @@ class SentGift:
     pass
 
 
-class StarTransactionDirection:
-    r"""Describes direction of a transaction with Telegram Stars"""
+class TransactionDirection:
+    r"""Describes direction of transactions in a transaction list"""
 
     pass
 
 
 class StarTransactionType:
     r"""Describes type of transaction with Telegram Stars"""
+
+    pass
+
+
+class TonTransactionType:
+    r"""Describes type of transaction with Toncoins"""
 
     pass
 
@@ -8442,7 +8472,7 @@ class ChatPhoto(TlObject):
             A big \(up to 1280x1280\) animated variant of the photo in MPEG4 format; may be null
 
         small_animation (:class:`"types.AnimatedChatPhoto"`):
-            A small \(160x160\) animated variant of the photo in MPEG4 format; may be null even the big animation is available
+            A small \(160x160\) animated variant of the photo in MPEG4 format; may be null even if the big animation is available
 
         sticker (:class:`"types.ChatPhotoSticker"`):
             Sticker\-based version of the chat photo; may be null
@@ -8470,7 +8500,7 @@ class ChatPhoto(TlObject):
         self.animation: Union[AnimatedChatPhoto, None] = animation
         r"""A big \(up to 1280x1280\) animated variant of the photo in MPEG4 format; may be null"""
         self.small_animation: Union[AnimatedChatPhoto, None] = small_animation
-        r"""A small \(160x160\) animated variant of the photo in MPEG4 format; may be null even the big animation is available"""
+        r"""A small \(160x160\) animated variant of the photo in MPEG4 format; may be null even if the big animation is available"""
         self.sticker: Union[ChatPhotoSticker, None] = sticker
         r"""Sticker\-based version of the chat photo; may be null"""
 
@@ -8879,7 +8909,7 @@ class ChatAdministratorRights(TlObject):
             True, if the administrator can change the chat title, photo, and other settings
 
         can_post_messages (:class:`bool`):
-            True, if the administrator can create channel posts, answer to channel direct messages, or view channel statistics; applicable to channels only
+            True, if the administrator can create channel posts, approve suggested channel posts, or view channel statistics; applicable to channels only
 
         can_edit_messages (:class:`bool`):
             True, if the administrator can edit messages of other users and pin messages; applicable to channels only
@@ -8914,6 +8944,9 @@ class ChatAdministratorRights(TlObject):
         can_delete_stories (:class:`bool`):
             True, if the administrator can delete stories posted by other users; applicable to supergroups and channels only
 
+        can_manage_direct_messages (:class:`bool`):
+            True, if the administrator can answer to channel direct messages; applicable to channels only
+
         is_anonymous (:class:`bool`):
             True, if the administrator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only
 
@@ -8935,6 +8968,7 @@ class ChatAdministratorRights(TlObject):
         can_post_stories: bool = False,
         can_edit_stories: bool = False,
         can_delete_stories: bool = False,
+        can_manage_direct_messages: bool = False,
         is_anonymous: bool = False,
     ) -> None:
         self.can_manage_chat: bool = bool(can_manage_chat)
@@ -8942,7 +8976,7 @@ class ChatAdministratorRights(TlObject):
         self.can_change_info: bool = bool(can_change_info)
         r"""True, if the administrator can change the chat title, photo, and other settings"""
         self.can_post_messages: bool = bool(can_post_messages)
-        r"""True, if the administrator can create channel posts, answer to channel direct messages, or view channel statistics; applicable to channels only"""
+        r"""True, if the administrator can create channel posts, approve suggested channel posts, or view channel statistics; applicable to channels only"""
         self.can_edit_messages: bool = bool(can_edit_messages)
         r"""True, if the administrator can edit messages of other users and pin messages; applicable to channels only"""
         self.can_delete_messages: bool = bool(can_delete_messages)
@@ -8965,6 +8999,8 @@ class ChatAdministratorRights(TlObject):
         r"""True, if the administrator can edit stories posted by other users, post stories to the chat page, pin chat stories, and access story archive; applicable to supergroups and channels only"""
         self.can_delete_stories: bool = bool(can_delete_stories)
         r"""True, if the administrator can delete stories posted by other users; applicable to supergroups and channels only"""
+        self.can_manage_direct_messages: bool = bool(can_manage_direct_messages)
+        r"""True, if the administrator can answer to channel direct messages; applicable to channels only"""
         self.is_anonymous: bool = bool(is_anonymous)
         r"""True, if the administrator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only"""
 
@@ -8996,6 +9032,7 @@ class ChatAdministratorRights(TlObject):
             "can_post_stories": self.can_post_stories,
             "can_edit_stories": self.can_edit_stories,
             "can_delete_stories": self.can_delete_stories,
+            "can_manage_direct_messages": self.can_manage_direct_messages,
             "is_anonymous": self.is_anonymous,
         }
 
@@ -9019,7 +9056,351 @@ class ChatAdministratorRights(TlObject):
             data_class.can_post_stories = data.get("can_post_stories", False)
             data_class.can_edit_stories = data.get("can_edit_stories", False)
             data_class.can_delete_stories = data.get("can_delete_stories", False)
+            data_class.can_manage_direct_messages = data.get(
+                "can_manage_direct_messages", False
+            )
             data_class.is_anonymous = data.get("is_anonymous", False)
+
+        return data_class
+
+
+class SuggestedPostPriceStar(TlObject, SuggestedPostPrice):
+    r"""Describes price of a suggested post in Telegram Stars
+
+    Parameters:
+        star_count (:class:`int`):
+            The amount of Telegram Stars agreed to pay for the post; getOption\(\"suggested\_post\_star\_count\_min\"\)\-getOption\(\"suggested\_post\_star\_count\_max\"\)
+
+    """
+
+    def __init__(self, star_count: int = 0) -> None:
+        self.star_count: int = int(star_count)
+        r"""The amount of Telegram Stars agreed to pay for the post; getOption\(\"suggested\_post\_star\_count\_min\"\)\-getOption\(\"suggested\_post\_star\_count\_max\"\)"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["suggestedPostPriceStar"]:
+        return "suggestedPostPriceStar"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedPostPrice"]:
+        return "SuggestedPostPrice"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "star_count": self.star_count}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["SuggestedPostPriceStar", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+
+        return data_class
+
+
+class SuggestedPostPriceTon(TlObject, SuggestedPostPrice):
+    r"""Describes price of a suggested post in Toncoins
+
+    Parameters:
+        toncoin_cent_count (:class:`int`):
+            The amount of 1/100 of Toncoin agreed to pay for the post; getOption\(\"suggested\_post\_toncoin\_cent\_count\_min\"\)\-getOption\(\"suggested\_post\_toncoin\_cent\_count\_max\"\)
+
+    """
+
+    def __init__(self, toncoin_cent_count: int = 0) -> None:
+        self.toncoin_cent_count: int = int(toncoin_cent_count)
+        r"""The amount of 1/100 of Toncoin agreed to pay for the post; getOption\(\"suggested\_post\_toncoin\_cent\_count\_min\"\)\-getOption\(\"suggested\_post\_toncoin\_cent\_count\_max\"\)"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["suggestedPostPriceTon"]:
+        return "suggestedPostPriceTon"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedPostPrice"]:
+        return "SuggestedPostPrice"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "toncoin_cent_count": self.toncoin_cent_count}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["SuggestedPostPriceTon", None]:
+        if data:
+            data_class = cls()
+            data_class.toncoin_cent_count = int(data.get("toncoin_cent_count", 0))
+
+        return data_class
+
+
+class SuggestedPostStatePending(TlObject, SuggestedPostState):
+    r"""The post must be approved or declined"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["suggestedPostStatePending"]:
+        return "suggestedPostStatePending"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedPostState"]:
+        return "SuggestedPostState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["SuggestedPostStatePending", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class SuggestedPostStateApproved(TlObject, SuggestedPostState):
+    r"""The post was approved"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["suggestedPostStateApproved"]:
+        return "suggestedPostStateApproved"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedPostState"]:
+        return "SuggestedPostState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["SuggestedPostStateApproved", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class SuggestedPostStateDeclined(TlObject, SuggestedPostState):
+    r"""The post was declined"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["suggestedPostStateDeclined"]:
+        return "suggestedPostStateDeclined"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedPostState"]:
+        return "SuggestedPostState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["SuggestedPostStateDeclined", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class SuggestedPostInfo(TlObject):
+    r"""Contains information about a suggested post\. If the post can be approved or declined, then changes to the post can be also suggested\. Use sendMessage with reply to the message and suggested post information to suggest message changes\. Use addOffer to suggest price or time changes
+
+    Parameters:
+        price (:class:`"types.SuggestedPostPrice"`):
+            Price of the suggested post; may be null if the post is non\-paid
+
+        send_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the post is expected to be published; 0 if the specific date isn't set yet
+
+        state (:class:`"types.SuggestedPostState"`):
+            State of the post
+
+        can_be_approved (:class:`bool`):
+            True, if the suggested post can be approved by the current user using approveSuggestedPost; updates aren't sent when value of this field changes
+
+        can_be_declined (:class:`bool`):
+            True, if the suggested post can be declined by the current user using declineSuggestedPost; updates aren't sent when value of this field changes
+
+    """
+
+    def __init__(
+        self,
+        price: SuggestedPostPrice = None,
+        send_date: int = 0,
+        state: SuggestedPostState = None,
+        can_be_approved: bool = False,
+        can_be_declined: bool = False,
+    ) -> None:
+        self.price: Union[SuggestedPostPriceStar, SuggestedPostPriceTon, None] = price
+        r"""Price of the suggested post; may be null if the post is non\-paid"""
+        self.send_date: int = int(send_date)
+        r"""Point in time \(Unix timestamp\) when the post is expected to be published; 0 if the specific date isn't set yet"""
+        self.state: Union[
+            SuggestedPostStatePending,
+            SuggestedPostStateApproved,
+            SuggestedPostStateDeclined,
+            None,
+        ] = state
+        r"""State of the post"""
+        self.can_be_approved: bool = bool(can_be_approved)
+        r"""True, if the suggested post can be approved by the current user using approveSuggestedPost; updates aren't sent when value of this field changes"""
+        self.can_be_declined: bool = bool(can_be_declined)
+        r"""True, if the suggested post can be declined by the current user using declineSuggestedPost; updates aren't sent when value of this field changes"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["suggestedPostInfo"]:
+        return "suggestedPostInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedPostInfo"]:
+        return "SuggestedPostInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "price": self.price,
+            "send_date": self.send_date,
+            "state": self.state,
+            "can_be_approved": self.can_be_approved,
+            "can_be_declined": self.can_be_declined,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["SuggestedPostInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.price = data.get("price", None)
+            data_class.send_date = int(data.get("send_date", 0))
+            data_class.state = data.get("state", None)
+            data_class.can_be_approved = data.get("can_be_approved", False)
+            data_class.can_be_declined = data.get("can_be_declined", False)
+
+        return data_class
+
+
+class InputSuggestedPostInfo(TlObject):
+    r"""Contains information about a post to suggest
+
+    Parameters:
+        price (:class:`"types.SuggestedPostPrice"`):
+            Price of the suggested post; pass null to suggest a post without payment\. If the current user isn't an administrator of the channel direct messages chat and has no enough funds to pay for the post, then the error \"BALANCE\_TOO\_LOW\" will be returned immediately
+
+        send_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the post is expected to be published; pass 0 if the date isn't restricted\. If specified, then the date must be getOption\(\"suggested\_post\_send\_delay\_min\"\)\-getOption\(\"suggested\_post\_send\_delay\_max\"\) seconds in the future
+
+    """
+
+    def __init__(self, price: SuggestedPostPrice = None, send_date: int = 0) -> None:
+        self.price: Union[SuggestedPostPriceStar, SuggestedPostPriceTon, None] = price
+        r"""Price of the suggested post; pass null to suggest a post without payment\. If the current user isn't an administrator of the channel direct messages chat and has no enough funds to pay for the post, then the error \"BALANCE\_TOO\_LOW\" will be returned immediately"""
+        self.send_date: int = int(send_date)
+        r"""Point in time \(Unix timestamp\) when the post is expected to be published; pass 0 if the date isn't restricted\. If specified, then the date must be getOption\(\"suggested\_post\_send\_delay\_min\"\)\-getOption\(\"suggested\_post\_send\_delay\_max\"\) seconds in the future"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputSuggestedPostInfo"]:
+        return "inputSuggestedPostInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["InputSuggestedPostInfo"]:
+        return "InputSuggestedPostInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "price": self.price,
+            "send_date": self.send_date,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputSuggestedPostInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.price = data.get("price", None)
+            data_class.send_date = int(data.get("send_date", 0))
+
+        return data_class
+
+
+class SuggestedPostRefundReasonPostDeleted(TlObject, SuggestedPostRefundReason):
+    r"""The post was refunded, because it was deleted by channel administrators in less than getOption\(\"suggested\_post\_lifetime\_min\"\) seconds"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["suggestedPostRefundReasonPostDeleted"]:
+        return "suggestedPostRefundReasonPostDeleted"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedPostRefundReason"]:
+        return "SuggestedPostRefundReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["SuggestedPostRefundReasonPostDeleted", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class SuggestedPostRefundReasonPaymentRefunded(TlObject, SuggestedPostRefundReason):
+    r"""The post was refunded, because the payment for the post was refunded"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["suggestedPostRefundReasonPaymentRefunded"]:
+        return "suggestedPostRefundReasonPaymentRefunded"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedPostRefundReason"]:
+        return "SuggestedPostRefundReason"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["SuggestedPostRefundReasonPaymentRefunded", None]:
+        if data:
+            data_class = cls()
 
         return data_class
 
@@ -10118,6 +10499,7 @@ class PremiumPaymentOption(TlObject):
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypeMyStars,
+            InternalLinkTypeMyToncoins,
             InternalLinkTypePassportDataRequest,
             InternalLinkTypePhoneNumberConfirmation,
             InternalLinkTypePremiumFeatures,
@@ -10997,6 +11379,106 @@ class GiftSettings(TlObject):
         return data_class
 
 
+class UpgradedGiftOriginUpgrade(TlObject, UpgradedGiftOrigin):
+    r"""The gift was obtained by upgrading of a previously received gift
+
+    Parameters:
+        gift_message_id (:class:`int`):
+            Identifier of the message with the regular gift that was upgraded; can be 0 or an identifier of a deleted message
+
+    """
+
+    def __init__(self, gift_message_id: int = 0) -> None:
+        self.gift_message_id: int = int(gift_message_id)
+        r"""Identifier of the message with the regular gift that was upgraded; can be 0 or an identifier of a deleted message"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["upgradedGiftOriginUpgrade"]:
+        return "upgradedGiftOriginUpgrade"
+
+    @classmethod
+    def getClass(self) -> Literal["UpgradedGiftOrigin"]:
+        return "UpgradedGiftOrigin"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "gift_message_id": self.gift_message_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpgradedGiftOriginUpgrade", None]:
+        if data:
+            data_class = cls()
+            data_class.gift_message_id = int(data.get("gift_message_id", 0))
+
+        return data_class
+
+
+class UpgradedGiftOriginTransfer(TlObject, UpgradedGiftOrigin):
+    r"""The gift was transferred from another owner"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["upgradedGiftOriginTransfer"]:
+        return "upgradedGiftOriginTransfer"
+
+    @classmethod
+    def getClass(self) -> Literal["UpgradedGiftOrigin"]:
+        return "UpgradedGiftOrigin"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpgradedGiftOriginTransfer", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class UpgradedGiftOriginResale(TlObject, UpgradedGiftOrigin):
+    r"""The gift was bought from another user
+
+    Parameters:
+        star_count (:class:`int`):
+            Number of Telegram Stars that were paid by the sender for the gift
+
+    """
+
+    def __init__(self, star_count: int = 0) -> None:
+        self.star_count: int = int(star_count)
+        r"""Number of Telegram Stars that were paid by the sender for the gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["upgradedGiftOriginResale"]:
+        return "upgradedGiftOriginResale"
+
+    @classmethod
+    def getClass(self) -> Literal["UpgradedGiftOrigin"]:
+        return "UpgradedGiftOrigin"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "star_count": self.star_count}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpgradedGiftOriginResale", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+
+        return data_class
+
+
 class UpgradedGiftModel(TlObject):
     r"""Describes a model of an upgraded gift
 
@@ -11314,6 +11796,9 @@ class Gift(TlObject):
         id (:class:`int`):
             Unique identifier of the gift
 
+        publisher_chat_id (:class:`int`):
+            Identifier of the chat that published the gift; 0 if none
+
         sticker (:class:`"types.Sticker"`):
             The sticker representing the gift
 
@@ -11346,6 +11831,7 @@ class Gift(TlObject):
     def __init__(
         self,
         id: int = 0,
+        publisher_chat_id: int = 0,
         sticker: Sticker = None,
         star_count: int = 0,
         default_sell_star_count: int = 0,
@@ -11358,6 +11844,8 @@ class Gift(TlObject):
     ) -> None:
         self.id: int = int(id)
         r"""Unique identifier of the gift"""
+        self.publisher_chat_id: int = int(publisher_chat_id)
+        r"""Identifier of the chat that published the gift; 0 if none"""
         self.sticker: Union[Sticker, None] = sticker
         r"""The sticker representing the gift"""
         self.star_count: int = int(star_count)
@@ -11392,6 +11880,7 @@ class Gift(TlObject):
         return {
             "@type": self.getType(),
             "id": self.id,
+            "publisher_chat_id": self.publisher_chat_id,
             "sticker": self.sticker,
             "star_count": self.star_count,
             "default_sell_star_count": self.default_sell_star_count,
@@ -11408,6 +11897,7 @@ class Gift(TlObject):
         if data:
             data_class = cls()
             data_class.id = int(data.get("id", 0))
+            data_class.publisher_chat_id = int(data.get("publisher_chat_id", 0))
             data_class.sticker = data.get("sticker", None)
             data_class.star_count = int(data.get("star_count", 0))
             data_class.default_sell_star_count = int(
@@ -11429,6 +11919,9 @@ class UpgradedGift(TlObject):
     Parameters:
         id (:class:`int`):
             Unique identifier of the gift
+
+        publisher_chat_id (:class:`int`):
+            Identifier of the chat that published the gift; 0 if none
 
         title (:class:`str`):
             The title of the upgraded gift
@@ -11477,6 +11970,7 @@ class UpgradedGift(TlObject):
     def __init__(
         self,
         id: int = 0,
+        publisher_chat_id: int = 0,
         title: str = "",
         name: str = "",
         number: int = 0,
@@ -11494,6 +11988,8 @@ class UpgradedGift(TlObject):
     ) -> None:
         self.id: int = int(id)
         r"""Unique identifier of the gift"""
+        self.publisher_chat_id: int = int(publisher_chat_id)
+        r"""Identifier of the chat that published the gift; 0 if none"""
         self.title: Union[str, None] = title
         r"""The title of the upgraded gift"""
         self.name: Union[str, None] = name
@@ -11540,6 +12036,7 @@ class UpgradedGift(TlObject):
         return {
             "@type": self.getType(),
             "id": self.id,
+            "publisher_chat_id": self.publisher_chat_id,
             "title": self.title,
             "name": self.name,
             "number": self.number,
@@ -11561,6 +12058,7 @@ class UpgradedGift(TlObject):
         if data:
             data_class = cls()
             data_class.id = int(data.get("id", 0))
+            data_class.publisher_chat_id = int(data.get("publisher_chat_id", 0))
             data_class.title = data.get("title", "")
             data_class.name = data.get("name", "")
             data_class.number = int(data.get("number", 0))
@@ -12609,8 +13107,8 @@ class GiftUpgradePreview(TlObject):
         return data_class
 
 
-class StarTransactionDirectionIncoming(TlObject, StarTransactionDirection):
-    r"""The transaction is incoming and increases the number of owned Telegram Stars"""
+class TransactionDirectionIncoming(TlObject, TransactionDirection):
+    r"""The transaction is incoming and increases the amount of owned currency"""
 
     def __init__(self) -> None:
         pass
@@ -12619,26 +13117,26 @@ class StarTransactionDirectionIncoming(TlObject, StarTransactionDirection):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["starTransactionDirectionIncoming"]:
-        return "starTransactionDirectionIncoming"
+    def getType(self) -> Literal["transactionDirectionIncoming"]:
+        return "transactionDirectionIncoming"
 
     @classmethod
-    def getClass(self) -> Literal["StarTransactionDirection"]:
-        return "StarTransactionDirection"
+    def getClass(self) -> Literal["TransactionDirection"]:
+        return "TransactionDirection"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionDirectionIncoming", None]:
+    def from_dict(cls, data: dict) -> Union["TransactionDirectionIncoming", None]:
         if data:
             data_class = cls()
 
         return data_class
 
 
-class StarTransactionDirectionOutgoing(TlObject, StarTransactionDirection):
-    r"""The transaction is outgoing and decreases the number of owned Telegram Stars"""
+class TransactionDirectionOutgoing(TlObject, TransactionDirection):
+    r"""The transaction is outgoing and decreases the amount of owned currency"""
 
     def __init__(self) -> None:
         pass
@@ -12647,18 +13145,18 @@ class StarTransactionDirectionOutgoing(TlObject, StarTransactionDirection):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["starTransactionDirectionOutgoing"]:
-        return "starTransactionDirectionOutgoing"
+    def getType(self) -> Literal["transactionDirectionOutgoing"]:
+        return "transactionDirectionOutgoing"
 
     @classmethod
-    def getClass(self) -> Literal["StarTransactionDirection"]:
-        return "StarTransactionDirection"
+    def getClass(self) -> Literal["TransactionDirection"]:
+        return "TransactionDirection"
 
     def to_dict(self) -> dict:
         return {"@type": self.getType()}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["StarTransactionDirectionOutgoing", None]:
+    def from_dict(cls, data: dict) -> Union["TransactionDirectionOutgoing", None]:
         if data:
             data_class = cls()
 
@@ -14088,6 +14586,82 @@ class StarTransactionTypePaidMessageReceive(TlObject, StarTransactionType):
         return data_class
 
 
+class StarTransactionTypeSuggestedPostPaymentSend(TlObject, StarTransactionType):
+    r"""The transaction is a payment for a suggested post; for regular users only
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the channel chat that posted the post
+
+    """
+
+    def __init__(self, chat_id: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the channel chat that posted the post"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["starTransactionTypeSuggestedPostPaymentSend"]:
+        return "starTransactionTypeSuggestedPostPaymentSend"
+
+    @classmethod
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "chat_id": self.chat_id}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeSuggestedPostPaymentSend", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+
+        return data_class
+
+
+class StarTransactionTypeSuggestedPostPaymentReceive(TlObject, StarTransactionType):
+    r"""The transaction is a receiving of a payment for a suggested post by the channel chat; for channel chats only
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user that paid for the suggested post
+
+    """
+
+    def __init__(self, user_id: int = 0) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that paid for the suggested post"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["starTransactionTypeSuggestedPostPaymentReceive"]:
+        return "starTransactionTypeSuggestedPostPaymentReceive"
+
+    @classmethod
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "user_id": self.user_id}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeSuggestedPostPaymentReceive", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+
+        return data_class
+
+
 class StarTransactionTypePremiumPurchase(TlObject, StarTransactionType):
     r"""The transaction is a purchase of Telegram Premium subscription; for regular users and bots only
 
@@ -14315,6 +14889,8 @@ class StarTransaction(TlObject):
             StarTransactionTypeAffiliateProgramCommission,
             StarTransactionTypePaidMessageSend,
             StarTransactionTypePaidMessageReceive,
+            StarTransactionTypeSuggestedPostPaymentSend,
+            StarTransactionTypeSuggestedPostPaymentReceive,
             StarTransactionTypePremiumPurchase,
             StarTransactionTypeBusinessBotTransferSend,
             StarTransactionTypeBusinessBotTransferReceive,
@@ -14409,6 +14985,255 @@ class StarTransactions(TlObject):
         if data:
             data_class = cls()
             data_class.star_amount = data.get("star_amount", None)
+            data_class.transactions = data.get("transactions", None)
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class TonTransactionTypeFragmentDeposit(TlObject, TonTransactionType):
+    r"""The transaction is a deposit of Toncoins from Fragment
+
+    Parameters:
+        is_gift (:class:`bool`):
+            True, if the transaction is a gift from another user
+
+        sticker (:class:`"types.Sticker"`):
+            The sticker to be shown in the transaction information; may be null if unknown
+
+    """
+
+    def __init__(self, is_gift: bool = False, sticker: Sticker = None) -> None:
+        self.is_gift: bool = bool(is_gift)
+        r"""True, if the transaction is a gift from another user"""
+        self.sticker: Union[Sticker, None] = sticker
+        r"""The sticker to be shown in the transaction information; may be null if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["tonTransactionTypeFragmentDeposit"]:
+        return "tonTransactionTypeFragmentDeposit"
+
+    @classmethod
+    def getClass(self) -> Literal["TonTransactionType"]:
+        return "TonTransactionType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "is_gift": self.is_gift,
+            "sticker": self.sticker,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TonTransactionTypeFragmentDeposit", None]:
+        if data:
+            data_class = cls()
+            data_class.is_gift = data.get("is_gift", False)
+            data_class.sticker = data.get("sticker", None)
+
+        return data_class
+
+
+class TonTransactionTypeSuggestedPostPayment(TlObject, TonTransactionType):
+    r"""The transaction is a payment for a suggested post
+
+    Parameters:
+        chat_id (:class:`int`):
+            Identifier of the channel chat that posted the post
+
+    """
+
+    def __init__(self, chat_id: int = 0) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the channel chat that posted the post"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["tonTransactionTypeSuggestedPostPayment"]:
+        return "tonTransactionTypeSuggestedPostPayment"
+
+    @classmethod
+    def getClass(self) -> Literal["TonTransactionType"]:
+        return "TonTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "chat_id": self.chat_id}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["TonTransactionTypeSuggestedPostPayment", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+
+        return data_class
+
+
+class TonTransactionTypeUnsupported(TlObject, TonTransactionType):
+    r"""The transaction is a transaction of an unsupported type"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["tonTransactionTypeUnsupported"]:
+        return "tonTransactionTypeUnsupported"
+
+    @classmethod
+    def getClass(self) -> Literal["TonTransactionType"]:
+        return "TonTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TonTransactionTypeUnsupported", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class TonTransaction(TlObject):
+    r"""Represents a transaction changing the amount of owned Toncoins
+
+    Parameters:
+        id (:class:`str`):
+            Unique identifier of the transaction
+
+        ton_amount (:class:`int`):
+            The amount of added owned Toncoins; negative for outgoing transactions
+
+        is_refund (:class:`bool`):
+            True, if the transaction is a refund of a previous transaction
+
+        date (:class:`int`):
+            Point in time \(Unix timestamp\) when the transaction was completed
+
+        type (:class:`"types.TonTransactionType"`):
+            Type of the transaction
+
+    """
+
+    def __init__(
+        self,
+        id: str = "",
+        ton_amount: int = 0,
+        is_refund: bool = False,
+        date: int = 0,
+        type: TonTransactionType = None,
+    ) -> None:
+        self.id: Union[str, None] = id
+        r"""Unique identifier of the transaction"""
+        self.ton_amount: int = int(ton_amount)
+        r"""The amount of added owned Toncoins; negative for outgoing transactions"""
+        self.is_refund: bool = bool(is_refund)
+        r"""True, if the transaction is a refund of a previous transaction"""
+        self.date: int = int(date)
+        r"""Point in time \(Unix timestamp\) when the transaction was completed"""
+        self.type: Union[
+            TonTransactionTypeFragmentDeposit,
+            TonTransactionTypeSuggestedPostPayment,
+            TonTransactionTypeUnsupported,
+            None,
+        ] = type
+        r"""Type of the transaction"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["tonTransaction"]:
+        return "tonTransaction"
+
+    @classmethod
+    def getClass(self) -> Literal["TonTransaction"]:
+        return "TonTransaction"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "ton_amount": self.ton_amount,
+            "is_refund": self.is_refund,
+            "date": self.date,
+            "type": self.type,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TonTransaction", None]:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", "")
+            data_class.ton_amount = int(data.get("ton_amount", 0))
+            data_class.is_refund = data.get("is_refund", False)
+            data_class.date = int(data.get("date", 0))
+            data_class.type = data.get("type", None)
+
+        return data_class
+
+
+class TonTransactions(TlObject):
+    r"""Represents a list of Toncoin transactions
+
+    Parameters:
+        ton_amount (:class:`int`):
+            The total amount of owned Toncoins
+
+        transactions (:class:`List["types.TonTransaction"]`):
+            List of Toncoin transactions
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self,
+        ton_amount: int = 0,
+        transactions: List[TonTransaction] = None,
+        next_offset: str = "",
+    ) -> None:
+        self.ton_amount: int = int(ton_amount)
+        r"""The total amount of owned Toncoins"""
+        self.transactions: List[TonTransaction] = transactions or []
+        r"""List of Toncoin transactions"""
+        self.next_offset: Union[str, None] = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["tonTransactions"]:
+        return "tonTransactions"
+
+    @classmethod
+    def getClass(self) -> Literal["TonTransactions"]:
+        return "TonTransactions"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "ton_amount": self.ton_amount,
+            "transactions": self.transactions,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TonTransactions", None]:
+        if data:
+            data_class = cls()
+            data_class.ton_amount = int(data.get("ton_amount", 0))
             data_class.transactions = data.get("transactions", None)
             data_class.next_offset = data.get("next_offset", "")
 
@@ -15777,6 +16602,7 @@ class BotInfo(TlObject):
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypeMyStars,
+            InternalLinkTypeMyToncoins,
             InternalLinkTypePassportDataRequest,
             InternalLinkTypePhoneNumberConfirmation,
             InternalLinkTypePremiumFeatures,
@@ -15830,6 +16656,7 @@ class BotInfo(TlObject):
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypeMyStars,
+            InternalLinkTypeMyToncoins,
             InternalLinkTypePassportDataRequest,
             InternalLinkTypePhoneNumberConfirmation,
             InternalLinkTypePremiumFeatures,
@@ -15883,6 +16710,7 @@ class BotInfo(TlObject):
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypeMyStars,
+            InternalLinkTypeMyToncoins,
             InternalLinkTypePassportDataRequest,
             InternalLinkTypePhoneNumberConfirmation,
             InternalLinkTypePremiumFeatures,
@@ -15936,6 +16764,7 @@ class BotInfo(TlObject):
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypeMyStars,
+            InternalLinkTypeMyToncoins,
             InternalLinkTypePassportDataRequest,
             InternalLinkTypePhoneNumberConfirmation,
             InternalLinkTypePremiumFeatures,
@@ -18421,7 +19250,7 @@ class Supergroup(TlObject):
             True, if messages sent to the channel have information about the sender user\. This field is only applicable to channels
 
         join_to_send_messages (:class:`bool`):
-            True, if users need to join the supergroup before they can send messages\. Always true for channels and non\-discussion supergroups
+            True, if users need to join the supergroup before they can send messages\. May be false only for discussion supergroups and channel direct messages groups
 
         join_by_request (:class:`bool`):
             True, if all users directly joining the supergroup need to be approved by supergroup administrators\. Always false for channels and supergroups without username, location, or a linked chat
@@ -18531,7 +19360,7 @@ class Supergroup(TlObject):
         self.show_message_sender: bool = bool(show_message_sender)
         r"""True, if messages sent to the channel have information about the sender user\. This field is only applicable to channels"""
         self.join_to_send_messages: bool = bool(join_to_send_messages)
-        r"""True, if users need to join the supergroup before they can send messages\. Always true for channels and non\-discussion supergroups"""
+        r"""True, if users need to join the supergroup before they can send messages\. May be false only for discussion supergroups and channel direct messages groups"""
         self.join_by_request: bool = bool(join_by_request)
         r"""True, if all users directly joining the supergroup need to be approved by supergroup administrators\. Always false for channels and supergroups without username, location, or a linked chat"""
         self.is_slow_mode_enabled: bool = bool(is_slow_mode_enabled)
@@ -21158,6 +21987,9 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         quote (:class:`"types.TextQuote"`):
             Chosen quote from the replied message; may be null if none
 
+        checklist_task_id (:class:`int`):
+            Identifier of the checklist task in the original message that was replied; 0 if none
+
         origin (:class:`"types.MessageOrigin"`):
             Information about origin of the message if the message was from another chat or topic; may be null for messages from the same chat
 
@@ -21174,6 +22006,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         chat_id: int = 0,
         message_id: int = 0,
         quote: TextQuote = None,
+        checklist_task_id: int = 0,
         origin: MessageOrigin = None,
         origin_send_date: int = 0,
         content: MessageContent = None,
@@ -21184,6 +22017,8 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         r"""The identifier of the message; may be 0 if the replied message is in unknown chat"""
         self.quote: Union[TextQuote, None] = quote
         r"""Chosen quote from the replied message; may be null if none"""
+        self.checklist_task_id: int = int(checklist_task_id)
+        r"""Identifier of the checklist task in the original message that was replied; 0 if none"""
         self.origin: Union[
             MessageOriginUser,
             MessageOriginHiddenUser,
@@ -21259,6 +22094,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageGiveawayCompleted,
             MessageGiveawayWinners,
             MessageGiftedStars,
+            MessageGiftedTon,
             MessageGiveawayPrizeStars,
             MessageGift,
             MessageUpgradedGift,
@@ -21268,6 +22104,11 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageDirectMessagePriceChanged,
             MessageChecklistTasksDone,
             MessageChecklistTasksAdded,
+            MessageSuggestedPostApprovalFailed,
+            MessageSuggestedPostApproved,
+            MessageSuggestedPostDeclined,
+            MessageSuggestedPostPaid,
+            MessageSuggestedPostRefunded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -21299,6 +22140,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             "chat_id": self.chat_id,
             "message_id": self.message_id,
             "quote": self.quote,
+            "checklist_task_id": self.checklist_task_id,
             "origin": self.origin,
             "origin_send_date": self.origin_send_date,
             "content": self.content,
@@ -21311,6 +22153,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             data_class.chat_id = int(data.get("chat_id", 0))
             data_class.message_id = int(data.get("message_id", 0))
             data_class.quote = data.get("quote", None)
+            data_class.checklist_task_id = int(data.get("checklist_task_id", 0))
             data_class.origin = data.get("origin", None)
             data_class.origin_send_date = int(data.get("origin_send_date", 0))
             data_class.content = data.get("content", None)
@@ -21374,13 +22217,23 @@ class InputMessageReplyToMessage(TlObject, InputMessageReplyTo):
         quote (:class:`"types.InputTextQuote"`):
             Quote from the message to be replied; pass null if none\. Must always be null for replies in secret chats
 
+        checklist_task_id (:class:`int`):
+            Identifier of the checklist task in the message to be replied; pass 0 to reply to the whole message
+
     """
 
-    def __init__(self, message_id: int = 0, quote: InputTextQuote = None) -> None:
+    def __init__(
+        self,
+        message_id: int = 0,
+        quote: InputTextQuote = None,
+        checklist_task_id: int = 0,
+    ) -> None:
         self.message_id: int = int(message_id)
         r"""The identifier of the message to be replied in the same chat and forum topic\. A message can be replied in the same chat and forum topic only if messageProperties\.can\_be\_replied"""
         self.quote: Union[InputTextQuote, None] = quote
         r"""Quote from the message to be replied; pass null if none\. Must always be null for replies in secret chats"""
+        self.checklist_task_id: int = int(checklist_task_id)
+        r"""Identifier of the checklist task in the message to be replied; pass 0 to reply to the whole message"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -21398,6 +22251,7 @@ class InputMessageReplyToMessage(TlObject, InputMessageReplyTo):
             "@type": self.getType(),
             "message_id": self.message_id,
             "quote": self.quote,
+            "checklist_task_id": self.checklist_task_id,
         }
 
     @classmethod
@@ -21406,6 +22260,7 @@ class InputMessageReplyToMessage(TlObject, InputMessageReplyTo):
             data_class = cls()
             data_class.message_id = int(data.get("message_id", 0))
             data_class.quote = data.get("quote", None)
+            data_class.checklist_task_id = int(data.get("checklist_task_id", 0))
 
         return data_class
 
@@ -21423,10 +22278,17 @@ class InputMessageReplyToExternalMessage(TlObject, InputMessageReplyTo):
         quote (:class:`"types.InputTextQuote"`):
             Quote from the message to be replied; pass null if none
 
+        checklist_task_id (:class:`int`):
+            Identifier of the checklist task in the message to be replied; pass 0 to reply to the whole message
+
     """
 
     def __init__(
-        self, chat_id: int = 0, message_id: int = 0, quote: InputTextQuote = None
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        quote: InputTextQuote = None,
+        checklist_task_id: int = 0,
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""The identifier of the chat to which the message to be replied belongs"""
@@ -21434,6 +22296,8 @@ class InputMessageReplyToExternalMessage(TlObject, InputMessageReplyTo):
         r"""The identifier of the message to be replied in the specified chat\. A message can be replied in another chat or forum topic only if messageProperties\.can\_be\_replied\_in\_another\_chat"""
         self.quote: Union[InputTextQuote, None] = quote
         r"""Quote from the message to be replied; pass null if none"""
+        self.checklist_task_id: int = int(checklist_task_id)
+        r"""Identifier of the checklist task in the message to be replied; pass 0 to reply to the whole message"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -21452,6 +22316,7 @@ class InputMessageReplyToExternalMessage(TlObject, InputMessageReplyTo):
             "chat_id": self.chat_id,
             "message_id": self.message_id,
             "quote": self.quote,
+            "checklist_task_id": self.checklist_task_id,
         }
 
     @classmethod
@@ -21461,6 +22326,7 @@ class InputMessageReplyToExternalMessage(TlObject, InputMessageReplyTo):
             data_class.chat_id = int(data.get("chat_id", 0))
             data_class.message_id = int(data.get("message_id", 0))
             data_class.quote = data.get("quote", None)
+            data_class.checklist_task_id = int(data.get("checklist_task_id", 0))
 
         return data_class
 
@@ -21594,6 +22460,12 @@ class Message(TlObject, MessageBoundMethods):
         is_channel_post (:class:`bool`):
             True, if the message is a channel post\. All messages to channels are channel posts, all other messages are not channel posts
 
+        is_paid_star_suggested_post (:class:`bool`):
+            True, if the message is a suggested channel post which was paid in Telegram Stars; a warning must be shown if the message is deleted in less than getOption\(\"suggested\_post\_lifetime\_min\"\) seconds after sending
+
+        is_paid_ton_suggested_post (:class:`bool`):
+            True, if the message is a suggested channel post which was paid in Toncoins; a warning must be shown if the message is deleted in less than getOption\(\"suggested\_post\_lifetime\_min\"\) seconds after sending
+
         contains_unread_mention (:class:`bool`):
             True, if the message contains an unread mention for the current user
 
@@ -21617,6 +22489,9 @@ class Message(TlObject, MessageBoundMethods):
 
         fact_check (:class:`"types.FactCheck"`):
             Information about fact\-check added to the message; may be null if none
+
+        suggested_post_info (:class:`"types.SuggestedPostInfo"`):
+            Information about the suggested post; may be null if the message isn't a suggested post
 
         reply_to (:class:`"types.MessageReplyTo"`):
             Information about the message or the story this message is replying to; may be null if none
@@ -21684,6 +22559,8 @@ class Message(TlObject, MessageBoundMethods):
         can_be_saved: bool = False,
         has_timestamped_media: bool = False,
         is_channel_post: bool = False,
+        is_paid_star_suggested_post: bool = False,
+        is_paid_ton_suggested_post: bool = False,
         contains_unread_mention: bool = False,
         date: int = 0,
         edit_date: int = 0,
@@ -21692,6 +22569,7 @@ class Message(TlObject, MessageBoundMethods):
         interaction_info: MessageInteractionInfo = None,
         unread_reactions: List[UnreadReaction] = None,
         fact_check: FactCheck = None,
+        suggested_post_info: SuggestedPostInfo = None,
         reply_to: MessageReplyTo = None,
         message_thread_id: int = 0,
         topic_id: MessageTopic = None,
@@ -21739,6 +22617,10 @@ class Message(TlObject, MessageBoundMethods):
         r"""True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message"""
         self.is_channel_post: bool = bool(is_channel_post)
         r"""True, if the message is a channel post\. All messages to channels are channel posts, all other messages are not channel posts"""
+        self.is_paid_star_suggested_post: bool = bool(is_paid_star_suggested_post)
+        r"""True, if the message is a suggested channel post which was paid in Telegram Stars; a warning must be shown if the message is deleted in less than getOption\(\"suggested\_post\_lifetime\_min\"\) seconds after sending"""
+        self.is_paid_ton_suggested_post: bool = bool(is_paid_ton_suggested_post)
+        r"""True, if the message is a suggested channel post which was paid in Toncoins; a warning must be shown if the message is deleted in less than getOption\(\"suggested\_post\_lifetime\_min\"\) seconds after sending"""
         self.contains_unread_mention: bool = bool(contains_unread_mention)
         r"""True, if the message contains an unread mention for the current user"""
         self.date: int = int(date)
@@ -21755,6 +22637,8 @@ class Message(TlObject, MessageBoundMethods):
         r"""Information about unread reactions added to the message"""
         self.fact_check: Union[FactCheck, None] = fact_check
         r"""Information about fact\-check added to the message; may be null if none"""
+        self.suggested_post_info: Union[SuggestedPostInfo, None] = suggested_post_info
+        r"""Information about the suggested post; may be null if the message isn't a suggested post"""
         self.reply_to: Union[MessageReplyToMessage, MessageReplyToStory, None] = (
             reply_to
         )
@@ -21859,6 +22743,7 @@ class Message(TlObject, MessageBoundMethods):
             MessageGiveawayCompleted,
             MessageGiveawayWinners,
             MessageGiftedStars,
+            MessageGiftedTon,
             MessageGiveawayPrizeStars,
             MessageGift,
             MessageUpgradedGift,
@@ -21868,6 +22753,11 @@ class Message(TlObject, MessageBoundMethods):
             MessageDirectMessagePriceChanged,
             MessageChecklistTasksDone,
             MessageChecklistTasksAdded,
+            MessageSuggestedPostApprovalFailed,
+            MessageSuggestedPostApproved,
+            MessageSuggestedPostDeclined,
+            MessageSuggestedPostPaid,
+            MessageSuggestedPostRefunded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -21915,6 +22805,8 @@ class Message(TlObject, MessageBoundMethods):
             "can_be_saved": self.can_be_saved,
             "has_timestamped_media": self.has_timestamped_media,
             "is_channel_post": self.is_channel_post,
+            "is_paid_star_suggested_post": self.is_paid_star_suggested_post,
+            "is_paid_ton_suggested_post": self.is_paid_ton_suggested_post,
             "contains_unread_mention": self.contains_unread_mention,
             "date": self.date,
             "edit_date": self.edit_date,
@@ -21923,6 +22815,7 @@ class Message(TlObject, MessageBoundMethods):
             "interaction_info": self.interaction_info,
             "unread_reactions": self.unread_reactions,
             "fact_check": self.fact_check,
+            "suggested_post_info": self.suggested_post_info,
             "reply_to": self.reply_to,
             "message_thread_id": self.message_thread_id,
             "topic_id": self.topic_id,
@@ -21957,6 +22850,12 @@ class Message(TlObject, MessageBoundMethods):
             data_class.can_be_saved = data.get("can_be_saved", False)
             data_class.has_timestamped_media = data.get("has_timestamped_media", False)
             data_class.is_channel_post = data.get("is_channel_post", False)
+            data_class.is_paid_star_suggested_post = data.get(
+                "is_paid_star_suggested_post", False
+            )
+            data_class.is_paid_ton_suggested_post = data.get(
+                "is_paid_ton_suggested_post", False
+            )
             data_class.contains_unread_mention = data.get(
                 "contains_unread_mention", False
             )
@@ -21967,6 +22866,7 @@ class Message(TlObject, MessageBoundMethods):
             data_class.interaction_info = data.get("interaction_info", None)
             data_class.unread_reactions = data.get("unread_reactions", None)
             data_class.fact_check = data.get("fact_check", None)
+            data_class.suggested_post_info = data.get("suggested_post_info", None)
             data_class.reply_to = data.get("reply_to", None)
             data_class.message_thread_id = int(data.get("message_thread_id", 0))
             data_class.topic_id = data.get("topic_id", None)
@@ -22916,6 +23816,7 @@ class SponsoredMessage(TlObject):
             MessageGiveawayCompleted,
             MessageGiveawayWinners,
             MessageGiftedStars,
+            MessageGiftedTon,
             MessageGiveawayPrizeStars,
             MessageGift,
             MessageUpgradedGift,
@@ -22925,6 +23826,11 @@ class SponsoredMessage(TlObject):
             MessageDirectMessagePriceChanged,
             MessageChecklistTasksDone,
             MessageChecklistTasksAdded,
+            MessageSuggestedPostApprovalFailed,
+            MessageSuggestedPostApproved,
+            MessageSuggestedPostDeclined,
+            MessageSuggestedPostPaid,
+            MessageSuggestedPostRefunded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -23158,10 +24064,10 @@ class VideoMessageAdvertisement(TlObject):
             Text of the advertisement
 
         min_display_duration (:class:`int`):
-            The minimum amount of time the advertisement must be dispalyed before it can be hidden by the user, in seconds
+            The minimum amount of time the advertisement must be displayed before it can be hidden by the user, in seconds
 
         max_display_duration (:class:`int`):
-            The maximum amount of time the advertisement must be dispalyed before it must be automatically hidden, in seconds
+            The maximum amount of time the advertisement must be displayed before it must be automatically hidden, in seconds
 
         can_be_reported (:class:`bool`):
             True, if the advertisement can be reported to Telegram moderators through reportVideoMessageAdvertisement
@@ -23193,9 +24099,9 @@ class VideoMessageAdvertisement(TlObject):
         self.text: Union[str, None] = text
         r"""Text of the advertisement"""
         self.min_display_duration: int = int(min_display_duration)
-        r"""The minimum amount of time the advertisement must be dispalyed before it can be hidden by the user, in seconds"""
+        r"""The minimum amount of time the advertisement must be displayed before it can be hidden by the user, in seconds"""
         self.max_display_duration: int = int(max_display_duration)
-        r"""The maximum amount of time the advertisement must be dispalyed before it must be automatically hidden, in seconds"""
+        r"""The maximum amount of time the advertisement must be displayed before it must be automatically hidden, in seconds"""
         self.can_be_reported: bool = bool(can_be_reported)
         r"""True, if the advertisement can be reported to Telegram moderators through reportVideoMessageAdvertisement"""
         self.sponsor: Union[AdvertisementSponsor, None] = sponsor
@@ -24256,6 +25162,9 @@ class DraftMessage(TlObject):
         effect_id (:class:`int`):
             Identifier of the effect to apply to the message when it is sent; 0 if none
 
+        suggested_post_info (:class:`"types.InputSuggestedPostInfo"`):
+            Information about the suggested post; may be null if none
+
     """
 
     def __init__(
@@ -24264,6 +25173,7 @@ class DraftMessage(TlObject):
         date: int = 0,
         input_message_text: InputMessageContent = None,
         effect_id: int = 0,
+        suggested_post_info: InputSuggestedPostInfo = None,
     ) -> None:
         self.reply_to: Union[
             InputMessageReplyToMessage,
@@ -24300,6 +25210,10 @@ class DraftMessage(TlObject):
         r"""Content of the message draft; must be of the type inputMessageText, inputMessageVideoNote, or inputMessageVoiceNote"""
         self.effect_id: int = int(effect_id)
         r"""Identifier of the effect to apply to the message when it is sent; 0 if none"""
+        self.suggested_post_info: Union[InputSuggestedPostInfo, None] = (
+            suggested_post_info
+        )
+        r"""Information about the suggested post; may be null if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -24319,6 +25233,7 @@ class DraftMessage(TlObject):
             "date": self.date,
             "input_message_text": self.input_message_text,
             "effect_id": self.effect_id,
+            "suggested_post_info": self.suggested_post_info,
         }
 
     @classmethod
@@ -24329,6 +25244,7 @@ class DraftMessage(TlObject):
             data_class.date = int(data.get("date", 0))
             data_class.input_message_text = data.get("input_message_text", None)
             data_class.effect_id = int(data.get("effect_id", 0))
+            data_class.suggested_post_info = data.get("suggested_post_info", None)
 
         return data_class
 
@@ -25725,7 +26641,7 @@ class Chat(TlObject):
             Positions of the chat in chat lists
 
         chat_lists (:class:`List["types.ChatList"]`):
-            Chat lists to which the chat belongs\. A chat can have a non\-zero position in a chat list even it doesn't belong to the chat list and have no position in a chat list even it belongs to the chat list
+            Chat lists to which the chat belongs\. A chat can have a non\-zero position in a chat list even if it doesn't belong to the chat list and have no position in a chat list even if it belongs to the chat list
 
         message_sender_id (:class:`"types.MessageSender"`):
             Identifier of a user or chat that is selected to send messages in the chat; may be null if the user can't change message sender
@@ -25891,7 +26807,7 @@ class Chat(TlObject):
         self.positions: List[ChatPosition] = positions or []
         r"""Positions of the chat in chat lists"""
         self.chat_lists: List[ChatList] = chat_lists or []
-        r"""Chat lists to which the chat belongs\. A chat can have a non\-zero position in a chat list even it doesn't belong to the chat list and have no position in a chat list even it belongs to the chat list"""
+        r"""Chat lists to which the chat belongs\. A chat can have a non\-zero position in a chat list even if it doesn't belong to the chat list and have no position in a chat list even if it belongs to the chat list"""
         self.message_sender_id: Union[MessageSenderUser, MessageSenderChat, None] = (
             message_sender_id
         )
@@ -28820,7 +29736,7 @@ class ForumTopicInfo(TlObject):
             True, if the topic was created by the current user
 
         is_closed (:class:`bool`):
-            True, if the topic is closed
+            True, if the topic is closed\. If the topic is closed, then the user must have can\_manage\_topics administrator right in the supergroup or must be the creator of the topic to send messages there
 
         is_hidden (:class:`bool`):
             True, if the topic is hidden above the topic list and closed; for General topic only
@@ -28860,7 +29776,7 @@ class ForumTopicInfo(TlObject):
         self.is_outgoing: bool = bool(is_outgoing)
         r"""True, if the topic was created by the current user"""
         self.is_closed: bool = bool(is_closed)
-        r"""True, if the topic is closed"""
+        r"""True, if the topic is closed\. If the topic is closed, then the user must have can\_manage\_topics administrator right in the supergroup or must be the creator of the topic to send messages there"""
         self.is_hidden: bool = bool(is_hidden)
         r"""True, if the topic is hidden above the topic list and closed; for General topic only"""
 
@@ -32674,6 +33590,7 @@ class WebPageInstantView(TlObject):
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypeMyStars,
+            InternalLinkTypeMyToncoins,
             InternalLinkTypePassportDataRequest,
             InternalLinkTypePhoneNumberConfirmation,
             InternalLinkTypePremiumFeatures,
@@ -34085,13 +35002,23 @@ class LinkPreviewTypeVideoChat(TlObject, LinkPreviewType):
         is_live_stream (:class:`bool`):
             True, if the video chat is expected to be a live stream in a channel or a broadcast group
 
+        joins_as_speaker (:class:`bool`):
+            True, if the user can use the link to join the video chat without being muted by administrators
+
     """
 
-    def __init__(self, photo: ChatPhoto = None, is_live_stream: bool = False) -> None:
+    def __init__(
+        self,
+        photo: ChatPhoto = None,
+        is_live_stream: bool = False,
+        joins_as_speaker: bool = False,
+    ) -> None:
         self.photo: Union[ChatPhoto, None] = photo
         r"""Photo of the chat with the video chat; may be null if none"""
         self.is_live_stream: bool = bool(is_live_stream)
         r"""True, if the video chat is expected to be a live stream in a channel or a broadcast group"""
+        self.joins_as_speaker: bool = bool(joins_as_speaker)
+        r"""True, if the user can use the link to join the video chat without being muted by administrators"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -34109,6 +35036,7 @@ class LinkPreviewTypeVideoChat(TlObject, LinkPreviewType):
             "@type": self.getType(),
             "photo": self.photo,
             "is_live_stream": self.is_live_stream,
+            "joins_as_speaker": self.joins_as_speaker,
         }
 
     @classmethod
@@ -34117,6 +35045,7 @@ class LinkPreviewTypeVideoChat(TlObject, LinkPreviewType):
             data_class = cls()
             data_class.photo = data.get("photo", None)
             data_class.is_live_stream = data.get("is_live_stream", False)
+            data_class.joins_as_speaker = data.get("joins_as_speaker", False)
 
         return data_class
 
@@ -36539,7 +37468,7 @@ class GiveawayParameters(TlObject):
 
     Parameters:
         boosted_chat_id (:class:`int`):
-            Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Telegram Premium subscription, or for the specified time\. If the chat is a channel, then can\_post\_messages right is required in the channel, otherwise, the user must be an administrator in the supergroup
+            Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Telegram Premium subscription, or for the specified time\. If the chat is a channel, then can\_post\_messages administrator right is required in the channel, otherwise, the user must be an administrator in the supergroup
 
         additional_chat_ids (:class:`List[int]`):
             Identifiers of other supergroup or channel chats that must be subscribed by the users to be eligible for the giveaway\. There can be up to getOption\(\"giveaway\_additional\_chat\_count\_max\"\) additional chats
@@ -36572,7 +37501,7 @@ class GiveawayParameters(TlObject):
         prize_description: str = "",
     ) -> None:
         self.boosted_chat_id: int = int(boosted_chat_id)
-        r"""Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Telegram Premium subscription, or for the specified time\. If the chat is a channel, then can\_post\_messages right is required in the channel, otherwise, the user must be an administrator in the supergroup"""
+        r"""Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Telegram Premium subscription, or for the specified time\. If the chat is a channel, then can\_post\_messages administrator right is required in the channel, otherwise, the user must be an administrator in the supergroup"""
         self.additional_chat_ids: List[int] = additional_chat_ids or []
         r"""Identifiers of other supergroup or channel chats that must be subscribed by the users to be eligible for the giveaway\. There can be up to getOption\(\"giveaway\_additional\_chat\_count\_max\"\) additional chats"""
         self.winners_selection_date: int = int(winners_selection_date)
@@ -43179,6 +44108,80 @@ class MessageGiftedStars(TlObject, MessageContent):
         return data_class
 
 
+class MessageGiftedTon(TlObject, MessageContent):
+    r"""Toncoins were gifted to a user
+
+    Parameters:
+        gifter_user_id (:class:`int`):
+            The identifier of a user that gifted Toncoins; 0 if the gift was anonymous or is outgoing
+
+        receiver_user_id (:class:`int`):
+            The identifier of a user that received Toncoins; 0 if the gift is incoming
+
+        ton_amount (:class:`int`):
+            The received amount of Toncoins, in the smallest units of the cryptocurrency
+
+        transaction_id (:class:`str`):
+            Identifier of the transaction for Toncoin credit; for receiver only
+
+        sticker (:class:`"types.Sticker"`):
+            A sticker to be shown in the message; may be null if unknown
+
+    """
+
+    def __init__(
+        self,
+        gifter_user_id: int = 0,
+        receiver_user_id: int = 0,
+        ton_amount: int = 0,
+        transaction_id: str = "",
+        sticker: Sticker = None,
+    ) -> None:
+        self.gifter_user_id: int = int(gifter_user_id)
+        r"""The identifier of a user that gifted Toncoins; 0 if the gift was anonymous or is outgoing"""
+        self.receiver_user_id: int = int(receiver_user_id)
+        r"""The identifier of a user that received Toncoins; 0 if the gift is incoming"""
+        self.ton_amount: int = int(ton_amount)
+        r"""The received amount of Toncoins, in the smallest units of the cryptocurrency"""
+        self.transaction_id: Union[str, None] = transaction_id
+        r"""Identifier of the transaction for Toncoin credit; for receiver only"""
+        self.sticker: Union[Sticker, None] = sticker
+        r"""A sticker to be shown in the message; may be null if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageGiftedTon"]:
+        return "messageGiftedTon"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "gifter_user_id": self.gifter_user_id,
+            "receiver_user_id": self.receiver_user_id,
+            "ton_amount": self.ton_amount,
+            "transaction_id": self.transaction_id,
+            "sticker": self.sticker,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageGiftedTon", None]:
+        if data:
+            data_class = cls()
+            data_class.gifter_user_id = int(data.get("gifter_user_id", 0))
+            data_class.receiver_user_id = int(data.get("receiver_user_id", 0))
+            data_class.ton_amount = int(data.get("ton_amount", 0))
+            data_class.transaction_id = data.get("transaction_id", "")
+            data_class.sticker = data.get("sticker", None)
+
+        return data_class
+
+
 class MessageGiveawayPrizeStars(TlObject, MessageContent):
     r"""A Telegram Stars were received by the current user from a giveaway
 
@@ -43426,11 +44429,11 @@ class MessageUpgradedGift(TlObject, MessageContent):
         receiver_id (:class:`"types.MessageSender"`):
             Receiver of the gift
 
+        origin (:class:`"types.UpgradedGiftOrigin"`):
+            Origin of the upgraded gift
+
         received_gift_id (:class:`str`):
             Unique identifier of the received gift for the current user; only for the receiver of the gift
-
-        is_upgrade (:class:`bool`):
-            True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred or resold gift
 
         is_saved (:class:`bool`):
             True, if the gift is displayed on the user's or the channel's profile page; only for the receiver of the gift
@@ -43439,10 +44442,7 @@ class MessageUpgradedGift(TlObject, MessageContent):
             True, if the gift can be transferred to another owner; only for the receiver of the gift
 
         was_transferred (:class:`bool`):
-            True, if the gift was transferred to another owner; only for the receiver of the gift
-
-        last_resale_star_count (:class:`int`):
-            Number of Telegram Stars that were paid by the sender for the gift; 0 if the gift was upgraded or transferred
+            True, if the gift has already been transferred to another owner; only for the receiver of the gift
 
         transfer_star_count (:class:`int`):
             Number of Telegram Stars that must be paid to transfer the upgraded gift; only for the receiver of the gift
@@ -43463,12 +44463,11 @@ class MessageUpgradedGift(TlObject, MessageContent):
         gift: UpgradedGift = None,
         sender_id: MessageSender = None,
         receiver_id: MessageSender = None,
+        origin: UpgradedGiftOrigin = None,
         received_gift_id: str = "",
-        is_upgrade: bool = False,
         is_saved: bool = False,
         can_be_transferred: bool = False,
         was_transferred: bool = False,
-        last_resale_star_count: int = 0,
         transfer_star_count: int = 0,
         next_transfer_date: int = 0,
         next_resale_date: int = 0,
@@ -43482,18 +44481,21 @@ class MessageUpgradedGift(TlObject, MessageContent):
             receiver_id
         )
         r"""Receiver of the gift"""
+        self.origin: Union[
+            UpgradedGiftOriginUpgrade,
+            UpgradedGiftOriginTransfer,
+            UpgradedGiftOriginResale,
+            None,
+        ] = origin
+        r"""Origin of the upgraded gift"""
         self.received_gift_id: Union[str, None] = received_gift_id
         r"""Unique identifier of the received gift for the current user; only for the receiver of the gift"""
-        self.is_upgrade: bool = bool(is_upgrade)
-        r"""True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred or resold gift"""
         self.is_saved: bool = bool(is_saved)
         r"""True, if the gift is displayed on the user's or the channel's profile page; only for the receiver of the gift"""
         self.can_be_transferred: bool = bool(can_be_transferred)
         r"""True, if the gift can be transferred to another owner; only for the receiver of the gift"""
         self.was_transferred: bool = bool(was_transferred)
-        r"""True, if the gift was transferred to another owner; only for the receiver of the gift"""
-        self.last_resale_star_count: int = int(last_resale_star_count)
-        r"""Number of Telegram Stars that were paid by the sender for the gift; 0 if the gift was upgraded or transferred"""
+        r"""True, if the gift has already been transferred to another owner; only for the receiver of the gift"""
         self.transfer_star_count: int = int(transfer_star_count)
         r"""Number of Telegram Stars that must be paid to transfer the upgraded gift; only for the receiver of the gift"""
         self.next_transfer_date: int = int(next_transfer_date)
@@ -43520,12 +44522,11 @@ class MessageUpgradedGift(TlObject, MessageContent):
             "gift": self.gift,
             "sender_id": self.sender_id,
             "receiver_id": self.receiver_id,
+            "origin": self.origin,
             "received_gift_id": self.received_gift_id,
-            "is_upgrade": self.is_upgrade,
             "is_saved": self.is_saved,
             "can_be_transferred": self.can_be_transferred,
             "was_transferred": self.was_transferred,
-            "last_resale_star_count": self.last_resale_star_count,
             "transfer_star_count": self.transfer_star_count,
             "next_transfer_date": self.next_transfer_date,
             "next_resale_date": self.next_resale_date,
@@ -43539,14 +44540,11 @@ class MessageUpgradedGift(TlObject, MessageContent):
             data_class.gift = data.get("gift", None)
             data_class.sender_id = data.get("sender_id", None)
             data_class.receiver_id = data.get("receiver_id", None)
+            data_class.origin = data.get("origin", None)
             data_class.received_gift_id = data.get("received_gift_id", "")
-            data_class.is_upgrade = data.get("is_upgrade", False)
             data_class.is_saved = data.get("is_saved", False)
             data_class.can_be_transferred = data.get("can_be_transferred", False)
             data_class.was_transferred = data.get("was_transferred", False)
-            data_class.last_resale_star_count = int(
-                data.get("last_resale_star_count", 0)
-            )
             data_class.transfer_star_count = int(data.get("transfer_star_count", 0))
             data_class.next_transfer_date = int(data.get("next_transfer_date", 0))
             data_class.next_resale_date = int(data.get("next_resale_date", 0))
@@ -43866,6 +44864,280 @@ class MessageChecklistTasksAdded(TlObject, MessageContent):
             data_class = cls()
             data_class.checklist_message_id = int(data.get("checklist_message_id", 0))
             data_class.tasks = data.get("tasks", None)
+
+        return data_class
+
+
+class MessageSuggestedPostApprovalFailed(TlObject, MessageContent):
+    r"""Approval of suggested post has failed, because the user which proposed the post had no enough funds
+
+    Parameters:
+        suggested_post_message_id (:class:`int`):
+            Identifier of the message with the suggested post; can be 0 if the message was deleted
+
+        price (:class:`"types.SuggestedPostPrice"`):
+            Price of the suggested post
+
+    """
+
+    def __init__(
+        self, suggested_post_message_id: int = 0, price: SuggestedPostPrice = None
+    ) -> None:
+        self.suggested_post_message_id: int = int(suggested_post_message_id)
+        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        self.price: Union[SuggestedPostPriceStar, SuggestedPostPriceTon, None] = price
+        r"""Price of the suggested post"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageSuggestedPostApprovalFailed"]:
+        return "messageSuggestedPostApprovalFailed"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "suggested_post_message_id": self.suggested_post_message_id,
+            "price": self.price,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageSuggestedPostApprovalFailed", None]:
+        if data:
+            data_class = cls()
+            data_class.suggested_post_message_id = int(
+                data.get("suggested_post_message_id", 0)
+            )
+            data_class.price = data.get("price", None)
+
+        return data_class
+
+
+class MessageSuggestedPostApproved(TlObject, MessageContent):
+    r"""A suggested post was approved
+
+    Parameters:
+        suggested_post_message_id (:class:`int`):
+            Identifier of the message with the suggested post; can be 0 if the message was deleted
+
+        price (:class:`"types.SuggestedPostPrice"`):
+            Price of the suggested post; may be null if the post is non\-paid
+
+        send_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the post is expected to be published
+
+    """
+
+    def __init__(
+        self,
+        suggested_post_message_id: int = 0,
+        price: SuggestedPostPrice = None,
+        send_date: int = 0,
+    ) -> None:
+        self.suggested_post_message_id: int = int(suggested_post_message_id)
+        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        self.price: Union[SuggestedPostPriceStar, SuggestedPostPriceTon, None] = price
+        r"""Price of the suggested post; may be null if the post is non\-paid"""
+        self.send_date: int = int(send_date)
+        r"""Point in time \(Unix timestamp\) when the post is expected to be published"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageSuggestedPostApproved"]:
+        return "messageSuggestedPostApproved"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "suggested_post_message_id": self.suggested_post_message_id,
+            "price": self.price,
+            "send_date": self.send_date,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageSuggestedPostApproved", None]:
+        if data:
+            data_class = cls()
+            data_class.suggested_post_message_id = int(
+                data.get("suggested_post_message_id", 0)
+            )
+            data_class.price = data.get("price", None)
+            data_class.send_date = int(data.get("send_date", 0))
+
+        return data_class
+
+
+class MessageSuggestedPostDeclined(TlObject, MessageContent):
+    r"""A suggested post was declined
+
+    Parameters:
+        suggested_post_message_id (:class:`int`):
+            Identifier of the message with the suggested post; can be 0 if the message was deleted
+
+        comment (:class:`str`):
+            Comment added by administrator of the channel when the post was declined
+
+    """
+
+    def __init__(self, suggested_post_message_id: int = 0, comment: str = "") -> None:
+        self.suggested_post_message_id: int = int(suggested_post_message_id)
+        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        self.comment: Union[str, None] = comment
+        r"""Comment added by administrator of the channel when the post was declined"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageSuggestedPostDeclined"]:
+        return "messageSuggestedPostDeclined"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "suggested_post_message_id": self.suggested_post_message_id,
+            "comment": self.comment,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageSuggestedPostDeclined", None]:
+        if data:
+            data_class = cls()
+            data_class.suggested_post_message_id = int(
+                data.get("suggested_post_message_id", 0)
+            )
+            data_class.comment = data.get("comment", "")
+
+        return data_class
+
+
+class MessageSuggestedPostPaid(TlObject, MessageContent):
+    r"""A suggested post was published for getOption\(\"suggested\_post\_lifetime\_min\"\) seconds and payment for the post was received
+
+    Parameters:
+        suggested_post_message_id (:class:`int`):
+            Identifier of the message with the suggested post; can be 0 if the message was deleted
+
+        star_amount (:class:`"types.StarAmount"`):
+            The amount of received Telegram Stars
+
+        ton_amount (:class:`int`):
+            The amount of received Toncoins; in the smallest units of the cryptocurrency
+
+    """
+
+    def __init__(
+        self,
+        suggested_post_message_id: int = 0,
+        star_amount: StarAmount = None,
+        ton_amount: int = 0,
+    ) -> None:
+        self.suggested_post_message_id: int = int(suggested_post_message_id)
+        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        self.star_amount: Union[StarAmount, None] = star_amount
+        r"""The amount of received Telegram Stars"""
+        self.ton_amount: int = int(ton_amount)
+        r"""The amount of received Toncoins; in the smallest units of the cryptocurrency"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageSuggestedPostPaid"]:
+        return "messageSuggestedPostPaid"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "suggested_post_message_id": self.suggested_post_message_id,
+            "star_amount": self.star_amount,
+            "ton_amount": self.ton_amount,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageSuggestedPostPaid", None]:
+        if data:
+            data_class = cls()
+            data_class.suggested_post_message_id = int(
+                data.get("suggested_post_message_id", 0)
+            )
+            data_class.star_amount = data.get("star_amount", None)
+            data_class.ton_amount = int(data.get("ton_amount", 0))
+
+        return data_class
+
+
+class MessageSuggestedPostRefunded(TlObject, MessageContent):
+    r"""A suggested post was refunded
+
+    Parameters:
+        suggested_post_message_id (:class:`int`):
+            Identifier of the message with the suggested post; can be 0 if the message was deleted
+
+        reason (:class:`"types.SuggestedPostRefundReason"`):
+            Reason of the refund
+
+    """
+
+    def __init__(
+        self,
+        suggested_post_message_id: int = 0,
+        reason: SuggestedPostRefundReason = None,
+    ) -> None:
+        self.suggested_post_message_id: int = int(suggested_post_message_id)
+        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        self.reason: Union[
+            SuggestedPostRefundReasonPostDeleted,
+            SuggestedPostRefundReasonPaymentRefunded,
+            None,
+        ] = reason
+        r"""Reason of the refund"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageSuggestedPostRefunded"]:
+        return "messageSuggestedPostRefunded"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "suggested_post_message_id": self.suggested_post_message_id,
+            "reason": self.reason,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageSuggestedPostRefunded", None]:
+        if data:
+            data_class = cls()
+            data_class.suggested_post_message_id = int(
+                data.get("suggested_post_message_id", 0)
+            )
+            data_class.reason = data.get("reason", None)
 
         return data_class
 
@@ -45352,6 +46624,9 @@ class MessageSendOptions(TlObject):
         direct_messages_chat_topic_id (:class:`int`):
             Unique identifier of the topic in a channel direct messages chat administered by the current user; pass 0 if the chat isn't a channel direct messages chat administered by the current user
 
+        suggested_post_info (:class:`"types.InputSuggestedPostInfo"`):
+            Information about the suggested post; pass null if none\. For messages to channel direct messages chat only\. Applicable only to sendMessage and addOffer
+
         disable_notification (:class:`bool`):
             Pass true to disable notification for the message
 
@@ -45387,6 +46662,7 @@ class MessageSendOptions(TlObject):
     def __init__(
         self,
         direct_messages_chat_topic_id: int = 0,
+        suggested_post_info: InputSuggestedPostInfo = None,
         disable_notification: bool = False,
         from_background: bool = False,
         protect_content: bool = False,
@@ -45400,6 +46676,10 @@ class MessageSendOptions(TlObject):
     ) -> None:
         self.direct_messages_chat_topic_id: int = int(direct_messages_chat_topic_id)
         r"""Unique identifier of the topic in a channel direct messages chat administered by the current user; pass 0 if the chat isn't a channel direct messages chat administered by the current user"""
+        self.suggested_post_info: Union[InputSuggestedPostInfo, None] = (
+            suggested_post_info
+        )
+        r"""Information about the suggested post; pass null if none\. For messages to channel direct messages chat only\. Applicable only to sendMessage and addOffer"""
         self.disable_notification: bool = bool(disable_notification)
         r"""Pass true to disable notification for the message"""
         self.from_background: bool = bool(from_background)
@@ -45443,6 +46723,7 @@ class MessageSendOptions(TlObject):
         return {
             "@type": self.getType(),
             "direct_messages_chat_topic_id": self.direct_messages_chat_topic_id,
+            "suggested_post_info": self.suggested_post_info,
             "disable_notification": self.disable_notification,
             "from_background": self.from_background,
             "protect_content": self.protect_content,
@@ -45462,6 +46743,7 @@ class MessageSendOptions(TlObject):
             data_class.direct_messages_chat_topic_id = int(
                 data.get("direct_messages_chat_topic_id", 0)
             )
+            data_class.suggested_post_info = data.get("suggested_post_info", None)
             data_class.disable_notification = data.get("disable_notification", False)
             data_class.from_background = data.get("from_background", False)
             data_class.protect_content = data.get("protect_content", False)
@@ -47070,14 +48352,23 @@ class MessageProperties(TlObject):
     r"""Contains properties of a message and describes actions that can be done with the message right now
 
     Parameters:
+        can_add_offer (:class:`bool`):
+            True, if an offer can be added to the message using addOffer
+
         can_add_tasks (:class:`bool`):
             True, if tasks can be added to the message's checklist using addChecklistTasks if the current user has Telegram Premium subscription
+
+        can_be_approved (:class:`bool`):
+            True, if the message is a suggested post that can be approved by the user using approveSuggestedPost
 
         can_be_copied (:class:`bool`):
             True, if content of the message can be copied using inputMessageForwarded or forwardMessages with copy options
 
         can_be_copied_to_secret_chat (:class:`bool`):
             True, if content of the message can be copied to a secret chat using inputMessageForwarded or forwardMessages with copy options
+
+        can_be_declined (:class:`bool`):
+            True, if the message is a suggested post that can be declined by the user using declineSuggestedPost
 
         can_be_deleted_only_for_self (:class:`bool`):
             True, if the message can be deleted only for the current user while other users will continue to see it using the method deleteMessages with revoke \=\= false
@@ -47114,6 +48405,9 @@ class MessageProperties(TlObject):
 
         can_edit_scheduling_state (:class:`bool`):
             True, if scheduling state of the message can be edited
+
+        can_edit_suggested_post_info (:class:`bool`):
+            True, if another price or post send time can be suggested using addOffer
 
         can_get_author (:class:`bool`):
             True, if author of the message sent on behalf of a chat can be received through getMessageAuthor
@@ -47167,9 +48461,12 @@ class MessageProperties(TlObject):
 
     def __init__(
         self,
+        can_add_offer: bool = False,
         can_add_tasks: bool = False,
+        can_be_approved: bool = False,
         can_be_copied: bool = False,
         can_be_copied_to_secret_chat: bool = False,
+        can_be_declined: bool = False,
         can_be_deleted_only_for_self: bool = False,
         can_be_deleted_for_all_users: bool = False,
         can_be_edited: bool = False,
@@ -47182,6 +48479,7 @@ class MessageProperties(TlObject):
         can_be_shared_in_story: bool = False,
         can_edit_media: bool = False,
         can_edit_scheduling_state: bool = False,
+        can_edit_suggested_post_info: bool = False,
         can_get_author: bool = False,
         can_get_embedding_code: bool = False,
         can_get_link: bool = False,
@@ -47199,12 +48497,18 @@ class MessageProperties(TlObject):
         can_set_fact_check: bool = False,
         need_show_statistics: bool = False,
     ) -> None:
+        self.can_add_offer: bool = bool(can_add_offer)
+        r"""True, if an offer can be added to the message using addOffer"""
         self.can_add_tasks: bool = bool(can_add_tasks)
         r"""True, if tasks can be added to the message's checklist using addChecklistTasks if the current user has Telegram Premium subscription"""
+        self.can_be_approved: bool = bool(can_be_approved)
+        r"""True, if the message is a suggested post that can be approved by the user using approveSuggestedPost"""
         self.can_be_copied: bool = bool(can_be_copied)
         r"""True, if content of the message can be copied using inputMessageForwarded or forwardMessages with copy options"""
         self.can_be_copied_to_secret_chat: bool = bool(can_be_copied_to_secret_chat)
         r"""True, if content of the message can be copied to a secret chat using inputMessageForwarded or forwardMessages with copy options"""
+        self.can_be_declined: bool = bool(can_be_declined)
+        r"""True, if the message is a suggested post that can be declined by the user using declineSuggestedPost"""
         self.can_be_deleted_only_for_self: bool = bool(can_be_deleted_only_for_self)
         r"""True, if the message can be deleted only for the current user while other users will continue to see it using the method deleteMessages with revoke \=\= false"""
         self.can_be_deleted_for_all_users: bool = bool(can_be_deleted_for_all_users)
@@ -47229,6 +48533,8 @@ class MessageProperties(TlObject):
         r"""True, if the message can be edited using the method editMessageMedia"""
         self.can_edit_scheduling_state: bool = bool(can_edit_scheduling_state)
         r"""True, if scheduling state of the message can be edited"""
+        self.can_edit_suggested_post_info: bool = bool(can_edit_suggested_post_info)
+        r"""True, if another price or post send time can be suggested using addOffer"""
         self.can_get_author: bool = bool(can_get_author)
         r"""True, if author of the message sent on behalf of a chat can be received through getMessageAuthor"""
         self.can_get_embedding_code: bool = bool(can_get_embedding_code)
@@ -47276,9 +48582,12 @@ class MessageProperties(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
+            "can_add_offer": self.can_add_offer,
             "can_add_tasks": self.can_add_tasks,
+            "can_be_approved": self.can_be_approved,
             "can_be_copied": self.can_be_copied,
             "can_be_copied_to_secret_chat": self.can_be_copied_to_secret_chat,
+            "can_be_declined": self.can_be_declined,
             "can_be_deleted_only_for_self": self.can_be_deleted_only_for_self,
             "can_be_deleted_for_all_users": self.can_be_deleted_for_all_users,
             "can_be_edited": self.can_be_edited,
@@ -47291,6 +48600,7 @@ class MessageProperties(TlObject):
             "can_be_shared_in_story": self.can_be_shared_in_story,
             "can_edit_media": self.can_edit_media,
             "can_edit_scheduling_state": self.can_edit_scheduling_state,
+            "can_edit_suggested_post_info": self.can_edit_suggested_post_info,
             "can_get_author": self.can_get_author,
             "can_get_embedding_code": self.can_get_embedding_code,
             "can_get_link": self.can_get_link,
@@ -47313,11 +48623,14 @@ class MessageProperties(TlObject):
     def from_dict(cls, data: dict) -> Union["MessageProperties", None]:
         if data:
             data_class = cls()
+            data_class.can_add_offer = data.get("can_add_offer", False)
             data_class.can_add_tasks = data.get("can_add_tasks", False)
+            data_class.can_be_approved = data.get("can_be_approved", False)
             data_class.can_be_copied = data.get("can_be_copied", False)
             data_class.can_be_copied_to_secret_chat = data.get(
                 "can_be_copied_to_secret_chat", False
             )
+            data_class.can_be_declined = data.get("can_be_declined", False)
             data_class.can_be_deleted_only_for_self = data.get(
                 "can_be_deleted_only_for_self", False
             )
@@ -47339,6 +48652,9 @@ class MessageProperties(TlObject):
             data_class.can_edit_media = data.get("can_edit_media", False)
             data_class.can_edit_scheduling_state = data.get(
                 "can_edit_scheduling_state", False
+            )
+            data_class.can_edit_suggested_post_info = data.get(
+                "can_edit_suggested_post_info", False
             )
             data_class.can_get_author = data.get("can_get_author", False)
             data_class.can_get_embedding_code = data.get(
@@ -51970,6 +53286,7 @@ class QuickReplyMessage(TlObject):
             MessageGiveawayCompleted,
             MessageGiveawayWinners,
             MessageGiftedStars,
+            MessageGiftedTon,
             MessageGiveawayPrizeStars,
             MessageGift,
             MessageUpgradedGift,
@@ -51979,6 +53296,11 @@ class QuickReplyMessage(TlObject):
             MessageDirectMessagePriceChanged,
             MessageChecklistTasksDone,
             MessageChecklistTasksAdded,
+            MessageSuggestedPostApprovalFailed,
+            MessageSuggestedPostApproved,
+            MessageSuggestedPostDeclined,
+            MessageSuggestedPostPaid,
+            MessageSuggestedPostRefunded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -57491,6 +58813,7 @@ class TargetChatInternalLink(TlObject, TargetChat):
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypeMyStars,
+            InternalLinkTypeMyToncoins,
             InternalLinkTypePassportDataRequest,
             InternalLinkTypePhoneNumberConfirmation,
             InternalLinkTypePremiumFeatures,
@@ -64589,7 +65912,7 @@ class PremiumFeatureMessagePrivacy(TlObject, PremiumFeature):
 
 
 class PremiumFeatureLastSeenTimes(TlObject, PremiumFeature):
-    r"""The ability to view last seen and read times of other users even they can't view last seen or read time for the current user"""
+    r"""The ability to view last seen and read times of other users even if they can't view last seen or read time for the current user"""
 
     def __init__(self) -> None:
         pass
@@ -65342,6 +66665,7 @@ class PremiumFeatures(TlObject):
             InternalLinkTypeMessage,
             InternalLinkTypeMessageDraft,
             InternalLinkTypeMyStars,
+            InternalLinkTypeMyToncoins,
             InternalLinkTypePassportDataRequest,
             InternalLinkTypePhoneNumberConfirmation,
             InternalLinkTypePremiumFeatures,
@@ -75502,6 +76826,34 @@ class InternalLinkTypeMyStars(TlObject, InternalLinkType):
         return data_class
 
 
+class InternalLinkTypeMyToncoins(TlObject, InternalLinkType):
+    r"""The link is a link to the screen with information about Toncoin balance and transactions of the current user"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["internalLinkTypeMyToncoins"]:
+        return "internalLinkTypeMyToncoins"
+
+    @classmethod
+    def getClass(self) -> Literal["InternalLinkType"]:
+        return "InternalLinkType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InternalLinkTypeMyToncoins", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class InternalLinkTypePassportDataRequest(TlObject, InternalLinkType):
     r"""The link contains a request of Telegram passport data\. Call getPassportAuthorizationForm with the given parameters to process the link if the link was received from outside of the application; otherwise, ignore it
 
@@ -81664,7 +83016,39 @@ class RevenueWithdrawalStateFailed(TlObject, RevenueWithdrawalState):
         return data_class
 
 
-class ChatRevenueTransactionTypeEarnings(TlObject, ChatRevenueTransactionType):
+class ChatRevenueTransactionTypeUnsupported(TlObject, ChatRevenueTransactionType):
+    r"""Describes an unsupported transaction"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatRevenueTransactionTypeUnsupported"]:
+        return "chatRevenueTransactionTypeUnsupported"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatRevenueTransactionType"]:
+        return "ChatRevenueTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["ChatRevenueTransactionTypeUnsupported", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ChatRevenueTransactionTypeSponsoredMessageEarnings(
+    TlObject, ChatRevenueTransactionType
+):
     r"""Describes earnings from sponsored messages in a chat in some time frame
 
     Parameters:
@@ -81686,8 +83070,8 @@ class ChatRevenueTransactionTypeEarnings(TlObject, ChatRevenueTransactionType):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["chatRevenueTransactionTypeEarnings"]:
-        return "chatRevenueTransactionTypeEarnings"
+    def getType(self) -> Literal["chatRevenueTransactionTypeSponsoredMessageEarnings"]:
+        return "chatRevenueTransactionTypeSponsoredMessageEarnings"
 
     @classmethod
     def getClass(self) -> Literal["ChatRevenueTransactionType"]:
@@ -81701,7 +83085,9 @@ class ChatRevenueTransactionTypeEarnings(TlObject, ChatRevenueTransactionType):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatRevenueTransactionTypeEarnings", None]:
+    def from_dict(
+        cls, data: dict
+    ) -> Union["ChatRevenueTransactionTypeSponsoredMessageEarnings", None]:
         if data:
             data_class = cls()
             data_class.start_date = int(data.get("start_date", 0))
@@ -81710,15 +83096,54 @@ class ChatRevenueTransactionTypeEarnings(TlObject, ChatRevenueTransactionType):
         return data_class
 
 
-class ChatRevenueTransactionTypeWithdrawal(TlObject, ChatRevenueTransactionType):
-    r"""Describes a withdrawal of earnings
+class ChatRevenueTransactionTypeSuggestedPostEarnings(
+    TlObject, ChatRevenueTransactionType
+):
+    r"""Describes earnings from a published suggested post
+
+    Parameters:
+        user_id (:class:`int`):
+            Identifier of the user that paid for the suggested post
+
+    """
+
+    def __init__(self, user_id: int = 0) -> None:
+        self.user_id: int = int(user_id)
+        r"""Identifier of the user that paid for the suggested post"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatRevenueTransactionTypeSuggestedPostEarnings"]:
+        return "chatRevenueTransactionTypeSuggestedPostEarnings"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatRevenueTransactionType"]:
+        return "ChatRevenueTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "user_id": self.user_id}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["ChatRevenueTransactionTypeSuggestedPostEarnings", None]:
+        if data:
+            data_class = cls()
+            data_class.user_id = int(data.get("user_id", 0))
+
+        return data_class
+
+
+class ChatRevenueTransactionTypeFragmentWithdrawal(
+    TlObject, ChatRevenueTransactionType
+):
+    r"""Describes a withdrawal of earnings through Fragment
 
     Parameters:
         withdrawal_date (:class:`int`):
             Point in time \(Unix timestamp\) when the earnings withdrawal started
-
-        provider (:class:`str`):
-            Name of the payment provider
 
         state (:class:`"types.RevenueWithdrawalState"`):
             State of the withdrawal
@@ -81726,15 +83151,10 @@ class ChatRevenueTransactionTypeWithdrawal(TlObject, ChatRevenueTransactionType)
     """
 
     def __init__(
-        self,
-        withdrawal_date: int = 0,
-        provider: str = "",
-        state: RevenueWithdrawalState = None,
+        self, withdrawal_date: int = 0, state: RevenueWithdrawalState = None
     ) -> None:
         self.withdrawal_date: int = int(withdrawal_date)
         r"""Point in time \(Unix timestamp\) when the earnings withdrawal started"""
-        self.provider: Union[str, None] = provider
-        r"""Name of the payment provider"""
         self.state: Union[
             RevenueWithdrawalStatePending,
             RevenueWithdrawalStateSucceeded,
@@ -81747,8 +83167,8 @@ class ChatRevenueTransactionTypeWithdrawal(TlObject, ChatRevenueTransactionType)
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["chatRevenueTransactionTypeWithdrawal"]:
-        return "chatRevenueTransactionTypeWithdrawal"
+    def getType(self) -> Literal["chatRevenueTransactionTypeFragmentWithdrawal"]:
+        return "chatRevenueTransactionTypeFragmentWithdrawal"
 
     @classmethod
     def getClass(self) -> Literal["ChatRevenueTransactionType"]:
@@ -81758,65 +83178,55 @@ class ChatRevenueTransactionTypeWithdrawal(TlObject, ChatRevenueTransactionType)
         return {
             "@type": self.getType(),
             "withdrawal_date": self.withdrawal_date,
-            "provider": self.provider,
             "state": self.state,
         }
 
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["ChatRevenueTransactionTypeWithdrawal", None]:
+    ) -> Union["ChatRevenueTransactionTypeFragmentWithdrawal", None]:
         if data:
             data_class = cls()
             data_class.withdrawal_date = int(data.get("withdrawal_date", 0))
-            data_class.provider = data.get("provider", "")
             data_class.state = data.get("state", None)
 
         return data_class
 
 
-class ChatRevenueTransactionTypeRefund(TlObject, ChatRevenueTransactionType):
-    r"""Describes a refund for failed withdrawal of earnings
+class ChatRevenueTransactionTypeFragmentRefund(TlObject, ChatRevenueTransactionType):
+    r"""Describes a refund for failed withdrawal of earnings through Fragment
 
     Parameters:
         refund_date (:class:`int`):
             Point in time \(Unix timestamp\) when the transaction was refunded
 
-        provider (:class:`str`):
-            Name of the payment provider
-
     """
 
-    def __init__(self, refund_date: int = 0, provider: str = "") -> None:
+    def __init__(self, refund_date: int = 0) -> None:
         self.refund_date: int = int(refund_date)
         r"""Point in time \(Unix timestamp\) when the transaction was refunded"""
-        self.provider: Union[str, None] = provider
-        r"""Name of the payment provider"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["chatRevenueTransactionTypeRefund"]:
-        return "chatRevenueTransactionTypeRefund"
+    def getType(self) -> Literal["chatRevenueTransactionTypeFragmentRefund"]:
+        return "chatRevenueTransactionTypeFragmentRefund"
 
     @classmethod
     def getClass(self) -> Literal["ChatRevenueTransactionType"]:
         return "ChatRevenueTransactionType"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "refund_date": self.refund_date,
-            "provider": self.provider,
-        }
+        return {"@type": self.getType(), "refund_date": self.refund_date}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatRevenueTransactionTypeRefund", None]:
+    def from_dict(
+        cls, data: dict
+    ) -> Union["ChatRevenueTransactionTypeFragmentRefund", None]:
         if data:
             data_class = cls()
             data_class.refund_date = int(data.get("refund_date", 0))
-            data_class.provider = data.get("provider", "")
 
         return data_class
 
@@ -81847,9 +83257,11 @@ class ChatRevenueTransaction(TlObject):
         self.cryptocurrency_amount: int = int(cryptocurrency_amount)
         r"""The withdrawn amount, in the smallest units of the cryptocurrency"""
         self.type: Union[
-            ChatRevenueTransactionTypeEarnings,
-            ChatRevenueTransactionTypeWithdrawal,
-            ChatRevenueTransactionTypeRefund,
+            ChatRevenueTransactionTypeUnsupported,
+            ChatRevenueTransactionTypeSponsoredMessageEarnings,
+            ChatRevenueTransactionTypeSuggestedPostEarnings,
+            ChatRevenueTransactionTypeFragmentWithdrawal,
+            ChatRevenueTransactionTypeFragmentRefund,
             None,
         ] = type
         r"""Type of the transaction"""
@@ -81888,21 +83300,29 @@ class ChatRevenueTransactions(TlObject):
     r"""Contains a list of chat revenue transactions
 
     Parameters:
-        total_count (:class:`int`):
-            Total number of transactions
+        ton_amount (:class:`int`):
+            The amount of owned Toncoins; in the smallest units of the cryptocurrency
 
         transactions (:class:`List["types.ChatRevenueTransaction"]`):
             List of transactions
 
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
     """
 
     def __init__(
-        self, total_count: int = 0, transactions: List[ChatRevenueTransaction] = None
+        self,
+        ton_amount: int = 0,
+        transactions: List[ChatRevenueTransaction] = None,
+        next_offset: str = "",
     ) -> None:
-        self.total_count: int = int(total_count)
-        r"""Total number of transactions"""
+        self.ton_amount: int = int(ton_amount)
+        r"""The amount of owned Toncoins; in the smallest units of the cryptocurrency"""
         self.transactions: List[ChatRevenueTransaction] = transactions or []
         r"""List of transactions"""
+        self.next_offset: Union[str, None] = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -81918,16 +83338,18 @@ class ChatRevenueTransactions(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
-            "total_count": self.total_count,
+            "ton_amount": self.ton_amount,
             "transactions": self.transactions,
+            "next_offset": self.next_offset,
         }
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["ChatRevenueTransactions", None]:
         if data:
             data_class = cls()
-            data_class.total_count = int(data.get("total_count", 0))
+            data_class.ton_amount = int(data.get("ton_amount", 0))
             data_class.transactions = data.get("transactions", None)
+            data_class.next_offset = data.get("next_offset", "")
 
         return data_class
 
@@ -83342,6 +84764,7 @@ class UpdateMessageContent(TlObject, Update):
             MessageGiveawayCompleted,
             MessageGiveawayWinners,
             MessageGiftedStars,
+            MessageGiftedTon,
             MessageGiveawayPrizeStars,
             MessageGift,
             MessageUpgradedGift,
@@ -83351,6 +84774,11 @@ class UpdateMessageContent(TlObject, Update):
             MessageDirectMessagePriceChanged,
             MessageChecklistTasksDone,
             MessageChecklistTasksAdded,
+            MessageSuggestedPostApprovalFailed,
+            MessageSuggestedPostApproved,
+            MessageSuggestedPostDeclined,
+            MessageSuggestedPostPaid,
+            MessageSuggestedPostRefunded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -83798,6 +85226,64 @@ class UpdateMessageFactCheck(TlObject, Update):
             data_class.chat_id = int(data.get("chat_id", 0))
             data_class.message_id = int(data.get("message_id", 0))
             data_class.fact_check = data.get("fact_check", None)
+
+        return data_class
+
+
+class UpdateMessageSuggestedPostInfo(TlObject, Update):
+    r"""Information about suggested post of a message was changed
+
+    Parameters:
+        chat_id (:class:`int`):
+            Chat identifier
+
+        message_id (:class:`int`):
+            Message identifier
+
+        suggested_post_info (:class:`"types.SuggestedPostInfo"`):
+            The new information about the suggested post
+
+    """
+
+    def __init__(
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        suggested_post_info: SuggestedPostInfo = None,
+    ) -> None:
+        self.chat_id: int = int(chat_id)
+        r"""Chat identifier"""
+        self.message_id: int = int(message_id)
+        r"""Message identifier"""
+        self.suggested_post_info: Union[SuggestedPostInfo, None] = suggested_post_info
+        r"""The new information about the suggested post"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateMessageSuggestedPostInfo"]:
+        return "updateMessageSuggestedPostInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "chat_id": self.chat_id,
+            "message_id": self.message_id,
+            "suggested_post_info": self.suggested_post_info,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateMessageSuggestedPostInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.chat_id = int(data.get("chat_id", 0))
+            data_class.message_id = int(data.get("message_id", 0))
+            data_class.suggested_post_info = data.get("suggested_post_info", None)
 
         return data_class
 
@@ -87001,6 +88487,7 @@ class UpdateServiceNotification(TlObject, Update):
             MessageGiveawayCompleted,
             MessageGiveawayWinners,
             MessageGiftedStars,
+            MessageGiftedTon,
             MessageGiveawayPrizeStars,
             MessageGift,
             MessageUpgradedGift,
@@ -87010,6 +88497,11 @@ class UpdateServiceNotification(TlObject, Update):
             MessageDirectMessagePriceChanged,
             MessageChecklistTasksDone,
             MessageChecklistTasksAdded,
+            MessageSuggestedPostApprovalFailed,
+            MessageSuggestedPostApproved,
+            MessageSuggestedPostDeclined,
+            MessageSuggestedPostPaid,
+            MessageSuggestedPostRefunded,
             MessageContactRegistered,
             MessageUsersShared,
             MessageChatShared,
@@ -87639,7 +89131,7 @@ class UpdateGroupCallParticipants(TlObject, Update):
             Identifier of the group call
 
         participant_user_ids (:class:`List[int]`):
-            New list of group call participant user identifiers\. The identifiers may be invalid or the corresponding users may be unknown\. The participants must be shown in the list of group call participants even there is no information about them
+            New list of group call participant user identifiers\. The identifiers may be invalid or the corresponding users may be unknown\. The participants must be shown in the list of group call participants even if there is no information about them
 
     """
 
@@ -87649,7 +89141,7 @@ class UpdateGroupCallParticipants(TlObject, Update):
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the group call"""
         self.participant_user_ids: List[int] = participant_user_ids or []
-        r"""New list of group call participant user identifiers\. The identifiers may be invalid or the corresponding users may be unknown\. The participants must be shown in the list of group call participants even there is no information about them"""
+        r"""New list of group call participant user identifiers\. The identifiers may be invalid or the corresponding users may be unknown\. The participants must be shown in the list of group call participants even if there is no information about them"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -89444,6 +90936,42 @@ class UpdateOwnedStarCount(TlObject, Update):
         if data:
             data_class = cls()
             data_class.star_amount = data.get("star_amount", None)
+
+        return data_class
+
+
+class UpdateOwnedTonCount(TlObject, Update):
+    r"""The number of Toncoins owned by the current user has changed
+
+    Parameters:
+        ton_amount (:class:`int`):
+            The new amount of owned Toncoins; in the smallest units of the cryptocurrency
+
+    """
+
+    def __init__(self, ton_amount: int = 0) -> None:
+        self.ton_amount: int = int(ton_amount)
+        r"""The new amount of owned Toncoins; in the smallest units of the cryptocurrency"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateOwnedTonCount"]:
+        return "updateOwnedTonCount"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "ton_amount": self.ton_amount}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateOwnedTonCount", None]:
+        if data:
+            data_class = cls()
+            data_class.ton_amount = int(data.get("ton_amount", 0))
 
         return data_class
 
