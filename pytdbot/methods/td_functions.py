@@ -2634,6 +2634,53 @@ class TDLibFunctions:
             {"@type": "searchOutgoingDocumentMessages", "query": query, "limit": limit}
         )
 
+    async def getPublicPostSearchLimits(
+        self, query: str = ""
+    ) -> Union["types.Error", "types.PublicPostSearchLimits"]:
+        r"""Checks public post search limits without actually performing the search
+
+        Parameters:
+            query (:class:`str`):
+                Query that will be searched for
+
+        Returns:
+            :class:`~pytdbot.types.PublicPostSearchLimits`
+        """
+
+        return await self.invoke({"@type": "getPublicPostSearchLimits", "query": query})
+
+    async def searchPublicPosts(
+        self, query: str = "", offset: str = "", limit: int = 0, star_count: int = 0
+    ) -> Union["types.Error", "types.FoundPublicPosts"]:
+        r"""Searches for public channel posts using the given query\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+        Parameters:
+            query (:class:`str`):
+                Query to search for
+
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of messages to be returned; up to 100\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+            star_count (:class:`int`):
+                The amount of Telegram Stars the user agreed to pay for the search; pass 0 for free searches
+
+        Returns:
+            :class:`~pytdbot.types.FoundPublicPosts`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "searchPublicPosts",
+                "query": query,
+                "offset": offset,
+                "limit": limit,
+                "star_count": star_count,
+            }
+        )
+
     async def searchPublicMessagesByTag(
         self, tag: str = "", offset: str = "", limit: int = 0
     ) -> Union["types.Error", "types.FoundMessages"]:
@@ -9109,7 +9156,7 @@ class TDLibFunctions:
     async def setChatSlowModeDelay(
         self, chat_id: int = 0, slow_mode_delay: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the slow mode delay of a chat\. Available only for supergroups; requires can\_restrict\_members right
+        r"""Changes the slow mode delay of a chat\. Available only for supergroups; requires can\_restrict\_members administrator right
 
         Parameters:
             chat_id (:class:`int`):
@@ -9797,7 +9844,7 @@ class TDLibFunctions:
     async def canPostStory(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.CanPostStoryResult"]:
-        r"""Checks whether the current user can post a story on behalf of a chat; requires can\_post\_stories right for supergroup and channel chats
+        r"""Checks whether the current user can post a story on behalf of a chat; requires can\_post\_stories administrator right for supergroup and channel chats
 
         Parameters:
             chat_id (:class:`int`):
@@ -9816,12 +9863,13 @@ class TDLibFunctions:
         areas: "types.InputStoryAreas" = None,
         caption: "types.FormattedText" = None,
         privacy_settings: "types.StoryPrivacySettings" = None,
+        album_ids: List[int] = None,
         active_period: int = 0,
         from_story_full_id: "types.StoryFullId" = None,
         is_posted_to_chat_page: bool = False,
         protect_content: bool = False,
     ) -> Union["types.Error", "types.Story"]:
-        r"""Posts a new story on behalf of a chat; requires can\_post\_stories right for supergroup and channel chats\. Returns a temporary story
+        r"""Posts a new story on behalf of a chat; requires can\_post\_stories administrator right for supergroup and channel chats\. Returns a temporary story
 
         Parameters:
             chat_id (:class:`int`):
@@ -9838,6 +9886,9 @@ class TDLibFunctions:
 
             privacy_settings (:class:`"types.StoryPrivacySettings"`):
                 The privacy settings for the story; ignored for stories posted on behalf of supergroup and channel chats
+
+            album_ids (:class:`List[int]`):
+                Identifiers of story albums to which the story will be added upon posting\. An album can have up to getOption\(\"story\_album\_story\_count\_max\"\)
 
             active_period (:class:`int`):
                 Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, or 2 \* 86400 for Telegram Premium users, and 86400 otherwise
@@ -9863,6 +9914,7 @@ class TDLibFunctions:
                 "areas": areas,
                 "caption": caption,
                 "privacy_settings": privacy_settings,
+                "album_ids": album_ids,
                 "active_period": active_period,
                 "from_story_full_id": from_story_full_id,
                 "is_posted_to_chat_page": is_posted_to_chat_page,
@@ -10123,7 +10175,7 @@ class TDLibFunctions:
     async def getChatArchivedStories(
         self, chat_id: int = 0, from_story_id: int = 0, limit: int = 0
     ) -> Union["types.Error", "types.Stories"]:
-        r"""Returns the list of all stories posted by the given chat; requires can\_edit\_stories right in the chat\. The stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
+        r"""Returns the list of all stories posted by the given chat; requires can\_edit\_stories administrator right in the chat\. The stories are returned in reverse chronological order \(i\.e\., in order of decreasing story\_id\)\. For optimal performance, the number of returned stories is chosen by TDLib
 
         Parameters:
             chat_id (:class:`int`):
@@ -10151,7 +10203,7 @@ class TDLibFunctions:
     async def setChatPinnedStories(
         self, chat_id: int = 0, story_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the list of pinned stories on a chat page; requires can\_edit\_stories right in the chat
+        r"""Changes the list of pinned stories on a chat page; requires can\_edit\_stories administrator right in the chat
 
         Parameters:
             chat_id (:class:`int`):
@@ -10452,6 +10504,241 @@ class TDLibFunctions:
                 "story_id": story_id,
                 "offset": offset,
                 "limit": limit,
+            }
+        )
+
+    async def getChatStoryAlbums(
+        self, chat_id: int = 0
+    ) -> Union["types.Error", "types.StoryAlbums"]:
+        r"""Returns the list of story albums owned by the given chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+        Returns:
+            :class:`~pytdbot.types.StoryAlbums`
+        """
+
+        return await self.invoke({"@type": "getChatStoryAlbums", "chat_id": chat_id})
+
+    async def getStoryAlbumStories(
+        self, chat_id: int = 0, story_album_id: int = 0, offset: int = 0, limit: int = 0
+    ) -> Union["types.Error", "types.Stories"]:
+        r"""Returns the list of stories added to the given story album\. For optimal performance, the number of returned stories is chosen by TDLib
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            story_album_id (:class:`int`):
+                Story album identifier
+
+            offset (:class:`int`):
+                Offset of the first entry to return; use 0 to get results from the first album story
+
+            limit (:class:`int`):
+                The maximum number of stories to be returned\. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit
+
+        Returns:
+            :class:`~pytdbot.types.Stories`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getStoryAlbumStories",
+                "chat_id": chat_id,
+                "story_album_id": story_album_id,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def createStoryAlbum(
+        self, story_poster_chat_id: int = 0, name: str = "", story_ids: List[int] = None
+    ) -> Union["types.Error", "types.StoryAlbum"]:
+        r"""Creates an album of stories; requires can\_edit\_stories administrator right for supergroup and channel chats
+
+        Parameters:
+            story_poster_chat_id (:class:`int`):
+                Identifier of the chat that posted the stories
+
+            name (:class:`str`):
+                Name of the album; 1\-12 characters
+
+            story_ids (:class:`List[int]`):
+                Identifiers of stories to add to the album; 0\-getOption\(\"story\_album\_story\_count\_max\"\) identifiers
+
+        Returns:
+            :class:`~pytdbot.types.StoryAlbum`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "createStoryAlbum",
+                "story_poster_chat_id": story_poster_chat_id,
+                "name": name,
+                "story_ids": story_ids,
+            }
+        )
+
+    async def reorderStoryAlbums(
+        self, chat_id: int = 0, story_album_ids: List[int] = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes order of story albums\. If the albums are owned by a supergroup or a channel chat, then requires can\_edit\_stories administrator right in the chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat that owns the stories
+
+            story_album_ids (:class:`List[int]`):
+                New order of story albums
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "reorderStoryAlbums",
+                "chat_id": chat_id,
+                "story_album_ids": story_album_ids,
+            }
+        )
+
+    async def deleteStoryAlbum(
+        self, chat_id: int = 0, story_album_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Deletes a story album\. If the album is owned by a supergroup or a channel chat, then requires can\_edit\_stories administrator right in the chat
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat that owns the stories
+
+            story_album_id (:class:`int`):
+                Identifier of the story album
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteStoryAlbum",
+                "chat_id": chat_id,
+                "story_album_id": story_album_id,
+            }
+        )
+
+    async def setStoryAlbumName(
+        self, chat_id: int = 0, story_album_id: int = 0, name: str = ""
+    ) -> Union["types.Error", "types.StoryAlbum"]:
+        r"""Changes name of an album of stories\. If the album is owned by a supergroup or a channel chat, then requires can\_edit\_stories administrator right in the chat\. Returns the changed album
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat that owns the stories
+
+            story_album_id (:class:`int`):
+                Identifier of the story album
+
+            name (:class:`str`):
+                New name of the album; 1\-12 characters
+
+        Returns:
+            :class:`~pytdbot.types.StoryAlbum`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setStoryAlbumName",
+                "chat_id": chat_id,
+                "story_album_id": story_album_id,
+                "name": name,
+            }
+        )
+
+    async def addStoryAlbumStories(
+        self, chat_id: int = 0, story_album_id: int = 0, story_ids: List[int] = None
+    ) -> Union["types.Error", "types.StoryAlbum"]:
+        r"""Adds stories to the beginning of a previously created story album\. If the album is owned by a supergroup or a channel chat, then requires can\_edit\_stories administrator right in the chat\. Returns the changed album
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat that owns the stories
+
+            story_album_id (:class:`int`):
+                Identifier of the story album
+
+            story_ids (:class:`List[int]`):
+                Identifier of the stories to add to the album; 1\-getOption\(\"story\_album\_story\_count\_max\"\) identifiers\. If after addition the album has more than getOption\(\"story\_album\_story\_count\_max\"\) stories, then the last one are removed from the album
+
+        Returns:
+            :class:`~pytdbot.types.StoryAlbum`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addStoryAlbumStories",
+                "chat_id": chat_id,
+                "story_album_id": story_album_id,
+                "story_ids": story_ids,
+            }
+        )
+
+    async def removeStoryAlbumStories(
+        self, chat_id: int = 0, story_album_id: int = 0, story_ids: List[int] = None
+    ) -> Union["types.Error", "types.StoryAlbum"]:
+        r"""Removes stories from an album\. If the album is owned by a supergroup or a channel chat, then requires can\_edit\_stories administrator right in the chat\. Returns the changed album
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat that owns the stories
+
+            story_album_id (:class:`int`):
+                Identifier of the story album
+
+            story_ids (:class:`List[int]`):
+                Identifier of the stories to remove from the album
+
+        Returns:
+            :class:`~pytdbot.types.StoryAlbum`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "removeStoryAlbumStories",
+                "chat_id": chat_id,
+                "story_album_id": story_album_id,
+                "story_ids": story_ids,
+            }
+        )
+
+    async def reorderStoryAlbumStories(
+        self, chat_id: int = 0, story_album_id: int = 0, story_ids: List[int] = None
+    ) -> Union["types.Error", "types.StoryAlbum"]:
+        r"""Changes order of stories in an album\. If the album is owned by a supergroup or a channel chat, then requires can\_edit\_stories administrator right in the chat\. Returns the changed album
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat that owns the stories
+
+            story_album_id (:class:`int`):
+                Identifier of the story album
+
+            story_ids (:class:`List[int]`):
+                Identifier of the stories to move to the beginning of the album\. All other stories are placed in the current order after the specified stories
+
+        Returns:
+            :class:`~pytdbot.types.StoryAlbum`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "reorderStoryAlbumStories",
+                "chat_id": chat_id,
+                "story_album_id": story_album_id,
+                "story_ids": story_ids,
             }
         )
 
@@ -11845,7 +12132,7 @@ class TDLibFunctions:
                 Identifier of the message with the suggested post\. Use messageProperties\.can\_be\_approved to check whether the suggested post can be approved
 
             send_date (:class:`int`):
-                Point in time \(Unix timestamp\) when the post is expected to be published; pass 0 if the date has already been chosen
+                Point in time \(Unix timestamp\) when the post is expected to be published; pass 0 if the date has already been chosen\. If specified, then the date must be in the future, but at most getOption\(\"suggested\_post\_send\_delay\_max\"\) seconds in the future
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -16791,8 +17078,8 @@ class TDLibFunctions:
         self,
         gift_name: str = "",
         owner_id: "types.MessageSender" = None,
-        star_count: int = 0,
-    ) -> Union["types.Error", "types.Ok"]:
+        price: "types.GiftResalePrice" = None,
+    ) -> Union["types.Error", "types.GiftResaleResult"]:
         r"""Sends an upgraded gift that is available for resale to another user or channel chat; gifts already owned by the current user must be transferred using transferGift and can't be passed to the method
 
         Parameters:
@@ -16802,11 +17089,11 @@ class TDLibFunctions:
             owner_id (:class:`"types.MessageSender"`):
                 Identifier of the user or the channel chat that will receive the gift
 
-            star_count (:class:`int`):
-                The amount of Telegram Stars required to pay for the gift
+            price (:class:`"types.GiftResalePrice"`):
+                The price that the user agreed to pay for the gift
 
         Returns:
-            :class:`~pytdbot.types.Ok`
+            :class:`~pytdbot.types.GiftResaleResult`
         """
 
         return await self.invoke(
@@ -16814,7 +17101,7 @@ class TDLibFunctions:
                 "@type": "sendResoldGift",
                 "gift_name": gift_name,
                 "owner_id": owner_id,
-                "star_count": star_count,
+                "price": price,
             }
         )
 
@@ -16822,6 +17109,7 @@ class TDLibFunctions:
         self,
         business_connection_id: str = "",
         owner_id: "types.MessageSender" = None,
+        collection_id: int = 0,
         exclude_unsaved: bool = False,
         exclude_saved: bool = False,
         exclude_unlimited: bool = False,
@@ -16839,6 +17127,9 @@ class TDLibFunctions:
 
             owner_id (:class:`"types.MessageSender"`):
                 Identifier of the gift receiver
+
+            collection_id (:class:`int`):
+                Pass collection identifier to get gifts only from the specified collection; pass 0 to get gifts regardless of collections
 
             exclude_unsaved (:class:`bool`):
                 Pass true to exclude gifts that aren't saved to the chat's profile page\. Always true for gifts received by other users and channel chats without can\_post\_messages administrator right
@@ -16873,6 +17164,7 @@ class TDLibFunctions:
                 "@type": "getReceivedGifts",
                 "business_connection_id": business_connection_id,
                 "owner_id": owner_id,
+                "collection_id": collection_id,
                 "exclude_unsaved": exclude_unsaved,
                 "exclude_saved": exclude_saved,
                 "exclude_unlimited": exclude_unlimited,
@@ -16941,7 +17233,7 @@ class TDLibFunctions:
         )
 
     async def setGiftResalePrice(
-        self, received_gift_id: str = "", resale_star_count: int = 0
+        self, received_gift_id: str = "", price: "types.GiftResalePrice" = None
     ) -> Union["types.Error", "types.Ok"]:
         r"""Changes resale price of a unique gift owned by the current user
 
@@ -16949,8 +17241,8 @@ class TDLibFunctions:
             received_gift_id (:class:`str`):
                 Identifier of the unique gift
 
-            resale_star_count (:class:`int`):
-                The new price for the unique gift; 0 or getOption\(\"gift\_resale\_star\_count\_min\"\)\-getOption\(\"gift\_resale\_star\_count\_max\"\)\. Pass 0 to disallow gift resale\. The current user will receive getOption\(\"gift\_resale\_earnings\_per\_mille\"\) Telegram Stars for each 1000 Telegram Stars paid for the gift
+            price (:class:`"types.GiftResalePrice"`):
+                The new price for the unique gift; pass null to disallow gift resale\. The current user will receive getOption\(\"gift\_resale\_star\_earnings\_per\_mille\"\) Telegram Stars for each 1000 Telegram Stars paid for the gift if the gift price is in Telegram Stars or getOption\(\"gift\_resale\_ton\_earnings\_per\_mille\"\) Toncoins for each 1000 Toncoins paid for the gift if the gift price is in Toncoins
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -16960,7 +17252,7 @@ class TDLibFunctions:
             {
                 "@type": "setGiftResalePrice",
                 "received_gift_id": received_gift_id,
-                "resale_star_count": resale_star_count,
+                "price": price,
             }
         )
 
@@ -17002,6 +17294,224 @@ class TDLibFunctions:
                 "attributes": attributes,
                 "offset": offset,
                 "limit": limit,
+            }
+        )
+
+    async def getGiftCollections(
+        self, owner_id: "types.MessageSender" = None
+    ) -> Union["types.Error", "types.GiftCollections"]:
+        r"""Returns collections of gifts owned by the given user or chat
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that received the gifts
+
+        Returns:
+            :class:`~pytdbot.types.GiftCollections`
+        """
+
+        return await self.invoke({"@type": "getGiftCollections", "owner_id": owner_id})
+
+    async def createGiftCollection(
+        self,
+        owner_id: "types.MessageSender" = None,
+        name: str = "",
+        received_gift_ids: List[str] = None,
+    ) -> Union["types.Error", "types.GiftCollection"]:
+        r"""Creates a collection from gifts on the current user's or a channel's profile page; requires can\_post\_messages administrator right in the channel chat\. An owner can have up to getOption\(\"gift\_collection\_count\_max\"\) gift collections\. The new collection will be added to the end of the gift collection list of the owner\. Returns the created collection
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that received the gifts
+
+            name (:class:`str`):
+                Name of the collection; 1\-12 characters
+
+            received_gift_ids (:class:`List[str]`):
+                Identifier of the gifts to add to the collection; 0\-getOption\(\"gift\_collection\_gift\_count\_max\"\) identifiers
+
+        Returns:
+            :class:`~pytdbot.types.GiftCollection`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "createGiftCollection",
+                "owner_id": owner_id,
+                "name": name,
+                "received_gift_ids": received_gift_ids,
+            }
+        )
+
+    async def reorderGiftCollections(
+        self, owner_id: "types.MessageSender" = None, collection_ids: List[int] = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes order of gift collections\. If the collections are owned by a channel chat, then requires can\_post\_messages administrator right in the channel chat
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that owns the collection
+
+            collection_ids (:class:`List[int]`):
+                New order of gift collections
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "reorderGiftCollections",
+                "owner_id": owner_id,
+                "collection_ids": collection_ids,
+            }
+        )
+
+    async def deleteGiftCollection(
+        self, owner_id: "types.MessageSender" = None, collection_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Deletes a gift collection\. If the collection is owned by a channel chat, then requires can\_post\_messages administrator right in the channel chat
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that owns the collection
+
+            collection_id (:class:`int`):
+                Identifier of the gift collection
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteGiftCollection",
+                "owner_id": owner_id,
+                "collection_id": collection_id,
+            }
+        )
+
+    async def setGiftCollectionName(
+        self,
+        owner_id: "types.MessageSender" = None,
+        collection_id: int = 0,
+        name: str = "",
+    ) -> Union["types.Error", "types.GiftCollection"]:
+        r"""Changes name of a gift collection\. If the collection is owned by a channel chat, then requires can\_post\_messages administrator right in the channel chat\. Returns the changed collection
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that owns the collection
+
+            collection_id (:class:`int`):
+                Identifier of the gift collection
+
+            name (:class:`str`):
+                New name of the collection; 1\-12 characters
+
+        Returns:
+            :class:`~pytdbot.types.GiftCollection`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setGiftCollectionName",
+                "owner_id": owner_id,
+                "collection_id": collection_id,
+                "name": name,
+            }
+        )
+
+    async def addGiftCollectionGifts(
+        self,
+        owner_id: "types.MessageSender" = None,
+        collection_id: int = 0,
+        received_gift_ids: List[str] = None,
+    ) -> Union["types.Error", "types.GiftCollection"]:
+        r"""Adds gifts to the beginning of a previously created collection\. If the collection is owned by a channel chat, then requires can\_post\_messages administrator right in the channel chat\. Returns the changed collection
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that owns the collection
+
+            collection_id (:class:`int`):
+                Identifier of the gift collection
+
+            received_gift_ids (:class:`List[str]`):
+                Identifier of the gifts to add to the collection; 1\-getOption\(\"gift\_collection\_gift\_count\_max\"\) identifiers\. If after addition the collection has more than getOption\(\"gift\_collection\_gift\_count\_max\"\) gifts, then the last one are removed from the collection
+
+        Returns:
+            :class:`~pytdbot.types.GiftCollection`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addGiftCollectionGifts",
+                "owner_id": owner_id,
+                "collection_id": collection_id,
+                "received_gift_ids": received_gift_ids,
+            }
+        )
+
+    async def removeGiftCollectionGifts(
+        self,
+        owner_id: "types.MessageSender" = None,
+        collection_id: int = 0,
+        received_gift_ids: List[str] = None,
+    ) -> Union["types.Error", "types.GiftCollection"]:
+        r"""Removes gifts from a collection\. If the collection is owned by a channel chat, then requires can\_post\_messages administrator right in the channel chat\. Returns the changed collection
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that owns the collection
+
+            collection_id (:class:`int`):
+                Identifier of the gift collection
+
+            received_gift_ids (:class:`List[str]`):
+                Identifier of the gifts to remove from the collection
+
+        Returns:
+            :class:`~pytdbot.types.GiftCollection`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "removeGiftCollectionGifts",
+                "owner_id": owner_id,
+                "collection_id": collection_id,
+                "received_gift_ids": received_gift_ids,
+            }
+        )
+
+    async def reorderGiftCollectionGifts(
+        self,
+        owner_id: "types.MessageSender" = None,
+        collection_id: int = 0,
+        received_gift_ids: List[str] = None,
+    ) -> Union["types.Error", "types.GiftCollection"]:
+        r"""Changes order of gifts in a collection\. If the collection is owned by a channel chat, then requires can\_post\_messages administrator right in the channel chat\. Returns the changed collection
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that owns the collection
+
+            collection_id (:class:`int`):
+                Identifier of the gift collection
+
+            received_gift_ids (:class:`List[str]`):
+                Identifier of the gifts to move to the beginning of the collection\. All other gifts are placed in the current order after the specified gifts
+
+        Returns:
+            :class:`~pytdbot.types.GiftCollection`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "reorderGiftCollectionGifts",
+                "owner_id": owner_id,
+                "collection_id": collection_id,
+                "received_gift_ids": received_gift_ids,
             }
         )
 
