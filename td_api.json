@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.52",
-    "commit_hash": "dadceed76fe51be919f04fd80f4eb71d131028a9",
+    "version": "1.8.53",
+    "commit_hash": "bdec6af5d70dd51dd8ee9c0565a8a81deb9d169b",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -170,6 +170,14 @@
             ],
             "functions": []
         },
+        "GiftResalePrice": {
+            "description": "Describes price of a resold gift",
+            "types": [
+                "giftResalePriceStar",
+                "giftResalePriceTon"
+            ],
+            "functions": []
+        },
         "SuggestedPostPrice": {
             "description": "Describes price of a suggested post",
             "types": [
@@ -248,6 +256,16 @@
             ],
             "functions": []
         },
+        "GiftResaleResult": {
+            "description": "Describes result of sending a resold gift",
+            "types": [
+                "giftResaleResultOk",
+                "giftResaleResultPriceIncreased"
+            ],
+            "functions": [
+                "sendResoldGift"
+            ]
+        },
         "SentGift": {
             "description": "Represents content of a gift received by a user or a channel chat",
             "types": [
@@ -302,6 +320,7 @@
                 "starTransactionTypePremiumPurchase",
                 "starTransactionTypeBusinessBotTransferSend",
                 "starTransactionTypeBusinessBotTransferReceive",
+                "starTransactionTypePublicPostSearch",
                 "starTransactionTypeUnsupported"
             ],
             "functions": []
@@ -311,6 +330,8 @@
             "types": [
                 "tonTransactionTypeFragmentDeposit",
                 "tonTransactionTypeSuggestedPostPayment",
+                "tonTransactionTypeUpgradedGiftPurchase",
+                "tonTransactionTypeUpgradedGiftSale",
                 "tonTransactionTypeUnsupported"
             ],
             "functions": []
@@ -770,12 +791,14 @@
                 "linkPreviewTypeBackground",
                 "linkPreviewTypeChannelBoost",
                 "linkPreviewTypeChat",
+                "linkPreviewTypeDirectMessagesChat",
                 "linkPreviewTypeDocument",
                 "linkPreviewTypeEmbeddedAnimationPlayer",
                 "linkPreviewTypeEmbeddedAudioPlayer",
                 "linkPreviewTypeEmbeddedVideoPlayer",
                 "linkPreviewTypeExternalAudio",
                 "linkPreviewTypeExternalVideo",
+                "linkPreviewTypeGiftCollection",
                 "linkPreviewTypeGroupCall",
                 "linkPreviewTypeInvoice",
                 "linkPreviewTypeMessage",
@@ -785,6 +808,7 @@
                 "linkPreviewTypeSticker",
                 "linkPreviewTypeStickerSet",
                 "linkPreviewTypeStory",
+                "linkPreviewTypeStoryAlbum",
                 "linkPreviewTypeSupergroupBoost",
                 "linkPreviewTypeTheme",
                 "linkPreviewTypeUnsupported",
@@ -2047,8 +2071,10 @@
                 "internalLinkTypeChatFolderSettings",
                 "internalLinkTypeChatInvite",
                 "internalLinkTypeDefaultMessageAutoDeleteTimerSettings",
+                "internalLinkTypeDirectMessagesChat",
                 "internalLinkTypeEditProfileSettings",
                 "internalLinkTypeGame",
+                "internalLinkTypeGiftCollection",
                 "internalLinkTypeGroupCall",
                 "internalLinkTypeInstantView",
                 "internalLinkTypeInvoice",
@@ -2072,6 +2098,7 @@
                 "internalLinkTypeSettings",
                 "internalLinkTypeStickerSet",
                 "internalLinkTypeStory",
+                "internalLinkTypeStoryAlbum",
                 "internalLinkTypeTheme",
                 "internalLinkTypeThemeSettings",
                 "internalLinkTypeUnknownDeepLink",
@@ -2425,6 +2452,7 @@
                 "updateLanguagePackStrings",
                 "updateConnectionState",
                 "updateFreezeState",
+                "updateAgeVerificationParameters",
                 "updateTermsOfService",
                 "updateUnconfirmedSession",
                 "updateAttachmentMenuBots",
@@ -5383,11 +5411,33 @@
             },
             "type": "ChatAdministratorRights"
         },
+        "giftResalePriceStar": {
+            "description": "Describes price of a resold gift in Telegram Stars",
+            "args": {
+                "star_count": {
+                    "description": "The amount of Telegram Stars expected to be paid for the gift. Must be in range getOption(\"gift_resale_star_count_min\")-getOption(\"gift_resale_star_count_max\") for gifts put for resale",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "GiftResalePrice"
+        },
+        "giftResalePriceTon": {
+            "description": "Describes price of a resold gift in Toncoins",
+            "args": {
+                "toncoin_cent_count": {
+                    "description": "The amount of 1/100 of Toncoin expected to be paid for the gift. Must be in range getOption(\"gift_resale_toncoin_cent_count_min\")-getOption(\"gift_resale_toncoin_cent_count_max\")",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "GiftResalePrice"
+        },
         "suggestedPostPriceStar": {
             "description": "Describes price of a suggested post in Telegram Stars",
             "args": {
                 "star_count": {
-                    "description": "The amount of Telegram Stars agreed to pay for the post; getOption(\"suggested_post_star_count_min\")-getOption(\"suggested_post_star_count_max\")",
+                    "description": "The amount of Telegram Stars expected to be paid for the post; getOption(\"suggested_post_star_count_min\")-getOption(\"suggested_post_star_count_max\")",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -5398,7 +5448,7 @@
             "description": "Describes price of a suggested post in Toncoins",
             "args": {
                 "toncoin_cent_count": {
-                    "description": "The amount of 1/100 of Toncoin agreed to pay for the post; getOption(\"suggested_post_toncoin_cent_count_min\")-getOption(\"suggested_post_toncoin_cent_count_max\")",
+                    "description": "The amount of 1/100 of Toncoin expected to be paid for the post; getOption(\"suggested_post_toncoin_cent_count_min\")-getOption(\"suggested_post_toncoin_cent_count_max\")",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -6202,6 +6252,80 @@
             },
             "type": "GiftSettings"
         },
+        "giftPurchaseLimits": {
+            "description": "Describes the maximum number of times that a specific gift can be purchased",
+            "args": {
+                "total_count": {
+                    "description": "The maximum number of times the gifts can be purchased",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "remaining_count": {
+                    "description": "Number of remaining times the gift can be purchased",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "GiftPurchaseLimits"
+        },
+        "giftResaleParameters": {
+            "description": "Describes parameters of a unique gift available for resale",
+            "args": {
+                "star_count": {
+                    "description": "Resale price of the gift in Telegram Stars",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "toncoin_cent_count": {
+                    "description": "Resale price of the gift in 1/100 of Toncoin",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "toncoin_only": {
+                    "description": "True, if the gift can be bought only using Toncoins",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "GiftResaleParameters"
+        },
+        "giftCollection": {
+            "description": "Describes collection of gifts",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the collection",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "name": {
+                    "description": "Name of the collection",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "icon": {
+                    "description": "Icon of the collection; may be null if none",
+                    "is_optional": true,
+                    "type": "sticker"
+                },
+                "gift_count": {
+                    "description": "Total number of gifts in the collection",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "GiftCollection"
+        },
+        "giftCollections": {
+            "description": "Contains a list of gift collections",
+            "args": {
+                "collections": {
+                    "description": "List of gift collections",
+                    "is_optional": false,
+                    "type": "vector<giftCollection>"
+                }
+            },
+            "type": "GiftCollections"
+        },
         "upgradedGiftOriginUpgrade": {
             "description": "The gift was obtained by upgrading of a previously received gift",
             "args": {
@@ -6221,10 +6345,10 @@
         "upgradedGiftOriginResale": {
             "description": "The gift was bought from another user",
             "args": {
-                "star_count": {
-                    "description": "Number of Telegram Stars that were paid by the sender for the gift",
+                "price": {
+                    "description": "Price paid by the sender for the gift",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "GiftResalePrice"
                 }
             },
             "type": "UpgradedGiftOrigin"
@@ -6387,15 +6511,20 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "remaining_count": {
-                    "description": "Number of remaining times the gift can be purchased; 0 if not limited or the gift was sold out",
+                "is_premium": {
+                    "description": "True, if the gift can be bought only by Telegram Premium subscribers",
                     "is_optional": false,
-                    "type": "int32"
+                    "type": "Bool"
                 },
-                "total_count": {
-                    "description": "Number of total times the gift can be purchased; 0 if not limited",
-                    "is_optional": false,
-                    "type": "int32"
+                "user_limits": {
+                    "description": "Number of times the gift can be purchased by the current user; may be null if not limited",
+                    "is_optional": true,
+                    "type": "giftPurchaseLimits"
+                },
+                "overall_limits": {
+                    "description": "Number of times the gift can be purchased all users; may be null if not limited",
+                    "is_optional": true,
+                    "type": "giftPurchaseLimits"
                 },
                 "first_send_date": {
                     "description": "Point in time (Unix timestamp) when the gift was send for the first time; for sold out gifts only",
@@ -6448,6 +6577,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "is_premium": {
+                    "description": "True, if the original gift could have been bought only by Telegram Premium subscribers",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "owner_id": {
                     "description": "Identifier of the user or the chat that owns the upgraded gift; may be null if none or unknown",
                     "is_optional": true,
@@ -6488,10 +6622,10 @@
                     "is_optional": true,
                     "type": "upgradedGiftOriginalDetails"
                 },
-                "resale_star_count": {
-                    "description": "Number of Telegram Stars that must be paid to buy the gift and send it to someone else; 0 if resale isn't possible",
-                    "is_optional": false,
-                    "type": "int53"
+                "resale_parameters": {
+                    "description": "Resale parameters of the gift; may be null if resale isn't possible",
+                    "is_optional": true,
+                    "type": "giftResaleParameters"
                 }
             },
             "type": "UpgradedGift"
@@ -6556,7 +6690,7 @@
                     "type": "int32"
                 },
                 "min_resale_star_count": {
-                    "description": "The minimum price for the gifts available for resale; 0 if there are no such gifts",
+                    "description": "The minimum price for the gifts available for resale in Telegram Star equivalent; 0 if there are no such gifts",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -6727,6 +6861,22 @@
             },
             "type": "GiftsForResale"
         },
+        "giftResaleResultOk": {
+            "description": "Operation was successfully completed",
+            "args": {},
+            "type": "GiftResaleResult"
+        },
+        "giftResaleResultPriceIncreased": {
+            "description": "Operation has failed, because price has increased. If the price has decreased, then the buying will succeed anyway",
+            "args": {
+                "price": {
+                    "description": "New price for the gift",
+                    "is_optional": false,
+                    "type": "GiftResalePrice"
+                }
+            },
+            "type": "GiftResaleResult"
+        },
         "sentGiftRegular": {
             "description": "Regular gift",
             "args": {
@@ -6806,6 +6956,11 @@
                     "description": "The gift",
                     "is_optional": false,
                     "type": "SentGift"
+                },
+                "collection_ids": {
+                    "description": "Identifiers of collections to which the gift is added; only for the receiver of the gift",
+                    "is_optional": false,
+                    "type": "vector<int32>"
                 },
                 "sell_star_count": {
                     "description": "Number of Telegram Stars that can be claimed by the receiver instead of the regular gift; 0 if the gift can't be sold by the current user",
@@ -7279,10 +7434,15 @@
                     "is_optional": false,
                     "type": "upgradedGift"
                 },
-                "affiliate": {
-                    "description": "Information about commission received by Telegram from the transaction",
+                "commission_per_mille": {
+                    "description": "The number of Telegram Stars received by the Telegram for each 1000 Telegram Stars received by the seller of the gift",
                     "is_optional": false,
-                    "type": "affiliateInfo"
+                    "type": "int32"
+                },
+                "commission_star_amount": {
+                    "description": "The amount of Telegram Stars that were received by Telegram; can be negative for refunds",
+                    "is_optional": false,
+                    "type": "starAmount"
                 }
             },
             "type": "StarTransactionType"
@@ -7442,6 +7602,11 @@
             },
             "type": "StarTransactionType"
         },
+        "starTransactionTypePublicPostSearch": {
+            "description": "The transaction is a payment for search of posts in public Telegram channels; for regular users only",
+            "args": {},
+            "type": "StarTransactionType"
+        },
         "starTransactionTypeUnsupported": {
             "description": "The transaction is a transaction of an unsupported type",
             "args": {},
@@ -7520,6 +7685,48 @@
             "args": {
                 "chat_id": {
                     "description": "Identifier of the channel chat that posted the post",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "TonTransactionType"
+        },
+        "tonTransactionTypeUpgradedGiftPurchase": {
+            "description": "The transaction is a purchase of an upgraded gift for some user or channel; for regular users only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user that sold the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "upgradedGift"
+                }
+            },
+            "type": "TonTransactionType"
+        },
+        "tonTransactionTypeUpgradedGiftSale": {
+            "description": "The transaction is a sale of an upgraded gift; for regular users only",
+            "args": {
+                "user_id": {
+                    "description": "Identifier of the user that bought the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "upgradedGift"
+                },
+                "commission_per_mille": {
+                    "description": "The number of Toncoins received by the Telegram for each 1000 Toncoins received by the seller of the gift",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "commission_toncoin_amount": {
+                    "description": "The amount of Toncoins that were received by the Telegram; in the smallest units of the currency",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -7798,6 +8005,53 @@
             },
             "type": "ProfileAccentColor"
         },
+        "userRating": {
+            "description": "Contains description of user rating",
+            "args": {
+                "level": {
+                    "description": "The level of the user; may be negative",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_maximum_level_reached": {
+                    "description": "True, if the maximum level is reached",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "rating": {
+                    "description": "Numerical value of the rating",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "current_level_rating": {
+                    "description": "The rating required for the current level",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "next_level_rating": {
+                    "description": "The rating required for the next level; 0 if the maximum level is reached",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "UserRating"
+        },
+        "restrictionInfo": {
+            "description": "Contains information about restrictions that must be applied to a chat or a message",
+            "args": {
+                "restriction_reason": {
+                    "description": "A human-readable description of the reason why access to the content must be restricted. If empty, then the content can be accessed, but may be covered by hidden with 18+ spoiler anyway",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "has_sensitive_content": {
+                    "description": "True, if media content of the messages must be hidden with 18+ spoiler. Use value of the option \"can_ignore_sensitive_content_restrictions\" to check whether the current user can ignore the restriction. If age verification parameters were received in updateAgeVerificationParameters, then the user must complete age verification to ignore the restriction. Set the option \"ignore_sensitive_content_restrictions\" to true if the user passes age verification",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "RestrictionInfo"
+        },
         "emojiStatusTypeCustomEmoji": {
             "description": "A custom emoji set as emoji status",
             "args": {
@@ -7997,10 +8251,10 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "restriction_reason": {
-                    "description": "If non-empty, it contains a human-readable description of the reason why access to this user must be restricted",
+                "restriction_info": {
+                    "description": "Information about restrictions that must be applied to the corresponding private chat; may be null if none",
                     "is_optional": true,
-                    "type": "string"
+                    "type": "restrictionInfo"
                 },
                 "has_active_stories": {
                     "description": "True, if the user has non-expired stories available to the current user",
@@ -8273,6 +8527,21 @@
                     "description": "Information about verification status of the user provided by a bot; may be null if none or unknown",
                     "is_optional": true,
                     "type": "botVerification"
+                },
+                "rating": {
+                    "description": "The current rating of the user; may be null if none",
+                    "is_optional": true,
+                    "type": "userRating"
+                },
+                "pending_rating": {
+                    "description": "The rating of the user after the next change; may be null if the user isn't the current user or there are no pending rating changes",
+                    "is_optional": true,
+                    "type": "userRating"
+                },
+                "pending_rating_date": {
+                    "description": "Unix timestamp when rating of the user will change to pending_rating; 0 if the user isn't the current user or there are no pending rating changes",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "business_info": {
                     "description": "Information about business settings for Telegram Business accounts; may be null if none",
@@ -9115,15 +9384,10 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "has_sensitive_content": {
-                    "description": "True, if content of media messages in the supergroup or channel chat must be hidden with 18+ spoiler",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "restriction_reason": {
-                    "description": "If non-empty, contains a human-readable description of the reason why access to this supergroup or channel must be restricted",
+                "restriction_info": {
+                    "description": "Information about the restrictions that must be applied to the corresponding supergroup or channel chat; may be null if none",
                     "is_optional": true,
-                    "type": "string"
+                    "type": "restrictionInfo"
                 },
                 "paid_message_star_count": {
                     "description": "Number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message",
@@ -9394,6 +9658,37 @@
                 }
             },
             "type": "SecretChat"
+        },
+        "publicPostSearchLimits": {
+            "description": "Contains information about public post search limits",
+            "args": {
+                "daily_free_query_count": {
+                    "description": "Number of queries that can be sent daily for free",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "remaining_free_query_count": {
+                    "description": "Number of remaining free queries today",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "next_free_query_in": {
+                    "description": "Amount of time till the next free query can be sent; 0 if it can be sent now",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "star_count": {
+                    "description": "Number of Telegram Stars that must be paid for each non-free query",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "is_current_query_free": {
+                    "description": "True, if the search for the specified query isn't charged",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "PublicPostSearchLimits"
         },
         "messageSenderUser": {
             "description": "The message was sent by a known user",
@@ -10363,15 +10658,10 @@
                     "is_optional": false,
                     "type": "int64"
                 },
-                "has_sensitive_content": {
-                    "description": "True, if media content of the message must be hidden with 18+ spoiler",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "restriction_reason": {
-                    "description": "If non-empty, contains a human-readable description of the reason why access to this message must be restricted",
+                "restriction_info": {
+                    "description": "Information about the restrictions that must be applied to the message content; may be null if none",
                     "is_optional": true,
-                    "type": "string"
+                    "type": "restrictionInfo"
                 },
                 "content": {
                     "description": "Content of the message",
@@ -10443,6 +10733,32 @@
                 }
             },
             "type": "FoundChatMessages"
+        },
+        "foundPublicPosts": {
+            "description": "Contains a list of messages found by a public post search",
+            "args": {
+                "messages": {
+                    "description": "List of found public posts",
+                    "is_optional": false,
+                    "type": "vector<message>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "search_limits": {
+                    "description": "Updated public post search limits after the query; repeated requests with the same query will be free; may be null if they didn't change",
+                    "is_optional": true,
+                    "type": "publicPostSearchLimits"
+                },
+                "are_limits_exceeded": {
+                    "description": "True, if the query has failed because search limits are exceeded. In this case search_limits.daily_free_query_count will be equal to 0",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "FoundPublicPosts"
         },
         "messagePosition": {
             "description": "Contains information about a message in a specific position",
@@ -14096,6 +14412,17 @@
             },
             "type": "LinkPreviewType"
         },
+        "linkPreviewTypeDirectMessagesChat": {
+            "description": "The link is a link to a direct messages chat of a channel",
+            "args": {
+                "photo": {
+                    "description": "Photo of the channel chat; may be null",
+                    "is_optional": true,
+                    "type": "chatPhoto"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
         "linkPreviewTypeDocument": {
             "description": "The link is a link to a general file",
             "args": {
@@ -14252,6 +14579,17 @@
             },
             "type": "LinkPreviewType"
         },
+        "linkPreviewTypeGiftCollection": {
+            "description": "The link is a link to a gift collection",
+            "args": {
+                "icons": {
+                    "description": "Icons for some gifts from the collection; may be empty",
+                    "is_optional": true,
+                    "type": "vector<sticker>"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
         "linkPreviewTypeGroupCall": {
             "description": "The link is a link to a group call that isn't bound to a chat",
             "args": {},
@@ -14322,6 +14660,22 @@
                     "description": "Story identifier",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
+        "linkPreviewTypeStoryAlbum": {
+            "description": "The link is a link to an album of stories",
+            "args": {
+                "photo_icon": {
+                    "description": "Icon of the album; may be null if none",
+                    "is_optional": true,
+                    "type": "photo"
+                },
+                "video_icon": {
+                    "description": "Video icon of the album; may be null if none",
+                    "is_optional": true,
+                    "type": "video"
                 }
             },
             "type": "LinkPreviewType"
@@ -20486,6 +20840,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_be_added_to_album": {
+                    "description": "True, if the story can be added to an album",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_be_deleted": {
                     "description": "True, if the story can be deleted",
                     "is_optional": false,
@@ -20560,6 +20919,11 @@
                     "description": "Caption of the story",
                     "is_optional": false,
                     "type": "formattedText"
+                },
+                "album_ids": {
+                    "description": "Identifiers of story albums to which the story is added; only for manageable stories",
+                    "is_optional": false,
+                    "type": "vector<int32>"
                 }
             },
             "type": "Story"
@@ -20605,6 +20969,43 @@
                 }
             },
             "type": "FoundStories"
+        },
+        "storyAlbum": {
+            "description": "Describes album of stories",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the album",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "name": {
+                    "description": "Name of the album",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "photo_icon": {
+                    "description": "Icon of the album; may be null if none",
+                    "is_optional": true,
+                    "type": "photo"
+                },
+                "video_icon": {
+                    "description": "Video icon of the album; may be null if none",
+                    "is_optional": true,
+                    "type": "video"
+                }
+            },
+            "type": "StoryAlbum"
+        },
+        "storyAlbums": {
+            "description": "Represents a list of story albums",
+            "args": {
+                "albums": {
+                    "description": "List of story albums",
+                    "is_optional": false,
+                    "type": "vector<storyAlbum>"
+                }
+            },
+            "type": "StoryAlbums"
         },
         "storyFullId": {
             "description": "Contains identifier of a story along with identifier of the chat that posted it",
@@ -20660,6 +21061,11 @@
                     "description": "A parameter used to determine order of the stories in the story list; 0 if the stories doesn't need to be shown in the story list. Stories must be sorted by the pair (order, story_poster_chat_id) in descending order",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "can_be_archived": {
+                    "description": "True, if the stories are shown in the main story list and can be archived; otherwise, the stories can be hidden from the main story list only by calling removeTopChat with topChatCategoryUsers and the chat_id. Stories of the current user can't be archived nor hidden using removeTopChat",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "max_read_story_id": {
                     "description": "Identifier of the last read active story",
@@ -28025,6 +28431,17 @@
             "args": {},
             "type": "InternalLinkType"
         },
+        "internalLinkTypeDirectMessagesChat": {
+            "description": "The link is a link to a channel direct messages chat by username of the channel. Call searchPublicChat with the given chat username to process the link. If the chat is found and is channel, open the direct messages chat of the channel",
+            "args": {
+                "channel_username": {
+                    "description": "Username of the channel",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeEditProfileSettings": {
             "description": "The link is a link to the edit profile section of the application settings",
             "args": {},
@@ -28042,6 +28459,22 @@
                     "description": "Short name of the game",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeGiftCollection": {
+            "description": "The link is a link to a gift collection. Call searchPublicChat with the given username, then call getReceivedGifts with the received gift owner identifier and the given collection identifier, then show the collection if received",
+            "args": {
+                "gift_owner_username": {
+                    "description": "Username of the owner of the gift collection",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "collection_id": {
+                    "description": "Gift collection identifier",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "InternalLinkType"
@@ -28326,6 +28759,22 @@
                 },
                 "story_id": {
                     "description": "Story identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeStoryAlbum": {
+            "description": "The link is a link to an album of stories. Call searchPublicChat with the given username, then call getStoryAlbumStories with the received chat identifier and the given story album identifier, then show the story album if received",
+            "args": {
+                "story_album_owner_username": {
+                    "description": "Username of the owner of the story album",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "story_album_id": {
+                    "description": "Story album identifier",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -29051,6 +29500,27 @@
             "description": "There is a working connection to the Telegram servers",
             "args": {},
             "type": "ConnectionState"
+        },
+        "ageVerificationParameters": {
+            "description": "Describes parameters for age verification of the current user",
+            "args": {
+                "min_age": {
+                    "description": "The minimum age required to view restricted content",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "verification_bot_username": {
+                    "description": "Username of the bot which main Web App may be used to verify age of the user",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "country": {
+                    "description": "Unique name for the country or region, which legislation required age verification. May be used to get the corresponding localization key",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "AgeVerificationParameters"
         },
         "topChatCategoryUsers": {
             "description": "A category containing frequently used private chats with non-bot users",
@@ -31402,7 +31872,7 @@
                     "type": "MessageTopic"
                 },
                 "message_count": {
-                    "description": "Approximate number of messages in the topics",
+                    "description": "Approximate number of messages in the topic",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -32468,6 +32938,17 @@
                     "description": "The link to open to send an appeal to unfreeze the account",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "Update"
+        },
+        "updateAgeVerificationParameters": {
+            "description": "The parameters for age verification of the current user's account has changed",
+            "args": {
+                "parameters": {
+                    "description": "Parameters for the age verification; may be null if age verification isn't needed",
+                    "is_optional": true,
+                    "type": "ageVerificationParameters"
                 }
             },
             "type": "Update"
@@ -35121,6 +35602,43 @@
                 }
             },
             "type": "FoundMessages"
+        },
+        "getPublicPostSearchLimits": {
+            "description": "Checks public post search limits without actually performing the search",
+            "args": {
+                "query": {
+                    "description": "Query that will be searched for",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "PublicPostSearchLimits"
+        },
+        "searchPublicPosts": {
+            "description": "Searches for public channel posts using the given query. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+            "args": {
+                "query": {
+                    "description": "Query to search for",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of messages to be returned; up to 100. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "star_count": {
+                    "description": "The amount of Telegram Stars the user agreed to pay for the search; pass 0 for free searches",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "FoundPublicPosts"
         },
         "searchPublicMessagesByTag": {
             "description": "Searches for public channel posts containing the given hashtag or cashtag. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
@@ -39721,7 +40239,7 @@
             "type": "Ok"
         },
         "setChatSlowModeDelay": {
-            "description": "Changes the slow mode delay of a chat. Available only for supergroups; requires can_restrict_members right",
+            "description": "Changes the slow mode delay of a chat. Available only for supergroups; requires can_restrict_members administrator right",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -40184,7 +40702,7 @@
             "type": "Chats"
         },
         "canPostStory": {
-            "description": "Checks whether the current user can post a story on behalf of a chat; requires can_post_stories right for supergroup and channel chats",
+            "description": "Checks whether the current user can post a story on behalf of a chat; requires can_post_stories administrator right for supergroup and channel chats",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier. Pass Saved Messages chat identifier when posting a story on behalf of the current user",
@@ -40195,7 +40713,7 @@
             "type": "CanPostStoryResult"
         },
         "postStory": {
-            "description": "Posts a new story on behalf of a chat; requires can_post_stories right for supergroup and channel chats. Returns a temporary story",
+            "description": "Posts a new story on behalf of a chat; requires can_post_stories administrator right for supergroup and channel chats. Returns a temporary story",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat that will post the story. Pass Saved Messages chat identifier when posting a story on behalf of the current user",
@@ -40221,6 +40739,11 @@
                     "description": "The privacy settings for the story; ignored for stories posted on behalf of supergroup and channel chats",
                     "is_optional": false,
                     "type": "StoryPrivacySettings"
+                },
+                "album_ids": {
+                    "description": "Identifiers of story albums to which the story will be added upon posting. An album can have up to getOption(\"story_album_story_count_max\")",
+                    "is_optional": false,
+                    "type": "vector<int32>"
                 },
                 "active_period": {
                     "description": "Period after which the story is moved to archive, in seconds; must be one of 6 * 3600, 12 * 3600, 86400, or 2 * 86400 for Telegram Premium users, and 86400 otherwise",
@@ -40415,7 +40938,7 @@
             "type": "Stories"
         },
         "getChatArchivedStories": {
-            "description": "Returns the list of all stories posted by the given chat; requires can_edit_stories right in the chat. The stories are returned in reverse chronological order (i.e., in order of decreasing story_id). For optimal performance, the number of returned stories is chosen by TDLib",
+            "description": "Returns the list of all stories posted by the given chat; requires can_edit_stories administrator right in the chat. The stories are returned in reverse chronological order (i.e., in order of decreasing story_id). For optimal performance, the number of returned stories is chosen by TDLib",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -40436,7 +40959,7 @@
             "type": "Stories"
         },
         "setChatPinnedStories": {
-            "description": "Changes the list of pinned stories on a chat page; requires can_edit_stories right in the chat",
+            "description": "Changes the list of pinned stories on a chat page; requires can_edit_stories administrator right in the chat",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat that posted the stories",
@@ -40653,6 +41176,180 @@
                 }
             },
             "type": "PublicForwards"
+        },
+        "getChatStoryAlbums": {
+            "description": "Returns the list of story albums owned by the given chat",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StoryAlbums"
+        },
+        "getStoryAlbumStories": {
+            "description": "Returns the list of stories added to the given story album. For optimal performance, the number of returned stories is chosen by TDLib",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_album_id": {
+                    "description": "Story album identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return; use 0 to get results from the first album story",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "limit": {
+                    "description": "The maximum number of stories to be returned. For optimal performance, the number of returned stories is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Stories"
+        },
+        "createStoryAlbum": {
+            "description": "Creates an album of stories; requires can_edit_stories administrator right for supergroup and channel chats",
+            "args": {
+                "story_poster_chat_id": {
+                    "description": "Identifier of the chat that posted the stories",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "name": {
+                    "description": "Name of the album; 1-12 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "story_ids": {
+                    "description": "Identifiers of stories to add to the album; 0-getOption(\"story_album_story_count_max\") identifiers",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "StoryAlbum"
+        },
+        "reorderStoryAlbums": {
+            "description": "Changes order of story albums. If the albums are owned by a supergroup or a channel chat, then requires can_edit_stories administrator right in the chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that owns the stories",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_album_ids": {
+                    "description": "New order of story albums",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteStoryAlbum": {
+            "description": "Deletes a story album. If the album is owned by a supergroup or a channel chat, then requires can_edit_stories administrator right in the chat",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that owns the stories",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_album_id": {
+                    "description": "Identifier of the story album",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "setStoryAlbumName": {
+            "description": "Changes name of an album of stories. If the album is owned by a supergroup or a channel chat, then requires can_edit_stories administrator right in the chat. Returns the changed album",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that owns the stories",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_album_id": {
+                    "description": "Identifier of the story album",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "name": {
+                    "description": "New name of the album; 1-12 characters",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "StoryAlbum"
+        },
+        "addStoryAlbumStories": {
+            "description": "Adds stories to the beginning of a previously created story album. If the album is owned by a supergroup or a channel chat, then requires can_edit_stories administrator right in the chat. Returns the changed album",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that owns the stories",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_album_id": {
+                    "description": "Identifier of the story album",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "story_ids": {
+                    "description": "Identifier of the stories to add to the album; 1-getOption(\"story_album_story_count_max\") identifiers. If after addition the album has more than getOption(\"story_album_story_count_max\") stories, then the last one are removed from the album",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "StoryAlbum"
+        },
+        "removeStoryAlbumStories": {
+            "description": "Removes stories from an album. If the album is owned by a supergroup or a channel chat, then requires can_edit_stories administrator right in the chat. Returns the changed album",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that owns the stories",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_album_id": {
+                    "description": "Identifier of the story album",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "story_ids": {
+                    "description": "Identifier of the stories to remove from the album",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "StoryAlbum"
+        },
+        "reorderStoryAlbumStories": {
+            "description": "Changes order of stories in an album. If the album is owned by a supergroup or a channel chat, then requires can_edit_stories administrator right in the chat. Returns the changed album",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that owns the stories",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_album_id": {
+                    "description": "Identifier of the story album",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "story_ids": {
+                    "description": "Identifier of the stories to move to the beginning of the album. All other stories are placed in the current order after the specified stories",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "StoryAlbum"
         },
         "getChatBoostLevelFeatures": {
             "description": "Returns the list of features available on the specific chat boost level. This is an offline method",
@@ -41601,7 +42298,7 @@
                     "type": "int53"
                 },
                 "send_date": {
-                    "description": "Point in time (Unix timestamp) when the post is expected to be published; pass 0 if the date has already been chosen",
+                    "description": "Point in time (Unix timestamp) when the post is expected to be published; pass 0 if the date has already been chosen. If specified, then the date must be in the future, but at most getOption(\"suggested_post_send_delay_max\") seconds in the future",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -44950,13 +45647,13 @@
                     "is_optional": false,
                     "type": "MessageSender"
                 },
-                "star_count": {
-                    "description": "The amount of Telegram Stars required to pay for the gift",
+                "price": {
+                    "description": "The price that the user agreed to pay for the gift",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "GiftResalePrice"
                 }
             },
-            "type": "Ok"
+            "type": "GiftResaleResult"
         },
         "getReceivedGifts": {
             "description": "Returns gifts received by the given user or chat",
@@ -44970,6 +45667,11 @@
                     "description": "Identifier of the gift receiver",
                     "is_optional": false,
                     "type": "MessageSender"
+                },
+                "collection_id": {
+                    "description": "Pass collection identifier to get gifts only from the specified collection; pass 0 to get gifts regardless of collections",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "exclude_unsaved": {
                     "description": "Pass true to exclude gifts that aren't saved to the chat's profile page. Always true for gifts received by other users and channel chats without can_post_messages administrator right",
@@ -45060,10 +45762,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "resale_star_count": {
-                    "description": "The new price for the unique gift; 0 or getOption(\"gift_resale_star_count_min\")-getOption(\"gift_resale_star_count_max\"). Pass 0 to disallow gift resale. The current user will receive getOption(\"gift_resale_earnings_per_mille\") Telegram Stars for each 1000 Telegram Stars paid for the gift",
-                    "is_optional": false,
-                    "type": "int53"
+                "price": {
+                    "description": "The new price for the unique gift; pass null to disallow gift resale. The current user will receive getOption(\"gift_resale_star_earnings_per_mille\") Telegram Stars for each 1000 Telegram Stars paid for the gift if the gift price is in Telegram Stars or getOption(\"gift_resale_ton_earnings_per_mille\") Toncoins for each 1000 Toncoins paid for the gift if the gift price is in Toncoins",
+                    "is_optional": true,
+                    "type": "GiftResalePrice"
                 }
             },
             "type": "Ok"
@@ -45098,6 +45800,154 @@
                 }
             },
             "type": "GiftsForResale"
+        },
+        "getGiftCollections": {
+            "description": "Returns collections of gifts owned by the given user or chat",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that received the gifts",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                }
+            },
+            "type": "GiftCollections"
+        },
+        "createGiftCollection": {
+            "description": "Creates a collection from gifts on the current user's or a channel's profile page; requires can_post_messages administrator right in the channel chat. An owner can have up to getOption(\"gift_collection_count_max\") gift collections. The new collection will be added to the end of the gift collection list of the owner. Returns the created collection",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that received the gifts",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "name": {
+                    "description": "Name of the collection; 1-12 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "received_gift_ids": {
+                    "description": "Identifier of the gifts to add to the collection; 0-getOption(\"gift_collection_gift_count_max\") identifiers",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "GiftCollection"
+        },
+        "reorderGiftCollections": {
+            "description": "Changes order of gift collections. If the collections are owned by a channel chat, then requires can_post_messages administrator right in the channel chat",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that owns the collection",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "collection_ids": {
+                    "description": "New order of gift collections",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteGiftCollection": {
+            "description": "Deletes a gift collection. If the collection is owned by a channel chat, then requires can_post_messages administrator right in the channel chat",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that owns the collection",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "collection_id": {
+                    "description": "Identifier of the gift collection",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "setGiftCollectionName": {
+            "description": "Changes name of a gift collection. If the collection is owned by a channel chat, then requires can_post_messages administrator right in the channel chat. Returns the changed collection",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that owns the collection",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "collection_id": {
+                    "description": "Identifier of the gift collection",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "name": {
+                    "description": "New name of the collection; 1-12 characters",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "GiftCollection"
+        },
+        "addGiftCollectionGifts": {
+            "description": "Adds gifts to the beginning of a previously created collection. If the collection is owned by a channel chat, then requires can_post_messages administrator right in the channel chat. Returns the changed collection",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that owns the collection",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "collection_id": {
+                    "description": "Identifier of the gift collection",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "received_gift_ids": {
+                    "description": "Identifier of the gifts to add to the collection; 1-getOption(\"gift_collection_gift_count_max\") identifiers. If after addition the collection has more than getOption(\"gift_collection_gift_count_max\") gifts, then the last one are removed from the collection",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "GiftCollection"
+        },
+        "removeGiftCollectionGifts": {
+            "description": "Removes gifts from a collection. If the collection is owned by a channel chat, then requires can_post_messages administrator right in the channel chat. Returns the changed collection",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that owns the collection",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "collection_id": {
+                    "description": "Identifier of the gift collection",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "received_gift_ids": {
+                    "description": "Identifier of the gifts to remove from the collection",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "GiftCollection"
+        },
+        "reorderGiftCollectionGifts": {
+            "description": "Changes order of gifts in a collection. If the collection is owned by a channel chat, then requires can_post_messages administrator right in the channel chat. Returns the changed collection",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that owns the collection",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "collection_id": {
+                    "description": "Identifier of the gift collection",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "received_gift_ids": {
+                    "description": "Identifier of the gifts to move to the beginning of the collection. All other gifts are placed in the current order after the specified gifts",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "GiftCollection"
         },
         "createInvoiceLink": {
             "description": "Creates a link for the given invoice; for bots only",
