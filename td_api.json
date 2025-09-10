@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.53",
-    "commit_hash": "bdec6af5d70dd51dd8ee9c0565a8a81deb9d169b",
+    "version": "1.8.54",
+    "commit_hash": "6dca40bdaac8b5e66c7a793727bf3f81e9711f70",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -234,7 +234,8 @@
             "types": [
                 "upgradedGiftOriginUpgrade",
                 "upgradedGiftOriginTransfer",
-                "upgradedGiftOriginResale"
+                "upgradedGiftOriginResale",
+                "upgradedGiftOriginPrepaidUpgrade"
             ],
             "functions": []
         },
@@ -308,6 +309,7 @@
                 "starTransactionTypeGiftTransfer",
                 "starTransactionTypeGiftSale",
                 "starTransactionTypeGiftUpgrade",
+                "starTransactionTypeGiftUpgradePurchase",
                 "starTransactionTypeUpgradedGiftPurchase",
                 "starTransactionTypeUpgradedGiftSale",
                 "starTransactionTypeChannelPaidReactionSend",
@@ -6353,6 +6355,11 @@
             },
             "type": "UpgradedGiftOrigin"
         },
+        "upgradedGiftOriginPrepaidUpgrade": {
+            "description": "The sender or receiver of the message has paid for upgraid of the gift, which has been completed",
+            "args": {},
+            "type": "UpgradedGiftOrigin"
+        },
         "upgradedGiftModel": {
             "description": "Describes a model of an upgraded gift",
             "args": {
@@ -6547,6 +6554,11 @@
                     "is_optional": false,
                     "type": "int64"
                 },
+                "regular_gift_id": {
+                    "description": "Unique identifier of the regular gift from which the gift was upgraded; may be 0 for short period of time for old gifts from database",
+                    "is_optional": false,
+                    "type": "int64"
+                },
                 "publisher_chat_id": {
                     "description": "Identifier of the chat that published the gift; 0 if none",
                     "is_optional": false,
@@ -6626,9 +6638,95 @@
                     "description": "Resale parameters of the gift; may be null if resale isn't possible",
                     "is_optional": true,
                     "type": "giftResaleParameters"
+                },
+                "value_currency": {
+                    "description": "ISO 4217 currency code of the currency in which value of the gift is represented; may be empty if unavailable",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "value_amount": {
+                    "description": "Estimated value of the gift; in the smallest units of the currency; 0 if unavailable",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "UpgradedGift"
+        },
+        "upgradedGiftValueInfo": {
+            "description": "Contains information about value of an upgraded gift",
+            "args": {
+                "currency": {
+                    "description": "ISO 4217 currency code of the currency in which the prices are represented",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "value": {
+                    "description": "Estimated value of the gift; in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_value_average": {
+                    "description": "True, if the value is calculated as average value of similar sold gifts. Otherwise, it is based on the sale price of the gift",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "initial_sale_date": {
+                    "description": "Point in time (Unix timestamp) when the corresponding regular gift was originally purchased",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "initial_sale_star_count": {
+                    "description": "Amount of Telegram Stars that were paid for the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "initial_sale_price": {
+                    "description": "Initial price of the gift; in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "last_sale_date": {
+                    "description": "Point in time (Unix timestamp) when the upgraded gift was purchased last time; 0 if never",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "last_sale_price": {
+                    "description": "Last purchase price of the gift; in the smallest units of the currency; 0 if the gift has never been resold",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_last_sale_on_fragment": {
+                    "description": "True, if the last sale was completed on Fragment",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "minimum_price": {
+                    "description": "The current minimum price of gifts upgraded from the same gift; in the smallest units of the currency; 0 if there are no such gifts",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "average_sale_price": {
+                    "description": "The average sale price in the last month of gifts upgraded from the same gift; in the smallest units of the currency; 0 if there were no such sales",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "telegram_listed_gift_count": {
+                    "description": "Number of gifts upgraded from the same gift being resold on Telegram",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "fragment_listed_gift_count": {
+                    "description": "Number of gifts upgraded from the same gift being resold on Fragment",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "fragment_url": {
+                    "description": "The HTTPS link to the Fragment for the gift; may be empty if there are no such gifts being sold on Fragment",
+                    "is_optional": true,
+                    "type": "string"
+                }
+            },
+            "type": "UpgradedGiftValueInfo"
         },
         "upgradeGiftResult": {
             "description": "Contains result of gift upgrading",
@@ -6659,17 +6757,17 @@
                     "type": "int53"
                 },
                 "next_transfer_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be transferred to another owner; 0 if the gift can be transferred immediately or transfer isn't possible",
+                    "description": "Point in time (Unix timestamp) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "next_resale_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be resold to another user; 0 if the gift can't be resold; only for the receiver of the gift",
+                    "description": "Point in time (Unix timestamp) when the gift can be resold to another user; can be in the past; 0 if the gift can't be resold; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "export_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be transferred to the TON blockchain as an NFT",
+                    "description": "Point in time (Unix timestamp) when the gift can be transferred to the TON blockchain as an NFT; can be in the past",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -6978,19 +7076,24 @@
                     "type": "int53"
                 },
                 "next_transfer_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be transferred to another owner; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift",
+                    "description": "Point in time (Unix timestamp) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "next_resale_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be resold to another user; 0 if the gift can't be resold; only for the receiver of the gift",
+                    "description": "Point in time (Unix timestamp) when the gift can be resold to another user; can be in the past; 0 if the gift can't be resold; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "export_date": {
-                    "description": "Point in time (Unix timestamp) when the upgraded gift can be transferred to the TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift",
+                    "description": "Point in time (Unix timestamp) when the upgraded gift can be transferred to the TON blockchain as an NFT; can be in the past; 0 if NFT export isn't possible; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "prepaid_upgrade_hash": {
+                    "description": "If non-empty, then the user can pay for an upgrade of the gift using buyGiftUpgrade",
+                    "is_optional": true,
+                    "type": "string"
                 }
             },
             "type": "ReceivedGift"
@@ -7401,6 +7504,22 @@
                     "description": "The upgraded gift",
                     "is_optional": false,
                     "type": "upgradedGift"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeGiftUpgradePurchase": {
+            "description": "The transaction is a purchase of an upgrade of a gift owned by another user or channel; for regular users only",
+            "args": {
+                "owner_id": {
+                    "description": "Owner of the upgraded gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "gift"
                 }
             },
             "type": "StarTransactionType"
@@ -18015,8 +18134,8 @@
                     "type": "gift"
                 },
                 "sender_id": {
-                    "description": "Sender of the gift",
-                    "is_optional": false,
+                    "description": "Sender of the gift; may be null for outgoing messages about prepaid upgrade of gifts from unknown users",
+                    "is_optional": true,
                     "type": "MessageSender"
                 },
                 "receiver_id": {
@@ -18054,6 +18173,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_prepaid_upgrade": {
+                    "description": "True, if the message is about prepaid upgrade of the gift by another user",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "can_be_upgraded": {
                     "description": "True, if the gift can be upgraded to a unique gift; only for the receiver of the gift",
                     "is_optional": false,
@@ -18076,6 +18200,11 @@
                 },
                 "upgraded_received_gift_id": {
                     "description": "Identifier of the corresponding upgraded gift; may be empty if unknown. Use getReceivedGift to get information about the gift",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "prepaid_upgrade_hash": {
+                    "description": "If non-empty, then the user can pay for an upgrade of the gift using buyGiftUpgrade",
                     "is_optional": true,
                     "type": "string"
                 }
@@ -18131,17 +18260,17 @@
                     "type": "int53"
                 },
                 "next_transfer_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be transferred to another owner; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift",
+                    "description": "Point in time (Unix timestamp) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "next_resale_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be resold to another user; 0 if the gift can't be resold; only for the receiver of the gift",
+                    "description": "Point in time (Unix timestamp) when the gift can be resold to another user; can be in the past; 0 if the gift can't be resold; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "export_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be transferred to the TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift",
+                    "description": "Point in time (Unix timestamp) when the gift can be transferred to the TON blockchain as an NFT; can be in the past; 0 if NFT export isn't possible; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -45485,7 +45614,7 @@
                     "type": "int64"
                 },
                 "owner_id": {
-                    "description": "Identifier of the user or the channel chat that will receive the gift",
+                    "description": "Identifier of the user or the channel chat that will receive the gift; limited gifts can't be sent to channel chats",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
@@ -45608,8 +45737,29 @@
             },
             "type": "UpgradeGiftResult"
         },
+        "buyGiftUpgrade": {
+            "description": "Pays for upgrade of a regular gift that is owned by another user or channel chat",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that owns the gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "prepaid_upgrade_hash": {
+                    "description": "Prepaid upgrade hash as received along with the gift",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "star_count": {
+                    "description": "The amount of Telegram Stars the user agreed to pay for the upgrade; must be equal to gift.upgrade_star_count",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
         "transferGift": {
-            "description": "Sends an upgraded gift to another user or a channel chat",
+            "description": "Sends an upgraded gift to another user or channel chat",
             "args": {
                 "business_connection_id": {
                     "description": "Unique identifier of business connection on behalf of which to send the request; for bots only",
@@ -45688,8 +45838,13 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "exclude_limited": {
-                    "description": "Pass true to exclude gifts that can be purchased limited number of times",
+                "exclude_upgradable": {
+                    "description": "Pass true to exclude gifts that can be purchased limited number of times and can be upgraded",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "exclude_non_upgradable": {
+                    "description": "Pass true to exclude gifts that can be purchased limited number of times and can't be upgraded",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -45737,6 +45892,17 @@
                 }
             },
             "type": "UpgradedGift"
+        },
+        "getUpgradedGiftValueInfo": {
+            "description": "Returns information about value of an upgraded gift by its name",
+            "args": {
+                "name": {
+                    "description": "Unique name of the upgraded gift",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "UpgradedGiftValueInfo"
         },
         "getUpgradedGiftWithdrawalUrl": {
             "description": "Returns a URL for upgraded gift withdrawal in the TON blockchain as an NFT; requires owner privileges for gifts owned by a chat",
