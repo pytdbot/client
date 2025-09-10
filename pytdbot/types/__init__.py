@@ -381,6 +381,7 @@ __all__ = [
     "UpgradedGiftOriginUpgrade",
     "UpgradedGiftOriginTransfer",
     "UpgradedGiftOriginResale",
+    "UpgradedGiftOriginPrepaidUpgrade",
     "UpgradedGiftModel",
     "UpgradedGiftSymbol",
     "UpgradedGiftBackdropColors",
@@ -388,6 +389,7 @@ __all__ = [
     "UpgradedGiftOriginalDetails",
     "Gift",
     "UpgradedGift",
+    "UpgradedGiftValueInfo",
     "UpgradeGiftResult",
     "AvailableGift",
     "AvailableGifts",
@@ -434,6 +436,7 @@ __all__ = [
     "StarTransactionTypeGiftTransfer",
     "StarTransactionTypeGiftSale",
     "StarTransactionTypeGiftUpgrade",
+    "StarTransactionTypeGiftUpgradePurchase",
     "StarTransactionTypeUpgradedGiftPurchase",
     "StarTransactionTypeUpgradedGiftSale",
     "StarTransactionTypeChannelPaidReactionSend",
@@ -2409,6 +2412,7 @@ from .td_types import (
     UpgradedGiftOriginUpgrade,
     UpgradedGiftOriginTransfer,
     UpgradedGiftOriginResale,
+    UpgradedGiftOriginPrepaidUpgrade,
     UpgradedGiftModel,
     UpgradedGiftSymbol,
     UpgradedGiftBackdropColors,
@@ -2416,6 +2420,7 @@ from .td_types import (
     UpgradedGiftOriginalDetails,
     Gift,
     UpgradedGift,
+    UpgradedGiftValueInfo,
     UpgradeGiftResult,
     AvailableGift,
     AvailableGifts,
@@ -2462,6 +2467,7 @@ from .td_types import (
     StarTransactionTypeGiftTransfer,
     StarTransactionTypeGiftSale,
     StarTransactionTypeGiftUpgrade,
+    StarTransactionTypeGiftUpgradePurchase,
     StarTransactionTypeUpgradedGiftPurchase,
     StarTransactionTypeUpgradedGiftSale,
     StarTransactionTypeChannelPaidReactionSend,
@@ -4060,4 +4066,4 @@ from .td_types import (
 from .plugins import Plugins
 from .tdserver import ServerStats, ScheduledEvent, UpdateScheduledEvent
 
-TDLIB_VERSION = "1.8.53"
+TDLIB_VERSION = "1.8.54"

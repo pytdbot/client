@@ -2,8 +2,8 @@ from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
     CallbackQueryBoundMethods,
-    FileBoundMethods,
     MessageBoundMethods,
+    FileBoundMethods,
 )
 import pytdbot
 
@@ -11768,6 +11768,34 @@ class UpgradedGiftOriginResale(TlObject, UpgradedGiftOrigin):
         return data_class
 
 
+class UpgradedGiftOriginPrepaidUpgrade(TlObject, UpgradedGiftOrigin):
+    r"""The sender or receiver of the message has paid for upgraid of the gift, which has been completed"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["upgradedGiftOriginPrepaidUpgrade"]:
+        return "upgradedGiftOriginPrepaidUpgrade"
+
+    @classmethod
+    def getClass(self) -> Literal["UpgradedGiftOrigin"]:
+        return "UpgradedGiftOrigin"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpgradedGiftOriginPrepaidUpgrade", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class UpgradedGiftModel(TlObject):
     r"""Describes a model of an upgraded gift
 
@@ -12217,6 +12245,9 @@ class UpgradedGift(TlObject):
         id (:class:`int`):
             Unique identifier of the gift
 
+        regular_gift_id (:class:`int`):
+            Unique identifier of the regular gift from which the gift was upgraded; may be 0 for short period of time for old gifts from database
+
         publisher_chat_id (:class:`int`):
             Identifier of the chat that published the gift; 0 if none
 
@@ -12265,11 +12296,18 @@ class UpgradedGift(TlObject):
         resale_parameters (:class:`"types.GiftResaleParameters"`):
             Resale parameters of the gift; may be null if resale isn't possible
 
+        value_currency (:class:`str`):
+            ISO 4217 currency code of the currency in which value of the gift is represented; may be empty if unavailable
+
+        value_amount (:class:`int`):
+            Estimated value of the gift; in the smallest units of the currency; 0 if unavailable
+
     """
 
     def __init__(
         self,
         id: int = 0,
+        regular_gift_id: int = 0,
         publisher_chat_id: int = 0,
         title: str = "",
         name: str = "",
@@ -12286,9 +12324,13 @@ class UpgradedGift(TlObject):
         backdrop: UpgradedGiftBackdrop = None,
         original_details: UpgradedGiftOriginalDetails = None,
         resale_parameters: GiftResaleParameters = None,
+        value_currency: str = "",
+        value_amount: int = 0,
     ) -> None:
         self.id: int = int(id)
         r"""Unique identifier of the gift"""
+        self.regular_gift_id: int = int(regular_gift_id)
+        r"""Unique identifier of the regular gift from which the gift was upgraded; may be 0 for short period of time for old gifts from database"""
         self.publisher_chat_id: int = int(publisher_chat_id)
         r"""Identifier of the chat that published the gift; 0 if none"""
         self.title: Union[str, None] = title
@@ -12323,6 +12365,10 @@ class UpgradedGift(TlObject):
         r"""Information about the originally sent gift; may be null if unknown"""
         self.resale_parameters: Union[GiftResaleParameters, None] = resale_parameters
         r"""Resale parameters of the gift; may be null if resale isn't possible"""
+        self.value_currency: Union[str, None] = value_currency
+        r"""ISO 4217 currency code of the currency in which value of the gift is represented; may be empty if unavailable"""
+        self.value_amount: int = int(value_amount)
+        r"""Estimated value of the gift; in the smallest units of the currency; 0 if unavailable"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -12339,6 +12385,7 @@ class UpgradedGift(TlObject):
         return {
             "@type": self.getType(),
             "id": self.id,
+            "regular_gift_id": self.regular_gift_id,
             "publisher_chat_id": self.publisher_chat_id,
             "title": self.title,
             "name": self.name,
@@ -12355,6 +12402,8 @@ class UpgradedGift(TlObject):
             "backdrop": self.backdrop,
             "original_details": self.original_details,
             "resale_parameters": self.resale_parameters,
+            "value_currency": self.value_currency,
+            "value_amount": self.value_amount,
         }
 
     @classmethod
@@ -12362,6 +12411,7 @@ class UpgradedGift(TlObject):
         if data:
             data_class = cls()
             data_class.id = int(data.get("id", 0))
+            data_class.regular_gift_id = int(data.get("regular_gift_id", 0))
             data_class.publisher_chat_id = int(data.get("publisher_chat_id", 0))
             data_class.title = data.get("title", "")
             data_class.name = data.get("name", "")
@@ -12378,6 +12428,162 @@ class UpgradedGift(TlObject):
             data_class.backdrop = data.get("backdrop", None)
             data_class.original_details = data.get("original_details", None)
             data_class.resale_parameters = data.get("resale_parameters", None)
+            data_class.value_currency = data.get("value_currency", "")
+            data_class.value_amount = int(data.get("value_amount", 0))
+
+        return data_class
+
+
+class UpgradedGiftValueInfo(TlObject):
+    r"""Contains information about value of an upgraded gift
+
+    Parameters:
+        currency (:class:`str`):
+            ISO 4217 currency code of the currency in which the prices are represented
+
+        value (:class:`int`):
+            Estimated value of the gift; in the smallest units of the currency
+
+        is_value_average (:class:`bool`):
+            True, if the value is calculated as average value of similar sold gifts\. Otherwise, it is based on the sale price of the gift
+
+        initial_sale_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the corresponding regular gift was originally purchased
+
+        initial_sale_star_count (:class:`int`):
+            Amount of Telegram Stars that were paid for the gift
+
+        initial_sale_price (:class:`int`):
+            Initial price of the gift; in the smallest units of the currency
+
+        last_sale_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the upgraded gift was purchased last time; 0 if never
+
+        last_sale_price (:class:`int`):
+            Last purchase price of the gift; in the smallest units of the currency; 0 if the gift has never been resold
+
+        is_last_sale_on_fragment (:class:`bool`):
+            True, if the last sale was completed on Fragment
+
+        minimum_price (:class:`int`):
+            The current minimum price of gifts upgraded from the same gift; in the smallest units of the currency; 0 if there are no such gifts
+
+        average_sale_price (:class:`int`):
+            The average sale price in the last month of gifts upgraded from the same gift; in the smallest units of the currency; 0 if there were no such sales
+
+        telegram_listed_gift_count (:class:`int`):
+            Number of gifts upgraded from the same gift being resold on Telegram
+
+        fragment_listed_gift_count (:class:`int`):
+            Number of gifts upgraded from the same gift being resold on Fragment
+
+        fragment_url (:class:`str`):
+            The HTTPS link to the Fragment for the gift; may be empty if there are no such gifts being sold on Fragment
+
+    """
+
+    def __init__(
+        self,
+        currency: str = "",
+        value: int = 0,
+        is_value_average: bool = False,
+        initial_sale_date: int = 0,
+        initial_sale_star_count: int = 0,
+        initial_sale_price: int = 0,
+        last_sale_date: int = 0,
+        last_sale_price: int = 0,
+        is_last_sale_on_fragment: bool = False,
+        minimum_price: int = 0,
+        average_sale_price: int = 0,
+        telegram_listed_gift_count: int = 0,
+        fragment_listed_gift_count: int = 0,
+        fragment_url: str = "",
+    ) -> None:
+        self.currency: Union[str, None] = currency
+        r"""ISO 4217 currency code of the currency in which the prices are represented"""
+        self.value: int = int(value)
+        r"""Estimated value of the gift; in the smallest units of the currency"""
+        self.is_value_average: bool = bool(is_value_average)
+        r"""True, if the value is calculated as average value of similar sold gifts\. Otherwise, it is based on the sale price of the gift"""
+        self.initial_sale_date: int = int(initial_sale_date)
+        r"""Point in time \(Unix timestamp\) when the corresponding regular gift was originally purchased"""
+        self.initial_sale_star_count: int = int(initial_sale_star_count)
+        r"""Amount of Telegram Stars that were paid for the gift"""
+        self.initial_sale_price: int = int(initial_sale_price)
+        r"""Initial price of the gift; in the smallest units of the currency"""
+        self.last_sale_date: int = int(last_sale_date)
+        r"""Point in time \(Unix timestamp\) when the upgraded gift was purchased last time; 0 if never"""
+        self.last_sale_price: int = int(last_sale_price)
+        r"""Last purchase price of the gift; in the smallest units of the currency; 0 if the gift has never been resold"""
+        self.is_last_sale_on_fragment: bool = bool(is_last_sale_on_fragment)
+        r"""True, if the last sale was completed on Fragment"""
+        self.minimum_price: int = int(minimum_price)
+        r"""The current minimum price of gifts upgraded from the same gift; in the smallest units of the currency; 0 if there are no such gifts"""
+        self.average_sale_price: int = int(average_sale_price)
+        r"""The average sale price in the last month of gifts upgraded from the same gift; in the smallest units of the currency; 0 if there were no such sales"""
+        self.telegram_listed_gift_count: int = int(telegram_listed_gift_count)
+        r"""Number of gifts upgraded from the same gift being resold on Telegram"""
+        self.fragment_listed_gift_count: int = int(fragment_listed_gift_count)
+        r"""Number of gifts upgraded from the same gift being resold on Fragment"""
+        self.fragment_url: Union[str, None] = fragment_url
+        r"""The HTTPS link to the Fragment for the gift; may be empty if there are no such gifts being sold on Fragment"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["upgradedGiftValueInfo"]:
+        return "upgradedGiftValueInfo"
+
+    @classmethod
+    def getClass(self) -> Literal["UpgradedGiftValueInfo"]:
+        return "UpgradedGiftValueInfo"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "currency": self.currency,
+            "value": self.value,
+            "is_value_average": self.is_value_average,
+            "initial_sale_date": self.initial_sale_date,
+            "initial_sale_star_count": self.initial_sale_star_count,
+            "initial_sale_price": self.initial_sale_price,
+            "last_sale_date": self.last_sale_date,
+            "last_sale_price": self.last_sale_price,
+            "is_last_sale_on_fragment": self.is_last_sale_on_fragment,
+            "minimum_price": self.minimum_price,
+            "average_sale_price": self.average_sale_price,
+            "telegram_listed_gift_count": self.telegram_listed_gift_count,
+            "fragment_listed_gift_count": self.fragment_listed_gift_count,
+            "fragment_url": self.fragment_url,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpgradedGiftValueInfo", None]:
+        if data:
+            data_class = cls()
+            data_class.currency = data.get("currency", "")
+            data_class.value = int(data.get("value", 0))
+            data_class.is_value_average = data.get("is_value_average", False)
+            data_class.initial_sale_date = int(data.get("initial_sale_date", 0))
+            data_class.initial_sale_star_count = int(
+                data.get("initial_sale_star_count", 0)
+            )
+            data_class.initial_sale_price = int(data.get("initial_sale_price", 0))
+            data_class.last_sale_date = int(data.get("last_sale_date", 0))
+            data_class.last_sale_price = int(data.get("last_sale_price", 0))
+            data_class.is_last_sale_on_fragment = data.get(
+                "is_last_sale_on_fragment", False
+            )
+            data_class.minimum_price = int(data.get("minimum_price", 0))
+            data_class.average_sale_price = int(data.get("average_sale_price", 0))
+            data_class.telegram_listed_gift_count = int(
+                data.get("telegram_listed_gift_count", 0)
+            )
+            data_class.fragment_listed_gift_count = int(
+                data.get("fragment_listed_gift_count", 0)
+            )
+            data_class.fragment_url = data.get("fragment_url", "")
 
         return data_class
 
@@ -12402,13 +12608,13 @@ class UpgradeGiftResult(TlObject):
             Number of Telegram Stars that must be paid to transfer the upgraded gift
 
         next_transfer_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the gift can be transferred to another owner; 0 if the gift can be transferred immediately or transfer isn't possible
+            Point in time \(Unix timestamp\) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible
 
         next_resale_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the gift can be resold to another user; 0 if the gift can't be resold; only for the receiver of the gift
+            Point in time \(Unix timestamp\) when the gift can be resold to another user; can be in the past; 0 if the gift can't be resold; only for the receiver of the gift
 
         export_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the gift can be transferred to the TON blockchain as an NFT
+            Point in time \(Unix timestamp\) when the gift can be transferred to the TON blockchain as an NFT; can be in the past
 
     """
 
@@ -12434,11 +12640,11 @@ class UpgradeGiftResult(TlObject):
         self.transfer_star_count: int = int(transfer_star_count)
         r"""Number of Telegram Stars that must be paid to transfer the upgraded gift"""
         self.next_transfer_date: int = int(next_transfer_date)
-        r"""Point in time \(Unix timestamp\) when the gift can be transferred to another owner; 0 if the gift can be transferred immediately or transfer isn't possible"""
+        r"""Point in time \(Unix timestamp\) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible"""
         self.next_resale_date: int = int(next_resale_date)
-        r"""Point in time \(Unix timestamp\) when the gift can be resold to another user; 0 if the gift can't be resold; only for the receiver of the gift"""
+        r"""Point in time \(Unix timestamp\) when the gift can be resold to another user; can be in the past; 0 if the gift can't be resold; only for the receiver of the gift"""
         self.export_date: int = int(export_date)
-        r"""Point in time \(Unix timestamp\) when the gift can be transferred to the TON blockchain as an NFT"""
+        r"""Point in time \(Unix timestamp\) when the gift can be transferred to the TON blockchain as an NFT; can be in the past"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -13228,13 +13434,16 @@ class ReceivedGift(TlObject):
             Number of Telegram Stars that must be paid to transfer the upgraded gift; only for the receiver of the gift
 
         next_transfer_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the gift can be transferred to another owner; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift
+            Point in time \(Unix timestamp\) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift
 
         next_resale_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the gift can be resold to another user; 0 if the gift can't be resold; only for the receiver of the gift
+            Point in time \(Unix timestamp\) when the gift can be resold to another user; can be in the past; 0 if the gift can't be resold; only for the receiver of the gift
 
         export_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the upgraded gift can be transferred to the TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift
+            Point in time \(Unix timestamp\) when the upgraded gift can be transferred to the TON blockchain as an NFT; can be in the past; 0 if NFT export isn't possible; only for the receiver of the gift
+
+        prepaid_upgrade_hash (:class:`str`):
+            If non\-empty, then the user can pay for an upgrade of the gift using buyGiftUpgrade
 
     """
 
@@ -13258,6 +13467,7 @@ class ReceivedGift(TlObject):
         next_transfer_date: int = 0,
         next_resale_date: int = 0,
         export_date: int = 0,
+        prepaid_upgrade_hash: str = "",
     ) -> None:
         self.received_gift_id: Union[str, None] = received_gift_id
         r"""Unique identifier of the received gift for the current user; only for the receiver of the gift"""
@@ -13290,11 +13500,13 @@ class ReceivedGift(TlObject):
         self.transfer_star_count: int = int(transfer_star_count)
         r"""Number of Telegram Stars that must be paid to transfer the upgraded gift; only for the receiver of the gift"""
         self.next_transfer_date: int = int(next_transfer_date)
-        r"""Point in time \(Unix timestamp\) when the gift can be transferred to another owner; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift"""
+        r"""Point in time \(Unix timestamp\) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift"""
         self.next_resale_date: int = int(next_resale_date)
-        r"""Point in time \(Unix timestamp\) when the gift can be resold to another user; 0 if the gift can't be resold; only for the receiver of the gift"""
+        r"""Point in time \(Unix timestamp\) when the gift can be resold to another user; can be in the past; 0 if the gift can't be resold; only for the receiver of the gift"""
         self.export_date: int = int(export_date)
-        r"""Point in time \(Unix timestamp\) when the upgraded gift can be transferred to the TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift"""
+        r"""Point in time \(Unix timestamp\) when the upgraded gift can be transferred to the TON blockchain as an NFT; can be in the past; 0 if NFT export isn't possible; only for the receiver of the gift"""
+        self.prepaid_upgrade_hash: Union[str, None] = prepaid_upgrade_hash
+        r"""If non\-empty, then the user can pay for an upgrade of the gift using buyGiftUpgrade"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -13328,6 +13540,7 @@ class ReceivedGift(TlObject):
             "next_transfer_date": self.next_transfer_date,
             "next_resale_date": self.next_resale_date,
             "export_date": self.export_date,
+            "prepaid_upgrade_hash": self.prepaid_upgrade_hash,
         }
 
     @classmethod
@@ -13354,6 +13567,7 @@ class ReceivedGift(TlObject):
             data_class.next_transfer_date = int(data.get("next_transfer_date", 0))
             data_class.next_resale_date = int(data.get("next_resale_date", 0))
             data_class.export_date = int(data.get("export_date", 0))
+            data_class.prepaid_upgrade_hash = data.get("prepaid_upgrade_hash", "")
 
         return data_class
 
@@ -14601,6 +14815,50 @@ class StarTransactionTypeGiftUpgrade(TlObject, StarTransactionType):
         return data_class
 
 
+class StarTransactionTypeGiftUpgradePurchase(TlObject, StarTransactionType):
+    r"""The transaction is a purchase of an upgrade of a gift owned by another user or channel; for regular users only
+
+    Parameters:
+        owner_id (:class:`"types.MessageSender"`):
+            Owner of the upgraded gift
+
+        gift (:class:`"types.Gift"`):
+            The gift
+
+    """
+
+    def __init__(self, owner_id: MessageSender = None, gift: Gift = None) -> None:
+        self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
+        r"""Owner of the upgraded gift"""
+        self.gift: Union[Gift, None] = gift
+        r"""The gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["starTransactionTypeGiftUpgradePurchase"]:
+        return "starTransactionTypeGiftUpgradePurchase"
+
+    @classmethod
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "owner_id": self.owner_id, "gift": self.gift}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeGiftUpgradePurchase", None]:
+        if data:
+            data_class = cls()
+            data_class.owner_id = data.get("owner_id", None)
+            data_class.gift = data.get("gift", None)
+
+        return data_class
+
+
 class StarTransactionTypeUpgradedGiftPurchase(TlObject, StarTransactionType):
     r"""The transaction is a purchase of an upgraded gift for some user or channel; for regular users only
 
@@ -15297,6 +15555,7 @@ class StarTransaction(TlObject):
             StarTransactionTypeGiftTransfer,
             StarTransactionTypeGiftSale,
             StarTransactionTypeGiftUpgrade,
+            StarTransactionTypeGiftUpgradePurchase,
             StarTransactionTypeUpgradedGiftPurchase,
             StarTransactionTypeUpgradedGiftSale,
             StarTransactionTypeChannelPaidReactionSend,
@@ -45214,7 +45473,7 @@ class MessageGift(TlObject, MessageContent):
             The gift
 
         sender_id (:class:`"types.MessageSender"`):
-            Sender of the gift
+            Sender of the gift; may be null for outgoing messages about prepaid upgrade of gifts from unknown users
 
         receiver_id (:class:`"types.MessageSender"`):
             Receiver of the gift
@@ -45237,6 +45496,9 @@ class MessageGift(TlObject, MessageContent):
         is_saved (:class:`bool`):
             True, if the gift is displayed on the user's or the channel's profile page; only for the receiver of the gift
 
+        is_prepaid_upgrade (:class:`bool`):
+            True, if the message is about prepaid upgrade of the gift by another user
+
         can_be_upgraded (:class:`bool`):
             True, if the gift can be upgraded to a unique gift; only for the receiver of the gift
 
@@ -45252,6 +45514,9 @@ class MessageGift(TlObject, MessageContent):
         upgraded_received_gift_id (:class:`str`):
             Identifier of the corresponding upgraded gift; may be empty if unknown\. Use getReceivedGift to get information about the gift
 
+        prepaid_upgrade_hash (:class:`str`):
+            If non\-empty, then the user can pay for an upgrade of the gift using buyGiftUpgrade
+
     """
 
     def __init__(
@@ -45265,16 +45530,18 @@ class MessageGift(TlObject, MessageContent):
         prepaid_upgrade_star_count: int = 0,
         is_private: bool = False,
         is_saved: bool = False,
+        is_prepaid_upgrade: bool = False,
         can_be_upgraded: bool = False,
         was_converted: bool = False,
         was_upgraded: bool = False,
         was_refunded: bool = False,
         upgraded_received_gift_id: str = "",
+        prepaid_upgrade_hash: str = "",
     ) -> None:
         self.gift: Union[Gift, None] = gift
         r"""The gift"""
         self.sender_id: Union[MessageSenderUser, MessageSenderChat, None] = sender_id
-        r"""Sender of the gift"""
+        r"""Sender of the gift; may be null for outgoing messages about prepaid upgrade of gifts from unknown users"""
         self.receiver_id: Union[MessageSenderUser, MessageSenderChat, None] = (
             receiver_id
         )
@@ -45291,6 +45558,8 @@ class MessageGift(TlObject, MessageContent):
         r"""True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them"""
         self.is_saved: bool = bool(is_saved)
         r"""True, if the gift is displayed on the user's or the channel's profile page; only for the receiver of the gift"""
+        self.is_prepaid_upgrade: bool = bool(is_prepaid_upgrade)
+        r"""True, if the message is about prepaid upgrade of the gift by another user"""
         self.can_be_upgraded: bool = bool(can_be_upgraded)
         r"""True, if the gift can be upgraded to a unique gift; only for the receiver of the gift"""
         self.was_converted: bool = bool(was_converted)
@@ -45301,6 +45570,8 @@ class MessageGift(TlObject, MessageContent):
         r"""True, if the gift was refunded and isn't available anymore"""
         self.upgraded_received_gift_id: Union[str, None] = upgraded_received_gift_id
         r"""Identifier of the corresponding upgraded gift; may be empty if unknown\. Use getReceivedGift to get information about the gift"""
+        self.prepaid_upgrade_hash: Union[str, None] = prepaid_upgrade_hash
+        r"""If non\-empty, then the user can pay for an upgrade of the gift using buyGiftUpgrade"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -45325,11 +45596,13 @@ class MessageGift(TlObject, MessageContent):
             "prepaid_upgrade_star_count": self.prepaid_upgrade_star_count,
             "is_private": self.is_private,
             "is_saved": self.is_saved,
+            "is_prepaid_upgrade": self.is_prepaid_upgrade,
             "can_be_upgraded": self.can_be_upgraded,
             "was_converted": self.was_converted,
             "was_upgraded": self.was_upgraded,
             "was_refunded": self.was_refunded,
             "upgraded_received_gift_id": self.upgraded_received_gift_id,
+            "prepaid_upgrade_hash": self.prepaid_upgrade_hash,
         }
 
     @classmethod
@@ -45347,6 +45620,7 @@ class MessageGift(TlObject, MessageContent):
             )
             data_class.is_private = data.get("is_private", False)
             data_class.is_saved = data.get("is_saved", False)
+            data_class.is_prepaid_upgrade = data.get("is_prepaid_upgrade", False)
             data_class.can_be_upgraded = data.get("can_be_upgraded", False)
             data_class.was_converted = data.get("was_converted", False)
             data_class.was_upgraded = data.get("was_upgraded", False)
@@ -45354,6 +45628,7 @@ class MessageGift(TlObject, MessageContent):
             data_class.upgraded_received_gift_id = data.get(
                 "upgraded_received_gift_id", ""
             )
+            data_class.prepaid_upgrade_hash = data.get("prepaid_upgrade_hash", "")
 
         return data_class
 
@@ -45390,13 +45665,13 @@ class MessageUpgradedGift(TlObject, MessageContent):
             Number of Telegram Stars that must be paid to transfer the upgraded gift; only for the receiver of the gift
 
         next_transfer_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the gift can be transferred to another owner; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift
+            Point in time \(Unix timestamp\) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift
 
         next_resale_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the gift can be resold to another user; 0 if the gift can't be resold; only for the receiver of the gift
+            Point in time \(Unix timestamp\) when the gift can be resold to another user; can be in the past; 0 if the gift can't be resold; only for the receiver of the gift
 
         export_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the gift can be transferred to the TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift
+            Point in time \(Unix timestamp\) when the gift can be transferred to the TON blockchain as an NFT; can be in the past; 0 if NFT export isn't possible; only for the receiver of the gift
 
     """
 
@@ -45427,6 +45702,7 @@ class MessageUpgradedGift(TlObject, MessageContent):
             UpgradedGiftOriginUpgrade,
             UpgradedGiftOriginTransfer,
             UpgradedGiftOriginResale,
+            UpgradedGiftOriginPrepaidUpgrade,
             None,
         ] = origin
         r"""Origin of the upgraded gift"""
@@ -45441,11 +45717,11 @@ class MessageUpgradedGift(TlObject, MessageContent):
         self.transfer_star_count: int = int(transfer_star_count)
         r"""Number of Telegram Stars that must be paid to transfer the upgraded gift; only for the receiver of the gift"""
         self.next_transfer_date: int = int(next_transfer_date)
-        r"""Point in time \(Unix timestamp\) when the gift can be transferred to another owner; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift"""
+        r"""Point in time \(Unix timestamp\) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift"""
         self.next_resale_date: int = int(next_resale_date)
-        r"""Point in time \(Unix timestamp\) when the gift can be resold to another user; 0 if the gift can't be resold; only for the receiver of the gift"""
+        r"""Point in time \(Unix timestamp\) when the gift can be resold to another user; can be in the past; 0 if the gift can't be resold; only for the receiver of the gift"""
         self.export_date: int = int(export_date)
-        r"""Point in time \(Unix timestamp\) when the gift can be transferred to the TON blockchain as an NFT; 0 if NFT export isn't possible; only for the receiver of the gift"""
+        r"""Point in time \(Unix timestamp\) when the gift can be transferred to the TON blockchain as an NFT; can be in the past; 0 if NFT export isn't possible; only for the receiver of the gift"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))

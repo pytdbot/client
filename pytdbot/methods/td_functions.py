@@ -16863,7 +16863,7 @@ class TDLibFunctions:
                 Identifier of the gift to send
 
             owner_id (:class:`"types.MessageSender"`):
-                Identifier of the user or the channel chat that will receive the gift
+                Identifier of the user or the channel chat that will receive the gift; limited gifts can't be sent to channel chats
 
             text (:class:`"types.FormattedText"`):
                 Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed\. Must be empty if the receiver enabled paid messages
@@ -17038,6 +17038,37 @@ class TDLibFunctions:
             }
         )
 
+    async def buyGiftUpgrade(
+        self,
+        owner_id: "types.MessageSender" = None,
+        prepaid_upgrade_hash: str = "",
+        star_count: int = 0,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Pays for upgrade of a regular gift that is owned by another user or channel chat
+
+        Parameters:
+            owner_id (:class:`"types.MessageSender"`):
+                Identifier of the user or the channel chat that owns the gift
+
+            prepaid_upgrade_hash (:class:`str`):
+                Prepaid upgrade hash as received along with the gift
+
+            star_count (:class:`int`):
+                The amount of Telegram Stars the user agreed to pay for the upgrade; must be equal to gift\.upgrade\_star\_count
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "buyGiftUpgrade",
+                "owner_id": owner_id,
+                "prepaid_upgrade_hash": prepaid_upgrade_hash,
+                "star_count": star_count,
+            }
+        )
+
     async def transferGift(
         self,
         business_connection_id: str = "",
@@ -17045,7 +17076,7 @@ class TDLibFunctions:
         new_owner_id: "types.MessageSender" = None,
         star_count: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Sends an upgraded gift to another user or a channel chat
+        r"""Sends an upgraded gift to another user or channel chat
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -17113,7 +17144,8 @@ class TDLibFunctions:
         exclude_unsaved: bool = False,
         exclude_saved: bool = False,
         exclude_unlimited: bool = False,
-        exclude_limited: bool = False,
+        exclude_upgradable: bool = False,
+        exclude_non_upgradable: bool = False,
         exclude_upgraded: bool = False,
         sort_by_price: bool = False,
         offset: str = "",
@@ -17140,8 +17172,11 @@ class TDLibFunctions:
             exclude_unlimited (:class:`bool`):
                 Pass true to exclude gifts that can be purchased unlimited number of times
 
-            exclude_limited (:class:`bool`):
-                Pass true to exclude gifts that can be purchased limited number of times
+            exclude_upgradable (:class:`bool`):
+                Pass true to exclude gifts that can be purchased limited number of times and can be upgraded
+
+            exclude_non_upgradable (:class:`bool`):
+                Pass true to exclude gifts that can be purchased limited number of times and can't be upgraded
 
             exclude_upgraded (:class:`bool`):
                 Pass true to exclude upgraded gifts
@@ -17168,7 +17203,8 @@ class TDLibFunctions:
                 "exclude_unsaved": exclude_unsaved,
                 "exclude_saved": exclude_saved,
                 "exclude_unlimited": exclude_unlimited,
-                "exclude_limited": exclude_limited,
+                "exclude_upgradable": exclude_upgradable,
+                "exclude_non_upgradable": exclude_non_upgradable,
                 "exclude_upgraded": exclude_upgraded,
                 "sort_by_price": sort_by_price,
                 "offset": offset,
@@ -17207,6 +17243,21 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "getUpgradedGift", "name": name})
+
+    async def getUpgradedGiftValueInfo(
+        self, name: str = ""
+    ) -> Union["types.Error", "types.UpgradedGiftValueInfo"]:
+        r"""Returns information about value of an upgraded gift by its name
+
+        Parameters:
+            name (:class:`str`):
+                Unique name of the upgraded gift
+
+        Returns:
+            :class:`~pytdbot.types.UpgradedGiftValueInfo`
+        """
+
+        return await self.invoke({"@type": "getUpgradedGiftValueInfo", "name": name})
 
     async def getUpgradedGiftWithdrawalUrl(
         self, received_gift_id: str = "", password: str = ""
