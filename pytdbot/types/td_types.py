@@ -1,8 +1,8 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
-    CallbackQueryBoundMethods,
     MessageBoundMethods,
+    CallbackQueryBoundMethods,
     FileBoundMethods,
 )
 import pytdbot
@@ -122,6 +122,12 @@ class PollType:
     pass
 
 
+class ProfileTab:
+    r"""Describes a tab shown in a user or a chat profile"""
+
+    pass
+
+
 class UserType:
     r"""Represents the type of user\. The following types are possible: regular users, deleted users and bots"""
 
@@ -184,6 +190,12 @@ class AffiliateType:
 
 class AffiliateProgramSortOrder:
     r"""Describes the order of the found affiliate programs"""
+
+    pass
+
+
+class CanSendGiftResult:
+    r"""Describes whether a gift can be sent now by the current user"""
 
     pass
 
@@ -442,6 +454,12 @@ class WebAppOpenMode:
 
 class SavedMessagesTopicType:
     r"""Describes type of Saved Messages topic"""
+
+    pass
+
+
+class BuiltInTheme:
+    r"""Describes a built\-in theme of an official app"""
 
     pass
 
@@ -874,6 +892,18 @@ class BackgroundType:
 
 class InputBackground:
     r"""Contains information about background to set"""
+
+    pass
+
+
+class ChatTheme:
+    r"""Describes a chat theme"""
+
+    pass
+
+
+class InputChatTheme:
+    r"""Describes a chat theme to set"""
 
     pass
 
@@ -2209,11 +2239,26 @@ class AuthorizationStateWaitPremiumPurchase(TlObject, AuthorizationState):
         store_product_id (:class:`str`):
             Identifier of the store product that must be bought
 
+        support_email_address (:class:`str`):
+            Email address to use for support if the user has issues with Telegram Premium purchase
+
+        support_email_subject (:class:`str`):
+            Subject for the email sent to the support email address
+
     """
 
-    def __init__(self, store_product_id: str = "") -> None:
+    def __init__(
+        self,
+        store_product_id: str = "",
+        support_email_address: str = "",
+        support_email_subject: str = "",
+    ) -> None:
         self.store_product_id: Union[str, None] = store_product_id
         r"""Identifier of the store product that must be bought"""
+        self.support_email_address: Union[str, None] = support_email_address
+        r"""Email address to use for support if the user has issues with Telegram Premium purchase"""
+        self.support_email_subject: Union[str, None] = support_email_subject
+        r"""Subject for the email sent to the support email address"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -2227,7 +2272,12 @@ class AuthorizationStateWaitPremiumPurchase(TlObject, AuthorizationState):
         return "AuthorizationState"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "store_product_id": self.store_product_id}
+        return {
+            "@type": self.getType(),
+            "store_product_id": self.store_product_id,
+            "support_email_address": self.support_email_address,
+            "support_email_subject": self.support_email_subject,
+        }
 
     @classmethod
     def from_dict(
@@ -2236,6 +2286,8 @@ class AuthorizationStateWaitPremiumPurchase(TlObject, AuthorizationState):
         if data:
             data_class = cls()
             data_class.store_product_id = data.get("store_product_id", "")
+            data_class.support_email_address = data.get("support_email_address", "")
+            data_class.support_email_subject = data.get("support_email_subject", "")
 
         return data_class
 
@@ -4919,6 +4971,52 @@ class Audio(TlObject):
         return data_class
 
 
+class Audios(TlObject):
+    r"""Contains a list of audio files
+
+    Parameters:
+        total_count (:class:`int`):
+            Approximate total number of audio files found
+
+        audios (:class:`List["types.Audio"]`):
+            List of audio files
+
+    """
+
+    def __init__(self, total_count: int = 0, audios: List[Audio] = None) -> None:
+        self.total_count: int = int(total_count)
+        r"""Approximate total number of audio files found"""
+        self.audios: List[Audio] = audios or []
+        r"""List of audio files"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["audios"]:
+        return "audios"
+
+    @classmethod
+    def getClass(self) -> Literal["Audios"]:
+        return "Audios"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "total_count": self.total_count,
+            "audios": self.audios,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["Audios", None]:
+        if data:
+            data_class = cls()
+            data_class.total_count = int(data.get("total_count", 0))
+            data_class.audios = data.get("audios", None)
+
+        return data_class
+
+
 class Document(TlObject):
     r"""Describes a document of any type
 
@@ -6494,6 +6592,230 @@ class ChatPhotoInfo(TlObject):
             data_class.minithumbnail = data.get("minithumbnail", None)
             data_class.has_animation = data.get("has_animation", False)
             data_class.is_personal = data.get("is_personal", False)
+
+        return data_class
+
+
+class ProfileTabPosts(TlObject, ProfileTab):
+    r"""A tab with stories posted by the user or the channel chat and saved to profile"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["profileTabPosts"]:
+        return "profileTabPosts"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileTab"]:
+        return "ProfileTab"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ProfileTabPosts", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ProfileTabGifts(TlObject, ProfileTab):
+    r"""A tab with gifts received by the user or the channel chat"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["profileTabGifts"]:
+        return "profileTabGifts"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileTab"]:
+        return "ProfileTab"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ProfileTabGifts", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ProfileTabMedia(TlObject, ProfileTab):
+    r"""A tab with photos and videos posted by the channel"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["profileTabMedia"]:
+        return "profileTabMedia"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileTab"]:
+        return "ProfileTab"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ProfileTabMedia", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ProfileTabFiles(TlObject, ProfileTab):
+    r"""A tab with documents posted by the channel"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["profileTabFiles"]:
+        return "profileTabFiles"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileTab"]:
+        return "ProfileTab"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ProfileTabFiles", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ProfileTabLinks(TlObject, ProfileTab):
+    r"""A tab with messages posted by the channel and containing links"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["profileTabLinks"]:
+        return "profileTabLinks"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileTab"]:
+        return "ProfileTab"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ProfileTabLinks", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ProfileTabMusic(TlObject, ProfileTab):
+    r"""A tab with audio messages posted by the channel"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["profileTabMusic"]:
+        return "profileTabMusic"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileTab"]:
+        return "ProfileTab"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ProfileTabMusic", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ProfileTabVoice(TlObject, ProfileTab):
+    r"""A tab with voice notes posted by the channel"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["profileTabVoice"]:
+        return "profileTabVoice"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileTab"]:
+        return "ProfileTab"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ProfileTabVoice", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class ProfileTabGifs(TlObject, ProfileTab):
+    r"""A tab with animations posted by the channel"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["profileTabGifs"]:
+        return "profileTabGifs"
+
+    @classmethod
+    def getClass(self) -> Literal["ProfileTab"]:
+        return "ProfileTab"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ProfileTabGifs", None]:
+        if data:
+            data_class = cls()
 
         return data_class
 
@@ -11668,6 +11990,70 @@ class GiftCollections(TlObject):
         return data_class
 
 
+class CanSendGiftResultOk(TlObject, CanSendGiftResult):
+    r"""The gift can be sent now by the current user"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["canSendGiftResultOk"]:
+        return "canSendGiftResultOk"
+
+    @classmethod
+    def getClass(self) -> Literal["CanSendGiftResult"]:
+        return "CanSendGiftResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["CanSendGiftResultOk", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class CanSendGiftResultFail(TlObject, CanSendGiftResult):
+    r"""The gift can't be sent now by the current user
+
+    Parameters:
+        reason (:class:`"types.FormattedText"`):
+            Reason to be shown to the user
+
+    """
+
+    def __init__(self, reason: FormattedText = None) -> None:
+        self.reason: Union[FormattedText, None] = reason
+        r"""Reason to be shown to the user"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["canSendGiftResultFail"]:
+        return "canSendGiftResultFail"
+
+    @classmethod
+    def getClass(self) -> Literal["CanSendGiftResult"]:
+        return "CanSendGiftResult"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "reason": self.reason}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["CanSendGiftResultFail", None]:
+        if data:
+            data_class = cls()
+            data_class.reason = data.get("reason", None)
+
+        return data_class
+
+
 class UpgradedGiftOriginUpgrade(TlObject, UpgradedGiftOrigin):
     r"""The gift was obtained by upgrading of a previously received gift
 
@@ -12134,6 +12520,9 @@ class Gift(TlObject):
         is_premium (:class:`bool`):
             True, if the gift can be bought only by Telegram Premium subscribers
 
+        next_send_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the gift can be sent next time by the current user; can be 0 or a date in the past\. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now
+
         user_limits (:class:`"types.GiftPurchaseLimits"`):
             Number of times the gift can be purchased by the current user; may be null if not limited
 
@@ -12158,6 +12547,7 @@ class Gift(TlObject):
         upgrade_star_count: int = 0,
         is_for_birthday: bool = False,
         is_premium: bool = False,
+        next_send_date: int = 0,
         user_limits: GiftPurchaseLimits = None,
         overall_limits: GiftPurchaseLimits = None,
         first_send_date: int = 0,
@@ -12179,6 +12569,8 @@ class Gift(TlObject):
         r"""True, if the gift is a birthday gift"""
         self.is_premium: bool = bool(is_premium)
         r"""True, if the gift can be bought only by Telegram Premium subscribers"""
+        self.next_send_date: int = int(next_send_date)
+        r"""Point in time \(Unix timestamp\) when the gift can be sent next time by the current user; can be 0 or a date in the past\. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now"""
         self.user_limits: Union[GiftPurchaseLimits, None] = user_limits
         r"""Number of times the gift can be purchased by the current user; may be null if not limited"""
         self.overall_limits: Union[GiftPurchaseLimits, None] = overall_limits
@@ -12210,6 +12602,7 @@ class Gift(TlObject):
             "upgrade_star_count": self.upgrade_star_count,
             "is_for_birthday": self.is_for_birthday,
             "is_premium": self.is_premium,
+            "next_send_date": self.next_send_date,
             "user_limits": self.user_limits,
             "overall_limits": self.overall_limits,
             "first_send_date": self.first_send_date,
@@ -12230,6 +12623,7 @@ class Gift(TlObject):
             data_class.upgrade_star_count = int(data.get("upgrade_star_count", 0))
             data_class.is_for_birthday = data.get("is_for_birthday", False)
             data_class.is_premium = data.get("is_premium", False)
+            data_class.next_send_date = int(data.get("next_send_date", 0))
             data_class.user_limits = data.get("user_limits", None)
             data_class.overall_limits = data.get("overall_limits", None)
             data_class.first_send_date = int(data.get("first_send_date", 0))
@@ -12268,6 +12662,12 @@ class UpgradedGift(TlObject):
 
         is_premium (:class:`bool`):
             True, if the original gift could have been bought only by Telegram Premium subscribers
+
+        is_theme_available (:class:`bool`):
+            True, if the gift can be used to set a theme in a chat
+
+        used_theme_chat_id (:class:`int`):
+            Identifier of the chat for which the gift is used to set a theme; 0 if none or the gift isn't owned by the current user
 
         owner_id (:class:`"types.MessageSender"`):
             Identifier of the user or the chat that owns the upgraded gift; may be null if none or unknown
@@ -12315,6 +12715,8 @@ class UpgradedGift(TlObject):
         total_upgraded_count: int = 0,
         max_upgraded_count: int = 0,
         is_premium: bool = False,
+        is_theme_available: bool = False,
+        used_theme_chat_id: int = 0,
         owner_id: MessageSender = None,
         owner_address: str = "",
         owner_name: str = "",
@@ -12345,6 +12747,10 @@ class UpgradedGift(TlObject):
         r"""The maximum number of gifts that can be upgraded from the same gift"""
         self.is_premium: bool = bool(is_premium)
         r"""True, if the original gift could have been bought only by Telegram Premium subscribers"""
+        self.is_theme_available: bool = bool(is_theme_available)
+        r"""True, if the gift can be used to set a theme in a chat"""
+        self.used_theme_chat_id: int = int(used_theme_chat_id)
+        r"""Identifier of the chat for which the gift is used to set a theme; 0 if none or the gift isn't owned by the current user"""
         self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
         r"""Identifier of the user or the chat that owns the upgraded gift; may be null if none or unknown"""
         self.owner_address: Union[str, None] = owner_address
@@ -12393,6 +12799,8 @@ class UpgradedGift(TlObject):
             "total_upgraded_count": self.total_upgraded_count,
             "max_upgraded_count": self.max_upgraded_count,
             "is_premium": self.is_premium,
+            "is_theme_available": self.is_theme_available,
+            "used_theme_chat_id": self.used_theme_chat_id,
             "owner_id": self.owner_id,
             "owner_address": self.owner_address,
             "owner_name": self.owner_name,
@@ -12419,6 +12827,8 @@ class UpgradedGift(TlObject):
             data_class.total_upgraded_count = int(data.get("total_upgraded_count", 0))
             data_class.max_upgraded_count = int(data.get("max_upgraded_count", 0))
             data_class.is_premium = data.get("is_premium", False)
+            data_class.is_theme_available = data.get("is_theme_available", False)
+            data_class.used_theme_chat_id = int(data.get("used_theme_chat_id", 0))
             data_class.owner_id = data.get("owner_id", None)
             data_class.owner_address = data.get("owner_address", "")
             data_class.owner_name = data.get("owner_name", "")
@@ -13430,6 +13840,9 @@ class ReceivedGift(TlObject):
         prepaid_upgrade_star_count (:class:`int`):
             Number of Telegram Stars that were paid by the sender for the ability to upgrade the gift
 
+        is_upgrade_separate (:class:`bool`):
+            True, if the upgrade was bought after the gift was sent\. In this case, prepaid upgrade cost must not be added to the gift cost
+
         transfer_star_count (:class:`int`):
             Number of Telegram Stars that must be paid to transfer the upgraded gift; only for the receiver of the gift
 
@@ -13463,6 +13876,7 @@ class ReceivedGift(TlObject):
         collection_ids: List[int] = None,
         sell_star_count: int = 0,
         prepaid_upgrade_star_count: int = 0,
+        is_upgrade_separate: bool = False,
         transfer_star_count: int = 0,
         next_transfer_date: int = 0,
         next_resale_date: int = 0,
@@ -13497,6 +13911,8 @@ class ReceivedGift(TlObject):
         r"""Number of Telegram Stars that can be claimed by the receiver instead of the regular gift; 0 if the gift can't be sold by the current user"""
         self.prepaid_upgrade_star_count: int = int(prepaid_upgrade_star_count)
         r"""Number of Telegram Stars that were paid by the sender for the ability to upgrade the gift"""
+        self.is_upgrade_separate: bool = bool(is_upgrade_separate)
+        r"""True, if the upgrade was bought after the gift was sent\. In this case, prepaid upgrade cost must not be added to the gift cost"""
         self.transfer_star_count: int = int(transfer_star_count)
         r"""Number of Telegram Stars that must be paid to transfer the upgraded gift; only for the receiver of the gift"""
         self.next_transfer_date: int = int(next_transfer_date)
@@ -13536,6 +13952,7 @@ class ReceivedGift(TlObject):
             "collection_ids": self.collection_ids,
             "sell_star_count": self.sell_star_count,
             "prepaid_upgrade_star_count": self.prepaid_upgrade_star_count,
+            "is_upgrade_separate": self.is_upgrade_separate,
             "transfer_star_count": self.transfer_star_count,
             "next_transfer_date": self.next_transfer_date,
             "next_resale_date": self.next_resale_date,
@@ -13563,6 +13980,7 @@ class ReceivedGift(TlObject):
             data_class.prepaid_upgrade_star_count = int(
                 data.get("prepaid_upgrade_star_count", 0)
             )
+            data_class.is_upgrade_separate = data.get("is_upgrade_separate", False)
             data_class.transfer_star_count = int(data.get("transfer_star_count", 0))
             data_class.next_transfer_date = int(data.get("next_transfer_date", 0))
             data_class.next_resale_date = int(data.get("next_resale_date", 0))
@@ -17874,6 +18292,12 @@ class UserFullInfo(TlObject):
         bot_verification (:class:`"types.BotVerification"`):
             Information about verification status of the user provided by a bot; may be null if none or unknown
 
+        main_profile_tab (:class:`"types.ProfileTab"`):
+            The main tab chosen by the user; may be null if not chosen manually
+
+        first_profile_audio (:class:`"types.Audio"`):
+            The first audio file added to the user's profile; may be null if none
+
         rating (:class:`"types.UserRating"`):
             The current rating of the user; may be null if none
 
@@ -17915,6 +18339,8 @@ class UserFullInfo(TlObject):
         outgoing_paid_message_star_count: int = 0,
         gift_settings: GiftSettings = None,
         bot_verification: BotVerification = None,
+        main_profile_tab: ProfileTab = None,
+        first_profile_audio: Audio = None,
         rating: UserRating = None,
         pending_rating: UserRating = None,
         pending_rating_date: int = 0,
@@ -17973,6 +18399,20 @@ class UserFullInfo(TlObject):
         r"""Settings for gift receiving for the user"""
         self.bot_verification: Union[BotVerification, None] = bot_verification
         r"""Information about verification status of the user provided by a bot; may be null if none or unknown"""
+        self.main_profile_tab: Union[
+            ProfileTabPosts,
+            ProfileTabGifts,
+            ProfileTabMedia,
+            ProfileTabFiles,
+            ProfileTabLinks,
+            ProfileTabMusic,
+            ProfileTabVoice,
+            ProfileTabGifs,
+            None,
+        ] = main_profile_tab
+        r"""The main tab chosen by the user; may be null if not chosen manually"""
+        self.first_profile_audio: Union[Audio, None] = first_profile_audio
+        r"""The first audio file added to the user's profile; may be null if none"""
         self.rating: Union[UserRating, None] = rating
         r"""The current rating of the user; may be null if none"""
         self.pending_rating: Union[UserRating, None] = pending_rating
@@ -18020,6 +18460,8 @@ class UserFullInfo(TlObject):
             "outgoing_paid_message_star_count": self.outgoing_paid_message_star_count,
             "gift_settings": self.gift_settings,
             "bot_verification": self.bot_verification,
+            "main_profile_tab": self.main_profile_tab,
+            "first_profile_audio": self.first_profile_audio,
             "rating": self.rating,
             "pending_rating": self.pending_rating,
             "pending_rating_date": self.pending_rating_date,
@@ -18065,6 +18507,8 @@ class UserFullInfo(TlObject):
             )
             data_class.gift_settings = data.get("gift_settings", None)
             data_class.bot_verification = data.get("bot_verification", None)
+            data_class.main_profile_tab = data.get("main_profile_tab", None)
+            data_class.first_profile_audio = data.get("first_profile_audio", None)
             data_class.rating = data.get("rating", None)
             data_class.pending_rating = data.get("pending_rating", None)
             data_class.pending_rating_date = int(data.get("pending_rating_date", 0))
@@ -20540,6 +20984,9 @@ class SupergroupFullInfo(TlObject):
         bot_verification (:class:`"types.BotVerification"`):
             Information about verification status of the supergroup or the channel provided by a bot; may be null if none or unknown
 
+        main_profile_tab (:class:`"types.ProfileTab"`):
+            The main tab chosen by the administrators of the channel; may be null if not chosen manually
+
         upgraded_from_basic_group_id (:class:`int`):
             Identifier of the basic group from which supergroup was upgraded; 0 if none
 
@@ -20587,6 +21034,7 @@ class SupergroupFullInfo(TlObject):
         invite_link: ChatInviteLink = None,
         bot_commands: List[BotCommands] = None,
         bot_verification: BotVerification = None,
+        main_profile_tab: ProfileTab = None,
         upgraded_from_basic_group_id: int = 0,
         upgraded_from_max_message_id: int = 0,
     ) -> None:
@@ -20672,6 +21120,18 @@ class SupergroupFullInfo(TlObject):
         r"""List of commands of bots in the group"""
         self.bot_verification: Union[BotVerification, None] = bot_verification
         r"""Information about verification status of the supergroup or the channel provided by a bot; may be null if none or unknown"""
+        self.main_profile_tab: Union[
+            ProfileTabPosts,
+            ProfileTabGifts,
+            ProfileTabMedia,
+            ProfileTabFiles,
+            ProfileTabLinks,
+            ProfileTabMusic,
+            ProfileTabVoice,
+            ProfileTabGifs,
+            None,
+        ] = main_profile_tab
+        r"""The main tab chosen by the administrators of the channel; may be null if not chosen manually"""
         self.upgraded_from_basic_group_id: int = int(upgraded_from_basic_group_id)
         r"""Identifier of the basic group from which supergroup was upgraded; 0 if none"""
         self.upgraded_from_max_message_id: int = int(upgraded_from_max_message_id)
@@ -20728,6 +21188,7 @@ class SupergroupFullInfo(TlObject):
             "invite_link": self.invite_link,
             "bot_commands": self.bot_commands,
             "bot_verification": self.bot_verification,
+            "main_profile_tab": self.main_profile_tab,
             "upgraded_from_basic_group_id": self.upgraded_from_basic_group_id,
             "upgraded_from_max_message_id": self.upgraded_from_max_message_id,
         }
@@ -20801,6 +21262,7 @@ class SupergroupFullInfo(TlObject):
             data_class.invite_link = data.get("invite_link", None)
             data_class.bot_commands = data.get("bot_commands", None)
             data_class.bot_verification = data.get("bot_verification", None)
+            data_class.main_profile_tab = data.get("main_profile_tab", None)
             data_class.upgraded_from_basic_group_id = int(
                 data.get("upgraded_from_basic_group_id", 0)
             )
@@ -27783,8 +28245,8 @@ class Chat(TlObject):
         background (:class:`"types.ChatBackground"`):
             Background set for the chat; may be null if none
 
-        theme_name (:class:`str`):
-            If non\-empty, name of a theme, set for the chat
+        theme (:class:`"types.ChatTheme"`):
+            Theme set for the chat; may be null if none
 
         action_bar (:class:`"types.ChatActionBar"`):
             Information about actions which must be possible to do through the chat action bar; may be null if none
@@ -27844,7 +28306,7 @@ class Chat(TlObject):
         message_auto_delete_time: int = 0,
         emoji_status: EmojiStatus = None,
         background: ChatBackground = None,
-        theme_name: str = "",
+        theme: ChatTheme = None,
         action_bar: ChatActionBar = None,
         business_bot_manage_bar: BusinessBotManageBar = None,
         video_chat: VideoChat = None,
@@ -27933,8 +28395,8 @@ class Chat(TlObject):
         r"""Emoji status to be shown along with chat title; may be null"""
         self.background: Union[ChatBackground, None] = background
         r"""Background set for the chat; may be null if none"""
-        self.theme_name: Union[str, None] = theme_name
-        r"""If non\-empty, name of a theme, set for the chat"""
+        self.theme: Union[ChatThemeEmoji, ChatThemeGift, None] = theme
+        r"""Theme set for the chat; may be null if none"""
         self.action_bar: Union[
             ChatActionBarReportSpam,
             ChatActionBarInviteMembers,
@@ -28009,7 +28471,7 @@ class Chat(TlObject):
             "message_auto_delete_time": self.message_auto_delete_time,
             "emoji_status": self.emoji_status,
             "background": self.background,
-            "theme_name": self.theme_name,
+            "theme": self.theme,
             "action_bar": self.action_bar,
             "business_bot_manage_bar": self.business_bot_manage_bar,
             "video_chat": self.video_chat,
@@ -28076,7 +28538,7 @@ class Chat(TlObject):
             )
             data_class.emoji_status = data.get("emoji_status", None)
             data_class.background = data.get("background", None)
-            data_class.theme_name = data.get("theme_name", "")
+            data_class.theme = data.get("theme", None)
             data_class.action_bar = data.get("action_bar", None)
             data_class.business_bot_manage_bar = data.get(
                 "business_bot_manage_bar", None
@@ -31319,10 +31781,153 @@ class SharedChat(TlObject):
         return data_class
 
 
+class BuiltInThemeClassic(TlObject, BuiltInTheme):
+    r"""Classic light theme"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["builtInThemeClassic"]:
+        return "builtInThemeClassic"
+
+    @classmethod
+    def getClass(self) -> Literal["BuiltInTheme"]:
+        return "BuiltInTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BuiltInThemeClassic", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class BuiltInThemeDay(TlObject, BuiltInTheme):
+    r"""Regular light theme"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["builtInThemeDay"]:
+        return "builtInThemeDay"
+
+    @classmethod
+    def getClass(self) -> Literal["BuiltInTheme"]:
+        return "BuiltInTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BuiltInThemeDay", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class BuiltInThemeNight(TlObject, BuiltInTheme):
+    r"""Regular dark theme"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["builtInThemeNight"]:
+        return "builtInThemeNight"
+
+    @classmethod
+    def getClass(self) -> Literal["BuiltInTheme"]:
+        return "BuiltInTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BuiltInThemeNight", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class BuiltInThemeTinted(TlObject, BuiltInTheme):
+    r"""Tinted dark theme"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["builtInThemeTinted"]:
+        return "builtInThemeTinted"
+
+    @classmethod
+    def getClass(self) -> Literal["BuiltInTheme"]:
+        return "BuiltInTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BuiltInThemeTinted", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class BuiltInThemeArctic(TlObject, BuiltInTheme):
+    r"""Arctic light theme"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["builtInThemeArctic"]:
+        return "builtInThemeArctic"
+
+    @classmethod
+    def getClass(self) -> Literal["BuiltInTheme"]:
+        return "BuiltInTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["BuiltInThemeArctic", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class ThemeSettings(TlObject):
     r"""Describes theme settings
 
     Parameters:
+        base_theme (:class:`"types.BuiltInTheme"`):
+            Base theme for this theme
+
         accent_color (:class:`int`):
             Theme accent color in ARGB format
 
@@ -31330,7 +31935,7 @@ class ThemeSettings(TlObject):
             The background to be used in chats; may be null
 
         outgoing_message_fill (:class:`"types.BackgroundFill"`):
-            The fill to be used as a background for outgoing messages
+            The fill to be used as a background for outgoing messages; may be null if the fill from the base theme must be used instead
 
         animate_outgoing_message_fill (:class:`bool`):
             If true, the freeform gradient fill needs to be animated on every sent message
@@ -31342,12 +31947,22 @@ class ThemeSettings(TlObject):
 
     def __init__(
         self,
+        base_theme: BuiltInTheme = None,
         accent_color: int = 0,
         background: Background = None,
         outgoing_message_fill: BackgroundFill = None,
         animate_outgoing_message_fill: bool = False,
         outgoing_message_accent_color: int = 0,
     ) -> None:
+        self.base_theme: Union[
+            BuiltInThemeClassic,
+            BuiltInThemeDay,
+            BuiltInThemeNight,
+            BuiltInThemeTinted,
+            BuiltInThemeArctic,
+            None,
+        ] = base_theme
+        r"""Base theme for this theme"""
         self.accent_color: int = int(accent_color)
         r"""Theme accent color in ARGB format"""
         self.background: Union[Background, None] = background
@@ -31358,7 +31973,7 @@ class ThemeSettings(TlObject):
             BackgroundFillFreeformGradient,
             None,
         ] = outgoing_message_fill
-        r"""The fill to be used as a background for outgoing messages"""
+        r"""The fill to be used as a background for outgoing messages; may be null if the fill from the base theme must be used instead"""
         self.animate_outgoing_message_fill: bool = bool(animate_outgoing_message_fill)
         r"""If true, the freeform gradient fill needs to be animated on every sent message"""
         self.outgoing_message_accent_color: int = int(outgoing_message_accent_color)
@@ -31378,6 +31993,7 @@ class ThemeSettings(TlObject):
     def to_dict(self) -> dict:
         return {
             "@type": self.getType(),
+            "base_theme": self.base_theme,
             "accent_color": self.accent_color,
             "background": self.background,
             "outgoing_message_fill": self.outgoing_message_fill,
@@ -31389,6 +32005,7 @@ class ThemeSettings(TlObject):
     def from_dict(cls, data: dict) -> Union["ThemeSettings", None]:
         if data:
             data_class = cls()
+            data_class.base_theme = data.get("base_theme", None)
             data_class.accent_color = int(data.get("accent_color", 0))
             data_class.background = data.get("background", None)
             data_class.outgoing_message_fill = data.get("outgoing_message_fill", None)
@@ -43956,14 +44573,14 @@ class MessageChatSetTheme(TlObject, MessageContent):
     r"""A theme in the chat has been changed
 
     Parameters:
-        theme_name (:class:`str`):
-            If non\-empty, name of a new theme, set for the chat\. Otherwise, chat theme was reset to the default one
+        theme (:class:`"types.ChatTheme"`):
+            New theme for the chat; may be null if chat theme was reset to the default one
 
     """
 
-    def __init__(self, theme_name: str = "") -> None:
-        self.theme_name: Union[str, None] = theme_name
-        r"""If non\-empty, name of a new theme, set for the chat\. Otherwise, chat theme was reset to the default one"""
+    def __init__(self, theme: ChatTheme = None) -> None:
+        self.theme: Union[ChatThemeEmoji, ChatThemeGift, None] = theme
+        r"""New theme for the chat; may be null if chat theme was reset to the default one"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -43977,13 +44594,13 @@ class MessageChatSetTheme(TlObject, MessageContent):
         return "MessageContent"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "theme_name": self.theme_name}
+        return {"@type": self.getType(), "theme": self.theme}
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["MessageChatSetTheme", None]:
         if data:
             data_class = cls()
-            data_class.theme_name = data.get("theme_name", "")
+            data_class.theme = data.get("theme", None)
 
         return data_class
 
@@ -45490,6 +46107,9 @@ class MessageGift(TlObject, MessageContent):
         prepaid_upgrade_star_count (:class:`int`):
             Number of Telegram Stars that were paid by the sender for the ability to upgrade the gift
 
+        is_upgrade_separate (:class:`bool`):
+            True, if the upgrade was bought after the gift was sent\. In this case, prepaid upgrade cost must not be added to the gift cost
+
         is_private (:class:`bool`):
             True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them
 
@@ -45528,6 +46148,7 @@ class MessageGift(TlObject, MessageContent):
         text: FormattedText = None,
         sell_star_count: int = 0,
         prepaid_upgrade_star_count: int = 0,
+        is_upgrade_separate: bool = False,
         is_private: bool = False,
         is_saved: bool = False,
         is_prepaid_upgrade: bool = False,
@@ -45554,6 +46175,8 @@ class MessageGift(TlObject, MessageContent):
         r"""Number of Telegram Stars that can be claimed by the receiver instead of the regular gift; 0 if the gift can't be sold by the receiver"""
         self.prepaid_upgrade_star_count: int = int(prepaid_upgrade_star_count)
         r"""Number of Telegram Stars that were paid by the sender for the ability to upgrade the gift"""
+        self.is_upgrade_separate: bool = bool(is_upgrade_separate)
+        r"""True, if the upgrade was bought after the gift was sent\. In this case, prepaid upgrade cost must not be added to the gift cost"""
         self.is_private: bool = bool(is_private)
         r"""True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them"""
         self.is_saved: bool = bool(is_saved)
@@ -45594,6 +46217,7 @@ class MessageGift(TlObject, MessageContent):
             "text": self.text,
             "sell_star_count": self.sell_star_count,
             "prepaid_upgrade_star_count": self.prepaid_upgrade_star_count,
+            "is_upgrade_separate": self.is_upgrade_separate,
             "is_private": self.is_private,
             "is_saved": self.is_saved,
             "is_prepaid_upgrade": self.is_prepaid_upgrade,
@@ -45618,6 +46242,7 @@ class MessageGift(TlObject, MessageContent):
             data_class.prepaid_upgrade_star_count = int(
                 data.get("prepaid_upgrade_star_count", 0)
             )
+            data_class.is_upgrade_separate = data.get("is_upgrade_separate", False)
             data_class.is_private = data.get("is_private", False)
             data_class.is_saved = data.get("is_saved", False)
             data_class.is_prepaid_upgrade = data.get("is_prepaid_upgrade", False)
@@ -45784,8 +46409,8 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
         receiver_id (:class:`"types.MessageSender"`):
             Receiver of the gift
 
-        is_upgrade (:class:`bool`):
-            True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred or resold gift
+        origin (:class:`"types.UpgradedGiftOrigin"`):
+            Origin of the upgraded gift
 
     """
 
@@ -45794,7 +46419,7 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
         gift: Gift = None,
         sender_id: MessageSender = None,
         receiver_id: MessageSender = None,
-        is_upgrade: bool = False,
+        origin: UpgradedGiftOrigin = None,
     ) -> None:
         self.gift: Union[Gift, None] = gift
         r"""The gift"""
@@ -45804,8 +46429,14 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
             receiver_id
         )
         r"""Receiver of the gift"""
-        self.is_upgrade: bool = bool(is_upgrade)
-        r"""True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred or resold gift"""
+        self.origin: Union[
+            UpgradedGiftOriginUpgrade,
+            UpgradedGiftOriginTransfer,
+            UpgradedGiftOriginResale,
+            UpgradedGiftOriginPrepaidUpgrade,
+            None,
+        ] = origin
+        r"""Origin of the upgraded gift"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -45824,7 +46455,7 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
             "gift": self.gift,
             "sender_id": self.sender_id,
             "receiver_id": self.receiver_id,
-            "is_upgrade": self.is_upgrade,
+            "origin": self.origin,
         }
 
     @classmethod
@@ -45834,7 +46465,7 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
             data_class.gift = data.get("gift", None)
             data_class.sender_id = data.get("sender_id", None)
             data_class.receiver_id = data.get("receiver_id", None)
-            data_class.is_upgrade = data.get("is_upgrade", False)
+            data_class.origin = data.get("origin", None)
 
         return data_class
 
@@ -68922,10 +69553,13 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
         star_count (:class:`int`):
             Number of bought Telegram Stars
 
+        chat_id (:class:`int`):
+            Identifier of the chat that is supposed to receive the Telegram Stars; pass 0 if none
+
     """
 
     def __init__(
-        self, currency: str = "", amount: int = 0, star_count: int = 0
+        self, currency: str = "", amount: int = 0, star_count: int = 0, chat_id: int = 0
     ) -> None:
         self.currency: Union[str, None] = currency
         r"""ISO 4217 currency code of the payment currency"""
@@ -68933,6 +69567,8 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
         r"""Paid amount, in the smallest units of the currency"""
         self.star_count: int = int(star_count)
         r"""Number of bought Telegram Stars"""
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat that is supposed to receive the Telegram Stars; pass 0 if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -68951,6 +69587,7 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
             "currency": self.currency,
             "amount": self.amount,
             "star_count": self.star_count,
+            "chat_id": self.chat_id,
         }
 
     @classmethod
@@ -68960,6 +69597,7 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
             data_class.currency = data.get("currency", "")
             data_class.amount = int(data.get("amount", 0))
             data_class.star_count = int(data.get("star_count", 0))
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -69367,10 +70005,13 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
         star_count (:class:`int`):
             Number of bought Telegram Stars
 
+        chat_id (:class:`int`):
+            Identifier of the chat that is supposed to receive the Telegram Stars; pass 0 if none
+
     """
 
     def __init__(
-        self, currency: str = "", amount: int = 0, star_count: int = 0
+        self, currency: str = "", amount: int = 0, star_count: int = 0, chat_id: int = 0
     ) -> None:
         self.currency: Union[str, None] = currency
         r"""ISO 4217 currency code of the payment currency"""
@@ -69378,6 +70019,8 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
         r"""Paid amount, in the smallest units of the currency"""
         self.star_count: int = int(star_count)
         r"""Number of bought Telegram Stars"""
+        self.chat_id: int = int(chat_id)
+        r"""Identifier of the chat that is supposed to receive the Telegram Stars; pass 0 if none"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -69396,6 +70039,7 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
             "currency": self.currency,
             "amount": self.amount,
             "star_count": self.star_count,
+            "chat_id": self.chat_id,
         }
 
     @classmethod
@@ -69405,6 +70049,7 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
             data_class.currency = data.get("currency", "")
             data_class.amount = int(data.get("amount", 0))
             data_class.star_count = int(data.get("star_count", 0))
+            data_class.chat_id = int(data.get("chat_id", 0))
 
         return data_class
 
@@ -70398,17 +71043,17 @@ class BackgroundTypeFill(TlObject, BackgroundType):
 
 
 class BackgroundTypeChatTheme(TlObject, BackgroundType):
-    r"""A background from a chat theme; can be used only as a chat background in channels
+    r"""A background from a chat theme based on an emoji; can be used only as a chat background in channels
 
     Parameters:
         theme_name (:class:`str`):
-            Name of the chat theme
+            Name of the emoji chat theme
 
     """
 
     def __init__(self, theme_name: str = "") -> None:
         self.theme_name: Union[str, None] = theme_name
-        r"""Name of the chat theme"""
+        r"""Name of the emoji chat theme"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -70543,8 +71188,8 @@ class InputBackgroundPrevious(TlObject, InputBackground):
         return data_class
 
 
-class ChatTheme(TlObject):
-    r"""Describes a chat theme
+class EmojiChatTheme(TlObject):
+    r"""Describes a chat theme based on an emoji
 
     Parameters:
         name (:class:`str`):
@@ -70575,12 +71220,12 @@ class ChatTheme(TlObject):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["chatTheme"]:
-        return "chatTheme"
+    def getType(self) -> Literal["emojiChatTheme"]:
+        return "emojiChatTheme"
 
     @classmethod
-    def getClass(self) -> Literal["ChatTheme"]:
-        return "ChatTheme"
+    def getClass(self) -> Literal["EmojiChatTheme"]:
+        return "EmojiChatTheme"
 
     def to_dict(self) -> dict:
         return {
@@ -70591,12 +71236,262 @@ class ChatTheme(TlObject):
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["ChatTheme", None]:
+    def from_dict(cls, data: dict) -> Union["EmojiChatTheme", None]:
         if data:
             data_class = cls()
             data_class.name = data.get("name", "")
             data_class.light_settings = data.get("light_settings", None)
             data_class.dark_settings = data.get("dark_settings", None)
+
+        return data_class
+
+
+class GiftChatTheme(TlObject):
+    r"""Describes a chat theme based on an upgraded gift
+
+    Parameters:
+        gift (:class:`"types.UpgradedGift"`):
+            The gift
+
+        light_settings (:class:`"types.ThemeSettings"`):
+            Theme settings for a light chat theme
+
+        dark_settings (:class:`"types.ThemeSettings"`):
+            Theme settings for a dark chat theme
+
+    """
+
+    def __init__(
+        self,
+        gift: UpgradedGift = None,
+        light_settings: ThemeSettings = None,
+        dark_settings: ThemeSettings = None,
+    ) -> None:
+        self.gift: Union[UpgradedGift, None] = gift
+        r"""The gift"""
+        self.light_settings: Union[ThemeSettings, None] = light_settings
+        r"""Theme settings for a light chat theme"""
+        self.dark_settings: Union[ThemeSettings, None] = dark_settings
+        r"""Theme settings for a dark chat theme"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftChatTheme"]:
+        return "giftChatTheme"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftChatTheme"]:
+        return "GiftChatTheme"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "gift": self.gift,
+            "light_settings": self.light_settings,
+            "dark_settings": self.dark_settings,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftChatTheme", None]:
+        if data:
+            data_class = cls()
+            data_class.gift = data.get("gift", None)
+            data_class.light_settings = data.get("light_settings", None)
+            data_class.dark_settings = data.get("dark_settings", None)
+
+        return data_class
+
+
+class GiftChatThemes(TlObject):
+    r"""Contains a list of chat themes based on upgraded gifts
+
+    Parameters:
+        themes (:class:`List["types.GiftChatTheme"]`):
+            A list of chat themes
+
+        next_offset (:class:`str`):
+            The offset for the next request\. If empty, then there are no more results
+
+    """
+
+    def __init__(
+        self, themes: List[GiftChatTheme] = None, next_offset: str = ""
+    ) -> None:
+        self.themes: List[GiftChatTheme] = themes or []
+        r"""A list of chat themes"""
+        self.next_offset: Union[str, None] = next_offset
+        r"""The offset for the next request\. If empty, then there are no more results"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftChatThemes"]:
+        return "giftChatThemes"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftChatThemes"]:
+        return "GiftChatThemes"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "themes": self.themes,
+            "next_offset": self.next_offset,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftChatThemes", None]:
+        if data:
+            data_class = cls()
+            data_class.themes = data.get("themes", None)
+            data_class.next_offset = data.get("next_offset", "")
+
+        return data_class
+
+
+class ChatThemeEmoji(TlObject, ChatTheme):
+    r"""A chat theme based on an emoji
+
+    Parameters:
+        name (:class:`str`):
+            Name of the theme; full theme description is received through updateEmojiChatThemes
+
+    """
+
+    def __init__(self, name: str = "") -> None:
+        self.name: Union[str, None] = name
+        r"""Name of the theme; full theme description is received through updateEmojiChatThemes"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatThemeEmoji"]:
+        return "chatThemeEmoji"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatTheme"]:
+        return "ChatTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "name": self.name}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatThemeEmoji", None]:
+        if data:
+            data_class = cls()
+            data_class.name = data.get("name", "")
+
+        return data_class
+
+
+class ChatThemeGift(TlObject, ChatTheme):
+    r"""A chat theme based on an upgraded gift
+
+    Parameters:
+        gift_theme (:class:`"types.GiftChatTheme"`):
+            The chat theme
+
+    """
+
+    def __init__(self, gift_theme: GiftChatTheme = None) -> None:
+        self.gift_theme: Union[GiftChatTheme, None] = gift_theme
+        r"""The chat theme"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["chatThemeGift"]:
+        return "chatThemeGift"
+
+    @classmethod
+    def getClass(self) -> Literal["ChatTheme"]:
+        return "ChatTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "gift_theme": self.gift_theme}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["ChatThemeGift", None]:
+        if data:
+            data_class = cls()
+            data_class.gift_theme = data.get("gift_theme", None)
+
+        return data_class
+
+
+class InputChatThemeEmoji(TlObject, InputChatTheme):
+    r"""A theme based on an emoji
+
+    Parameters:
+        name (:class:`str`):
+            Name of the theme
+
+    """
+
+    def __init__(self, name: str = "") -> None:
+        self.name: Union[str, None] = name
+        r"""Name of the theme"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputChatThemeEmoji"]:
+        return "inputChatThemeEmoji"
+
+    @classmethod
+    def getClass(self) -> Literal["InputChatTheme"]:
+        return "InputChatTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "name": self.name}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputChatThemeEmoji", None]:
+        if data:
+            data_class = cls()
+            data_class.name = data.get("name", "")
+
+        return data_class
+
+
+class InputChatThemeGift(TlObject, InputChatTheme):
+    r"""A theme based on an upgraded gift
+
+    Parameters:
+        name (:class:`str`):
+            Name of the upgraded gift\. A gift can be used only in one chat in a time\. When the same gift is used in another chat, theme in the previous chat is reset to default
+
+    """
+
+    def __init__(self, name: str = "") -> None:
+        self.name: Union[str, None] = name
+        r"""Name of the upgraded gift\. A gift can be used only in one chat in a time\. When the same gift is used in another chat, theme in the previous chat is reset to default"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputChatThemeGift"]:
+        return "inputChatThemeGift"
+
+    @classmethod
+    def getClass(self) -> Literal["InputChatTheme"]:
+        return "InputChatTheme"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "name": self.name}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputChatThemeGift", None]:
+        if data:
+            data_class = cls()
+            data_class.name = data.get("name", "")
 
         return data_class
 
@@ -71704,10 +72599,17 @@ class PushMessageContentContact(TlObject, PushMessageContent):
 
 
 class PushMessageContentContactRegistered(TlObject, PushMessageContent):
-    r"""A contact has registered with Telegram"""
+    r"""A contact has registered with Telegram
 
-    def __init__(self) -> None:
-        pass
+    Parameters:
+        as_premium_account (:class:`bool`):
+            True, if the user joined Telegram as a Telegram Premium account
+
+    """
+
+    def __init__(self, as_premium_account: bool = False) -> None:
+        self.as_premium_account: bool = bool(as_premium_account)
+        r"""True, if the user joined Telegram as a Telegram Premium account"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -71721,7 +72623,7 @@ class PushMessageContentContactRegistered(TlObject, PushMessageContent):
         return "PushMessageContent"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType()}
+        return {"@type": self.getType(), "as_premium_account": self.as_premium_account}
 
     @classmethod
     def from_dict(
@@ -71729,6 +72631,7 @@ class PushMessageContentContactRegistered(TlObject, PushMessageContent):
     ) -> Union["PushMessageContentContactRegistered", None]:
         if data:
             data_class = cls()
+            data_class.as_premium_account = data.get("as_premium_account", False)
 
         return data_class
 
@@ -72240,11 +73143,16 @@ class PushMessageContentGift(TlObject, PushMessageContent):
         star_count (:class:`int`):
             Number of Telegram Stars that sender paid for the gift
 
+        is_prepaid_upgrade (:class:`bool`):
+            True, if the message is about prepaid upgrade of the gift by another user instead of actual receiving of a new gift
+
     """
 
-    def __init__(self, star_count: int = 0) -> None:
+    def __init__(self, star_count: int = 0, is_prepaid_upgrade: bool = False) -> None:
         self.star_count: int = int(star_count)
         r"""Number of Telegram Stars that sender paid for the gift"""
+        self.is_prepaid_upgrade: bool = bool(is_prepaid_upgrade)
+        r"""True, if the message is about prepaid upgrade of the gift by another user instead of actual receiving of a new gift"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -72258,13 +73166,18 @@ class PushMessageContentGift(TlObject, PushMessageContent):
         return "PushMessageContent"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "star_count": self.star_count}
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "is_prepaid_upgrade": self.is_prepaid_upgrade,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["PushMessageContentGift", None]:
         if data:
             data_class = cls()
             data_class.star_count = int(data.get("star_count", 0))
+            data_class.is_prepaid_upgrade = data.get("is_prepaid_upgrade", False)
 
         return data_class
 
@@ -72274,13 +73187,20 @@ class PushMessageContentUpgradedGift(TlObject, PushMessageContent):
 
     Parameters:
         is_upgrade (:class:`bool`):
-            True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred or resold gift
+            True, if the gift was obtained by upgrading of a previously received gift; otherwise, if is\_prepaid\_upgrade \=\= false, then this is a transferred or resold gift
+
+        is_prepaid_upgrade (:class:`bool`):
+            True, if the message is about completion of prepaid upgrade of the gift instead of actual receiving of a new gift
 
     """
 
-    def __init__(self, is_upgrade: bool = False) -> None:
+    def __init__(
+        self, is_upgrade: bool = False, is_prepaid_upgrade: bool = False
+    ) -> None:
         self.is_upgrade: bool = bool(is_upgrade)
-        r"""True, if the gift was obtained by upgrading of a previously received gift; otherwise, this is a transferred or resold gift"""
+        r"""True, if the gift was obtained by upgrading of a previously received gift; otherwise, if is\_prepaid\_upgrade \=\= false, then this is a transferred or resold gift"""
+        self.is_prepaid_upgrade: bool = bool(is_prepaid_upgrade)
+        r"""True, if the message is about completion of prepaid upgrade of the gift instead of actual receiving of a new gift"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -72294,13 +73214,18 @@ class PushMessageContentUpgradedGift(TlObject, PushMessageContent):
         return "PushMessageContent"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "is_upgrade": self.is_upgrade}
+        return {
+            "@type": self.getType(),
+            "is_upgrade": self.is_upgrade,
+            "is_prepaid_upgrade": self.is_prepaid_upgrade,
+        }
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["PushMessageContentUpgradedGift", None]:
         if data:
             data_class = cls()
             data_class.is_upgrade = data.get("is_upgrade", False)
+            data_class.is_prepaid_upgrade = data.get("is_prepaid_upgrade", False)
 
         return data_class
 
@@ -72968,14 +73893,14 @@ class PushMessageContentChatSetTheme(TlObject, PushMessageContent):
     r"""A chat theme was edited
 
     Parameters:
-        theme_name (:class:`str`):
-            If non\-empty, name of a new theme, set for the chat\. Otherwise, the chat theme was reset to the default one
+        name (:class:`str`):
+            If non\-empty, human\-readable name of the new theme\. Otherwise, the chat theme was reset to the default one
 
     """
 
-    def __init__(self, theme_name: str = "") -> None:
-        self.theme_name: Union[str, None] = theme_name
-        r"""If non\-empty, name of a new theme, set for the chat\. Otherwise, the chat theme was reset to the default one"""
+    def __init__(self, name: str = "") -> None:
+        self.name: Union[str, None] = name
+        r"""If non\-empty, human\-readable name of the new theme\. Otherwise, the chat theme was reset to the default one"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -72989,13 +73914,13 @@ class PushMessageContentChatSetTheme(TlObject, PushMessageContent):
         return "PushMessageContent"
 
     def to_dict(self) -> dict:
-        return {"@type": self.getType(), "theme_name": self.theme_name}
+        return {"@type": self.getType(), "name": self.name}
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["PushMessageContentChatSetTheme", None]:
         if data:
             data_class = cls()
-            data_class.theme_name = data.get("theme_name", "")
+            data_class.name = data.get("name", "")
 
         return data_class
 
@@ -84894,7 +85819,7 @@ class ChatRevenueTransactions(TlObject):
 
 
 class StarRevenueStatus(TlObject):
-    r"""Contains information about Telegram Stars earned by a bot or a chat
+    r"""Contains information about Telegram Stars earned by a user or a chat
 
     Parameters:
         total_amount (:class:`"types.StarAmount"`):
@@ -84968,7 +85893,7 @@ class StarRevenueStatus(TlObject):
 
 
 class StarRevenueStatistics(TlObject):
-    r"""A detailed statistics about Telegram Stars earned by a bot or a chat
+    r"""A detailed statistics about Telegram Stars earned by a user or a chat
 
     Parameters:
         revenue_by_day_graph (:class:`"types.StatisticalGraph"`):
@@ -85018,6 +85943,132 @@ class StarRevenueStatistics(TlObject):
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["StarRevenueStatistics", None]:
+        if data:
+            data_class = cls()
+            data_class.revenue_by_day_graph = data.get("revenue_by_day_graph", None)
+            data_class.status = data.get("status", None)
+            data_class.usd_rate = data.get("usd_rate", 0.0)
+
+        return data_class
+
+
+class TonRevenueStatus(TlObject):
+    r"""Contains information about Toncoins earned by the current user
+
+    Parameters:
+        total_amount (:class:`int`):
+            Total amount of Toncoins earned; in the smallest units of the cryptocurrency
+
+        balance_amount (:class:`int`):
+            Amount of Toncoins that aren't withdrawn yet; in the smallest units of the cryptocurrency
+
+        available_amount (:class:`int`):
+            Amount of Toncoins that are available for withdrawal; in the smallest units of the cryptocurrency
+
+        withdrawal_enabled (:class:`bool`):
+            True, if Toncoins can be withdrawn
+
+    """
+
+    def __init__(
+        self,
+        total_amount: int = 0,
+        balance_amount: int = 0,
+        available_amount: int = 0,
+        withdrawal_enabled: bool = False,
+    ) -> None:
+        self.total_amount: int = int(total_amount)
+        r"""Total amount of Toncoins earned; in the smallest units of the cryptocurrency"""
+        self.balance_amount: int = int(balance_amount)
+        r"""Amount of Toncoins that aren't withdrawn yet; in the smallest units of the cryptocurrency"""
+        self.available_amount: int = int(available_amount)
+        r"""Amount of Toncoins that are available for withdrawal; in the smallest units of the cryptocurrency"""
+        self.withdrawal_enabled: bool = bool(withdrawal_enabled)
+        r"""True, if Toncoins can be withdrawn"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["tonRevenueStatus"]:
+        return "tonRevenueStatus"
+
+    @classmethod
+    def getClass(self) -> Literal["TonRevenueStatus"]:
+        return "TonRevenueStatus"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "total_amount": self.total_amount,
+            "balance_amount": self.balance_amount,
+            "available_amount": self.available_amount,
+            "withdrawal_enabled": self.withdrawal_enabled,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TonRevenueStatus", None]:
+        if data:
+            data_class = cls()
+            data_class.total_amount = int(data.get("total_amount", 0))
+            data_class.balance_amount = int(data.get("balance_amount", 0))
+            data_class.available_amount = int(data.get("available_amount", 0))
+            data_class.withdrawal_enabled = data.get("withdrawal_enabled", False)
+
+        return data_class
+
+
+class TonRevenueStatistics(TlObject):
+    r"""A detailed statistics about Toncoins earned by the current user
+
+    Parameters:
+        revenue_by_day_graph (:class:`"types.StatisticalGraph"`):
+            A graph containing amount of revenue in a given day
+
+        status (:class:`"types.TonRevenueStatus"`):
+            Amount of earned revenue
+
+        usd_rate (:class:`float`):
+            Current conversion rate of nanotoncoin to USD cents
+
+    """
+
+    def __init__(
+        self,
+        revenue_by_day_graph: StatisticalGraph = None,
+        status: TonRevenueStatus = None,
+        usd_rate: float = 0.0,
+    ) -> None:
+        self.revenue_by_day_graph: Union[
+            StatisticalGraphData, StatisticalGraphAsync, StatisticalGraphError, None
+        ] = revenue_by_day_graph
+        r"""A graph containing amount of revenue in a given day"""
+        self.status: Union[TonRevenueStatus, None] = status
+        r"""Amount of earned revenue"""
+        self.usd_rate: float = float(usd_rate)
+        r"""Current conversion rate of nanotoncoin to USD cents"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["tonRevenueStatistics"]:
+        return "tonRevenueStatistics"
+
+    @classmethod
+    def getClass(self) -> Literal["TonRevenueStatistics"]:
+        return "TonRevenueStatistics"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "revenue_by_day_graph": self.revenue_by_day_graph,
+            "status": self.status,
+            "usd_rate": self.usd_rate,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["TonRevenueStatistics", None]:
         if data:
             data_class = cls()
             data_class.revenue_by_day_graph = data.get("revenue_by_day_graph", None)
@@ -88034,16 +89085,16 @@ class UpdateChatTheme(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        theme_name (:class:`str`):
-            The new name of the chat theme; may be empty if theme was reset to default
+        theme (:class:`"types.ChatTheme"`):
+            The new theme of the chat; may be null if theme was reset to default
 
     """
 
-    def __init__(self, chat_id: int = 0, theme_name: str = "") -> None:
+    def __init__(self, chat_id: int = 0, theme: ChatTheme = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
-        self.theme_name: Union[str, None] = theme_name
-        r"""The new name of the chat theme; may be empty if theme was reset to default"""
+        self.theme: Union[ChatThemeEmoji, ChatThemeGift, None] = theme
+        r"""The new theme of the chat; may be null if theme was reset to default"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -88057,18 +89108,14 @@ class UpdateChatTheme(TlObject, Update):
         return "Update"
 
     def to_dict(self) -> dict:
-        return {
-            "@type": self.getType(),
-            "chat_id": self.chat_id,
-            "theme_name": self.theme_name,
-        }
+        return {"@type": self.getType(), "chat_id": self.chat_id, "theme": self.theme}
 
     @classmethod
     def from_dict(cls, data: dict) -> Union["UpdateChatTheme", None]:
         if data:
             data_class = cls()
             data_class.chat_id = int(data.get("chat_id", 0))
-            data_class.theme_name = data.get("theme_name", "")
+            data_class.theme = data.get("theme", None)
 
         return data_class
 
@@ -91729,25 +92776,25 @@ class UpdateDefaultBackground(TlObject, Update):
         return data_class
 
 
-class UpdateChatThemes(TlObject, Update):
-    r"""The list of available chat themes has changed
+class UpdateEmojiChatThemes(TlObject, Update):
+    r"""The list of available emoji chat themes has changed
 
     Parameters:
-        chat_themes (:class:`List["types.ChatTheme"]`):
-            The new list of chat themes
+        chat_themes (:class:`List["types.EmojiChatTheme"]`):
+            The new list of emoji chat themes
 
     """
 
-    def __init__(self, chat_themes: List[ChatTheme] = None) -> None:
-        self.chat_themes: List[ChatTheme] = chat_themes or []
-        r"""The new list of chat themes"""
+    def __init__(self, chat_themes: List[EmojiChatTheme] = None) -> None:
+        self.chat_themes: List[EmojiChatTheme] = chat_themes or []
+        r"""The new list of emoji chat themes"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["updateChatThemes"]:
-        return "updateChatThemes"
+    def getType(self) -> Literal["updateEmojiChatThemes"]:
+        return "updateEmojiChatThemes"
 
     @classmethod
     def getClass(self) -> Literal["Update"]:
@@ -91757,7 +92804,7 @@ class UpdateChatThemes(TlObject, Update):
         return {"@type": self.getType(), "chat_themes": self.chat_themes}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["UpdateChatThemes", None]:
+    def from_dict(cls, data: dict) -> Union["UpdateEmojiChatThemes", None]:
         if data:
             data_class = cls()
             data_class.chat_themes = data.get("chat_themes", None)
@@ -92600,7 +93647,7 @@ class UpdateChatRevenueAmount(TlObject, Update):
 
 
 class UpdateStarRevenueStatus(TlObject, Update):
-    r"""The Telegram Star revenue earned by a bot or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
+    r"""The Telegram Star revenue earned by a user or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
 
     Parameters:
         owner_id (:class:`"types.MessageSender"`):
@@ -92642,6 +93689,42 @@ class UpdateStarRevenueStatus(TlObject, Update):
         if data:
             data_class = cls()
             data_class.owner_id = data.get("owner_id", None)
+            data_class.status = data.get("status", None)
+
+        return data_class
+
+
+class UpdateTonRevenueStatus(TlObject, Update):
+    r"""The Toncoin revenue earned by the current user has changed\. If Toncoin transaction screen of the chat is opened, then getTonTransactions may be called to fetch new transactions
+
+    Parameters:
+        status (:class:`"types.TonRevenueStatus"`):
+            New Toncoin revenue status
+
+    """
+
+    def __init__(self, status: TonRevenueStatus = None) -> None:
+        self.status: Union[TonRevenueStatus, None] = status
+        r"""New Toncoin revenue status"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateTonRevenueStatus"]:
+        return "updateTonRevenueStatus"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "status": self.status}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateTonRevenueStatus", None]:
+        if data:
+            data_class = cls()
             data_class.status = data.get("status", None)
 
         return data_class

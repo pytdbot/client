@@ -8807,8 +8807,28 @@ class TDLibFunctions:
             }
         )
 
+    async def getGiftChatThemes(
+        self, offset: str = "", limit: int = 0
+    ) -> Union["types.Error", "types.GiftChatThemes"]:
+        r"""Returns available to the current user gift chat themes
+
+        Parameters:
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of chat themes to return
+
+        Returns:
+            :class:`~pytdbot.types.GiftChatThemes`
+        """
+
+        return await self.invoke(
+            {"@type": "getGiftChatThemes", "offset": offset, "limit": limit}
+        )
+
     async def setChatTheme(
-        self, chat_id: int = 0, theme_name: str = ""
+        self, chat_id: int = 0, theme: "types.InputChatTheme" = None
     ) -> Union["types.Error", "types.Ok"]:
         r"""Changes the chat theme\. Supported only in private and secret chats
 
@@ -8816,15 +8836,15 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Chat identifier
 
-            theme_name (:class:`str`):
-                Name of the new chat theme; pass an empty string to return the default theme
+            theme (:class:`"types.InputChatTheme"`):
+                New chat theme; pass null to return the default theme
 
         Returns:
             :class:`~pytdbot.types.Ok`
         """
 
         return await self.invoke(
-            {"@type": "setChatTheme", "chat_id": chat_id, "theme_name": theme_name}
+            {"@type": "setChatTheme", "chat_id": chat_id, "theme": theme}
         )
 
     async def setChatDraftMessage(
@@ -13744,6 +13764,103 @@ class TDLibFunctions:
             }
         )
 
+    async def getUserProfileAudios(
+        self, user_id: int = 0, offset: int = 0, limit: int = 0
+    ) -> Union["types.Error", "types.Audios"]:
+        r"""Returns the list of profile audio files of a user
+
+        Parameters:
+            user_id (:class:`int`):
+                User identifier
+
+            offset (:class:`int`):
+                The number of audio files to skip; must be non\-negative
+
+            limit (:class:`int`):
+                The maximum number of audio files to be returned; up to 100
+
+        Returns:
+            :class:`~pytdbot.types.Audios`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getUserProfileAudios",
+                "user_id": user_id,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
+    async def isProfileAudio(
+        self, file_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Checks whether a file is in the profile audio files of the current user\. Returns a 404 error if it isn't
+
+        Parameters:
+            file_id (:class:`int`):
+                Identifier of the audio file to check
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "isProfileAudio", "file_id": file_id})
+
+    async def addProfileAudio(
+        self, file_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Adds an audio file to the beginning of the profile audio files of the current user
+
+        Parameters:
+            file_id (:class:`int`):
+                Identifier of the audio file to be added\. The file must have been uploaded to the server
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "addProfileAudio", "file_id": file_id})
+
+    async def setProfileAudioPosition(
+        self, file_id: int = 0, after_file_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes position of an audio file in the profile audio files of the current user
+
+        Parameters:
+            file_id (:class:`int`):
+                Identifier of the file from profile audio files, which position will be changed
+
+            after_file_id (:class:`int`):
+                Identifier of the file from profile audio files after which the file will be positioned; pass 0 to move the file to the beginning of the list
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setProfileAudioPosition",
+                "file_id": file_id,
+                "after_file_id": after_file_id,
+            }
+        )
+
+    async def removeProfileAudio(
+        self, file_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Removes an audio file from the profile audio files of the current user
+
+        Parameters:
+            file_id (:class:`int`):
+                Identifier of the audio file to be removed
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "removeProfileAudio", "file_id": file_id})
+
     async def getStickerOutline(
         self,
         sticker_file_id: int = 0,
@@ -14820,6 +14937,23 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "setBirthdate", "birthdate": birthdate})
+
+    async def setMainProfileTab(
+        self, main_profile_tab: "types.ProfileTab" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the main profile tab of the current user
+
+        Parameters:
+            main_profile_tab (:class:`"types.ProfileTab"`):
+                The new value of the main profile tab
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "setMainProfileTab", "main_profile_tab": main_profile_tab}
+        )
 
     async def setPersonalChat(
         self, chat_id: int = 0
@@ -16252,6 +16386,30 @@ class TDLibFunctions:
             }
         )
 
+    async def setSupergroupMainProfileTab(
+        self, supergroup_id: int = 0, main_profile_tab: "types.ProfileTab" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes the main profile tab of the channel; requires can\_change\_info administrator right
+
+        Parameters:
+            supergroup_id (:class:`int`):
+                Identifier of the channel
+
+            main_profile_tab (:class:`"types.ProfileTab"`):
+                The new value of the main profile tab
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setSupergroupMainProfileTab",
+                "supergroup_id": supergroup_id,
+                "main_profile_tab": main_profile_tab,
+            }
+        )
+
     async def toggleSupergroupSignMessages(
         self,
         supergroup_id: int = 0,
@@ -16847,6 +17005,21 @@ class TDLibFunctions:
                 "@type": "getAvailableGifts",
             }
         )
+
+    async def canSendGift(
+        self, gift_id: int = 0
+    ) -> Union["types.Error", "types.CanSendGiftResult"]:
+        r"""Checks whether a gift with next\_send\_date in the future can be sent already
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the gift to send
+
+        Returns:
+            :class:`~pytdbot.types.CanSendGiftResult`
+        """
+
+        return await self.invoke({"@type": "canSendGift", "gift_id": gift_id})
 
     async def sendGift(
         self,
@@ -18605,6 +18778,38 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "getStarAdAccountUrl", "owner_id": owner_id})
+
+    async def getTonRevenueStatistics(
+        self, is_dark: bool = False
+    ) -> Union["types.Error", "types.TonRevenueStatistics"]:
+        r"""Returns detailed Toncoin revenue statistics of the current user
+
+        Parameters:
+            is_dark (:class:`bool`):
+                Pass true if a dark theme is used by the application
+
+        Returns:
+            :class:`~pytdbot.types.TonRevenueStatistics`
+        """
+
+        return await self.invoke(
+            {"@type": "getTonRevenueStatistics", "is_dark": is_dark}
+        )
+
+    async def getTonWithdrawalUrl(
+        self, password: str = ""
+    ) -> Union["types.Error", "types.HttpUrl"]:
+        r"""Returns a URL for Toncoin withdrawal from the current user's account\. The user must have at least 10 toncoins to withdraw and can withdraw up to 100000 Toncoins in one transaction
+
+        Parameters:
+            password (:class:`str`):
+                The 2\-step verification password of the current user
+
+        Returns:
+            :class:`~pytdbot.types.HttpUrl`
+        """
+
+        return await self.invoke({"@type": "getTonWithdrawalUrl", "password": password})
 
     async def getChatStatistics(
         self, chat_id: int = 0, is_dark: bool = False

@@ -6619,13 +6619,13 @@ class Updates:
 
         return decorator
 
-    def on_updateChatThemes(
+    def on_updateEmojiChatThemes(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
         position: int = None,
         timeout: float = None,
     ) -> Callable:
-        r"""The list of available chat themes has changed
+        r"""The list of available emoji chat themes has changed
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -6647,7 +6647,7 @@ class Updates:
             elif isinstance(self, pytdbot.Client):
                 if iscoroutinefunction(func):
                     self.add_handler(
-                        update_type="updateChatThemes",
+                        update_type="updateEmojiChatThemes",
                         func=func,
                         filters=filters,
                         position=position,
@@ -6659,7 +6659,7 @@ class Updates:
             elif isinstance(self, pytdbot.filters.Filter):
                 func._handler = Handler(
                     func=func,
-                    update_type="updateChatThemes",
+                    update_type="updateEmojiChatThemes",
                     filter=self,
                     position=position,
                     inner_object=False,
@@ -6668,7 +6668,7 @@ class Updates:
             else:
                 func._handler = Handler(
                     func=func,
-                    update_type="updateChatThemes",
+                    update_type="updateEmojiChatThemes",
                     filter=filters,
                     position=position,
                     inner_object=False,
@@ -7805,7 +7805,7 @@ class Updates:
         position: int = None,
         timeout: float = None,
     ) -> Callable:
-        r"""The Telegram Star revenue earned by a bot or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
+        r"""The Telegram Star revenue earned by a user or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
 
         Parameters:
             filters (:class:`pytdbot.filters.Filter`, *optional*):
@@ -7849,6 +7849,65 @@ class Updates:
                 func._handler = Handler(
                     func=func,
                     update_type="updateStarRevenueStatus",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updateTonRevenueStatus(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+        timeout: float = None,
+    ) -> Callable:
+        r"""The Toncoin revenue earned by the current user has changed\. If Toncoin transaction screen of the chat is opened, then getTonTransactions may be called to fetch new transactions
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateTonRevenueStatus",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonRevenueStatus",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateTonRevenueStatus",
                     filter=filters,
                     position=position,
                     inner_object=False,
