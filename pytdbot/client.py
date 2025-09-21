@@ -1131,12 +1131,12 @@ class Client(Decorators, Methods):
         updates_queue = await self.__get_updates_queue()
 
         notify_queue = await self.__rchannel.declare_queue(
-            f"notify_{self._rabbitmq_instance_id}", exclusive=True
+            f"{self.my_id}_notify_{self._rabbitmq_instance_id}", exclusive=True
         )
         await notify_queue.bind(await self.__rchannel.get_exchange("broadcast"))
 
         responses_queue = await self.__rchannel.declare_queue(
-            f"res_{self._rabbitmq_instance_id}", exclusive=True
+            f"{self.my_id}_res_{self._rabbitmq_instance_id}", exclusive=True
         )
 
         self.__rqueues = {
