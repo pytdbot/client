@@ -435,6 +435,7 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
+        no_reply: bool = False,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -460,7 +461,7 @@ class MessageBoundMethods:
             allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
-            reply_to_message_id=self.id,
+            reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
         )
 
@@ -481,6 +482,7 @@ class MessageBoundMethods:
         has_spoiler: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
+        no_reply: bool = False,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -504,10 +506,10 @@ class MessageBoundMethods:
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            reply_to_message_id=self.id if not no_reply else None,
             has_spoiler=has_spoiler,
             message_thread_id=message_thread_id,
             quote=quote,
-            reply_to_message_id=self.id,
             reply_markup=reply_markup,
         )
 
@@ -526,6 +528,7 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
+        no_reply: bool = False,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -550,7 +553,7 @@ class MessageBoundMethods:
             allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
-            reply_to_message_id=self.id,
+            reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
         )
 
@@ -567,6 +570,7 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
+        no_reply: bool = False,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -589,7 +593,7 @@ class MessageBoundMethods:
             allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
-            reply_to_message_id=self.id,
+            reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
         )
 
@@ -610,6 +614,7 @@ class MessageBoundMethods:
         has_spoiler: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
+        no_reply: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -636,7 +641,7 @@ class MessageBoundMethods:
             has_spoiler=has_spoiler,
             message_thread_id=message_thread_id,
             quote=quote,
-            reply_to_message_id=self.id,
+            reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
         )
 
@@ -659,6 +664,7 @@ class MessageBoundMethods:
         has_spoiler: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
+        no_reply: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -687,7 +693,7 @@ class MessageBoundMethods:
             has_spoiler=has_spoiler,
             message_thread_id=message_thread_id,
             quote=quote,
-            reply_to_message_id=self.id,
+            reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
         )
 
@@ -702,6 +708,7 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
+        no_reply: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -722,7 +729,7 @@ class MessageBoundMethods:
             allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
-            reply_to_message_id=self.id,
+            reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
         )
 
@@ -739,6 +746,7 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
+        no_reply: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -761,7 +769,7 @@ class MessageBoundMethods:
             allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
-            reply_to_message_id=self.id,
+            reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
         )
 
@@ -777,6 +785,7 @@ class MessageBoundMethods:
         allow_paid_broadcast: bool = False,
         message_thread_id: int = 0,
         quote: "pytdbot.types.InputTextQuote" = None,
+        no_reply: bool = None,
         reply_markup: Union[
             "pytdbot.types.ReplyMarkupInlineKeyboard",
             "pytdbot.types.ReplyMarkupShowKeyboard",
@@ -798,7 +807,7 @@ class MessageBoundMethods:
             allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=message_thread_id,
             quote=quote,
-            reply_to_message_id=self.id,
+            reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
         )
 
