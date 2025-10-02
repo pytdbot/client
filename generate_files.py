@@ -7,6 +7,7 @@ bound_methods_class = {
     "File": "FileBoundMethods",
     "RemoteFile": "FileBoundMethods",
     "UpdateNewCallbackQuery": "CallbackQueryBoundMethods",
+    "MessageSender": "MessageSenderBoundMethods",
 }
 
 
@@ -218,7 +219,7 @@ def generate_inherited_class(class_name, type_data, classes):
     return ", ".join(inherited)
 
 
-class_template = """class {class_name}:
+class_template = """class {class_name}{inherited_class}:
     r\"\"\"{docstring}\"\"\"
 
     pass"""
@@ -226,9 +227,14 @@ class_template = """class {class_name}:
 
 def generate_classes(f, classes):
     for class_name in classes.keys():
+        class_name = to_camel_case(class_name, is_class=True)
+
         f.write(
             class_template.format(
-                class_name=to_camel_case(class_name, is_class=True),
+                class_name=class_name,
+                inherited_class=""
+                if class_name not in bound_methods_class
+                else f"({bound_methods_class[class_name]})",
                 docstring=escape_quotes(classes[class_name]["description"]),
             )
             + "\n\n"

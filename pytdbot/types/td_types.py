@@ -1,9 +1,10 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
-    MessageBoundMethods,
     CallbackQueryBoundMethods,
+    MessageSenderBoundMethods,
     FileBoundMethods,
+    MessageBoundMethods,
 )
 import pytdbot
 
@@ -302,7 +303,7 @@ class SecretChatState:
     pass
 
 
-class MessageSender:
+class MessageSender(MessageSenderBoundMethods):
     r"""Contains information about the sender of a message"""
 
     pass
