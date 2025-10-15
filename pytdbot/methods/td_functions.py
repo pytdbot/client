@@ -1927,37 +1927,6 @@ class TDLibFunctions:
             }
         )
 
-    async def setDirectMessagesChatTopicDraftMessage(
-        self,
-        chat_id: int = 0,
-        topic_id: int = 0,
-        draft_message: "types.DraftMessage" = None,
-    ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the draft message in the topic in a channel direct messages chat administered by the current user
-
-        Parameters:
-            chat_id (:class:`int`):
-                Chat identifier
-
-            topic_id (:class:`int`):
-                Topic identifier
-
-            draft_message (:class:`"types.DraftMessage"`):
-                New draft message; pass null to remove the draft\. All files in draft message content must be of the type inputFileLocal\. Media thumbnails and captions are ignored
-
-        Returns:
-            :class:`~pytdbot.types.Ok`
-        """
-
-        return await self.invoke(
-            {
-                "@type": "setDirectMessagesChatTopicDraftMessage",
-                "chat_id": chat_id,
-                "topic_id": topic_id,
-                "draft_message": draft_message,
-            }
-        )
-
     async def unpinAllDirectMessagesChatTopicMessages(
         self, chat_id: int = 0, topic_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
@@ -2975,7 +2944,7 @@ class TDLibFunctions:
                 Identifier of the chat in which to return information about messages
 
             topic_id (:class:`"types.MessageTopic"`):
-                Pass topic identifier to get the result only in specific topic; pass null to get the result in all topics; forum topics aren't supported
+                Pass topic identifier to get the result only in specific topic; pass null to get the result in all topics; forum topics and message threads aren't supported
 
             filter (:class:`"types.SearchMessagesFilter"`):
                 Filter for message content\. Filters searchMessagesFilterEmpty, searchMessagesFilterMention, searchMessagesFilterUnreadMention, and searchMessagesFilterUnreadReaction are unsupported in this function
@@ -3011,7 +2980,7 @@ class TDLibFunctions:
                 Identifier of the chat in which to count messages
 
             topic_id (:class:`"types.MessageTopic"`):
-                Pass topic identifier to get number of messages only in specific topic; pass null to get number of messages in all topics
+                Pass topic identifier to get number of messages only in specific topic; pass null to get number of messages in all topics; message threads aren't supported
 
             filter (:class:`"types.SearchMessagesFilter"`):
                 Filter for message content; searchMessagesFilterEmpty is unsupported in this function
@@ -3047,7 +3016,7 @@ class TDLibFunctions:
                 Identifier of the chat in which to find message position
 
             topic_id (:class:`"types.MessageTopic"`):
-                Pass topic identifier to get position among messages only in specific topic; pass null to get position among all chat messages
+                Pass topic identifier to get position among messages only in specific topic; pass null to get position among all chat messages; message threads aren't supported
 
             filter (:class:`"types.SearchMessagesFilter"`):
                 Filter for message content; searchMessagesFilterEmpty, searchMessagesFilterUnreadMention, searchMessagesFilterUnreadReaction, and searchMessagesFilterFailedToSend are unsupported in this function
@@ -3610,7 +3579,7 @@ class TDLibFunctions:
     async def sendMessage(
         self,
         chat_id: int = 0,
-        message_thread_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         reply_to: "types.InputMessageReplyTo" = None,
         options: "types.MessageSendOptions" = None,
         reply_markup: "types.ReplyMarkup" = None,
@@ -3622,8 +3591,8 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Target chat
 
-            message_thread_id (:class:`int`):
-                If not 0, the message thread identifier in which the message will be sent
+            topic_id (:class:`"types.MessageTopic"`):
+                Topic in which the message will be sent; pass null if none
 
             reply_to (:class:`"types.InputMessageReplyTo"`):
                 Information about the message or story to be replied; pass null if none
@@ -3645,7 +3614,7 @@ class TDLibFunctions:
             {
                 "@type": "sendMessage",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "topic_id": topic_id,
                 "reply_to": reply_to,
                 "options": options,
                 "reply_markup": reply_markup,
@@ -3656,7 +3625,7 @@ class TDLibFunctions:
     async def sendMessageAlbum(
         self,
         chat_id: int = 0,
-        message_thread_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         reply_to: "types.InputMessageReplyTo" = None,
         options: "types.MessageSendOptions" = None,
         input_message_contents: List["types.InputMessageContent"] = None,
@@ -3667,8 +3636,8 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Target chat
 
-            message_thread_id (:class:`int`):
-                If not 0, the message thread identifier in which the messages will be sent
+            topic_id (:class:`"types.MessageTopic"`):
+                Topic in which the messages will be sent; pass null if none
 
             reply_to (:class:`"types.InputMessageReplyTo"`):
                 Information about the message or story to be replied; pass null if none
@@ -3687,7 +3656,7 @@ class TDLibFunctions:
             {
                 "@type": "sendMessageAlbum",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "topic_id": topic_id,
                 "reply_to": reply_to,
                 "options": options,
                 "input_message_contents": input_message_contents,
@@ -3725,7 +3694,7 @@ class TDLibFunctions:
     async def sendInlineQueryResultMessage(
         self,
         chat_id: int = 0,
-        message_thread_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         reply_to: "types.InputMessageReplyTo" = None,
         options: "types.MessageSendOptions" = None,
         query_id: int = 0,
@@ -3738,8 +3707,8 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Target chat
 
-            message_thread_id (:class:`int`):
-                If not 0, the message thread identifier in which the message will be sent
+            topic_id (:class:`"types.MessageTopic"`):
+                Topic in which the message will be sent; pass null if none
 
             reply_to (:class:`"types.InputMessageReplyTo"`):
                 Information about the message or story to be replied; pass null if none
@@ -3764,7 +3733,7 @@ class TDLibFunctions:
             {
                 "@type": "sendInlineQueryResultMessage",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "topic_id": topic_id,
                 "reply_to": reply_to,
                 "options": options,
                 "query_id": query_id,
@@ -3776,7 +3745,7 @@ class TDLibFunctions:
     async def forwardMessages(
         self,
         chat_id: int = 0,
-        message_thread_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         from_chat_id: int = 0,
         message_ids: List[int] = None,
         options: "types.MessageSendOptions" = None,
@@ -3789,8 +3758,8 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Identifier of the chat to which to forward messages
 
-            message_thread_id (:class:`int`):
-                If not 0, the message thread identifier in which the message will be sent; for forum threads only
+            topic_id (:class:`"types.MessageTopic"`):
+                Topic in which the messages will be forwarded; message threads aren't supported; pass null if none
 
             from_chat_id (:class:`int`):
                 Identifier of the chat from which to forward messages
@@ -3815,7 +3784,7 @@ class TDLibFunctions:
             {
                 "@type": "forwardMessages",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "topic_id": topic_id,
                 "from_chat_id": from_chat_id,
                 "message_ids": message_ids,
                 "options": options,
@@ -5514,9 +5483,13 @@ class TDLibFunctions:
         )
 
     async def createForumTopic(
-        self, chat_id: int = 0, name: str = "", icon: "types.ForumTopicIcon" = None
+        self,
+        chat_id: int = 0,
+        name: str = "",
+        is_name_implicit: bool = False,
+        icon: "types.ForumTopicIcon" = None,
     ) -> Union["types.Error", "types.ForumTopicInfo"]:
-        r"""Creates a topic in a forum supergroup chat; requires can\_manage\_topics administrator or can\_create\_topics member right in the supergroup
+        r"""Creates a topic in a forum supergroup chat or a chat with a bot with topics; requires can\_manage\_topics administrator or can\_create\_topics member right in the supergroup
 
         Parameters:
             chat_id (:class:`int`):
@@ -5524,6 +5497,9 @@ class TDLibFunctions:
 
             name (:class:`str`):
                 Name of the topic; 1\-128 characters
+
+            is_name_implicit (:class:`bool`):
+                Pass true if the name of the topic wasn't entered explicitly; for chats with bots only
 
             icon (:class:`"types.ForumTopicIcon"`):
                 Icon of the topic\. Icon color must be one of 0x6FB9F0, 0xFFD67E, 0xCB86DB, 0x8EEE98, 0xFF93B2, or 0xFB6F5F\. Telegram Premium users can use any custom emoji as topic icon, other users can use only a custom emoji returned by getForumTopicDefaultIcons
@@ -5537,6 +5513,7 @@ class TDLibFunctions:
                 "@type": "createForumTopic",
                 "chat_id": chat_id,
                 "name": name,
+                "is_name_implicit": is_name_implicit,
                 "icon": icon,
             }
         )
@@ -5544,19 +5521,19 @@ class TDLibFunctions:
     async def editForumTopic(
         self,
         chat_id: int = 0,
-        message_thread_id: int = 0,
+        forum_topic_id: int = 0,
         name: str = "",
         edit_icon_custom_emoji: bool = False,
         icon_custom_emoji_id: int = 0,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Edits title and icon of a topic in a forum supergroup chat; requires can\_manage\_topics administrator right in the supergroup unless the user is creator of the topic
+        r"""Edits title and icon of a topic in a forum supergroup chat or a chat with a bot with topics; for supergroup chats requires can\_manage\_topics administrator right unless the user is creator of the topic
 
         Parameters:
             chat_id (:class:`int`):
                 Identifier of the chat
 
-            message_thread_id (:class:`int`):
-                Message thread identifier of the forum topic
+            forum_topic_id (:class:`int`):
+                Forum topic identifier
 
             name (:class:`str`):
                 New name of the topic; 0\-128 characters\. If empty, the previous topic name is kept
@@ -5575,7 +5552,7 @@ class TDLibFunctions:
             {
                 "@type": "editForumTopic",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "forum_topic_id": forum_topic_id,
                 "name": name,
                 "edit_icon_custom_emoji": edit_icon_custom_emoji,
                 "icon_custom_emoji_id": icon_custom_emoji_id,
@@ -5583,16 +5560,16 @@ class TDLibFunctions:
         )
 
     async def getForumTopic(
-        self, chat_id: int = 0, message_thread_id: int = 0
+        self, chat_id: int = 0, forum_topic_id: int = 0
     ) -> Union["types.Error", "types.ForumTopic"]:
-        r"""Returns information about a forum topic
+        r"""Returns information about a topic in a forum supergroup chat or a chat with a bot with topics
 
         Parameters:
             chat_id (:class:`int`):
                 Identifier of the chat
 
-            message_thread_id (:class:`int`):
-                Message thread identifier of the forum topic
+            forum_topic_id (:class:`int`):
+                Forum topic identifier
 
         Returns:
             :class:`~pytdbot.types.ForumTopic`
@@ -5602,21 +5579,62 @@ class TDLibFunctions:
             {
                 "@type": "getForumTopic",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "forum_topic_id": forum_topic_id,
+            }
+        )
+
+    async def getForumTopicHistory(
+        self,
+        chat_id: int = 0,
+        forum_topic_id: int = 0,
+        from_message_id: int = 0,
+        offset: int = 0,
+        limit: int = 0,
+    ) -> Union["types.Error", "types.Messages"]:
+        r"""Returns messages in a topic in a forum supergroup chat or a chat with a bot with topics\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)\. For optimal performance, the number of returned messages is chosen by TDLib
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            forum_topic_id (:class:`int`):
+                Forum topic identifier
+
+            from_message_id (:class:`int`):
+                Identifier of the message starting from which history must be fetched; use 0 to get results from the last message
+
+            offset (:class:`int`):
+                Specify 0 to get results from exactly the message from\_message\_id or a negative number from \-99 to \-1 to get additionally \-offset newer messages
+
+            limit (:class:`int`):
+                The maximum number of messages to be returned; must be positive and can't be greater than 100\. If the offset is negative, then the limit must be greater than or equal to \-offset\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
+
+        Returns:
+            :class:`~pytdbot.types.Messages`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getForumTopicHistory",
+                "chat_id": chat_id,
+                "forum_topic_id": forum_topic_id,
+                "from_message_id": from_message_id,
+                "offset": offset,
+                "limit": limit,
             }
         )
 
     async def getForumTopicLink(
-        self, chat_id: int = 0, message_thread_id: int = 0
+        self, chat_id: int = 0, forum_topic_id: int = 0
     ) -> Union["types.Error", "types.MessageLink"]:
-        r"""Returns an HTTPS link to a topic in a forum chat\. This is an offline method
+        r"""Returns an HTTPS link to a topic in a forum supergroup chat\. This is an offline method
 
         Parameters:
             chat_id (:class:`int`):
                 Identifier of the chat
 
-            message_thread_id (:class:`int`):
-                Message thread identifier of the forum topic
+            forum_topic_id (:class:`int`):
+                Forum topic identifier
 
         Returns:
             :class:`~pytdbot.types.MessageLink`
@@ -5626,7 +5644,7 @@ class TDLibFunctions:
             {
                 "@type": "getForumTopicLink",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "forum_topic_id": forum_topic_id,
             }
         )
 
@@ -5636,14 +5654,14 @@ class TDLibFunctions:
         query: str = "",
         offset_date: int = 0,
         offset_message_id: int = 0,
-        offset_message_thread_id: int = 0,
+        offset_forum_topic_id: int = 0,
         limit: int = 0,
     ) -> Union["types.Error", "types.ForumTopics"]:
-        r"""Returns found forum topics in a forum chat\. This is a temporary method for getting information about topic list from the server
+        r"""Returns found forum topics in a forum supergroup chat or a chat with a bot with topics\. This is a temporary method for getting information about topic list from the server
 
         Parameters:
             chat_id (:class:`int`):
-                Identifier of the forum chat
+                Identifier of the chat
 
             query (:class:`str`):
                 Query to search for in the forum topic's name
@@ -5654,8 +5672,8 @@ class TDLibFunctions:
             offset_message_id (:class:`int`):
                 The message identifier of the last message in the last found topic, or 0 for the first request
 
-            offset_message_thread_id (:class:`int`):
-                The message thread identifier of the last found topic, or 0 for the first request
+            offset_forum_topic_id (:class:`int`):
+                The forum topic identifier of the last found topic, or 0 for the first request
 
             limit (:class:`int`):
                 The maximum number of forum topics to be returned; up to 100\. For optimal performance, the number of returned forum topics is chosen by TDLib and can be smaller than the specified limit
@@ -5671,7 +5689,7 @@ class TDLibFunctions:
                 "query": query,
                 "offset_date": offset_date,
                 "offset_message_id": offset_message_id,
-                "offset_message_thread_id": offset_message_thread_id,
+                "offset_forum_topic_id": offset_forum_topic_id,
                 "limit": limit,
             }
         )
@@ -5679,17 +5697,17 @@ class TDLibFunctions:
     async def setForumTopicNotificationSettings(
         self,
         chat_id: int = 0,
-        message_thread_id: int = 0,
+        forum_topic_id: int = 0,
         notification_settings: "types.ChatNotificationSettings" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the notification settings of a forum topic
+        r"""Changes the notification settings of a forum topic in a forum supergroup chat or a chat with a bot with topics
 
         Parameters:
             chat_id (:class:`int`):
                 Chat identifier
 
-            message_thread_id (:class:`int`):
-                Message thread identifier of the forum topic
+            forum_topic_id (:class:`int`):
+                Forum topic identifier
 
             notification_settings (:class:`"types.ChatNotificationSettings"`):
                 New notification settings for the forum topic\. If the topic is muted for more than 366 days, it is considered to be muted forever
@@ -5702,13 +5720,13 @@ class TDLibFunctions:
             {
                 "@type": "setForumTopicNotificationSettings",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "forum_topic_id": forum_topic_id,
                 "notification_settings": notification_settings,
             }
         )
 
     async def toggleForumTopicIsClosed(
-        self, chat_id: int = 0, message_thread_id: int = 0, is_closed: bool = False
+        self, chat_id: int = 0, forum_topic_id: int = 0, is_closed: bool = False
     ) -> Union["types.Error", "types.Ok"]:
         r"""Toggles whether a topic is closed in a forum supergroup chat; requires can\_manage\_topics administrator right in the supergroup unless the user is creator of the topic
 
@@ -5716,8 +5734,8 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Identifier of the chat
 
-            message_thread_id (:class:`int`):
-                Message thread identifier of the forum topic
+            forum_topic_id (:class:`int`):
+                Forum topic identifier
 
             is_closed (:class:`bool`):
                 Pass true to close the topic; pass false to reopen it
@@ -5730,7 +5748,7 @@ class TDLibFunctions:
             {
                 "@type": "toggleForumTopicIsClosed",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "forum_topic_id": forum_topic_id,
                 "is_closed": is_closed,
             }
         )
@@ -5760,16 +5778,16 @@ class TDLibFunctions:
         )
 
     async def toggleForumTopicIsPinned(
-        self, chat_id: int = 0, message_thread_id: int = 0, is_pinned: bool = False
+        self, chat_id: int = 0, forum_topic_id: int = 0, is_pinned: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the pinned state of a forum topic; requires can\_manage\_topics administrator right in the supergroup\. There can be up to getOption\(\"pinned\_forum\_topic\_count\_max\"\) pinned forum topics
+        r"""Changes the pinned state of a topic in a forum supergroup chat or a chat with a bot with topics; requires can\_manage\_topics administrator right in the supergroup\. There can be up to getOption\(\"pinned\_forum\_topic\_count\_max\"\) pinned forum topics
 
         Parameters:
             chat_id (:class:`int`):
                 Chat identifier
 
-            message_thread_id (:class:`int`):
-                Message thread identifier of the forum topic
+            forum_topic_id (:class:`int`):
+                Forum topic identifier
 
             is_pinned (:class:`bool`):
                 Pass true to pin the topic; pass false to unpin it
@@ -5782,22 +5800,22 @@ class TDLibFunctions:
             {
                 "@type": "toggleForumTopicIsPinned",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "forum_topic_id": forum_topic_id,
                 "is_pinned": is_pinned,
             }
         )
 
     async def setPinnedForumTopics(
-        self, chat_id: int = 0, message_thread_ids: List[int] = None
+        self, chat_id: int = 0, forum_topic_ids: List[int] = None
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the order of pinned forum topics; requires can\_manage\_topics administrator right in the supergroup
+        r"""Changes the order of pinned topics in a forum supergroup chat or a chat with a bot with topics; requires can\_manage\_topics administrator right in the supergroup
 
         Parameters:
             chat_id (:class:`int`):
                 Chat identifier
 
-            message_thread_ids (:class:`List[int]`):
-                The new list of pinned forum topics
+            forum_topic_ids (:class:`List[int]`):
+                The new list of identifiers of the pinned forum topics
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5807,21 +5825,21 @@ class TDLibFunctions:
             {
                 "@type": "setPinnedForumTopics",
                 "chat_id": chat_id,
-                "message_thread_ids": message_thread_ids,
+                "forum_topic_ids": forum_topic_ids,
             }
         )
 
     async def deleteForumTopic(
-        self, chat_id: int = 0, message_thread_id: int = 0
+        self, chat_id: int = 0, forum_topic_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Deletes all messages in a forum topic; requires can\_delete\_messages administrator right in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages
+        r"""Deletes all messages from a topic in a forum supergroup chat or a chat with a bot with topics; requires can\_delete\_messages administrator right in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages
 
         Parameters:
             chat_id (:class:`int`):
                 Identifier of the chat
 
-            message_thread_id (:class:`int`):
-                Message thread identifier of the forum topic
+            forum_topic_id (:class:`int`):
+                Forum topic identifier
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -5831,7 +5849,79 @@ class TDLibFunctions:
             {
                 "@type": "deleteForumTopic",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "forum_topic_id": forum_topic_id,
+            }
+        )
+
+    async def readAllForumTopicMentions(
+        self, chat_id: int = 0, forum_topic_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Marks all mentions in a topic in a forum supergroup chat as read
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            forum_topic_id (:class:`int`):
+                Forum topic identifier in which mentions are marked as read
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "readAllForumTopicMentions",
+                "chat_id": chat_id,
+                "forum_topic_id": forum_topic_id,
+            }
+        )
+
+    async def readAllForumTopicReactions(
+        self, chat_id: int = 0, forum_topic_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Marks all reactions in a topic in a forum supergroup chat or a chat with a bot with topics as read
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            forum_topic_id (:class:`int`):
+                Forum topic identifier in which reactions are marked as read
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "readAllForumTopicReactions",
+                "chat_id": chat_id,
+                "forum_topic_id": forum_topic_id,
+            }
+        )
+
+    async def unpinAllForumTopicMessages(
+        self, chat_id: int = 0, forum_topic_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Removes all pinned messages from a topic in a forum supergroup chat or a chat with a bot with topics; requires can\_pin\_messages member right in the supergroup
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat
+
+            forum_topic_id (:class:`int`):
+                Forum topic identifier in which messages will be unpinned
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "unpinAllForumTopicMessages",
+                "chat_id": chat_id,
+                "forum_topic_id": forum_topic_id,
             }
         )
 
@@ -7207,8 +7297,7 @@ class TDLibFunctions:
         chat_id: int = 0,
         bot_user_id: int = 0,
         url: str = "",
-        message_thread_id: int = 0,
-        direct_messages_chat_topic_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         reply_to: "types.InputMessageReplyTo" = None,
         parameters: "types.WebAppOpenParameters" = None,
     ) -> Union["types.Error", "types.WebAppInfo"]:
@@ -7224,11 +7313,8 @@ class TDLibFunctions:
             url (:class:`str`):
                 The URL from an inlineKeyboardButtonTypeWebApp button, a botMenuButton button, an internalLinkTypeAttachmentMenuBot link, or an empty string otherwise
 
-            message_thread_id (:class:`int`):
-                If not 0, the message thread identifier to which the message will be sent
-
-            direct_messages_chat_topic_id (:class:`int`):
-                If not 0, unique identifier of the topic of channel direct messages chat to which the message will be sent
+            topic_id (:class:`"types.MessageTopic"`):
+                Topic in which the message will be sent; pass null if none
 
             reply_to (:class:`"types.InputMessageReplyTo"`):
                 Information about the message or story to be replied in the message sent by the Web App; pass null if none
@@ -7246,8 +7332,7 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "bot_user_id": bot_user_id,
                 "url": url,
-                "message_thread_id": message_thread_id,
-                "direct_messages_chat_topic_id": direct_messages_chat_topic_id,
+                "topic_id": topic_id,
                 "reply_to": reply_to,
                 "parameters": parameters,
             }
@@ -7591,7 +7676,7 @@ class TDLibFunctions:
     async def deleteChatReplyMarkup(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Deletes the default reply markup from a chat\. Must be called after a one\-time keyboard or a replyMarkupForceReply reply markup has been used\. An updateChatReplyMarkup update will be sent if the reply markup is changed
+        r"""Deletes the default reply markup from a chat\. Must be called after a one\-time keyboard or a replyMarkupForceReply reply markup has been used or dismissed
 
         Parameters:
             chat_id (:class:`int`):
@@ -7615,7 +7700,7 @@ class TDLibFunctions:
     async def sendChatAction(
         self,
         chat_id: int = 0,
-        message_thread_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         business_connection_id: str = "",
         action: "types.ChatAction" = None,
     ) -> Union["types.Error", "types.Ok"]:
@@ -7625,8 +7710,8 @@ class TDLibFunctions:
             chat_id (:class:`int`):
                 Chat identifier
 
-            message_thread_id (:class:`int`):
-                If not 0, the message thread identifier in which the action was performed
+            topic_id (:class:`"types.MessageTopic"`):
+                Identifier of the topic in which the action is performed
 
             business_connection_id (:class:`str`):
                 Unique identifier of business connection on behalf of which to send the request; for bots only
@@ -7642,9 +7727,45 @@ class TDLibFunctions:
             {
                 "@type": "sendChatAction",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "topic_id": topic_id,
                 "business_connection_id": business_connection_id,
                 "action": action,
+            }
+        )
+
+    async def sendTextMessageDraft(
+        self,
+        chat_id: int = 0,
+        forum_topic_id: int = 0,
+        draft_id: int = 0,
+        text: "types.FormattedText" = None,
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Sends a draft for a being generated text message; for bots only
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+            forum_topic_id (:class:`int`):
+                The forum topic identifier in which the message will be sent; pass 0 if none
+
+            draft_id (:class:`int`):
+                Unique identifier of the draft
+
+            text (:class:`"types.FormattedText"`):
+                Draft text of the message
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sendTextMessageDraft",
+                "chat_id": chat_id,
+                "forum_topic_id": forum_topic_id,
+                "draft_id": draft_id,
+                "text": text,
             }
         )
 
@@ -7847,34 +7968,10 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "readAllChatMentions", "chat_id": chat_id})
 
-    async def readAllMessageThreadMentions(
-        self, chat_id: int = 0, message_thread_id: int = 0
-    ) -> Union["types.Error", "types.Ok"]:
-        r"""Marks all mentions in a forum topic as read
-
-        Parameters:
-            chat_id (:class:`int`):
-                Chat identifier
-
-            message_thread_id (:class:`int`):
-                Message thread identifier in which mentions are marked as read
-
-        Returns:
-            :class:`~pytdbot.types.Ok`
-        """
-
-        return await self.invoke(
-            {
-                "@type": "readAllMessageThreadMentions",
-                "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
-            }
-        )
-
     async def readAllChatReactions(
         self, chat_id: int = 0
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Marks all reactions in a chat or a forum topic as read
+        r"""Marks all reactions in a chat as read
 
         Parameters:
             chat_id (:class:`int`):
@@ -7885,30 +7982,6 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "readAllChatReactions", "chat_id": chat_id})
-
-    async def readAllMessageThreadReactions(
-        self, chat_id: int = 0, message_thread_id: int = 0
-    ) -> Union["types.Error", "types.Ok"]:
-        r"""Marks all reactions in a forum topic as read
-
-        Parameters:
-            chat_id (:class:`int`):
-                Chat identifier
-
-            message_thread_id (:class:`int`):
-                Message thread identifier in which reactions are marked as read
-
-        Returns:
-            :class:`~pytdbot.types.Ok`
-        """
-
-        return await self.invoke(
-            {
-                "@type": "readAllMessageThreadReactions",
-                "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
-            }
-        )
 
     async def createPrivateChat(
         self, user_id: int = 0, force: bool = False
@@ -8850,17 +8923,17 @@ class TDLibFunctions:
     async def setChatDraftMessage(
         self,
         chat_id: int = 0,
-        message_thread_id: int = 0,
+        topic_id: "types.MessageTopic" = None,
         draft_message: "types.DraftMessage" = None,
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes the draft message in a chat
+        r"""Changes the draft message in a chat or a topic
 
         Parameters:
             chat_id (:class:`int`):
                 Chat identifier
 
-            message_thread_id (:class:`int`):
-                If not 0, the message thread identifier in which the draft was changed
+            topic_id (:class:`"types.MessageTopic"`):
+                Topic in which the draft will be changed; pass null to change the draft for the chat itself
 
             draft_message (:class:`"types.DraftMessage"`):
                 New draft message; pass null to remove the draft\. All files in draft message content must be of the type inputFileLocal\. Media thumbnails and captions are ignored
@@ -8873,7 +8946,7 @@ class TDLibFunctions:
             {
                 "@type": "setChatDraftMessage",
                 "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
+                "topic_id": topic_id,
                 "draft_message": draft_message,
             }
         )
@@ -9183,7 +9256,7 @@ class TDLibFunctions:
                 Chat identifier
 
             slow_mode_delay (:class:`int`):
-                New slow mode delay for the chat, in seconds; must be one of 0, 10, 30, 60, 300, 900, 3600
+                New slow mode delay for the chat, in seconds; must be one of 0, 5, 10, 30, 60, 300, 900, 3600
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -9267,30 +9340,6 @@ class TDLibFunctions:
         """
 
         return await self.invoke({"@type": "unpinAllChatMessages", "chat_id": chat_id})
-
-    async def unpinAllMessageThreadMessages(
-        self, chat_id: int = 0, message_thread_id: int = 0
-    ) -> Union["types.Error", "types.Ok"]:
-        r"""Removes all pinned messages from a forum topic; requires can\_pin\_messages member right in the supergroup
-
-        Parameters:
-            chat_id (:class:`int`):
-                Identifier of the chat
-
-            message_thread_id (:class:`int`):
-                Message thread identifier in which messages will be unpinned
-
-        Returns:
-            :class:`~pytdbot.types.Ok`
-        """
-
-        return await self.invoke(
-            {
-                "@type": "unpinAllMessageThreadMessages",
-                "chat_id": chat_id,
-                "message_thread_id": message_thread_id,
-            }
-        )
 
     async def joinChat(self, chat_id: int = 0) -> Union["types.Error", "types.Ok"]:
         r"""Adds the current user as a new member to a chat\. Private and secret chats can't be joined using this method\. May return an error with a message \"INVITE\_REQUEST\_SENT\" if only a join request was created
@@ -12786,6 +12835,54 @@ class TDLibFunctions:
             }
         )
 
+    async def toggleGroupCallCanSendMessages(
+        self, group_call_id: int = 0, can_send_messages: bool = False
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Toggles whether participants of a group call can send messages there\. Requires groupCall\.can\_toggle\_can\_send\_messages right
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+            can_send_messages (:class:`bool`):
+                New value of the can\_send\_messages setting
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "toggleGroupCallCanSendMessages",
+                "group_call_id": group_call_id,
+                "can_send_messages": can_send_messages,
+            }
+        )
+
+    async def sendGroupCallMessage(
+        self, group_call_id: int = 0, text: "types.FormattedText" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Sends a message to other participants of a group call\. Requires groupCall\.can\_send\_messages right
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+            text (:class:`"types.FormattedText"`):
+                Text of the message to send; 1\-getOption\(\"group\_call\_message\_text\_length\_max\"\) characters
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sendGroupCallMessage",
+                "group_call_id": group_call_id,
+                "text": text,
+            }
+        )
+
     async def inviteGroupCallParticipant(
         self, group_call_id: int = 0, user_id: int = 0, is_video: bool = False
     ) -> Union["types.Error", "types.InviteGroupCallParticipantResult"]:
@@ -13452,13 +13549,19 @@ class TDLibFunctions:
         )
 
     async def addContact(
-        self, contact: "types.Contact" = None, share_phone_number: bool = False
+        self,
+        user_id: int = 0,
+        contact: "types.ImportedContact" = None,
+        share_phone_number: bool = False,
     ) -> Union["types.Error", "types.Ok"]:
         r"""Adds a user to the contact list or edits an existing contact by their user identifier
 
         Parameters:
-            contact (:class:`"types.Contact"`):
-                The contact to add or edit; phone number may be empty and needs to be specified only if known, vCard is ignored
+            user_id (:class:`int`):
+                Identifier of the user
+
+            contact (:class:`"types.ImportedContact"`):
+                The contact to add or edit; phone number may be empty and needs to be specified only if known
 
             share_phone_number (:class:`bool`):
                 Pass true to share the current user's phone number with the new contact\. A corresponding rule to userPrivacySettingShowPhoneNumber will be added if needed\. Use the field userFullInfo\.need\_phone\_number\_privacy\_exception to check whether the current user needs to be asked to share their phone number
@@ -13470,19 +13573,20 @@ class TDLibFunctions:
         return await self.invoke(
             {
                 "@type": "addContact",
+                "user_id": user_id,
                 "contact": contact,
                 "share_phone_number": share_phone_number,
             }
         )
 
     async def importContacts(
-        self, contacts: List["types.Contact"] = None
+        self, contacts: List["types.ImportedContact"] = None
     ) -> Union["types.Error", "types.ImportedContacts"]:
         r"""Adds new contacts or edits existing contacts by their phone numbers; contacts' user identifiers are ignored
 
         Parameters:
-            contacts (:class:`List["types.Contact"]`):
-                The list of contacts to import or edit; contacts' vCard are ignored and are not imported
+            contacts (:class:`List["types.ImportedContact"]`):
+                The list of contacts to import or edit
 
         Returns:
             :class:`~pytdbot.types.ImportedContacts`
@@ -13552,13 +13656,13 @@ class TDLibFunctions:
         )
 
     async def changeImportedContacts(
-        self, contacts: List["types.Contact"] = None
+        self, contacts: List["types.ImportedContact"] = None
     ) -> Union["types.Error", "types.ImportedContacts"]:
         r"""Changes imported contacts using the list of contacts saved on the device\. Imports newly added contacts and, if at least the file database is enabled, deletes recently deleted contacts\. Query result depends on the result of the previous query, so only one query is possible at the same time
 
         Parameters:
-            contacts (:class:`List["types.Contact"]`):
-                The new list of contacts, contact's vCard are ignored and are not imported
+            contacts (:class:`List["types.ImportedContact"]`):
+                The new list of contacts to import
 
         Returns:
             :class:`~pytdbot.types.ImportedContacts`
@@ -13629,6 +13733,26 @@ class TDLibFunctions:
             {"@type": "setUserPersonalProfilePhoto", "user_id": user_id, "photo": photo}
         )
 
+    async def setUserNote(
+        self, user_id: int = 0, note: "types.FormattedText" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes a note of a contact user
+
+        Parameters:
+            user_id (:class:`int`):
+                User identifier
+
+            note (:class:`"types.FormattedText"`):
+                Note to set for the user; 0\-getOption\(\"user\_note\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "setUserNote", "user_id": user_id, "note": note}
+        )
+
     async def suggestUserProfilePhoto(
         self, user_id: int = 0, photo: "types.InputChatPhoto" = None
     ) -> Union["types.Error", "types.Ok"]:
@@ -13647,6 +13771,30 @@ class TDLibFunctions:
 
         return await self.invoke(
             {"@type": "suggestUserProfilePhoto", "user_id": user_id, "photo": photo}
+        )
+
+    async def suggestUserBirthdate(
+        self, user_id: int = 0, birthdate: "types.Birthdate" = None
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Suggests a birthdate to another regular user with common messages and allowing non\-paid messages
+
+        Parameters:
+            user_id (:class:`int`):
+                User identifier
+
+            birthdate (:class:`"types.Birthdate"`):
+                Birthdate to suggest
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "suggestUserBirthdate",
+                "user_id": user_id,
+                "birthdate": birthdate,
+            }
         )
 
     async def toggleBotCanManageEmojiStatus(
@@ -14810,6 +14958,26 @@ class TDLibFunctions:
             }
         )
 
+    async def setUpgradedGiftColors(
+        self, upgraded_gift_colors_id: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Changes color scheme for the current user based on an owned or a hosted upgraded gift; for Telegram Premium users only
+
+        Parameters:
+            upgraded_gift_colors_id (:class:`int`):
+                Identifier of the upgradedGiftColors scheme to use
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setUpgradedGiftColors",
+                "upgraded_gift_colors_id": upgraded_gift_colors_id,
+            }
+        )
+
     async def setProfileAccentColor(
         self,
         profile_accent_color_id: int = 0,
@@ -15842,7 +16010,7 @@ class TDLibFunctions:
     async def toggleBotUsernameIsActive(
         self, bot_user_id: int = 0, username: str = "", is_active: bool = False
     ) -> Union["types.Error", "types.Ok"]:
-        r"""Changes active state for a username of a bot\. The editable username can't be disabled\. May return an error with a message \"USERNAMES\_ACTIVE\_TOO\_MUCH\" if the maximum number of active usernames has been reached\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
+        r"""Changes active state for a username of a bot\. The editable username can be disabled only if there are other active usernames\. May return an error with a message \"USERNAMES\_ACTIVE\_TOO\_MUCH\" if the maximum number of active usernames has been reached\. Can be called only if userTypeBot\.can\_be\_edited \=\= true
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -16472,7 +16640,7 @@ class TDLibFunctions:
 
         Parameters:
             supergroup_id (:class:`int`):
-                Identifier of the supergroup that isn't a broadcast group
+                Identifier of the supergroup that isn't a broadcast group and isn't a channel direct message group
 
             join_by_request (:class:`bool`):
                 New value of join\_by\_request
@@ -17278,6 +17446,30 @@ class TDLibFunctions:
             }
         )
 
+    async def dropGiftOriginalDetails(
+        self, received_gift_id: str = "", star_count: int = 0
+    ) -> Union["types.Error", "types.Ok"]:
+        r"""Drops original details for an upgraded gift
+
+        Parameters:
+            received_gift_id (:class:`str`):
+                Identifier of the gift
+
+            star_count (:class:`int`):
+                The amount of Telegram Stars required to pay for the operation
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "dropGiftOriginalDetails",
+                "received_gift_id": received_gift_id,
+                "star_count": star_count,
+            }
+        )
+
     async def sendResoldGift(
         self,
         gift_name: str = "",
@@ -17320,6 +17512,8 @@ class TDLibFunctions:
         exclude_upgradable: bool = False,
         exclude_non_upgradable: bool = False,
         exclude_upgraded: bool = False,
+        exclude_without_colors: bool = False,
+        exclude_hosted: bool = False,
         sort_by_price: bool = False,
         offset: str = "",
         limit: int = 0,
@@ -17354,6 +17548,12 @@ class TDLibFunctions:
             exclude_upgraded (:class:`bool`):
                 Pass true to exclude upgraded gifts
 
+            exclude_without_colors (:class:`bool`):
+                Pass true to exclude gifts that can't be used in setUpgradedGiftColors
+
+            exclude_hosted (:class:`bool`):
+                Pass true to exclude gifts that are just hosted and are not owned by the owner
+
             sort_by_price (:class:`bool`):
                 Pass true to sort results by gift price instead of send date
 
@@ -17379,6 +17579,8 @@ class TDLibFunctions:
                 "exclude_upgradable": exclude_upgradable,
                 "exclude_non_upgradable": exclude_non_upgradable,
                 "exclude_upgraded": exclude_upgraded,
+                "exclude_without_colors": exclude_without_colors,
+                "exclude_hosted": exclude_hosted,
                 "sort_by_price": sort_by_price,
                 "offset": offset,
                 "limit": limit,
