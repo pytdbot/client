@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.55",
-    "commit_hash": "cebf0b76982f2e42421439cc3a146eb5f234ee01",
+    "version": "1.8.56",
+    "commit_hash": "c66844c949aea93bea38c04093bcbed9d95e8fc4",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -259,6 +259,7 @@
                 "upgradedGiftOriginUpgrade",
                 "upgradedGiftOriginTransfer",
                 "upgradedGiftOriginResale",
+                "upgradedGiftOriginBlockchain",
                 "upgradedGiftOriginPrepaidUpgrade"
             ],
             "functions": []
@@ -331,6 +332,7 @@
                 "starTransactionTypeChannelSubscriptionSale",
                 "starTransactionTypeGiftPurchase",
                 "starTransactionTypeGiftTransfer",
+                "starTransactionTypeGiftOriginalDetailsDrop",
                 "starTransactionTypeGiftSale",
                 "starTransactionTypeGiftUpgrade",
                 "starTransactionTypeGiftUpgradePurchase",
@@ -510,6 +512,7 @@
         "MessageTopic": {
             "description": "Describes a topic of messages in a chat",
             "types": [
+                "messageTopicThread",
                 "messageTopicForum",
                 "messageTopicDirectMessages",
                 "messageTopicSavedMessages"
@@ -1067,6 +1070,7 @@
                 "messageForumTopicIsClosedToggled",
                 "messageForumTopicIsHiddenToggled",
                 "messageSuggestProfilePhoto",
+                "messageSuggestBirthdate",
                 "messageCustomServiceAction",
                 "messageGameScore",
                 "messagePaymentSuccessful",
@@ -1930,6 +1934,7 @@
                 "pushMessageContentChatJoinByRequest",
                 "pushMessageContentRecurringPayment",
                 "pushMessageContentSuggestProfilePhoto",
+                "pushMessageContentSuggestBirthdate",
                 "pushMessageContentProximityAlertTriggered",
                 "pushMessageContentChecklistTasksAdded",
                 "pushMessageContentChecklistTasksDone",
@@ -2456,6 +2461,7 @@
                 "updateHavePendingNotifications",
                 "updateDeleteMessages",
                 "updateChatAction",
+                "updatePendingTextMessage",
                 "updateUserStatus",
                 "updateUser",
                 "updateBasicGroup",
@@ -2479,6 +2485,7 @@
                 "updateGroupCallParticipant",
                 "updateGroupCallParticipants",
                 "updateGroupCallVerificationState",
+                "updateGroupCallNewMessage",
                 "updateNewCallSignalingData",
                 "updateUserPrivacySettingRules",
                 "updateUnreadMessageCount",
@@ -4091,7 +4098,7 @@
             "type": "AnimatedEmoji"
         },
         "contact": {
-            "description": "Describes a user contact",
+            "description": "Describes a contact of a user",
             "args": {
                 "phone_number": {
                     "description": "Phone number of the user",
@@ -4099,12 +4106,12 @@
                     "type": "string"
                 },
                 "first_name": {
-                    "description": "First name of the user; 1-255 characters in length",
+                    "description": "First name of the user; 1-64 characters",
                     "is_optional": false,
                     "type": "string"
                 },
                 "last_name": {
-                    "description": "Last name of the user",
+                    "description": "Last name of the user; 0-64 characters",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -4568,6 +4575,11 @@
                 },
                 "has_main_web_app": {
                     "description": "True, if the bot has the main Web App",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "has_topics": {
+                    "description": "True, if the bot has topics",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -6489,6 +6501,11 @@
             },
             "type": "UpgradedGiftOrigin"
         },
+        "upgradedGiftOriginBlockchain": {
+            "description": "The gift was assigned from blockchain and isn't owned by the current user. The gift can't be transferred, resold or withdrawn to blockchain",
+            "args": {},
+            "type": "UpgradedGiftOrigin"
+        },
         "upgradedGiftOriginPrepaidUpgrade": {
             "description": "The sender or receiver of the message has paid for upgraid of the gift, which has been completed",
             "args": {},
@@ -6614,6 +6631,47 @@
             },
             "type": "UpgradedGiftOriginalDetails"
         },
+        "upgradedGiftColors": {
+            "description": "Contains information about color scheme for user's name, background of empty chat photo, replies to messages and link previews",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the upgraded gift colors",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "model_custom_emoji_id": {
+                    "description": "Custom emoji identifier of the model of the upgraded gift",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "symbol_custom_emoji_id": {
+                    "description": "Custom emoji identifier of the symbol of the upgraded gift",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "light_theme_accent_color": {
+                    "description": "Accent color to use in light themes in RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "light_theme_colors": {
+                    "description": "The list of 1-3 colors in RGB format, describing the accent color, as expected to be shown in light themes",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                },
+                "dark_theme_accent_color": {
+                    "description": "Accent color to use in dark themes in RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "dark_theme_colors": {
+                    "description": "The list of 1-3 colors in RGB format, describing the accent color, as expected to be shown in dark themes",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "UpgradedGiftColors"
+        },
         "gift": {
             "description": "Describes a gift that can be sent to another user or channel chat",
             "args": {
@@ -6646,6 +6704,11 @@
                     "description": "Number of Telegram Stars that must be paid to upgrade the gift; 0 if upgrade isn't possible",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "has_colors": {
+                    "description": "True, if the gift can be used to customize the user's name, and backgrounds of profile photo, reply header, and link preview",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "is_for_birthday": {
                     "description": "True, if the gift is a birthday gift",
@@ -6743,6 +6806,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "host_id": {
+                    "description": "Identifier of the user or the chat to which the upgraded gift was assigned from blockchain; may be null if none or unknown",
+                    "is_optional": true,
+                    "type": "MessageSender"
+                },
                 "owner_id": {
                     "description": "Identifier of the user or the chat that owns the upgraded gift; may be null if none or unknown",
                     "is_optional": true,
@@ -6782,6 +6850,11 @@
                     "description": "Information about the originally sent gift; may be null if unknown",
                     "is_optional": true,
                     "type": "upgradedGiftOriginalDetails"
+                },
+                "colors": {
+                    "description": "Colors that can be set for user's name, background of empty chat photo, replies to messages and link previews; may be null if none",
+                    "is_optional": true,
+                    "type": "upgradedGiftColors"
                 },
                 "resale_parameters": {
                     "description": "Resale parameters of the gift; may be null if resale isn't possible",
@@ -6905,6 +6978,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "drop_original_details_star_count": {
+                    "description": "Number of Telegram Stars that must be paid to drop original details of the upgraded gift; 0 if not available",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "next_transfer_date": {
                     "description": "Point in time (Unix timestamp) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible",
                     "is_optional": false,
@@ -6959,6 +7037,22 @@
                 }
             },
             "type": "AvailableGifts"
+        },
+        "giftUpgradePrice": {
+            "description": "Describes a price required to pay to upgrade a gift",
+            "args": {
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the price will be in effect",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "star_count": {
+                    "description": "The amount of Telegram Stars required to pay to upgrade the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "GiftUpgradePrice"
         },
         "upgradedGiftAttributeIdModel": {
             "description": "Identifier of a gift model",
@@ -7229,6 +7323,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "drop_original_details_star_count": {
+                    "description": "Number of Telegram Stars that must be paid to drop original details of the upgraded gift; 0 if not available; only for the receiver of the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "next_transfer_date": {
                     "description": "Point in time (Unix timestamp) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift",
                     "is_optional": false,
@@ -7295,6 +7394,16 @@
                     "description": "Examples of possible backdrops that can be chosen for the gift after upgrade",
                     "is_optional": false,
                     "type": "vector<upgradedGiftBackdrop>"
+                },
+                "prices": {
+                    "description": "Examples of price for gift upgrade from the maximum price to the minimum price",
+                    "is_optional": false,
+                    "type": "vector<giftUpgradePrice>"
+                },
+                "next_prices": {
+                    "description": "Next changes for the price for gift upgrade with more granularity than in prices",
+                    "is_optional": false,
+                    "type": "vector<giftUpgradePrice>"
                 }
             },
             "type": "GiftUpgradePreview"
@@ -7619,6 +7728,22 @@
             "args": {
                 "owner_id": {
                     "description": "Identifier of the user or the channel that received the gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "upgradedGift"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeGiftOriginalDetailsDrop": {
+            "description": "The transaction is a drop of original details of an upgraded gift; for regular users only",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel that owns the gift",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
@@ -8424,7 +8549,7 @@
                     "type": "vector<string>"
                 },
                 "editable_username": {
-                    "description": "The active username, which can be changed with setUsername or setSupergroupUsername. Information about other active usernames can be received using getCollectibleItemInfo",
+                    "description": "Active or disabled username, which may be changed with setUsername or setSupergroupUsername. Information about other active usernames can be received using getCollectibleItemInfo",
                     "is_optional": false,
                     "type": "string"
                 }
@@ -8478,6 +8603,11 @@
                     "description": "Identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none",
                     "is_optional": false,
                     "type": "int64"
+                },
+                "upgraded_gift_colors": {
+                    "description": "Color scheme based on an upgraded gift to be used for the user instead of accent_color_id and background_custom_emoji_id; may be null if none",
+                    "is_optional": true,
+                    "type": "upgradedGiftColors"
                 },
                 "profile_accent_color_id": {
                     "description": "Identifier of the accent color for the user's profile; -1 if none",
@@ -8826,6 +8956,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "note": {
+                    "description": "Note added to the user's contact; may be null if none",
+                    "is_optional": true,
+                    "type": "formattedText"
+                },
                 "business_info": {
                     "description": "Information about business settings for Telegram Business accounts; may be null if none",
                     "is_optional": true,
@@ -9053,10 +9188,10 @@
         "chatMembersFilterMention": {
             "description": "Returns users which can be mentioned in the chat",
             "args": {
-                "message_thread_id": {
-                    "description": "If non-zero, the identifier of the current message thread",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Identifier of the topic in which the users will be mentioned; pass null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 }
             },
             "type": "ChatMembersFilter"
@@ -9138,10 +9273,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "message_thread_id": {
-                    "description": "If non-zero, the identifier of the current message thread",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Identifier of the topic in which the users will be mentioned; pass null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 }
             },
             "type": "SupergroupMembersFilter"
@@ -9618,7 +9753,7 @@
                     "type": "Bool"
                 },
                 "join_by_request": {
-                    "description": "True, if all users directly joining the supergroup need to be approved by supergroup administrators. Always false for channels and supergroups without username, location, or a linked chat",
+                    "description": "True, if all users directly joining the supergroup need to be approved by supergroup administrators. Can be true only for non-broadcast supergroups with username, location, or a linked chat",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -10452,13 +10587,24 @@
             },
             "type": "UnreadReaction"
         },
-        "messageTopicForum": {
-            "description": "A topic in a forum supergroup chat",
+        "messageTopicThread": {
+            "description": "A topic in a non-forum supergroup chat",
             "args": {
-                "forum_topic_id": {
-                    "description": "Unique identifier of the forum topic; all messages in a non-forum supergroup chats belongs to the General topic",
+                "message_thread_id": {
+                    "description": "Unique identifier of the message thread",
                     "is_optional": false,
                     "type": "int53"
+                }
+            },
+            "type": "MessageTopic"
+        },
+        "messageTopicForum": {
+            "description": "A topic in a forum supergroup chat or a chat with a bot",
+            "args": {
+                "forum_topic_id": {
+                    "description": "Unique identifier of the forum topic",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "MessageTopic"
@@ -10885,11 +11031,6 @@
                     "description": "Information about the message or the story this message is replying to; may be null if none",
                     "is_optional": true,
                     "type": "MessageReplyTo"
-                },
-                "message_thread_id": {
-                    "description": "If non-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs",
-                    "is_optional": false,
-                    "type": "int53"
                 },
                 "topic_id": {
                     "description": "Identifier of the topic within the chat to which the message belongs; may be null if none",
@@ -11718,7 +11859,7 @@
             "description": "Contains information about a message draft",
             "args": {
                 "reply_to": {
-                    "description": "Information about the message to be replied; must be of the type inputMessageReplyToMessage; may be null if none",
+                    "description": "Information about the message to be replied; inputMessageReplyToStory is unsupported; may be null if none",
                     "is_optional": true,
                     "type": "InputMessageReplyTo"
                 },
@@ -12261,6 +12402,11 @@
                     "description": "Identifier of a custom emoji to be shown on the reply header and link preview background for messages sent by the chat; 0 if none",
                     "is_optional": false,
                     "type": "int64"
+                },
+                "upgraded_gift_colors": {
+                    "description": "Color scheme based on an upgraded gift to be used for the chat instead of accent_color_id and background_custom_emoji_id; may be null if none",
+                    "is_optional": true,
+                    "type": "upgradedGiftColors"
                 },
                 "profile_accent_color_id": {
                     "description": "Identifier of the profile accent color for the chat's profile; -1 if none",
@@ -13325,7 +13471,7 @@
                     "type": "Bool"
                 },
                 "is_marked_as_unread": {
-                    "description": "True, if the forum topic is marked as unread",
+                    "description": "True, if the topic is marked as unread",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -13382,19 +13528,14 @@
             "description": "Contains basic information about a forum topic",
             "args": {
                 "chat_id": {
-                    "description": "Identifier of the forum chat to which the topic belongs",
+                    "description": "Identifier of a forum supergroup chat or a chat with a bot to which the topic belongs",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "forum_topic_id": {
                     "description": "Forum topic identifier of the topic",
                     "is_optional": false,
-                    "type": "int53"
-                },
-                "message_thread_id": {
-                    "description": "Message thread identifier of the topic",
-                    "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 },
                 "name": {
                     "description": "Name of the topic",
@@ -13417,7 +13558,7 @@
                     "type": "MessageSender"
                 },
                 "is_general": {
-                    "description": "True, if the topic is the General topic list",
+                    "description": "True, if the topic is the General topic",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -13433,6 +13574,11 @@
                 },
                 "is_hidden": {
                     "description": "True, if the topic is hidden above the topic list and closed; for General topic only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_name_implicit": {
+                    "description": "True, if the name of the topic wasn't added explicitly",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -13523,10 +13669,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "next_offset_message_thread_id": {
-                    "description": "Offset message thread identifier for the next getForumTopics request",
+                "next_offset_forum_topic_id": {
+                    "description": "Offset forum topic identifier for the next getForumTopics request",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 }
             },
             "type": "ForumTopics"
@@ -17738,6 +17884,11 @@
                     "is_optional": false,
                     "type": "string"
                 },
+                "is_name_implicit": {
+                    "description": "True, if the name of the topic wasn't added explicitly",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "icon": {
                     "description": "Icon of the topic",
                     "is_optional": false,
@@ -17796,6 +17947,17 @@
                     "description": "The suggested chat photo. Use the method setProfilePhoto with inputChatPhotoPrevious to apply the photo",
                     "is_optional": false,
                     "type": "chatPhoto"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageSuggestBirthdate": {
+            "description": "A birthdate was suggested to be set",
+            "args": {
+                "birthdate": {
+                    "description": "The suggested birthdate. Use the method setBirthdate to apply the birthdate",
+                    "is_optional": false,
+                    "type": "birthdate"
                 }
             },
             "type": "MessageContent"
@@ -18463,6 +18625,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "drop_original_details_star_count": {
+                    "description": "Number of Telegram Stars that must be paid to drop original details of the upgraded gift; 0 if not available; only for the receiver of the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
                 "next_transfer_date": {
                     "description": "Point in time (Unix timestamp) when the gift can be transferred to another owner; can be in the past; 0 if the gift can be transferred immediately or transfer isn't possible; only for the receiver of the gift",
                     "is_optional": false,
@@ -19079,11 +19246,6 @@
         "messageSendOptions": {
             "description": "Options to be used when a message is sent",
             "args": {
-                "direct_messages_chat_topic_id": {
-                    "description": "Unique identifier of the topic in a channel direct messages chat administered by the current user; pass 0 if the chat isn't a channel direct messages chat administered by the current user",
-                    "is_optional": false,
-                    "type": "int53"
-                },
                 "suggested_post_info": {
                     "description": "Information about the suggested post; pass null if none. For messages to channel direct messages chat only. Applicable only to sendMessage and addOffer",
                     "is_optional": true,
@@ -21189,7 +21351,7 @@
                     "type": "Bool"
                 },
                 "can_be_forwarded": {
-                    "description": "True, if the story can be forwarded as a message. Otherwise, screenshots and saving of the story content must be also forbidden",
+                    "description": "True, if the story can be forwarded as a message or reposted as a story. Otherwise, screenshotting and saving of the story content must be also forbidden",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -22548,6 +22710,16 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "can_send_messages": {
+                    "description": "True, if users can send messages to the group call",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_toggle_can_send_messages": {
+                    "description": "True, if the current user can enable or disable sending messages in the group call",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "record_duration": {
                     "description": "Duration of the ongoing group call recording, in seconds; 0 if none. An updateGroupCall update is not triggered when value of this field changes, but the same recording goes on",
                     "is_optional": false,
@@ -23154,6 +23326,32 @@
                 }
             },
             "type": "DiceStickers"
+        },
+        "importedContact": {
+            "description": "Describes a contact to import",
+            "args": {
+                "phone_number": {
+                    "description": "Phone number of the user",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "first_name": {
+                    "description": "First name of the user; 1-64 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "last_name": {
+                    "description": "Last name of the user; 0-64 characters",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "note": {
+                    "description": "Note to add about the user; 0-getOption(\"user_note_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed; pass null to keep the current user's note",
+                    "is_optional": true,
+                    "type": "formattedText"
+                }
+            },
+            "type": "ImportedContact"
         },
         "importedContacts": {
             "description": "Represents the result of an importContacts request",
@@ -27616,6 +27814,11 @@
             "args": {},
             "type": "PushMessageContent"
         },
+        "pushMessageContentSuggestBirthdate": {
+            "description": "A birthdate was suggested to be set",
+            "args": {},
+            "type": "PushMessageContent"
+        },
         "pushMessageContentProximityAlertTriggered": {
             "description": "A user in the chat came within proximity alert range from the current user",
             "args": {
@@ -29372,10 +29575,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "If found, identifier of the message thread in which to open the message, or a forum topic to open if the message is missing",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Identifier of the specific topic in which the message must be opened, or a topic to open if the message is missing; may be null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "message": {
                     "description": "If found, the linked message; may be null",
@@ -31783,6 +31986,11 @@
                     "is_optional": false,
                     "type": "int64"
                 },
+                "upgraded_gift_colors": {
+                    "description": "Color scheme based on an upgraded gift to be used for the chat instead of accent_color_id and background_custom_emoji_id; may be null if none",
+                    "is_optional": true,
+                    "type": "upgradedGiftColors"
+                },
                 "profile_accent_color_id": {
                     "description": "The new chat profile accent color identifier; -1 if none",
                     "is_optional": false,
@@ -32434,10 +32642,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "Message thread identifier of the topic",
+                "forum_topic_id": {
+                    "description": "Forum topic identifier of the topic",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 },
                 "is_pinned": {
                     "description": "True, if the topic is pinned in the topic list",
@@ -32622,10 +32830,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, the message thread identifier in which the action was performed",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Identifier of the specific topic in which the action was performed; may be null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "sender_id": {
                     "description": "Identifier of a message sender performing the action",
@@ -32636,6 +32844,32 @@
                     "description": "The action",
                     "is_optional": false,
                     "type": "ChatAction"
+                }
+            },
+            "type": "Update"
+        },
+        "updatePendingTextMessage": {
+            "description": "A new pending text message was received in a chat with a bot. The message must be shown in the chat for at most getOption(\"pending_text_message_period\") seconds, replace any other pending message with the same draft_id, and be deleted whenever any incoming message from the bot in the message thread is received",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "forum_topic_id": {
+                    "description": "The forum topic identifier in which the message will be sent; 0 if none",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "draft_id": {
+                    "description": "Unique identifier of the message draft within the message thread",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "text": {
+                    "description": "Text of the pending message",
+                    "is_optional": false,
+                    "type": "formattedText"
                 }
             },
             "type": "Update"
@@ -33004,6 +33238,27 @@
                     "description": "Group call state fingerprint represented as 4 emoji; may be empty if the state isn't verified yet",
                     "is_optional": true,
                     "type": "vector<string>"
+                }
+            },
+            "type": "Update"
+        },
+        "updateGroupCallNewMessage": {
+            "description": "A new message was received in a group call. It must be shown for at most getOption(\"group_call_message_show_time_max\") seconds after receiving",
+            "args": {
+                "group_call_id": {
+                    "description": "Identifier of the group call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "sender_id": {
+                    "description": "Identifier of the sender of the message",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "text": {
+                    "description": "Text of the message",
+                    "is_optional": false,
+                    "type": "formattedText"
                 }
             },
             "type": "Update"
@@ -35583,27 +35838,6 @@
             },
             "type": "Ok"
         },
-        "setDirectMessagesChatTopicDraftMessage": {
-            "description": "Changes the draft message in the topic in a channel direct messages chat administered by the current user",
-            "args": {
-                "chat_id": {
-                    "description": "Chat identifier",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "topic_id": {
-                    "description": "Topic identifier",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "draft_message": {
-                    "description": "New draft message; pass null to remove the draft. All files in draft message content must be of the type inputFileLocal. Media thumbnails and captions are ignored",
-                    "is_optional": true,
-                    "type": "draftMessage"
-                }
-            },
-            "type": "Ok"
-        },
         "unpinAllDirectMessagesChatTopicMessages": {
             "description": "Removes all pinned messages from the topic in a channel direct messages chat administered by the current user",
             "args": {
@@ -36353,7 +36587,7 @@
                     "type": "int53"
                 },
                 "topic_id": {
-                    "description": "Pass topic identifier to get the result only in specific topic; pass null to get the result in all topics; forum topics aren't supported",
+                    "description": "Pass topic identifier to get the result only in specific topic; pass null to get the result in all topics; forum topics and message threads aren't supported",
                     "is_optional": true,
                     "type": "MessageTopic"
                 },
@@ -36379,7 +36613,7 @@
                     "type": "int53"
                 },
                 "topic_id": {
-                    "description": "Pass topic identifier to get number of messages only in specific topic; pass null to get number of messages in all topics",
+                    "description": "Pass topic identifier to get number of messages only in specific topic; pass null to get number of messages in all topics; message threads aren't supported",
                     "is_optional": true,
                     "type": "MessageTopic"
                 },
@@ -36405,7 +36639,7 @@
                     "type": "int53"
                 },
                 "topic_id": {
-                    "description": "Pass topic identifier to get position among messages only in specific topic; pass null to get position among all chat messages",
+                    "description": "Pass topic identifier to get position among messages only in specific topic; pass null to get position among all chat messages; message threads aren't supported",
                     "is_optional": true,
                     "type": "MessageTopic"
                 },
@@ -36798,10 +37032,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, the message thread identifier in which the message will be sent",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Topic in which the message will be sent; pass null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "reply_to": {
                     "description": "Information about the message or story to be replied; pass null if none",
@@ -36834,10 +37068,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, the message thread identifier in which the messages will be sent",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Topic in which the messages will be sent; pass null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "reply_to": {
                     "description": "Information about the message or story to be replied; pass null if none",
@@ -36886,10 +37120,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, the message thread identifier in which the message will be sent",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Topic in which the message will be sent; pass null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "reply_to": {
                     "description": "Information about the message or story to be replied; pass null if none",
@@ -36927,10 +37161,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, the message thread identifier in which the message will be sent; for forum threads only",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Topic in which the messages will be forwarded; message threads aren't supported; pass null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "from_chat_id": {
                     "description": "Identifier of the chat from which to forward messages",
@@ -38177,7 +38411,7 @@
             "type": "Stickers"
         },
         "createForumTopic": {
-            "description": "Creates a topic in a forum supergroup chat; requires can_manage_topics administrator or can_create_topics member right in the supergroup",
+            "description": "Creates a topic in a forum supergroup chat or a chat with a bot with topics; requires can_manage_topics administrator or can_create_topics member right in the supergroup",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
@@ -38189,6 +38423,11 @@
                     "is_optional": false,
                     "type": "string"
                 },
+                "is_name_implicit": {
+                    "description": "Pass true if the name of the topic wasn't entered explicitly; for chats with bots only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "icon": {
                     "description": "Icon of the topic. Icon color must be one of 0x6FB9F0, 0xFFD67E, 0xCB86DB, 0x8EEE98, 0xFF93B2, or 0xFB6F5F. Telegram Premium users can use any custom emoji as topic icon, other users can use only a custom emoji returned by getForumTopicDefaultIcons",
                     "is_optional": false,
@@ -38198,17 +38437,17 @@
             "type": "ForumTopicInfo"
         },
         "editForumTopic": {
-            "description": "Edits title and icon of a topic in a forum supergroup chat; requires can_manage_topics administrator right in the supergroup unless the user is creator of the topic",
+            "description": "Edits title and icon of a topic in a forum supergroup chat or a chat with a bot with topics; for supergroup chats requires can_manage_topics administrator right unless the user is creator of the topic",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "Message thread identifier of the forum topic",
+                "forum_topic_id": {
+                    "description": "Forum topic identifier",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 },
                 "name": {
                     "description": "New name of the topic; 0-128 characters. If empty, the previous topic name is kept",
@@ -38229,42 +38468,73 @@
             "type": "Ok"
         },
         "getForumTopic": {
-            "description": "Returns information about a forum topic",
+            "description": "Returns information about a topic in a forum supergroup chat or a chat with a bot with topics",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "Message thread identifier of the forum topic",
+                "forum_topic_id": {
+                    "description": "Forum topic identifier",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 }
             },
             "type": "ForumTopic"
         },
+        "getForumTopicHistory": {
+            "description": "Returns messages in a topic in a forum supergroup chat or a chat with a bot with topics. The messages are returned in reverse chronological order (i.e., in order of decreasing message_id). For optimal performance, the number of returned messages is chosen by TDLib",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "forum_topic_id": {
+                    "description": "Forum topic identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "from_message_id": {
+                    "description": "Identifier of the message starting from which history must be fetched; use 0 to get results from the last message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "offset": {
+                    "description": "Specify 0 to get results from exactly the message from_message_id or a negative number from -99 to -1 to get additionally -offset newer messages",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "limit": {
+                    "description": "The maximum number of messages to be returned; must be positive and can't be greater than 100. If the offset is negative, then the limit must be greater than or equal to -offset. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Messages"
+        },
         "getForumTopicLink": {
-            "description": "Returns an HTTPS link to a topic in a forum chat. This is an offline method",
+            "description": "Returns an HTTPS link to a topic in a forum supergroup chat. This is an offline method",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "Message thread identifier of the forum topic",
+                "forum_topic_id": {
+                    "description": "Forum topic identifier",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 }
             },
             "type": "MessageLink"
         },
         "getForumTopics": {
-            "description": "Returns found forum topics in a forum chat. This is a temporary method for getting information about topic list from the server",
+            "description": "Returns found forum topics in a forum supergroup chat or a chat with a bot with topics. This is a temporary method for getting information about topic list from the server",
             "args": {
                 "chat_id": {
-                    "description": "Identifier of the forum chat",
+                    "description": "Identifier of the chat",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -38283,10 +38553,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "offset_message_thread_id": {
-                    "description": "The message thread identifier of the last found topic, or 0 for the first request",
+                "offset_forum_topic_id": {
+                    "description": "The forum topic identifier of the last found topic, or 0 for the first request",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 },
                 "limit": {
                     "description": "The maximum number of forum topics to be returned; up to 100. For optimal performance, the number of returned forum topics is chosen by TDLib and can be smaller than the specified limit",
@@ -38297,17 +38567,17 @@
             "type": "ForumTopics"
         },
         "setForumTopicNotificationSettings": {
-            "description": "Changes the notification settings of a forum topic",
+            "description": "Changes the notification settings of a forum topic in a forum supergroup chat or a chat with a bot with topics",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "Message thread identifier of the forum topic",
+                "forum_topic_id": {
+                    "description": "Forum topic identifier",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 },
                 "notification_settings": {
                     "description": "New notification settings for the forum topic. If the topic is muted for more than 366 days, it is considered to be muted forever",
@@ -38325,10 +38595,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "Message thread identifier of the forum topic",
+                "forum_topic_id": {
+                    "description": "Forum topic identifier",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 },
                 "is_closed": {
                     "description": "Pass true to close the topic; pass false to reopen it",
@@ -38355,17 +38625,17 @@
             "type": "Ok"
         },
         "toggleForumTopicIsPinned": {
-            "description": "Changes the pinned state of a forum topic; requires can_manage_topics administrator right in the supergroup. There can be up to getOption(\"pinned_forum_topic_count_max\") pinned forum topics",
+            "description": "Changes the pinned state of a topic in a forum supergroup chat or a chat with a bot with topics; requires can_manage_topics administrator right in the supergroup. There can be up to getOption(\"pinned_forum_topic_count_max\") pinned forum topics",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "Message thread identifier of the forum topic",
+                "forum_topic_id": {
+                    "description": "Forum topic identifier",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "int32"
                 },
                 "is_pinned": {
                     "description": "Pass true to pin the topic; pass false to unpin it",
@@ -38376,33 +38646,81 @@
             "type": "Ok"
         },
         "setPinnedForumTopics": {
-            "description": "Changes the order of pinned forum topics; requires can_manage_topics administrator right in the supergroup",
+            "description": "Changes the order of pinned topics in a forum supergroup chat or a chat with a bot with topics; requires can_manage_topics administrator right in the supergroup",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_ids": {
-                    "description": "The new list of pinned forum topics",
+                "forum_topic_ids": {
+                    "description": "The new list of identifiers of the pinned forum topics",
                     "is_optional": false,
-                    "type": "vector<int53>"
+                    "type": "vector<int32>"
                 }
             },
             "type": "Ok"
         },
         "deleteForumTopic": {
-            "description": "Deletes all messages in a forum topic; requires can_delete_messages administrator right in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages",
+            "description": "Deletes all messages from a topic in a forum supergroup chat or a chat with a bot with topics; requires can_delete_messages administrator right in the supergroup unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "Message thread identifier of the forum topic",
+                "forum_topic_id": {
+                    "description": "Forum topic identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "readAllForumTopicMentions": {
+            "description": "Marks all mentions in a topic in a forum supergroup chat as read",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "forum_topic_id": {
+                    "description": "Forum topic identifier in which mentions are marked as read",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "readAllForumTopicReactions": {
+            "description": "Marks all reactions in a topic in a forum supergroup chat or a chat with a bot with topics as read",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "forum_topic_id": {
+                    "description": "Forum topic identifier in which reactions are marked as read",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "unpinAllForumTopicMessages": {
+            "description": "Removes all pinned messages from a topic in a forum supergroup chat or a chat with a bot with topics; requires can_pin_messages member right in the supergroup",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "forum_topic_id": {
+                    "description": "Forum topic identifier in which messages will be unpinned",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "Ok"
@@ -39395,15 +39713,10 @@
                     "is_optional": false,
                     "type": "string"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, the message thread identifier to which the message will be sent",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "direct_messages_chat_topic_id": {
-                    "description": "If not 0, unique identifier of the topic of channel direct messages chat to which the message will be sent",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Topic in which the message will be sent; pass null if none",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "reply_to": {
                     "description": "Information about the message or story to be replied in the message sent by the Web App; pass null if none",
@@ -39660,7 +39973,7 @@
             "type": "GameHighScores"
         },
         "deleteChatReplyMarkup": {
-            "description": "Deletes the default reply markup from a chat. Must be called after a one-time keyboard or a replyMarkupForceReply reply markup has been used. An updateChatReplyMarkup update will be sent if the reply markup is changed",
+            "description": "Deletes the default reply markup from a chat. Must be called after a one-time keyboard or a replyMarkupForceReply reply markup has been used or dismissed",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
@@ -39683,10 +39996,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, the message thread identifier in which the action was performed",
+                "topic_id": {
+                    "description": "Identifier of the topic in which the action is performed",
                     "is_optional": false,
-                    "type": "int53"
+                    "type": "MessageTopic"
                 },
                 "business_connection_id": {
                     "description": "Unique identifier of business connection on behalf of which to send the request; for bots only",
@@ -39697,6 +40010,32 @@
                     "description": "The action description; pass null to cancel the currently active action",
                     "is_optional": true,
                     "type": "ChatAction"
+                }
+            },
+            "type": "Ok"
+        },
+        "sendTextMessageDraft": {
+            "description": "Sends a draft for a being generated text message; for bots only",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "forum_topic_id": {
+                    "description": "The forum topic identifier in which the message will be sent; pass 0 if none",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "draft_id": {
+                    "description": "Unique identifier of the draft",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "text": {
+                    "description": "Draft text of the message",
+                    "is_optional": false,
+                    "type": "formattedText"
                 }
             },
             "type": "Ok"
@@ -39846,43 +40185,11 @@
             },
             "type": "Ok"
         },
-        "readAllMessageThreadMentions": {
-            "description": "Marks all mentions in a forum topic as read",
-            "args": {
-                "chat_id": {
-                    "description": "Chat identifier",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "message_thread_id": {
-                    "description": "Message thread identifier in which mentions are marked as read",
-                    "is_optional": false,
-                    "type": "int53"
-                }
-            },
-            "type": "Ok"
-        },
         "readAllChatReactions": {
-            "description": "Marks all reactions in a chat or a forum topic as read",
+            "description": "Marks all reactions in a chat as read",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
-                    "is_optional": false,
-                    "type": "int53"
-                }
-            },
-            "type": "Ok"
-        },
-        "readAllMessageThreadReactions": {
-            "description": "Marks all reactions in a forum topic as read",
-            "args": {
-                "chat_id": {
-                    "description": "Chat identifier",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "message_thread_id": {
-                    "description": "Message thread identifier in which reactions are marked as read",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -40535,17 +40842,17 @@
             "type": "Ok"
         },
         "setChatDraftMessage": {
-            "description": "Changes the draft message in a chat",
+            "description": "Changes the draft message in a chat or a topic",
             "args": {
                 "chat_id": {
                     "description": "Chat identifier",
                     "is_optional": false,
                     "type": "int53"
                 },
-                "message_thread_id": {
-                    "description": "If not 0, the message thread identifier in which the draft was changed",
-                    "is_optional": false,
-                    "type": "int53"
+                "topic_id": {
+                    "description": "Topic in which the draft will be changed; pass null to change the draft for the chat itself",
+                    "is_optional": true,
+                    "type": "MessageTopic"
                 },
                 "draft_message": {
                     "description": "New draft message; pass null to remove the draft. All files in draft message content must be of the type inputFileLocal. Media thumbnails and captions are ignored",
@@ -40761,7 +41068,7 @@
                     "type": "int53"
                 },
                 "slow_mode_delay": {
-                    "description": "New slow mode delay for the chat, in seconds; must be one of 0, 10, 30, 60, 300, 900, 3600",
+                    "description": "New slow mode delay for the chat, in seconds; must be one of 0, 5, 10, 30, 60, 300, 900, 3600",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -40815,22 +41122,6 @@
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat",
-                    "is_optional": false,
-                    "type": "int53"
-                }
-            },
-            "type": "Ok"
-        },
-        "unpinAllMessageThreadMessages": {
-            "description": "Removes all pinned messages from a forum topic; requires can_pin_messages member right in the supergroup",
-            "args": {
-                "chat_id": {
-                    "description": "Identifier of the chat",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "message_thread_id": {
-                    "description": "Message thread identifier in which messages will be unpinned",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -43254,6 +43545,38 @@
             },
             "type": "Ok"
         },
+        "toggleGroupCallCanSendMessages": {
+            "description": "Toggles whether participants of a group call can send messages there. Requires groupCall.can_toggle_can_send_messages right",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "can_send_messages": {
+                    "description": "New value of the can_send_messages setting",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "sendGroupCallMessage": {
+            "description": "Sends a message to other participants of a group call. Requires groupCall.can_send_messages right",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "text": {
+                    "description": "Text of the message to send; 1-getOption(\"group_call_message_text_length_max\") characters",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "Ok"
+        },
         "inviteGroupCallParticipant": {
             "description": "Invites a user to an active group call; for group calls not bound to a chat only. Sends a service message of the type messageGroupCall. The group call can have at most getOption(\"group_call_participant_count_max\") participants",
             "args": {
@@ -43717,10 +44040,15 @@
         "addContact": {
             "description": "Adds a user to the contact list or edits an existing contact by their user identifier",
             "args": {
-                "contact": {
-                    "description": "The contact to add or edit; phone number may be empty and needs to be specified only if known, vCard is ignored",
+                "user_id": {
+                    "description": "Identifier of the user",
                     "is_optional": false,
-                    "type": "contact"
+                    "type": "int53"
+                },
+                "contact": {
+                    "description": "The contact to add or edit; phone number may be empty and needs to be specified only if known",
+                    "is_optional": false,
+                    "type": "importedContact"
                 },
                 "share_phone_number": {
                     "description": "Pass true to share the current user's phone number with the new contact. A corresponding rule to userPrivacySettingShowPhoneNumber will be added if needed. Use the field userFullInfo.need_phone_number_privacy_exception to check whether the current user needs to be asked to share their phone number",
@@ -43734,9 +44062,9 @@
             "description": "Adds new contacts or edits existing contacts by their phone numbers; contacts' user identifiers are ignored",
             "args": {
                 "contacts": {
-                    "description": "The list of contacts to import or edit; contacts' vCard are ignored and are not imported",
+                    "description": "The list of contacts to import or edit",
                     "is_optional": false,
-                    "type": "vector<contact>"
+                    "type": "vector<importedContact>"
                 }
             },
             "type": "ImportedContacts"
@@ -43782,9 +44110,9 @@
             "description": "Changes imported contacts using the list of contacts saved on the device. Imports newly added contacts and, if at least the file database is enabled, deletes recently deleted contacts. Query result depends on the result of the previous query, so only one query is possible at the same time",
             "args": {
                 "contacts": {
-                    "description": "The new list of contacts, contact's vCard are ignored and are not imported",
+                    "description": "The new list of contacts to import",
                     "is_optional": false,
-                    "type": "vector<contact>"
+                    "type": "vector<importedContact>"
                 }
             },
             "type": "ImportedContacts"
@@ -43826,6 +44154,22 @@
             },
             "type": "Ok"
         },
+        "setUserNote": {
+            "description": "Changes a note of a contact user",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "note": {
+                    "description": "Note to set for the user; 0-getOption(\"user_note_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed",
+                    "is_optional": false,
+                    "type": "formattedText"
+                }
+            },
+            "type": "Ok"
+        },
         "suggestUserProfilePhoto": {
             "description": "Suggests a profile photo to another regular user with common messages and allowing non-paid messages",
             "args": {
@@ -43838,6 +44182,22 @@
                     "description": "Profile photo to suggest; inputChatPhotoPrevious isn't supported in this function",
                     "is_optional": false,
                     "type": "InputChatPhoto"
+                }
+            },
+            "type": "Ok"
+        },
+        "suggestUserBirthdate": {
+            "description": "Suggests a birthdate to another regular user with common messages and allowing non-paid messages",
+            "args": {
+                "user_id": {
+                    "description": "User identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "birthdate": {
+                    "description": "Birthdate to suggest",
+                    "is_optional": false,
+                    "type": "birthdate"
                 }
             },
             "type": "Ok"
@@ -44626,6 +44986,17 @@
             },
             "type": "Ok"
         },
+        "setUpgradedGiftColors": {
+            "description": "Changes color scheme for the current user based on an owned or a hosted upgraded gift; for Telegram Premium users only",
+            "args": {
+                "upgraded_gift_colors_id": {
+                    "description": "Identifier of the upgradedGiftColors scheme to use",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Ok"
+        },
         "setProfileAccentColor": {
             "description": "Changes accent color and background custom emoji for profile of the current user; for Telegram Premium users only",
             "args": {
@@ -45321,7 +45692,7 @@
             "type": "Ok"
         },
         "toggleBotUsernameIsActive": {
-            "description": "Changes active state for a username of a bot. The editable username can't be disabled. May return an error with a message \"USERNAMES_ACTIVE_TOO_MUCH\" if the maximum number of active usernames has been reached. Can be called only if userTypeBot.can_be_edited == true",
+            "description": "Changes active state for a username of a bot. The editable username can be disabled only if there are other active usernames. May return an error with a message \"USERNAMES_ACTIVE_TOO_MUCH\" if the maximum number of active usernames has been reached. Can be called only if userTypeBot.can_be_edited == true",
             "args": {
                 "bot_user_id": {
                     "description": "Identifier of the target bot",
@@ -45733,7 +46104,7 @@
             "description": "Toggles whether all users directly joining the supergroup need to be approved by supergroup administrators; requires can_restrict_members administrator right",
             "args": {
                 "supergroup_id": {
-                    "description": "Identifier of the supergroup that isn't a broadcast group",
+                    "description": "Identifier of the supergroup that isn't a broadcast group and isn't a channel direct message group",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -46277,6 +46648,22 @@
             },
             "type": "Ok"
         },
+        "dropGiftOriginalDetails": {
+            "description": "Drops original details for an upgraded gift",
+            "args": {
+                "received_gift_id": {
+                    "description": "Identifier of the gift",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "star_count": {
+                    "description": "The amount of Telegram Stars required to pay for the operation",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
         "sendResoldGift": {
             "description": "Sends an upgraded gift that is available for resale to another user or channel chat; gifts already owned by the current user must be transferred using transferGift and can't be passed to the method",
             "args": {
@@ -46343,6 +46730,16 @@
                 },
                 "exclude_upgraded": {
                     "description": "Pass true to exclude upgraded gifts",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "exclude_without_colors": {
+                    "description": "Pass true to exclude gifts that can't be used in setUpgradedGiftColors",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "exclude_hosted": {
+                    "description": "Pass true to exclude gifts that are just hosted and are not owned by the owner",
                     "is_optional": false,
                     "type": "Bool"
                 },
