@@ -23,15 +23,16 @@ class ChatActions:
             "upload_video_note",
             "cancel",
         ],
-        message_thread_id: int = None,
+        topic_id: "pytdbot.types.MessageTopic" = None,
     ) -> None:
         self.client = client
         self.chat_id = chat_id
         self.action = None
         self.__task = None
-        self.message_thread_id = message_thread_id or 0
+        self.topic_id = topic_id
 
-        assert isinstance(self.message_thread_id, int), "message_thread_id must be int"
+        if topic_id and not isinstance(self.topic_id, pytdbot.types.MessageTopic):
+            raise ValueError("topic_id must be an instnace of MessageTopic")
         self.setAction(action)
 
     def __await__(self):
@@ -48,7 +49,7 @@ class ChatActions:
     async def sendAction(self):
         return await self.client.sendChatAction(
             chat_id=self.chat_id,
-            message_thread_id=self.message_thread_id,
+            topic_id=self.topic_id,
             action=self.action,
         )
 

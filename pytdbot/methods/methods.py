@@ -25,6 +25,7 @@ from ..types import (
     InputThumbnail,
     LinkPreviewOptions,
     Message,
+    MessageTopic,
     MessageCopyOptions,
     MessageSelfDestructType,
     MessageSendOptions,
@@ -117,7 +118,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -170,8 +171,8 @@ class Methods(TDLibFunctions):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -216,7 +217,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -239,7 +240,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -295,8 +296,8 @@ class Methods(TDLibFunctions):
             has_spoiler (``bool``, *optional*):
                 True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -344,7 +345,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -365,7 +366,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -415,8 +416,8 @@ class Methods(TDLibFunctions):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -463,7 +464,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -482,7 +483,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -526,8 +527,8 @@ class Methods(TDLibFunctions):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -571,7 +572,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -594,7 +595,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -650,8 +651,8 @@ class Methods(TDLibFunctions):
             has_spoiler (``bool``, *optional*):
                 True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -699,7 +700,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -724,7 +725,7 @@ class Methods(TDLibFunctions):
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -786,8 +787,8 @@ class Methods(TDLibFunctions):
             has_spoiler (``bool``, *optional*):
                 True, if the photo preview must be covered by a spoiler animation; not supported in secret chats
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -837,7 +838,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -854,7 +855,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -892,8 +893,8 @@ class Methods(TDLibFunctions):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -927,7 +928,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -946,7 +947,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -990,8 +991,8 @@ class Methods(TDLibFunctions):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -1035,7 +1036,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -1053,7 +1054,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -1094,8 +1095,8 @@ class Methods(TDLibFunctions):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -1129,7 +1130,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -1149,7 +1150,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -1190,8 +1191,8 @@ class Methods(TDLibFunctions):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass true to allow the message to ignore regular broadcast limits for a small fee; for bots only. Default is ``False``
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the message will be sent
+            topic_id (:class:`~pytdbot.types.MessageTopic`, *optional*):
+                Topic in which the message will be sent; pass null if none
 
             quote (:class:`~pytdbot.types.InputTextQuote`, *optional*):
                 Chosen quote from the replied message; may be null if none
@@ -1231,7 +1232,7 @@ class Methods(TDLibFunctions):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to=reply_to,
             reply_to_message_id=reply_to_message_id,
@@ -1373,7 +1374,7 @@ class Methods(TDLibFunctions):
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: MessageTopic = None,
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
@@ -1396,7 +1397,7 @@ class Methods(TDLibFunctions):
 
         res = await self.sendMessage(
             chat_id=chat_id,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             reply_to=reply_to,
             options=MessageSendOptions(
                 disable_notification=disable_notification,

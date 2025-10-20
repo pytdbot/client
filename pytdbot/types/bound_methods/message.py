@@ -380,7 +380,7 @@ class MessageBoundMethods:
             "upload_video_note",
             "cancel",
         ],
-        message_thread_id: int = None,
+        topic_id: "pytdbot.types.MessageTopic" = None,
     ) -> ChatActions:
         r"""Sends a chat action to a specific chat. Supporting context manager (``with`` statement)
 
@@ -408,15 +408,15 @@ class MessageBoundMethods:
             action (``str``):
                 Type of action to broadcast. Choose one, depending on what the user is about to receive: ``typing`` for text messages, ``upload_photo`` for photos, ``record_video`` or ``upload_video`` for videos, ``record_voice`` or ``upload_voice`` for voice notes, ``upload_document`` for general files, ``choose_sticker`` for stickers, ``find_location` for location data, ``record_video_note`` or ``upload_video_note`` for video notes
 
-            message_thread_id (``int``, *optional*):
-                If not 0, a message thread identifier in which the action was performed. Default is ``None``
+            topic_id (:class:`pytdbot.types.MessageTopic`, *optional*):
+                Identifier of the topic in which the action is performed. Default is ``None``
         """
 
         return ChatActions(
             client=self._client,
             chat_id=self.chat_id,
             action=action,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
         )
 
     async def reply_text(
@@ -433,7 +433,7 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         no_reply: bool = False,
         reply_markup: Union[
@@ -459,7 +459,7 @@ class MessageBoundMethods:
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
@@ -480,7 +480,7 @@ class MessageBoundMethods:
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         no_reply: bool = False,
         reply_markup: Union[
@@ -508,7 +508,7 @@ class MessageBoundMethods:
             allow_paid_broadcast=allow_paid_broadcast,
             reply_to_message_id=self.id if not no_reply else None,
             has_spoiler=has_spoiler,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_markup=reply_markup,
         )
@@ -526,7 +526,7 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         no_reply: bool = False,
         reply_markup: Union[
@@ -551,7 +551,7 @@ class MessageBoundMethods:
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
@@ -568,7 +568,7 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         no_reply: bool = False,
         reply_markup: Union[
@@ -591,7 +591,7 @@ class MessageBoundMethods:
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
@@ -612,7 +612,7 @@ class MessageBoundMethods:
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         no_reply: bool = None,
         reply_markup: Union[
@@ -639,7 +639,7 @@ class MessageBoundMethods:
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             has_spoiler=has_spoiler,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
@@ -662,7 +662,7 @@ class MessageBoundMethods:
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         no_reply: bool = None,
         reply_markup: Union[
@@ -691,7 +691,7 @@ class MessageBoundMethods:
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             has_spoiler=has_spoiler,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
@@ -706,7 +706,7 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         no_reply: bool = None,
         reply_markup: Union[
@@ -727,7 +727,7 @@ class MessageBoundMethods:
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
@@ -744,7 +744,7 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         no_reply: bool = None,
         reply_markup: Union[
@@ -767,7 +767,7 @@ class MessageBoundMethods:
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
@@ -783,7 +783,7 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         no_reply: bool = None,
         reply_markup: Union[
@@ -805,7 +805,7 @@ class MessageBoundMethods:
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to_message_id=self.id if not no_reply else None,
             reply_markup=reply_markup,
@@ -822,7 +822,7 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        message_thread_id: int = 0,
+        topic_id: "pytdbot.types.MessageTopic" = None,
         quote: "pytdbot.types.InputTextQuote" = None,
         reply_to_message_id: int = 0,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
@@ -840,7 +840,7 @@ class MessageBoundMethods:
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            message_thread_id=message_thread_id,
+            topic_id=topic_id,
             quote=quote,
             reply_to_message_id=reply_to_message_id,
         )
