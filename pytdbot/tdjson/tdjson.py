@@ -14,19 +14,22 @@ logger = getLogger(__name__)
 
 
 class TdJson:
+    """TdJson client
+
+    Parameters:
+        lib_path (``str``, optional):
+            Path to shared library; if ``None`` then [`tdjson`](https://github.com/AYMENJD/tdjson) binding will be used. Default is ``None``
+
+        verbosity (``int``, optional):
+            TDLib verbosity level. Default is ``2``
+
+    Raises:
+        :py:class:`ValueError`: If library not found
+    """
+
     def __init__(self, lib_path: str = None, verbosity: int = 2) -> None:
-        """TdJson client
-
-        Parameters:
-            lib_path (``str``, optional):
-                Path to shared library; if ``None`` then [`tdjson`](https://github.com/AYMENJD/tdjson) binding will be used. Default is ``None``
-
-            verbosity (``int``, optional):
-                TDLib verbosity level. Default is ``2``
-
-        Raises:
-            :py:class:``ValueError``: If library not found
-        """
+        self.version = None
+        self.commit_hash = None
 
         self._build_client(lib_path, verbosity)
 
@@ -95,6 +98,8 @@ class TdJson:
             self.execute({"@type": "getOption", "name": "version"}),
             self.execute({"@type": "getOption", "name": "commit_hash"}),
         )
+        self.version = td_version["value"]
+        self.commit_hash = td_commit_hash["value"]
 
         logger.info(
             f"Using TDLib {td_version['value']} ({td_commit_hash['value'][:9]}) with {JSON_ENCODER} encoder"

@@ -48,6 +48,7 @@ class ClientManager:
 
         self.loop = loop or pytdbot.utils.get_running_loop()
         self.__tdjson = TdJson(lib_path, verbosity)
+        self.check_tdlib_version()
 
         self.__clients: dict[int, pytdbot.Client] = {}
 
@@ -136,6 +137,14 @@ class ClientManager:
         """
 
         self.__tdjson.send(client_id, request)
+
+    def check_tdlib_version(self):
+        if self.__tdjson.version != pytdbot.types.TDLIB_VERSION:
+            logger.warning(
+                f"Pytdbot v{pytdbot.VERSION} is designed for TDLib v{pytdbot.types.TDLIB_VERSION}, "
+                f"but the installed TDLib version is v{self.__tdjson.version}. "
+                "This may cause unexpected behavior or errors"
+            )
 
     async def __td_receiver_loop(self) -> None:
         with ThreadPoolExecutor(
