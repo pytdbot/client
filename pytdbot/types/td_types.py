@@ -1,9 +1,9 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
-    CallbackQueryBoundMethods,
     MessageBoundMethods,
     FileBoundMethods,
+    CallbackQueryBoundMethods,
     MessageSenderBoundMethods,
 )
 import pytdbot
@@ -1535,7 +1535,7 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
     r"""A digit\-only authentication code is delivered via Firebase Authentication to the official Android application
 
     Parameters:
-        device_verification_parameters (:class:`"types.FirebaseDeviceVerificationParameters"`):
+        device_verification_parameters (:class:`~pytdbot.types.FirebaseDeviceVerificationParameters`):
             Parameters to be used for device verification
 
         length (:class:`int`):
@@ -1651,10 +1651,10 @@ class AuthenticationCodeInfo(TlObject):
         phone_number (:class:`str`):
             A phone number that is being authenticated
 
-        type (:class:`"types.AuthenticationCodeType"`):
+        type (:class:`~pytdbot.types.AuthenticationCodeType`):
             The way the code was sent to the user
 
-        next_type (:class:`"types.AuthenticationCodeType"`):
+        next_type (:class:`~pytdbot.types.AuthenticationCodeType`):
             The way the next code will be sent to the user; may be null
 
         timeout (:class:`int`):
@@ -1970,7 +1970,7 @@ class TextEntity(TlObject):
         length (:class:`int`):
             Length of the entity, in UTF\-16 code units
 
-        type (:class:`"types.TextEntityType"`):
+        type (:class:`~pytdbot.types.TextEntityType`):
             Type of the entity
 
     """
@@ -2043,7 +2043,7 @@ class TextEntities(TlObject):
     r"""Contains a list of text entities
 
     Parameters:
-        entities (:class:`List["types.TextEntity"]`):
+        entities (List[:class:`~pytdbot.types.TextEntity`]):
             List of text entities
 
     """
@@ -2082,7 +2082,7 @@ class FormattedText(TlObject):
         text (:class:`str`):
             The text
 
-        entities (:class:`List["types.TextEntity"]`):
+        entities (List[:class:`~pytdbot.types.TextEntity`]):
             Entities contained in the text\. Entities can be nested, but must not mutually intersect with each other\. Pre, Code and PreCode entities can't contain other entities\. BlockQuote entities can't contain other BlockQuote entities\. Bold, Italic, Underline, Strikethrough, and Spoiler entities can contain and can be part of any other entities\. All other entities can't contain each other
 
     """
@@ -2121,7 +2121,7 @@ class TermsOfService(TlObject):
     r"""Contains Telegram terms of service
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text of the terms of service
 
         min_user_age (:class:`int`):
@@ -2351,10 +2351,10 @@ class AuthorizationStateWaitEmailCode(TlObject, AuthorizationState):
         allow_google_id (:class:`bool`):
             True, if authorization through Google ID is allowed
 
-        code_info (:class:`"types.EmailAddressAuthenticationCodeInfo"`):
+        code_info (:class:`~pytdbot.types.EmailAddressAuthenticationCodeInfo`):
             Information about the sent authentication code
 
-        email_address_reset_state (:class:`"types.EmailAddressResetState"`):
+        email_address_reset_state (:class:`~pytdbot.types.EmailAddressResetState`):
             Reset state of the email address; may be null if the email address can't be reset
 
     """
@@ -2415,7 +2415,7 @@ class AuthorizationStateWaitCode(TlObject, AuthorizationState):
     r"""TDLib needs the user's authentication code to authorize\. Call checkAuthenticationCode to check the code
 
     Parameters:
-        code_info (:class:`"types.AuthenticationCodeInfo"`):
+        code_info (:class:`~pytdbot.types.AuthenticationCodeInfo`):
             Information about the authorization code that was sent
 
     """
@@ -2489,7 +2489,7 @@ class AuthorizationStateWaitRegistration(TlObject, AuthorizationState):
     r"""The user is unregistered and need to accept terms of service and enter their first name and last name to finish registration\. Call registerUser to accept the terms of service and provide the data
 
     Parameters:
-        terms_of_service (:class:`"types.TermsOfService"`):
+        terms_of_service (:class:`~pytdbot.types.TermsOfService`):
             Telegram terms of service
 
     """
@@ -2811,7 +2811,7 @@ class PasswordState(TlObject):
         has_passport_data (:class:`bool`):
             True, if some Telegram Passport elements were saved
 
-        recovery_email_address_code_info (:class:`"types.EmailAddressAuthenticationCodeInfo"`):
+        recovery_email_address_code_info (:class:`~pytdbot.types.EmailAddressAuthenticationCodeInfo`):
             Information about the recovery email address to which the confirmation email was sent; may be null
 
         login_email_address_pattern (:class:`str`):
@@ -3169,10 +3169,10 @@ class File(TlObject, FileBoundMethods):
         expected_size (:class:`int`):
             Approximate file size in bytes in case the exact file size is unknown\. Can be used to show download/upload progress
 
-        local (:class:`"types.LocalFile"`):
+        local (:class:`~pytdbot.types.LocalFile`):
             Information about the local copy of the file
 
-        remote (:class:`"types.RemoteFile"`):
+        remote (:class:`~pytdbot.types.RemoteFile`):
             Information about the remote copy of the file
 
     """
@@ -3400,7 +3400,7 @@ class PhotoSize(TlObject):
         type (:class:`str`):
             Image type \(see https://core\.telegram\.org/constructor/photoSize\)
 
-        photo (:class:`"types.File"`):
+        photo (:class:`~pytdbot.types.File`):
             Information about the image file
 
         width (:class:`int`):
@@ -3409,7 +3409,7 @@ class PhotoSize(TlObject):
         height (:class:`int`):
             Image height
 
-        progressive_sizes (:class:`List[int]`):
+        progressive_sizes (List[:class:`int`]):
             Sizes of progressive JPEG file prefixes, which can be used to preliminarily show the image; in bytes
 
     """
@@ -3720,7 +3720,7 @@ class Thumbnail(TlObject):
     r"""Represents a thumbnail
 
     Parameters:
-        format (:class:`"types.ThumbnailFormat"`):
+        format (:class:`~pytdbot.types.ThumbnailFormat`):
             Thumbnail format
 
         width (:class:`int`):
@@ -3729,7 +3729,7 @@ class Thumbnail(TlObject):
         height (:class:`int`):
             Thumbnail height
 
-        file (:class:`"types.File"`):
+        file (:class:`~pytdbot.types.File`):
             The thumbnail
 
     """
@@ -3907,7 +3907,7 @@ class MaskPosition(TlObject):
     r"""Position on a photo where a mask is placed
 
     Parameters:
-        point (:class:`"types.MaskPoint"`):
+        point (:class:`~pytdbot.types.MaskPoint`):
             Part of the face, relative to which the mask is placed
 
         x_shift (:class:`float`):
@@ -4143,7 +4143,7 @@ class StickerFullTypeRegular(TlObject, StickerFullType):
     r"""The sticker is a regular sticker
 
     Parameters:
-        premium_animation (:class:`"types.File"`):
+        premium_animation (:class:`~pytdbot.types.File`):
             Premium animation of the sticker; may be null\. If present, only Telegram Premium users can use the sticker
 
     """
@@ -4179,7 +4179,7 @@ class StickerFullTypeMask(TlObject, StickerFullType):
     r"""The sticker is a mask in WEBP format to be placed on photos or videos
 
     Parameters:
-        mask_position (:class:`"types.MaskPosition"`):
+        mask_position (:class:`~pytdbot.types.MaskPosition`):
             Position where the mask is placed; may be null
 
     """
@@ -4263,7 +4263,7 @@ class ClosedVectorPath(TlObject):
     r"""Represents a closed vector path\. The path begins at the end point of the last command\. The coordinate system origin is in the upper\-left corner
 
     Parameters:
-        commands (:class:`List["types.VectorPathCommand"]`):
+        commands (List[:class:`~pytdbot.types.VectorPathCommand`]):
             List of vector path commands
 
     """
@@ -4299,7 +4299,7 @@ class Outline(TlObject):
     r"""Represents outline of an image
 
     Parameters:
-        paths (:class:`List["types.ClosedVectorPath"]`):
+        paths (List[:class:`~pytdbot.types.ClosedVectorPath`]):
             The list of closed vector paths
 
     """
@@ -4335,7 +4335,7 @@ class PollOption(TlObject):
     r"""Describes one answer option of a poll
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Option text; 1\-100 characters\. Only custom emoji entities are allowed
 
         voter_count (:class:`int`):
@@ -4453,7 +4453,7 @@ class PollTypeQuiz(TlObject, PollType):
         correct_option_id (:class:`int`):
             0\-based identifier of the correct answer option; \-1 for a yet unanswered poll
 
-        explanation (:class:`"types.FormattedText"`):
+        explanation (:class:`~pytdbot.types.FormattedText`):
             Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; 0\-200 characters with at most 2 line feeds; empty for a yet unanswered poll
 
     """
@@ -4501,7 +4501,7 @@ class ChecklistTask(TlObject):
         id (:class:`int`):
             Unique identifier of the task
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text of the task; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Url, EmailAddress, Mention, Hashtag, Cashtag and PhoneNumber entities
 
         completed_by_user_id (:class:`int`):
@@ -4567,7 +4567,7 @@ class InputChecklistTask(TlObject):
         id (:class:`int`):
             Unique identifier of the task; must be positive
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text of the task; 1\-getOption\(\"checklist\_task\_text\_length\_max\"\) characters without line feeds\. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities
 
     """
@@ -4606,10 +4606,10 @@ class Checklist(TlObject):
     r"""Describes a checklist
 
     Parameters:
-        title (:class:`"types.FormattedText"`):
+        title (:class:`~pytdbot.types.FormattedText`):
             Title of the checklist; may contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities
 
-        tasks (:class:`List["types.ChecklistTask"]`):
+        tasks (List[:class:`~pytdbot.types.ChecklistTask`]):
             List of tasks in the checklist
 
         others_can_add_tasks (:class:`bool`):
@@ -4692,10 +4692,10 @@ class InputChecklist(TlObject):
     r"""Describes a checklist to be sent
 
     Parameters:
-        title (:class:`"types.FormattedText"`):
+        title (:class:`~pytdbot.types.FormattedText`):
             Title of the checklist; 1\-getOption\(\"checklist\_title\_length\_max\"\) characters\. May contain only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities
 
-        tasks (:class:`List["types.InputChecklistTask"]`):
+        tasks (List[:class:`~pytdbot.types.InputChecklistTask`]):
             List of tasks in the checklist; 1\-getOption\(\"checklist\_task\_count\_max\"\) tasks
 
         others_can_add_tasks (:class:`bool`):
@@ -4778,13 +4778,13 @@ class Animation(TlObject):
         has_stickers (:class:`bool`):
             True, if stickers were added to the animation\. The list of corresponding sticker set can be received using getAttachedStickerSets
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             Animation minithumbnail; may be null
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Animation thumbnail in JPEG or MPEG4 format; may be null
 
-        animation (:class:`"types.File"`):
+        animation (:class:`~pytdbot.types.File`):
             File containing the animation
 
     """
@@ -4881,16 +4881,16 @@ class Audio(TlObject):
         mime_type (:class:`str`):
             The MIME type of the file; as defined by the sender
 
-        album_cover_minithumbnail (:class:`"types.Minithumbnail"`):
+        album_cover_minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             The minithumbnail of the album cover; may be null
 
-        album_cover_thumbnail (:class:`"types.Thumbnail"`):
+        album_cover_thumbnail (:class:`~pytdbot.types.Thumbnail`):
             The thumbnail of the album cover in JPEG format; as defined by the sender\. The full size thumbnail is expected to be extracted from the downloaded audio file; may be null
 
-        external_album_covers (:class:`List["types.Thumbnail"]`):
+        external_album_covers (List[:class:`~pytdbot.types.Thumbnail`]):
             Album cover variants to use if the downloaded audio file contains no album cover\. Provided thumbnail dimensions are approximate
 
-        audio (:class:`"types.File"`):
+        audio (:class:`~pytdbot.types.File`):
             File containing the audio
 
     """
@@ -4979,7 +4979,7 @@ class Audios(TlObject):
         total_count (:class:`int`):
             Approximate total number of audio files found
 
-        audios (:class:`List["types.Audio"]`):
+        audios (List[:class:`~pytdbot.types.Audio`]):
             List of audio files
 
     """
@@ -5028,13 +5028,13 @@ class Document(TlObject):
         mime_type (:class:`str`):
             MIME type of the file; as defined by the sender
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             Document minithumbnail; may be null
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Document thumbnail in JPEG or PNG format \(PNG will be used only for background patterns\); as defined by the sender; may be null
 
-        document (:class:`"types.File"`):
+        document (:class:`~pytdbot.types.File`):
             File containing the document
 
     """
@@ -5099,10 +5099,10 @@ class Photo(TlObject):
         has_stickers (:class:`bool`):
             True, if stickers were added to the photo\. The list of corresponding sticker sets can be received using getAttachedStickerSets
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             Photo minithumbnail; may be null
 
-        sizes (:class:`List["types.PhotoSize"]`):
+        sizes (List[:class:`~pytdbot.types.PhotoSize`]):
             Available variants of the photo, in different sizes
 
     """
@@ -5169,16 +5169,16 @@ class Sticker(TlObject):
         emoji (:class:`str`):
             Emoji corresponding to the sticker
 
-        format (:class:`"types.StickerFormat"`):
+        format (:class:`~pytdbot.types.StickerFormat`):
             Sticker format
 
-        full_type (:class:`"types.StickerFullType"`):
+        full_type (:class:`~pytdbot.types.StickerFullType`):
             Sticker's full type
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Sticker thumbnail in WEBP or JPEG format; may be null
 
-        sticker (:class:`"types.File"`):
+        sticker (:class:`~pytdbot.types.File`):
             File containing the sticker
 
     """
@@ -5288,13 +5288,13 @@ class Video(TlObject):
         supports_streaming (:class:`bool`):
             True, if the video is expected to be streamed
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             Video minithumbnail; may be null
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Video thumbnail in JPEG or MPEG4 format; as defined by the sender; may be null
 
-        video (:class:`"types.File"`):
+        video (:class:`~pytdbot.types.File`):
             File containing the video
 
     """
@@ -5390,16 +5390,16 @@ class VideoNote(TlObject):
         length (:class:`int`):
             Video width and height; as defined by the sender
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             Video minithumbnail; may be null
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Video thumbnail in JPEG format; as defined by the sender; may be null
 
-        speech_recognition_result (:class:`"types.SpeechRecognitionResult"`):
+        speech_recognition_result (:class:`~pytdbot.types.SpeechRecognitionResult`):
             Result of speech recognition in the video note; may be null
 
-        video (:class:`"types.File"`):
+        video (:class:`~pytdbot.types.File`):
             File containing the video
 
     """
@@ -5487,10 +5487,10 @@ class VoiceNote(TlObject):
         mime_type (:class:`str`):
             MIME type of the file; as defined by the sender\. Usually, one of \"audio/ogg\" for Opus in an OGG container, \"audio/mpeg\" for an MP3 audio, or \"audio/mp4\" for an M4A audio
 
-        speech_recognition_result (:class:`"types.SpeechRecognitionResult"`):
+        speech_recognition_result (:class:`~pytdbot.types.SpeechRecognitionResult`):
             Result of speech recognition in the voice note; may be null
 
-        voice (:class:`"types.File"`):
+        voice (:class:`~pytdbot.types.File`):
             File containing the voice note
 
     """
@@ -5559,7 +5559,7 @@ class AnimatedEmoji(TlObject):
     r"""Describes an animated or custom representation of an emoji
 
     Parameters:
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             Sticker for the emoji; may be null if yet unknown for a custom emoji\. If the sticker is a custom emoji, then it can have arbitrary format
 
         sticker_width (:class:`int`):
@@ -5571,7 +5571,7 @@ class AnimatedEmoji(TlObject):
         fitzpatrick_type (:class:`int`):
             Emoji modifier fitzpatrick type; 0\-6; 0 if none
 
-        sound (:class:`"types.File"`):
+        sound (:class:`~pytdbot.types.File`):
             File containing the sound to be played when the sticker is clicked; may be null\. The sound is encoded with the Opus codec, and stored inside an OGG container
 
     """
@@ -5765,7 +5765,7 @@ class Venue(TlObject):
     r"""Describes a venue
 
     Parameters:
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             Venue location; as defined by the sender
 
         title (:class:`str`):
@@ -5856,16 +5856,16 @@ class Game(TlObject):
         title (:class:`str`):
             Game title
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Game text, usually containing scoreboards for a game
 
         description (:class:`str`):
             Game description
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Game photo
 
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             Game animation; may be null
 
     """
@@ -5946,10 +5946,10 @@ class WebApp(TlObject):
         description (:class:`str`):
             Web App description
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Web App photo
 
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             Web App animation; may be null
 
     """
@@ -6014,22 +6014,22 @@ class Poll(TlObject):
         id (:class:`int`):
             Unique poll identifier
 
-        question (:class:`"types.FormattedText"`):
+        question (:class:`~pytdbot.types.FormattedText`):
             Poll question; 1\-300 characters\. Only custom emoji entities are allowed
 
-        options (:class:`List["types.PollOption"]`):
+        options (List[:class:`~pytdbot.types.PollOption`]):
             List of poll answer options
 
         total_voter_count (:class:`int`):
             Total number of voters, participating in the poll
 
-        recent_voter_ids (:class:`List["types.MessageSender"]`):
+        recent_voter_ids (List[:class:`~pytdbot.types.MessageSender`]):
             Identifiers of recent voters, if the poll is non\-anonymous
 
         is_anonymous (:class:`bool`):
             True, if the poll is anonymous
 
-        type (:class:`"types.PollType"`):
+        type (:class:`~pytdbot.types.PollType`):
             Type of the poll
 
         open_period (:class:`int`):
@@ -6137,10 +6137,10 @@ class AlternativeVideo(TlObject):
         codec (:class:`str`):
             Codec used for video file encoding, for example, \"h264\", \"h265\", or \"av1\"
 
-        hls_file (:class:`"types.File"`):
+        hls_file (:class:`~pytdbot.types.File`):
             HLS file describing the video
 
-        video (:class:`"types.File"`):
+        video (:class:`~pytdbot.types.File`):
             File containing the video
 
     """
@@ -6207,7 +6207,7 @@ class VideoStoryboard(TlObject):
     r"""Describes a storyboard for a video
 
     Parameters:
-        storyboard_file (:class:`"types.File"`):
+        storyboard_file (:class:`~pytdbot.types.File`):
             A JPEG file that contains tiled previews of video
 
         width (:class:`int`):
@@ -6216,7 +6216,7 @@ class VideoStoryboard(TlObject):
         height (:class:`int`):
             Height of a tile
 
-        map_file (:class:`"types.File"`):
+        map_file (:class:`~pytdbot.types.File`):
             File that describes mapping of position in the video to a tile in the JPEG file
 
     """
@@ -6285,10 +6285,10 @@ class Background(TlObject):
         name (:class:`str`):
             Unique background name
 
-        document (:class:`"types.Document"`):
+        document (:class:`~pytdbot.types.Document`):
             Document with the background; may be null\. Null only for filled and chat theme backgrounds
 
-        type (:class:`"types.BackgroundType"`):
+        type (:class:`~pytdbot.types.BackgroundType`):
             Type of the background
 
     """
@@ -6361,7 +6361,7 @@ class Backgrounds(TlObject):
     r"""Contains a list of backgrounds
 
     Parameters:
-        backgrounds (:class:`List["types.Background"]`):
+        backgrounds (List[:class:`~pytdbot.types.Background`]):
             A list of backgrounds
 
     """
@@ -6397,7 +6397,7 @@ class ChatBackground(TlObject):
     r"""Describes a background set for a specific chat
 
     Parameters:
-        background (:class:`"types.Background"`):
+        background (:class:`~pytdbot.types.Background`):
             The background
 
         dark_theme_dimming (:class:`int`):
@@ -6448,13 +6448,13 @@ class ProfilePhoto(TlObject):
         id (:class:`int`):
             Photo identifier; 0 for an empty photo\. Can be used to find a photo in a list of user profile photos
 
-        small (:class:`"types.File"`):
+        small (:class:`~pytdbot.types.File`):
             A small \(160x160\) user profile photo\. The file can be downloaded only before the photo is changed
 
-        big (:class:`"types.File"`):
+        big (:class:`~pytdbot.types.File`):
             A big \(640x640\) user profile photo\. The file can be downloaded only before the photo is changed
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             User profile photo minithumbnail; may be null
 
         has_animation (:class:`bool`):
@@ -6527,13 +6527,13 @@ class ChatPhotoInfo(TlObject):
     r"""Contains basic information about the photo of a chat
 
     Parameters:
-        small (:class:`"types.File"`):
+        small (:class:`~pytdbot.types.File`):
             A small \(160x160\) chat photo variant in JPEG format\. The file can be downloaded only before the photo is changed
 
-        big (:class:`"types.File"`):
+        big (:class:`~pytdbot.types.File`):
             A big \(640x640\) chat photo variant in JPEG format\. The file can be downloaded only before the photo is changed
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             Chat photo minithumbnail; may be null
 
         has_animation (:class:`bool`):
@@ -7090,7 +7090,7 @@ class BotCommands(TlObject):
         bot_user_id (:class:`int`):
             Bot's user identifier
 
-        commands (:class:`List["types.BotCommand"]`):
+        commands (List[:class:`~pytdbot.types.BotCommand`]):
             List of bot commands
 
     """
@@ -7181,7 +7181,7 @@ class BotVerificationParameters(TlObject):
         organization_name (:class:`str`):
             Name of the organization that provides verification
 
-        default_custom_description (:class:`"types.FormattedText"`):
+        default_custom_description (:class:`~pytdbot.types.FormattedText`):
             Default custom description of verification reason to be used as placeholder in setMessageSenderBotVerification; may be null if none
 
         can_set_custom_description (:class:`bool`):
@@ -7253,7 +7253,7 @@ class BotVerification(TlObject):
         icon_custom_emoji_id (:class:`int`):
             Identifier of the custom emoji that is used as the verification sign
 
-        custom_description (:class:`"types.FormattedText"`):
+        custom_description (:class:`~pytdbot.types.FormattedText`):
             Custom description of verification reason set by the bot\. Can contain only Mention, Hashtag, Cashtag, PhoneNumber, BankCardNumber, Url, and EmailAddress entities
 
     """
@@ -7375,7 +7375,7 @@ class ChatLocation(TlObject):
     r"""Represents a location to which a chat is connected
 
     Parameters:
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             The location
 
         address (:class:`str`):
@@ -7477,7 +7477,7 @@ class CloseBirthdayUser(TlObject):
         user_id (:class:`int`):
             User identifier
 
-        birthdate (:class:`"types.Birthdate"`):
+        birthdate (:class:`~pytdbot.types.Birthdate`):
             Birthdate of the user
 
     """
@@ -7626,7 +7626,7 @@ class BusinessLocation(TlObject):
     r"""Represents a location of a business
 
     Parameters:
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             The location; may be null if not specified
 
         address (:class:`str`):
@@ -7672,10 +7672,10 @@ class BusinessRecipients(TlObject):
     r"""Describes private chats chosen for automatic interaction with a business
 
     Parameters:
-        chat_ids (:class:`List[int]`):
+        chat_ids (List[:class:`int`]):
             Identifiers of selected private chats
 
-        excluded_chat_ids (:class:`List[int]`):
+        excluded_chat_ids (List[:class:`int`]):
             Identifiers of private chats that are always excluded; for businessConnectedBot only
 
         select_existing_chats (:class:`bool`):
@@ -7765,10 +7765,10 @@ class BusinessAwayMessageSettings(TlObject):
         shortcut_id (:class:`int`):
             Unique quick reply shortcut identifier for the away messages
 
-        recipients (:class:`"types.BusinessRecipients"`):
+        recipients (:class:`~pytdbot.types.BusinessRecipients`):
             Chosen recipients of the away messages
 
-        schedule (:class:`"types.BusinessAwayMessageSchedule"`):
+        schedule (:class:`~pytdbot.types.BusinessAwayMessageSchedule`):
             Settings used to check whether the current user is away
 
         offline_only (:class:`bool`):
@@ -7836,7 +7836,7 @@ class BusinessGreetingMessageSettings(TlObject):
         shortcut_id (:class:`int`):
             Unique quick reply shortcut identifier for the greeting messages
 
-        recipients (:class:`"types.BusinessRecipients"`):
+        recipients (:class:`~pytdbot.types.BusinessRecipients`):
             Chosen recipients of the greeting messages
 
         inactivity_days (:class:`int`):
@@ -8052,10 +8052,10 @@ class BusinessConnectedBot(TlObject):
         bot_user_id (:class:`int`):
             User identifier of the bot
 
-        recipients (:class:`"types.BusinessRecipients"`):
+        recipients (:class:`~pytdbot.types.BusinessRecipients`):
             Private chats that will be accessible to the bot
 
-        rights (:class:`"types.BusinessBotRights"`):
+        rights (:class:`~pytdbot.types.BusinessBotRights`):
             Rights of the bot
 
     """
@@ -8113,7 +8113,7 @@ class BusinessStartPage(TlObject):
         message (:class:`str`):
             Message text of the start page
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             Greeting sticker of the start page; may be null if none
 
     """
@@ -8168,7 +8168,7 @@ class InputBusinessStartPage(TlObject):
         message (:class:`str`):
             Message text of the start page; 0\-getOption\(\"business\_start\_page\_message\_length\_max\"\) characters
 
-        sticker (:class:`"types.InputFile"`):
+        sticker (:class:`~pytdbot.types.InputFile`):
             Greeting sticker of the start page; pass null if none\. The sticker must belong to a sticker set and must not be a custom emoji
 
     """
@@ -8268,7 +8268,7 @@ class BusinessOpeningHours(TlObject):
         time_zone_id (:class:`str`):
             Unique time zone identifier
 
-        opening_hours (:class:`List["types.BusinessOpeningHoursInterval"]`):
+        opening_hours (List[:class:`~pytdbot.types.BusinessOpeningHoursInterval`]):
             Intervals of the time when the business is open
 
     """
@@ -8315,13 +8315,13 @@ class BusinessInfo(TlObject):
     r"""Contains information about a Telegram Business account
 
     Parameters:
-        location (:class:`"types.BusinessLocation"`):
+        location (:class:`~pytdbot.types.BusinessLocation`):
             Location of the business; may be null if none
 
-        opening_hours (:class:`"types.BusinessOpeningHours"`):
+        opening_hours (:class:`~pytdbot.types.BusinessOpeningHours`):
             Opening hours of the business; may be null if none\. The hours are guaranteed to be valid and has already been split by week days
 
-        local_opening_hours (:class:`"types.BusinessOpeningHours"`):
+        local_opening_hours (:class:`~pytdbot.types.BusinessOpeningHours`):
             Opening hours of the business in the local time; may be null if none\. The hours are guaranteed to be valid and has already been split by week days\. Local time zone identifier will be empty\. An updateUserFullInfo update is not triggered when value of this field changes
 
         next_open_in (:class:`int`):
@@ -8330,13 +8330,13 @@ class BusinessInfo(TlObject):
         next_close_in (:class:`int`):
             Time left before the business will close the next time, in seconds; 0 if unknown\. An updateUserFullInfo update is not triggered when value of this field changes
 
-        greeting_message_settings (:class:`"types.BusinessGreetingMessageSettings"`):
+        greeting_message_settings (:class:`~pytdbot.types.BusinessGreetingMessageSettings`):
             The greeting message; may be null if none or the Business account is not of the current user
 
-        away_message_settings (:class:`"types.BusinessAwayMessageSettings"`):
+        away_message_settings (:class:`~pytdbot.types.BusinessAwayMessageSettings`):
             The away message; may be null if none or the Business account is not of the current user
 
-        start_page (:class:`"types.BusinessStartPage"`):
+        start_page (:class:`~pytdbot.types.BusinessStartPage`):
             Information about start page of the account; may be null if none
 
     """
@@ -8424,7 +8424,7 @@ class BusinessChatLink(TlObject):
         link (:class:`str`):
             The HTTPS link
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Message draft text that will be added to the input field
 
         title (:class:`str`):
@@ -8487,7 +8487,7 @@ class BusinessChatLinks(TlObject):
     r"""Contains a list of business chat links created by the user
 
     Parameters:
-        links (:class:`List["types.BusinessChatLink"]`):
+        links (List[:class:`~pytdbot.types.BusinessChatLink`]):
             List of links
 
     """
@@ -8523,7 +8523,7 @@ class InputBusinessChatLink(TlObject):
     r"""Describes a business chat link to create or edit
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Message draft text that will be added to the input field
 
         title (:class:`str`):
@@ -8568,7 +8568,7 @@ class BusinessChatLinkInfo(TlObject):
         chat_id (:class:`int`):
             Identifier of the private chat that created the link
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Message draft text that must be added to the input field
 
     """
@@ -8689,10 +8689,10 @@ class ChatPhotoSticker(TlObject):
     r"""Information about the sticker, which was used to create the chat photo\. The sticker is shown at the center of the photo and occupies at most 67% of it
 
     Parameters:
-        type (:class:`"types.ChatPhotoStickerType"`):
+        type (:class:`~pytdbot.types.ChatPhotoStickerType`):
             Type of the sticker
 
-        background_fill (:class:`"types.BackgroundFill"`):
+        background_fill (:class:`~pytdbot.types.BackgroundFill`):
             The fill to be used as background for the sticker; rotation angle in backgroundFillGradient isn't supported
 
     """
@@ -8747,7 +8747,7 @@ class AnimatedChatPhoto(TlObject):
         length (:class:`int`):
             Animation width and height
 
-        file (:class:`"types.File"`):
+        file (:class:`~pytdbot.types.File`):
             Information about the animation file
 
         main_frame_timestamp (:class:`float`):
@@ -8805,19 +8805,19 @@ class ChatPhoto(TlObject):
         added_date (:class:`int`):
             Point in time \(Unix timestamp\) when the photo has been added
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             Photo minithumbnail; may be null
 
-        sizes (:class:`List["types.PhotoSize"]`):
+        sizes (List[:class:`~pytdbot.types.PhotoSize`]):
             Available variants of the photo in JPEG format, in different size
 
-        animation (:class:`"types.AnimatedChatPhoto"`):
+        animation (:class:`~pytdbot.types.AnimatedChatPhoto`):
             A big \(up to 1280x1280\) animated variant of the photo in MPEG4 format; may be null
 
-        small_animation (:class:`"types.AnimatedChatPhoto"`):
+        small_animation (:class:`~pytdbot.types.AnimatedChatPhoto`):
             A small \(160x160\) animated variant of the photo in MPEG4 format; may be null even if the big animation is available
 
-        sticker (:class:`"types.ChatPhotoSticker"`):
+        sticker (:class:`~pytdbot.types.ChatPhotoSticker`):
             Sticker\-based version of the chat photo; may be null
 
     """
@@ -8892,7 +8892,7 @@ class ChatPhotos(TlObject):
         total_count (:class:`int`):
             Total number of photos
 
-        photos (:class:`List["types.ChatPhoto"]`):
+        photos (List[:class:`~pytdbot.types.ChatPhoto`]):
             List of photos
 
     """
@@ -8971,7 +8971,7 @@ class InputChatPhotoStatic(TlObject, InputChatPhoto):
     r"""A static photo in JPEG format
 
     Parameters:
-        photo (:class:`"types.InputFile"`):
+        photo (:class:`~pytdbot.types.InputFile`):
             Photo to be set as profile photo\. Only inputFileLocal and inputFileGenerated are allowed
 
     """
@@ -9009,7 +9009,7 @@ class InputChatPhotoAnimation(TlObject, InputChatPhoto):
     r"""An animation in MPEG4 format; must be square, at most 10 seconds long, have width between 160 and 1280 and be at most 2MB in size
 
     Parameters:
-        animation (:class:`"types.InputFile"`):
+        animation (:class:`~pytdbot.types.InputFile`):
             Animation to be set as profile photo\. Only inputFileLocal and inputFileGenerated are allowed
 
         main_frame_timestamp (:class:`float`):
@@ -9059,7 +9059,7 @@ class InputChatPhotoSticker(TlObject, InputChatPhoto):
     r"""A sticker on a custom background
 
     Parameters:
-        sticker (:class:`"types.ChatPhotoSticker"`):
+        sticker (:class:`~pytdbot.types.ChatPhotoSticker`):
             Information about the sticker
 
     """
@@ -9639,13 +9639,13 @@ class SuggestedPostInfo(TlObject):
     r"""Contains information about a suggested post\. If the post can be approved or declined, then changes to the post can be also suggested\. Use sendMessage with reply to the message and suggested post information to suggest message changes\. Use addOffer to suggest price or time changes
 
     Parameters:
-        price (:class:`"types.SuggestedPostPrice"`):
+        price (:class:`~pytdbot.types.SuggestedPostPrice`):
             Price of the suggested post; may be null if the post is non\-paid
 
         send_date (:class:`int`):
             Point in time \(Unix timestamp\) when the post is expected to be published; 0 if the specific date isn't set yet
 
-        state (:class:`"types.SuggestedPostState"`):
+        state (:class:`~pytdbot.types.SuggestedPostState`):
             State of the post
 
         can_be_approved (:class:`bool`):
@@ -9718,7 +9718,7 @@ class InputSuggestedPostInfo(TlObject):
     r"""Contains information about a post to suggest
 
     Parameters:
-        price (:class:`"types.SuggestedPostPrice"`):
+        price (:class:`~pytdbot.types.SuggestedPostPrice`):
             Price of the suggested post; pass null to suggest a post without payment\. If the current user isn't an administrator of the channel direct messages chat and has no enough funds to pay for the post, then the error \"BALANCE\_TOO\_LOW\" will be returned immediately
 
         send_date (:class:`int`):
@@ -9922,7 +9922,7 @@ class StarSubscriptionTypeBot(TlObject, StarSubscriptionType):
         title (:class:`str`):
             Subscription invoice title
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Subscription invoice photo
 
         invoice_link (:class:`str`):
@@ -10043,10 +10043,10 @@ class StarSubscription(TlObject):
         is_expiring (:class:`bool`):
             True, if the subscription expires soon and there are no enough Telegram Stars on the user's balance to extend it
 
-        pricing (:class:`"types.StarSubscriptionPricing"`):
+        pricing (:class:`~pytdbot.types.StarSubscriptionPricing`):
             The subscription plan
 
-        type (:class:`"types.StarSubscriptionType"`):
+        type (:class:`~pytdbot.types.StarSubscriptionType`):
             Type of the subscription
 
     """
@@ -10120,10 +10120,10 @@ class StarSubscriptions(TlObject):
     r"""Represents a list of Telegram Star subscriptions
 
     Parameters:
-        star_amount (:class:`"types.StarAmount"`):
+        star_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of owned Telegram Stars
 
-        subscriptions (:class:`List["types.StarSubscription"]`):
+        subscriptions (List[:class:`~pytdbot.types.StarSubscription`]):
             List of subscriptions for Telegram Stars
 
         required_star_count (:class:`int`):
@@ -10420,13 +10420,13 @@ class AffiliateProgramInfo(TlObject):
     r"""Contains information about an active affiliate program
 
     Parameters:
-        parameters (:class:`"types.AffiliateProgramParameters"`):
+        parameters (:class:`~pytdbot.types.AffiliateProgramParameters`):
             Parameters of the affiliate program
 
         end_date (:class:`int`):
             Point in time \(Unix timestamp\) when the affiliate program will be closed; 0 if the affiliate program isn't scheduled to be closed\. If positive, then the program can't be connected using connectAffiliateProgram, but active connections will work until the date
 
-        daily_revenue_per_user_amount (:class:`"types.StarAmount"`):
+        daily_revenue_per_user_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of daily revenue per user in Telegram Stars of the bot that created the affiliate program
 
     """
@@ -10488,7 +10488,7 @@ class AffiliateInfo(TlObject):
         affiliate_chat_id (:class:`int`):
             Identifier of the chat which received the commission
 
-        star_amount (:class:`"types.StarAmount"`):
+        star_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of Telegram Stars that were received by the affiliate; can be negative for refunds
 
     """
@@ -10543,7 +10543,7 @@ class FoundAffiliateProgram(TlObject):
         bot_user_id (:class:`int`):
             User identifier of the bot created the program
 
-        info (:class:`"types.AffiliateProgramInfo"`):
+        info (:class:`~pytdbot.types.AffiliateProgramInfo`):
             Information about the affiliate program
 
     """
@@ -10589,7 +10589,7 @@ class FoundAffiliatePrograms(TlObject):
         total_count (:class:`int`):
             The total number of found affiliate programs
 
-        programs (:class:`List["types.FoundAffiliateProgram"]`):
+        programs (List[:class:`~pytdbot.types.FoundAffiliateProgram`]):
             The list of affiliate programs
 
         next_offset (:class:`str`):
@@ -10650,7 +10650,7 @@ class ConnectedAffiliateProgram(TlObject):
         bot_user_id (:class:`int`):
             User identifier of the bot created the program
 
-        parameters (:class:`"types.AffiliateProgramParameters"`):
+        parameters (:class:`~pytdbot.types.AffiliateProgramParameters`):
             The parameters of the affiliate program
 
         connection_date (:class:`int`):
@@ -10737,7 +10737,7 @@ class ConnectedAffiliatePrograms(TlObject):
         total_count (:class:`int`):
             The total number of affiliate programs that were connected to the affiliate
 
-        programs (:class:`List["types.ConnectedAffiliateProgram"]`):
+        programs (List[:class:`~pytdbot.types.ConnectedAffiliateProgram`]):
             The list of connected affiliate programs
 
         next_offset (:class:`str`):
@@ -10795,10 +10795,10 @@ class ProductInfo(TlObject):
         title (:class:`str`):
             Product title
 
-        description (:class:`"types.FormattedText"`):
+        description (:class:`~pytdbot.types.FormattedText`):
             Product description
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Product photo; may be null
 
     """
@@ -10862,7 +10862,7 @@ class PremiumPaymentOption(TlObject):
         store_product_id (:class:`str`):
             Identifier of the store product associated with the option
 
-        payment_link (:class:`"types.InternalLinkType"`):
+        payment_link (:class:`~pytdbot.types.InternalLinkType`):
             An internal link to be opened for buying Telegram Premium to the user if store payment isn't possible; may be null if direct payment isn't available
 
     """
@@ -10984,7 +10984,7 @@ class PremiumStatePaymentOption(TlObject):
     r"""Describes an option for buying or upgrading Telegram Premium for self
 
     Parameters:
-        payment_option (:class:`"types.PremiumPaymentOption"`):
+        payment_option (:class:`~pytdbot.types.PremiumPaymentOption`):
             Information about the payment option
 
         is_current (:class:`bool`):
@@ -11068,7 +11068,7 @@ class PremiumGiftPaymentOption(TlObject):
         store_product_id (:class:`str`):
             Identifier of the store product associated with the option
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             A sticker to be shown along with the option; may be null if unknown
 
     """
@@ -11140,7 +11140,7 @@ class PremiumGiftPaymentOptions(TlObject):
     r"""Contains a list of options for gifting Telegram Premium to a user
 
     Parameters:
-        options (:class:`List["types.PremiumGiftPaymentOption"]`):
+        options (List[:class:`~pytdbot.types.PremiumGiftPaymentOption`]):
             The list of options sorted by Telegram Premium subscription duration
 
     """
@@ -11260,7 +11260,7 @@ class PremiumGiveawayPaymentOptions(TlObject):
     r"""Contains a list of options for creating of Telegram Premium giveaway or manual distribution of Telegram Premium among chat members
 
     Parameters:
-        options (:class:`List["types.PremiumGiveawayPaymentOption"]`):
+        options (List[:class:`~pytdbot.types.PremiumGiveawayPaymentOption`]):
             The list of options
 
     """
@@ -11296,7 +11296,7 @@ class PremiumGiftCodeInfo(TlObject):
     r"""Contains information about a Telegram Premium gift code
 
     Parameters:
-        creator_id (:class:`"types.MessageSender"`):
+        creator_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of a chat or a user that created the gift code; may be null if unknown\. If null and the code is from messagePremiumGiftCode message, then creator\_id from the message can be used
 
         creation_date (:class:`int`):
@@ -11460,7 +11460,7 @@ class StarPaymentOptions(TlObject):
     r"""Contains a list of options for buying Telegram Stars
 
     Parameters:
-        options (:class:`List["types.StarPaymentOption"]`):
+        options (List[:class:`~pytdbot.types.StarPaymentOption`]):
             The list of options
 
     """
@@ -11566,7 +11566,7 @@ class StarGiveawayPaymentOption(TlObject):
         yearly_boost_count (:class:`int`):
             Number of times the chat will be boosted for one year if the option is chosen
 
-        winner_options (:class:`List["types.StarGiveawayWinnerOption"]`):
+        winner_options (List[:class:`~pytdbot.types.StarGiveawayWinnerOption`]):
             Allowed options for the number of giveaway winners
 
         is_default (:class:`bool`):
@@ -11649,7 +11649,7 @@ class StarGiveawayPaymentOptions(TlObject):
     r"""Contains a list of options for creating of Telegram Star giveaway
 
     Parameters:
-        options (:class:`List["types.StarGiveawayPaymentOption"]`):
+        options (List[:class:`~pytdbot.types.StarGiveawayPaymentOption`]):
             The list of options
 
     """
@@ -11754,7 +11754,7 @@ class GiftSettings(TlObject):
         show_gift_button (:class:`bool`):
             True, if a button for sending a gift to the user or by the user must always be shown in the input field
 
-        accepted_gift_types (:class:`"types.AcceptedGiftTypes"`):
+        accepted_gift_types (:class:`~pytdbot.types.AcceptedGiftTypes`):
             Types of gifts accepted by the user; for Telegram Premium users only
 
     """
@@ -11911,7 +11911,7 @@ class GiftCollection(TlObject):
         name (:class:`str`):
             Name of the collection
 
-        icon (:class:`"types.Sticker"`):
+        icon (:class:`~pytdbot.types.Sticker`):
             Icon of the collection; may be null if none
 
         gift_count (:class:`int`):
@@ -11967,7 +11967,7 @@ class GiftCollections(TlObject):
     r"""Contains a list of gift collections
 
     Parameters:
-        collections (:class:`List["types.GiftCollection"]`):
+        collections (List[:class:`~pytdbot.types.GiftCollection`]):
             List of gift collections
 
     """
@@ -12031,7 +12031,7 @@ class CanSendGiftResultFail(TlObject, CanSendGiftResult):
     r"""The gift can't be sent now by the current user
 
     Parameters:
-        reason (:class:`"types.FormattedText"`):
+        reason (:class:`~pytdbot.types.FormattedText`):
             Reason to be shown to the user
 
     """
@@ -12131,7 +12131,7 @@ class UpgradedGiftOriginResale(TlObject, UpgradedGiftOrigin):
     r"""The gift was bought from another user
 
     Parameters:
-        price (:class:`"types.GiftResalePrice"`):
+        price (:class:`~pytdbot.types.GiftResalePrice`):
             Price paid by the sender for the gift
 
     """
@@ -12226,7 +12226,7 @@ class UpgradedGiftModel(TlObject):
         name (:class:`str`):
             Name of the model
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The sticker representing the upgraded gift
 
         rarity_per_mille (:class:`int`):
@@ -12281,7 +12281,7 @@ class UpgradedGiftSymbol(TlObject):
         name (:class:`str`):
             Name of the symbol
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The sticker representing the symbol
 
         rarity_per_mille (:class:`int`):
@@ -12405,7 +12405,7 @@ class UpgradedGiftBackdrop(TlObject):
         name (:class:`str`):
             Name of the backdrop
 
-        colors (:class:`"types.UpgradedGiftBackdropColors"`):
+        colors (:class:`~pytdbot.types.UpgradedGiftBackdropColors`):
             Colors of the backdrop
 
         rarity_per_mille (:class:`int`):
@@ -12465,13 +12465,13 @@ class UpgradedGiftOriginalDetails(TlObject):
     r"""Describes the original details about the gift
 
     Parameters:
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or the chat that sent the gift; may be null if the gift was private
 
-        receiver_id (:class:`"types.MessageSender"`):
+        receiver_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or the chat that received the gift
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Message added to the gift
 
         date (:class:`int`):
@@ -12545,13 +12545,13 @@ class UpgradedGiftColors(TlObject):
         light_theme_accent_color (:class:`int`):
             Accent color to use in light themes in RGB format
 
-        light_theme_colors (:class:`List[int]`):
+        light_theme_colors (List[:class:`int`]):
             The list of 1\-3 colors in RGB format, describing the accent color, as expected to be shown in light themes
 
         dark_theme_accent_color (:class:`int`):
             Accent color to use in dark themes in RGB format
 
-        dark_theme_colors (:class:`List[int]`):
+        dark_theme_colors (List[:class:`int`]):
             The list of 1\-3 colors in RGB format, describing the accent color, as expected to be shown in dark themes
 
     """
@@ -12635,7 +12635,7 @@ class Gift(TlObject):
         publisher_chat_id (:class:`int`):
             Identifier of the chat that published the gift; 0 if none
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The sticker representing the gift
 
         star_count (:class:`int`):
@@ -12659,10 +12659,10 @@ class Gift(TlObject):
         next_send_date (:class:`int`):
             Point in time \(Unix timestamp\) when the gift can be sent next time by the current user; can be 0 or a date in the past\. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now
 
-        user_limits (:class:`"types.GiftPurchaseLimits"`):
+        user_limits (:class:`~pytdbot.types.GiftPurchaseLimits`):
             Number of times the gift can be purchased by the current user; may be null if not limited
 
-        overall_limits (:class:`"types.GiftPurchaseLimits"`):
+        overall_limits (:class:`~pytdbot.types.GiftPurchaseLimits`):
             Number of times the gift can be purchased all users; may be null if not limited
 
         first_send_date (:class:`int`):
@@ -12810,10 +12810,10 @@ class UpgradedGift(TlObject):
         used_theme_chat_id (:class:`int`):
             Identifier of the chat for which the gift is used to set a theme; 0 if none or the gift isn't owned by the current user
 
-        host_id (:class:`"types.MessageSender"`):
+        host_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or the chat to which the upgraded gift was assigned from blockchain; may be null if none or unknown
 
-        owner_id (:class:`"types.MessageSender"`):
+        owner_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or the chat that owns the upgraded gift; may be null if none or unknown
 
         owner_address (:class:`str`):
@@ -12825,22 +12825,22 @@ class UpgradedGift(TlObject):
         gift_address (:class:`str`):
             Address of the gift NFT in TON blockchain; may be empty if none\. Append the address to getOption\(\"ton\_blockchain\_explorer\_url\"\) to get a link with information about the address
 
-        model (:class:`"types.UpgradedGiftModel"`):
+        model (:class:`~pytdbot.types.UpgradedGiftModel`):
             Model of the upgraded gift
 
-        symbol (:class:`"types.UpgradedGiftSymbol"`):
+        symbol (:class:`~pytdbot.types.UpgradedGiftSymbol`):
             Symbol of the upgraded gift
 
-        backdrop (:class:`"types.UpgradedGiftBackdrop"`):
+        backdrop (:class:`~pytdbot.types.UpgradedGiftBackdrop`):
             Backdrop of the upgraded gift
 
-        original_details (:class:`"types.UpgradedGiftOriginalDetails"`):
+        original_details (:class:`~pytdbot.types.UpgradedGiftOriginalDetails`):
             Information about the originally sent gift; may be null if unknown
 
-        colors (:class:`"types.UpgradedGiftColors"`):
+        colors (:class:`~pytdbot.types.UpgradedGiftColors`):
             Colors that can be set for user's name, background of empty chat photo, replies to messages and link previews; may be null if none
 
-        resale_parameters (:class:`"types.GiftResaleParameters"`):
+        resale_parameters (:class:`~pytdbot.types.GiftResaleParameters`):
             Resale parameters of the gift; may be null if resale isn't possible
 
         value_currency (:class:`str`):
@@ -13159,7 +13159,7 @@ class UpgradeGiftResult(TlObject):
     r"""Contains result of gift upgrading
 
     Parameters:
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The upgraded gift
 
         received_gift_id (:class:`str`):
@@ -13269,7 +13269,7 @@ class AvailableGift(TlObject):
     r"""Describes a gift that is available for purchase
 
     Parameters:
-        gift (:class:`"types.Gift"`):
+        gift (:class:`~pytdbot.types.Gift`):
             The gift
 
         resale_count (:class:`int`):
@@ -13335,7 +13335,7 @@ class AvailableGifts(TlObject):
     r"""Contains a list of gifts that can be sent to another user or channel chat
 
     Parameters:
-        gifts (:class:`List["types.AvailableGift"]`):
+        gifts (List[:class:`~pytdbot.types.AvailableGift`]):
             The list of gifts
 
     """
@@ -13525,7 +13525,7 @@ class UpgradedGiftModelCount(TlObject):
     r"""Describes a model of an upgraded gift with the number of gifts found
 
     Parameters:
-        model (:class:`"types.UpgradedGiftModel"`):
+        model (:class:`~pytdbot.types.UpgradedGiftModel`):
             The model
 
         total_count (:class:`int`):
@@ -13571,7 +13571,7 @@ class UpgradedGiftSymbolCount(TlObject):
     r"""Describes a symbol shown on the pattern of an upgraded gift
 
     Parameters:
-        symbol (:class:`"types.UpgradedGiftSymbol"`):
+        symbol (:class:`~pytdbot.types.UpgradedGiftSymbol`):
             The symbol
 
         total_count (:class:`int`):
@@ -13617,7 +13617,7 @@ class UpgradedGiftBackdropCount(TlObject):
     r"""Describes a backdrop of an upgraded gift
 
     Parameters:
-        backdrop (:class:`"types.UpgradedGiftBackdrop"`):
+        backdrop (:class:`~pytdbot.types.UpgradedGiftBackdrop`):
             The backdrop
 
         total_count (:class:`int`):
@@ -13749,7 +13749,7 @@ class GiftForResale(TlObject):
     r"""Describes a gift available for resale
 
     Parameters:
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
         received_gift_id (:class:`str`):
@@ -13798,16 +13798,16 @@ class GiftsForResale(TlObject):
         total_count (:class:`int`):
             Total number of gifts found
 
-        gifts (:class:`List["types.GiftForResale"]`):
+        gifts (List[:class:`~pytdbot.types.GiftForResale`]):
             The gifts
 
-        models (:class:`List["types.UpgradedGiftModelCount"]`):
+        models (List[:class:`~pytdbot.types.UpgradedGiftModelCount`]):
             Available models; for searchGiftsForResale requests without offset and attributes only
 
-        symbols (:class:`List["types.UpgradedGiftSymbolCount"]`):
+        symbols (List[:class:`~pytdbot.types.UpgradedGiftSymbolCount`]):
             Available symbols; for searchGiftsForResale requests without offset and attributes only
 
-        backdrops (:class:`List["types.UpgradedGiftBackdropCount"]`):
+        backdrops (List[:class:`~pytdbot.types.UpgradedGiftBackdropCount`]):
             Available backdrops; for searchGiftsForResale requests without offset and attributes only
 
         next_offset (:class:`str`):
@@ -13905,7 +13905,7 @@ class GiftResaleResultPriceIncreased(TlObject, GiftResaleResult):
     r"""Operation has failed, because price has increased\. If the price has decreased, then the buying will succeed anyway
 
     Parameters:
-        price (:class:`"types.GiftResalePrice"`):
+        price (:class:`~pytdbot.types.GiftResalePrice`):
             New price for the gift
 
     """
@@ -13941,7 +13941,7 @@ class SentGiftRegular(TlObject, SentGift):
     r"""Regular gift
 
     Parameters:
-        gift (:class:`"types.Gift"`):
+        gift (:class:`~pytdbot.types.Gift`):
             The gift
 
     """
@@ -13977,7 +13977,7 @@ class SentGiftUpgraded(TlObject, SentGift):
     r"""Upgraded gift
 
     Parameters:
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
     """
@@ -14016,10 +14016,10 @@ class ReceivedGift(TlObject):
         received_gift_id (:class:`str`):
             Unique identifier of the received gift for the current user; only for the receiver of the gift
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of a user or a chat that sent the gift; may be null if unknown
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Message added to the gift
 
         is_private (:class:`bool`):
@@ -14043,10 +14043,10 @@ class ReceivedGift(TlObject):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the gift was sent
 
-        gift (:class:`"types.SentGift"`):
+        gift (:class:`~pytdbot.types.SentGift`):
             The gift
 
-        collection_ids (:class:`List[int]`):
+        collection_ids (List[:class:`int`]):
             Identifiers of collections to which the gift is added; only for the receiver of the gift
 
         sell_star_count (:class:`int`):
@@ -14224,7 +14224,7 @@ class ReceivedGifts(TlObject):
         total_count (:class:`int`):
             The total number of received gifts
 
-        gifts (:class:`List["types.ReceivedGift"]`):
+        gifts (List[:class:`~pytdbot.types.ReceivedGift`]):
             The list of gifts
 
         are_notifications_enabled (:class:`bool`):
@@ -14289,19 +14289,19 @@ class GiftUpgradePreview(TlObject):
     r"""Contains examples of possible upgraded gifts for the given regular gift
 
     Parameters:
-        models (:class:`List["types.UpgradedGiftModel"]`):
+        models (List[:class:`~pytdbot.types.UpgradedGiftModel`]):
             Examples of possible models that can be chosen for the gift after upgrade
 
-        symbols (:class:`List["types.UpgradedGiftSymbol"]`):
+        symbols (List[:class:`~pytdbot.types.UpgradedGiftSymbol`]):
             Examples of possible symbols that can be chosen for the gift after upgrade
 
-        backdrops (:class:`List["types.UpgradedGiftBackdrop"]`):
+        backdrops (List[:class:`~pytdbot.types.UpgradedGiftBackdrop`]):
             Examples of possible backdrops that can be chosen for the gift after upgrade
 
-        prices (:class:`List["types.GiftUpgradePrice"]`):
+        prices (List[:class:`~pytdbot.types.GiftUpgradePrice`]):
             Examples of price for gift upgrade from the maximum price to the minimum price
 
-        next_prices (:class:`List["types.GiftUpgradePrice"]`):
+        next_prices (List[:class:`~pytdbot.types.GiftUpgradePrice`]):
             Next changes for the price for gift upgrade with more granularity than in prices
 
     """
@@ -14538,7 +14538,7 @@ class StarTransactionTypeUserDeposit(TlObject, StarTransactionType):
         user_id (:class:`int`):
             Identifier of the user that gifted Telegram Stars; 0 if the user was anonymous
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The sticker to be shown in the transaction information; may be null if unknown
 
     """
@@ -14627,7 +14627,7 @@ class StarTransactionTypeFragmentWithdrawal(TlObject, StarTransactionType):
     r"""The transaction is a withdrawal of earned Telegram Stars to Fragment; for regular users, bots, supergroup and channel chats only
 
     Parameters:
-        withdrawal_state (:class:`"types.RevenueWithdrawalState"`):
+        withdrawal_state (:class:`~pytdbot.types.RevenueWithdrawalState`):
             State of the withdrawal; may be null for refunds from Fragment
 
     """
@@ -14741,7 +14741,7 @@ class StarTransactionTypeBotPaidMediaPurchase(TlObject, StarTransactionType):
         user_id (:class:`int`):
             Identifier of the bot or the business account user that sent the paid media
 
-        media (:class:`List["types.PaidMedia"]`):
+        media (List[:class:`~pytdbot.types.PaidMedia`]):
             The bought media if the transaction wasn't refunded
 
     """
@@ -14785,13 +14785,13 @@ class StarTransactionTypeBotPaidMediaSale(TlObject, StarTransactionType):
         user_id (:class:`int`):
             Identifier of the user that bought the media
 
-        media (:class:`List["types.PaidMedia"]`):
+        media (List[:class:`~pytdbot.types.PaidMedia`]):
             The bought media
 
         payload (:class:`str`):
             Bot\-provided payload
 
-        affiliate (:class:`"types.AffiliateInfo"`):
+        affiliate (:class:`~pytdbot.types.AffiliateInfo`):
             Information about the affiliate which received commission from the transaction; may be null if none
 
     """
@@ -14856,7 +14856,7 @@ class StarTransactionTypeChannelPaidMediaPurchase(TlObject, StarTransactionType)
         message_id (:class:`int`):
             Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message
 
-        media (:class:`List["types.PaidMedia"]`):
+        media (List[:class:`~pytdbot.types.PaidMedia`]):
             The bought media if the transaction wasn't refunded
 
     """
@@ -14913,7 +14913,7 @@ class StarTransactionTypeChannelPaidMediaSale(TlObject, StarTransactionType):
         message_id (:class:`int`):
             Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message
 
-        media (:class:`List["types.PaidMedia"]`):
+        media (List[:class:`~pytdbot.types.PaidMedia`]):
             The bought media
 
     """
@@ -14967,7 +14967,7 @@ class StarTransactionTypeBotInvoicePurchase(TlObject, StarTransactionType):
         user_id (:class:`int`):
             Identifier of the bot or the business account user that created the invoice
 
-        product_info (:class:`"types.ProductInfo"`):
+        product_info (:class:`~pytdbot.types.ProductInfo`):
             Information about the bought product
 
     """
@@ -15015,13 +15015,13 @@ class StarTransactionTypeBotInvoiceSale(TlObject, StarTransactionType):
         user_id (:class:`int`):
             Identifier of the user that bought the product
 
-        product_info (:class:`"types.ProductInfo"`):
+        product_info (:class:`~pytdbot.types.ProductInfo`):
             Information about the bought product
 
         invoice_payload (:class:`bytes`):
             Invoice payload
 
-        affiliate (:class:`"types.AffiliateInfo"`):
+        affiliate (:class:`~pytdbot.types.AffiliateInfo`):
             Information about the affiliate which received commission from the transaction; may be null if none
 
     """
@@ -15084,7 +15084,7 @@ class StarTransactionTypeBotSubscriptionPurchase(TlObject, StarTransactionType):
         subscription_period (:class:`int`):
             The number of seconds between consecutive Telegram Star debitings
 
-        product_info (:class:`"types.ProductInfo"`):
+        product_info (:class:`~pytdbot.types.ProductInfo`):
             Information about the bought subscription
 
     """
@@ -15144,13 +15144,13 @@ class StarTransactionTypeBotSubscriptionSale(TlObject, StarTransactionType):
         subscription_period (:class:`int`):
             The number of seconds between consecutive Telegram Star debitings
 
-        product_info (:class:`"types.ProductInfo"`):
+        product_info (:class:`~pytdbot.types.ProductInfo`):
             Information about the bought subscription
 
         invoice_payload (:class:`bytes`):
             Invoice payload
 
-        affiliate (:class:`"types.AffiliateInfo"`):
+        affiliate (:class:`~pytdbot.types.AffiliateInfo`):
             Information about the affiliate which received commission from the transaction; may be null if none
 
     """
@@ -15310,10 +15310,10 @@ class StarTransactionTypeGiftPurchase(TlObject, StarTransactionType):
     r"""The transaction is a purchase of a regular gift; for regular users and bots only
 
     Parameters:
-        owner_id (:class:`"types.MessageSender"`):
+        owner_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or the channel that received the gift
 
-        gift (:class:`"types.Gift"`):
+        gift (:class:`~pytdbot.types.Gift`):
             The gift
 
     """
@@ -15352,10 +15352,10 @@ class StarTransactionTypeGiftTransfer(TlObject, StarTransactionType):
     r"""The transaction is a transfer of an upgraded gift; for regular users only
 
     Parameters:
-        owner_id (:class:`"types.MessageSender"`):
+        owner_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or the channel that received the gift
 
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
     """
@@ -15396,10 +15396,10 @@ class StarTransactionTypeGiftOriginalDetailsDrop(TlObject, StarTransactionType):
     r"""The transaction is a drop of original details of an upgraded gift; for regular users only
 
     Parameters:
-        owner_id (:class:`"types.MessageSender"`):
+        owner_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or the channel that owns the gift
 
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
     """
@@ -15445,7 +15445,7 @@ class StarTransactionTypeGiftSale(TlObject, StarTransactionType):
         user_id (:class:`int`):
             Identifier of the user that sent the gift
 
-        gift (:class:`"types.Gift"`):
+        gift (:class:`~pytdbot.types.Gift`):
             The gift
 
     """
@@ -15487,7 +15487,7 @@ class StarTransactionTypeGiftUpgrade(TlObject, StarTransactionType):
         user_id (:class:`int`):
             Identifier of the user that initially sent the gift
 
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The upgraded gift
 
     """
@@ -15526,10 +15526,10 @@ class StarTransactionTypeGiftUpgradePurchase(TlObject, StarTransactionType):
     r"""The transaction is a purchase of an upgrade of a gift owned by another user or channel; for regular users only
 
     Parameters:
-        owner_id (:class:`"types.MessageSender"`):
+        owner_id (:class:`~pytdbot.types.MessageSender`):
             Owner of the upgraded gift
 
-        gift (:class:`"types.Gift"`):
+        gift (:class:`~pytdbot.types.Gift`):
             The gift
 
     """
@@ -15573,7 +15573,7 @@ class StarTransactionTypeUpgradedGiftPurchase(TlObject, StarTransactionType):
         user_id (:class:`int`):
             Identifier of the user that sold the gift
 
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
     """
@@ -15617,13 +15617,13 @@ class StarTransactionTypeUpgradedGiftSale(TlObject, StarTransactionType):
         user_id (:class:`int`):
             Identifier of the user that bought the gift
 
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
         commission_per_mille (:class:`int`):
             The number of Telegram Stars received by the Telegram for each 1000 Telegram Stars received by the seller of the gift
 
-        commission_star_amount (:class:`"types.StarAmount"`):
+        commission_star_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of Telegram Stars that were received by Telegram; can be negative for refunds
 
     """
@@ -15872,7 +15872,7 @@ class StarTransactionTypePaidMessageReceive(TlObject, StarTransactionType):
     r"""The transaction is a receiving of a paid message; for regular users, supergroup and channel chats only
 
     Parameters:
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the sender of the message
 
         message_count (:class:`int`):
@@ -15881,7 +15881,7 @@ class StarTransactionTypePaidMessageReceive(TlObject, StarTransactionType):
         commission_per_mille (:class:`int`):
             The number of Telegram Stars received by the Telegram for each 1000 Telegram Stars paid for message sending
 
-        commission_star_amount (:class:`"types.StarAmount"`):
+        commission_star_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of Telegram Stars that were received by Telegram; can be negative for refunds
 
     """
@@ -16022,7 +16022,7 @@ class StarTransactionTypePremiumPurchase(TlObject, StarTransactionType):
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             A sticker to be shown in the transaction information; may be null if unknown
 
     """
@@ -16208,7 +16208,7 @@ class StarTransaction(TlObject):
         id (:class:`str`):
             Unique identifier of the transaction
 
-        star_amount (:class:`"types.StarAmount"`):
+        star_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of added owned Telegram Stars; negative for outgoing transactions
 
         is_refund (:class:`bool`):
@@ -16217,7 +16217,7 @@ class StarTransaction(TlObject):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the transaction was completed
 
-        type (:class:`"types.StarTransactionType"`):
+        type (:class:`~pytdbot.types.StarTransactionType`):
             Type of the transaction
 
     """
@@ -16320,10 +16320,10 @@ class StarTransactions(TlObject):
     r"""Represents a list of Telegram Star transactions
 
     Parameters:
-        star_amount (:class:`"types.StarAmount"`):
+        star_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of owned Telegram Stars
 
-        transactions (:class:`List["types.StarTransaction"]`):
+        transactions (List[:class:`~pytdbot.types.StarTransaction`]):
             List of transactions with Telegram Stars
 
         next_offset (:class:`str`):
@@ -16381,7 +16381,7 @@ class TonTransactionTypeFragmentDeposit(TlObject, TonTransactionType):
         is_gift (:class:`bool`):
             True, if the transaction is a gift from another user
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The sticker to be shown in the transaction information; may be null if unknown
 
     """
@@ -16465,7 +16465,7 @@ class TonTransactionTypeUpgradedGiftPurchase(TlObject, TonTransactionType):
         user_id (:class:`int`):
             Identifier of the user that sold the gift
 
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
     """
@@ -16509,7 +16509,7 @@ class TonTransactionTypeUpgradedGiftSale(TlObject, TonTransactionType):
         user_id (:class:`int`):
             Identifier of the user that bought the gift
 
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
         commission_per_mille (:class:`int`):
@@ -16614,7 +16614,7 @@ class TonTransaction(TlObject):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the transaction was completed
 
-        type (:class:`"types.TonTransactionType"`):
+        type (:class:`~pytdbot.types.TonTransactionType`):
             Type of the transaction
 
     """
@@ -16686,7 +16686,7 @@ class TonTransactions(TlObject):
         ton_amount (:class:`int`):
             The total amount of owned Toncoins
 
-        transactions (:class:`List["types.TonTransaction"]`):
+        transactions (List[:class:`~pytdbot.types.TonTransaction`]):
             List of Toncoin transactions
 
         next_offset (:class:`str`):
@@ -16916,7 +16916,7 @@ class GiveawayInfoOngoing(TlObject, GiveawayInfo):
         creation_date (:class:`int`):
             Point in time \(Unix timestamp\) when the giveaway was created
 
-        status (:class:`"types.GiveawayParticipantStatus"`):
+        status (:class:`~pytdbot.types.GiveawayParticipantStatus`):
             Status of the current user in the giveaway
 
         is_ended (:class:`bool`):
@@ -17156,10 +17156,10 @@ class AccentColor(TlObject):
         built_in_accent_color_id (:class:`int`):
             Identifier of a built\-in color to use in places, where only one color is needed; 0\-6
 
-        light_theme_colors (:class:`List[int]`):
+        light_theme_colors (List[:class:`int`]):
             The list of 1\-3 colors in RGB format, describing the accent color, as expected to be shown in light themes
 
-        dark_theme_colors (:class:`List[int]`):
+        dark_theme_colors (List[:class:`int`]):
             The list of 1\-3 colors in RGB format, describing the accent color, as expected to be shown in dark themes
 
         min_channel_chat_boost_level (:class:`int`):
@@ -17228,13 +17228,13 @@ class ProfileAccentColors(TlObject):
     r"""Contains information about supported accent colors for user profile photo background in RGB format
 
     Parameters:
-        palette_colors (:class:`List[int]`):
+        palette_colors (List[:class:`int`]):
             The list of 1\-2 colors in RGB format, describing the colors, as expected to be shown in the color palette settings
 
-        background_colors (:class:`List[int]`):
+        background_colors (List[:class:`int`]):
             The list of 1\-2 colors in RGB format, describing the colors, as expected to be used for the profile photo background
 
-        story_colors (:class:`List[int]`):
+        story_colors (List[:class:`int`]):
             The list of 2 colors in RGB format, describing the colors of the gradient to be used for the unread active story indicator around profile photo
 
     """
@@ -17289,10 +17289,10 @@ class ProfileAccentColor(TlObject):
         id (:class:`int`):
             Profile accent color identifier
 
-        light_theme_colors (:class:`"types.ProfileAccentColors"`):
+        light_theme_colors (:class:`~pytdbot.types.ProfileAccentColors`):
             Accent colors expected to be used in light themes
 
-        dark_theme_colors (:class:`"types.ProfileAccentColors"`):
+        dark_theme_colors (:class:`~pytdbot.types.ProfileAccentColors`):
             Accent colors expected to be used in dark themes
 
         min_supergroup_chat_boost_level (:class:`int`):
@@ -17539,7 +17539,7 @@ class EmojiStatusTypeUpgradedGift(TlObject, EmojiStatusType):
         symbol_custom_emoji_id (:class:`int`):
             Custom emoji identifier of the symbol of the upgraded gift
 
-        backdrop_colors (:class:`"types.UpgradedGiftBackdropColors"`):
+        backdrop_colors (:class:`~pytdbot.types.UpgradedGiftBackdropColors`):
             Colors of the backdrop of the upgraded gift
 
     """
@@ -17608,7 +17608,7 @@ class EmojiStatus(TlObject):
     r"""Describes an emoji to be shown instead of the Telegram Premium badge
 
     Parameters:
-        type (:class:`"types.EmojiStatusType"`):
+        type (:class:`~pytdbot.types.EmojiStatusType`):
             Type of the emoji status
 
         expiration_date (:class:`int`):
@@ -17656,7 +17656,7 @@ class EmojiStatuses(TlObject):
     r"""Contains a list of emoji statuses
 
     Parameters:
-        emoji_statuses (:class:`List["types.EmojiStatus"]`):
+        emoji_statuses (List[:class:`~pytdbot.types.EmojiStatus`]):
             The list of emoji statuses identifiers
 
     """
@@ -17692,7 +17692,7 @@ class EmojiStatusCustomEmojis(TlObject):
     r"""Contains a list of custom emoji identifiers for emoji statuses
 
     Parameters:
-        custom_emoji_ids (:class:`List[int]`):
+        custom_emoji_ids (List[:class:`int`]):
             The list of custom emoji identifiers
 
     """
@@ -17728,10 +17728,10 @@ class Usernames(TlObject):
     r"""Describes usernames assigned to a user, a supergroup, or a channel
 
     Parameters:
-        active_usernames (:class:`List[str]`):
+        active_usernames (List[:class:`str`]):
             List of active usernames; the first one must be shown as the primary username\. The order of active usernames can be changed with reorderActiveUsernames, reorderBotActiveUsernames or reorderSupergroupActiveUsernames
 
-        disabled_usernames (:class:`List[str]`):
+        disabled_usernames (List[:class:`str`]):
             List of currently disabled usernames; the username can be activated with toggleUsernameIsActive, toggleBotUsernameIsActive, or toggleSupergroupUsernameIsActive
 
         editable_username (:class:`str`):
@@ -17795,16 +17795,16 @@ class User(TlObject):
         last_name (:class:`str`):
             Last name of the user
 
-        usernames (:class:`"types.Usernames"`):
+        usernames (:class:`~pytdbot.types.Usernames`):
             Usernames of the user; may be null
 
         phone_number (:class:`str`):
             Phone number of the user
 
-        status (:class:`"types.UserStatus"`):
+        status (:class:`~pytdbot.types.UserStatus`):
             Current online status of the user
 
-        profile_photo (:class:`"types.ProfilePhoto"`):
+        profile_photo (:class:`~pytdbot.types.ProfilePhoto`):
             Profile photo of the user; may be null
 
         accent_color_id (:class:`int`):
@@ -17813,7 +17813,7 @@ class User(TlObject):
         background_custom_emoji_id (:class:`int`):
             Identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none
 
-        upgraded_gift_colors (:class:`"types.UpgradedGiftColors"`):
+        upgraded_gift_colors (:class:`~pytdbot.types.UpgradedGiftColors`):
             Color scheme based on an upgraded gift to be used for the user instead of accent\_color\_id and background\_custom\_emoji\_id; may be null if none
 
         profile_accent_color_id (:class:`int`):
@@ -17822,7 +17822,7 @@ class User(TlObject):
         profile_background_custom_emoji_id (:class:`int`):
             Identifier of a custom emoji to be shown on the background of the user's profile; 0 if none
 
-        emoji_status (:class:`"types.EmojiStatus"`):
+        emoji_status (:class:`~pytdbot.types.EmojiStatus`):
             Emoji status to be shown instead of the default Telegram Premium badge; may be null
 
         is_contact (:class:`bool`):
@@ -17834,7 +17834,7 @@ class User(TlObject):
         is_close_friend (:class:`bool`):
             The user is a close friend of the current user; implies that the user is a contact
 
-        verification_status (:class:`"types.VerificationStatus"`):
+        verification_status (:class:`~pytdbot.types.VerificationStatus`):
             Information about verification status of the user; may be null if none
 
         is_premium (:class:`bool`):
@@ -17843,7 +17843,7 @@ class User(TlObject):
         is_support (:class:`bool`):
             True, if the user is Telegram support account
 
-        restriction_info (:class:`"types.RestrictionInfo"`):
+        restriction_info (:class:`~pytdbot.types.RestrictionInfo`):
             Information about restrictions that must be applied to the corresponding private chat; may be null if none
 
         has_active_stories (:class:`bool`):
@@ -17861,7 +17861,7 @@ class User(TlObject):
         have_access (:class:`bool`):
             If false, the user is inaccessible, and the only information known about the user is inside this class\. Identifier of the user can't be passed to any method
 
-        type (:class:`"types.UserType"`):
+        type (:class:`~pytdbot.types.UserType`):
             Type of the user
 
         language_code (:class:`str`):
@@ -18076,28 +18076,28 @@ class BotInfo(TlObject):
         description (:class:`str`):
             The text shown in the chat with the bot if the chat is empty
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Photo shown in the chat with the bot if the chat is empty; may be null
 
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             Animation shown in the chat with the bot if the chat is empty; may be null
 
-        menu_button (:class:`"types.BotMenuButton"`):
+        menu_button (:class:`~pytdbot.types.BotMenuButton`):
             Information about a button to show instead of the bot commands menu button; may be null if ordinary bot commands menu must be shown
 
-        commands (:class:`List["types.BotCommand"]`):
+        commands (List[:class:`~pytdbot.types.BotCommand`]):
             List of the bot commands
 
         privacy_policy_url (:class:`str`):
             The HTTP link to the privacy policy of the bot\. If empty, then /privacy command must be used if supported by the bot\. If the command isn't supported, then https://telegram\.org/privacy\-tpa must be opened
 
-        default_group_administrator_rights (:class:`"types.ChatAdministratorRights"`):
+        default_group_administrator_rights (:class:`~pytdbot.types.ChatAdministratorRights`):
             Default administrator rights for adding the bot to basic group and supergroup chats; may be null
 
-        default_channel_administrator_rights (:class:`"types.ChatAdministratorRights"`):
+        default_channel_administrator_rights (:class:`~pytdbot.types.ChatAdministratorRights`):
             Default administrator rights for adding the bot to channels; may be null
 
-        affiliate_program (:class:`"types.AffiliateProgramInfo"`):
+        affiliate_program (:class:`~pytdbot.types.AffiliateProgramInfo`):
             Information about the affiliate program of the bot; may be null if none
 
         web_app_background_light_color (:class:`int`):
@@ -18112,7 +18112,7 @@ class BotInfo(TlObject):
         web_app_header_dark_color (:class:`int`):
             Default dark header color for bot Web Apps; \-1 if not specified
 
-        verification_parameters (:class:`"types.BotVerificationParameters"`):
+        verification_parameters (:class:`~pytdbot.types.BotVerificationParameters`):
             Parameters of the verification that can be provided by the bot; may be null if none or the current user isn't the owner of the bot
 
         can_get_revenue_statistics (:class:`bool`):
@@ -18124,16 +18124,16 @@ class BotInfo(TlObject):
         has_media_previews (:class:`bool`):
             True, if the bot has media previews
 
-        edit_commands_link (:class:`"types.InternalLinkType"`):
+        edit_commands_link (:class:`~pytdbot.types.InternalLinkType`):
             The internal link, which can be used to edit bot commands; may be null
 
-        edit_description_link (:class:`"types.InternalLinkType"`):
+        edit_description_link (:class:`~pytdbot.types.InternalLinkType`):
             The internal link, which can be used to edit bot description; may be null
 
-        edit_description_media_link (:class:`"types.InternalLinkType"`):
+        edit_description_media_link (:class:`~pytdbot.types.InternalLinkType`):
             The internal link, which can be used to edit the photo or animation shown in the chat with the bot if the chat is empty; may be null
 
-        edit_settings_link (:class:`"types.InternalLinkType"`):
+        edit_settings_link (:class:`~pytdbot.types.InternalLinkType`):
             The internal link, which can be used to edit bot settings; may be null
 
     """
@@ -18526,16 +18526,16 @@ class UserFullInfo(TlObject):
     r"""Contains full information about a user
 
     Parameters:
-        personal_photo (:class:`"types.ChatPhoto"`):
+        personal_photo (:class:`~pytdbot.types.ChatPhoto`):
             User profile photo set by the current user for the contact; may be null\. If null and user\.profile\_photo is null, then the photo is empty; otherwise, it is unknown\. If non\-null, then it is the same photo as in user\.profile\_photo and chat\.photo\. This photo isn't returned in the list of user photos
 
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             User profile photo; may be null\. If null and user\.profile\_photo is null, then the photo is empty; otherwise, it is unknown\. If non\-null and personal\_photo is null, then it is the same photo as in user\.profile\_photo and chat\.photo
 
-        public_photo (:class:`"types.ChatPhoto"`):
+        public_photo (:class:`~pytdbot.types.ChatPhoto`):
             User profile photo visible if the main photo is hidden by privacy settings; may be null\. If null and user\.profile\_photo is null, then the photo is empty; otherwise, it is unknown\. If non\-null and both photo and personal\_photo are null, then it is the same photo as in user\.profile\_photo and chat\.photo\. This photo isn't returned in the list of user photos
 
-        block_list (:class:`"types.BlockList"`):
+        block_list (:class:`~pytdbot.types.BlockList`):
             Block list to which the user is added; may be null if none
 
         can_be_called (:class:`bool`):
@@ -18565,10 +18565,10 @@ class UserFullInfo(TlObject):
         set_chat_background (:class:`bool`):
             True, if the user set chat background for both chat users and it wasn't reverted yet
 
-        bio (:class:`"types.FormattedText"`):
+        bio (:class:`~pytdbot.types.FormattedText`):
             A short user bio; may be null for bots
 
-        birthdate (:class:`"types.Birthdate"`):
+        birthdate (:class:`~pytdbot.types.Birthdate`):
             Birthdate of the user; may be null if unknown
 
         personal_chat_id (:class:`int`):
@@ -18586,34 +18586,34 @@ class UserFullInfo(TlObject):
         outgoing_paid_message_star_count (:class:`int`):
             Number of Telegram Stars that must be paid by the current user for each sent message to the user
 
-        gift_settings (:class:`"types.GiftSettings"`):
+        gift_settings (:class:`~pytdbot.types.GiftSettings`):
             Settings for gift receiving for the user
 
-        bot_verification (:class:`"types.BotVerification"`):
+        bot_verification (:class:`~pytdbot.types.BotVerification`):
             Information about verification status of the user provided by a bot; may be null if none or unknown
 
-        main_profile_tab (:class:`"types.ProfileTab"`):
+        main_profile_tab (:class:`~pytdbot.types.ProfileTab`):
             The main tab chosen by the user; may be null if not chosen manually
 
-        first_profile_audio (:class:`"types.Audio"`):
+        first_profile_audio (:class:`~pytdbot.types.Audio`):
             The first audio file added to the user's profile; may be null if none
 
-        rating (:class:`"types.UserRating"`):
+        rating (:class:`~pytdbot.types.UserRating`):
             The current rating of the user; may be null if none
 
-        pending_rating (:class:`"types.UserRating"`):
+        pending_rating (:class:`~pytdbot.types.UserRating`):
             The rating of the user after the next change; may be null if the user isn't the current user or there are no pending rating changes
 
         pending_rating_date (:class:`int`):
             Unix timestamp when rating of the user will change to pending\_rating; 0 if the user isn't the current user or there are no pending rating changes
 
-        note (:class:`"types.FormattedText"`):
+        note (:class:`~pytdbot.types.FormattedText`):
             Note added to the user's contact; may be null if none
 
-        business_info (:class:`"types.BusinessInfo"`):
+        business_info (:class:`~pytdbot.types.BusinessInfo`):
             Information about business settings for Telegram Business accounts; may be null if none
 
-        bot_info (:class:`"types.BotInfo"`):
+        bot_info (:class:`~pytdbot.types.BotInfo`):
             For bots, information about the bot; may be null if the user isn't a bot
 
     """
@@ -18833,7 +18833,7 @@ class Users(TlObject):
         total_count (:class:`int`):
             Approximate total number of users found
 
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             A list of user identifiers
 
     """
@@ -18876,7 +18876,7 @@ class FoundUsers(TlObject):
     r"""Represents a list of found users
 
     Parameters:
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             Identifiers of the found users
 
         next_offset (:class:`str`):
@@ -18977,7 +18977,7 @@ class ChatAdministrators(TlObject):
     r"""Represents a list of chat administrators
 
     Parameters:
-        administrators (:class:`List["types.ChatAdministrator"]`):
+        administrators (List[:class:`~pytdbot.types.ChatAdministrator`]):
             A list of chat administrators
 
     """
@@ -19077,7 +19077,7 @@ class ChatMemberStatusAdministrator(TlObject, ChatMemberStatus):
         can_be_edited (:class:`bool`):
             True, if the current user can edit the administrator privileges for the called user
 
-        rights (:class:`"types.ChatAdministratorRights"`):
+        rights (:class:`~pytdbot.types.ChatAdministratorRights`):
             Rights of the administrator
 
     """
@@ -19171,7 +19171,7 @@ class ChatMemberStatusRestricted(TlObject, ChatMemberStatus):
         restricted_until_date (:class:`int`):
             Point in time \(Unix timestamp\) when restrictions will be lifted from the user; 0 if never\. If the user is restricted for more than 366 days or for less than 30 seconds from the current time, the user is considered to be restricted forever
 
-        permissions (:class:`"types.ChatPermissions"`):
+        permissions (:class:`~pytdbot.types.ChatPermissions`):
             User permissions in the chat
 
     """
@@ -19287,7 +19287,7 @@ class ChatMember(TlObject):
     r"""Describes a user or a chat as a member of another chat
 
     Parameters:
-        member_id (:class:`"types.MessageSender"`):
+        member_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the chat member\. Currently, other chats can be only Left or Banned\. Only supergroups and channels can have other chats as Left or Banned members and these chats must be supergroups or channels
 
         inviter_user_id (:class:`int`):
@@ -19296,7 +19296,7 @@ class ChatMember(TlObject):
         joined_chat_date (:class:`int`):
             Point in time \(Unix timestamp\) when the user joined/was promoted/was banned in the chat
 
-        status (:class:`"types.ChatMemberStatus"`):
+        status (:class:`~pytdbot.types.ChatMemberStatus`):
             Status of the member in the chat
 
     """
@@ -19364,7 +19364,7 @@ class ChatMembers(TlObject):
         total_count (:class:`int`):
             Approximate total number of chat members found
 
-        members (:class:`List["types.ChatMember"]`):
+        members (List[:class:`~pytdbot.types.ChatMember`]):
             A list of chat members
 
     """
@@ -19491,7 +19491,7 @@ class ChatMembersFilterMention(TlObject, ChatMembersFilter):
     r"""Returns users which can be mentioned in the chat
 
     Parameters:
-        topic_id (:class:`"types.MessageTopic"`):
+        topic_id (:class:`~pytdbot.types.MessageTopic`):
             Identifier of the topic in which the users will be mentioned; pass null if none
 
     """
@@ -19822,7 +19822,7 @@ class SupergroupMembersFilterMention(TlObject, SupergroupMembersFilter):
         query (:class:`str`):
             Query to search for
 
-        topic_id (:class:`"types.MessageTopic"`):
+        topic_id (:class:`~pytdbot.types.MessageTopic`):
             Identifier of the topic in which the users will be mentioned; pass null if none
 
     """
@@ -19913,7 +19913,7 @@ class ChatInviteLink(TlObject):
         expiration_date (:class:`int`):
             Point in time \(Unix timestamp\) when the link will expire; 0 if never
 
-        subscription_pricing (:class:`"types.StarSubscriptionPricing"`):
+        subscription_pricing (:class:`~pytdbot.types.StarSubscriptionPricing`):
             Information about subscription plan that is applied to the users joining the chat by the link; may be null if the link doesn't require subscription
 
         member_limit (:class:`int`):
@@ -20048,7 +20048,7 @@ class ChatInviteLinks(TlObject):
         total_count (:class:`int`):
             Approximate total number of chat invite links found
 
-        invite_links (:class:`List["types.ChatInviteLink"]`):
+        invite_links (List[:class:`~pytdbot.types.ChatInviteLink`]):
             List of invite links
 
     """
@@ -20153,7 +20153,7 @@ class ChatInviteLinkCounts(TlObject):
     r"""Contains a list of chat invite link counts
 
     Parameters:
-        invite_link_counts (:class:`List["types.ChatInviteLinkCount"]`):
+        invite_link_counts (List[:class:`~pytdbot.types.ChatInviteLinkCount`]):
             List of invite link counts
 
     """
@@ -20260,7 +20260,7 @@ class ChatInviteLinkMembers(TlObject):
         total_count (:class:`int`):
             Approximate total number of chat members found
 
-        members (:class:`List["types.ChatInviteLinkMember"]`):
+        members (List[:class:`~pytdbot.types.ChatInviteLinkMember`]):
             List of chat members, joined a chat via an invite link
 
     """
@@ -20389,7 +20389,7 @@ class ChatInviteLinkSubscriptionInfo(TlObject):
     r"""Contains information about subscription plan that must be paid by the user to use a chat invite link
 
     Parameters:
-        pricing (:class:`"types.StarSubscriptionPricing"`):
+        pricing (:class:`~pytdbot.types.StarSubscriptionPricing`):
             Information about subscription plan that must be paid by the user to use the link
 
         can_reuse (:class:`bool`):
@@ -20453,13 +20453,13 @@ class ChatInviteLinkInfo(TlObject):
         accessible_for (:class:`int`):
             If non\-zero, the amount of time for which read access to the chat will remain available, in seconds
 
-        type (:class:`"types.InviteLinkChatType"`):
+        type (:class:`~pytdbot.types.InviteLinkChatType`):
             Type of the chat
 
         title (:class:`str`):
             Title of the chat
 
-        photo (:class:`"types.ChatPhotoInfo"`):
+        photo (:class:`~pytdbot.types.ChatPhotoInfo`):
             Chat photo; may be null
 
         accent_color_id (:class:`int`):
@@ -20471,10 +20471,10 @@ class ChatInviteLinkInfo(TlObject):
         member_count (:class:`int`):
             Number of members in the chat
 
-        member_user_ids (:class:`List[int]`):
+        member_user_ids (List[:class:`int`]):
             User identifiers of some chat members that may be known to the current user
 
-        subscription_info (:class:`"types.ChatInviteLinkSubscriptionInfo"`):
+        subscription_info (:class:`~pytdbot.types.ChatInviteLinkSubscriptionInfo`):
             Information about subscription plan that must be paid by the user to use the link; may be null if the link doesn't require subscription
 
         creates_join_request (:class:`bool`):
@@ -20483,7 +20483,7 @@ class ChatInviteLinkInfo(TlObject):
         is_public (:class:`bool`):
             True, if the chat is a public supergroup or channel, i\.e\. it has a username or it is a location\-based supergroup
 
-        verification_status (:class:`"types.VerificationStatus"`):
+        verification_status (:class:`~pytdbot.types.VerificationStatus`):
             Information about verification status of the chat; may be null if none
 
     """
@@ -20648,7 +20648,7 @@ class ChatJoinRequests(TlObject):
         total_count (:class:`int`):
             Approximate total number of requests found
 
-        requests (:class:`List["types.ChatJoinRequest"]`):
+        requests (List[:class:`~pytdbot.types.ChatJoinRequest`]):
             List of the requests
 
     """
@@ -20696,7 +20696,7 @@ class ChatJoinRequestsInfo(TlObject):
         total_count (:class:`int`):
             Total number of pending join requests
 
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             Identifiers of at most 3 users sent the newest pending join requests
 
     """
@@ -20745,7 +20745,7 @@ class BasicGroup(TlObject):
         member_count (:class:`int`):
             Number of members in the group
 
-        status (:class:`"types.ChatMemberStatus"`):
+        status (:class:`~pytdbot.types.ChatMemberStatus`):
             Status of the current user in the group
 
         is_active (:class:`bool`):
@@ -20823,7 +20823,7 @@ class BasicGroupFullInfo(TlObject):
     r"""Contains full information about a basic group
 
     Parameters:
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             Chat photo; may be null if empty or unknown\. If non\-null, then it is the same photo as in chat\.photo
 
         description (:class:`str`):
@@ -20832,7 +20832,7 @@ class BasicGroupFullInfo(TlObject):
         creator_user_id (:class:`int`):
             User identifier of the creator of the group; 0 if unknown
 
-        members (:class:`List["types.ChatMember"]`):
+        members (List[:class:`~pytdbot.types.ChatMember`]):
             Group members
 
         can_hide_members (:class:`bool`):
@@ -20841,10 +20841,10 @@ class BasicGroupFullInfo(TlObject):
         can_toggle_aggressive_anti_spam (:class:`bool`):
             True, if aggressive anti\-spam checks can be enabled or disabled in the supergroup after upgrading the basic group to a supergroup
 
-        invite_link (:class:`"types.ChatInviteLink"`):
+        invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             Primary invite link for this group; may be null\. For chat administrators with can\_invite\_users right only\. Updated only after the basic group is opened
 
-        bot_commands (:class:`List["types.BotCommands"]`):
+        bot_commands (List[:class:`~pytdbot.types.BotCommands`]):
             List of commands of bots in the group
 
     """
@@ -20928,13 +20928,13 @@ class Supergroup(TlObject):
         id (:class:`int`):
             Supergroup or channel identifier
 
-        usernames (:class:`"types.Usernames"`):
+        usernames (:class:`~pytdbot.types.Usernames`):
             Usernames of the supergroup or channel; may be null
 
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the current user joined, or the point in time when the supergroup or channel was created, in case the user is not a member
 
-        status (:class:`"types.ChatMemberStatus"`):
+        status (:class:`~pytdbot.types.ChatMemberStatus`):
             Status of the current user in the supergroup or channel; custom title will always be empty
 
         member_count (:class:`int`):
@@ -20982,7 +20982,7 @@ class Supergroup(TlObject):
         is_administered_direct_messages_group (:class:`bool`):
             True, if the supergroup is a direct messages group for a channel chat that is administered by the current user
 
-        verification_status (:class:`"types.VerificationStatus"`):
+        verification_status (:class:`~pytdbot.types.VerificationStatus`):
             Information about verification status of the supergroup or channel; may be null if none
 
         has_direct_messages_group (:class:`bool`):
@@ -20991,7 +20991,7 @@ class Supergroup(TlObject):
         has_forum_tabs (:class:`bool`):
             True, if the supergroup is a forum, which topics are shown in the same way as in channel direct messages groups
 
-        restriction_info (:class:`"types.RestrictionInfo"`):
+        restriction_info (:class:`~pytdbot.types.RestrictionInfo`):
             Information about the restrictions that must be applied to the corresponding supergroup or channel chat; may be null if none
 
         paid_message_star_count (:class:`int`):
@@ -21189,7 +21189,7 @@ class SupergroupFullInfo(TlObject):
     r"""Contains full information about a supergroup or channel
 
     Parameters:
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             Chat photo; may be null if empty or unknown\. If non\-null, then it is the same photo as in chat\.photo
 
         description (:class:`str`):
@@ -21288,19 +21288,19 @@ class SupergroupFullInfo(TlObject):
         custom_emoji_sticker_set_id (:class:`int`):
             Identifier of the custom emoji sticker set that can be used in the supergroup without Telegram Premium subscription; 0 if none
 
-        location (:class:`"types.ChatLocation"`):
+        location (:class:`~pytdbot.types.ChatLocation`):
             Location to which the supergroup is connected; may be null if none
 
-        invite_link (:class:`"types.ChatInviteLink"`):
+        invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             Primary invite link for the chat; may be null\. For chat administrators with can\_invite\_users right only
 
-        bot_commands (:class:`List["types.BotCommands"]`):
+        bot_commands (List[:class:`~pytdbot.types.BotCommands`]):
             List of commands of bots in the group
 
-        bot_verification (:class:`"types.BotVerification"`):
+        bot_verification (:class:`~pytdbot.types.BotVerification`):
             Information about verification status of the supergroup or the channel provided by a bot; may be null if none or unknown
 
-        main_profile_tab (:class:`"types.ProfileTab"`):
+        main_profile_tab (:class:`~pytdbot.types.ProfileTab`):
             The main tab chosen by the administrators of the channel; may be null if not chosen manually
 
         upgraded_from_basic_group_id (:class:`int`):
@@ -21683,7 +21683,7 @@ class SecretChat(TlObject):
         user_id (:class:`int`):
             Identifier of the chat partner
 
-        state (:class:`"types.SecretChatState"`):
+        state (:class:`~pytdbot.types.SecretChatState`):
             State of the secret chat
 
         is_outbound (:class:`bool`):
@@ -21914,7 +21914,7 @@ class MessageSenders(TlObject):
         total_count (:class:`int`):
             Approximate total number of messages senders found
 
-        senders (:class:`List["types.MessageSender"]`):
+        senders (List[:class:`~pytdbot.types.MessageSender`]):
             List of message senders
 
     """
@@ -21959,7 +21959,7 @@ class ChatMessageSender(TlObject):
     r"""Represents a message sender, which can be used to send messages in a chat
 
     Parameters:
-        sender (:class:`"types.MessageSender"`):
+        sender (:class:`~pytdbot.types.MessageSender`):
             The message sender
 
         needs_premium (:class:`bool`):
@@ -22007,7 +22007,7 @@ class ChatMessageSenders(TlObject):
     r"""Represents a list of message senders, which can be used to send messages in a chat
 
     Parameters:
-        senders (:class:`List["types.ChatMessageSender"]`):
+        senders (List[:class:`~pytdbot.types.ChatMessageSender`]):
             List of available message senders
 
     """
@@ -22239,7 +22239,7 @@ class MessageViewers(TlObject):
     r"""Represents a list of message viewers
 
     Parameters:
-        viewers (:class:`List["types.MessageViewer"]`):
+        viewers (List[:class:`~pytdbot.types.MessageViewer`]):
             List of message viewers
 
     """
@@ -22454,7 +22454,7 @@ class ForwardSource(TlObject):
         message_id (:class:`int`):
             Identifier of the message; may be 0 if unknown
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the sender of the message; may be null if unknown or the new message was forwarded not to Saved Messages
 
         sender_name (:class:`str`):
@@ -22722,7 +22722,7 @@ class PaidReactor(TlObject):
     r"""Contains information about a user that added paid reactions
 
     Parameters:
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or chat that added the reactions; may be null for anonymous reactors that aren't the current user
 
         star_count (:class:`int`):
@@ -22796,13 +22796,13 @@ class MessageForwardInfo(TlObject):
     r"""Contains information about a forwarded message
 
     Parameters:
-        origin (:class:`"types.MessageOrigin"`):
+        origin (:class:`~pytdbot.types.MessageOrigin`):
             Origin of the forwarded message
 
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the message was originally sent
 
-        source (:class:`"types.ForwardSource"`):
+        source (:class:`~pytdbot.types.ForwardSource`):
             For messages forwarded to the chat with the current user \(Saved Messages\), to the Replies bot chat, or to the channel's discussion group, information about the source message from which the message was forwarded last time; may be null for other forwards or if unknown
 
         public_service_announcement_type (:class:`str`):
@@ -22921,7 +22921,7 @@ class MessageReplyInfo(TlObject):
         reply_count (:class:`int`):
             Number of times the message was directly or indirectly replied
 
-        recent_replier_ids (:class:`List["types.MessageSender"]`):
+        recent_replier_ids (List[:class:`~pytdbot.types.MessageSender`]):
             Identifiers of at most 3 recent repliers to the message; available in channels with a discussion supergroup\. The users and chats are expected to be inaccessible: only their photo and name will be available
 
         last_read_inbox_message_id (:class:`int`):
@@ -22996,7 +22996,7 @@ class MessageReaction(TlObject):
     r"""Contains information about a reaction to a message
 
     Parameters:
-        type (:class:`"types.ReactionType"`):
+        type (:class:`~pytdbot.types.ReactionType`):
             Type of the reaction
 
         total_count (:class:`int`):
@@ -23005,10 +23005,10 @@ class MessageReaction(TlObject):
         is_chosen (:class:`bool`):
             True, if the reaction is chosen by the current user
 
-        used_sender_id (:class:`"types.MessageSender"`):
+        used_sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the message sender used by the current user to add the reaction; may be null if unknown or the reaction isn't chosen
 
-        recent_sender_ids (:class:`List["types.MessageSender"]`):
+        recent_sender_ids (List[:class:`~pytdbot.types.MessageSender`]):
             Identifiers of at most 3 recent message senders, added the reaction; available in private, basic group and supergroup chats
 
     """
@@ -23074,13 +23074,13 @@ class MessageReactions(TlObject):
     r"""Contains a list of reactions added to a message
 
     Parameters:
-        reactions (:class:`List["types.MessageReaction"]`):
+        reactions (List[:class:`~pytdbot.types.MessageReaction`]):
             List of added reactions
 
         are_tags (:class:`bool`):
             True, if the reactions are tags and Telegram Premium users can filter messages by them
 
-        paid_reactors (:class:`List["types.PaidReactor"]`):
+        paid_reactors (List[:class:`~pytdbot.types.PaidReactor`]):
             Information about top users that added the paid reaction
 
         can_get_added_reactions (:class:`bool`):
@@ -23148,10 +23148,10 @@ class MessageInteractionInfo(TlObject):
         forward_count (:class:`int`):
             Number of times the message was forwarded
 
-        reply_info (:class:`"types.MessageReplyInfo"`):
+        reply_info (:class:`~pytdbot.types.MessageReplyInfo`):
             Information about direct or indirect replies to the message; may be null\. Currently, available only in channels with a discussion supergroup and discussion supergroups for messages, which are not replies itself
 
-        reactions (:class:`"types.MessageReactions"`):
+        reactions (:class:`~pytdbot.types.MessageReactions`):
             The list of reactions or tags added to the message; may be null
 
     """
@@ -23208,10 +23208,10 @@ class UnreadReaction(TlObject):
     r"""Contains information about an unread reaction to a message
 
     Parameters:
-        type (:class:`"types.ReactionType"`):
+        type (:class:`~pytdbot.types.ReactionType`):
             Type of the reaction
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the sender, added the reaction
 
         is_big (:class:`bool`):
@@ -23422,10 +23422,10 @@ class MessageEffectTypeEmojiReaction(TlObject, MessageEffectType):
     r"""An effect from an emoji reaction
 
     Parameters:
-        select_animation (:class:`"types.Sticker"`):
+        select_animation (:class:`~pytdbot.types.Sticker`):
             Select animation for the effect in TGS format
 
-        effect_animation (:class:`"types.Sticker"`):
+        effect_animation (:class:`~pytdbot.types.Sticker`):
             Effect animation for the effect in TGS format
 
     """
@@ -23470,7 +23470,7 @@ class MessageEffectTypePremiumSticker(TlObject, MessageEffectType):
     r"""An effect from a premium sticker
 
     Parameters:
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The premium sticker\. The effect can be found at sticker\.full\_type\.premium\_animation
 
     """
@@ -23509,7 +23509,7 @@ class MessageEffect(TlObject):
         id (:class:`int`):
             Unique identifier of the effect
 
-        static_icon (:class:`"types.Sticker"`):
+        static_icon (:class:`~pytdbot.types.Sticker`):
             Static icon for the effect in WEBP format; may be null if none
 
         emoji (:class:`str`):
@@ -23518,7 +23518,7 @@ class MessageEffect(TlObject):
         is_premium (:class:`bool`):
             True, if Telegram Premium subscription is required to use the effect
 
-        type (:class:`"types.MessageEffectType"`):
+        type (:class:`~pytdbot.types.MessageEffectType`):
             Type of the effect
 
     """
@@ -23618,7 +23618,7 @@ class MessageSendingStateFailed(TlObject, MessageSendingState):
     r"""The message failed to be sent
 
     Parameters:
-        error (:class:`"types.Error"`):
+        error (:class:`~pytdbot.types.Error`):
             The cause of the message sending failure
 
         can_retry (:class:`bool`):
@@ -23714,7 +23714,7 @@ class TextQuote(TlObject):
     r"""Describes manually or automatically chosen quote from another message
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text of the quote\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities can be present in the text
 
         position (:class:`int`):
@@ -23769,7 +23769,7 @@ class InputTextQuote(TlObject):
     r"""Describes manually chosen quote from another message
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text of the quote; 0\-getOption\(\"message\_reply\_quote\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed to be kept and must be kept in the quote
 
         position (:class:`int`):
@@ -23817,19 +23817,19 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
         message_id (:class:`int`):
             The identifier of the message; may be 0 if the replied message is in unknown chat
 
-        quote (:class:`"types.TextQuote"`):
+        quote (:class:`~pytdbot.types.TextQuote`):
             Chosen quote from the replied message; may be null if none
 
         checklist_task_id (:class:`int`):
             Identifier of the checklist task in the original message that was replied; 0 if none
 
-        origin (:class:`"types.MessageOrigin"`):
+        origin (:class:`~pytdbot.types.MessageOrigin`):
             Information about origin of the message if the message was from another chat or topic; may be null for messages from the same chat
 
         origin_send_date (:class:`int`):
             Point in time \(Unix timestamp\) when the message was sent if the message was from another chat or topic; 0 for messages from the same chat
 
-        content (:class:`"types.MessageContent"`):
+        content (:class:`~pytdbot.types.MessageContent`):
             Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote
 
     """
@@ -24048,7 +24048,7 @@ class InputMessageReplyToMessage(TlObject, InputMessageReplyTo):
         message_id (:class:`int`):
             The identifier of the message to be replied in the same chat and forum topic\. A message can be replied in the same chat and forum topic only if messageProperties\.can\_be\_replied
 
-        quote (:class:`"types.InputTextQuote"`):
+        quote (:class:`~pytdbot.types.InputTextQuote`):
             Quote from the message to be replied; pass null if none\. Must always be null for replies in secret chats
 
         checklist_task_id (:class:`int`):
@@ -24109,7 +24109,7 @@ class InputMessageReplyToExternalMessage(TlObject, InputMessageReplyTo):
         message_id (:class:`int`):
             The identifier of the message to be replied in the specified chat\. A message can be replied in another chat or forum topic only if messageProperties\.can\_be\_replied\_in\_another\_chat
 
-        quote (:class:`"types.InputTextQuote"`):
+        quote (:class:`~pytdbot.types.InputTextQuote`):
             Quote from the message to be replied; pass null if none
 
         checklist_task_id (:class:`int`):
@@ -24215,7 +24215,7 @@ class FactCheck(TlObject):
     r"""Describes a fact\-check added to the message by an independent checker
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text of the fact\-check
 
         country_code (:class:`str`):
@@ -24264,16 +24264,16 @@ class Message(TlObject, MessageBoundMethods):
         id (:class:`int`):
             Message identifier; unique for the chat to which the message belongs
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the sender of the message
 
         chat_id (:class:`int`):
             Chat identifier
 
-        sending_state (:class:`"types.MessageSendingState"`):
+        sending_state (:class:`~pytdbot.types.MessageSendingState`):
             The sending state of the message; may be null if the message isn't being sent and didn't fail to be sent
 
-        scheduling_state (:class:`"types.MessageSchedulingState"`):
+        scheduling_state (:class:`~pytdbot.types.MessageSchedulingState`):
             The scheduling state of the message; may be null if the message isn't scheduled
 
         is_outgoing (:class:`bool`):
@@ -24309,31 +24309,31 @@ class Message(TlObject, MessageBoundMethods):
         edit_date (:class:`int`):
             Point in time \(Unix timestamp\) when the message was last edited; 0 for scheduled messages
 
-        forward_info (:class:`"types.MessageForwardInfo"`):
+        forward_info (:class:`~pytdbot.types.MessageForwardInfo`):
             Information about the initial message sender; may be null if none or unknown
 
-        import_info (:class:`"types.MessageImportInfo"`):
+        import_info (:class:`~pytdbot.types.MessageImportInfo`):
             Information about the initial message for messages created with importMessages; may be null if the message isn't imported
 
-        interaction_info (:class:`"types.MessageInteractionInfo"`):
+        interaction_info (:class:`~pytdbot.types.MessageInteractionInfo`):
             Information about interactions with the message; may be null if none
 
-        unread_reactions (:class:`List["types.UnreadReaction"]`):
+        unread_reactions (List[:class:`~pytdbot.types.UnreadReaction`]):
             Information about unread reactions added to the message
 
-        fact_check (:class:`"types.FactCheck"`):
+        fact_check (:class:`~pytdbot.types.FactCheck`):
             Information about fact\-check added to the message; may be null if none
 
-        suggested_post_info (:class:`"types.SuggestedPostInfo"`):
+        suggested_post_info (:class:`~pytdbot.types.SuggestedPostInfo`):
             Information about the suggested post; may be null if the message isn't a suggested post
 
-        reply_to (:class:`"types.MessageReplyTo"`):
+        reply_to (:class:`~pytdbot.types.MessageReplyTo`):
             Information about the message or the story this message is replying to; may be null if none
 
-        topic_id (:class:`"types.MessageTopic"`):
+        topic_id (:class:`~pytdbot.types.MessageTopic`):
             Identifier of the topic within the chat to which the message belongs; may be null if none
 
-        self_destruct_type (:class:`"types.MessageSelfDestructType"`):
+        self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`):
             The message's self\-destruct type; may be null if none
 
         self_destruct_in (:class:`float`):
@@ -24363,13 +24363,13 @@ class Message(TlObject, MessageBoundMethods):
         effect_id (:class:`int`):
             Unique identifier of the effect added to the message; 0 if none
 
-        restriction_info (:class:`"types.RestrictionInfo"`):
+        restriction_info (:class:`~pytdbot.types.RestrictionInfo`):
             Information about the restrictions that must be applied to the message content; may be null if none
 
-        content (:class:`"types.MessageContent"`):
+        content (:class:`~pytdbot.types.MessageContent`):
             Content of the message
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             Reply markup for the message; may be null if none
 
     """
@@ -24719,7 +24719,7 @@ class Messages(TlObject):
         total_count (:class:`int`):
             Approximate total number of messages found
 
-        messages (:class:`List["types.Message"]`):
+        messages (List[:class:`~pytdbot.types.Message`]):
             List of messages; messages may be null
 
     """
@@ -24765,7 +24765,7 @@ class FoundMessages(TlObject):
         total_count (:class:`int`):
             Approximate total number of messages found; \-1 if unknown
 
-        messages (:class:`List["types.Message"]`):
+        messages (List[:class:`~pytdbot.types.Message`]):
             List of messages
 
         next_offset (:class:`str`):
@@ -24823,7 +24823,7 @@ class FoundChatMessages(TlObject):
         total_count (:class:`int`):
             Approximate total number of messages found; \-1 if unknown
 
-        messages (:class:`List["types.Message"]`):
+        messages (List[:class:`~pytdbot.types.Message`]):
             List of messages
 
         next_from_message_id (:class:`int`):
@@ -24878,13 +24878,13 @@ class FoundPublicPosts(TlObject):
     r"""Contains a list of messages found by a public post search
 
     Parameters:
-        messages (:class:`List["types.Message"]`):
+        messages (List[:class:`~pytdbot.types.Message`]):
             List of found public posts
 
         next_offset (:class:`str`):
             The offset for the next request\. If empty, then there are no more results
 
-        search_limits (:class:`"types.PublicPostSearchLimits"`):
+        search_limits (:class:`~pytdbot.types.PublicPostSearchLimits`):
             Updated public post search limits after the query; repeated requests with the same query will be free; may be null if they didn't change
 
         are_limits_exceeded (:class:`bool`):
@@ -25000,7 +25000,7 @@ class MessagePositions(TlObject):
         total_count (:class:`int`):
             Total number of messages found
 
-        positions (:class:`List["types.MessagePosition"]`):
+        positions (List[:class:`~pytdbot.types.MessagePosition`]):
             List of message positions
 
     """
@@ -25048,7 +25048,7 @@ class MessageCalendarDay(TlObject):
         total_count (:class:`int`):
             Total number of found messages sent on the day
 
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             First message sent on the day
 
     """
@@ -25094,7 +25094,7 @@ class MessageCalendar(TlObject):
         total_count (:class:`int`):
             Total number of found messages
 
-        days (:class:`List["types.MessageCalendarDay"]`):
+        days (List[:class:`~pytdbot.types.MessageCalendarDay`]):
             Information about messages sent
 
     """
@@ -25139,10 +25139,10 @@ class BusinessMessage(TlObject):
     r"""Describes a message from a business account as received by a bot
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             The message
 
-        reply_to_message (:class:`"types.Message"`):
+        reply_to_message (:class:`~pytdbot.types.Message`):
             Message that is replied by the message in the same chat; may be null if none
 
     """
@@ -25187,7 +25187,7 @@ class BusinessMessages(TlObject):
     r"""Contains a list of messages from a business account as received by a bot
 
     Parameters:
-        messages (:class:`List["types.BusinessMessage"]`):
+        messages (List[:class:`~pytdbot.types.BusinessMessage`]):
             List of business messages
 
     """
@@ -25536,7 +25536,7 @@ class AdvertisementSponsor(TlObject):
         url (:class:`str`):
             URL of the sponsor to be opened when the advertisement is clicked
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Photo of the sponsor; may be null if must not be shown
 
         info (:class:`str`):
@@ -25595,10 +25595,10 @@ class SponsoredMessage(TlObject):
         can_be_reported (:class:`bool`):
             True, if the message can be reported to Telegram moderators through reportChatSponsoredMessage
 
-        content (:class:`"types.MessageContent"`):
+        content (:class:`~pytdbot.types.MessageContent`):
             Content of the message\. Currently, can be only of the types messageText, messageAnimation, messagePhoto, or messageVideo\. Video messages can be viewed fullscreen
 
-        sponsor (:class:`"types.AdvertisementSponsor"`):
+        sponsor (:class:`~pytdbot.types.AdvertisementSponsor`):
             Information about the sponsor of the message
 
         title (:class:`str`):
@@ -25794,7 +25794,7 @@ class SponsoredMessages(TlObject):
     r"""Contains a list of sponsored messages
 
     Parameters:
-        messages (:class:`List["types.SponsoredMessage"]`):
+        messages (List[:class:`~pytdbot.types.SponsoredMessage`]):
             List of sponsored messages
 
         messages_between (:class:`int`):
@@ -25908,7 +25908,7 @@ class SponsoredChats(TlObject):
     r"""Contains a list of sponsored chats
 
     Parameters:
-        chats (:class:`List["types.SponsoredChat"]`):
+        chats (List[:class:`~pytdbot.types.SponsoredChat`]):
             List of sponsored chats
 
     """
@@ -25959,7 +25959,7 @@ class VideoMessageAdvertisement(TlObject):
         can_be_reported (:class:`bool`):
             True, if the advertisement can be reported to Telegram moderators through reportVideoMessageAdvertisement
 
-        sponsor (:class:`"types.AdvertisementSponsor"`):
+        sponsor (:class:`~pytdbot.types.AdvertisementSponsor`):
             Information about the sponsor of the advertisement
 
         title (:class:`str`):
@@ -26042,7 +26042,7 @@ class VideoMessageAdvertisements(TlObject):
     r"""Contains a list of advertisements to be shown while a video from a message is watched
 
     Parameters:
-        advertisements (:class:`List["types.VideoMessageAdvertisement"]`):
+        advertisements (List[:class:`~pytdbot.types.VideoMessageAdvertisement`]):
             List of advertisements
 
         start_delay (:class:`int`):
@@ -26201,7 +26201,7 @@ class ReportSponsoredResultOptionRequired(TlObject, ReportSponsoredResult):
         title (:class:`str`):
             Title for the option choice
 
-        options (:class:`List["types.ReportOption"]`):
+        options (List[:class:`~pytdbot.types.ReportOption`]):
             List of available options
 
     """
@@ -26303,7 +26303,7 @@ class FileDownload(TlObject):
         file_id (:class:`int`):
             File identifier
 
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             The message with the file
 
         add_date (:class:`int`):
@@ -26429,10 +26429,10 @@ class FoundFileDownloads(TlObject):
     r"""Contains a list of downloaded files, found by a search
 
     Parameters:
-        total_counts (:class:`"types.DownloadedFileCounts"`):
+        total_counts (:class:`~pytdbot.types.DownloadedFileCounts`):
             Total number of suitable files, ignoring offset
 
-        files (:class:`List["types.FileDownload"]`):
+        files (List[:class:`~pytdbot.types.FileDownload`]):
             The list of files
 
         next_offset (:class:`str`):
@@ -26959,10 +26959,10 @@ class ReactionNotificationSettings(TlObject):
     r"""Contains information about notification settings for reactions
 
     Parameters:
-        message_reaction_source (:class:`"types.ReactionNotificationSource"`):
+        message_reaction_source (:class:`~pytdbot.types.ReactionNotificationSource`):
             Source of message reactions for which notifications are shown
 
-        story_reaction_source (:class:`"types.ReactionNotificationSource"`):
+        story_reaction_source (:class:`~pytdbot.types.ReactionNotificationSource`):
             Source of story reactions for which notifications are shown
 
         sound_id (:class:`int`):
@@ -27037,19 +27037,19 @@ class DraftMessage(TlObject):
     r"""Contains information about a message draft
 
     Parameters:
-        reply_to (:class:`"types.InputMessageReplyTo"`):
+        reply_to (:class:`~pytdbot.types.InputMessageReplyTo`):
             Information about the message to be replied; inputMessageReplyToStory is unsupported; may be null if none
 
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the draft was created
 
-        input_message_text (:class:`"types.InputMessageContent"`):
+        input_message_text (:class:`~pytdbot.types.InputMessageContent`):
             Content of the message draft; must be of the type inputMessageText, inputMessageVideoNote, or inputMessageVoiceNote
 
         effect_id (:class:`int`):
             Identifier of the effect to apply to the message when it is sent; 0 if none
 
-        suggested_post_info (:class:`"types.InputSuggestedPostInfo"`):
+        suggested_post_info (:class:`~pytdbot.types.InputSuggestedPostInfo`):
             Information about the suggested post; may be null if none
 
     """
@@ -27340,7 +27340,7 @@ class ChatFolderName(TlObject):
     r"""Describes name of a chat folder
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             The text of the chat folder name; 1\-12 characters without line feeds\. May contain only CustomEmoji entities
 
         animate_custom_emoji (:class:`bool`):
@@ -27388,10 +27388,10 @@ class ChatFolder(TlObject):
     r"""Represents a folder for user chats
 
     Parameters:
-        name (:class:`"types.ChatFolderName"`):
+        name (:class:`~pytdbot.types.ChatFolderName`):
             The name of the folder
 
-        icon (:class:`"types.ChatFolderIcon"`):
+        icon (:class:`~pytdbot.types.ChatFolderIcon`):
             The chosen icon for the chat folder; may be null\. If null, use getChatFolderDefaultIconName to get default icon name for the folder
 
         color_id (:class:`int`):
@@ -27400,13 +27400,13 @@ class ChatFolder(TlObject):
         is_shareable (:class:`bool`):
             True, if at least one link has been created for the folder
 
-        pinned_chat_ids (:class:`List[int]`):
+        pinned_chat_ids (List[:class:`int`]):
             The chat identifiers of pinned chats in the folder\. There can be up to getOption\(\"chat\_folder\_chosen\_chat\_count\_max\"\) pinned and always included non\-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium
 
-        included_chat_ids (:class:`List[int]`):
+        included_chat_ids (List[:class:`int`]):
             The chat identifiers of always included chats in the folder\. There can be up to getOption\(\"chat\_folder\_chosen\_chat\_count\_max\"\) pinned and always included non\-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium
 
-        excluded_chat_ids (:class:`List[int]`):
+        excluded_chat_ids (List[:class:`int`]):
             The chat identifiers of always excluded chats in the folder\. There can be up to getOption\(\"chat\_folder\_chosen\_chat\_count\_max\"\) always excluded non\-secret chats and the same number of secret chats, but the limit can be increased with Telegram Premium
 
         exclude_muted (:class:`bool`):
@@ -27545,10 +27545,10 @@ class ChatFolderInfo(TlObject):
         id (:class:`int`):
             Unique chat folder identifier
 
-        name (:class:`"types.ChatFolderName"`):
+        name (:class:`~pytdbot.types.ChatFolderName`):
             The name of the folder
 
-        icon (:class:`"types.ChatFolderIcon"`):
+        icon (:class:`~pytdbot.types.ChatFolderIcon`):
             The chosen or default icon for the chat folder
 
         color_id (:class:`int`):
@@ -27630,7 +27630,7 @@ class ChatFolderInviteLink(TlObject):
         name (:class:`str`):
             Name of the link
 
-        chat_ids (:class:`List[int]`):
+        chat_ids (List[:class:`int`]):
             Identifiers of chats, included in the link
 
     """
@@ -27679,7 +27679,7 @@ class ChatFolderInviteLinks(TlObject):
     r"""Represents a list of chat folder invite links
 
     Parameters:
-        invite_links (:class:`List["types.ChatFolderInviteLink"]`):
+        invite_links (List[:class:`~pytdbot.types.ChatFolderInviteLink`]):
             List of the invite links
 
     """
@@ -27715,13 +27715,13 @@ class ChatFolderInviteLinkInfo(TlObject):
     r"""Contains information about an invite link to a chat folder
 
     Parameters:
-        chat_folder_info (:class:`"types.ChatFolderInfo"`):
+        chat_folder_info (:class:`~pytdbot.types.ChatFolderInfo`):
             Basic information about the chat folder; chat folder identifier will be 0 if the user didn't have the chat folder yet
 
-        missing_chat_ids (:class:`List[int]`):
+        missing_chat_ids (List[:class:`int`]):
             Identifiers of the chats from the link, which aren't added to the folder yet
 
-        added_chat_ids (:class:`List[int]`):
+        added_chat_ids (List[:class:`int`]):
             Identifiers of the chats from the link, which are added to the folder already
 
     """
@@ -27773,7 +27773,7 @@ class RecommendedChatFolder(TlObject):
     r"""Describes a recommended chat folder
 
     Parameters:
-        folder (:class:`"types.ChatFolder"`):
+        folder (:class:`~pytdbot.types.ChatFolder`):
             The chat folder
 
         description (:class:`str`):
@@ -27819,7 +27819,7 @@ class RecommendedChatFolders(TlObject):
     r"""Contains a list of recommended chat folders
 
     Parameters:
-        chat_folders (:class:`List["types.RecommendedChatFolder"]`):
+        chat_folders (List[:class:`~pytdbot.types.RecommendedChatFolder`]):
             List of recommended chat folders
 
     """
@@ -28015,7 +28015,7 @@ class ChatLists(TlObject):
     r"""Contains a list of chat lists
 
     Parameters:
-        chat_lists (:class:`List["types.ChatList"]`):
+        chat_lists (List[:class:`~pytdbot.types.ChatList`]):
             List of chat lists
 
     """
@@ -28123,7 +28123,7 @@ class ChatPosition(TlObject):
     r"""Describes a position of a chat in a chat list
 
     Parameters:
-        list (:class:`"types.ChatList"`):
+        list (:class:`~pytdbot.types.ChatList`):
             The chat list
 
         order (:class:`int`):
@@ -28132,7 +28132,7 @@ class ChatPosition(TlObject):
         is_pinned (:class:`bool`):
             True, if the chat is pinned in the chat list
 
-        source (:class:`"types.ChatSource"`):
+        source (:class:`~pytdbot.types.ChatSource`):
             Source of the chat in the chat list; may be null
 
     """
@@ -28227,7 +28227,7 @@ class ChatAvailableReactionsSome(TlObject, ChatAvailableReactions):
     r"""Only specific reactions are available in the chat
 
     Parameters:
-        reactions (:class:`List["types.ReactionType"]`):
+        reactions (List[:class:`~pytdbot.types.ReactionType`]):
             The list of reactions
 
         max_reaction_count (:class:`int`):
@@ -28275,7 +28275,7 @@ class SavedMessagesTag(TlObject):
     r"""Represents a tag used in Saved Messages or a Saved Messages topic
 
     Parameters:
-        tag (:class:`"types.ReactionType"`):
+        tag (:class:`~pytdbot.types.ReactionType`):
             The tag
 
         label (:class:`str`):
@@ -28332,7 +28332,7 @@ class SavedMessagesTags(TlObject):
     r"""Contains a list of tags used in Saved Messages
 
     Parameters:
-        tags (:class:`List["types.SavedMessagesTag"]`):
+        tags (List[:class:`~pytdbot.types.SavedMessagesTag`]):
             List of tags
 
     """
@@ -28440,7 +28440,7 @@ class VideoChat(TlObject):
         has_participants (:class:`bool`):
             True, if the video chat has participants
 
-        default_participant_id (:class:`"types.MessageSender"`):
+        default_participant_id (:class:`~pytdbot.types.MessageSender`):
             Default group call participant identifier to join the video chat; may be null
 
     """
@@ -28497,13 +28497,13 @@ class Chat(TlObject):
         id (:class:`int`):
             Chat unique identifier
 
-        type (:class:`"types.ChatType"`):
+        type (:class:`~pytdbot.types.ChatType`):
             Type of the chat
 
         title (:class:`str`):
             Chat title
 
-        photo (:class:`"types.ChatPhotoInfo"`):
+        photo (:class:`~pytdbot.types.ChatPhotoInfo`):
             Chat photo; may be null
 
         accent_color_id (:class:`int`):
@@ -28512,7 +28512,7 @@ class Chat(TlObject):
         background_custom_emoji_id (:class:`int`):
             Identifier of a custom emoji to be shown on the reply header and link preview background for messages sent by the chat; 0 if none
 
-        upgraded_gift_colors (:class:`"types.UpgradedGiftColors"`):
+        upgraded_gift_colors (:class:`~pytdbot.types.UpgradedGiftColors`):
             Color scheme based on an upgraded gift to be used for the chat instead of accent\_color\_id and background\_custom\_emoji\_id; may be null if none
 
         profile_accent_color_id (:class:`int`):
@@ -28521,22 +28521,22 @@ class Chat(TlObject):
         profile_background_custom_emoji_id (:class:`int`):
             Identifier of a custom emoji to be shown on the background of the chat's profile; 0 if none
 
-        permissions (:class:`"types.ChatPermissions"`):
+        permissions (:class:`~pytdbot.types.ChatPermissions`):
             Actions that non\-administrator chat members are allowed to take in the chat
 
-        last_message (:class:`"types.Message"`):
+        last_message (:class:`~pytdbot.types.Message`):
             Last message in the chat; may be null if none or unknown
 
-        positions (:class:`List["types.ChatPosition"]`):
+        positions (List[:class:`~pytdbot.types.ChatPosition`]):
             Positions of the chat in chat lists
 
-        chat_lists (:class:`List["types.ChatList"]`):
+        chat_lists (List[:class:`~pytdbot.types.ChatList`]):
             Chat lists to which the chat belongs\. A chat can have a non\-zero position in a chat list even if it doesn't belong to the chat list and have no position in a chat list even if it belongs to the chat list
 
-        message_sender_id (:class:`"types.MessageSender"`):
+        message_sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of a user or chat that is selected to send messages in the chat; may be null if the user can't change message sender
 
-        block_list (:class:`"types.BlockList"`):
+        block_list (:class:`~pytdbot.types.BlockList`):
             Block list to which the chat is added; may be null if none
 
         has_protected_content (:class:`bool`):
@@ -28581,40 +28581,40 @@ class Chat(TlObject):
         unread_reaction_count (:class:`int`):
             Number of messages with unread reactions in the chat
 
-        notification_settings (:class:`"types.ChatNotificationSettings"`):
+        notification_settings (:class:`~pytdbot.types.ChatNotificationSettings`):
             Notification settings for the chat
 
-        available_reactions (:class:`"types.ChatAvailableReactions"`):
+        available_reactions (:class:`~pytdbot.types.ChatAvailableReactions`):
             Types of reaction, available in the chat
 
         message_auto_delete_time (:class:`int`):
             Current message auto\-delete or self\-destruct timer setting for the chat, in seconds; 0 if disabled\. Self\-destruct timer in secret chats starts after the message or its content is viewed\. Auto\-delete timer in other chats starts from the send date
 
-        emoji_status (:class:`"types.EmojiStatus"`):
+        emoji_status (:class:`~pytdbot.types.EmojiStatus`):
             Emoji status to be shown along with chat title; may be null
 
-        background (:class:`"types.ChatBackground"`):
+        background (:class:`~pytdbot.types.ChatBackground`):
             Background set for the chat; may be null if none
 
-        theme (:class:`"types.ChatTheme"`):
+        theme (:class:`~pytdbot.types.ChatTheme`):
             Theme set for the chat; may be null if none
 
-        action_bar (:class:`"types.ChatActionBar"`):
+        action_bar (:class:`~pytdbot.types.ChatActionBar`):
             Information about actions which must be possible to do through the chat action bar; may be null if none
 
-        business_bot_manage_bar (:class:`"types.BusinessBotManageBar"`):
+        business_bot_manage_bar (:class:`~pytdbot.types.BusinessBotManageBar`):
             Information about bar for managing a business bot in the chat; may be null if none
 
-        video_chat (:class:`"types.VideoChat"`):
+        video_chat (:class:`~pytdbot.types.VideoChat`):
             Information about video chat of the chat
 
-        pending_join_requests (:class:`"types.ChatJoinRequestsInfo"`):
+        pending_join_requests (:class:`~pytdbot.types.ChatJoinRequestsInfo`):
             Information about pending join requests; may be null if none
 
         reply_markup_message_id (:class:`int`):
             Identifier of the message from which reply markup needs to be used; 0 if there is no default custom reply markup in the chat
 
-        draft_message (:class:`"types.DraftMessage"`):
+        draft_message (:class:`~pytdbot.types.DraftMessage`):
             A draft of a message in the chat; may be null if none
 
         client_data (:class:`str`):
@@ -28919,7 +28919,7 @@ class Chats(TlObject):
         total_count (:class:`int`):
             Approximate total number of chats found
 
-        chat_ids (:class:`List[int]`):
+        chat_ids (List[:class:`int`]):
             List of chat identifiers
 
     """
@@ -29026,7 +29026,7 @@ class FailedToAddMembers(TlObject):
     r"""Represents a list of users that has failed to be added to a chat
 
     Parameters:
-        failed_to_add_members (:class:`List["types.FailedToAddMember"]`):
+        failed_to_add_members (List[:class:`~pytdbot.types.FailedToAddMember`]):
             Information about users that weren't added to the chat
 
     """
@@ -29070,7 +29070,7 @@ class CreatedBasicGroupChat(TlObject):
         chat_id (:class:`int`):
             Chat identifier
 
-        failed_to_add_members (:class:`"types.FailedToAddMembers"`):
+        failed_to_add_members (:class:`~pytdbot.types.FailedToAddMembers`):
             Information about failed to add members
 
     """
@@ -29318,7 +29318,7 @@ class ChatActionBarReportAddBlock(TlObject, ChatActionBar):
         can_unarchive (:class:`bool`):
             If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings
 
-        account_info (:class:`"types.AccountInfo"`):
+        account_info (:class:`~pytdbot.types.AccountInfo`):
             Basic information about the other user in the chat; may be null if unknown
 
     """
@@ -29735,10 +29735,10 @@ class KeyboardButtonTypeRequestChat(TlObject, KeyboardButtonType):
         chat_is_created (:class:`bool`):
             True, if the chat must be created by the current user
 
-        user_administrator_rights (:class:`"types.ChatAdministratorRights"`):
+        user_administrator_rights (:class:`~pytdbot.types.ChatAdministratorRights`):
             Expected user administrator rights in the chat; may be null if they aren't restricted
 
-        bot_administrator_rights (:class:`"types.ChatAdministratorRights"`):
+        bot_administrator_rights (:class:`~pytdbot.types.ChatAdministratorRights`):
             Expected bot administrator rights in the chat; may be null if they aren't restricted
 
         bot_is_member (:class:`bool`):
@@ -29903,7 +29903,7 @@ class KeyboardButton(TlObject):
         text (:class:`str`):
             Text of the button
 
-        type (:class:`"types.KeyboardButtonType"`):
+        type (:class:`~pytdbot.types.KeyboardButtonType`):
             Type of the button
 
     """
@@ -30183,7 +30183,7 @@ class InlineKeyboardButtonTypeSwitchInline(TlObject, InlineKeyboardButtonType):
         query (:class:`str`):
             Inline query to be sent to the bot
 
-        target_chat (:class:`"types.TargetChat"`):
+        target_chat (:class:`~pytdbot.types.TargetChat`):
             Target chat from which to send the inline query
 
     """
@@ -30333,7 +30333,7 @@ class InlineKeyboardButton(TlObject):
         text (:class:`str`):
             Text of the button
 
-        type (:class:`"types.InlineKeyboardButtonType"`):
+        type (:class:`~pytdbot.types.InlineKeyboardButtonType`):
             Type of the button
 
     """
@@ -30468,7 +30468,7 @@ class ReplyMarkupShowKeyboard(TlObject, ReplyMarkup):
     r"""Contains a custom keyboard layout to quickly reply to bots
 
     Parameters:
-        rows (:class:`List[List["types.KeyboardButton"]]`):
+        rows (List[List[:class:`~pytdbot.types.KeyboardButton`]]):
             A list of rows of bot keyboard buttons
 
         is_persistent (:class:`bool`):
@@ -30550,7 +30550,7 @@ class ReplyMarkupInlineKeyboard(TlObject, ReplyMarkup):
     r"""Contains an inline keyboard layout
 
     Parameters:
-        rows (:class:`List[List["types.InlineKeyboardButton"]]`):
+        rows (List[List[:class:`~pytdbot.types.InlineKeyboardButton`]]):
             A list of rows of inline keyboard buttons
 
     """
@@ -30950,7 +30950,7 @@ class FoundWebApp(TlObject):
     r"""Contains information about a Web App found by its short name
 
     Parameters:
-        web_app (:class:`"types.WebApp"`):
+        web_app (:class:`~pytdbot.types.WebApp`):
             The Web App
 
         request_write_access (:class:`bool`):
@@ -31053,7 +31053,7 @@ class MainWebApp(TlObject):
         url (:class:`str`):
             URL of the Web App to open
 
-        mode (:class:`"types.WebAppOpenMode"`):
+        mode (:class:`~pytdbot.types.WebAppOpenMode`):
             The mode in which the Web App must be opened
 
     """
@@ -31097,13 +31097,13 @@ class WebAppOpenParameters(TlObject):
     r"""Options to be used when a Web App is opened
 
     Parameters:
-        theme (:class:`"types.ThemeParameters"`):
+        theme (:class:`~pytdbot.types.ThemeParameters`):
             Preferred Web App theme; pass null to use the default theme
 
         application_name (:class:`str`):
             Short name of the current application; 0\-64 English letters, digits, and underscores
 
-        mode (:class:`"types.WebAppOpenMode"`):
+        mode (:class:`~pytdbot.types.WebAppOpenMode`):
             The mode in which the Web App is opened; pass null to open in webAppOpenModeFullSize
 
     """
@@ -31166,16 +31166,16 @@ class MessageThreadInfo(TlObject):
         message_thread_id (:class:`int`):
             Message thread identifier, unique within the chat
 
-        reply_info (:class:`"types.MessageReplyInfo"`):
+        reply_info (:class:`~pytdbot.types.MessageReplyInfo`):
             Information about the message thread; may be null for forum topic threads
 
         unread_message_count (:class:`int`):
             Approximate number of unread messages in the message thread
 
-        messages (:class:`List["types.Message"]`):
+        messages (List[:class:`~pytdbot.types.Message`]):
             The messages from which the thread starts\. The messages are returned in reverse chronological order \(i\.e\., in order of decreasing message\_id\)
 
-        draft_message (:class:`"types.DraftMessage"`):
+        draft_message (:class:`~pytdbot.types.DraftMessage`):
             A draft of a message in the message thread; may be null if none
 
     """
@@ -31339,7 +31339,7 @@ class SavedMessagesTopic(TlObject):
         id (:class:`int`):
             Unique topic identifier
 
-        type (:class:`"types.SavedMessagesTopicType"`):
+        type (:class:`~pytdbot.types.SavedMessagesTopicType`):
             Type of the topic
 
         is_pinned (:class:`bool`):
@@ -31348,10 +31348,10 @@ class SavedMessagesTopic(TlObject):
         order (:class:`int`):
             A parameter used to determine order of the topic in the topic list\. Topics must be sorted by the order in descending order
 
-        last_message (:class:`"types.Message"`):
+        last_message (:class:`~pytdbot.types.Message`):
             Last message in the topic; may be null if none or unknown
 
-        draft_message (:class:`"types.DraftMessage"`):
+        draft_message (:class:`~pytdbot.types.DraftMessage`):
             A draft of a message in the topic; may be null if none
 
     """
@@ -31429,7 +31429,7 @@ class DirectMessagesChatTopic(TlObject):
         id (:class:`int`):
             Unique topic identifier
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or chat that sends the messages to the topic
 
         order (:class:`int`):
@@ -31453,10 +31453,10 @@ class DirectMessagesChatTopic(TlObject):
         unread_reaction_count (:class:`int`):
             Number of messages with unread reactions in the chat
 
-        last_message (:class:`"types.Message"`):
+        last_message (:class:`~pytdbot.types.Message`):
             Last message in the topic; may be null if none or unknown
 
-        draft_message (:class:`"types.DraftMessage"`):
+        draft_message (:class:`~pytdbot.types.DraftMessage`):
             A draft of a message in the topic; may be null if none
 
     """
@@ -31614,13 +31614,13 @@ class ForumTopicInfo(TlObject):
         name (:class:`str`):
             Name of the topic
 
-        icon (:class:`"types.ForumTopicIcon"`):
+        icon (:class:`~pytdbot.types.ForumTopicIcon`):
             Icon of the topic
 
         creation_date (:class:`int`):
             Point in time \(Unix timestamp\) when the topic was created
 
-        creator_id (:class:`"types.MessageSender"`):
+        creator_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the creator of the topic
 
         is_general (:class:`bool`):
@@ -31727,10 +31727,10 @@ class ForumTopic(TlObject):
     r"""Describes a forum topic
 
     Parameters:
-        info (:class:`"types.ForumTopicInfo"`):
+        info (:class:`~pytdbot.types.ForumTopicInfo`):
             Basic information about the topic
 
-        last_message (:class:`"types.Message"`):
+        last_message (:class:`~pytdbot.types.Message`):
             Last message in the topic; may be null if unknown
 
         order (:class:`int`):
@@ -31754,10 +31754,10 @@ class ForumTopic(TlObject):
         unread_reaction_count (:class:`int`):
             Number of messages with unread reactions in the topic
 
-        notification_settings (:class:`"types.ChatNotificationSettings"`):
+        notification_settings (:class:`~pytdbot.types.ChatNotificationSettings`):
             Notification settings for the topic
 
-        draft_message (:class:`"types.DraftMessage"`):
+        draft_message (:class:`~pytdbot.types.DraftMessage`):
             A draft of a message in the topic; may be null if none
 
     """
@@ -31858,7 +31858,7 @@ class ForumTopics(TlObject):
         total_count (:class:`int`):
             Approximate total number of forum topics found
 
-        topics (:class:`List["types.ForumTopic"]`):
+        topics (List[:class:`~pytdbot.types.ForumTopic`]):
             List of forum topics
 
         next_offset_date (:class:`int`):
@@ -32019,7 +32019,7 @@ class SharedUser(TlObject):
         username (:class:`str`):
             Username of the user; for bots only
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Profile photo of the user; for bots only; may be null
 
     """
@@ -32090,7 +32090,7 @@ class SharedChat(TlObject):
         username (:class:`str`):
             Username of the chat; for bots only
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Photo of the chat; for bots only; may be null
 
     """
@@ -32283,16 +32283,16 @@ class ThemeSettings(TlObject):
     r"""Describes theme settings
 
     Parameters:
-        base_theme (:class:`"types.BuiltInTheme"`):
+        base_theme (:class:`~pytdbot.types.BuiltInTheme`):
             Base theme for this theme
 
         accent_color (:class:`int`):
             Theme accent color in ARGB format
 
-        background (:class:`"types.Background"`):
+        background (:class:`~pytdbot.types.Background`):
             The background to be used in chats; may be null
 
-        outgoing_message_fill (:class:`"types.BackgroundFill"`):
+        outgoing_message_fill (:class:`~pytdbot.types.BackgroundFill`):
             The fill to be used as a background for outgoing messages; may be null if the fill from the base theme must be used instead
 
         animate_outgoing_message_fill (:class:`bool`):
@@ -32417,7 +32417,7 @@ class RichTextBold(TlObject, RichText):
     r"""A bold rich text
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
     """
@@ -32472,7 +32472,7 @@ class RichTextItalic(TlObject, RichText):
     r"""An italicized rich text
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
     """
@@ -32527,7 +32527,7 @@ class RichTextUnderline(TlObject, RichText):
     r"""An underlined rich text
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
     """
@@ -32582,7 +32582,7 @@ class RichTextStrikethrough(TlObject, RichText):
     r"""A strikethrough rich text
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
     """
@@ -32637,7 +32637,7 @@ class RichTextFixed(TlObject, RichText):
     r"""A fixed\-width rich text
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
     """
@@ -32692,7 +32692,7 @@ class RichTextUrl(TlObject, RichText):
     r"""A rich text URL link
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
         url (:class:`str`):
@@ -32766,7 +32766,7 @@ class RichTextEmailAddress(TlObject, RichText):
     r"""A rich text email link
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
         email_address (:class:`str`):
@@ -32831,7 +32831,7 @@ class RichTextSubscript(TlObject, RichText):
     r"""A subscript rich text
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
     """
@@ -32886,7 +32886,7 @@ class RichTextSuperscript(TlObject, RichText):
     r"""A superscript rich text
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
     """
@@ -32941,7 +32941,7 @@ class RichTextMarked(TlObject, RichText):
     r"""A marked rich text
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
     """
@@ -32996,7 +32996,7 @@ class RichTextPhoneNumber(TlObject, RichText):
     r"""A rich text phone number
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Text
 
         phone_number (:class:`str`):
@@ -33061,7 +33061,7 @@ class RichTextIcon(TlObject, RichText):
     r"""A small image inside the text
 
     Parameters:
-        document (:class:`"types.Document"`):
+        document (:class:`~pytdbot.types.Document`):
             The image represented as a document\. The image can be in GIF, JPEG or PNG format
 
         width (:class:`int`):
@@ -33116,7 +33116,7 @@ class RichTextReference(TlObject, RichText):
     r"""A reference to a richTexts object on the same page
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             The text
 
         anchor_name (:class:`str`):
@@ -33226,7 +33226,7 @@ class RichTextAnchorLink(TlObject, RichText):
     r"""A link to an anchor on the same page
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             The link text
 
         anchor_name (:class:`str`):
@@ -33300,7 +33300,7 @@ class RichTexts(TlObject, RichText):
     r"""A concatenation of rich texts
 
     Parameters:
-        texts (:class:`List["types.RichText"]`):
+        texts (List[:class:`~pytdbot.types.RichText`]):
             Texts
 
     """
@@ -33336,10 +33336,10 @@ class PageBlockCaption(TlObject):
     r"""Contains a caption of another block
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Content of the caption
 
-        credit (:class:`"types.RichText"`):
+        credit (:class:`~pytdbot.types.RichText`):
             Block credit \(like HTML tag <cite\>\)
 
     """
@@ -33419,7 +33419,7 @@ class PageBlockListItem(TlObject):
         label (:class:`str`):
             Item label
 
-        page_blocks (:class:`List["types.PageBlock"]`):
+        page_blocks (List[:class:`~pytdbot.types.PageBlock`]):
             Item blocks
 
     """
@@ -33630,7 +33630,7 @@ class PageBlockTableCell(TlObject):
     r"""Represents a cell of a table
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Cell text; may be null\. If the text is null, then the cell must be invisible
 
         is_header (:class:`bool`):
@@ -33642,10 +33642,10 @@ class PageBlockTableCell(TlObject):
         rowspan (:class:`int`):
             The number of rows the cell spans
 
-        align (:class:`"types.PageBlockHorizontalAlignment"`):
+        align (:class:`~pytdbot.types.PageBlockHorizontalAlignment`):
             Horizontal cell content alignment
 
-        valign (:class:`"types.PageBlockVerticalAlignment"`):
+        valign (:class:`~pytdbot.types.PageBlockVerticalAlignment`):
             Vertical cell content alignment
 
     """
@@ -33750,7 +33750,7 @@ class PageBlockRelatedArticle(TlObject):
         description (:class:`str`):
             Article description; may be empty
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Article photo; may be null
 
         author (:class:`str`):
@@ -33823,7 +33823,7 @@ class PageBlockTitle(TlObject, PageBlock):
     r"""The title of a page
 
     Parameters:
-        title (:class:`"types.RichText"`):
+        title (:class:`~pytdbot.types.RichText`):
             Title
 
     """
@@ -33878,7 +33878,7 @@ class PageBlockSubtitle(TlObject, PageBlock):
     r"""The subtitle of a page
 
     Parameters:
-        subtitle (:class:`"types.RichText"`):
+        subtitle (:class:`~pytdbot.types.RichText`):
             Subtitle
 
     """
@@ -33933,7 +33933,7 @@ class PageBlockAuthorDate(TlObject, PageBlock):
     r"""The author and publishing date of a page
 
     Parameters:
-        author (:class:`"types.RichText"`):
+        author (:class:`~pytdbot.types.RichText`):
             Author
 
         publish_date (:class:`int`):
@@ -33998,7 +33998,7 @@ class PageBlockHeader(TlObject, PageBlock):
     r"""A header
 
     Parameters:
-        header (:class:`"types.RichText"`):
+        header (:class:`~pytdbot.types.RichText`):
             Header
 
     """
@@ -34053,7 +34053,7 @@ class PageBlockSubheader(TlObject, PageBlock):
     r"""A subheader
 
     Parameters:
-        subheader (:class:`"types.RichText"`):
+        subheader (:class:`~pytdbot.types.RichText`):
             Subheader
 
     """
@@ -34108,7 +34108,7 @@ class PageBlockKicker(TlObject, PageBlock):
     r"""A kicker
 
     Parameters:
-        kicker (:class:`"types.RichText"`):
+        kicker (:class:`~pytdbot.types.RichText`):
             Kicker
 
     """
@@ -34163,7 +34163,7 @@ class PageBlockParagraph(TlObject, PageBlock):
     r"""A text paragraph
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Paragraph text
 
     """
@@ -34218,7 +34218,7 @@ class PageBlockPreformatted(TlObject, PageBlock):
     r"""A preformatted text paragraph
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Paragraph text
 
         language (:class:`str`):
@@ -34279,7 +34279,7 @@ class PageBlockFooter(TlObject, PageBlock):
     r"""The footer of a page
 
     Parameters:
-        footer (:class:`"types.RichText"`):
+        footer (:class:`~pytdbot.types.RichText`):
             Footer
 
     """
@@ -34398,7 +34398,7 @@ class PageBlockList(TlObject, PageBlock):
     r"""A list of data blocks
 
     Parameters:
-        items (:class:`List["types.PageBlockListItem"]`):
+        items (List[:class:`~pytdbot.types.PageBlockListItem`]):
             The items of the list
 
     """
@@ -34434,10 +34434,10 @@ class PageBlockBlockQuote(TlObject, PageBlock):
     r"""A block quote
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Quote text
 
-        credit (:class:`"types.RichText"`):
+        credit (:class:`~pytdbot.types.RichText`):
             Quote credit
 
     """
@@ -34514,10 +34514,10 @@ class PageBlockPullQuote(TlObject, PageBlock):
     r"""A pull quote
 
     Parameters:
-        text (:class:`"types.RichText"`):
+        text (:class:`~pytdbot.types.RichText`):
             Quote text
 
-        credit (:class:`"types.RichText"`):
+        credit (:class:`~pytdbot.types.RichText`):
             Quote credit
 
     """
@@ -34594,10 +34594,10 @@ class PageBlockAnimation(TlObject, PageBlock):
     r"""An animation
 
     Parameters:
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             Animation file; may be null
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Animation caption
 
         need_autoplay (:class:`bool`):
@@ -34652,10 +34652,10 @@ class PageBlockAudio(TlObject, PageBlock):
     r"""An audio file
 
     Parameters:
-        audio (:class:`"types.Audio"`):
+        audio (:class:`~pytdbot.types.Audio`):
             Audio file; may be null
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Audio file caption
 
     """
@@ -34694,10 +34694,10 @@ class PageBlockPhoto(TlObject, PageBlock):
     r"""A photo
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Photo file; may be null
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Photo caption
 
         url (:class:`str`):
@@ -34749,10 +34749,10 @@ class PageBlockVideo(TlObject, PageBlock):
     r"""A video
 
     Parameters:
-        video (:class:`"types.Video"`):
+        video (:class:`~pytdbot.types.Video`):
             Video file; may be null
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Video caption
 
         need_autoplay (:class:`bool`):
@@ -34815,10 +34815,10 @@ class PageBlockVoiceNote(TlObject, PageBlock):
     r"""A voice note
 
     Parameters:
-        voice_note (:class:`"types.VoiceNote"`):
+        voice_note (:class:`~pytdbot.types.VoiceNote`):
             Voice note; may be null
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Voice note caption
 
     """
@@ -34863,7 +34863,7 @@ class PageBlockCover(TlObject, PageBlock):
     r"""A page cover
 
     Parameters:
-        cover (:class:`"types.PageBlock"`):
+        cover (:class:`~pytdbot.types.PageBlock`):
             Cover
 
     """
@@ -34936,7 +34936,7 @@ class PageBlockEmbedded(TlObject, PageBlock):
         html (:class:`str`):
             HTML\-markup of the embedded page
 
-        poster_photo (:class:`"types.Photo"`):
+        poster_photo (:class:`~pytdbot.types.Photo`):
             Poster photo, if available; may be null
 
         width (:class:`int`):
@@ -34945,7 +34945,7 @@ class PageBlockEmbedded(TlObject, PageBlock):
         height (:class:`int`):
             Block height; 0 if unknown
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Block caption
 
         is_full_width (:class:`bool`):
@@ -35034,16 +35034,16 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
         author (:class:`str`):
             Post author
 
-        author_photo (:class:`"types.Photo"`):
+        author_photo (:class:`~pytdbot.types.Photo`):
             Post author photo; may be null
 
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the post was created; 0 if unknown
 
-        page_blocks (:class:`List["types.PageBlock"]`):
+        page_blocks (List[:class:`~pytdbot.types.PageBlock`]):
             Post content
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Post caption
 
     """
@@ -35110,10 +35110,10 @@ class PageBlockCollage(TlObject, PageBlock):
     r"""A collage
 
     Parameters:
-        page_blocks (:class:`List["types.PageBlock"]`):
+        page_blocks (List[:class:`~pytdbot.types.PageBlock`]):
             Collage item contents
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Block caption
 
     """
@@ -35158,10 +35158,10 @@ class PageBlockSlideshow(TlObject, PageBlock):
     r"""A slideshow
 
     Parameters:
-        page_blocks (:class:`List["types.PageBlock"]`):
+        page_blocks (List[:class:`~pytdbot.types.PageBlock`]):
             Slideshow item contents
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Block caption
 
     """
@@ -35209,7 +35209,7 @@ class PageBlockChatLink(TlObject, PageBlock):
         title (:class:`str`):
             Chat title
 
-        photo (:class:`"types.ChatPhotoInfo"`):
+        photo (:class:`~pytdbot.types.ChatPhotoInfo`):
             Chat photo; may be null
 
         accent_color_id (:class:`int`):
@@ -35272,10 +35272,10 @@ class PageBlockTable(TlObject, PageBlock):
     r"""A table
 
     Parameters:
-        caption (:class:`"types.RichText"`):
+        caption (:class:`~pytdbot.types.RichText`):
             Table caption
 
-        cells (:class:`List[List["types.PageBlockTableCell"]]`):
+        cells (List[List[:class:`~pytdbot.types.PageBlockTableCell`]]):
             Table cells
 
         is_bordered (:class:`bool`):
@@ -35357,10 +35357,10 @@ class PageBlockDetails(TlObject, PageBlock):
     r"""A collapsible block
 
     Parameters:
-        header (:class:`"types.RichText"`):
+        header (:class:`~pytdbot.types.RichText`):
             Always visible heading for the block
 
-        page_blocks (:class:`List["types.PageBlock"]`):
+        page_blocks (List[:class:`~pytdbot.types.PageBlock`]):
             Block contents
 
         is_open (:class:`bool`):
@@ -35434,10 +35434,10 @@ class PageBlockRelatedArticles(TlObject, PageBlock):
     r"""Related articles
 
     Parameters:
-        header (:class:`"types.RichText"`):
+        header (:class:`~pytdbot.types.RichText`):
             Block header
 
-        articles (:class:`List["types.PageBlockRelatedArticle"]`):
+        articles (List[:class:`~pytdbot.types.PageBlockRelatedArticle`]):
             List of related articles
 
     """
@@ -35501,7 +35501,7 @@ class PageBlockMap(TlObject, PageBlock):
     r"""A map
 
     Parameters:
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             Location of the map center
 
         zoom (:class:`int`):
@@ -35513,7 +35513,7 @@ class PageBlockMap(TlObject, PageBlock):
         height (:class:`int`):
             Map height
 
-        caption (:class:`"types.PageBlockCaption"`):
+        caption (:class:`~pytdbot.types.PageBlockCaption`):
             Block caption
 
     """
@@ -35575,7 +35575,7 @@ class WebPageInstantView(TlObject):
     r"""Describes an instant view page for a web page
 
     Parameters:
-        page_blocks (:class:`List["types.PageBlock"]`):
+        page_blocks (List[:class:`~pytdbot.types.PageBlock`]):
             Content of the instant view page
 
         view_count (:class:`int`):
@@ -35590,7 +35590,7 @@ class WebPageInstantView(TlObject):
         is_full (:class:`bool`):
             True, if the instant view contains the full page\. A network request might be needed to get the full instant view
 
-        feedback_link (:class:`"types.InternalLinkType"`):
+        feedback_link (:class:`~pytdbot.types.InternalLinkType`):
             An internal link to be opened to leave feedback about the instant view
 
     """
@@ -35712,7 +35712,7 @@ class LinkPreviewAlbumMediaPhoto(TlObject, LinkPreviewAlbumMedia):
     r"""The media is a photo
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Photo description
 
     """
@@ -35748,7 +35748,7 @@ class LinkPreviewAlbumMediaVideo(TlObject, LinkPreviewAlbumMedia):
     r"""The media is a video
 
     Parameters:
-        video (:class:`"types.Video"`):
+        video (:class:`~pytdbot.types.Video`):
             Video description
 
     """
@@ -35784,7 +35784,7 @@ class LinkPreviewTypeAlbum(TlObject, LinkPreviewType):
     r"""The link is a link to a media album consisting of photos and videos
 
     Parameters:
-        media (:class:`List["types.LinkPreviewAlbumMedia"]`):
+        media (List[:class:`~pytdbot.types.LinkPreviewAlbumMedia`]):
             The list of album media
 
         caption (:class:`str`):
@@ -35828,7 +35828,7 @@ class LinkPreviewTypeAnimation(TlObject, LinkPreviewType):
     r"""The link is a link to an animation
 
     Parameters:
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             The animation
 
     """
@@ -35864,7 +35864,7 @@ class LinkPreviewTypeApp(TlObject, LinkPreviewType):
     r"""The link is a link to an app at App Store or Google Play
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Photo for the app
 
     """
@@ -35900,7 +35900,7 @@ class LinkPreviewTypeArticle(TlObject, LinkPreviewType):
     r"""The link is a link to a web site
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Article's main photo; may be null
 
     """
@@ -35936,7 +35936,7 @@ class LinkPreviewTypeAudio(TlObject, LinkPreviewType):
     r"""The link is a link to an audio
 
     Parameters:
-        audio (:class:`"types.Audio"`):
+        audio (:class:`~pytdbot.types.Audio`):
             The audio description
 
     """
@@ -35972,10 +35972,10 @@ class LinkPreviewTypeBackground(TlObject, LinkPreviewType):
     r"""The link is a link to a background\. Link preview title and description are available only for filled backgrounds
 
     Parameters:
-        document (:class:`"types.Document"`):
+        document (:class:`~pytdbot.types.Document`):
             Document with the background; may be null for filled backgrounds
 
-        background_type (:class:`"types.BackgroundType"`):
+        background_type (:class:`~pytdbot.types.BackgroundType`):
             Type of the background; may be null if unknown
 
     """
@@ -36026,7 +36026,7 @@ class LinkPreviewTypeChannelBoost(TlObject, LinkPreviewType):
     r"""The link is a link to boost a channel chat
 
     Parameters:
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             Photo of the chat; may be null
 
     """
@@ -36062,10 +36062,10 @@ class LinkPreviewTypeChat(TlObject, LinkPreviewType):
     r"""The link is a link to a chat
 
     Parameters:
-        type (:class:`"types.InviteLinkChatType"`):
+        type (:class:`~pytdbot.types.InviteLinkChatType`):
             Type of the chat
 
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             Photo of the chat; may be null
 
         creates_join_request (:class:`bool`):
@@ -36125,7 +36125,7 @@ class LinkPreviewTypeDirectMessagesChat(TlObject, LinkPreviewType):
     r"""The link is a link to a direct messages chat of a channel
 
     Parameters:
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             Photo of the channel chat; may be null
 
     """
@@ -36161,7 +36161,7 @@ class LinkPreviewTypeDocument(TlObject, LinkPreviewType):
     r"""The link is a link to a general file
 
     Parameters:
-        document (:class:`"types.Document"`):
+        document (:class:`~pytdbot.types.Document`):
             The document description
 
     """
@@ -36200,7 +36200,7 @@ class LinkPreviewTypeEmbeddedAnimationPlayer(TlObject, LinkPreviewType):
         url (:class:`str`):
             URL of the external animation player
 
-        thumbnail (:class:`"types.Photo"`):
+        thumbnail (:class:`~pytdbot.types.Photo`):
             Thumbnail of the animation; may be null if unknown
 
         duration (:class:`int`):
@@ -36276,7 +36276,7 @@ class LinkPreviewTypeEmbeddedAudioPlayer(TlObject, LinkPreviewType):
         url (:class:`str`):
             URL of the external audio player
 
-        thumbnail (:class:`"types.Photo"`):
+        thumbnail (:class:`~pytdbot.types.Photo`):
             Thumbnail of the audio; may be null if unknown
 
         duration (:class:`int`):
@@ -36350,7 +36350,7 @@ class LinkPreviewTypeEmbeddedVideoPlayer(TlObject, LinkPreviewType):
         url (:class:`str`):
             URL of the external video player
 
-        thumbnail (:class:`"types.Photo"`):
+        thumbnail (:class:`~pytdbot.types.Photo`):
             Thumbnail of the video; may be null if unknown
 
         duration (:class:`int`):
@@ -36548,7 +36548,7 @@ class LinkPreviewTypeGiftCollection(TlObject, LinkPreviewType):
     r"""The link is a link to a gift collection
 
     Parameters:
-        icons (:class:`List["types.Sticker"]`):
+        icons (List[:class:`~pytdbot.types.Sticker`]):
             Icons for some gifts from the collection; may be empty
 
     """
@@ -36668,7 +36668,7 @@ class LinkPreviewTypePhoto(TlObject, LinkPreviewType):
     r"""The link is a link to a photo
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             The photo
 
     """
@@ -36760,7 +36760,7 @@ class LinkPreviewTypeSticker(TlObject, LinkPreviewType):
     r"""The link is a link to a sticker
 
     Parameters:
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The sticker\. It can be an arbitrary WEBP image and can have dimensions bigger than 512
 
     """
@@ -36796,7 +36796,7 @@ class LinkPreviewTypeStickerSet(TlObject, LinkPreviewType):
     r"""The link is a link to a sticker set
 
     Parameters:
-        stickers (:class:`List["types.Sticker"]`):
+        stickers (List[:class:`~pytdbot.types.Sticker`]):
             Up to 4 stickers from the sticker set
 
     """
@@ -36878,10 +36878,10 @@ class LinkPreviewTypeStoryAlbum(TlObject, LinkPreviewType):
     r"""The link is a link to an album of stories
 
     Parameters:
-        photo_icon (:class:`"types.Photo"`):
+        photo_icon (:class:`~pytdbot.types.Photo`):
             Icon of the album; may be null if none
 
-        video_icon (:class:`"types.Video"`):
+        video_icon (:class:`~pytdbot.types.Video`):
             Video icon of the album; may be null if none
 
     """
@@ -36924,7 +36924,7 @@ class LinkPreviewTypeSupergroupBoost(TlObject, LinkPreviewType):
     r"""The link is a link to boost a supergroup chat
 
     Parameters:
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             Photo of the chat; may be null
 
     """
@@ -36960,10 +36960,10 @@ class LinkPreviewTypeTheme(TlObject, LinkPreviewType):
     r"""The link is a link to a cloud theme\. TDLib has no theme support yet
 
     Parameters:
-        documents (:class:`List["types.Document"]`):
+        documents (List[:class:`~pytdbot.types.Document`]):
             The list of files with theme description
 
-        settings (:class:`"types.ThemeSettings"`):
+        settings (:class:`~pytdbot.types.ThemeSettings`):
             Settings for the cloud theme; may be null if unknown
 
     """
@@ -37036,7 +37036,7 @@ class LinkPreviewTypeUpgradedGift(TlObject, LinkPreviewType):
     r"""The link is a link to an upgraded gift
 
     Parameters:
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
     """
@@ -37072,7 +37072,7 @@ class LinkPreviewTypeUser(TlObject, LinkPreviewType):
     r"""The link is a link to a user
 
     Parameters:
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             Photo of the user; may be null if none
 
         is_bot (:class:`bool`):
@@ -37114,10 +37114,10 @@ class LinkPreviewTypeVideo(TlObject, LinkPreviewType):
     r"""The link is a link to a video
 
     Parameters:
-        video (:class:`"types.Video"`):
+        video (:class:`~pytdbot.types.Video`):
             The video description
 
-        cover (:class:`"types.Photo"`):
+        cover (:class:`~pytdbot.types.Photo`):
             Cover of the video; may be null if none
 
         start_timestamp (:class:`int`):
@@ -37169,7 +37169,7 @@ class LinkPreviewTypeVideoChat(TlObject, LinkPreviewType):
     r"""The link is a link to a video chat
 
     Parameters:
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             Photo of the chat with the video chat; may be null if none
 
         is_live_stream (:class:`bool`):
@@ -37227,7 +37227,7 @@ class LinkPreviewTypeVideoNote(TlObject, LinkPreviewType):
     r"""The link is a link to a video note message
 
     Parameters:
-        video_note (:class:`"types.VideoNote"`):
+        video_note (:class:`~pytdbot.types.VideoNote`):
             The video note
 
     """
@@ -37263,7 +37263,7 @@ class LinkPreviewTypeVoiceNote(TlObject, LinkPreviewType):
     r"""The link is a link to a voice note message
 
     Parameters:
-        voice_note (:class:`"types.VoiceNote"`):
+        voice_note (:class:`~pytdbot.types.VoiceNote`):
             The voice note
 
     """
@@ -37299,7 +37299,7 @@ class LinkPreviewTypeWebApp(TlObject, LinkPreviewType):
     r"""The link is a link to a Web App
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Web App photo; may be null if none
 
     """
@@ -37347,13 +37347,13 @@ class LinkPreview(TlObject):
         title (:class:`str`):
             Title of the content
 
-        description (:class:`"types.FormattedText"`):
+        description (:class:`~pytdbot.types.FormattedText`):
             Description of the content
 
         author (:class:`str`):
             Author of the content
 
-        type (:class:`"types.LinkPreviewType"`):
+        type (:class:`~pytdbot.types.LinkPreviewType`):
             Type of the link preview
 
         has_large_media (:class:`bool`):
@@ -37525,7 +37525,7 @@ class CountryInfo(TlObject):
         is_hidden (:class:`bool`):
             True, if the country must be hidden from the list of all countries
 
-        calling_codes (:class:`List[str]`):
+        calling_codes (List[:class:`str`]):
             List of country calling codes
 
     """
@@ -37587,7 +37587,7 @@ class Countries(TlObject):
     r"""Contains information about countries
 
     Parameters:
-        countries (:class:`List["types.CountryInfo"]`):
+        countries (List[:class:`~pytdbot.types.CountryInfo`]):
             The list of countries
 
     """
@@ -37623,7 +37623,7 @@ class PhoneNumberInfo(TlObject):
     r"""Contains information about a phone number
 
     Parameters:
-        country (:class:`"types.CountryInfo"`):
+        country (:class:`~pytdbot.types.CountryInfo`):
             Information about the country to which the phone number belongs; may be null
 
         country_calling_code (:class:`str`):
@@ -37888,7 +37888,7 @@ class BankCardInfo(TlObject):
         title (:class:`str`):
             Title of the bank card description
 
-        actions (:class:`List["types.BankCardActionOpenUrl"]`):
+        actions (List[:class:`~pytdbot.types.BankCardActionOpenUrl`]):
             Actions that can be done with the bank card number
 
     """
@@ -38118,7 +38118,7 @@ class Invoice(TlObject):
         currency (:class:`str`):
             ISO 4217 currency code
 
-        price_parts (:class:`List["types.LabeledPricePart"]`):
+        price_parts (List[:class:`~pytdbot.types.LabeledPricePart`]):
             A list of objects used to calculate the total price of the product
 
         subscription_period (:class:`int`):
@@ -38127,7 +38127,7 @@ class Invoice(TlObject):
         max_tip_amount (:class:`int`):
             The maximum allowed amount of tip in the smallest units of the currency
 
-        suggested_tip_amounts (:class:`List[int]`):
+        suggested_tip_amounts (List[:class:`int`]):
             Suggested amounts of tip in the smallest units of the currency
 
         recurring_payment_terms_of_service_url (:class:`str`):
@@ -38286,7 +38286,7 @@ class OrderInfo(TlObject):
         email_address (:class:`str`):
             Email address of the user
 
-        shipping_address (:class:`"types.Address"`):
+        shipping_address (:class:`~pytdbot.types.Address`):
             Shipping address for this order; may be null
 
     """
@@ -38349,7 +38349,7 @@ class ShippingOption(TlObject):
         title (:class:`str`):
             Option title
 
-        price_parts (:class:`List["types.LabeledPricePart"]`):
+        price_parts (List[:class:`~pytdbot.types.LabeledPricePart`]):
             A list of objects used to calculate the total shipping costs
 
     """
@@ -38787,22 +38787,22 @@ class PaymentFormTypeRegular(TlObject, PaymentFormType):
     r"""The payment form is for a regular payment
 
     Parameters:
-        invoice (:class:`"types.Invoice"`):
+        invoice (:class:`~pytdbot.types.Invoice`):
             Full information about the invoice
 
         payment_provider_user_id (:class:`int`):
             User identifier of the payment provider bot
 
-        payment_provider (:class:`"types.PaymentProvider"`):
+        payment_provider (:class:`~pytdbot.types.PaymentProvider`):
             Information about the payment provider
 
-        additional_payment_options (:class:`List["types.PaymentOption"]`):
+        additional_payment_options (List[:class:`~pytdbot.types.PaymentOption`]):
             The list of additional payment options
 
-        saved_order_info (:class:`"types.OrderInfo"`):
+        saved_order_info (:class:`~pytdbot.types.OrderInfo`):
             Saved server\-side order information; may be null
 
-        saved_credentials (:class:`List["types.SavedCredentials"]`):
+        saved_credentials (List[:class:`~pytdbot.types.SavedCredentials`]):
             The list of saved payment credentials
 
         can_save_credentials (:class:`bool`):
@@ -38932,7 +38932,7 @@ class PaymentFormTypeStarSubscription(TlObject, PaymentFormType):
     r"""The payment form is for a payment in Telegram Stars for subscription
 
     Parameters:
-        pricing (:class:`"types.StarSubscriptionPricing"`):
+        pricing (:class:`~pytdbot.types.StarSubscriptionPricing`):
             Information about subscription plan
 
     """
@@ -38971,13 +38971,13 @@ class PaymentForm(TlObject):
         id (:class:`int`):
             The payment form identifier
 
-        type (:class:`"types.PaymentFormType"`):
+        type (:class:`~pytdbot.types.PaymentFormType`):
             Type of the payment form
 
         seller_bot_user_id (:class:`int`):
             User identifier of the seller bot
 
-        product_info (:class:`"types.ProductInfo"`):
+        product_info (:class:`~pytdbot.types.ProductInfo`):
             Information about the product
 
     """
@@ -39042,7 +39042,7 @@ class ValidatedOrderInfo(TlObject):
         order_info_id (:class:`str`):
             Temporary identifier of the order information
 
-        shipping_options (:class:`List["types.ShippingOption"]`):
+        shipping_options (List[:class:`~pytdbot.types.ShippingOption`]):
             Available shipping options
 
     """
@@ -39136,13 +39136,13 @@ class PaymentReceiptTypeRegular(TlObject, PaymentReceiptType):
         payment_provider_user_id (:class:`int`):
             User identifier of the payment provider bot
 
-        invoice (:class:`"types.Invoice"`):
+        invoice (:class:`~pytdbot.types.Invoice`):
             Information about the invoice
 
-        order_info (:class:`"types.OrderInfo"`):
+        order_info (:class:`~pytdbot.types.OrderInfo`):
             Order information; may be null
 
-        shipping_option (:class:`"types.ShippingOption"`):
+        shipping_option (:class:`~pytdbot.types.ShippingOption`):
             Chosen shipping option; may be null
 
         credentials_title (:class:`str`):
@@ -39263,7 +39263,7 @@ class PaymentReceipt(TlObject):
     r"""Contains information about a successful payment
 
     Parameters:
-        product_info (:class:`"types.ProductInfo"`):
+        product_info (:class:`~pytdbot.types.ProductInfo`):
             Information about the product
 
         date (:class:`int`):
@@ -39272,7 +39272,7 @@ class PaymentReceipt(TlObject):
         seller_bot_user_id (:class:`int`):
             User identifier of the seller bot
 
-        type (:class:`"types.PaymentReceiptType"`):
+        type (:class:`~pytdbot.types.PaymentReceiptType`):
             Type of the payment receipt
 
     """
@@ -39413,7 +39413,7 @@ class InputInvoiceTelegram(TlObject, InputInvoice):
     r"""An invoice for a payment toward Telegram; must not be used in the in\-store apps
 
     Parameters:
-        purpose (:class:`"types.TelegramPaymentPurpose"`):
+        purpose (:class:`~pytdbot.types.TelegramPaymentPurpose`):
             Transaction purpose
 
     """
@@ -39467,7 +39467,7 @@ class PaidMediaPreview(TlObject, PaidMedia):
         duration (:class:`int`):
             Media duration, in seconds; 0 if unknown
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             Media minithumbnail; may be null
 
     """
@@ -39524,7 +39524,7 @@ class PaidMediaPhoto(TlObject, PaidMedia):
     r"""The media is a photo
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             The photo
 
     """
@@ -39560,10 +39560,10 @@ class PaidMediaVideo(TlObject, PaidMedia):
     r"""The media is a video
 
     Parameters:
-        video (:class:`"types.Video"`):
+        video (:class:`~pytdbot.types.Video`):
             The video
 
-        cover (:class:`"types.Photo"`):
+        cover (:class:`~pytdbot.types.Photo`):
             Cover of the video; may be null if none
 
         start_timestamp (:class:`int`):
@@ -39646,7 +39646,7 @@ class GiveawayParameters(TlObject):
         boosted_chat_id (:class:`int`):
             Identifier of the supergroup or channel chat, which will be automatically boosted by the winners of the giveaway for duration of the Telegram Premium subscription, or for the specified time\. If the chat is a channel, then can\_post\_messages administrator right is required in the channel, otherwise, the user must be an administrator in the supergroup
 
-        additional_chat_ids (:class:`List[int]`):
+        additional_chat_ids (List[:class:`int`]):
             Identifiers of other supergroup or channel chats that must be subscribed by the users to be eligible for the giveaway\. There can be up to getOption\(\"giveaway\_additional\_chat\_count\_max\"\) additional chats
 
         winners_selection_date (:class:`int`):
@@ -39658,7 +39658,7 @@ class GiveawayParameters(TlObject):
         has_public_winners (:class:`bool`):
             True, if the list of winners of the giveaway will be available to everyone
 
-        country_codes (:class:`List[str]`):
+        country_codes (List[:class:`str`]):
             The list of two\-letter ISO 3166\-1 alpha\-2 codes of countries, users from which will be eligible for the giveaway\. If empty, then all users can participate in the giveaway\. There can be up to getOption\(\"giveaway\_country\_count\_max\"\) chosen countries\. Users with phone number that was bought at https://fragment\.com can participate in any giveaway and the country code \"FT\" must not be specified in the list
 
         prize_description (:class:`str`):
@@ -39735,7 +39735,7 @@ class DatedFile(TlObject):
     r"""File with the date it was uploaded
 
     Parameters:
-        file (:class:`"types.File"`):
+        file (:class:`~pytdbot.types.File`):
             The file
 
         date (:class:`int`):
@@ -40218,7 +40218,7 @@ class PersonalDetails(TlObject):
         native_last_name (:class:`str`):
             Native last name of the user; 1\-255 characters
 
-        birthdate (:class:`"types.Date"`):
+        birthdate (:class:`~pytdbot.types.Date`):
             Birthdate of the user
 
         gender (:class:`str`):
@@ -40317,19 +40317,19 @@ class IdentityDocument(TlObject):
         number (:class:`str`):
             Document number; 1\-24 characters
 
-        expiration_date (:class:`"types.Date"`):
+        expiration_date (:class:`~pytdbot.types.Date`):
             Document expiration date; may be null if not applicable
 
-        front_side (:class:`"types.DatedFile"`):
+        front_side (:class:`~pytdbot.types.DatedFile`):
             Front side of the document
 
-        reverse_side (:class:`"types.DatedFile"`):
+        reverse_side (:class:`~pytdbot.types.DatedFile`):
             Reverse side of the document; only for driver license and identity card; may be null
 
-        selfie (:class:`"types.DatedFile"`):
+        selfie (:class:`~pytdbot.types.DatedFile`):
             Selfie with the document; may be null
 
-        translation (:class:`List["types.DatedFile"]`):
+        translation (List[:class:`~pytdbot.types.DatedFile`]):
             List of files containing a certified English translation of the document
 
     """
@@ -40399,19 +40399,19 @@ class InputIdentityDocument(TlObject):
         number (:class:`str`):
             Document number; 1\-24 characters
 
-        expiration_date (:class:`"types.Date"`):
+        expiration_date (:class:`~pytdbot.types.Date`):
             Document expiration date; pass null if not applicable
 
-        front_side (:class:`"types.InputFile"`):
+        front_side (:class:`~pytdbot.types.InputFile`):
             Front side of the document
 
-        reverse_side (:class:`"types.InputFile"`):
+        reverse_side (:class:`~pytdbot.types.InputFile`):
             Reverse side of the document; only for driver license and identity card; pass null otherwise
 
-        selfie (:class:`"types.InputFile"`):
+        selfie (:class:`~pytdbot.types.InputFile`):
             Selfie with the document; pass null if unavailable
 
-        translation (:class:`List["types.InputFile"]`):
+        translation (List[:class:`~pytdbot.types.InputFile`]):
             List of files containing a certified English translation of the document
 
     """
@@ -40484,10 +40484,10 @@ class PersonalDocument(TlObject):
     r"""A personal document, containing some information about a user
 
     Parameters:
-        files (:class:`List["types.DatedFile"]`):
+        files (List[:class:`~pytdbot.types.DatedFile`]):
             List of files containing the pages of the document
 
-        translation (:class:`List["types.DatedFile"]`):
+        translation (List[:class:`~pytdbot.types.DatedFile`]):
             List of files containing a certified English translation of the document
 
     """
@@ -40532,10 +40532,10 @@ class InputPersonalDocument(TlObject):
     r"""A personal document to be saved to Telegram Passport
 
     Parameters:
-        files (:class:`List["types.InputFile"]`):
+        files (List[:class:`~pytdbot.types.InputFile`]):
             List of files containing the pages of the document
 
-        translation (:class:`List["types.InputFile"]`):
+        translation (List[:class:`~pytdbot.types.InputFile`]):
             List of files containing a certified English translation of the document
 
     """
@@ -40580,7 +40580,7 @@ class PassportElementPersonalDetails(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's personal details
 
     Parameters:
-        personal_details (:class:`"types.PersonalDetails"`):
+        personal_details (:class:`~pytdbot.types.PersonalDetails`):
             Personal details of the user
 
     """
@@ -40616,7 +40616,7 @@ class PassportElementPassport(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's passport
 
     Parameters:
-        passport (:class:`"types.IdentityDocument"`):
+        passport (:class:`~pytdbot.types.IdentityDocument`):
             Passport
 
     """
@@ -40652,7 +40652,7 @@ class PassportElementDriverLicense(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's driver license
 
     Parameters:
-        driver_license (:class:`"types.IdentityDocument"`):
+        driver_license (:class:`~pytdbot.types.IdentityDocument`):
             Driver license
 
     """
@@ -40688,7 +40688,7 @@ class PassportElementIdentityCard(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's identity card
 
     Parameters:
-        identity_card (:class:`"types.IdentityDocument"`):
+        identity_card (:class:`~pytdbot.types.IdentityDocument`):
             Identity card
 
     """
@@ -40724,7 +40724,7 @@ class PassportElementInternalPassport(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's internal passport
 
     Parameters:
-        internal_passport (:class:`"types.IdentityDocument"`):
+        internal_passport (:class:`~pytdbot.types.IdentityDocument`):
             Internal passport
 
     """
@@ -40760,7 +40760,7 @@ class PassportElementAddress(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's address
 
     Parameters:
-        address (:class:`"types.Address"`):
+        address (:class:`~pytdbot.types.Address`):
             Address
 
     """
@@ -40796,7 +40796,7 @@ class PassportElementUtilityBill(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's utility bill
 
     Parameters:
-        utility_bill (:class:`"types.PersonalDocument"`):
+        utility_bill (:class:`~pytdbot.types.PersonalDocument`):
             Utility bill
 
     """
@@ -40832,7 +40832,7 @@ class PassportElementBankStatement(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's bank statement
 
     Parameters:
-        bank_statement (:class:`"types.PersonalDocument"`):
+        bank_statement (:class:`~pytdbot.types.PersonalDocument`):
             Bank statement
 
     """
@@ -40868,7 +40868,7 @@ class PassportElementRentalAgreement(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's rental agreement
 
     Parameters:
-        rental_agreement (:class:`"types.PersonalDocument"`):
+        rental_agreement (:class:`~pytdbot.types.PersonalDocument`):
             Rental agreement
 
     """
@@ -40904,7 +40904,7 @@ class PassportElementPassportRegistration(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's passport registration pages
 
     Parameters:
-        passport_registration (:class:`"types.PersonalDocument"`):
+        passport_registration (:class:`~pytdbot.types.PersonalDocument`):
             Passport registration pages
 
     """
@@ -40947,7 +40947,7 @@ class PassportElementTemporaryRegistration(TlObject, PassportElement):
     r"""A Telegram Passport element containing the user's temporary registration
 
     Parameters:
-        temporary_registration (:class:`"types.PersonalDocument"`):
+        temporary_registration (:class:`~pytdbot.types.PersonalDocument`):
             Temporary registration
 
     """
@@ -41062,7 +41062,7 @@ class InputPassportElementPersonalDetails(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's personal details
 
     Parameters:
-        personal_details (:class:`"types.PersonalDetails"`):
+        personal_details (:class:`~pytdbot.types.PersonalDetails`):
             Personal details of the user
 
     """
@@ -41100,7 +41100,7 @@ class InputPassportElementPassport(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's passport
 
     Parameters:
-        passport (:class:`"types.InputIdentityDocument"`):
+        passport (:class:`~pytdbot.types.InputIdentityDocument`):
             The passport to be saved
 
     """
@@ -41136,7 +41136,7 @@ class InputPassportElementDriverLicense(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's driver license
 
     Parameters:
-        driver_license (:class:`"types.InputIdentityDocument"`):
+        driver_license (:class:`~pytdbot.types.InputIdentityDocument`):
             The driver license to be saved
 
     """
@@ -41172,7 +41172,7 @@ class InputPassportElementIdentityCard(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's identity card
 
     Parameters:
-        identity_card (:class:`"types.InputIdentityDocument"`):
+        identity_card (:class:`~pytdbot.types.InputIdentityDocument`):
             The identity card to be saved
 
     """
@@ -41208,7 +41208,7 @@ class InputPassportElementInternalPassport(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's internal passport
 
     Parameters:
-        internal_passport (:class:`"types.InputIdentityDocument"`):
+        internal_passport (:class:`~pytdbot.types.InputIdentityDocument`):
             The internal passport to be saved
 
     """
@@ -41246,7 +41246,7 @@ class InputPassportElementAddress(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's address
 
     Parameters:
-        address (:class:`"types.Address"`):
+        address (:class:`~pytdbot.types.Address`):
             The address to be saved
 
     """
@@ -41282,7 +41282,7 @@ class InputPassportElementUtilityBill(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's utility bill
 
     Parameters:
-        utility_bill (:class:`"types.InputPersonalDocument"`):
+        utility_bill (:class:`~pytdbot.types.InputPersonalDocument`):
             The utility bill to be saved
 
     """
@@ -41318,7 +41318,7 @@ class InputPassportElementBankStatement(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's bank statement
 
     Parameters:
-        bank_statement (:class:`"types.InputPersonalDocument"`):
+        bank_statement (:class:`~pytdbot.types.InputPersonalDocument`):
             The bank statement to be saved
 
     """
@@ -41354,7 +41354,7 @@ class InputPassportElementRentalAgreement(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's rental agreement
 
     Parameters:
-        rental_agreement (:class:`"types.InputPersonalDocument"`):
+        rental_agreement (:class:`~pytdbot.types.InputPersonalDocument`):
             The rental agreement to be saved
 
     """
@@ -41392,7 +41392,7 @@ class InputPassportElementPassportRegistration(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's passport registration
 
     Parameters:
-        passport_registration (:class:`"types.InputPersonalDocument"`):
+        passport_registration (:class:`~pytdbot.types.InputPersonalDocument`):
             The passport registration page to be saved
 
     """
@@ -41435,7 +41435,7 @@ class InputPassportElementTemporaryRegistration(TlObject, InputPassportElement):
     r"""A Telegram Passport element to be saved containing the user's temporary registration
 
     Parameters:
-        temporary_registration (:class:`"types.InputPersonalDocument"`):
+        temporary_registration (:class:`~pytdbot.types.InputPersonalDocument`):
             The temporary registration document to be saved
 
     """
@@ -41550,7 +41550,7 @@ class PassportElements(TlObject):
     r"""Contains information about saved Telegram Passport elements
 
     Parameters:
-        elements (:class:`List["types.PassportElement"]`):
+        elements (List[:class:`~pytdbot.types.PassportElement`]):
             Telegram Passport elements
 
     """
@@ -41874,13 +41874,13 @@ class PassportElementError(TlObject):
     r"""Contains the description of an error in a Telegram Passport element
 
     Parameters:
-        type (:class:`"types.PassportElementType"`):
+        type (:class:`~pytdbot.types.PassportElementType`):
             Type of the Telegram Passport element which has the error
 
         message (:class:`str`):
             Error message
 
-        source (:class:`"types.PassportElementErrorSource"`):
+        source (:class:`~pytdbot.types.PassportElementErrorSource`):
             Error source
 
     """
@@ -41958,7 +41958,7 @@ class PassportSuitableElement(TlObject):
     r"""Contains information about a Telegram Passport element that was requested by a service
 
     Parameters:
-        type (:class:`"types.PassportElementType"`):
+        type (:class:`~pytdbot.types.PassportElementType`):
             Type of the element
 
         is_selfie_required (:class:`bool`):
@@ -42043,7 +42043,7 @@ class PassportRequiredElement(TlObject):
     r"""Contains a description of the required Telegram Passport element that was requested by a service
 
     Parameters:
-        suitable_elements (:class:`List["types.PassportSuitableElement"]`):
+        suitable_elements (List[:class:`~pytdbot.types.PassportSuitableElement`]):
             List of Telegram Passport elements any of which is enough to provide
 
     """
@@ -42082,7 +42082,7 @@ class PassportAuthorizationForm(TlObject):
         id (:class:`int`):
             Unique identifier of the authorization form
 
-        required_elements (:class:`List["types.PassportRequiredElement"]`):
+        required_elements (List[:class:`~pytdbot.types.PassportRequiredElement`]):
             Telegram Passport elements that must be provided to complete the form
 
         privacy_policy_url (:class:`str`):
@@ -42137,10 +42137,10 @@ class PassportElementsWithErrors(TlObject):
     r"""Contains information about a Telegram Passport elements and corresponding errors
 
     Parameters:
-        elements (:class:`List["types.PassportElement"]`):
+        elements (List[:class:`~pytdbot.types.PassportElement`]):
             Telegram Passport elements
 
-        errors (:class:`List["types.PassportElementError"]`):
+        errors (List[:class:`~pytdbot.types.PassportElementError`]):
             Errors in the elements that are already available
 
     """
@@ -42242,25 +42242,25 @@ class EncryptedPassportElement(TlObject):
     r"""Contains information about an encrypted Telegram Passport element; for bots only
 
     Parameters:
-        type (:class:`"types.PassportElementType"`):
+        type (:class:`~pytdbot.types.PassportElementType`):
             Type of Telegram Passport element
 
         data (:class:`bytes`):
             Encrypted JSON\-encoded data about the user
 
-        front_side (:class:`"types.DatedFile"`):
+        front_side (:class:`~pytdbot.types.DatedFile`):
             The front side of an identity document
 
-        reverse_side (:class:`"types.DatedFile"`):
+        reverse_side (:class:`~pytdbot.types.DatedFile`):
             The reverse side of an identity document; may be null
 
-        selfie (:class:`"types.DatedFile"`):
+        selfie (:class:`~pytdbot.types.DatedFile`):
             Selfie with the document; may be null
 
-        translation (:class:`List["types.DatedFile"]`):
+        translation (List[:class:`~pytdbot.types.DatedFile`]):
             List of files containing a certified English translation of the document
 
-        files (:class:`List["types.DatedFile"]`):
+        files (List[:class:`~pytdbot.types.DatedFile`]):
             List of attached files
 
         value (:class:`str`):
@@ -42613,7 +42613,7 @@ class InputPassportElementErrorSourceTranslationFiles(
     r"""The translation of the document contains an error\. The error is considered resolved when the list of files changes
 
     Parameters:
-        file_hashes (:class:`List[bytes]`):
+        file_hashes (List[:class:`bytes`]):
             Current hashes of all files with the translation
 
     """
@@ -42689,7 +42689,7 @@ class InputPassportElementErrorSourceFiles(TlObject, InputPassportElementErrorSo
     r"""The list of attached files contains an error\. The error is considered resolved when the file list changes
 
     Parameters:
-        file_hashes (:class:`List[bytes]`):
+        file_hashes (List[:class:`bytes`]):
             Current hashes of all attached files
 
     """
@@ -42727,13 +42727,13 @@ class InputPassportElementError(TlObject):
     r"""Contains the description of an error in a Telegram Passport element; for bots only
 
     Parameters:
-        type (:class:`"types.PassportElementType"`):
+        type (:class:`~pytdbot.types.PassportElementType`):
             Type of Telegram Passport element that has the error
 
         message (:class:`str`):
             Error message
 
-        source (:class:`"types.InputPassportElementErrorSource"`):
+        source (:class:`~pytdbot.types.InputPassportElementErrorSource`):
             Error source
 
     """
@@ -42811,13 +42811,13 @@ class MessageText(TlObject, MessageContent):
     r"""A text message
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text of the message
 
-        link_preview (:class:`"types.LinkPreview"`):
+        link_preview (:class:`~pytdbot.types.LinkPreview`):
             A link preview attached to the message; may be null
 
-        link_preview_options (:class:`"types.LinkPreviewOptions"`):
+        link_preview_options (:class:`~pytdbot.types.LinkPreviewOptions`):
             Options which were used for generation of the link preview; may be null if default options were used
 
     """
@@ -42871,10 +42871,10 @@ class MessageAnimation(TlObject, MessageContent):
     r"""An animation message \(GIF\-style\)\.
 
     Parameters:
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             The animation description
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Animation caption
 
         show_caption_above_media (:class:`bool`):
@@ -42947,10 +42947,10 @@ class MessageAudio(TlObject, MessageContent):
     r"""An audio message
 
     Parameters:
-        audio (:class:`"types.Audio"`):
+        audio (:class:`~pytdbot.types.Audio`):
             The audio description
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Audio caption
 
     """
@@ -42989,10 +42989,10 @@ class MessageDocument(TlObject, MessageContent):
     r"""A document message \(general file\)
 
     Parameters:
-        document (:class:`"types.Document"`):
+        document (:class:`~pytdbot.types.Document`):
             The document description
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Document caption
 
     """
@@ -43040,10 +43040,10 @@ class MessagePaidMedia(TlObject, MessageContent):
         star_count (:class:`int`):
             Number of Telegram Stars needed to buy access to the media in the message
 
-        media (:class:`List["types.PaidMedia"]`):
+        media (List[:class:`~pytdbot.types.PaidMedia`]):
             Information about the media
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Media caption
 
         show_caption_above_media (:class:`bool`):
@@ -43105,10 +43105,10 @@ class MessagePhoto(TlObject, MessageContent):
     r"""A photo message
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             The photo
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Photo caption
 
         show_caption_above_media (:class:`bool`):
@@ -43181,7 +43181,7 @@ class MessageSticker(TlObject, MessageContent):
     r"""A sticker message
 
     Parameters:
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The sticker description
 
         is_premium (:class:`bool`):
@@ -43227,22 +43227,22 @@ class MessageVideo(TlObject, MessageContent):
     r"""A video message
 
     Parameters:
-        video (:class:`"types.Video"`):
+        video (:class:`~pytdbot.types.Video`):
             The video description
 
-        alternative_videos (:class:`List["types.AlternativeVideo"]`):
+        alternative_videos (List[:class:`~pytdbot.types.AlternativeVideo`]):
             Alternative qualities of the video
 
-        storyboards (:class:`List["types.VideoStoryboard"]`):
+        storyboards (List[:class:`~pytdbot.types.VideoStoryboard`]):
             Available storyboards for the video
 
-        cover (:class:`"types.Photo"`):
+        cover (:class:`~pytdbot.types.Photo`):
             Cover of the video; may be null if none
 
         start_timestamp (:class:`int`):
             Timestamp from which the video playing must start, in seconds
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Video caption
 
         show_caption_above_media (:class:`bool`):
@@ -43335,7 +43335,7 @@ class MessageVideoNote(TlObject, MessageContent):
     r"""A video note message
 
     Parameters:
-        video_note (:class:`"types.VideoNote"`):
+        video_note (:class:`~pytdbot.types.VideoNote`):
             The video note description
 
         is_viewed (:class:`bool`):
@@ -43393,10 +43393,10 @@ class MessageVoiceNote(TlObject, MessageContent):
     r"""A voice note message
 
     Parameters:
-        voice_note (:class:`"types.VoiceNote"`):
+        voice_note (:class:`~pytdbot.types.VoiceNote`):
             The voice note description
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Voice note caption
 
         is_listened (:class:`bool`):
@@ -43563,7 +43563,7 @@ class MessageLocation(TlObject, MessageContent):
     r"""A message with a location
 
     Parameters:
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             The location description
 
         live_period (:class:`int`):
@@ -43639,7 +43639,7 @@ class MessageVenue(TlObject, MessageContent):
     r"""A message with information about a venue
 
     Parameters:
-        venue (:class:`"types.Venue"`):
+        venue (:class:`~pytdbot.types.Venue`):
             The venue description
 
     """
@@ -43675,7 +43675,7 @@ class MessageContact(TlObject, MessageContent):
     r"""A message with a user contact
 
     Parameters:
-        contact (:class:`"types.Contact"`):
+        contact (:class:`~pytdbot.types.Contact`):
             The contact description
 
     """
@@ -43711,7 +43711,7 @@ class MessageAnimatedEmoji(TlObject, MessageContent):
     r"""A message with an animated emoji
 
     Parameters:
-        animated_emoji (:class:`"types.AnimatedEmoji"`):
+        animated_emoji (:class:`~pytdbot.types.AnimatedEmoji`):
             The animated emoji
 
         emoji (:class:`str`):
@@ -43757,10 +43757,10 @@ class MessageDice(TlObject, MessageContent):
     r"""A dice message\. The dice value is randomly generated by the server
 
     Parameters:
-        initial_state (:class:`"types.DiceStickers"`):
+        initial_state (:class:`~pytdbot.types.DiceStickers`):
             The animated stickers with the initial dice animation; may be null if unknown\. The update updateMessageContent will be sent when the sticker became known
 
-        final_state (:class:`"types.DiceStickers"`):
+        final_state (:class:`~pytdbot.types.DiceStickers`):
             The animated stickers with the final dice animation; may be null if unknown\. The update updateMessageContent will be sent when the sticker became known
 
         emoji (:class:`str`):
@@ -43837,7 +43837,7 @@ class MessageGame(TlObject, MessageContent):
     r"""A message with a game
 
     Parameters:
-        game (:class:`"types.Game"`):
+        game (:class:`~pytdbot.types.Game`):
             The game description
 
     """
@@ -43873,7 +43873,7 @@ class MessagePoll(TlObject, MessageContent):
     r"""A message with a poll
 
     Parameters:
-        poll (:class:`"types.Poll"`):
+        poll (:class:`~pytdbot.types.Poll`):
             The poll description
 
     """
@@ -43967,7 +43967,7 @@ class MessageChecklist(TlObject, MessageContent):
     r"""A message with a checklist
 
     Parameters:
-        list (:class:`"types.Checklist"`):
+        list (:class:`~pytdbot.types.Checklist`):
             The checklist description
 
     """
@@ -44003,7 +44003,7 @@ class MessageInvoice(TlObject, MessageContent):
     r"""A message with an invoice from a bot\. Use getInternalLink with internalLinkTypeBotStart to share the invoice
 
     Parameters:
-        product_info (:class:`"types.ProductInfo"`):
+        product_info (:class:`~pytdbot.types.ProductInfo`):
             Information about the product
 
         currency (:class:`str`):
@@ -44024,10 +44024,10 @@ class MessageInvoice(TlObject, MessageContent):
         receipt_message_id (:class:`int`):
             The identifier of the message with the receipt, after the product has been purchased
 
-        paid_media (:class:`"types.PaidMedia"`):
+        paid_media (:class:`~pytdbot.types.PaidMedia`):
             Extended media attached to the invoice; may be null if none
 
-        paid_media_caption (:class:`"types.FormattedText"`):
+        paid_media_caption (:class:`~pytdbot.types.FormattedText`):
             Extended media caption; may be null if none
 
     """
@@ -44114,7 +44114,7 @@ class MessageCall(TlObject, MessageContent):
         is_video (:class:`bool`):
             True, if the call was a video call
 
-        discard_reason (:class:`"types.CallDiscardReason"`):
+        discard_reason (:class:`~pytdbot.types.CallDiscardReason`):
             Reason why the call was discarded
 
         duration (:class:`int`):
@@ -44189,7 +44189,7 @@ class MessageGroupCall(TlObject, MessageContent):
         duration (:class:`int`):
             Call duration, in seconds; for left calls only
 
-        other_participant_ids (:class:`List["types.MessageSender"]`):
+        other_participant_ids (List[:class:`~pytdbot.types.MessageSender`]):
             Identifiers of some other call participants
 
     """
@@ -44372,7 +44372,7 @@ class MessageInviteVideoChatParticipants(TlObject, MessageContent):
         group_call_id (:class:`int`):
             Identifier of the video chat\. The video chat can be received through the method getGroupCall
 
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             Invited user identifiers
 
     """
@@ -44418,7 +44418,7 @@ class MessageBasicGroupChatCreate(TlObject, MessageContent):
         title (:class:`str`):
             Title of the basic group
 
-        member_user_ids (:class:`List[int]`):
+        member_user_ids (List[:class:`int`]):
             User identifiers of members in the basic group
 
     """
@@ -44533,7 +44533,7 @@ class MessageChatChangePhoto(TlObject, MessageContent):
     r"""An updated chat photo
 
     Parameters:
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             New chat photo
 
     """
@@ -44597,7 +44597,7 @@ class MessageChatAddMembers(TlObject, MessageContent):
     r"""New chat members were added
 
     Parameters:
-        member_user_ids (:class:`List[int]`):
+        member_user_ids (List[:class:`int`]):
             User identifiers of the new members
 
     """
@@ -44874,7 +44874,7 @@ class MessageChatSetBackground(TlObject, MessageContent):
         old_background_message_id (:class:`int`):
             Identifier of the message with a previously set same background; 0 if none\. Can be an identifier of a deleted message
 
-        background (:class:`"types.ChatBackground"`):
+        background (:class:`~pytdbot.types.ChatBackground`):
             The new background
 
         only_for_self (:class:`bool`):
@@ -44931,7 +44931,7 @@ class MessageChatSetTheme(TlObject, MessageContent):
     r"""A theme in the chat has been changed
 
     Parameters:
-        theme (:class:`"types.ChatTheme"`):
+        theme (:class:`~pytdbot.types.ChatTheme`):
             New theme for the chat; may be null if chat theme was reset to the default one
 
     """
@@ -45061,7 +45061,7 @@ class MessageForumTopicCreated(TlObject, MessageContent):
         is_name_implicit (:class:`bool`):
             True, if the name of the topic wasn't added explicitly
 
-        icon (:class:`"types.ForumTopicIcon"`):
+        icon (:class:`~pytdbot.types.ForumTopicIcon`):
             Icon of the topic
 
     """
@@ -45245,7 +45245,7 @@ class MessageSuggestProfilePhoto(TlObject, MessageContent):
     r"""A profile photo was suggested to a user in a private chat
 
     Parameters:
-        photo (:class:`"types.ChatPhoto"`):
+        photo (:class:`~pytdbot.types.ChatPhoto`):
             The suggested chat photo\. Use the method setProfilePhoto with inputChatPhotoPrevious to apply the photo
 
     """
@@ -45281,7 +45281,7 @@ class MessageSuggestBirthdate(TlObject, MessageContent):
     r"""A birthdate was suggested to be set
 
     Parameters:
-        birthdate (:class:`"types.Birthdate"`):
+        birthdate (:class:`~pytdbot.types.Birthdate`):
             The suggested birthdate\. Use the method setBirthdate to apply the birthdate
 
     """
@@ -45529,7 +45529,7 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
         shipping_option_id (:class:`str`):
             Identifier of the shipping option chosen by the user; may be empty if not applicable; for bots only
 
-        order_info (:class:`"types.OrderInfo"`):
+        order_info (:class:`~pytdbot.types.OrderInfo`):
             Information about the order; may be null; for bots only
 
         telegram_payment_charge_id (:class:`str`):
@@ -45628,7 +45628,7 @@ class MessagePaymentRefunded(TlObject, MessageContent):
     r"""A payment has been refunded
 
     Parameters:
-        owner_id (:class:`"types.MessageSender"`):
+        owner_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the previous owner of the Telegram Stars that refunds them
 
         currency (:class:`str`):
@@ -45720,7 +45720,7 @@ class MessageGiftedPremium(TlObject, MessageContent):
         receiver_user_id (:class:`int`):
             The identifier of a user that received Telegram Premium; 0 if the gift is incoming
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Message added to the gifted Telegram Premium by the sender
 
         currency (:class:`str`):
@@ -45738,7 +45738,7 @@ class MessageGiftedPremium(TlObject, MessageContent):
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             A sticker to be shown in the message; may be null if unknown
 
     """
@@ -45820,10 +45820,10 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
     r"""A Telegram Premium gift code was created for the user
 
     Parameters:
-        creator_id (:class:`"types.MessageSender"`):
+        creator_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of a chat or a user that created the gift code; may be null if unknown
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Message added to the gift
 
         is_from_giveaway (:class:`bool`):
@@ -45847,7 +45847,7 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active after code activation
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             A sticker to be shown in the message; may be null if unknown
 
         code (:class:`str`):
@@ -45978,16 +45978,16 @@ class MessageGiveaway(TlObject, MessageContent):
     r"""A giveaway
 
     Parameters:
-        parameters (:class:`"types.GiveawayParameters"`):
+        parameters (:class:`~pytdbot.types.GiveawayParameters`):
             Giveaway parameters
 
         winner_count (:class:`int`):
             Number of users which will receive Telegram Premium subscription gift codes
 
-        prize (:class:`"types.GiveawayPrize"`):
+        prize (:class:`~pytdbot.types.GiveawayPrize`):
             Prize of the giveaway
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             A sticker to be shown in the message; may be null if unknown
 
     """
@@ -46128,7 +46128,7 @@ class MessageGiveawayWinners(TlObject, MessageContent):
         was_refunded (:class:`bool`):
             True, if the giveaway was canceled and was fully refunded
 
-        prize (:class:`"types.GiveawayPrize"`):
+        prize (:class:`~pytdbot.types.GiveawayPrize`):
             Prize of the giveaway
 
         prize_description (:class:`str`):
@@ -46137,7 +46137,7 @@ class MessageGiveawayWinners(TlObject, MessageContent):
         winner_count (:class:`int`):
             Total number of winners in the giveaway
 
-        winner_user_ids (:class:`List[int]`):
+        winner_user_ids (List[:class:`int`]):
             Up to 100 user identifiers of the winners of the giveaway
 
         unclaimed_prize_count (:class:`int`):
@@ -46258,7 +46258,7 @@ class MessageGiftedStars(TlObject, MessageContent):
         transaction_id (:class:`str`):
             Identifier of the transaction for Telegram Stars purchase; for receiver only
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             A sticker to be shown in the message; may be null if unknown
 
     """
@@ -46352,7 +46352,7 @@ class MessageGiftedTon(TlObject, MessageContent):
         transaction_id (:class:`str`):
             Identifier of the transaction for Toncoin credit; for receiver only
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             A sticker to be shown in the message; may be null if unknown
 
     """
@@ -46429,7 +46429,7 @@ class MessageGiveawayPrizeStars(TlObject, MessageContent):
         is_unclaimed (:class:`bool`):
             True, if the corresponding winner wasn't chosen and the Telegram Stars were received by the owner of the boosted chat
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             A sticker to be shown in the message; may be null if unknown
 
     """
@@ -46496,19 +46496,19 @@ class MessageGift(TlObject, MessageContent):
     r"""A regular gift was received or sent by the current user, or the current user was notified about a channel gift
 
     Parameters:
-        gift (:class:`"types.Gift"`):
+        gift (:class:`~pytdbot.types.Gift`):
             The gift
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Sender of the gift; may be null for outgoing messages about prepaid upgrade of gifts from unknown users
 
-        receiver_id (:class:`"types.MessageSender"`):
+        receiver_id (:class:`~pytdbot.types.MessageSender`):
             Receiver of the gift
 
         received_gift_id (:class:`str`):
             Unique identifier of the received gift for the current user; only for the receiver of the gift
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Message added to the gift
 
         sell_star_count (:class:`int`):
@@ -46672,16 +46672,16 @@ class MessageUpgradedGift(TlObject, MessageContent):
     r"""An upgraded gift was received or sent by the current user, or the current user was notified about a channel gift
 
     Parameters:
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Sender of the gift; may be null for anonymous gifts
 
-        receiver_id (:class:`"types.MessageSender"`):
+        receiver_id (:class:`~pytdbot.types.MessageSender`):
             Receiver of the gift
 
-        origin (:class:`"types.UpgradedGiftOrigin"`):
+        origin (:class:`~pytdbot.types.UpgradedGiftOrigin`):
             Origin of the upgraded gift
 
         received_gift_id (:class:`str`):
@@ -46823,16 +46823,16 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
     r"""A gift which purchase, upgrade or transfer were refunded
 
     Parameters:
-        gift (:class:`"types.Gift"`):
+        gift (:class:`~pytdbot.types.Gift`):
             The gift
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Sender of the gift
 
-        receiver_id (:class:`"types.MessageSender"`):
+        receiver_id (:class:`~pytdbot.types.MessageSender`):
             Receiver of the gift
 
-        origin (:class:`"types.UpgradedGiftOrigin"`):
+        origin (:class:`~pytdbot.types.UpgradedGiftOrigin`):
             Origin of the upgraded gift
 
     """
@@ -47038,10 +47038,10 @@ class MessageChecklistTasksDone(TlObject, MessageContent):
         checklist_message_id (:class:`int`):
             Identifier of the message with the checklist; can be 0 if the message was deleted
 
-        marked_as_done_task_ids (:class:`List[int]`):
+        marked_as_done_task_ids (List[:class:`int`]):
             Identifiers of tasks that were marked as done
 
-        marked_as_not_done_task_ids (:class:`List[int]`):
+        marked_as_not_done_task_ids (List[:class:`int`]):
             Identifiers of tasks that were marked as not done
 
     """
@@ -47100,7 +47100,7 @@ class MessageChecklistTasksAdded(TlObject, MessageContent):
         checklist_message_id (:class:`int`):
             Identifier of the message with the checklist; can be 0 if the message was deleted
 
-        tasks (:class:`List["types.ChecklistTask"]`):
+        tasks (List[:class:`~pytdbot.types.ChecklistTask`]):
             List of tasks added to the checklist
 
     """
@@ -47148,7 +47148,7 @@ class MessageSuggestedPostApprovalFailed(TlObject, MessageContent):
         suggested_post_message_id (:class:`int`):
             Identifier of the message with the suggested post; can be 0 if the message was deleted
 
-        price (:class:`"types.SuggestedPostPrice"`):
+        price (:class:`~pytdbot.types.SuggestedPostPrice`):
             Price of the suggested post
 
     """
@@ -47198,7 +47198,7 @@ class MessageSuggestedPostApproved(TlObject, MessageContent):
         suggested_post_message_id (:class:`int`):
             Identifier of the message with the suggested post; can be 0 if the message was deleted
 
-        price (:class:`"types.SuggestedPostPrice"`):
+        price (:class:`~pytdbot.types.SuggestedPostPrice`):
             Price of the suggested post; may be null if the post is non\-paid
 
         send_date (:class:`int`):
@@ -47306,7 +47306,7 @@ class MessageSuggestedPostPaid(TlObject, MessageContent):
         suggested_post_message_id (:class:`int`):
             Identifier of the message with the suggested post; can be 0 if the message was deleted
 
-        star_amount (:class:`"types.StarAmount"`):
+        star_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of received Telegram Stars
 
         ton_amount (:class:`int`):
@@ -47366,7 +47366,7 @@ class MessageSuggestedPostRefunded(TlObject, MessageContent):
         suggested_post_message_id (:class:`int`):
             Identifier of the message with the suggested post; can be 0 if the message was deleted
 
-        reason (:class:`"types.SuggestedPostRefundReason"`):
+        reason (:class:`~pytdbot.types.SuggestedPostRefundReason`):
             Reason of the refund
 
     """
@@ -47447,7 +47447,7 @@ class MessageUsersShared(TlObject, MessageContent):
     r"""The current user shared users, which were requested by the bot
 
     Parameters:
-        users (:class:`List["types.SharedUser"]`):
+        users (List[:class:`~pytdbot.types.SharedUser`]):
             The shared users
 
         button_id (:class:`int`):
@@ -47493,7 +47493,7 @@ class MessageChatShared(TlObject, MessageContent):
     r"""The current user shared a chat, which was requested by the bot
 
     Parameters:
-        chat (:class:`"types.SharedChat"`):
+        chat (:class:`~pytdbot.types.SharedChat`):
             The shared chat
 
         button_id (:class:`int`):
@@ -47535,7 +47535,7 @@ class MessageBotWriteAccessAllowed(TlObject, MessageContent):
     r"""The user allowed the bot to send messages
 
     Parameters:
-        reason (:class:`"types.BotWriteAccessAllowReason"`):
+        reason (:class:`~pytdbot.types.BotWriteAccessAllowReason`):
             The reason why the bot was allowed to write messages
 
     """
@@ -47659,7 +47659,7 @@ class MessagePassportDataSent(TlObject, MessageContent):
     r"""Telegram Passport data has been sent to a bot
 
     Parameters:
-        types (:class:`List["types.PassportElementType"]`):
+        types (List[:class:`~pytdbot.types.PassportElementType`]):
             List of Telegram Passport element types sent
 
     """
@@ -47695,10 +47695,10 @@ class MessagePassportDataReceived(TlObject, MessageContent):
     r"""Telegram Passport data has been received; for bots only
 
     Parameters:
-        elements (:class:`List["types.EncryptedPassportElement"]`):
+        elements (List[:class:`~pytdbot.types.EncryptedPassportElement`]):
             List of received Telegram Passport elements
 
-        credentials (:class:`"types.EncryptedCredentials"`):
+        credentials (:class:`~pytdbot.types.EncryptedCredentials`):
             Encrypted data credentials
 
     """
@@ -47745,10 +47745,10 @@ class MessageProximityAlertTriggered(TlObject, MessageContent):
     r"""A user in the chat came within proximity alert range
 
     Parameters:
-        traveler_id (:class:`"types.MessageSender"`):
+        traveler_id (:class:`~pytdbot.types.MessageSender`):
             The identifier of a user or chat that triggered the proximity alert
 
-        watcher_id (:class:`"types.MessageSender"`):
+        watcher_id (:class:`~pytdbot.types.MessageSender`):
             The identifier of a user or chat that subscribed for the proximity alert
 
         distance (:class:`int`):
@@ -48489,7 +48489,7 @@ class InputThumbnail(TlObject):
     r"""A thumbnail to be sent along with a file; must be in JPEG or WEBP format for stickers, and less than 200 KB in size
 
     Parameters:
-        thumbnail (:class:`"types.InputFile"`):
+        thumbnail (:class:`~pytdbot.types.InputFile`):
             Thumbnail file to send\. Sending thumbnails by file\_id is currently not supported
 
         width (:class:`int`):
@@ -48574,7 +48574,7 @@ class InputPaidMediaTypeVideo(TlObject, InputPaidMediaType):
     r"""The media is a video
 
     Parameters:
-        cover (:class:`"types.InputFile"`):
+        cover (:class:`~pytdbot.types.InputFile`):
             Cover of the video; pass null to skip cover uploading
 
         start_timestamp (:class:`int`):
@@ -48642,16 +48642,16 @@ class InputPaidMedia(TlObject):
     r"""Describes a paid media to be sent
 
     Parameters:
-        type (:class:`"types.InputPaidMediaType"`):
+        type (:class:`~pytdbot.types.InputPaidMediaType`):
             Type of the media
 
-        media (:class:`"types.InputFile"`):
+        media (:class:`~pytdbot.types.InputFile`):
             Photo or video to be sent
 
-        thumbnail (:class:`"types.InputThumbnail"`):
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
             Media thumbnail; pass null to skip thumbnail uploading
 
-        added_sticker_file_ids (:class:`List[int]`):
+        added_sticker_file_ids (List[:class:`int`]):
             File identifiers of the stickers added to the media, if applicable
 
         width (:class:`int`):
@@ -48894,7 +48894,7 @@ class MessageSendOptions(TlObject):
     r"""Options to be used when a message is sent
 
     Parameters:
-        suggested_post_info (:class:`"types.InputSuggestedPostInfo"`):
+        suggested_post_info (:class:`~pytdbot.types.InputSuggestedPostInfo`):
             Information about the suggested post; pass null if none\. For messages to channel direct messages chat only\. Applicable only to sendMessage and addOffer
 
         disable_notification (:class:`bool`):
@@ -48915,7 +48915,7 @@ class MessageSendOptions(TlObject):
         update_order_of_installed_sticker_sets (:class:`bool`):
             Pass true if the user explicitly chosen a sticker or a custom emoji from an installed sticker set; applicable only to sendMessage and sendMessageAlbum
 
-        scheduling_state (:class:`"types.MessageSchedulingState"`):
+        scheduling_state (:class:`~pytdbot.types.MessageSchedulingState`):
             Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, to a chat with paid messages, to a channel direct messages chat, live location messages and self\-destructing messages can't be scheduled
 
         effect_id (:class:`int`):
@@ -49035,7 +49035,7 @@ class MessageCopyOptions(TlObject):
         replace_caption (:class:`bool`):
             True, if media caption of the message copy needs to be replaced\. Ignored if send\_copy is false
 
-        new_caption (:class:`"types.FormattedText"`):
+        new_caption (:class:`~pytdbot.types.FormattedText`):
             New message caption; pass null to copy message without caption\. Ignored if replace\_caption is false
 
         new_show_caption_above_media (:class:`bool`):
@@ -49097,10 +49097,10 @@ class InputMessageText(TlObject, InputMessageContent):
     r"""A text message
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Formatted text to be sent; 0\-getOption\(\"message\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, BlockQuote, ExpandableBlockQuote, Code, Pre, PreCode, TextUrl and MentionName entities are allowed to be specified manually
 
-        link_preview_options (:class:`"types.LinkPreviewOptions"`):
+        link_preview_options (:class:`~pytdbot.types.LinkPreviewOptions`):
             Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options
 
         clear_draft (:class:`bool`):
@@ -49157,13 +49157,13 @@ class InputMessageAnimation(TlObject, InputMessageContent):
     r"""An animation message \(GIF\-style\)\.
 
     Parameters:
-        animation (:class:`"types.InputFile"`):
+        animation (:class:`~pytdbot.types.InputFile`):
             Animation file to be sent
 
-        thumbnail (:class:`"types.InputThumbnail"`):
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
             Animation thumbnail; pass null to skip thumbnail uploading
 
-        added_sticker_file_ids (:class:`List[int]`):
+        added_sticker_file_ids (List[:class:`int`]):
             File identifiers of the stickers added to the animation, if applicable
 
         duration (:class:`int`):
@@ -49175,7 +49175,7 @@ class InputMessageAnimation(TlObject, InputMessageContent):
         height (:class:`int`):
             Height of the animation; may be replaced by the server
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Animation caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
         show_caption_above_media (:class:`bool`):
@@ -49267,10 +49267,10 @@ class InputMessageAudio(TlObject, InputMessageContent):
     r"""An audio message
 
     Parameters:
-        audio (:class:`"types.InputFile"`):
+        audio (:class:`~pytdbot.types.InputFile`):
             Audio file to be sent
 
-        album_cover_thumbnail (:class:`"types.InputThumbnail"`):
+        album_cover_thumbnail (:class:`~pytdbot.types.InputThumbnail`):
             Thumbnail of the cover for the album; pass null to skip thumbnail uploading
 
         duration (:class:`int`):
@@ -49282,7 +49282,7 @@ class InputMessageAudio(TlObject, InputMessageContent):
         performer (:class:`str`):
             Performer of the audio; 0\-64 characters, may be replaced by the server
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Audio caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
     """
@@ -49351,16 +49351,16 @@ class InputMessageDocument(TlObject, InputMessageContent):
     r"""A document message \(general file\)
 
     Parameters:
-        document (:class:`"types.InputFile"`):
+        document (:class:`~pytdbot.types.InputFile`):
             Document to be sent
 
-        thumbnail (:class:`"types.InputThumbnail"`):
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
             Document thumbnail; pass null to skip thumbnail uploading
 
         disable_content_type_detection (:class:`bool`):
             Pass true to disable automatic file type detection and send the document as a file\. Always true for files sent to secret chats
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Document caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
     """
@@ -49424,10 +49424,10 @@ class InputMessagePaidMedia(TlObject, InputMessageContent):
         star_count (:class:`int`):
             The number of Telegram Stars that must be paid to see the media; 1\-getOption\(\"paid\_media\_message\_star\_count\_max\"\)
 
-        paid_media (:class:`List["types.InputPaidMedia"]`):
+        paid_media (List[:class:`~pytdbot.types.InputPaidMedia`]):
             The content of the paid media
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Message caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
         show_caption_above_media (:class:`bool`):
@@ -49497,13 +49497,13 @@ class InputMessagePhoto(TlObject, InputMessageContent):
     r"""A photo message
 
     Parameters:
-        photo (:class:`"types.InputFile"`):
+        photo (:class:`~pytdbot.types.InputFile`):
             Photo to send\. The photo must be at most 10 MB in size\. The photo's width and height must not exceed 10000 in total\. Width and height ratio must be at most 20
 
-        thumbnail (:class:`"types.InputThumbnail"`):
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
             Photo thumbnail to be sent; pass null to skip thumbnail uploading\. The thumbnail is sent to the other party only in secret chats
 
-        added_sticker_file_ids (:class:`List[int]`):
+        added_sticker_file_ids (List[:class:`int`]):
             File identifiers of the stickers added to the photo, if applicable
 
         width (:class:`int`):
@@ -49512,13 +49512,13 @@ class InputMessagePhoto(TlObject, InputMessageContent):
         height (:class:`int`):
             Photo height
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Photo caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
         show_caption_above_media (:class:`bool`):
             True, if the caption must be shown above the photo; otherwise, the caption must be shown below the photo; not supported in secret chats
 
-        self_destruct_type (:class:`"types.MessageSelfDestructType"`):
+        self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`):
             Photo self\-destruct type; pass null if none; private chats only
 
         has_spoiler (:class:`bool`):
@@ -49609,10 +49609,10 @@ class InputMessageSticker(TlObject, InputMessageContent):
     r"""A sticker message
 
     Parameters:
-        sticker (:class:`"types.InputFile"`):
+        sticker (:class:`~pytdbot.types.InputFile`):
             Sticker to be sent
 
-        thumbnail (:class:`"types.InputThumbnail"`):
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
             Sticker thumbnail; pass null to skip thumbnail uploading
 
         width (:class:`int`):
@@ -49685,19 +49685,19 @@ class InputMessageVideo(TlObject, InputMessageContent):
     r"""A video message
 
     Parameters:
-        video (:class:`"types.InputFile"`):
+        video (:class:`~pytdbot.types.InputFile`):
             Video to be sent\. The video is expected to be re\-encoded to MPEG4 format with H\.264 codec by the sender
 
-        thumbnail (:class:`"types.InputThumbnail"`):
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
             Video thumbnail; pass null to skip thumbnail uploading
 
-        cover (:class:`"types.InputFile"`):
+        cover (:class:`~pytdbot.types.InputFile`):
             Cover of the video; pass null to skip cover uploading; not supported in secret chats and for self\-destructing messages
 
         start_timestamp (:class:`int`):
             Timestamp from which the video playing must start, in seconds
 
-        added_sticker_file_ids (:class:`List[int]`):
+        added_sticker_file_ids (List[:class:`int`]):
             File identifiers of the stickers added to the video, if applicable
 
         duration (:class:`int`):
@@ -49712,13 +49712,13 @@ class InputMessageVideo(TlObject, InputMessageContent):
         supports_streaming (:class:`bool`):
             True, if the video is expected to be streamed
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Video caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
         show_caption_above_media (:class:`bool`):
             True, if the caption must be shown above the video; otherwise, the caption must be shown below the video; not supported in secret chats
 
-        self_destruct_type (:class:`"types.MessageSelfDestructType"`):
+        self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`):
             Video self\-destruct type; pass null if none; private chats only
 
         has_spoiler (:class:`bool`):
@@ -49831,10 +49831,10 @@ class InputMessageVideoNote(TlObject, InputMessageContent):
     r"""A video note message
 
     Parameters:
-        video_note (:class:`"types.InputFile"`):
+        video_note (:class:`~pytdbot.types.InputFile`):
             Video note to be sent\. The video is expected to be encoded to MPEG4 format with H\.264 codec and have no data outside of the visible circle
 
-        thumbnail (:class:`"types.InputThumbnail"`):
+        thumbnail (:class:`~pytdbot.types.InputThumbnail`):
             Video thumbnail; may be null if empty; pass null to skip thumbnail uploading
 
         duration (:class:`int`):
@@ -49843,7 +49843,7 @@ class InputMessageVideoNote(TlObject, InputMessageContent):
         length (:class:`int`):
             Video width and height; must be positive and not greater than 640
 
-        self_destruct_type (:class:`"types.MessageSelfDestructType"`):
+        self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`):
             Video note self\-destruct type; may be null if none; pass null if none; private chats only
 
     """
@@ -49909,7 +49909,7 @@ class InputMessageVoiceNote(TlObject, InputMessageContent):
     r"""A voice note message
 
     Parameters:
-        voice_note (:class:`"types.InputFile"`):
+        voice_note (:class:`~pytdbot.types.InputFile`):
             Voice note to be sent\. The voice note must be encoded with the Opus codec and stored inside an OGG container with a single audio channel, or be in MP3 or M4A format as regular audio
 
         duration (:class:`int`):
@@ -49918,10 +49918,10 @@ class InputMessageVoiceNote(TlObject, InputMessageContent):
         waveform (:class:`bytes`):
             Waveform representation of the voice note in 5\-bit format
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Voice note caption; may be null if empty; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
-        self_destruct_type (:class:`"types.MessageSelfDestructType"`):
+        self_destruct_type (:class:`~pytdbot.types.MessageSelfDestructType`):
             Voice note self\-destruct type; may be null if none; pass null if none; private chats only
 
     """
@@ -49987,7 +49987,7 @@ class InputMessageLocation(TlObject, InputMessageContent):
     r"""A message with a location
 
     Parameters:
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             Location to be sent
 
         live_period (:class:`int`):
@@ -50055,7 +50055,7 @@ class InputMessageVenue(TlObject, InputMessageContent):
     r"""A message with information about a venue
 
     Parameters:
-        venue (:class:`"types.Venue"`):
+        venue (:class:`~pytdbot.types.Venue`):
             Venue to send
 
     """
@@ -50091,7 +50091,7 @@ class InputMessageContact(TlObject, InputMessageContent):
     r"""A message containing a user contact
 
     Parameters:
-        contact (:class:`"types.Contact"`):
+        contact (:class:`~pytdbot.types.Contact`):
             Contact to send
 
     """
@@ -50219,7 +50219,7 @@ class InputMessageInvoice(TlObject, InputMessageContent):
     r"""A message with an invoice; can be used only by bots
 
     Parameters:
-        invoice (:class:`"types.Invoice"`):
+        invoice (:class:`~pytdbot.types.Invoice`):
             Invoice
 
         title (:class:`str`):
@@ -50252,10 +50252,10 @@ class InputMessageInvoice(TlObject, InputMessageContent):
         start_parameter (:class:`str`):
             Unique invoice bot deep link parameter for the generation of this invoice\. If empty, it would be possible to pay directly from forwards of the invoice message
 
-        paid_media (:class:`"types.InputPaidMedia"`):
+        paid_media (:class:`~pytdbot.types.InputPaidMedia`):
             The content of paid media attached to the invoice; pass null if none
 
-        paid_media_caption (:class:`"types.FormattedText"`):
+        paid_media_caption (:class:`~pytdbot.types.FormattedText`):
             Paid media caption; pass null to use an empty caption; 0\-getOption\(\"message\_caption\_length\_max\"\) characters
 
     """
@@ -50357,16 +50357,16 @@ class InputMessagePoll(TlObject, InputMessageContent):
     r"""A message with a poll\. Polls can't be sent to secret chats and channel direct messages chats\. Polls can be sent to a private chat only if the chat is a chat with a bot or the Saved Messages chat
 
     Parameters:
-        question (:class:`"types.FormattedText"`):
+        question (:class:`~pytdbot.types.FormattedText`):
             Poll question; 1\-255 characters \(up to 300 characters for bots\)\. Only custom emoji entities are allowed to be added and only by Premium users
 
-        options (:class:`List["types.FormattedText"]`):
+        options (List[:class:`~pytdbot.types.FormattedText`]):
             List of poll answer options, 2\-getOption\(\"poll\_answer\_count\_max\"\) strings 1\-100 characters each\. Only custom emoji entities are allowed to be added and only by Premium users
 
         is_anonymous (:class:`bool`):
             True, if the poll voters are anonymous\. Non\-anonymous polls can't be sent or forwarded to channels
 
-        type (:class:`"types.PollType"`):
+        type (:class:`~pytdbot.types.PollType`):
             Type of the poll
 
         open_period (:class:`int`):
@@ -50493,7 +50493,7 @@ class InputMessageChecklist(TlObject, InputMessageContent):
     r"""A message with a checklist\. Checklists can't be sent to secret chats, channel chats and channel direct messages chats; for Telegram Premium users only
 
     Parameters:
-        checklist (:class:`"types.InputChecklist"`):
+        checklist (:class:`~pytdbot.types.InputChecklist`):
             The checklist to send
 
     """
@@ -50544,7 +50544,7 @@ class InputMessageForwarded(TlObject, InputMessageContent):
         new_video_start_timestamp (:class:`int`):
             The new video start timestamp; ignored if replace\_video\_start\_timestamp \=\= false
 
-        copy_options (:class:`"types.MessageCopyOptions"`):
+        copy_options (:class:`~pytdbot.types.MessageCopyOptions`):
             Options to be used to copy content of the message without reference to the original sender; pass null to forward the message as usual
 
     """
@@ -52254,7 +52254,7 @@ class EmojiKeywords(TlObject):
     r"""Represents a list of emojis with their keywords
 
     Parameters:
-        emoji_keywords (:class:`List["types.EmojiKeyword"]`):
+        emoji_keywords (List[:class:`~pytdbot.types.EmojiKeyword`]):
             List of emojis with their keywords
 
     """
@@ -52290,7 +52290,7 @@ class Stickers(TlObject):
     r"""Represents a list of stickers
 
     Parameters:
-        stickers (:class:`List["types.Sticker"]`):
+        stickers (List[:class:`~pytdbot.types.Sticker`]):
             List of stickers
 
     """
@@ -52326,7 +52326,7 @@ class Emojis(TlObject):
     r"""Represents a list of emojis
 
     Parameters:
-        emojis (:class:`List[str]`):
+        emojis (List[:class:`str`]):
             List of emojis
 
     """
@@ -52371,10 +52371,10 @@ class StickerSet(TlObject):
         name (:class:`str`):
             Name of the sticker set
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null\. The file can be downloaded only before the thumbnail is changed
 
-        thumbnail_outline (:class:`"types.Outline"`):
+        thumbnail_outline (:class:`~pytdbot.types.Outline`):
             Sticker set thumbnail's outline; may be null if unknown
 
         is_owned (:class:`bool`):
@@ -52389,7 +52389,7 @@ class StickerSet(TlObject):
         is_official (:class:`bool`):
             True, if the sticker set is official
 
-        sticker_type (:class:`"types.StickerType"`):
+        sticker_type (:class:`~pytdbot.types.StickerType`):
             Type of the stickers in the set
 
         needs_repainting (:class:`bool`):
@@ -52401,10 +52401,10 @@ class StickerSet(TlObject):
         is_viewed (:class:`bool`):
             True for already viewed trending sticker sets
 
-        stickers (:class:`List["types.Sticker"]`):
+        stickers (List[:class:`~pytdbot.types.Sticker`]):
             List of stickers in this set
 
-        emojis (:class:`List["types.Emojis"]`):
+        emojis (List[:class:`~pytdbot.types.Emojis`]):
             A list of emojis corresponding to the stickers in the same order\. The list is only for informational purposes, because a sticker is always sent with a fixed emoji from the corresponding Sticker object
 
     """
@@ -52531,10 +52531,10 @@ class StickerSetInfo(TlObject):
         name (:class:`str`):
             Name of the sticker set
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Sticker set thumbnail in WEBP, TGS, or WEBM format with width and height 100; may be null\. The file can be downloaded only before the thumbnail is changed
 
-        thumbnail_outline (:class:`"types.Outline"`):
+        thumbnail_outline (:class:`~pytdbot.types.Outline`):
             Sticker set thumbnail's outline; may be null if unknown
 
         is_owned (:class:`bool`):
@@ -52549,7 +52549,7 @@ class StickerSetInfo(TlObject):
         is_official (:class:`bool`):
             True, if the sticker set is official
 
-        sticker_type (:class:`"types.StickerType"`):
+        sticker_type (:class:`~pytdbot.types.StickerType`):
             Type of the stickers in the set
 
         needs_repainting (:class:`bool`):
@@ -52564,7 +52564,7 @@ class StickerSetInfo(TlObject):
         size (:class:`int`):
             Total number of stickers in the set
 
-        covers (:class:`List["types.Sticker"]`):
+        covers (List[:class:`~pytdbot.types.Sticker`]):
             Up to the first 5 stickers from the set, depending on the context\. If the application needs more stickers the full sticker set needs to be requested
 
     """
@@ -52685,7 +52685,7 @@ class StickerSets(TlObject):
         total_count (:class:`int`):
             Approximate total number of sticker sets found
 
-        sets (:class:`List["types.StickerSetInfo"]`):
+        sets (List[:class:`~pytdbot.types.StickerSetInfo`]):
             List of sticker sets
 
     """
@@ -52731,7 +52731,7 @@ class TrendingStickerSets(TlObject):
         total_count (:class:`int`):
             Approximate total number of trending sticker sets
 
-        sets (:class:`List["types.StickerSetInfo"]`):
+        sets (List[:class:`~pytdbot.types.StickerSetInfo`]):
             List of trending sticker sets
 
         is_premium (:class:`bool`):
@@ -52786,7 +52786,7 @@ class EmojiCategorySourceSearch(TlObject, EmojiCategorySource):
     r"""The category contains a list of similar emoji to search for in getStickers and searchStickers for stickers, or getInlineQueryResults with the bot getOption\(\"animation\_search\_bot\_username\"\) for animations
 
     Parameters:
-        emojis (:class:`List[str]`):
+        emojis (List[:class:`str`]):
             List of emojis to search for
 
     """
@@ -52853,10 +52853,10 @@ class EmojiCategory(TlObject):
         name (:class:`str`):
             Name of the category
 
-        icon (:class:`"types.Sticker"`):
+        icon (:class:`~pytdbot.types.Sticker`):
             Custom emoji sticker, which represents icon of the category
 
-        source (:class:`"types.EmojiCategorySource"`):
+        source (:class:`~pytdbot.types.EmojiCategorySource`):
             Source of stickers for the emoji category
 
         is_greeting (:class:`bool`):
@@ -52918,7 +52918,7 @@ class EmojiCategories(TlObject):
     r"""Represents a list of emoji categories
 
     Parameters:
-        categories (:class:`List["types.EmojiCategory"]`):
+        categories (List[:class:`~pytdbot.types.EmojiCategory`]):
             List of categories
 
     """
@@ -53196,10 +53196,10 @@ class StoryAreaTypeLocation(TlObject, StoryAreaType):
     r"""An area pointing to a location
 
     Parameters:
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             The location
 
-        address (:class:`"types.LocationAddress"`):
+        address (:class:`~pytdbot.types.LocationAddress`):
             Address of the location; may be null if unknown
 
     """
@@ -53244,7 +53244,7 @@ class StoryAreaTypeVenue(TlObject, StoryAreaType):
     r"""An area pointing to a venue
 
     Parameters:
-        venue (:class:`"types.Venue"`):
+        venue (:class:`~pytdbot.types.Venue`):
             Information about the venue
 
     """
@@ -53280,7 +53280,7 @@ class StoryAreaTypeSuggestedReaction(TlObject, StoryAreaType):
     r"""An area pointing to a suggested reaction\. App needs to show a clickable reaction on the area and call setStoryReaction when the are is clicked
 
     Parameters:
-        reaction_type (:class:`"types.ReactionType"`):
+        reaction_type (:class:`~pytdbot.types.ReactionType`):
             Type of the reaction
 
         total_count (:class:`int`):
@@ -53521,10 +53521,10 @@ class StoryArea(TlObject):
     r"""Describes a clickable rectangle area on a story media
 
     Parameters:
-        position (:class:`"types.StoryAreaPosition"`):
+        position (:class:`~pytdbot.types.StoryAreaPosition`):
             Position of the area
 
-        type (:class:`"types.StoryAreaType"`):
+        type (:class:`~pytdbot.types.StoryAreaType`):
             Type of the area
 
     """
@@ -53574,10 +53574,10 @@ class InputStoryAreaTypeLocation(TlObject, InputStoryAreaType):
     r"""An area pointing to a location
 
     Parameters:
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             The location
 
-        address (:class:`"types.LocationAddress"`):
+        address (:class:`~pytdbot.types.LocationAddress`):
             Address of the location; pass null if unknown
 
     """
@@ -53714,7 +53714,7 @@ class InputStoryAreaTypeSuggestedReaction(TlObject, InputStoryAreaType):
     r"""An area pointing to a suggested reaction
 
     Parameters:
-        reaction_type (:class:`"types.ReactionType"`):
+        reaction_type (:class:`~pytdbot.types.ReactionType`):
             Type of the reaction
 
         is_dark (:class:`bool`):
@@ -53949,10 +53949,10 @@ class InputStoryArea(TlObject):
     r"""Describes a clickable rectangle area on a story media to be added
 
     Parameters:
-        position (:class:`"types.StoryAreaPosition"`):
+        position (:class:`~pytdbot.types.StoryAreaPosition`):
             Position of the area
 
-        type (:class:`"types.InputStoryAreaType"`):
+        type (:class:`~pytdbot.types.InputStoryAreaType`):
             Type of the area
 
     """
@@ -54003,7 +54003,7 @@ class InputStoryAreas(TlObject):
     r"""Contains a list of story areas to be added
 
     Parameters:
-        areas (:class:`List["types.InputStoryArea"]`):
+        areas (List[:class:`~pytdbot.types.InputStoryArea`]):
             List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption\(\"story\_link\_area\_count\_max\"\) inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, up to 3 inputStoryAreaTypeWeather areas, and up to 1 inputStoryAreaTypeUpgradedGift area
 
     """
@@ -54054,10 +54054,10 @@ class StoryVideo(TlObject):
         is_animation (:class:`bool`):
             True, if the video has no sound
 
-        minithumbnail (:class:`"types.Minithumbnail"`):
+        minithumbnail (:class:`~pytdbot.types.Minithumbnail`):
             Video minithumbnail; may be null
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Video thumbnail in JPEG or MPEG4 format; may be null
 
         preload_prefix_size (:class:`int`):
@@ -54066,7 +54066,7 @@ class StoryVideo(TlObject):
         cover_frame_timestamp (:class:`float`):
             Timestamp of the frame used as video thumbnail
 
-        video (:class:`"types.File"`):
+        video (:class:`~pytdbot.types.File`):
             File containing the video
 
     """
@@ -54153,7 +54153,7 @@ class StoryContentPhoto(TlObject, StoryContent):
     r"""A photo story
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             The photo
 
     """
@@ -54189,10 +54189,10 @@ class StoryContentVideo(TlObject, StoryContent):
     r"""A video story
 
     Parameters:
-        video (:class:`"types.StoryVideo"`):
+        video (:class:`~pytdbot.types.StoryVideo`):
             The video in MPEG4 format
 
-        alternative_video (:class:`"types.StoryVideo"`):
+        alternative_video (:class:`~pytdbot.types.StoryVideo`):
             Alternative version of the video in MPEG4 format, encoded with H\.264 codec; may be null
 
     """
@@ -54265,10 +54265,10 @@ class InputStoryContentPhoto(TlObject, InputStoryContent):
     r"""A photo story
 
     Parameters:
-        photo (:class:`"types.InputFile"`):
+        photo (:class:`~pytdbot.types.InputFile`):
             Photo to send\. The photo must be at most 10 MB in size\. The photo size must be 1080x1920
 
-        added_sticker_file_ids (:class:`List[int]`):
+        added_sticker_file_ids (List[:class:`int`]):
             File identifiers of the stickers added to the photo, if applicable
 
     """
@@ -54315,10 +54315,10 @@ class InputStoryContentVideo(TlObject, InputStoryContent):
     r"""A video story
 
     Parameters:
-        video (:class:`"types.InputFile"`):
+        video (:class:`~pytdbot.types.InputFile`):
             Video to be sent\. The video size must be 720x1280\. The video must be streamable and stored in MPEG4 format, after encoding with H\.265 codec and key frames added each second
 
-        added_sticker_file_ids (:class:`List[int]`):
+        added_sticker_file_ids (List[:class:`int`]):
             File identifiers of the stickers added to the video, if applicable
 
         duration (:class:`float`):
@@ -54529,7 +54529,7 @@ class StoryRepostInfo(TlObject):
     r"""Contains information about original story that was reposted
 
     Parameters:
-        origin (:class:`"types.StoryOrigin"`):
+        origin (:class:`~pytdbot.types.StoryOrigin`):
             Origin of the story that was reposted
 
         is_content_modified (:class:`bool`):
@@ -54586,7 +54586,7 @@ class StoryInteractionInfo(TlObject):
         reaction_count (:class:`int`):
             Number of reactions added to the story; 0 if none or unknown
 
-        recent_viewer_user_ids (:class:`List[int]`):
+        recent_viewer_user_ids (List[:class:`int`]):
             Identifiers of at most 3 recent viewers of the story
 
     """
@@ -54649,7 +54649,7 @@ class Story(TlObject):
         poster_chat_id (:class:`int`):
             Identifier of the chat that posted the story
 
-        poster_id (:class:`"types.MessageSender"`):
+        poster_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or chat that posted the story; may be null if the story is posted on behalf of the poster\_chat\_id
 
         date (:class:`int`):
@@ -54697,28 +54697,28 @@ class Story(TlObject):
         has_expired_viewers (:class:`bool`):
             True, if users viewed the story can't be received, because the story has expired more than getOption\(\"story\_viewers\_expiration\_delay\"\) seconds ago
 
-        repost_info (:class:`"types.StoryRepostInfo"`):
+        repost_info (:class:`~pytdbot.types.StoryRepostInfo`):
             Information about the original story; may be null if the story wasn't reposted
 
-        interaction_info (:class:`"types.StoryInteractionInfo"`):
+        interaction_info (:class:`~pytdbot.types.StoryInteractionInfo`):
             Information about interactions with the story; may be null if the story isn't owned or there were no interactions
 
-        chosen_reaction_type (:class:`"types.ReactionType"`):
+        chosen_reaction_type (:class:`~pytdbot.types.ReactionType`):
             Type of the chosen reaction; may be null if none
 
-        privacy_settings (:class:`"types.StoryPrivacySettings"`):
+        privacy_settings (:class:`~pytdbot.types.StoryPrivacySettings`):
             Privacy rules affecting story visibility; may be approximate for non\-owned stories
 
-        content (:class:`"types.StoryContent"`):
+        content (:class:`~pytdbot.types.StoryContent`):
             Content of the story
 
-        areas (:class:`List["types.StoryArea"]`):
+        areas (List[:class:`~pytdbot.types.StoryArea`]):
             Clickable areas to be shown on the story content
 
-        caption (:class:`"types.FormattedText"`):
+        caption (:class:`~pytdbot.types.FormattedText`):
             Caption of the story
 
-        album_ids (:class:`List[int]`):
+        album_ids (List[:class:`int`]):
             Identifiers of story albums to which the story is added; only for manageable stories
 
     """
@@ -54906,10 +54906,10 @@ class Stories(TlObject):
         total_count (:class:`int`):
             Approximate total number of stories found
 
-        stories (:class:`List["types.Story"]`):
+        stories (List[:class:`~pytdbot.types.Story`]):
             The list of stories
 
-        pinned_story_ids (:class:`List[int]`):
+        pinned_story_ids (List[:class:`int`]):
             Identifiers of the pinned stories; returned only in getChatPostedToChatPageStories with from\_story\_id \=\= 0
 
     """
@@ -54964,7 +54964,7 @@ class FoundStories(TlObject):
         total_count (:class:`int`):
             Approximate total number of stories found
 
-        stories (:class:`List["types.Story"]`):
+        stories (List[:class:`~pytdbot.types.Story`]):
             List of stories
 
         next_offset (:class:`str`):
@@ -55022,10 +55022,10 @@ class StoryAlbum(TlObject):
         name (:class:`str`):
             Name of the album
 
-        photo_icon (:class:`"types.Photo"`):
+        photo_icon (:class:`~pytdbot.types.Photo`):
             Icon of the album; may be null if none
 
-        video_icon (:class:`"types.Video"`):
+        video_icon (:class:`~pytdbot.types.Video`):
             Video icon of the album; may be null if none
 
     """
@@ -55082,7 +55082,7 @@ class StoryAlbums(TlObject):
     r"""Represents a list of story albums
 
     Parameters:
-        albums (:class:`List["types.StoryAlbum"]`):
+        albums (List[:class:`~pytdbot.types.StoryAlbum`]):
             List of story albums
 
     """
@@ -55222,7 +55222,7 @@ class ChatActiveStories(TlObject):
         chat_id (:class:`int`):
             Identifier of the chat that posted the stories
 
-        list (:class:`"types.StoryList"`):
+        list (:class:`~pytdbot.types.StoryList`):
             Identifier of the story list in which the stories are shown; may be null if the stories aren't shown in a story list
 
         order (:class:`int`):
@@ -55234,7 +55234,7 @@ class ChatActiveStories(TlObject):
         max_read_story_id (:class:`int`):
             Identifier of the last read active story
 
-        stories (:class:`List["types.StoryInfo"]`):
+        stories (List[:class:`~pytdbot.types.StoryInfo`]):
             Basic information about the stories; use getStory to get full information about the stories\. The stories are in chronological order \(i\.e\., in order of increasing story identifiers\)
 
     """
@@ -55301,7 +55301,7 @@ class StoryInteractionTypeView(TlObject, StoryInteractionType):
     r"""A view of the story
 
     Parameters:
-        chosen_reaction_type (:class:`"types.ReactionType"`):
+        chosen_reaction_type (:class:`~pytdbot.types.ReactionType`):
             Type of the reaction that was chosen by the viewer; may be null if none
 
     """
@@ -55342,7 +55342,7 @@ class StoryInteractionTypeForward(TlObject, StoryInteractionType):
     r"""A forward of the story as a message
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             The message with story forward
 
     """
@@ -55378,7 +55378,7 @@ class StoryInteractionTypeRepost(TlObject, StoryInteractionType):
     r"""A repost of the story as a story
 
     Parameters:
-        story (:class:`"types.Story"`):
+        story (:class:`~pytdbot.types.Story`):
             The reposted story
 
     """
@@ -55414,16 +55414,16 @@ class StoryInteraction(TlObject):
     r"""Represents interaction with a story
 
     Parameters:
-        actor_id (:class:`"types.MessageSender"`):
+        actor_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or chat that made the interaction
 
         interaction_date (:class:`int`):
             Approximate point in time \(Unix timestamp\) when the interaction happened
 
-        block_list (:class:`"types.BlockList"`):
+        block_list (:class:`~pytdbot.types.BlockList`):
             Block list to which the actor is added; may be null if none or for chat stories
 
-        type (:class:`"types.StoryInteractionType"`):
+        type (:class:`~pytdbot.types.StoryInteractionType`):
             Type of the interaction
 
     """
@@ -55494,7 +55494,7 @@ class StoryInteractions(TlObject):
         total_reaction_count (:class:`int`):
             Approximate total number of found reactions; always 0 for chat stories
 
-        interactions (:class:`List["types.StoryInteraction"]`):
+        interactions (List[:class:`~pytdbot.types.StoryInteraction`]):
             List of story interactions
 
         next_offset (:class:`str`):
@@ -55562,7 +55562,7 @@ class QuickReplyMessage(TlObject):
         id (:class:`int`):
             Unique message identifier among all quick replies
 
-        sending_state (:class:`"types.MessageSendingState"`):
+        sending_state (:class:`~pytdbot.types.MessageSendingState`):
             The sending state of the message; may be null if the message isn't being sent and didn't fail to be sent
 
         can_be_edited (:class:`bool`):
@@ -55577,10 +55577,10 @@ class QuickReplyMessage(TlObject):
         media_album_id (:class:`int`):
             Unique identifier of an album this message belongs to; 0 if none\. Only audios, documents, photos and videos can be grouped together in albums
 
-        content (:class:`"types.MessageContent"`):
+        content (:class:`~pytdbot.types.MessageContent`):
             Content of the message
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             Inline keyboard reply markup for the message; may be null if none
 
     """
@@ -55757,7 +55757,7 @@ class QuickReplyMessages(TlObject):
     r"""Contains a list of quick reply messages
 
     Parameters:
-        messages (:class:`List["types.QuickReplyMessage"]`):
+        messages (List[:class:`~pytdbot.types.QuickReplyMessage`]):
             List of quick reply messages; messages may be null
 
     """
@@ -55799,7 +55799,7 @@ class QuickReplyShortcut(TlObject):
         name (:class:`str`):
             The name of the shortcut that can be used to use the shortcut
 
-        first_message (:class:`"types.QuickReplyMessage"`):
+        first_message (:class:`~pytdbot.types.QuickReplyMessage`):
             The first shortcut message
 
         message_count (:class:`int`):
@@ -55859,7 +55859,7 @@ class PublicForwardMessage(TlObject, PublicForward):
     r"""Contains a public forward as a message
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             Information about the message
 
     """
@@ -55895,7 +55895,7 @@ class PublicForwardStory(TlObject, PublicForward):
     r"""Contains a public repost to a story
 
     Parameters:
-        story (:class:`"types.Story"`):
+        story (:class:`~pytdbot.types.Story`):
             Information about the story
 
     """
@@ -55934,7 +55934,7 @@ class PublicForwards(TlObject):
         total_count (:class:`int`):
             Approximate total number of messages and stories found
 
-        forwards (:class:`List["types.PublicForward"]`):
+        forwards (List[:class:`~pytdbot.types.PublicForward`]):
             List of found public forwards and reposts
 
         next_offset (:class:`str`):
@@ -55992,7 +55992,7 @@ class BotMediaPreview(TlObject):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the preview was added or changed last time
 
-        content (:class:`"types.StoryContent"`):
+        content (:class:`~pytdbot.types.StoryContent`):
             Content of the preview
 
     """
@@ -56033,7 +56033,7 @@ class BotMediaPreviews(TlObject):
     r"""Contains a list of media previews of a bot
 
     Parameters:
-        previews (:class:`List["types.BotMediaPreview"]`):
+        previews (List[:class:`~pytdbot.types.BotMediaPreview`]):
             List of media previews
 
     """
@@ -56069,10 +56069,10 @@ class BotMediaPreviewInfo(TlObject):
     r"""Contains a list of media previews of a bot for the given language and the list of languages for which the bot has dedicated previews
 
     Parameters:
-        previews (:class:`List["types.BotMediaPreview"]`):
+        previews (List[:class:`~pytdbot.types.BotMediaPreview`]):
             List of media previews
 
-        language_codes (:class:`List[str]`):
+        language_codes (List[:class:`str`]):
             List of language codes for which the bot has dedicated previews
 
     """
@@ -56297,7 +56297,7 @@ class ChatBoostFeatures(TlObject):
     r"""Contains a list of features available on the first chat boost levels
 
     Parameters:
-        features (:class:`List["types.ChatBoostLevelFeatures"]`):
+        features (List[:class:`~pytdbot.types.ChatBoostLevelFeatures`]):
             The list of features
 
         min_profile_background_custom_emoji_boost_level (:class:`int`):
@@ -56607,7 +56607,7 @@ class PrepaidGiveaway(TlObject):
         winner_count (:class:`int`):
             Number of users which will receive giveaway prize
 
-        prize (:class:`"types.GiveawayPrize"`):
+        prize (:class:`~pytdbot.types.GiveawayPrize`):
             Prize of the giveaway
 
         boost_count (:class:`int`):
@@ -56678,7 +56678,7 @@ class ChatBoostStatus(TlObject):
         boost_url (:class:`str`):
             An HTTP URL, which can be used to boost the chat
 
-        applied_slot_ids (:class:`List[int]`):
+        applied_slot_ids (List[:class:`int`]):
             Identifiers of boost slots of the current user applied to the chat
 
         level (:class:`int`):
@@ -56702,7 +56702,7 @@ class ChatBoostStatus(TlObject):
         premium_member_percentage (:class:`float`):
             A percentage of Telegram Premium subscribers joined the chat; always 0 if the current user isn't an administrator in the chat
 
-        prepaid_giveaways (:class:`List["types.PrepaidGiveaway"]`):
+        prepaid_giveaways (List[:class:`~pytdbot.types.PrepaidGiveaway`]):
             The list of prepaid giveaways available for the chat; only for chat administrators
 
     """
@@ -56801,7 +56801,7 @@ class ChatBoost(TlObject):
         count (:class:`int`):
             The number of identical boosts applied
 
-        source (:class:`"types.ChatBoostSource"`):
+        source (:class:`~pytdbot.types.ChatBoostSource`):
             Source of the boost
 
         start_date (:class:`int`):
@@ -56877,7 +56877,7 @@ class FoundChatBoosts(TlObject):
         total_count (:class:`int`):
             Total number of boosts applied to the chat
 
-        boosts (:class:`List["types.ChatBoost"]`):
+        boosts (List[:class:`~pytdbot.types.ChatBoost`]):
             List of boosts
 
         next_offset (:class:`str`):
@@ -57008,7 +57008,7 @@ class ChatBoostSlots(TlObject):
     r"""Contains a list of chat boost slots
 
     Parameters:
-        slots (:class:`List["types.ChatBoostSlot"]`):
+        slots (List[:class:`~pytdbot.types.ChatBoostSlot`]):
             List of boost slots
 
     """
@@ -57298,7 +57298,7 @@ class CallProtocol(TlObject):
         max_layer (:class:`int`):
             The maximum supported API layer; use 92
 
-        library_versions (:class:`List[str]`):
+        library_versions (List[:class:`str`]):
             List of supported tgcalls versions
 
     """
@@ -57484,7 +57484,7 @@ class CallServer(TlObject):
         port (:class:`int`):
             Server port number
 
-        type (:class:`"types.CallServerType"`):
+        type (:class:`~pytdbot.types.CallServerType`):
             Server type
 
     """
@@ -57694,10 +57694,10 @@ class CallStateReady(TlObject, CallState):
     r"""The call is ready to use
 
     Parameters:
-        protocol (:class:`"types.CallProtocol"`):
+        protocol (:class:`~pytdbot.types.CallProtocol`):
             Call protocols supported by the other call participant
 
-        servers (:class:`List["types.CallServer"]`):
+        servers (List[:class:`~pytdbot.types.CallServer`]):
             List of available call servers
 
         config (:class:`str`):
@@ -57706,7 +57706,7 @@ class CallStateReady(TlObject, CallState):
         encryption_key (:class:`bytes`):
             Call encryption key
 
-        emojis (:class:`List[str]`):
+        emojis (List[:class:`str`]):
             Encryption key fingerprint represented as 4 emoji
 
         allow_p2p (:class:`bool`):
@@ -57822,7 +57822,7 @@ class CallStateDiscarded(TlObject, CallState):
     r"""The call has ended successfully
 
     Parameters:
-        reason (:class:`"types.CallDiscardReason"`):
+        reason (:class:`~pytdbot.types.CallDiscardReason`):
             The reason why the call has ended
 
         need_rating (:class:`bool`):
@@ -57898,7 +57898,7 @@ class CallStateError(TlObject, CallState):
     r"""The call has ended with an error
 
     Parameters:
-        error (:class:`"types.Error"`):
+        error (:class:`~pytdbot.types.Error`):
             Error\. An error with the code 4005000 will be returned if an outgoing call is missed because of an expired timeout
 
     """
@@ -58139,7 +58139,7 @@ class VideoChatStreams(TlObject):
     r"""Represents a list of video chat streams
 
     Parameters:
-        streams (:class:`List["types.VideoChatStream"]`):
+        streams (List[:class:`~pytdbot.types.VideoChatStream`]):
             A list of video chat streams
 
     """
@@ -58217,7 +58217,7 @@ class GroupCallRecentSpeaker(TlObject):
     r"""Describes a recently speaking participant in a group call
 
     Parameters:
-        participant_id (:class:`"types.MessageSender"`):
+        participant_id (:class:`~pytdbot.types.MessageSender`):
             Group call participant identifier
 
         is_speaking (:class:`bool`):
@@ -58312,7 +58312,7 @@ class GroupCall(TlObject):
         loaded_all_participants (:class:`bool`):
             True, if all group call participants are loaded
 
-        recent_speakers (:class:`List["types.GroupCallRecentSpeaker"]`):
+        recent_speakers (List[:class:`~pytdbot.types.GroupCallRecentSpeaker`]):
             At most 3 recently speaking users in the group call
 
         is_my_video_enabled (:class:`bool`):
@@ -58522,7 +58522,7 @@ class GroupCallVideoSourceGroup(TlObject):
         semantics (:class:`str`):
             The semantics of sources, one of \"SIM\" or \"FID\"
 
-        source_ids (:class:`List[int]`):
+        source_ids (List[:class:`int`]):
             The list of synchronization source identifiers
 
     """
@@ -58565,7 +58565,7 @@ class GroupCallParticipantVideoInfo(TlObject):
     r"""Contains information about a group call participant's video channel
 
     Parameters:
-        source_groups (:class:`List["types.GroupCallVideoSourceGroup"]`):
+        source_groups (List[:class:`~pytdbot.types.GroupCallVideoSourceGroup`]):
             List of synchronization source groups of the video
 
         endpoint_id (:class:`str`):
@@ -58623,7 +58623,7 @@ class GroupCallParticipant(TlObject):
     r"""Represents a group call participant
 
     Parameters:
-        participant_id (:class:`"types.MessageSender"`):
+        participant_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the group call participant
 
         audio_source_id (:class:`int`):
@@ -58632,10 +58632,10 @@ class GroupCallParticipant(TlObject):
         screen_sharing_audio_source_id (:class:`int`):
             User's screen sharing audio channel synchronization source identifier
 
-        video_info (:class:`"types.GroupCallParticipantVideoInfo"`):
+        video_info (:class:`~pytdbot.types.GroupCallParticipantVideoInfo`):
             Information about user's video channel; may be null if there is no active video
 
-        screen_sharing_video_info (:class:`"types.GroupCallParticipantVideoInfo"`):
+        screen_sharing_video_info (:class:`~pytdbot.types.GroupCallParticipantVideoInfo`):
             Information about user's screen sharing video channel; may be null if there is no active screen sharing video
 
         bio (:class:`str`):
@@ -58826,7 +58826,7 @@ class GroupCallParticipants(TlObject):
         total_count (:class:`int`):
             Total number of group call participants
 
-        participant_ids (:class:`List["types.MessageSender"]`):
+        participant_ids (List[:class:`~pytdbot.types.MessageSender`]):
             Identifiers of the participants
 
     """
@@ -59469,7 +59469,7 @@ class Call(TlObject):
         is_video (:class:`bool`):
             True, if the call is a video call
 
-        state (:class:`"types.CallState"`):
+        state (:class:`~pytdbot.types.CallState`):
             Call state
 
     """
@@ -59630,10 +59630,10 @@ class PhoneNumberAuthenticationSettings(TlObject):
         allow_sms_retriever_api (:class:`bool`):
             For official applications only\. True, if the application can use Android SMS Retriever API \(requires Google Play Services \>\= 10\.2\) to automatically receive the authentication code from the SMS\. See https://developers\.google\.com/identity/sms\-retriever/ for more details
 
-        firebase_authentication_settings (:class:`"types.FirebaseAuthenticationSettings"`):
+        firebase_authentication_settings (:class:`~pytdbot.types.FirebaseAuthenticationSettings`):
             For official Android and iOS applications only; pass null otherwise\. Settings for Firebase Authentication
 
-        authentication_tokens (:class:`List[str]`):
+        authentication_tokens (List[:class:`str`]):
             List of up to 20 authentication tokens, recently received in updateOption\(\"authentication\_token\"\) in previously logged out sessions; for setAuthenticationPhoneNumber only
 
     """
@@ -59717,10 +59717,10 @@ class AddedReaction(TlObject):
     r"""Represents a reaction applied to a message
 
     Parameters:
-        type (:class:`"types.ReactionType"`):
+        type (:class:`~pytdbot.types.ReactionType`):
             Type of the reaction
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the chat member, applied the reaction
 
         is_outgoing (:class:`bool`):
@@ -59788,7 +59788,7 @@ class AddedReactions(TlObject):
         total_count (:class:`int`):
             The total number of found reactions
 
-        reactions (:class:`List["types.AddedReaction"]`):
+        reactions (List[:class:`~pytdbot.types.AddedReaction`]):
             The list of added reactions
 
         next_offset (:class:`str`):
@@ -59843,7 +59843,7 @@ class AvailableReaction(TlObject):
     r"""Represents an available reaction
 
     Parameters:
-        type (:class:`"types.ReactionType"`):
+        type (:class:`~pytdbot.types.ReactionType`):
             Type of the reaction
 
         needs_premium (:class:`bool`):
@@ -59891,13 +59891,13 @@ class AvailableReactions(TlObject):
     r"""Represents a list of reactions that can be added to a message
 
     Parameters:
-        top_reactions (:class:`List["types.AvailableReaction"]`):
+        top_reactions (List[:class:`~pytdbot.types.AvailableReaction`]):
             List of reactions to be shown at the top
 
-        recent_reactions (:class:`List["types.AvailableReaction"]`):
+        recent_reactions (List[:class:`~pytdbot.types.AvailableReaction`]):
             List of recently used reactions
 
-        popular_reactions (:class:`List["types.AvailableReaction"]`):
+        popular_reactions (List[:class:`~pytdbot.types.AvailableReaction`]):
             List of popular reactions
 
         allow_custom_emoji (:class:`bool`):
@@ -59906,7 +59906,7 @@ class AvailableReactions(TlObject):
         are_tags (:class:`bool`):
             True, if the reactions will be tags and the message can be found by them
 
-        unavailability_reason (:class:`"types.ReactionUnavailabilityReason"`):
+        unavailability_reason (:class:`~pytdbot.types.ReactionUnavailabilityReason`):
             The reason why the current user can't add reactions to the message, despite some other users can; may be null if none
 
     """
@@ -59986,25 +59986,25 @@ class EmojiReaction(TlObject):
         is_active (:class:`bool`):
             True, if the reaction can be added to new messages and enabled in chats
 
-        static_icon (:class:`"types.Sticker"`):
+        static_icon (:class:`~pytdbot.types.Sticker`):
             Static icon for the reaction
 
-        appear_animation (:class:`"types.Sticker"`):
+        appear_animation (:class:`~pytdbot.types.Sticker`):
             Appear animation for the reaction
 
-        select_animation (:class:`"types.Sticker"`):
+        select_animation (:class:`~pytdbot.types.Sticker`):
             Select animation for the reaction
 
-        activate_animation (:class:`"types.Sticker"`):
+        activate_animation (:class:`~pytdbot.types.Sticker`):
             Activate animation for the reaction
 
-        effect_animation (:class:`"types.Sticker"`):
+        effect_animation (:class:`~pytdbot.types.Sticker`):
             Effect animation for the reaction
 
-        around_animation (:class:`"types.Sticker"`):
+        around_animation (:class:`~pytdbot.types.Sticker`):
             Around animation for the reaction; may be null
 
-        center_animation (:class:`"types.Sticker"`):
+        center_animation (:class:`~pytdbot.types.Sticker`):
             Center animation for the reaction; may be null
 
     """
@@ -60151,7 +60151,7 @@ class Animations(TlObject):
     r"""Represents a list of animations
 
     Parameters:
-        animations (:class:`List["types.Animation"]`):
+        animations (List[:class:`~pytdbot.types.Animation`]):
             List of animations
 
     """
@@ -60187,7 +60187,7 @@ class DiceStickersRegular(TlObject, DiceStickers):
     r"""A regular animated sticker
 
     Parameters:
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The animated sticker with the dice animation
 
     """
@@ -60223,19 +60223,19 @@ class DiceStickersSlotMachine(TlObject, DiceStickers):
     r"""Animated stickers to be combined into a slot machine
 
     Parameters:
-        background (:class:`"types.Sticker"`):
+        background (:class:`~pytdbot.types.Sticker`):
             The animated sticker with the slot machine background\. The background animation must start playing after all reel animations finish
 
-        lever (:class:`"types.Sticker"`):
+        lever (:class:`~pytdbot.types.Sticker`):
             The animated sticker with the lever animation\. The lever animation must play once in the initial dice state
 
-        left_reel (:class:`"types.Sticker"`):
+        left_reel (:class:`~pytdbot.types.Sticker`):
             The animated sticker with the left reel
 
-        center_reel (:class:`"types.Sticker"`):
+        center_reel (:class:`~pytdbot.types.Sticker`):
             The animated sticker with the center reel
 
-        right_reel (:class:`"types.Sticker"`):
+        right_reel (:class:`~pytdbot.types.Sticker`):
             The animated sticker with the right reel
 
     """
@@ -60306,7 +60306,7 @@ class ImportedContact(TlObject):
         last_name (:class:`str`):
             Last name of the user; 0\-64 characters
 
-        note (:class:`"types.FormattedText"`):
+        note (:class:`~pytdbot.types.FormattedText`):
             Note to add about the user; 0\-getOption\(\"user\_note\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed; pass null to keep the current user's note
 
     """
@@ -60363,10 +60363,10 @@ class ImportedContacts(TlObject):
     r"""Represents the result of an importContacts request
 
     Parameters:
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             User identifiers of the imported contacts in the same order as they were specified in the request; 0 if the contact is not yet a registered user
 
-        importer_count (:class:`List[int]`):
+        importer_count (List[:class:`int`]):
             The number of users that imported the corresponding contact; 0 for already registered users or if unavailable
 
     """
@@ -60483,7 +60483,7 @@ class SpeechRecognitionResultError(TlObject, SpeechRecognitionResult):
     r"""The speech recognition failed
 
     Parameters:
-        error (:class:`"types.Error"`):
+        error (:class:`~pytdbot.types.Error`):
             Recognition error\. An error with a message \"MSG\_VOICE\_TOO\_LONG\" is returned when media duration is too big to be recognized
 
     """
@@ -60531,7 +60531,7 @@ class BusinessConnection(TlObject):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the connection was established
 
-        rights (:class:`"types.BusinessBotRights"`):
+        rights (:class:`~pytdbot.types.BusinessBotRights`):
             Rights of the bot; may be null if the connection was disabled
 
         is_enabled (:class:`bool`):
@@ -60683,37 +60683,37 @@ class AttachmentMenuBot(TlObject):
         name (:class:`str`):
             Name for the bot in attachment menu
 
-        name_color (:class:`"types.AttachmentMenuBotColor"`):
+        name_color (:class:`~pytdbot.types.AttachmentMenuBotColor`):
             Color to highlight selected name of the bot if appropriate; may be null
 
-        default_icon (:class:`"types.File"`):
+        default_icon (:class:`~pytdbot.types.File`):
             Default icon for the bot in SVG format; may be null
 
-        ios_static_icon (:class:`"types.File"`):
+        ios_static_icon (:class:`~pytdbot.types.File`):
             Icon for the bot in SVG format for the official iOS app; may be null
 
-        ios_animated_icon (:class:`"types.File"`):
+        ios_animated_icon (:class:`~pytdbot.types.File`):
             Icon for the bot in TGS format for the official iOS app; may be null
 
-        ios_side_menu_icon (:class:`"types.File"`):
+        ios_side_menu_icon (:class:`~pytdbot.types.File`):
             Icon for the bot in PNG format for the official iOS app side menu; may be null
 
-        android_icon (:class:`"types.File"`):
+        android_icon (:class:`~pytdbot.types.File`):
             Icon for the bot in TGS format for the official Android app; may be null
 
-        android_side_menu_icon (:class:`"types.File"`):
+        android_side_menu_icon (:class:`~pytdbot.types.File`):
             Icon for the bot in SVG format for the official Android app side menu; may be null
 
-        macos_icon (:class:`"types.File"`):
+        macos_icon (:class:`~pytdbot.types.File`):
             Icon for the bot in TGS format for the official native macOS app; may be null
 
-        macos_side_menu_icon (:class:`"types.File"`):
+        macos_side_menu_icon (:class:`~pytdbot.types.File`):
             Icon for the bot in PNG format for the official macOS app side menu; may be null
 
-        icon_color (:class:`"types.AttachmentMenuBotColor"`):
+        icon_color (:class:`~pytdbot.types.AttachmentMenuBotColor`):
             Color to highlight selected icon of the bot if appropriate; may be null
 
-        web_app_placeholder (:class:`"types.File"`):
+        web_app_placeholder (:class:`~pytdbot.types.File`):
             Default placeholder for opened Web Apps in SVG format; may be null
 
     """
@@ -60977,7 +60977,7 @@ class BotWriteAccessAllowReasonLaunchedWebApp(TlObject, BotWriteAccessAllowReaso
     r"""The user launched a Web App using getWebAppLinkUrl
 
     Parameters:
-        web_app (:class:`"types.WebApp"`):
+        web_app (:class:`~pytdbot.types.WebApp`):
             Information about the Web App
 
     """
@@ -61217,7 +61217,7 @@ class TargetChatChosen(TlObject, TargetChat):
     r"""The chat needs to be chosen by the user among chats of the specified types
 
     Parameters:
-        types (:class:`"types.TargetChatTypes"`):
+        types (:class:`~pytdbot.types.TargetChatTypes`):
             Allowed types for the chat
 
     """
@@ -61253,7 +61253,7 @@ class TargetChatInternalLink(TlObject, TargetChat):
     r"""The chat needs to be open with the provided internal link
 
     Parameters:
-        link (:class:`"types.InternalLinkType"`):
+        link (:class:`~pytdbot.types.InternalLinkType`):
             An internal link pointing to the chat
 
     """
@@ -61371,10 +61371,10 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
         video_height (:class:`int`):
             Height of the video
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageAnimation, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -61515,10 +61515,10 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
         thumbnail_height (:class:`int`):
             Thumbnail height, if known
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -61643,10 +61643,10 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
         audio_duration (:class:`int`):
             Audio file duration, in seconds
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageAudio, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -61749,7 +61749,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        contact (:class:`"types.Contact"`):
+        contact (:class:`~pytdbot.types.Contact`):
             User contact
 
         thumbnail_url (:class:`str`):
@@ -61761,10 +61761,10 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
         thumbnail_height (:class:`int`):
             Thumbnail height, if known
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -61888,10 +61888,10 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
         thumbnail_height (:class:`int`):
             Height of the thumbnail
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageDocument, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -62012,7 +62012,7 @@ class InputInlineQueryResultGame(TlObject, InputInlineQueryResult):
         game_short_name (:class:`str`):
             Short name of the game
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
     """
@@ -62070,7 +62070,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             Location result
 
         live_period (:class:`int`):
@@ -62088,10 +62088,10 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
         thumbnail_height (:class:`int`):
             Thumbnail height, if known
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -62222,10 +62222,10 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
         photo_height (:class:`int`):
             Height of the photo
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessagePhoto, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -62350,10 +62350,10 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
         sticker_height (:class:`int`):
             Height of the sticker
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageSticker, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -62456,7 +62456,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        venue (:class:`"types.Venue"`):
+        venue (:class:`~pytdbot.types.Venue`):
             Venue result
 
         thumbnail_url (:class:`str`):
@@ -62468,10 +62468,10 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
         thumbnail_height (:class:`int`):
             Thumbnail height, if known
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -62598,10 +62598,10 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
         video_duration (:class:`int`):
             Video duration, in seconds
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageVideo, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -62733,10 +62733,10 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
         voice_note_duration (:class:`int`):
             Duration of the voice note, in seconds
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             The message reply markup; pass null if none\. Must be of type replyMarkupInlineKeyboard or null
 
-        input_message_content (:class:`"types.InputMessageContent"`):
+        input_message_content (:class:`~pytdbot.types.InputMessageContent`):
             The content of the message to be sent\. Must be one of the following types: inputMessageText, inputMessageVoiceNote, inputMessageInvoice, inputMessageLocation, inputMessageVenue or inputMessageContact
 
     """
@@ -62843,7 +62843,7 @@ class InlineQueryResultArticle(TlObject, InlineQueryResult):
         description (:class:`str`):
             A short description of the result
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Result thumbnail in JPEG format; may be null
 
     """
@@ -62908,10 +62908,10 @@ class InlineQueryResultContact(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        contact (:class:`"types.Contact"`):
+        contact (:class:`~pytdbot.types.Contact`):
             A user contact
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Result thumbnail in JPEG format; may be null
 
     """
@@ -62963,13 +62963,13 @@ class InlineQueryResultLocation(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        location (:class:`"types.Location"`):
+        location (:class:`~pytdbot.types.Location`):
             Location result
 
         title (:class:`str`):
             Title of the result
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Result thumbnail in JPEG format; may be null
 
     """
@@ -63029,10 +63029,10 @@ class InlineQueryResultVenue(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        venue (:class:`"types.Venue"`):
+        venue (:class:`~pytdbot.types.Venue`):
             Venue result
 
-        thumbnail (:class:`"types.Thumbnail"`):
+        thumbnail (:class:`~pytdbot.types.Thumbnail`):
             Result thumbnail in JPEG format; may be null
 
     """
@@ -63084,7 +63084,7 @@ class InlineQueryResultGame(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        game (:class:`"types.Game"`):
+        game (:class:`~pytdbot.types.Game`):
             Game result
 
     """
@@ -63126,7 +63126,7 @@ class InlineQueryResultAnimation(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             Animation file
 
         title (:class:`str`):
@@ -63181,7 +63181,7 @@ class InlineQueryResultAudio(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        audio (:class:`"types.Audio"`):
+        audio (:class:`~pytdbot.types.Audio`):
             Audio file
 
     """
@@ -63223,7 +63223,7 @@ class InlineQueryResultDocument(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        document (:class:`"types.Document"`):
+        document (:class:`~pytdbot.types.Document`):
             Document
 
         title (:class:`str`):
@@ -63289,7 +63289,7 @@ class InlineQueryResultPhoto(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Photo
 
         title (:class:`str`):
@@ -63351,7 +63351,7 @@ class InlineQueryResultSticker(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             Sticker
 
     """
@@ -63393,7 +63393,7 @@ class InlineQueryResultVideo(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        video (:class:`"types.Video"`):
+        video (:class:`~pytdbot.types.Video`):
             Video
 
         title (:class:`str`):
@@ -63455,7 +63455,7 @@ class InlineQueryResultVoiceNote(TlObject, InlineQueryResult):
         id (:class:`str`):
             Unique identifier of the query result
 
-        voice_note (:class:`"types.VoiceNote"`):
+        voice_note (:class:`~pytdbot.types.VoiceNote`):
             Voice note
 
         title (:class:`str`):
@@ -63584,7 +63584,7 @@ class InlineQueryResultsButton(TlObject):
         text (:class:`str`):
             The text of the button
 
-        type (:class:`"types.InlineQueryResultsButtonType"`):
+        type (:class:`~pytdbot.types.InlineQueryResultsButtonType`):
             Type of the button
 
     """
@@ -63632,10 +63632,10 @@ class InlineQueryResults(TlObject):
         inline_query_id (:class:`int`):
             Unique identifier of the inline query
 
-        button (:class:`"types.InlineQueryResultsButton"`):
+        button (:class:`~pytdbot.types.InlineQueryResultsButton`):
             Button to be shown above inline query results; may be null
 
-        results (:class:`List["types.InlineQueryResult"]`):
+        results (List[:class:`~pytdbot.types.InlineQueryResult`]):
             Results of the query
 
         next_offset (:class:`str`):
@@ -63744,10 +63744,10 @@ class PreparedInlineMessage(TlObject):
         inline_query_id (:class:`int`):
             Unique identifier of the inline query to pass to sendInlineQueryResultMessage
 
-        result (:class:`"types.InlineQueryResult"`):
+        result (:class:`~pytdbot.types.InlineQueryResult`):
             Resulted inline message of the query
 
-        chat_types (:class:`"types.TargetChatTypes"`):
+        chat_types (:class:`~pytdbot.types.TargetChatTypes`):
             Types of the chats to which the message can be sent
 
     """
@@ -64071,7 +64071,7 @@ class GameHighScores(TlObject):
     r"""Contains a list of game high scores
 
     Parameters:
-        scores (:class:`List["types.GameHighScore"]`):
+        scores (List[:class:`~pytdbot.types.GameHighScore`]):
             A list of game high scores
 
     """
@@ -64107,10 +64107,10 @@ class ChatEventMessageEdited(TlObject, ChatEventAction):
     r"""A message was edited
 
     Parameters:
-        old_message (:class:`"types.Message"`):
+        old_message (:class:`~pytdbot.types.Message`):
             The original message before the edit
 
-        new_message (:class:`"types.Message"`):
+        new_message (:class:`~pytdbot.types.Message`):
             The message after it was edited
 
     """
@@ -64155,7 +64155,7 @@ class ChatEventMessageDeleted(TlObject, ChatEventAction):
     r"""A message was deleted
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             Deleted message
 
         can_report_anti_spam_false_positive (:class:`bool`):
@@ -64207,7 +64207,7 @@ class ChatEventMessagePinned(TlObject, ChatEventAction):
     r"""A message was pinned
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             Pinned message
 
     """
@@ -64243,7 +64243,7 @@ class ChatEventMessageUnpinned(TlObject, ChatEventAction):
     r"""A message was unpinned
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             Unpinned message
 
     """
@@ -64279,7 +64279,7 @@ class ChatEventPollStopped(TlObject, ChatEventAction):
     r"""A poll in a message was stopped
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             The message with the poll
 
     """
@@ -64343,7 +64343,7 @@ class ChatEventMemberJoinedByInviteLink(TlObject, ChatEventAction):
     r"""A new member joined the chat via an invite link
 
     Parameters:
-        invite_link (:class:`"types.ChatInviteLink"`):
+        invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             Invite link used to join the chat
 
         via_chat_folder_invite_link (:class:`bool`):
@@ -64398,7 +64398,7 @@ class ChatEventMemberJoinedByRequest(TlObject, ChatEventAction):
         approver_user_id (:class:`int`):
             User identifier of the chat administrator, approved user join request
 
-        invite_link (:class:`"types.ChatInviteLink"`):
+        invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             Invite link used to join the chat; may be null
 
     """
@@ -64446,7 +64446,7 @@ class ChatEventMemberInvited(TlObject, ChatEventAction):
         user_id (:class:`int`):
             New member user identifier
 
-        status (:class:`"types.ChatMemberStatus"`):
+        status (:class:`~pytdbot.types.ChatMemberStatus`):
             New member status
 
     """
@@ -64524,10 +64524,10 @@ class ChatEventMemberPromoted(TlObject, ChatEventAction):
         user_id (:class:`int`):
             Affected chat member user identifier
 
-        old_status (:class:`"types.ChatMemberStatus"`):
+        old_status (:class:`~pytdbot.types.ChatMemberStatus`):
             Previous status of the chat member
 
-        new_status (:class:`"types.ChatMemberStatus"`):
+        new_status (:class:`~pytdbot.types.ChatMemberStatus`):
             New status of the chat member
 
     """
@@ -64595,13 +64595,13 @@ class ChatEventMemberRestricted(TlObject, ChatEventAction):
     r"""A chat member was restricted/unrestricted or banned/unbanned, or the list of their restrictions has changed
 
     Parameters:
-        member_id (:class:`"types.MessageSender"`):
+        member_id (:class:`~pytdbot.types.MessageSender`):
             Affected chat member identifier
 
-        old_status (:class:`"types.ChatMemberStatus"`):
+        old_status (:class:`~pytdbot.types.ChatMemberStatus`):
             Previous status of the chat member
 
-        new_status (:class:`"types.ChatMemberStatus"`):
+        new_status (:class:`~pytdbot.types.ChatMemberStatus`):
             New status of the chat member
 
     """
@@ -64672,10 +64672,10 @@ class ChatEventMemberSubscriptionExtended(TlObject, ChatEventAction):
         user_id (:class:`int`):
             Affected chat member user identifier
 
-        old_status (:class:`"types.ChatMemberStatus"`):
+        old_status (:class:`~pytdbot.types.ChatMemberStatus`):
             Previous status of the chat member
 
-        new_status (:class:`"types.ChatMemberStatus"`):
+        new_status (:class:`~pytdbot.types.ChatMemberStatus`):
             New status of the chat member
 
     """
@@ -64745,10 +64745,10 @@ class ChatEventAvailableReactionsChanged(TlObject, ChatEventAction):
     r"""The chat available reactions were changed
 
     Parameters:
-        old_available_reactions (:class:`"types.ChatAvailableReactions"`):
+        old_available_reactions (:class:`~pytdbot.types.ChatAvailableReactions`):
             Previous chat available reactions
 
-        new_available_reactions (:class:`"types.ChatAvailableReactions"`):
+        new_available_reactions (:class:`~pytdbot.types.ChatAvailableReactions`):
             New chat available reactions
 
     """
@@ -64803,10 +64803,10 @@ class ChatEventBackgroundChanged(TlObject, ChatEventAction):
     r"""The chat background was changed
 
     Parameters:
-        old_background (:class:`"types.ChatBackground"`):
+        old_background (:class:`~pytdbot.types.ChatBackground`):
             Previous background; may be null if none
 
-        new_background (:class:`"types.ChatBackground"`):
+        new_background (:class:`~pytdbot.types.ChatBackground`):
             New background; may be null if none
 
     """
@@ -64899,10 +64899,10 @@ class ChatEventEmojiStatusChanged(TlObject, ChatEventAction):
     r"""The chat emoji status was changed
 
     Parameters:
-        old_emoji_status (:class:`"types.EmojiStatus"`):
+        old_emoji_status (:class:`~pytdbot.types.EmojiStatus`):
             Previous emoji status; may be null if none
 
-        new_emoji_status (:class:`"types.EmojiStatus"`):
+        new_emoji_status (:class:`~pytdbot.types.EmojiStatus`):
             New emoji status; may be null if none
 
     """
@@ -64995,10 +64995,10 @@ class ChatEventLocationChanged(TlObject, ChatEventAction):
     r"""The supergroup location was changed
 
     Parameters:
-        old_location (:class:`"types.ChatLocation"`):
+        old_location (:class:`~pytdbot.types.ChatLocation`):
             Previous location; may be null
 
-        new_location (:class:`"types.ChatLocation"`):
+        new_location (:class:`~pytdbot.types.ChatLocation`):
             New location; may be null
 
     """
@@ -65099,10 +65099,10 @@ class ChatEventPermissionsChanged(TlObject, ChatEventAction):
     r"""The chat permissions were changed
 
     Parameters:
-        old_permissions (:class:`"types.ChatPermissions"`):
+        old_permissions (:class:`~pytdbot.types.ChatPermissions`):
             Previous chat permissions
 
-        new_permissions (:class:`"types.ChatPermissions"`):
+        new_permissions (:class:`~pytdbot.types.ChatPermissions`):
             New chat permissions
 
     """
@@ -65149,10 +65149,10 @@ class ChatEventPhotoChanged(TlObject, ChatEventAction):
     r"""The chat photo was changed
 
     Parameters:
-        old_photo (:class:`"types.ChatPhoto"`):
+        old_photo (:class:`~pytdbot.types.ChatPhoto`):
             Previous chat photo value; may be null
 
-        new_photo (:class:`"types.ChatPhoto"`):
+        new_photo (:class:`~pytdbot.types.ChatPhoto`):
             New chat photo value; may be null
 
     """
@@ -65435,10 +65435,10 @@ class ChatEventActiveUsernamesChanged(TlObject, ChatEventAction):
     r"""The chat active usernames were changed
 
     Parameters:
-        old_usernames (:class:`List[str]`):
+        old_usernames (List[:class:`str`]):
             Previous list of active usernames
 
-        new_usernames (:class:`List[str]`):
+        new_usernames (List[:class:`str`]):
             New list of active usernames
 
     """
@@ -65914,10 +65914,10 @@ class ChatEventInviteLinkEdited(TlObject, ChatEventAction):
     r"""A chat invite link was edited
 
     Parameters:
-        old_invite_link (:class:`"types.ChatInviteLink"`):
+        old_invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             Previous information about the invite link
 
-        new_invite_link (:class:`"types.ChatInviteLink"`):
+        new_invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             New information about the invite link
 
     """
@@ -65964,7 +65964,7 @@ class ChatEventInviteLinkRevoked(TlObject, ChatEventAction):
     r"""A chat invite link was revoked
 
     Parameters:
-        invite_link (:class:`"types.ChatInviteLink"`):
+        invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             The invite link
 
     """
@@ -66000,7 +66000,7 @@ class ChatEventInviteLinkDeleted(TlObject, ChatEventAction):
     r"""A revoked chat invite link was deleted
 
     Parameters:
-        invite_link (:class:`"types.ChatInviteLink"`):
+        invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             The invite link
 
     """
@@ -66149,7 +66149,7 @@ class ChatEventVideoChatParticipantIsMutedToggled(TlObject, ChatEventAction):
     r"""A video chat participant was muted or unmuted
 
     Parameters:
-        participant_id (:class:`"types.MessageSender"`):
+        participant_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the affected group call participant
 
         is_muted (:class:`bool`):
@@ -66201,7 +66201,7 @@ class ChatEventVideoChatParticipantVolumeLevelChanged(TlObject, ChatEventAction)
     r"""A video chat participant volume level was changed
 
     Parameters:
-        participant_id (:class:`"types.MessageSender"`):
+        participant_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the affected group call participant
 
         volume_level (:class:`int`):
@@ -66289,7 +66289,7 @@ class ChatEventForumTopicCreated(TlObject, ChatEventAction):
     r"""A new forum topic was created
 
     Parameters:
-        topic_info (:class:`"types.ForumTopicInfo"`):
+        topic_info (:class:`~pytdbot.types.ForumTopicInfo`):
             Information about the topic
 
     """
@@ -66325,10 +66325,10 @@ class ChatEventForumTopicEdited(TlObject, ChatEventAction):
     r"""A forum topic was edited
 
     Parameters:
-        old_topic_info (:class:`"types.ForumTopicInfo"`):
+        old_topic_info (:class:`~pytdbot.types.ForumTopicInfo`):
             Old information about the topic
 
-        new_topic_info (:class:`"types.ForumTopicInfo"`):
+        new_topic_info (:class:`~pytdbot.types.ForumTopicInfo`):
             New information about the topic
 
     """
@@ -66375,7 +66375,7 @@ class ChatEventForumTopicToggleIsClosed(TlObject, ChatEventAction):
     r"""A forum topic was closed or reopened
 
     Parameters:
-        topic_info (:class:`"types.ForumTopicInfo"`):
+        topic_info (:class:`~pytdbot.types.ForumTopicInfo`):
             New information about the topic
 
     """
@@ -66411,7 +66411,7 @@ class ChatEventForumTopicToggleIsHidden(TlObject, ChatEventAction):
     r"""The General forum topic was hidden or unhidden
 
     Parameters:
-        topic_info (:class:`"types.ForumTopicInfo"`):
+        topic_info (:class:`~pytdbot.types.ForumTopicInfo`):
             New information about the topic
 
     """
@@ -66447,7 +66447,7 @@ class ChatEventForumTopicDeleted(TlObject, ChatEventAction):
     r"""A forum topic was deleted
 
     Parameters:
-        topic_info (:class:`"types.ForumTopicInfo"`):
+        topic_info (:class:`~pytdbot.types.ForumTopicInfo`):
             Information about the topic
 
     """
@@ -66483,10 +66483,10 @@ class ChatEventForumTopicPinned(TlObject, ChatEventAction):
     r"""A pinned forum topic was changed
 
     Parameters:
-        old_topic_info (:class:`"types.ForumTopicInfo"`):
+        old_topic_info (:class:`~pytdbot.types.ForumTopicInfo`):
             Information about the old pinned topic; may be null
 
-        new_topic_info (:class:`"types.ForumTopicInfo"`):
+        new_topic_info (:class:`~pytdbot.types.ForumTopicInfo`):
             Information about the new pinned topic; may be null
 
     """
@@ -66539,10 +66539,10 @@ class ChatEvent(TlObject):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the event happened
 
-        member_id (:class:`"types.MessageSender"`):
+        member_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or chat who performed the action
 
-        action (:class:`"types.ChatEventAction"`):
+        action (:class:`~pytdbot.types.ChatEventAction`):
             The action
 
     """
@@ -66653,7 +66653,7 @@ class ChatEvents(TlObject):
     r"""Contains a list of chat events
 
     Parameters:
-        events (:class:`List["types.ChatEvent"]`):
+        events (List[:class:`~pytdbot.types.ChatEvent`]):
             List of events
 
     """
@@ -66986,7 +66986,7 @@ class LanguagePackString(TlObject):
         key (:class:`str`):
             String key
 
-        value (:class:`"types.LanguagePackStringValue"`):
+        value (:class:`~pytdbot.types.LanguagePackStringValue`):
             String value; pass null if the string needs to be taken from the built\-in English language pack
 
     """
@@ -67030,7 +67030,7 @@ class LanguagePackStrings(TlObject):
     r"""Contains a list of language pack strings
 
     Parameters:
-        strings (:class:`List["types.LanguagePackString"]`):
+        strings (List[:class:`~pytdbot.types.LanguagePackString`]):
             A list of language pack strings
 
     """
@@ -67206,7 +67206,7 @@ class LocalizationTargetInfo(TlObject):
     r"""Contains information about the current localization target
 
     Parameters:
-        language_packs (:class:`List["types.LanguagePackInfo"]`):
+        language_packs (List[:class:`~pytdbot.types.LanguagePackInfo`]):
             List of available language packs for this application
 
     """
@@ -69014,7 +69014,7 @@ class PremiumLimit(TlObject):
     r"""Contains information about a limit, increased for Premium users
 
     Parameters:
-        type (:class:`"types.PremiumLimitType"`):
+        type (:class:`~pytdbot.types.PremiumLimitType`):
             The type of the limit
 
         default_value (:class:`int`):
@@ -69093,13 +69093,13 @@ class PremiumFeatures(TlObject):
     r"""Contains information about features, available to Premium users
 
     Parameters:
-        features (:class:`List["types.PremiumFeature"]`):
+        features (List[:class:`~pytdbot.types.PremiumFeature`]):
             The list of available features
 
-        limits (:class:`List["types.PremiumLimit"]`):
+        limits (List[:class:`~pytdbot.types.PremiumLimit`]):
             The list of limits, increased for Premium users
 
-        payment_link (:class:`"types.InternalLinkType"`):
+        payment_link (:class:`~pytdbot.types.InternalLinkType`):
             An internal link to be opened to pay for Telegram Premium if store payment isn't possible; may be null if direct payment isn't available
 
     """
@@ -69206,7 +69206,7 @@ class BusinessFeatures(TlObject):
     r"""Contains information about features, available to Business user accounts
 
     Parameters:
-        features (:class:`List["types.BusinessFeature"]`):
+        features (List[:class:`~pytdbot.types.BusinessFeature`]):
             The list of available business features
 
     """
@@ -69242,7 +69242,7 @@ class PremiumSourceLimitExceeded(TlObject, PremiumSource):
     r"""A limit was exceeded
 
     Parameters:
-        limit_type (:class:`"types.PremiumLimitType"`):
+        limit_type (:class:`~pytdbot.types.PremiumLimitType`):
             Type of the exceeded limit
 
     """
@@ -69299,7 +69299,7 @@ class PremiumSourceFeature(TlObject, PremiumSource):
     r"""A user tried to use a Premium feature
 
     Parameters:
-        feature (:class:`"types.PremiumFeature"`):
+        feature (:class:`~pytdbot.types.PremiumFeature`):
             The used feature
 
     """
@@ -69362,7 +69362,7 @@ class PremiumSourceBusinessFeature(TlObject, PremiumSource):
     r"""A user tried to use a Business feature
 
     Parameters:
-        feature (:class:`"types.BusinessFeature"`):
+        feature (:class:`~pytdbot.types.BusinessFeature`):
             The used feature; pass null if none specific feature was used
 
     """
@@ -69411,7 +69411,7 @@ class PremiumSourceStoryFeature(TlObject, PremiumSource):
     r"""A user tried to use a Premium story feature
 
     Parameters:
-        feature (:class:`"types.PremiumStoryFeature"`):
+        feature (:class:`~pytdbot.types.PremiumStoryFeature`):
             The used feature
 
     """
@@ -69520,10 +69520,10 @@ class PremiumFeaturePromotionAnimation(TlObject):
     r"""Describes a promotion animation for a Premium feature
 
     Parameters:
-        feature (:class:`"types.PremiumFeature"`):
+        feature (:class:`~pytdbot.types.PremiumFeature`):
             Premium feature
 
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             Promotion animation for the feature
 
     """
@@ -69595,10 +69595,10 @@ class BusinessFeaturePromotionAnimation(TlObject):
     r"""Describes a promotion animation for a Business feature
 
     Parameters:
-        feature (:class:`"types.BusinessFeature"`):
+        feature (:class:`~pytdbot.types.BusinessFeature`):
             Business feature
 
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             Promotion animation for the feature
 
     """
@@ -69656,16 +69656,16 @@ class PremiumState(TlObject):
     r"""Contains state of Telegram Premium subscription and promotion videos for Premium features
 
     Parameters:
-        state (:class:`"types.FormattedText"`):
+        state (:class:`~pytdbot.types.FormattedText`):
             Text description of the state of the current Premium subscription; may be empty if the current user has no Telegram Premium subscription
 
-        payment_options (:class:`List["types.PremiumStatePaymentOption"]`):
+        payment_options (List[:class:`~pytdbot.types.PremiumStatePaymentOption`]):
             The list of available options for buying Telegram Premium
 
-        animations (:class:`List["types.PremiumFeaturePromotionAnimation"]`):
+        animations (List[:class:`~pytdbot.types.PremiumFeaturePromotionAnimation`]):
             The list of available promotion animations for Premium features
 
-        business_animations (:class:`List["types.BusinessFeaturePromotionAnimation"]`):
+        business_animations (List[:class:`~pytdbot.types.BusinessFeaturePromotionAnimation`]):
             The list of available promotion animations for Business features
 
     """
@@ -69781,7 +69781,7 @@ class StorePaymentPurposePremiumGift(TlObject, StorePaymentPurpose):
         user_id (:class:`int`):
             Identifiers of the user which will receive Telegram Premium
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
 
     """
@@ -69847,10 +69847,10 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
         amount (:class:`int`):
             Paid amount, in the smallest units of the currency
 
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             Identifiers of the users which can activate the gift codes
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
 
     """
@@ -69914,7 +69914,7 @@ class StorePaymentPurposePremiumGiveaway(TlObject, StorePaymentPurpose):
     r"""The user creating a Telegram Premium giveaway
 
     Parameters:
-        parameters (:class:`"types.GiveawayParameters"`):
+        parameters (:class:`~pytdbot.types.GiveawayParameters`):
             Giveaway parameters
 
         currency (:class:`str`):
@@ -69969,7 +69969,7 @@ class StorePaymentPurposeStarGiveaway(TlObject, StorePaymentPurpose):
     r"""The user creating a Telegram Star giveaway
 
     Parameters:
-        parameters (:class:`"types.GiveawayParameters"`):
+        parameters (:class:`~pytdbot.types.GiveawayParameters`):
             Giveaway parameters
 
         currency (:class:`str`):
@@ -70273,7 +70273,7 @@ class TelegramPaymentPurposePremiumGift(TlObject, TelegramPaymentPurpose):
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active for the user
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text to show to the user receiving Telegram Premium; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
 
     """
@@ -70344,13 +70344,13 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
         amount (:class:`int`):
             Paid amount, in the smallest units of the currency
 
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             Identifiers of the users which can activate the gift codes
 
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active for the users
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text to show along with the gift codes; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed
 
     """
@@ -70419,7 +70419,7 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
     r"""The user creating a Telegram Premium giveaway
 
     Parameters:
-        parameters (:class:`"types.GiveawayParameters"`):
+        parameters (:class:`~pytdbot.types.GiveawayParameters`):
             Giveaway parameters
 
         currency (:class:`str`):
@@ -70619,7 +70619,7 @@ class TelegramPaymentPurposeStarGiveaway(TlObject, TelegramPaymentPurpose):
     r"""The user creating a Telegram Star giveaway
 
     Parameters:
-        parameters (:class:`"types.GiveawayParameters"`):
+        parameters (:class:`~pytdbot.types.GiveawayParameters`):
             Giveaway parameters
 
         currency (:class:`str`):
@@ -71351,7 +71351,7 @@ class BackgroundFillFreeformGradient(TlObject, BackgroundFill):
     r"""Describes a freeform gradient fill of a background
 
     Parameters:
-        colors (:class:`List[int]`):
+        colors (List[:class:`int`]):
             A list of 3 or 4 colors of the freeform gradient in the RGB format
 
     """
@@ -71433,7 +71433,7 @@ class BackgroundTypePattern(TlObject, BackgroundType):
     r"""A PNG or TGV \(gzipped subset of SVG with MIME type \"application/x\-tgwallpattern\"\) pattern to be combined with the background fill chosen by the user
 
     Parameters:
-        fill (:class:`"types.BackgroundFill"`):
+        fill (:class:`~pytdbot.types.BackgroundFill`):
             Fill of the background
 
         intensity (:class:`int`):
@@ -71504,7 +71504,7 @@ class BackgroundTypeFill(TlObject, BackgroundType):
     r"""A filled background
 
     Parameters:
-        fill (:class:`"types.BackgroundFill"`):
+        fill (:class:`~pytdbot.types.BackgroundFill`):
             The background fill
 
     """
@@ -71581,7 +71581,7 @@ class InputBackgroundLocal(TlObject, InputBackground):
     r"""A background from a local file
 
     Parameters:
-        background (:class:`"types.InputFile"`):
+        background (:class:`~pytdbot.types.InputFile`):
             Background file to use\. Only inputFileLocal and inputFileGenerated are supported\. The file must be in JPEG format for wallpapers and in PNG format for patterns
 
     """
@@ -71694,10 +71694,10 @@ class EmojiChatTheme(TlObject):
         name (:class:`str`):
             Theme name
 
-        light_settings (:class:`"types.ThemeSettings"`):
+        light_settings (:class:`~pytdbot.types.ThemeSettings`):
             Theme settings for a light chat theme
 
-        dark_settings (:class:`"types.ThemeSettings"`):
+        dark_settings (:class:`~pytdbot.types.ThemeSettings`):
             Theme settings for a dark chat theme
 
     """
@@ -71749,13 +71749,13 @@ class GiftChatTheme(TlObject):
     r"""Describes a chat theme based on an upgraded gift
 
     Parameters:
-        gift (:class:`"types.UpgradedGift"`):
+        gift (:class:`~pytdbot.types.UpgradedGift`):
             The gift
 
-        light_settings (:class:`"types.ThemeSettings"`):
+        light_settings (:class:`~pytdbot.types.ThemeSettings`):
             Theme settings for a light chat theme
 
-        dark_settings (:class:`"types.ThemeSettings"`):
+        dark_settings (:class:`~pytdbot.types.ThemeSettings`):
             Theme settings for a dark chat theme
 
     """
@@ -71807,7 +71807,7 @@ class GiftChatThemes(TlObject):
     r"""Contains a list of chat themes based on upgraded gifts
 
     Parameters:
-        themes (:class:`List["types.GiftChatTheme"]`):
+        themes (List[:class:`~pytdbot.types.GiftChatTheme`]):
             A list of chat themes
 
         next_offset (:class:`str`):
@@ -71891,7 +71891,7 @@ class ChatThemeGift(TlObject, ChatTheme):
     r"""A chat theme based on an upgraded gift
 
     Parameters:
-        gift_theme (:class:`"types.GiftChatTheme"`):
+        gift_theme (:class:`~pytdbot.types.GiftChatTheme`):
             The chat theme
 
     """
@@ -72052,7 +72052,7 @@ class TimeZones(TlObject):
     r"""Contains a list of time zones
 
     Parameters:
-        time_zones (:class:`List["types.TimeZone"]`):
+        time_zones (List[:class:`~pytdbot.types.TimeZone`]):
             A list of time zones
 
     """
@@ -72088,7 +72088,7 @@ class Hashtags(TlObject):
     r"""Contains a list of hashtags
 
     Parameters:
-        hashtags (:class:`List[str]`):
+        hashtags (List[:class:`str`]):
             A list of hashtags
 
     """
@@ -72958,7 +72958,7 @@ class PushMessageContentAnimation(TlObject, PushMessageContent):
     r"""An animation message \(GIF\-style\)\.
 
     Parameters:
-        animation (:class:`"types.Animation"`):
+        animation (:class:`~pytdbot.types.Animation`):
             Message content; may be null
 
         caption (:class:`str`):
@@ -73013,7 +73013,7 @@ class PushMessageContentAudio(TlObject, PushMessageContent):
     r"""An audio message
 
     Parameters:
-        audio (:class:`"types.Audio"`):
+        audio (:class:`~pytdbot.types.Audio`):
             Message content; may be null
 
         is_pinned (:class:`bool`):
@@ -73139,7 +73139,7 @@ class PushMessageContentDocument(TlObject, PushMessageContent):
     r"""A document message \(a general file\)
 
     Parameters:
-        document (:class:`"types.Document"`):
+        document (:class:`~pytdbot.types.Document`):
             Message content; may be null
 
         is_pinned (:class:`bool`):
@@ -73424,7 +73424,7 @@ class PushMessageContentPhoto(TlObject, PushMessageContent):
     r"""A photo message
 
     Parameters:
-        photo (:class:`"types.Photo"`):
+        photo (:class:`~pytdbot.types.Photo`):
             Message content; may be null
 
         caption (:class:`str`):
@@ -73584,7 +73584,7 @@ class PushMessageContentGiveaway(TlObject, PushMessageContent):
         winner_count (:class:`int`):
             Number of users which will receive giveaway prizes; 0 for pinned message
 
-        prize (:class:`"types.GiveawayPrize"`):
+        prize (:class:`~pytdbot.types.GiveawayPrize`):
             Prize of the giveaway; may be null for pinned message
 
         is_pinned (:class:`bool`):
@@ -73761,7 +73761,7 @@ class PushMessageContentSticker(TlObject, PushMessageContent):
     r"""A message with a sticker
 
     Parameters:
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             Message content; may be null
 
         emoji (:class:`str`):
@@ -73950,7 +73950,7 @@ class PushMessageContentVideo(TlObject, PushMessageContent):
     r"""A video message
 
     Parameters:
-        video (:class:`"types.Video"`):
+        video (:class:`~pytdbot.types.Video`):
             Message content; may be null
 
         caption (:class:`str`):
@@ -74016,7 +74016,7 @@ class PushMessageContentVideoNote(TlObject, PushMessageContent):
     r"""A video note message
 
     Parameters:
-        video_note (:class:`"types.VideoNote"`):
+        video_note (:class:`~pytdbot.types.VideoNote`):
             Message content; may be null
 
         is_pinned (:class:`bool`):
@@ -74062,7 +74062,7 @@ class PushMessageContentVoiceNote(TlObject, PushMessageContent):
     r"""A voice note message
 
     Parameters:
-        voice_note (:class:`"types.VoiceNote"`):
+        voice_note (:class:`~pytdbot.types.VoiceNote`):
             Message content; may be null
 
         is_pinned (:class:`bool`):
@@ -74862,7 +74862,7 @@ class NotificationTypeNewMessage(TlObject, NotificationType):
     r"""New message was received
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             The message
 
         show_preview (:class:`bool`):
@@ -74975,7 +74975,7 @@ class NotificationTypeNewPushMessage(TlObject, NotificationType):
         message_id (:class:`int`):
             The message identifier\. The message will not be available in the chat history, but the identifier can be used in viewMessages, or as a message to be replied in the same chat
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the sender of the message\. Corresponding user or chat may be inaccessible
 
         sender_name (:class:`str`):
@@ -74984,7 +74984,7 @@ class NotificationTypeNewPushMessage(TlObject, NotificationType):
         is_outgoing (:class:`bool`):
             True, if the message is outgoing
 
-        content (:class:`"types.PushMessageContent"`):
+        content (:class:`~pytdbot.types.PushMessageContent`):
             Push message content
 
     """
@@ -75220,7 +75220,7 @@ class NotificationSound(TlObject):
         data (:class:`str`):
             Arbitrary data, defined while the sound was uploaded
 
-        sound (:class:`"types.File"`):
+        sound (:class:`~pytdbot.types.File`):
             File containing the sound
 
     """
@@ -75287,7 +75287,7 @@ class NotificationSounds(TlObject):
     r"""Contains a list of notification sounds
 
     Parameters:
-        notification_sounds (:class:`List["types.NotificationSound"]`):
+        notification_sounds (List[:class:`~pytdbot.types.NotificationSound`]):
             A list of notification sounds
 
     """
@@ -75335,7 +75335,7 @@ class Notification(TlObject):
         is_silent (:class:`bool`):
             True, if the notification was explicitly sent without sound
 
-        type (:class:`"types.NotificationType"`):
+        type (:class:`~pytdbot.types.NotificationType`):
             Notification type
 
     """
@@ -75401,7 +75401,7 @@ class NotificationGroup(TlObject):
         id (:class:`int`):
             Unique persistent auto\-incremented from 1 identifier of the notification group
 
-        type (:class:`"types.NotificationGroupType"`):
+        type (:class:`~pytdbot.types.NotificationGroupType`):
             Type of the group
 
         chat_id (:class:`int`):
@@ -75410,7 +75410,7 @@ class NotificationGroup(TlObject):
         total_count (:class:`int`):
             Total number of active notifications in the group
 
-        notifications (:class:`List["types.Notification"]`):
+        notifications (List[:class:`~pytdbot.types.Notification`]):
             The list of active notifications
 
     """
@@ -75617,7 +75617,7 @@ class JsonObjectMember(TlObject):
         key (:class:`str`):
             Member's key
 
-        value (:class:`"types.JsonValue"`):
+        value (:class:`~pytdbot.types.JsonValue`):
             Member's value
 
     """
@@ -75800,7 +75800,7 @@ class JsonValueArray(TlObject, JsonValue):
     r"""Represents a JSON array
 
     Parameters:
-        values (:class:`List["types.JsonValue"]`):
+        values (List[:class:`~pytdbot.types.JsonValue`]):
             The list of array elements
 
     """
@@ -75836,7 +75836,7 @@ class JsonValueObject(TlObject, JsonValue):
     r"""Represents a JSON object
 
     Parameters:
-        members (:class:`List["types.JsonObjectMember"]`):
+        members (List[:class:`~pytdbot.types.JsonObjectMember`]):
             The list of object members
 
     """
@@ -75872,7 +75872,7 @@ class StoryPrivacySettingsEveryone(TlObject, StoryPrivacySettings):
     r"""The story can be viewed by everyone
 
     Parameters:
-        except_user_ids (:class:`List[int]`):
+        except_user_ids (List[:class:`int`]):
             Identifiers of the users that can't see the story; always unknown and empty for non\-owned stories
 
     """
@@ -75908,7 +75908,7 @@ class StoryPrivacySettingsContacts(TlObject, StoryPrivacySettings):
     r"""The story can be viewed by all contacts except chosen users
 
     Parameters:
-        except_user_ids (:class:`List[int]`):
+        except_user_ids (List[:class:`int`]):
             User identifiers of the contacts that can't see the story; always unknown and empty for non\-owned stories
 
     """
@@ -75972,7 +75972,7 @@ class StoryPrivacySettingsSelectedUsers(TlObject, StoryPrivacySettings):
     r"""The story can be viewed by certain specified users
 
     Parameters:
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             Identifiers of the users; always unknown and empty for non\-owned stories
 
     """
@@ -76124,7 +76124,7 @@ class UserPrivacySettingRuleAllowUsers(TlObject, UserPrivacySettingRule):
     r"""A rule to allow certain specified users to do something
 
     Parameters:
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             The user identifiers, total number of users in all rules must not exceed 1000
 
     """
@@ -76160,7 +76160,7 @@ class UserPrivacySettingRuleAllowChatMembers(TlObject, UserPrivacySettingRule):
     r"""A rule to allow all members of certain specified basic groups and supergroups to doing something
 
     Parameters:
-        chat_ids (:class:`List[int]`):
+        chat_ids (List[:class:`int`]):
             The chat identifiers, total number of chats in all rules must not exceed 20
 
     """
@@ -76284,7 +76284,7 @@ class UserPrivacySettingRuleRestrictUsers(TlObject, UserPrivacySettingRule):
     r"""A rule to restrict all specified users from doing something
 
     Parameters:
-        user_ids (:class:`List[int]`):
+        user_ids (List[:class:`int`]):
             The user identifiers, total number of users in all rules must not exceed 1000
 
     """
@@ -76322,7 +76322,7 @@ class UserPrivacySettingRuleRestrictChatMembers(TlObject, UserPrivacySettingRule
     r"""A rule to restrict all members of specified basic groups and supergroups from doing something
 
     Parameters:
-        chat_ids (:class:`List[int]`):
+        chat_ids (List[:class:`int`]):
             The chat identifiers, total number of chats in all rules must not exceed 20
 
     """
@@ -76360,7 +76360,7 @@ class UserPrivacySettingRules(TlObject):
     r"""A list of privacy rules\. Rules are matched in the specified order\. The first matched rule defines the privacy setting for a given user\. If no rule matches, the action is not allowed
 
     Parameters:
-        rules (:class:`List["types.UserPrivacySettingRule"]`):
+        rules (List[:class:`~pytdbot.types.UserPrivacySettingRule`]):
             A list of rules
 
     """
@@ -77571,7 +77571,7 @@ class Session(TlObject):
         can_accept_calls (:class:`bool`):
             True, if incoming calls can be accepted by the session
 
-        type (:class:`"types.SessionType"`):
+        type (:class:`~pytdbot.types.SessionType`):
             Session type based on the system and application version, which can be used to display a corresponding icon
 
         api_id (:class:`int`):
@@ -77754,7 +77754,7 @@ class Sessions(TlObject):
     r"""Contains a list of sessions
 
     Parameters:
-        sessions (:class:`List["types.Session"]`):
+        sessions (List[:class:`~pytdbot.types.Session`]):
             List of sessions
 
         inactive_session_ttl_days (:class:`int`):
@@ -77976,7 +77976,7 @@ class ConnectedWebsites(TlObject):
     r"""Contains a list of websites the current user is logged in with Telegram
 
     Parameters:
-        websites (:class:`List["types.ConnectedWebsite"]`):
+        websites (List[:class:`~pytdbot.types.ConnectedWebsite`]):
             List of connected websites
 
     """
@@ -78323,7 +78323,7 @@ class ReportChatResultOptionRequired(TlObject, ReportChatResult):
         title (:class:`str`):
             Title for the option choice
 
-        options (:class:`List["types.ReportOption"]`):
+        options (List[:class:`~pytdbot.types.ReportOption`]):
             List of available options
 
     """
@@ -78467,7 +78467,7 @@ class ReportStoryResultOptionRequired(TlObject, ReportStoryResult):
         title (:class:`str`):
             Title for the option choice
 
-        options (:class:`List["types.ReportOption"]`):
+        options (List[:class:`~pytdbot.types.ReportOption`]):
             List of available options
 
     """
@@ -78580,7 +78580,7 @@ class InternalLinkTypeAttachmentMenuBot(TlObject, InternalLinkType):
     r"""The link is a link to an attachment menu bot to be opened in the specified or a chosen chat\. Process given target\_chat to open the chat\. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu\. Then, use getAttachmentMenuBot to receive information about the bot\. If the bot isn't added to attachment menu, then show a disclaimer about Mini Apps being third\-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu\. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot\. If the attachment menu bot can't be used in the opened chat, show an error to the user\. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL
 
     Parameters:
-        target_chat (:class:`"types.TargetChat"`):
+        target_chat (:class:`~pytdbot.types.TargetChat`):
             Target chat to be opened
 
         bot_username (:class:`str`):
@@ -78712,7 +78712,7 @@ class InternalLinkTypeBotAddToChannel(TlObject, InternalLinkType):
         bot_username (:class:`str`):
             Username of the bot
 
-        administrator_rights (:class:`"types.ChatAdministratorRights"`):
+        administrator_rights (:class:`~pytdbot.types.ChatAdministratorRights`):
             Expected administrator rights for the bot
 
     """
@@ -78822,7 +78822,7 @@ class InternalLinkTypeBotStartInGroup(TlObject, InternalLinkType):
         start_parameter (:class:`str`):
             The parameter to be passed to sendBotStartMessage
 
-        administrator_rights (:class:`"types.ChatAdministratorRights"`):
+        administrator_rights (:class:`~pytdbot.types.ChatAdministratorRights`):
             Expected administrator rights for the bot; may be null
 
     """
@@ -79548,7 +79548,7 @@ class InternalLinkTypeMainWebApp(TlObject, InternalLinkType):
         start_parameter (:class:`str`):
             Start parameter to be passed to getMainWebApp
 
-        mode (:class:`"types.WebAppOpenMode"`):
+        mode (:class:`~pytdbot.types.WebAppOpenMode`):
             The mode to be passed to getMainWebApp
 
     """
@@ -79641,7 +79641,7 @@ class InternalLinkTypeMessageDraft(TlObject, InternalLinkType):
     r"""The link contains a message draft text\. A share screen needs to be shown to the user, then the chosen chat must be opened and the text is added to the input field
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Message draft text
 
         contains_link (:class:`bool`):
@@ -80011,7 +80011,7 @@ class InternalLinkTypeProxy(TlObject, InternalLinkType):
         port (:class:`int`):
             Proxy server port
 
-        type (:class:`"types.ProxyType"`):
+        type (:class:`~pytdbot.types.ProxyType`):
             Type of the proxy
 
     """
@@ -80665,7 +80665,7 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
         start_parameter (:class:`str`):
             Start parameter to be passed to getWebAppLinkUrl
 
-        mode (:class:`"types.WebAppOpenMode"`):
+        mode (:class:`~pytdbot.types.WebAppOpenMode`):
             The mode in which the Web App must be opened
 
     """
@@ -80775,10 +80775,10 @@ class MessageLinkInfo(TlObject):
         chat_id (:class:`int`):
             If found, identifier of the chat to which the link points, 0 otherwise
 
-        topic_id (:class:`"types.MessageTopic"`):
+        topic_id (:class:`~pytdbot.types.MessageTopic`):
             Identifier of the specific topic in which the message must be opened, or a topic to open if the message is missing; may be null if none
 
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             If found, the linked message; may be null
 
         media_timestamp (:class:`int`):
@@ -81645,7 +81645,7 @@ class StorageStatisticsByFileType(TlObject):
     r"""Contains the storage usage statistics for a specific file type
 
     Parameters:
-        file_type (:class:`"types.FileType"`):
+        file_type (:class:`~pytdbot.types.FileType`):
             File type
 
         size (:class:`int`):
@@ -81734,7 +81734,7 @@ class StorageStatisticsByChat(TlObject):
         count (:class:`int`):
             Total number of files in the chat
 
-        by_file_type (:class:`List["types.StorageStatisticsByFileType"]`):
+        by_file_type (List[:class:`~pytdbot.types.StorageStatisticsByFileType`]):
             Statistics split by file types
 
     """
@@ -81797,7 +81797,7 @@ class StorageStatistics(TlObject):
         count (:class:`int`):
             Total number of files
 
-        by_chat (:class:`List["types.StorageStatisticsByChat"]`):
+        by_chat (List[:class:`~pytdbot.types.StorageStatisticsByChat`]):
             Statistics split by chats
 
     """
@@ -82101,10 +82101,10 @@ class NetworkStatisticsEntryFile(TlObject, NetworkStatisticsEntry):
     r"""Contains information about the total amount of data that was used to send and receive files
 
     Parameters:
-        file_type (:class:`"types.FileType"`):
+        file_type (:class:`~pytdbot.types.FileType`):
             Type of the file the data is part of; pass null if the data isn't related to files
 
-        network_type (:class:`"types.NetworkType"`):
+        network_type (:class:`~pytdbot.types.NetworkType`):
             Type of the network the data was sent through\. Call setNetworkType to maintain the actual network type
 
         sent_bytes (:class:`int`):
@@ -82199,7 +82199,7 @@ class NetworkStatisticsEntryCall(TlObject, NetworkStatisticsEntry):
     r"""Contains information about the total amount of data that was used for calls
 
     Parameters:
-        network_type (:class:`"types.NetworkType"`):
+        network_type (:class:`~pytdbot.types.NetworkType`):
             Type of the network the data was sent through\. Call setNetworkType to maintain the actual network type
 
         sent_bytes (:class:`int`):
@@ -82275,7 +82275,7 @@ class NetworkStatistics(TlObject):
         since_date (:class:`int`):
             Point in time \(Unix timestamp\) from which the statistics are collected
 
-        entries (:class:`List["types.NetworkStatisticsEntry"]`):
+        entries (List[:class:`~pytdbot.types.NetworkStatisticsEntry`]):
             Network statistics entries
 
     """
@@ -82430,13 +82430,13 @@ class AutoDownloadSettingsPresets(TlObject):
     r"""Contains auto\-download settings presets for the current user
 
     Parameters:
-        low (:class:`"types.AutoDownloadSettings"`):
+        low (:class:`~pytdbot.types.AutoDownloadSettings`):
             Preset with lowest settings; expected to be used by default when roaming
 
-        medium (:class:`"types.AutoDownloadSettings"`):
+        medium (:class:`~pytdbot.types.AutoDownloadSettings`):
             Preset with medium settings; expected to be used by default when using mobile data
 
-        high (:class:`"types.AutoDownloadSettings"`):
+        high (:class:`~pytdbot.types.AutoDownloadSettings`):
             Preset with highest settings; expected to be used by default when connected on Wi\-Fi
 
     """
@@ -82669,7 +82669,7 @@ class AutosaveSettingsException(TlObject):
         chat_id (:class:`int`):
             Chat identifier
 
-        settings (:class:`"types.ScopeAutosaveSettings"`):
+        settings (:class:`~pytdbot.types.ScopeAutosaveSettings`):
             Autosave settings for the chat
 
     """
@@ -82714,16 +82714,16 @@ class AutosaveSettings(TlObject):
     r"""Describes autosave settings
 
     Parameters:
-        private_chat_settings (:class:`"types.ScopeAutosaveSettings"`):
+        private_chat_settings (:class:`~pytdbot.types.ScopeAutosaveSettings`):
             Default autosave settings for private chats
 
-        group_settings (:class:`"types.ScopeAutosaveSettings"`):
+        group_settings (:class:`~pytdbot.types.ScopeAutosaveSettings`):
             Default autosave settings for basic group and supergroup chats
 
-        channel_settings (:class:`"types.ScopeAutosaveSettings"`):
+        channel_settings (:class:`~pytdbot.types.ScopeAutosaveSettings`):
             Default autosave settings for channel chats
 
-        exceptions (:class:`List["types.AutosaveSettingsException"]`):
+        exceptions (List[:class:`~pytdbot.types.AutosaveSettingsException`]):
             Autosave settings for specific chats
 
     """
@@ -83242,7 +83242,7 @@ class FoundPositions(TlObject):
         total_count (:class:`int`):
             Total number of matched objects
 
-        positions (:class:`List[int]`):
+        positions (List[:class:`int`]):
             The positions of the matched objects
 
     """
@@ -83357,7 +83357,7 @@ class TMeUrlTypeChatInvite(TlObject, TMeUrlType):
     r"""A chat invite link
 
     Parameters:
-        info (:class:`"types.ChatInviteLinkInfo"`):
+        info (:class:`~pytdbot.types.ChatInviteLinkInfo`):
             Information about the chat invite link
 
     """
@@ -83432,7 +83432,7 @@ class TMeUrl(TlObject):
         url (:class:`str`):
             URL
 
-        type (:class:`"types.TMeUrlType"`):
+        type (:class:`~pytdbot.types.TMeUrlType`):
             Type of the URL
 
     """
@@ -83477,7 +83477,7 @@ class TMeUrls(TlObject):
     r"""Contains a list of t\.me URLs
 
     Parameters:
-        urls (:class:`List["types.TMeUrl"]`):
+        urls (List[:class:`~pytdbot.types.TMeUrl`]):
             List of URLs
 
     """
@@ -83952,10 +83952,10 @@ class SuggestedActionCustom(TlObject, SuggestedAction):
         name (:class:`str`):
             Unique name of the suggestion
 
-        title (:class:`"types.FormattedText"`):
+        title (:class:`~pytdbot.types.FormattedText`):
             Title of the suggestion
 
-        description (:class:`"types.FormattedText"`):
+        description (:class:`~pytdbot.types.FormattedText`):
             Description of the suggestion
 
         url (:class:`str`):
@@ -84231,7 +84231,7 @@ class DeepLinkInfo(TlObject):
     r"""Contains information about a tg: deep link
 
     Parameters:
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text to be shown to the user
 
         need_update_application (:class:`bool`):
@@ -84497,7 +84497,7 @@ class Proxy(TlObject):
         is_enabled (:class:`bool`):
             True, if the proxy is enabled now
 
-        type (:class:`"types.ProxyType"`):
+        type (:class:`~pytdbot.types.ProxyType`):
             Type of the proxy
 
     """
@@ -84564,7 +84564,7 @@ class Proxies(TlObject):
     r"""Represents a list of proxy servers
 
     Parameters:
-        proxies (:class:`List["types.Proxy"]`):
+        proxies (List[:class:`~pytdbot.types.Proxy`]):
             List of proxy servers
 
     """
@@ -84600,19 +84600,19 @@ class InputSticker(TlObject):
     r"""A sticker to be added to a sticker set
 
     Parameters:
-        sticker (:class:`"types.InputFile"`):
+        sticker (:class:`~pytdbot.types.InputFile`):
             File with the sticker; must fit in a 512x512 square\. For WEBP stickers the file must be in WEBP or PNG format, which will be converted to WEBP server\-side\. See https://core\.telegram\.org/animated\_stickers\#technical\-requirements for technical requirements
 
-        format (:class:`"types.StickerFormat"`):
+        format (:class:`~pytdbot.types.StickerFormat`):
             Format of the sticker
 
         emojis (:class:`str`):
             String with 1\-20 emoji corresponding to the sticker
 
-        mask_position (:class:`"types.MaskPosition"`):
+        mask_position (:class:`~pytdbot.types.MaskPosition`):
             Position where the mask is placed; pass null if not specified
 
-        keywords (:class:`List[str]`):
+        keywords (List[:class:`str`]):
             List of up to 20 keywords with total length up to 64 characters, which can be used to find the sticker
 
     """
@@ -84972,7 +84972,7 @@ class ChatStatisticsInteractionInfo(TlObject):
     r"""Contains statistics about interactions with a message sent in the chat or a story posted on behalf of the chat
 
     Parameters:
-        object_type (:class:`"types.ChatStatisticsObjectType"`):
+        object_type (:class:`~pytdbot.types.ChatStatisticsObjectType`):
             Type of the object
 
         view_count (:class:`int`):
@@ -85214,52 +85214,52 @@ class ChatStatisticsSupergroup(TlObject, ChatStatistics):
     r"""A detailed statistics about a supergroup chat
 
     Parameters:
-        period (:class:`"types.DateRange"`):
+        period (:class:`~pytdbot.types.DateRange`):
             A period to which the statistics applies
 
-        member_count (:class:`"types.StatisticalValue"`):
+        member_count (:class:`~pytdbot.types.StatisticalValue`):
             Number of members in the chat
 
-        message_count (:class:`"types.StatisticalValue"`):
+        message_count (:class:`~pytdbot.types.StatisticalValue`):
             Number of messages sent to the chat
 
-        viewer_count (:class:`"types.StatisticalValue"`):
+        viewer_count (:class:`~pytdbot.types.StatisticalValue`):
             Number of users who viewed messages in the chat
 
-        sender_count (:class:`"types.StatisticalValue"`):
+        sender_count (:class:`~pytdbot.types.StatisticalValue`):
             Number of users who sent messages to the chat
 
-        member_count_graph (:class:`"types.StatisticalGraph"`):
+        member_count_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of members in the chat
 
-        join_graph (:class:`"types.StatisticalGraph"`):
+        join_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of members joined and left the chat
 
-        join_by_source_graph (:class:`"types.StatisticalGraph"`):
+        join_by_source_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of new member joins per source
 
-        language_graph (:class:`"types.StatisticalGraph"`):
+        language_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing distribution of active users per language
 
-        message_content_graph (:class:`"types.StatisticalGraph"`):
+        message_content_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing distribution of sent messages by content type
 
-        action_graph (:class:`"types.StatisticalGraph"`):
+        action_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of different actions in the chat
 
-        day_graph (:class:`"types.StatisticalGraph"`):
+        day_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing distribution of message views per hour
 
-        week_graph (:class:`"types.StatisticalGraph"`):
+        week_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing distribution of message views per day of week
 
-        top_senders (:class:`List["types.ChatStatisticsMessageSenderInfo"]`):
+        top_senders (List[:class:`~pytdbot.types.ChatStatisticsMessageSenderInfo`]):
             List of users sent most messages in the last week
 
-        top_administrators (:class:`List["types.ChatStatisticsAdministratorActionsInfo"]`):
+        top_administrators (List[:class:`~pytdbot.types.ChatStatisticsAdministratorActionsInfo`]):
             List of most active administrators in the last week
 
-        top_inviters (:class:`List["types.ChatStatisticsInviterInfo"]`):
+        top_inviters (List[:class:`~pytdbot.types.ChatStatisticsInviterInfo`]):
             List of most active inviters of new members in the last week
 
     """
@@ -85394,70 +85394,70 @@ class ChatStatisticsChannel(TlObject, ChatStatistics):
     r"""A detailed statistics about a channel chat
 
     Parameters:
-        period (:class:`"types.DateRange"`):
+        period (:class:`~pytdbot.types.DateRange`):
             A period to which the statistics applies
 
-        member_count (:class:`"types.StatisticalValue"`):
+        member_count (:class:`~pytdbot.types.StatisticalValue`):
             Number of members in the chat
 
-        mean_message_view_count (:class:`"types.StatisticalValue"`):
+        mean_message_view_count (:class:`~pytdbot.types.StatisticalValue`):
             Mean number of times the recently sent messages were viewed
 
-        mean_message_share_count (:class:`"types.StatisticalValue"`):
+        mean_message_share_count (:class:`~pytdbot.types.StatisticalValue`):
             Mean number of times the recently sent messages were shared
 
-        mean_message_reaction_count (:class:`"types.StatisticalValue"`):
+        mean_message_reaction_count (:class:`~pytdbot.types.StatisticalValue`):
             Mean number of times reactions were added to the recently sent messages
 
-        mean_story_view_count (:class:`"types.StatisticalValue"`):
+        mean_story_view_count (:class:`~pytdbot.types.StatisticalValue`):
             Mean number of times the recently posted stories were viewed
 
-        mean_story_share_count (:class:`"types.StatisticalValue"`):
+        mean_story_share_count (:class:`~pytdbot.types.StatisticalValue`):
             Mean number of times the recently posted stories were shared
 
-        mean_story_reaction_count (:class:`"types.StatisticalValue"`):
+        mean_story_reaction_count (:class:`~pytdbot.types.StatisticalValue`):
             Mean number of times reactions were added to the recently posted stories
 
         enabled_notifications_percentage (:class:`float`):
             A percentage of users with enabled notifications for the chat; 0\-100
 
-        member_count_graph (:class:`"types.StatisticalGraph"`):
+        member_count_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of members in the chat
 
-        join_graph (:class:`"types.StatisticalGraph"`):
+        join_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of members joined and left the chat
 
-        mute_graph (:class:`"types.StatisticalGraph"`):
+        mute_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of members muted and unmuted the chat
 
-        view_count_by_hour_graph (:class:`"types.StatisticalGraph"`):
+        view_count_by_hour_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of message views in a given hour in the last two weeks
 
-        view_count_by_source_graph (:class:`"types.StatisticalGraph"`):
+        view_count_by_source_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of message views per source
 
-        join_by_source_graph (:class:`"types.StatisticalGraph"`):
+        join_by_source_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of new member joins per source
 
-        language_graph (:class:`"types.StatisticalGraph"`):
+        language_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of users viewed chat messages per language
 
-        message_interaction_graph (:class:`"types.StatisticalGraph"`):
+        message_interaction_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of chat message views and shares
 
-        message_reaction_graph (:class:`"types.StatisticalGraph"`):
+        message_reaction_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of reactions on messages
 
-        story_interaction_graph (:class:`"types.StatisticalGraph"`):
+        story_interaction_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of story views and shares
 
-        story_reaction_graph (:class:`"types.StatisticalGraph"`):
+        story_reaction_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of reactions on stories
 
-        instant_view_interaction_graph (:class:`"types.StatisticalGraph"`):
+        instant_view_interaction_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of views of associated with the chat instant views
 
-        recent_interactions (:class:`List["types.ChatStatisticsInteractionInfo"]`):
+        recent_interactions (List[:class:`~pytdbot.types.ChatStatisticsInteractionInfo`]):
             Detailed statistics about number of views and shares of recently sent messages and posted stories
 
     """
@@ -85738,13 +85738,13 @@ class ChatRevenueStatistics(TlObject):
     r"""A detailed statistics about revenue earned from sponsored messages in a chat
 
     Parameters:
-        revenue_by_hour_graph (:class:`"types.StatisticalGraph"`):
+        revenue_by_hour_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing amount of revenue in a given hour
 
-        revenue_graph (:class:`"types.StatisticalGraph"`):
+        revenue_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing amount of revenue
 
-        revenue_amount (:class:`"types.ChatRevenueAmount"`):
+        revenue_amount (:class:`~pytdbot.types.ChatRevenueAmount`):
             Amount of earned revenue
 
         usd_rate (:class:`float`):
@@ -85808,10 +85808,10 @@ class MessageStatistics(TlObject):
     r"""A detailed statistics about a message
 
     Parameters:
-        message_interaction_graph (:class:`"types.StatisticalGraph"`):
+        message_interaction_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of message views and shares
 
-        message_reaction_graph (:class:`"types.StatisticalGraph"`):
+        message_reaction_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of message reactions
 
     """
@@ -85864,10 +85864,10 @@ class StoryStatistics(TlObject):
     r"""A detailed statistics about a story
 
     Parameters:
-        story_interaction_graph (:class:`"types.StatisticalGraph"`):
+        story_interaction_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of story views and shares
 
-        story_reaction_graph (:class:`"types.StatisticalGraph"`):
+        story_reaction_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing number of story reactions
 
     """
@@ -86143,7 +86143,7 @@ class ChatRevenueTransactionTypeFragmentWithdrawal(
         withdrawal_date (:class:`int`):
             Point in time \(Unix timestamp\) when the earnings withdrawal started
 
-        state (:class:`"types.RevenueWithdrawalState"`):
+        state (:class:`~pytdbot.types.RevenueWithdrawalState`):
             State of the withdrawal
 
     """
@@ -86239,7 +86239,7 @@ class ChatRevenueTransaction(TlObject):
         cryptocurrency_amount (:class:`int`):
             The withdrawn amount, in the smallest units of the cryptocurrency
 
-        type (:class:`"types.ChatRevenueTransactionType"`):
+        type (:class:`~pytdbot.types.ChatRevenueTransactionType`):
             Type of the transaction
 
     """
@@ -86301,7 +86301,7 @@ class ChatRevenueTransactions(TlObject):
         ton_amount (:class:`int`):
             The amount of owned Toncoins; in the smallest units of the cryptocurrency
 
-        transactions (:class:`List["types.ChatRevenueTransaction"]`):
+        transactions (List[:class:`~pytdbot.types.ChatRevenueTransaction`]):
             List of transactions
 
         next_offset (:class:`str`):
@@ -86356,13 +86356,13 @@ class StarRevenueStatus(TlObject):
     r"""Contains information about Telegram Stars earned by a user or a chat
 
     Parameters:
-        total_amount (:class:`"types.StarAmount"`):
+        total_amount (:class:`~pytdbot.types.StarAmount`):
             Total amount of Telegram Stars earned
 
-        current_amount (:class:`"types.StarAmount"`):
+        current_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of Telegram Stars that aren't withdrawn yet
 
-        available_amount (:class:`"types.StarAmount"`):
+        available_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of Telegram Stars that are available for withdrawal
 
         withdrawal_enabled (:class:`bool`):
@@ -86430,10 +86430,10 @@ class StarRevenueStatistics(TlObject):
     r"""A detailed statistics about Telegram Stars earned by a user or a chat
 
     Parameters:
-        revenue_by_day_graph (:class:`"types.StatisticalGraph"`):
+        revenue_by_day_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing amount of revenue in a given day
 
-        status (:class:`"types.StarRevenueStatus"`):
+        status (:class:`~pytdbot.types.StarRevenueStatus`):
             Telegram Star revenue status
 
         usd_rate (:class:`float`):
@@ -86556,10 +86556,10 @@ class TonRevenueStatistics(TlObject):
     r"""A detailed statistics about Toncoins earned by the current user
 
     Parameters:
-        revenue_by_day_graph (:class:`"types.StatisticalGraph"`):
+        revenue_by_day_graph (:class:`~pytdbot.types.StatisticalGraph`):
             A graph containing amount of revenue in a given day
 
-        status (:class:`"types.TonRevenueStatus"`):
+        status (:class:`~pytdbot.types.TonRevenueStatus`):
             Amount of earned revenue
 
         usd_rate (:class:`float`):
@@ -86658,7 +86658,7 @@ class VectorPathCommandLine(TlObject, VectorPathCommand):
     r"""A straight line to a given point
 
     Parameters:
-        end_point (:class:`"types.Point"`):
+        end_point (:class:`~pytdbot.types.Point`):
             The end point of the straight line
 
     """
@@ -86694,13 +86694,13 @@ class VectorPathCommandCubicBezierCurve(TlObject, VectorPathCommand):
     r"""A cubic Bézier curve to a given point
 
     Parameters:
-        start_control_point (:class:`"types.Point"`):
+        start_control_point (:class:`~pytdbot.types.Point`):
             The start control point of the curve
 
-        end_control_point (:class:`"types.Point"`):
+        end_control_point (:class:`~pytdbot.types.Point`):
             The end control point of the curve
 
-        end_point (:class:`"types.Point"`):
+        end_point (:class:`~pytdbot.types.Point`):
             The end point of the curve
 
     """
@@ -87225,7 +87225,7 @@ class LogTags(TlObject):
     r"""Contains a list of available TDLib internal log tags
 
     Parameters:
-        tags (:class:`List[str]`):
+        tags (List[:class:`str`]):
             List of log tags
 
     """
@@ -87261,7 +87261,7 @@ class UserSupportInfo(TlObject):
     r"""Contains custom information about the user
 
     Parameters:
-        message (:class:`"types.FormattedText"`):
+        message (:class:`~pytdbot.types.FormattedText`):
             Information message
 
         author (:class:`str`):
@@ -87424,7 +87424,7 @@ class TestVectorInt(TlObject):
     r"""A simple object containing a vector of numbers; for testing only
 
     Parameters:
-        value (:class:`List[int]`):
+        value (List[:class:`int`]):
             Vector of numbers
 
     """
@@ -87460,7 +87460,7 @@ class TestVectorIntObject(TlObject):
     r"""A simple object containing a vector of objects that hold a number; for testing only
 
     Parameters:
-        value (:class:`List["types.TestInt"]`):
+        value (List[:class:`~pytdbot.types.TestInt`]):
             Vector of objects
 
     """
@@ -87496,7 +87496,7 @@ class TestVectorString(TlObject):
     r"""A simple object containing a vector of strings; for testing only
 
     Parameters:
-        value (:class:`List[str]`):
+        value (List[:class:`str`]):
             Vector of strings
 
     """
@@ -87532,7 +87532,7 @@ class TestVectorStringObject(TlObject):
     r"""A simple object containing a vector of objects that hold a string; for testing only
 
     Parameters:
-        value (:class:`List["types.TestString"]`):
+        value (List[:class:`~pytdbot.types.TestString`]):
             Vector of objects
 
     """
@@ -87568,7 +87568,7 @@ class UpdateAuthorizationState(TlObject, Update):
     r"""The user authorization state has changed
 
     Parameters:
-        authorization_state (:class:`"types.AuthorizationState"`):
+        authorization_state (:class:`~pytdbot.types.AuthorizationState`):
             New authorization state
 
     """
@@ -87622,7 +87622,7 @@ class UpdateNewMessage(TlObject, Update):
     r"""A new message was received; can also be an outgoing message
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             The new message
 
     """
@@ -87704,7 +87704,7 @@ class UpdateMessageSendSucceeded(TlObject, Update):
     r"""A message has been successfully sent
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             The sent message\. Almost any field of the new message can be different from the corresponding field of the original message\. For example, the field scheduling\_state may change, making the message scheduled, or non\-scheduled
 
         old_message_id (:class:`int`):
@@ -87750,13 +87750,13 @@ class UpdateMessageSendFailed(TlObject, Update):
     r"""A message failed to send\. Be aware that some messages being sent can be irrecoverably deleted, in which case updateDeleteMessages will be received instead of this update
 
     Parameters:
-        message (:class:`"types.Message"`):
+        message (:class:`~pytdbot.types.Message`):
             The failed to send message
 
         old_message_id (:class:`int`):
             The previous temporary message identifier
 
-        error (:class:`"types.Error"`):
+        error (:class:`~pytdbot.types.Error`):
             The cause of the message sending failure
 
     """
@@ -87811,7 +87811,7 @@ class UpdateMessageContent(TlObject, Update):
         message_id (:class:`int`):
             Message identifier
 
-        new_content (:class:`"types.MessageContent"`):
+        new_content (:class:`~pytdbot.types.MessageContent`):
             New message content
 
     """
@@ -87961,7 +87961,7 @@ class UpdateMessageEdited(TlObject, Update):
         edit_date (:class:`int`):
             Point in time \(Unix timestamp\) when the message was edited
 
-        reply_markup (:class:`"types.ReplyMarkup"`):
+        reply_markup (:class:`~pytdbot.types.ReplyMarkup`):
             New message reply markup; may be null
 
     """
@@ -88085,7 +88085,7 @@ class UpdateMessageInteractionInfo(TlObject, Update):
         message_id (:class:`int`):
             Message identifier
 
-        interaction_info (:class:`"types.MessageInteractionInfo"`):
+        interaction_info (:class:`~pytdbot.types.MessageInteractionInfo`):
             New information about interactions with the message; may be null
 
     """
@@ -88244,7 +88244,7 @@ class UpdateMessageUnreadReactions(TlObject, Update):
         message_id (:class:`int`):
             Message identifier
 
-        unread_reactions (:class:`List["types.UnreadReaction"]`):
+        unread_reactions (List[:class:`~pytdbot.types.UnreadReaction`]):
             The new list of unread reactions
 
         unread_reaction_count (:class:`int`):
@@ -88310,7 +88310,7 @@ class UpdateMessageFactCheck(TlObject, Update):
         message_id (:class:`int`):
             Message identifier
 
-        fact_check (:class:`"types.FactCheck"`):
+        fact_check (:class:`~pytdbot.types.FactCheck`):
             The new fact\-check
 
     """
@@ -88365,7 +88365,7 @@ class UpdateMessageSuggestedPostInfo(TlObject, Update):
         message_id (:class:`int`):
             Message identifier
 
-        suggested_post_info (:class:`"types.SuggestedPostInfo"`):
+        suggested_post_info (:class:`~pytdbot.types.SuggestedPostInfo`):
             The new information about the suggested post
 
     """
@@ -88509,7 +88509,7 @@ class UpdateNewChat(TlObject, Update):
     r"""A new chat has been loaded/created\. This update is guaranteed to come before the chat identifier is returned to the application\. The chat field changes will be reported through separate updates
 
     Parameters:
-        chat (:class:`"types.Chat"`):
+        chat (:class:`~pytdbot.types.Chat`):
             The chat
 
     """
@@ -88590,7 +88590,7 @@ class UpdateChatPhoto(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        photo (:class:`"types.ChatPhotoInfo"`):
+        photo (:class:`~pytdbot.types.ChatPhotoInfo`):
             The new chat photo; may be null
 
     """
@@ -88638,7 +88638,7 @@ class UpdateChatAccentColors(TlObject, Update):
         background_custom_emoji_id (:class:`int`):
             The new identifier of a custom emoji to be shown on the reply header and link preview background; 0 if none
 
-        upgraded_gift_colors (:class:`"types.UpgradedGiftColors"`):
+        upgraded_gift_colors (:class:`~pytdbot.types.UpgradedGiftColors`):
             Color scheme based on an upgraded gift to be used for the chat instead of accent\_color\_id and background\_custom\_emoji\_id; may be null if none
 
         profile_accent_color_id (:class:`int`):
@@ -88724,7 +88724,7 @@ class UpdateChatPermissions(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        permissions (:class:`"types.ChatPermissions"`):
+        permissions (:class:`~pytdbot.types.ChatPermissions`):
             The new chat permissions
 
     """
@@ -88770,10 +88770,10 @@ class UpdateChatLastMessage(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        last_message (:class:`"types.Message"`):
+        last_message (:class:`~pytdbot.types.Message`):
             The new last message in the chat; may be null if the last message became unknown\. While the last message is unknown, new messages can be added to the chat without corresponding updateNewMessage update
 
-        positions (:class:`List["types.ChatPosition"]`):
+        positions (List[:class:`~pytdbot.types.ChatPosition`]):
             The new chat positions in the chat lists
 
     """
@@ -88828,7 +88828,7 @@ class UpdateChatPosition(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        position (:class:`"types.ChatPosition"`):
+        position (:class:`~pytdbot.types.ChatPosition`):
             New chat position\. If new order is 0, then the chat needs to be removed from the list
 
     """
@@ -88874,7 +88874,7 @@ class UpdateChatAddedToList(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        chat_list (:class:`"types.ChatList"`):
+        chat_list (:class:`~pytdbot.types.ChatList`):
             The chat list to which the chat was added
 
     """
@@ -88922,7 +88922,7 @@ class UpdateChatRemovedFromList(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        chat_list (:class:`"types.ChatList"`):
+        chat_list (:class:`~pytdbot.types.ChatList`):
             The chat list from which the chat was removed
 
     """
@@ -89078,7 +89078,7 @@ class UpdateChatActionBar(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        action_bar (:class:`"types.ChatActionBar"`):
+        action_bar (:class:`~pytdbot.types.ChatActionBar`):
             The new value of the action bar; may be null
 
     """
@@ -89132,7 +89132,7 @@ class UpdateChatBusinessBotManageBar(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        business_bot_manage_bar (:class:`"types.BusinessBotManageBar"`):
+        business_bot_manage_bar (:class:`~pytdbot.types.BusinessBotManageBar`):
             The new value of the business bot manage bar; may be null
 
     """
@@ -89184,7 +89184,7 @@ class UpdateChatAvailableReactions(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        available_reactions (:class:`"types.ChatAvailableReactions"`):
+        available_reactions (:class:`~pytdbot.types.ChatAvailableReactions`):
             The new reactions, available in the chat
 
     """
@@ -89234,10 +89234,10 @@ class UpdateChatDraftMessage(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        draft_message (:class:`"types.DraftMessage"`):
+        draft_message (:class:`~pytdbot.types.DraftMessage`):
             The new draft message; may be null if none
 
-        positions (:class:`List["types.ChatPosition"]`):
+        positions (List[:class:`~pytdbot.types.ChatPosition`]):
             The new chat positions in the chat lists
 
     """
@@ -89292,7 +89292,7 @@ class UpdateChatEmojiStatus(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        emoji_status (:class:`"types.EmojiStatus"`):
+        emoji_status (:class:`~pytdbot.types.EmojiStatus`):
             The new chat emoji status; may be null
 
     """
@@ -89338,7 +89338,7 @@ class UpdateChatMessageSender(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        message_sender_id (:class:`"types.MessageSender"`):
+        message_sender_id (:class:`~pytdbot.types.MessageSender`):
             New value of message\_sender\_id; may be null if the user can't change message sender
 
     """
@@ -89436,7 +89436,7 @@ class UpdateChatNotificationSettings(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        notification_settings (:class:`"types.ChatNotificationSettings"`):
+        notification_settings (:class:`~pytdbot.types.ChatNotificationSettings`):
             The new notification settings
 
     """
@@ -89486,7 +89486,7 @@ class UpdateChatPendingJoinRequests(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        pending_join_requests (:class:`"types.ChatJoinRequestsInfo"`):
+        pending_join_requests (:class:`~pytdbot.types.ChatJoinRequestsInfo`):
             The new data about pending join requests; may be null
 
     """
@@ -89584,7 +89584,7 @@ class UpdateChatBackground(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        background (:class:`"types.ChatBackground"`):
+        background (:class:`~pytdbot.types.ChatBackground`):
             The new chat background; may be null if background was reset to default
 
     """
@@ -89630,7 +89630,7 @@ class UpdateChatTheme(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        theme (:class:`"types.ChatTheme"`):
+        theme (:class:`~pytdbot.types.ChatTheme`):
             The new theme of the chat; may be null if theme was reset to default
 
     """
@@ -89764,7 +89764,7 @@ class UpdateChatVideoChat(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        video_chat (:class:`"types.VideoChat"`):
+        video_chat (:class:`~pytdbot.types.VideoChat`):
             New value of video\_chat
 
     """
@@ -90046,7 +90046,7 @@ class UpdateChatBlockList(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        block_list (:class:`"types.BlockList"`):
+        block_list (:class:`~pytdbot.types.BlockList`):
             Block list to which the chat is added; may be null if none
 
     """
@@ -90137,7 +90137,7 @@ class UpdateChatFolders(TlObject, Update):
     r"""The list of chat folders or a chat folder has changed
 
     Parameters:
-        chat_folders (:class:`List["types.ChatFolderInfo"]`):
+        chat_folders (List[:class:`~pytdbot.types.ChatFolderInfo`]):
             The new list of chat folders
 
         main_chat_list_position (:class:`int`):
@@ -90243,7 +90243,7 @@ class UpdateSavedMessagesTopic(TlObject, Update):
     r"""Basic information about a Saved Messages topic has changed\. This update is guaranteed to come before the topic identifier is returned to the application
 
     Parameters:
-        topic (:class:`"types.SavedMessagesTopic"`):
+        topic (:class:`~pytdbot.types.SavedMessagesTopic`):
             New data about the topic
 
     """
@@ -90315,7 +90315,7 @@ class UpdateDirectMessagesChatTopic(TlObject, Update):
     r"""Basic information about a topic in a channel direct messages chat administered by the current user has changed\. This update is guaranteed to come before the topic identifier is returned to the application
 
     Parameters:
-        topic (:class:`"types.DirectMessagesChatTopic"`):
+        topic (:class:`~pytdbot.types.DirectMessagesChatTopic`):
             New data about the topic
 
     """
@@ -90354,7 +90354,7 @@ class UpdateTopicMessageCount(TlObject, Update):
         chat_id (:class:`int`):
             Identifier of the chat in topic of which the number of messages has changed
 
-        topic_id (:class:`"types.MessageTopic"`):
+        topic_id (:class:`~pytdbot.types.MessageTopic`):
             Identifier of the topic
 
         message_count (:class:`int`):
@@ -90412,7 +90412,7 @@ class UpdateQuickReplyShortcut(TlObject, Update):
     r"""Basic information about a quick reply shortcut has changed\. This update is guaranteed to come before the quick shortcut name is returned to the application
 
     Parameters:
-        shortcut (:class:`"types.QuickReplyShortcut"`):
+        shortcut (:class:`~pytdbot.types.QuickReplyShortcut`):
             New data about the shortcut
 
     """
@@ -90484,7 +90484,7 @@ class UpdateQuickReplyShortcuts(TlObject, Update):
     r"""The list of quick reply shortcuts has changed
 
     Parameters:
-        shortcut_ids (:class:`List[int]`):
+        shortcut_ids (List[:class:`int`]):
             The new list of identifiers of quick reply shortcuts
 
     """
@@ -90523,7 +90523,7 @@ class UpdateQuickReplyShortcutMessages(TlObject, Update):
         shortcut_id (:class:`int`):
             The identifier of the shortcut
 
-        messages (:class:`List["types.QuickReplyMessage"]`):
+        messages (List[:class:`~pytdbot.types.QuickReplyMessage`]):
             The new list of quick reply messages for the shortcut in order from the first to the last sent
 
     """
@@ -90568,7 +90568,7 @@ class UpdateForumTopicInfo(TlObject, Update):
     r"""Basic information about a topic in a forum chat was changed
 
     Parameters:
-        info (:class:`"types.ForumTopicInfo"`):
+        info (:class:`~pytdbot.types.ForumTopicInfo`):
             New information about the topic
 
     """
@@ -90625,7 +90625,7 @@ class UpdateForumTopic(TlObject, Update):
         unread_reaction_count (:class:`int`):
             Number of messages with unread reactions in the topic
 
-        notification_settings (:class:`"types.ChatNotificationSettings"`):
+        notification_settings (:class:`~pytdbot.types.ChatNotificationSettings`):
             Notification settings for the topic
 
     """
@@ -90708,10 +90708,10 @@ class UpdateScopeNotificationSettings(TlObject, Update):
     r"""Notification settings for some type of chats were updated
 
     Parameters:
-        scope (:class:`"types.NotificationSettingsScope"`):
+        scope (:class:`~pytdbot.types.NotificationSettingsScope`):
             Types of chats for which notification settings were updated
 
-        notification_settings (:class:`"types.ScopeNotificationSettings"`):
+        notification_settings (:class:`~pytdbot.types.ScopeNotificationSettings`):
             The new notification settings
 
     """
@@ -90765,7 +90765,7 @@ class UpdateReactionNotificationSettings(TlObject, Update):
     r"""Notification settings for reactions were updated
 
     Parameters:
-        notification_settings (:class:`"types.ReactionNotificationSettings"`):
+        notification_settings (:class:`~pytdbot.types.ReactionNotificationSettings`):
             The new notification settings
 
     """
@@ -90811,7 +90811,7 @@ class UpdateNotification(TlObject, Update):
         notification_group_id (:class:`int`):
             Unique notification group identifier
 
-        notification (:class:`"types.Notification"`):
+        notification (:class:`~pytdbot.types.Notification`):
             Changed notification
 
     """
@@ -90859,7 +90859,7 @@ class UpdateNotificationGroup(TlObject, Update):
         notification_group_id (:class:`int`):
             Unique notification group identifier
 
-        type (:class:`"types.NotificationGroupType"`):
+        type (:class:`~pytdbot.types.NotificationGroupType`):
             New type of the notification group
 
         chat_id (:class:`int`):
@@ -90874,10 +90874,10 @@ class UpdateNotificationGroup(TlObject, Update):
         total_count (:class:`int`):
             Total number of unread notifications in the group, can be bigger than number of active notifications
 
-        added_notifications (:class:`List["types.Notification"]`):
+        added_notifications (List[:class:`~pytdbot.types.Notification`]):
             List of added group notifications, sorted by notification identifier
 
-        removed_notification_ids (:class:`List[int]`):
+        removed_notification_ids (List[:class:`int`]):
             Identifiers of removed group notifications, sorted by notification identifier
 
     """
@@ -90964,7 +90964,7 @@ class UpdateActiveNotifications(TlObject, Update):
     r"""Contains active notifications that were shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
 
     Parameters:
-        groups (:class:`List["types.NotificationGroup"]`):
+        groups (List[:class:`~pytdbot.types.NotificationGroup`]):
             Lists of active notification groups
 
     """
@@ -91057,7 +91057,7 @@ class UpdateDeleteMessages(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        message_ids (:class:`List[int]`):
+        message_ids (List[:class:`int`]):
             Identifiers of the deleted messages
 
         is_permanent (:class:`bool`):
@@ -91123,13 +91123,13 @@ class UpdateChatAction(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        topic_id (:class:`"types.MessageTopic"`):
+        topic_id (:class:`~pytdbot.types.MessageTopic`):
             Identifier of the specific topic in which the action was performed; may be null if none
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of a message sender performing the action
 
-        action (:class:`"types.ChatAction"`):
+        action (:class:`~pytdbot.types.ChatAction`):
             The action
 
     """
@@ -91218,7 +91218,7 @@ class UpdatePendingTextMessage(TlObject, Update):
         draft_id (:class:`int`):
             Unique identifier of the message draft within the message thread
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text of the pending message
 
     """
@@ -91278,7 +91278,7 @@ class UpdateUserStatus(TlObject, Update):
         user_id (:class:`int`):
             User identifier
 
-        status (:class:`"types.UserStatus"`):
+        status (:class:`~pytdbot.types.UserStatus`):
             New status of the user
 
     """
@@ -91325,7 +91325,7 @@ class UpdateUser(TlObject, Update):
     r"""Some data of a user has changed\. This update is guaranteed to come before the user identifier is returned to the application
 
     Parameters:
-        user (:class:`"types.User"`):
+        user (:class:`~pytdbot.types.User`):
             New data about the user
 
     """
@@ -91361,7 +91361,7 @@ class UpdateBasicGroup(TlObject, Update):
     r"""Some data of a basic group has changed\. This update is guaranteed to come before the basic group identifier is returned to the application
 
     Parameters:
-        basic_group (:class:`"types.BasicGroup"`):
+        basic_group (:class:`~pytdbot.types.BasicGroup`):
             New data about the group
 
     """
@@ -91397,7 +91397,7 @@ class UpdateSupergroup(TlObject, Update):
     r"""Some data of a supergroup or a channel has changed\. This update is guaranteed to come before the supergroup identifier is returned to the application
 
     Parameters:
-        supergroup (:class:`"types.Supergroup"`):
+        supergroup (:class:`~pytdbot.types.Supergroup`):
             New data about the supergroup
 
     """
@@ -91433,7 +91433,7 @@ class UpdateSecretChat(TlObject, Update):
     r"""Some data of a secret chat has changed\. This update is guaranteed to come before the secret chat identifier is returned to the application
 
     Parameters:
-        secret_chat (:class:`"types.SecretChat"`):
+        secret_chat (:class:`~pytdbot.types.SecretChat`):
             New data about the secret chat
 
     """
@@ -91472,7 +91472,7 @@ class UpdateUserFullInfo(TlObject, Update):
         user_id (:class:`int`):
             User identifier
 
-        user_full_info (:class:`"types.UserFullInfo"`):
+        user_full_info (:class:`~pytdbot.types.UserFullInfo`):
             New full information about the user
 
     """
@@ -91518,7 +91518,7 @@ class UpdateBasicGroupFullInfo(TlObject, Update):
         basic_group_id (:class:`int`):
             Identifier of a basic group
 
-        basic_group_full_info (:class:`"types.BasicGroupFullInfo"`):
+        basic_group_full_info (:class:`~pytdbot.types.BasicGroupFullInfo`):
             New full information about the group
 
     """
@@ -91568,7 +91568,7 @@ class UpdateSupergroupFullInfo(TlObject, Update):
         supergroup_id (:class:`int`):
             Identifier of the supergroup or channel
 
-        supergroup_full_info (:class:`"types.SupergroupFullInfo"`):
+        supergroup_full_info (:class:`~pytdbot.types.SupergroupFullInfo`):
             New full information about the supergroup
 
     """
@@ -91618,7 +91618,7 @@ class UpdateServiceNotification(TlObject, Update):
         type (:class:`str`):
             Notification type\. If type begins with \"AUTH\_KEY\_DROP\_\", then two buttons \"Cancel\" and \"Log out\" must be shown under notification; if user presses the second, all local data must be destroyed using Destroy method
 
-        content (:class:`"types.MessageContent"`):
+        content (:class:`~pytdbot.types.MessageContent`):
             Notification content
 
     """
@@ -91749,7 +91749,7 @@ class UpdateFile(TlObject, Update):
     r"""Information about a file was updated
 
     Parameters:
-        file (:class:`"types.File"`):
+        file (:class:`~pytdbot.types.File`):
             New data about the file
 
     """
@@ -91942,10 +91942,10 @@ class UpdateFileAddedToDownloads(TlObject, Update):
     r"""A file was added to the file download list\. This update is sent only after file download list is loaded for the first time
 
     Parameters:
-        file_download (:class:`"types.FileDownload"`):
+        file_download (:class:`~pytdbot.types.FileDownload`):
             The added file download
 
-        counts (:class:`"types.DownloadedFileCounts"`):
+        counts (:class:`~pytdbot.types.DownloadedFileCounts`):
             New number of being downloaded and recently downloaded files found
 
     """
@@ -91999,7 +91999,7 @@ class UpdateFileDownload(TlObject, Update):
         is_paused (:class:`bool`):
             True, if downloading of the file is paused
 
-        counts (:class:`"types.DownloadedFileCounts"`):
+        counts (:class:`~pytdbot.types.DownloadedFileCounts`):
             New number of being downloaded and recently downloaded files found
 
     """
@@ -92059,7 +92059,7 @@ class UpdateFileRemovedFromDownloads(TlObject, Update):
         file_id (:class:`int`):
             File identifier
 
-        counts (:class:`"types.DownloadedFileCounts"`):
+        counts (:class:`~pytdbot.types.DownloadedFileCounts`):
             New number of being downloaded and recently downloaded files found
 
     """
@@ -92212,7 +92212,7 @@ class UpdateCall(TlObject, Update):
     r"""New call was created or information about a call was updated
 
     Parameters:
-        call (:class:`"types.Call"`):
+        call (:class:`~pytdbot.types.Call`):
             New data about a call
 
     """
@@ -92248,7 +92248,7 @@ class UpdateGroupCall(TlObject, Update):
     r"""Information about a group call was updated
 
     Parameters:
-        group_call (:class:`"types.GroupCall"`):
+        group_call (:class:`~pytdbot.types.GroupCall`):
             New data about the group call
 
     """
@@ -92287,7 +92287,7 @@ class UpdateGroupCallParticipant(TlObject, Update):
         group_call_id (:class:`int`):
             Identifier of the group call
 
-        participant (:class:`"types.GroupCallParticipant"`):
+        participant (:class:`~pytdbot.types.GroupCallParticipant`):
             New data about the participant
 
     """
@@ -92335,7 +92335,7 @@ class UpdateGroupCallParticipants(TlObject, Update):
         group_call_id (:class:`int`):
             Identifier of the group call
 
-        participant_user_ids (:class:`List[int]`):
+        participant_user_ids (List[:class:`int`]):
             New list of group call participant user identifiers\. The identifiers may be invalid or the corresponding users may be unknown\. The participants must be shown in the list of group call participants even if there is no information about them
 
     """
@@ -92386,7 +92386,7 @@ class UpdateGroupCallVerificationState(TlObject, Update):
         generation (:class:`int`):
             The call state generation to which the emoji corresponds\. If generation is different for two users, then their emoji may be also different
 
-        emojis (:class:`List[str]`):
+        emojis (List[:class:`str`]):
             Group call state fingerprint represented as 4 emoji; may be empty if the state isn't verified yet
 
     """
@@ -92438,10 +92438,10 @@ class UpdateGroupCallNewMessage(TlObject, Update):
         group_call_id (:class:`int`):
             Identifier of the group call
 
-        sender_id (:class:`"types.MessageSender"`):
+        sender_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the sender of the message
 
-        text (:class:`"types.FormattedText"`):
+        text (:class:`~pytdbot.types.FormattedText`):
             Text of the message
 
     """
@@ -92535,10 +92535,10 @@ class UpdateUserPrivacySettingRules(TlObject, Update):
     r"""Some privacy setting rules have been changed
 
     Parameters:
-        setting (:class:`"types.UserPrivacySetting"`):
+        setting (:class:`~pytdbot.types.UserPrivacySetting`):
             The privacy setting
 
-        rules (:class:`"types.UserPrivacySettingRules"`):
+        rules (:class:`~pytdbot.types.UserPrivacySettingRules`):
             New privacy rules
 
     """
@@ -92594,7 +92594,7 @@ class UpdateUnreadMessageCount(TlObject, Update):
     r"""Number of unread messages in a chat list has changed\. This update is sent only if the message database is used
 
     Parameters:
-        chat_list (:class:`"types.ChatList"`):
+        chat_list (:class:`~pytdbot.types.ChatList`):
             The chat list with changed number of unread messages
 
         unread_count (:class:`int`):
@@ -92654,7 +92654,7 @@ class UpdateUnreadChatCount(TlObject, Update):
     r"""Number of unread chats, i\.e\. with unread messages or marked as unread, has changed\. This update is sent only if the message database is used
 
     Parameters:
-        chat_list (:class:`"types.ChatList"`):
+        chat_list (:class:`~pytdbot.types.ChatList`):
             The chat list with changed number of unread messages
 
         total_count (:class:`int`):
@@ -92742,7 +92742,7 @@ class UpdateStory(TlObject, Update):
     r"""A story was changed
 
     Parameters:
-        story (:class:`"types.Story"`):
+        story (:class:`~pytdbot.types.Story`):
             The new information about the story
 
     """
@@ -92824,7 +92824,7 @@ class UpdateStoryPostSucceeded(TlObject, Update):
     r"""A story has been successfully posted
 
     Parameters:
-        story (:class:`"types.Story"`):
+        story (:class:`~pytdbot.types.Story`):
             The posted story
 
         old_story_id (:class:`int`):
@@ -92870,13 +92870,13 @@ class UpdateStoryPostFailed(TlObject, Update):
     r"""A story failed to post\. If the story posting is canceled, then updateStoryDeleted will be received instead of this update
 
     Parameters:
-        story (:class:`"types.Story"`):
+        story (:class:`~pytdbot.types.Story`):
             The failed to post story
 
-        error (:class:`"types.Error"`):
+        error (:class:`~pytdbot.types.Error`):
             The cause of the story posting failure
 
-        error_type (:class:`"types.CanPostStoryResult"`):
+        error_type (:class:`~pytdbot.types.CanPostStoryResult`):
             Type of the error; may be null if unknown
 
     """
@@ -92936,7 +92936,7 @@ class UpdateChatActiveStories(TlObject, Update):
     r"""The list of active stories posted by a specific chat has changed
 
     Parameters:
-        active_stories (:class:`"types.ChatActiveStories"`):
+        active_stories (:class:`~pytdbot.types.ChatActiveStories`):
             The new list of active stories
 
     """
@@ -92972,7 +92972,7 @@ class UpdateStoryListChatCount(TlObject, Update):
     r"""Number of chats in a story list has changed
 
     Parameters:
-        story_list (:class:`"types.StoryList"`):
+        story_list (:class:`~pytdbot.types.StoryList`):
             The story list
 
         chat_count (:class:`int`):
@@ -93069,7 +93069,7 @@ class UpdateOption(TlObject, Update):
         name (:class:`str`):
             The option name
 
-        value (:class:`"types.OptionValue"`):
+        value (:class:`~pytdbot.types.OptionValue`):
             The new option value
 
     """
@@ -93114,7 +93114,7 @@ class UpdateStickerSet(TlObject, Update):
     r"""A sticker set has changed
 
     Parameters:
-        sticker_set (:class:`"types.StickerSet"`):
+        sticker_set (:class:`~pytdbot.types.StickerSet`):
             The sticker set
 
     """
@@ -93150,10 +93150,10 @@ class UpdateInstalledStickerSets(TlObject, Update):
     r"""The list of installed sticker sets was updated
 
     Parameters:
-        sticker_type (:class:`"types.StickerType"`):
+        sticker_type (:class:`~pytdbot.types.StickerType`):
             Type of the affected stickers
 
-        sticker_set_ids (:class:`List[int]`):
+        sticker_set_ids (List[:class:`int`]):
             The new list of installed ordinary sticker sets
 
     """
@@ -93200,10 +93200,10 @@ class UpdateTrendingStickerSets(TlObject, Update):
     r"""The list of trending sticker sets was updated or some of them were viewed
 
     Parameters:
-        sticker_type (:class:`"types.StickerType"`):
+        sticker_type (:class:`~pytdbot.types.StickerType`):
             Type of the affected stickers
 
-        sticker_sets (:class:`"types.TrendingStickerSets"`):
+        sticker_sets (:class:`~pytdbot.types.TrendingStickerSets`):
             The prefix of the list of trending sticker sets with the newest trending sticker sets
 
     """
@@ -93253,7 +93253,7 @@ class UpdateRecentStickers(TlObject, Update):
         is_attached (:class:`bool`):
             True, if the list of stickers attached to photo or video files was updated; otherwise, the list of sent stickers is updated
 
-        sticker_ids (:class:`List[int]`):
+        sticker_ids (List[:class:`int`]):
             The new list of file identifiers of recently used stickers
 
     """
@@ -93298,7 +93298,7 @@ class UpdateFavoriteStickers(TlObject, Update):
     r"""The list of favorite stickers was updated
 
     Parameters:
-        sticker_ids (:class:`List[int]`):
+        sticker_ids (List[:class:`int`]):
             The new list of file identifiers of favorite stickers
 
     """
@@ -93334,7 +93334,7 @@ class UpdateSavedAnimations(TlObject, Update):
     r"""The list of saved animations was updated
 
     Parameters:
-        animation_ids (:class:`List[int]`):
+        animation_ids (List[:class:`int`]):
             The new list of file identifiers of saved animations
 
     """
@@ -93370,7 +93370,7 @@ class UpdateSavedNotificationSounds(TlObject, Update):
     r"""The list of saved notification sounds was updated\. This update may not be sent until information about a notification sound was requested for the first time
 
     Parameters:
-        notification_sound_ids (:class:`List[int]`):
+        notification_sound_ids (List[:class:`int`]):
             The new list of identifiers of saved notification sounds
 
     """
@@ -93412,7 +93412,7 @@ class UpdateDefaultBackground(TlObject, Update):
         for_dark_theme (:class:`bool`):
             True, if default background for dark theme has changed
 
-        background (:class:`"types.Background"`):
+        background (:class:`~pytdbot.types.Background`):
             The new default background; may be null
 
     """
@@ -93457,7 +93457,7 @@ class UpdateEmojiChatThemes(TlObject, Update):
     r"""The list of available emoji chat themes has changed
 
     Parameters:
-        chat_themes (:class:`List["types.EmojiChatTheme"]`):
+        chat_themes (List[:class:`~pytdbot.types.EmojiChatTheme`]):
             The new list of emoji chat themes
 
     """
@@ -93493,10 +93493,10 @@ class UpdateAccentColors(TlObject, Update):
     r"""The list of supported accent colors has changed
 
     Parameters:
-        colors (:class:`List["types.AccentColor"]`):
+        colors (List[:class:`~pytdbot.types.AccentColor`]):
             Information about supported colors; colors with identifiers 0 \(red\), 1 \(orange\), 2 \(purple/violet\), 3 \(green\), 4 \(cyan\), 5 \(blue\), 6 \(pink\) must always be supported and aren't included in the list\. The exact colors for the accent colors with identifiers 0\-6 must be taken from the app theme
 
-        available_accent_color_ids (:class:`List[int]`):
+        available_accent_color_ids (List[:class:`int`]):
             The list of accent color identifiers, which can be set through setAccentColor and setChatAccentColor\. The colors must be shown in the specified order
 
     """
@@ -93545,10 +93545,10 @@ class UpdateProfileAccentColors(TlObject, Update):
     r"""The list of supported accent colors for user profiles has changed
 
     Parameters:
-        colors (:class:`List["types.ProfileAccentColor"]`):
+        colors (List[:class:`~pytdbot.types.ProfileAccentColor`]):
             Information about supported colors
 
-        available_accent_color_ids (:class:`List[int]`):
+        available_accent_color_ids (List[:class:`int`]):
             The list of accent color identifiers, which can be set through setProfileAccentColor and setChatProfileAccentColor\. The colors must be shown in the specified order
 
     """
@@ -93603,7 +93603,7 @@ class UpdateLanguagePackStrings(TlObject, Update):
         language_pack_id (:class:`str`):
             Identifier of the updated language pack
 
-        strings (:class:`List["types.LanguagePackString"]`):
+        strings (List[:class:`~pytdbot.types.LanguagePackString`]):
             List of changed language pack strings; empty if all strings have changed
 
     """
@@ -93655,7 +93655,7 @@ class UpdateConnectionState(TlObject, Update):
     r"""The connection state has changed\. This update must be used only to show a human\-readable description of the connection state
 
     Parameters:
-        state (:class:`"types.ConnectionState"`):
+        state (:class:`~pytdbot.types.ConnectionState`):
             The new connection state
 
     """
@@ -93764,7 +93764,7 @@ class UpdateAgeVerificationParameters(TlObject, Update):
     r"""The parameters for age verification of the current user's account has changed
 
     Parameters:
-        parameters (:class:`"types.AgeVerificationParameters"`):
+        parameters (:class:`~pytdbot.types.AgeVerificationParameters`):
             Parameters for the age verification; may be null if age verification isn't needed
 
     """
@@ -93803,7 +93803,7 @@ class UpdateTermsOfService(TlObject, Update):
         terms_of_service_id (:class:`str`):
             Identifier of the terms of service
 
-        terms_of_service (:class:`"types.TermsOfService"`):
+        terms_of_service (:class:`~pytdbot.types.TermsOfService`):
             The new terms of service
 
     """
@@ -93848,7 +93848,7 @@ class UpdateUnconfirmedSession(TlObject, Update):
     r"""The first unconfirmed session has changed
 
     Parameters:
-        session (:class:`"types.UnconfirmedSession"`):
+        session (:class:`~pytdbot.types.UnconfirmedSession`):
             The unconfirmed session; may be null if none
 
     """
@@ -93884,7 +93884,7 @@ class UpdateAttachmentMenuBots(TlObject, Update):
     r"""The list of bots added to attachment or side menu has changed
 
     Parameters:
-        bots (:class:`List["types.AttachmentMenuBot"]`):
+        bots (List[:class:`~pytdbot.types.AttachmentMenuBot`]):
             The new list of bots\. The bots must not be shown on scheduled messages screen
 
     """
@@ -93956,7 +93956,7 @@ class UpdateActiveEmojiReactions(TlObject, Update):
     r"""The list of active emoji reactions has changed
 
     Parameters:
-        emojis (:class:`List[str]`):
+        emojis (List[:class:`str`]):
             The new list of active emoji reactions
 
     """
@@ -93992,10 +93992,10 @@ class UpdateAvailableMessageEffects(TlObject, Update):
     r"""The list of available message effects has changed
 
     Parameters:
-        reaction_effect_ids (:class:`List[int]`):
+        reaction_effect_ids (List[:class:`int`]):
             The new list of available message effects from emoji reactions
 
-        sticker_effect_ids (:class:`List[int]`):
+        sticker_effect_ids (List[:class:`int`]):
             The new list of available message effects from Premium stickers
 
     """
@@ -94042,7 +94042,7 @@ class UpdateDefaultReactionType(TlObject, Update):
     r"""The type of default reaction has changed
 
     Parameters:
-        reaction_type (:class:`"types.ReactionType"`):
+        reaction_type (:class:`~pytdbot.types.ReactionType`):
             The new type of the default reaction
 
     """
@@ -94080,7 +94080,7 @@ class UpdateDefaultPaidReactionType(TlObject, Update):
     r"""The type of default paid reaction has changed
 
     Parameters:
-        type (:class:`"types.PaidReactionType"`):
+        type (:class:`~pytdbot.types.PaidReactionType`):
             The new type of the default paid reaction
 
     """
@@ -94124,7 +94124,7 @@ class UpdateSavedMessagesTags(TlObject, Update):
         saved_messages_topic_id (:class:`int`):
             Identifier of Saved Messages topic which tags were changed; 0 if tags for the whole chat has changed
 
-        tags (:class:`"types.SavedMessagesTags"`):
+        tags (:class:`~pytdbot.types.SavedMessagesTags`):
             The new tags
 
     """
@@ -94171,7 +94171,7 @@ class UpdateActiveLiveLocationMessages(TlObject, Update):
     r"""The list of messages with active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
 
     Parameters:
-        messages (:class:`List["types.Message"]`):
+        messages (List[:class:`~pytdbot.types.Message`]):
             The list of messages with active live locations
 
     """
@@ -94207,7 +94207,7 @@ class UpdateOwnedStarCount(TlObject, Update):
     r"""The number of Telegram Stars owned by the current user has changed
 
     Parameters:
-        star_amount (:class:`"types.StarAmount"`):
+        star_amount (:class:`~pytdbot.types.StarAmount`):
             The new amount of owned Telegram Stars
 
     """
@@ -94282,7 +94282,7 @@ class UpdateChatRevenueAmount(TlObject, Update):
         chat_id (:class:`int`):
             Identifier of the chat
 
-        revenue_amount (:class:`"types.ChatRevenueAmount"`):
+        revenue_amount (:class:`~pytdbot.types.ChatRevenueAmount`):
             New amount of earned revenue
 
     """
@@ -94327,10 +94327,10 @@ class UpdateStarRevenueStatus(TlObject, Update):
     r"""The Telegram Star revenue earned by a user or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
 
     Parameters:
-        owner_id (:class:`"types.MessageSender"`):
+        owner_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the owner of the Telegram Stars
 
-        status (:class:`"types.StarRevenueStatus"`):
+        status (:class:`~pytdbot.types.StarRevenueStatus`):
             New Telegram Star revenue status
 
     """
@@ -94375,7 +94375,7 @@ class UpdateTonRevenueStatus(TlObject, Update):
     r"""The Toncoin revenue earned by the current user has changed\. If Toncoin transaction screen of the chat is opened, then getTonTransactions may be called to fetch new transactions
 
     Parameters:
-        status (:class:`"types.TonRevenueStatus"`):
+        status (:class:`~pytdbot.types.TonRevenueStatus`):
             New Toncoin revenue status
 
     """
@@ -94477,7 +94477,7 @@ class UpdateDiceEmojis(TlObject, Update):
     r"""The list of supported dice emojis has changed
 
     Parameters:
-        emojis (:class:`List[str]`):
+        emojis (List[:class:`str`]):
             The new list of supported dice emojis
 
     """
@@ -94519,7 +94519,7 @@ class UpdateAnimatedEmojiMessageClicked(TlObject, Update):
         message_id (:class:`int`):
             Message identifier
 
-        sticker (:class:`"types.Sticker"`):
+        sticker (:class:`~pytdbot.types.Sticker`):
             The animated sticker to be played
 
     """
@@ -94571,7 +94571,7 @@ class UpdateAnimationSearchParameters(TlObject, Update):
         provider (:class:`str`):
             Name of the animation search provider
 
-        emojis (:class:`List[str]`):
+        emojis (List[:class:`str`]):
             The new list of emojis suggested for searching
 
     """
@@ -94614,10 +94614,10 @@ class UpdateSuggestedActions(TlObject, Update):
     r"""The list of suggested to the user actions has changed
 
     Parameters:
-        added_actions (:class:`List["types.SuggestedAction"]`):
+        added_actions (List[:class:`~pytdbot.types.SuggestedAction`]):
             Added suggested actions
 
-        removed_actions (:class:`List["types.SuggestedAction"]`):
+        removed_actions (List[:class:`~pytdbot.types.SuggestedAction`]):
             Removed suggested actions
 
     """
@@ -94700,7 +94700,7 @@ class UpdateContactCloseBirthdays(TlObject, Update):
     r"""The list of contacts that had birthdays recently or will have birthday soon has changed
 
     Parameters:
-        close_birthday_users (:class:`List["types.CloseBirthdayUser"]`):
+        close_birthday_users (List[:class:`~pytdbot.types.CloseBirthdayUser`]):
             List of contact users with close birthday
 
     """
@@ -94739,10 +94739,10 @@ class UpdateAutosaveSettings(TlObject, Update):
     r"""Autosave settings for some type of chats were updated
 
     Parameters:
-        scope (:class:`"types.AutosaveSettingsScope"`):
+        scope (:class:`~pytdbot.types.AutosaveSettingsScope`):
             Type of chats for which autosave settings were updated
 
-        settings (:class:`"types.ScopeAutosaveSettings"`):
+        settings (:class:`~pytdbot.types.ScopeAutosaveSettings`):
             The new autosave settings; may be null if the settings are reset to default
 
     """
@@ -94791,7 +94791,7 @@ class UpdateBusinessConnection(TlObject, Update):
     r"""A business connection has changed; for bots only
 
     Parameters:
-        connection (:class:`"types.BusinessConnection"`):
+        connection (:class:`~pytdbot.types.BusinessConnection`):
             New data about the connection
 
     """
@@ -94830,7 +94830,7 @@ class UpdateNewBusinessMessage(TlObject, Update):
         connection_id (:class:`str`):
             Unique identifier of the business connection
 
-        message (:class:`"types.BusinessMessage"`):
+        message (:class:`~pytdbot.types.BusinessMessage`):
             The new message
 
     """
@@ -94878,7 +94878,7 @@ class UpdateBusinessMessageEdited(TlObject, Update):
         connection_id (:class:`str`):
             Unique identifier of the business connection
 
-        message (:class:`"types.BusinessMessage"`):
+        message (:class:`~pytdbot.types.BusinessMessage`):
             The edited message
 
     """
@@ -94929,7 +94929,7 @@ class UpdateBusinessMessagesDeleted(TlObject, Update):
         chat_id (:class:`int`):
             Identifier of a chat in the business account in which messages were deleted
 
-        message_ids (:class:`List[int]`):
+        message_ids (List[:class:`int`]):
             Unique message identifiers of the deleted messages
 
     """
@@ -94984,10 +94984,10 @@ class UpdateNewInlineQuery(TlObject, Update):
         sender_user_id (:class:`int`):
             Identifier of the user who sent the query
 
-        user_location (:class:`"types.Location"`):
+        user_location (:class:`~pytdbot.types.Location`):
             User location; may be null
 
-        chat_type (:class:`"types.ChatType"`):
+        chat_type (:class:`~pytdbot.types.ChatType`):
             The type of the chat from which the query originated; may be null if unknown
 
         query (:class:`str`):
@@ -95069,7 +95069,7 @@ class UpdateNewChosenInlineResult(TlObject, Update):
         sender_user_id (:class:`int`):
             Identifier of the user who sent the query
 
-        user_location (:class:`"types.Location"`):
+        user_location (:class:`~pytdbot.types.Location`):
             User location; may be null
 
         query (:class:`str`):
@@ -95155,7 +95155,7 @@ class UpdateNewCallbackQuery(TlObject, Update, CallbackQueryBoundMethods):
         chat_instance (:class:`int`):
             Identifier that uniquely corresponds to the chat to which the message was sent
 
-        payload (:class:`"types.CallbackQueryPayload"`):
+        payload (:class:`~pytdbot.types.CallbackQueryPayload`):
             Query payload
 
     """
@@ -95239,7 +95239,7 @@ class UpdateNewInlineCallbackQuery(TlObject, Update):
         chat_instance (:class:`int`):
             An identifier uniquely corresponding to the chat a message was sent to
 
-        payload (:class:`"types.CallbackQueryPayload"`):
+        payload (:class:`~pytdbot.types.CallbackQueryPayload`):
             Query payload
 
     """
@@ -95315,13 +95315,13 @@ class UpdateNewBusinessCallbackQuery(TlObject, Update):
         connection_id (:class:`str`):
             Unique identifier of the business connection
 
-        message (:class:`"types.BusinessMessage"`):
+        message (:class:`~pytdbot.types.BusinessMessage`):
             The message from the business account from which the query originated
 
         chat_instance (:class:`int`):
             An identifier uniquely corresponding to the chat a message was sent to
 
-        payload (:class:`"types.CallbackQueryPayload"`):
+        payload (:class:`~pytdbot.types.CallbackQueryPayload`):
             Query payload
 
     """
@@ -95402,7 +95402,7 @@ class UpdateNewShippingQuery(TlObject, Update):
         invoice_payload (:class:`str`):
             Invoice payload
 
-        shipping_address (:class:`"types.Address"`):
+        shipping_address (:class:`~pytdbot.types.Address`):
             User shipping address
 
     """
@@ -95477,7 +95477,7 @@ class UpdateNewPreCheckoutQuery(TlObject, Update):
         shipping_option_id (:class:`str`):
             Identifier of a shipping option chosen by the user; may be empty if not applicable
 
-        order_info (:class:`"types.OrderInfo"`):
+        order_info (:class:`~pytdbot.types.OrderInfo`):
             Information about the order; may be null
 
     """
@@ -95638,7 +95638,7 @@ class UpdatePoll(TlObject, Update):
     r"""A poll was updated; for bots only
 
     Parameters:
-        poll (:class:`"types.Poll"`):
+        poll (:class:`~pytdbot.types.Poll`):
             New data about the poll
 
     """
@@ -95677,10 +95677,10 @@ class UpdatePollAnswer(TlObject, Update):
         poll_id (:class:`int`):
             Unique poll identifier
 
-        voter_id (:class:`"types.MessageSender"`):
+        voter_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the message sender that changed the answer to the poll
 
-        option_ids (:class:`List[int]`):
+        option_ids (List[:class:`int`]):
             0\-based identifiers of answer options, chosen by the user
 
     """
@@ -95741,7 +95741,7 @@ class UpdateChatMember(TlObject, Update):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the user rights were changed
 
-        invite_link (:class:`"types.ChatInviteLink"`):
+        invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             If user has joined the chat using an invite link, the invite link; may be null
 
         via_join_request (:class:`bool`):
@@ -95750,10 +95750,10 @@ class UpdateChatMember(TlObject, Update):
         via_chat_folder_invite_link (:class:`bool`):
             True, if the user has joined the chat using an invite link for a chat folder
 
-        old_chat_member (:class:`"types.ChatMember"`):
+        old_chat_member (:class:`~pytdbot.types.ChatMember`):
             Previous chat member
 
-        new_chat_member (:class:`"types.ChatMember"`):
+        new_chat_member (:class:`~pytdbot.types.ChatMember`):
             New chat member
 
     """
@@ -95835,13 +95835,13 @@ class UpdateNewChatJoinRequest(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        request (:class:`"types.ChatJoinRequest"`):
+        request (:class:`~pytdbot.types.ChatJoinRequest`):
             Join request
 
         user_chat_id (:class:`int`):
             Chat identifier of the private chat with the user
 
-        invite_link (:class:`"types.ChatInviteLink"`):
+        invite_link (:class:`~pytdbot.types.ChatInviteLink`):
             The invite link, which was used to send join request; may be null
 
     """
@@ -95901,7 +95901,7 @@ class UpdateChatBoost(TlObject, Update):
         chat_id (:class:`int`):
             Chat identifier
 
-        boost (:class:`"types.ChatBoost"`):
+        boost (:class:`~pytdbot.types.ChatBoost`):
             New information about the boost
 
     """
@@ -95946,16 +95946,16 @@ class UpdateMessageReaction(TlObject, Update):
         message_id (:class:`int`):
             Message identifier
 
-        actor_id (:class:`"types.MessageSender"`):
+        actor_id (:class:`~pytdbot.types.MessageSender`):
             Identifier of the user or chat that changed reactions
 
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the reactions were changed
 
-        old_reaction_types (:class:`List["types.ReactionType"]`):
+        old_reaction_types (List[:class:`~pytdbot.types.ReactionType`]):
             Old list of chosen reactions
 
-        new_reaction_types (:class:`List["types.ReactionType"]`):
+        new_reaction_types (List[:class:`~pytdbot.types.ReactionType`]):
             New list of chosen reactions
 
     """
@@ -96031,7 +96031,7 @@ class UpdateMessageReactions(TlObject, Update):
         date (:class:`int`):
             Point in time \(Unix timestamp\) when the reactions were changed
 
-        reactions (:class:`List["types.MessageReaction"]`):
+        reactions (List[:class:`~pytdbot.types.MessageReaction`]):
             The list of reactions added to the message
 
     """
@@ -96134,7 +96134,7 @@ class Updates(TlObject):
     r"""Contains a list of updates
 
     Parameters:
-        updates (:class:`List["types.Update"]`):
+        updates (List[:class:`~pytdbot.types.Update`]):
             List of updates
 
     """

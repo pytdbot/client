@@ -38,41 +38,54 @@ def to_camel_case(input_str: str, delimiter: str = ".", is_class: bool = True) -
     return camel_case_str
 
 
-def getArgTypePython(type_name: str, is_function: bool = False):
-    if type_name == "double":
-        return "float"
-    elif type_name in {"string", "secureString"}:
-        return "str"
-    elif type_name in {"int32", "int53", "int64", "int256"}:
-        return "int"
-    elif type_name in {"bytes", "secureBytes"}:
-        return "bytes"
-    elif type_name == "Bool":
-        return "bool"
-    elif type_name in {"Object", "Function"}:
-        return "dict"
-    elif type_name == "#":
-        return "int"
-    elif "?" in type_name:
-        return getArgTypePython(type_name.split("?")[-1], is_function)
-    elif type_name.startswith("("):
-        type_name = type_name.removeprefix("(").removesuffix(")")
-        a, b = type_name.split(" ")
-        if a == "vector":
-            return f"List[{getArgTypePython(b, is_function)}]"
-        else:
-            raise Exception(f"Unknown data type {a}/{b}")
-    elif type_name.startswith("vector<"):
-        inner_type_start = type_name.find("<") + 1
-        inner_type_end = type_name.rfind(">")
-        inner_type = type_name[inner_type_start:inner_type_end]
-        return f"List[{getArgTypePython(inner_type, is_function)}]"
-    else:
-        return (
-            to_camel_case(type_name, is_class=True)
-            if not is_function
-            else '"types.' + to_camel_case(type_name, is_class=True) + '"'
-        )
+arg_types = {
+    "double": "float",
+    "string": "str",
+    "secureString": "str",
+    "int32": "int",
+    "int53": "int",
+    "int64": "int",
+    "int256": "int",
+    "bytes": "bytes",
+    "secureBytes": "bytes",
+    "Bool": "bool",
+    "Object": "dict",
+    "Function": "dict",
+    "#": "int",
+}
+
+
+def getArgTypePython(
+    type_name: str, is_function: bool = False, is_docstring: bool = False
+):
+    if type_name in arg_types:
+        if is_docstring:
+            return f":class:`{arg_types[type_name]}`"
+
+        return arg_types[type_name]
+
+    if "?" in type_name:
+        return getArgTypePython(type_name.split("?")[-1], is_function, is_docstring)
+
+    if type_name.startswith("("):
+        type_name = type_name.strip("()")
+        kind, inner = type_name.split(" ", 1)
+        if kind == "vector":
+            return f"List[{getArgTypePython(inner, is_function, is_docstring)}]"
+        raise ValueError(f"Unknown data type: {kind}/{inner}")
+
+    if type_name.startswith("vector<") and type_name.endswith(">"):
+        inner = type_name[7:-1]
+        return f"List[{getArgTypePython(inner, is_function, is_docstring)}]"
+
+    class_name = to_camel_case(type_name, is_class=True)
+
+    if is_function:
+        if is_docstring:
+            return f":class:`~pytdbot.types.{class_name}`"
+        return f'"pytdbot.types.{class_name}"'
+
+    return class_name
 
 
 def generate_arg_value(arg_type, arg_name):
@@ -204,7 +217,7 @@ def generate_function_docstring_args(function_data):
     args_list = []
     for arg_name, arg_data in function_data["args"].items():
         args_list.append(
-            f"{indent * 3}{arg_name} (:class:`{getArgTypePython(arg_data['type'], True)}`):\n{indent * 4 + escape_quotes(arg_data['description'])}"
+            f"{indent * 3}{arg_name} ({getArgTypePython(arg_data['type'], True, True)}):\n{indent * 4 + escape_quotes(arg_data['description'])}"
         )
     return f"\n{indent * 2}Parameters:\n" + "\n\n".join(args_list) + "\n"
 
@@ -303,7 +316,7 @@ def generate_types(f, types, updates, classes):
     gen(updates)
 
 
-functions_template = """async def {function_name}({function_args}) -> Union["types.Error", "types.{return_type}"]:
+functions_template = """async def {function_name}({function_args}) -> Union["pytdbot.types.Error", "pytdbot.types.{return_type}"]:
         r\"\"\"{docstring}
 {docstring_args}
         Returns:
@@ -462,7 +475,7 @@ if __name__ == "__main__":
         types_init_file.write('\n\nTDLIB_VERSION = "{}"'.format(tl_json["version"]))
 
     with open("pytdbot/methods/td_functions.py", "w") as functions_file:
-        functions_file.write("from typing import Union, List\nfrom .. import types\n\n")
+        functions_file.write("from typing import Union, List\nimport pytdbot\n\n")
 
         functions_file.write("class TDLibFunctions:\n")
         functions_file.write(
