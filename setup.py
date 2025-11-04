@@ -2,13 +2,13 @@ from re import findall
 
 from setuptools import find_packages, setup
 
-with open("pytdbot/__init__.py", "r") as f:
+with open("pytdbot/__init__.py", "r", encoding="utf-8") as f:
     version = findall(r"__version__ = \"(.+)\"", f.read())[0]
 
-with open("README.md", "r") as f:
+with open("README.md", "r", encoding="utf-8") as f:
     readme = f.read()
 
-with open("requirements.txt", "r") as f:
+with open("requirements.txt", "r", encoding="utf-8") as f:
     requirements = [x.strip() for x in f.readlines()]
 
 

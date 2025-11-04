@@ -398,10 +398,10 @@ def generate_updates(f, updates):
 
 
 if __name__ == "__main__":
-    with open("td_api.json", "r") as f:
+    with open("td_api.json", "r", encoding="utf-8") as f:
         tl_json = json.loads(f.read())
 
-    with open("pytdbot/types/td_types.py", "w") as types_file:
+    with open("pytdbot/types/td_types.py", "w", encoding="utf-8") as types_file:
         types_file.write("from typing import Union, Literal, List\n")
         types_file.write("from base64 import b64decode\n")
         types_file.write(
@@ -456,7 +456,7 @@ if __name__ == "__main__":
             types_file, tl_json["types"], tl_json["updates"], tl_json["classes"]
         )
 
-    with open("pytdbot/types/__init__.py", "w") as types_init_file:
+    with open("pytdbot/types/__init__.py", "w", encoding="utf-8") as types_init_file:
         types_names = [
             to_camel_case(name, is_class=True)
             for section in ("classes", "types", "updates")
@@ -474,7 +474,9 @@ if __name__ == "__main__":
         types_init_file.write(classes_import)
         types_init_file.write('\n\nTDLIB_VERSION = "{}"'.format(tl_json["version"]))
 
-    with open("pytdbot/methods/td_functions.py", "w") as functions_file:
+    with open(
+        "pytdbot/methods/td_functions.py", "w", encoding="utf-8"
+    ) as functions_file:
         functions_file.write("from typing import Union, List\nimport pytdbot\n\n")
 
         functions_file.write("class TDLibFunctions:\n")
@@ -484,7 +486,7 @@ if __name__ == "__main__":
 
         generate_functions(functions_file, tl_json["functions"])
 
-    with open("pytdbot/handlers/td_updates.py", "w") as updates_file:
+    with open("pytdbot/handlers/td_updates.py", "w", encoding="utf-8") as updates_file:
         updates_file.write(
             'import pytdbot\n\nfrom .handler import Handler\nfrom typing import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated TDLib updates"""\n\n'
         )

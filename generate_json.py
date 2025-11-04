@@ -95,7 +95,7 @@ def main():
                 params = {}
                 description = ""
 
-    with open("td_api.json", "w") as f:
+    with open("td_api.json", "w", encoding="utf-8") as f:
         f.write(json.dumps(data, indent=4))
         print(
             "Classes: {}\nTypes: {}\nFunctions: {}\nUpdates: {}".format(
