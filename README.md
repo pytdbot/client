@@ -58,9 +58,14 @@ Basic example:
 ```python
 
 import asyncio
+import logging
 
 from pytdbot import Client, types
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(levelname)s][p %(process)d %(threadName)s][%(created)f][%(filename)s:%(lineno)d][%(funcName)s][%(name)s]  %(message)s",
+)
 client = Client(
     token="1088394097:AAQX2DnWiw4ihwiJUhIHOGog8gGOI",  # Your bot token
     api_id=0,
