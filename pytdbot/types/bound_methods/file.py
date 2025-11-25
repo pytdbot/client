@@ -34,3 +34,19 @@ class FileBoundMethods:
                 limit=limit,
                 synchronous=synchronous,
             )
+
+    async def delete(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Deletes a file from the TDLib file cache. Shortcut for :meth:`~pytdbot.Client.deleteFile`"""
+
+        file_id = None
+        if isinstance(self, pytdbot.types.RemoteFile):
+            file_info = await self._client.getRemoteFile(self.id)
+            if not file_info:
+                return file_info
+
+            file_id = file_info.id
+        elif isinstance(self, pytdbot.types.File):
+            file_id = self.id
+
+        if file_id:
+            return await self._client.deleteFile(file_id=file_id)
