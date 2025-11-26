@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.56",
-    "commit_hash": "c66844c949aea93bea38c04093bcbed9d95e8fc4",
+    "version": "1.8.57",
+    "commit_hash": "f0d04d357c4ab2d4a7288e52dbeec3c2d9dd0a2d",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -343,6 +343,10 @@
                 "starTransactionTypeAffiliateProgramCommission",
                 "starTransactionTypePaidMessageSend",
                 "starTransactionTypePaidMessageReceive",
+                "starTransactionTypePaidGroupCallMessageSend",
+                "starTransactionTypePaidGroupCallMessageReceive",
+                "starTransactionTypePaidGroupCallReactionSend",
+                "starTransactionTypePaidGroupCallReactionReceive",
                 "starTransactionTypeSuggestedPostPaymentSend",
                 "starTransactionTypeSuggestedPostPaymentReceive",
                 "starTransactionTypePremiumPurchase",
@@ -361,6 +365,15 @@
                 "tonTransactionTypeUpgradedGiftPurchase",
                 "tonTransactionTypeUpgradedGiftSale",
                 "tonTransactionTypeUnsupported"
+            ],
+            "functions": []
+        },
+        "ActiveStoryState": {
+            "description": "Describes state of active stories posted by a chat",
+            "types": [
+                "activeStoryStateLive",
+                "activeStoryStateUnread",
+                "activeStoryStateRead"
             ],
             "functions": []
         },
@@ -841,6 +854,7 @@
                 "linkPreviewTypeGiftCollection",
                 "linkPreviewTypeGroupCall",
                 "linkPreviewTypeInvoice",
+                "linkPreviewTypeLiveStory",
                 "linkPreviewTypeMessage",
                 "linkPreviewTypePhoto",
                 "linkPreviewTypePremiumGiftCode",
@@ -1305,6 +1319,7 @@
             "types": [
                 "storyContentPhoto",
                 "storyContentVideo",
+                "storyContentLive",
                 "storyContentUnsupported"
             ],
             "functions": []
@@ -1827,10 +1842,21 @@
                 "canPostStoryResultBoostNeeded",
                 "canPostStoryResultActiveStoryLimitExceeded",
                 "canPostStoryResultWeeklyLimitExceeded",
-                "canPostStoryResultMonthlyLimitExceeded"
+                "canPostStoryResultMonthlyLimitExceeded",
+                "canPostStoryResultLiveStoryIsActive"
             ],
             "functions": [
                 "canPostStory"
+            ]
+        },
+        "StartLiveStoryResult": {
+            "description": "Represents result of starting a live story",
+            "types": [
+                "startLiveStoryResultOk",
+                "startLiveStoryResultFail"
+            ],
+            "functions": [
+                "startLiveStory"
             ]
         },
         "CanTransferOwnershipResult": {
@@ -2026,6 +2052,7 @@
                 "userPrivacySettingShowPhoneNumber",
                 "userPrivacySettingShowBio",
                 "userPrivacySettingShowBirthdate",
+                "userPrivacySettingShowProfileAudio",
                 "userPrivacySettingAllowChatInvites",
                 "userPrivacySettingAllowCalls",
                 "userPrivacySettingAllowPeerToPeerCalls",
@@ -2138,13 +2165,17 @@
                 "internalLinkTypeInvoice",
                 "internalLinkTypeLanguagePack",
                 "internalLinkTypeLanguageSettings",
+                "internalLinkTypeLiveStory",
+                "internalLinkTypeLoginEmailSettings",
                 "internalLinkTypeMainWebApp",
                 "internalLinkTypeMessage",
                 "internalLinkTypeMessageDraft",
                 "internalLinkTypeMyStars",
                 "internalLinkTypeMyToncoins",
                 "internalLinkTypePassportDataRequest",
+                "internalLinkTypePasswordSettings",
                 "internalLinkTypePhoneNumberConfirmation",
+                "internalLinkTypePhoneNumberPrivacySettings",
                 "internalLinkTypePremiumFeatures",
                 "internalLinkTypePremiumGift",
                 "internalLinkTypePremiumGiftCode",
@@ -2289,7 +2320,8 @@
                 "suggestedActionSetProfilePhoto",
                 "suggestedActionExtendPremium",
                 "suggestedActionExtendStarSubscriptions",
-                "suggestedActionCustom"
+                "suggestedActionCustom",
+                "suggestedActionSetLoginEmailAddress"
             ],
             "functions": []
         },
@@ -2485,7 +2517,11 @@
                 "updateGroupCallParticipant",
                 "updateGroupCallParticipants",
                 "updateGroupCallVerificationState",
-                "updateGroupCallNewMessage",
+                "updateNewGroupCallMessage",
+                "updateNewGroupCallPaidReaction",
+                "updateGroupCallMessageSendFailed",
+                "updateGroupCallMessagesDeleted",
+                "updateLiveStoryTopDonors",
                 "updateNewCallSignalingData",
                 "updateUserPrivacySettingRules",
                 "updateUnreadMessageCount",
@@ -2497,6 +2533,7 @@
                 "updateChatActiveStories",
                 "updateStoryListChatCount",
                 "updateStoryStealthMode",
+                "updateTrustedMiniAppBots",
                 "updateOption",
                 "updateStickerSet",
                 "updateInstalledStickerSets",
@@ -2529,6 +2566,7 @@
                 "updateStarRevenueStatus",
                 "updateTonRevenueStatus",
                 "updateSpeechRecognitionTrial",
+                "updateGroupCallMessageLevels",
                 "updateDiceEmojis",
                 "updateAnimatedEmojiMessageClicked",
                 "updateAnimationSearchParameters",
@@ -3626,10 +3664,10 @@
                     "is_optional": false,
                     "type": "formattedText"
                 },
-                "completed_by_user_id": {
-                    "description": "Identifier of the user that completed the task; 0 if the task isn't completed",
-                    "is_optional": false,
-                    "type": "int53"
+                "completed_by": {
+                    "description": "Identifier of the user or chat that completed the task; may be null if the task isn't completed yet",
+                    "is_optional": true,
+                    "type": "MessageSender"
                 },
                 "completion_date": {
                     "description": "Point in time (Unix timestamp) when the task was completed; 0 if the task isn't completed",
@@ -5973,7 +6011,7 @@
                 "revenue_star_count": {
                     "description": "The number of Telegram Stars that were earned by the affiliate program",
                     "is_optional": false,
-                    "type": "int64"
+                    "type": "int53"
                 }
             },
             "type": "ConnectedAffiliateProgram"
@@ -6205,7 +6243,12 @@
                     "type": "int53"
                 },
                 "month_count": {
-                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation; 0 if the number of months isn't integer",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "day_count": {
+                    "description": "Number of days the Telegram Premium subscription will be active after code activation",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -6357,6 +6400,11 @@
                 },
                 "upgraded_gifts": {
                     "description": "True, if upgraded gifts and regular gifts that can be upgraded for free are accepted",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "gifts_from_channels": {
+                    "description": "True, if gifts from channels are accepted subject to other restrictions",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -7935,6 +7983,70 @@
             },
             "type": "StarTransactionType"
         },
+        "starTransactionTypePaidGroupCallMessageSend": {
+            "description": "The transaction is a sending of a paid group call message; for regular users only",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that received the payment",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypePaidGroupCallMessageReceive": {
+            "description": "The transaction is a receiving of a paid group call message; for regular users and channel chats only",
+            "args": {
+                "sender_id": {
+                    "description": "Identifier of the sender of the message",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "commission_per_mille": {
+                    "description": "The number of Telegram Stars received by the Telegram for each 1000 Telegram Stars paid for message sending",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "commission_star_amount": {
+                    "description": "The amount of Telegram Stars that were received by Telegram; can be negative for refunds",
+                    "is_optional": false,
+                    "type": "starAmount"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypePaidGroupCallReactionSend": {
+            "description": "The transaction is a sending of a paid group reaction; for regular users only",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that received the payment",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypePaidGroupCallReactionReceive": {
+            "description": "The transaction is a receiving of a paid group call reaction; for regular users and channel chats only",
+            "args": {
+                "sender_id": {
+                    "description": "Identifier of the sender of the reaction",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "commission_per_mille": {
+                    "description": "The number of Telegram Stars received by the Telegram for each 1000 Telegram Stars paid for reaction sending",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "commission_star_amount": {
+                    "description": "The amount of Telegram Stars that were received by Telegram; can be negative for refunds",
+                    "is_optional": false,
+                    "type": "starAmount"
+                }
+            },
+            "type": "StarTransactionType"
+        },
         "starTransactionTypeSuggestedPostPaymentSend": {
             "description": "The transaction is a payment for a suggested post; for regular users only",
             "args": {
@@ -8187,6 +8299,27 @@
                 }
             },
             "type": "TonTransactions"
+        },
+        "activeStoryStateLive": {
+            "description": "The chat has an active live story",
+            "args": {
+                "story_id": {
+                    "description": "Identifier of the active live story",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ActiveStoryState"
+        },
+        "activeStoryStateUnread": {
+            "description": "The chat has some unread active stories",
+            "args": {},
+            "type": "ActiveStoryState"
+        },
+        "activeStoryStateRead": {
+            "description": "The chat has active stories, all of which were read",
+            "args": {},
+            "type": "ActiveStoryState"
         },
         "giveawayParticipantStatusEligible": {
             "description": "The user is eligible for the giveaway",
@@ -8549,9 +8682,14 @@
                     "type": "vector<string>"
                 },
                 "editable_username": {
-                    "description": "Active or disabled username, which may be changed with setUsername or setSupergroupUsername. Information about other active usernames can be received using getCollectibleItemInfo",
+                    "description": "Active or disabled username, which may be changed with setUsername or setSupergroupUsername",
                     "is_optional": false,
                     "type": "string"
+                },
+                "collectible_usernames": {
+                    "description": "Collectible usernames that were purchased at https://fragment.com and can be passed to getCollectibleItemInfo for more details",
+                    "is_optional": false,
+                    "type": "vector<string>"
                 }
             },
             "type": "Usernames"
@@ -8659,15 +8797,10 @@
                     "is_optional": true,
                     "type": "restrictionInfo"
                 },
-                "has_active_stories": {
-                    "description": "True, if the user has non-expired stories available to the current user",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "has_unread_active_stories": {
-                    "description": "True, if the user has unread non-expired stories available to the current user",
-                    "is_optional": false,
-                    "type": "Bool"
+                "active_story_state": {
+                    "description": "State of active stories of the user; may be null if the user has no active stories",
+                    "is_optional": true,
+                    "type": "ActiveStoryState"
                 },
                 "restricts_new_chats": {
                     "description": "True, if the user may restrict new chats with non-contacts. Use canSendMessageToUser to check whether the current user can message the user or try to create a chat with them",
@@ -9753,7 +9886,7 @@
                     "type": "Bool"
                 },
                 "join_by_request": {
-                    "description": "True, if all users directly joining the supergroup need to be approved by supergroup administrators. Can be true only for non-broadcast supergroups with username, location, or a linked chat",
+                    "description": "True, if all users directly joining the supergroup need to be approved by supergroup administrators. May be true only for non-broadcast supergroups with username, location, or a linked chat",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -9812,15 +9945,10 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "has_active_stories": {
-                    "description": "True, if the supergroup or channel has non-expired stories available to the current user",
-                    "is_optional": false,
-                    "type": "Bool"
-                },
-                "has_unread_active_stories": {
-                    "description": "True, if the supergroup or channel has unread non-expired stories available to the current user",
-                    "is_optional": false,
-                    "type": "Bool"
+                "active_story_state": {
+                    "description": "State of active stories of the supergroup or channel; may be null if there are no active stories",
+                    "is_optional": true,
+                    "type": "ActiveStoryState"
                 }
             },
             "type": "Supergroup"
@@ -10103,7 +10231,7 @@
                 "star_count": {
                     "description": "Number of Telegram Stars that must be paid for each non-free query",
                     "is_optional": false,
-                    "type": "int64"
+                    "type": "int53"
                 },
                 "is_current_query_free": {
                     "description": "True, if the search for the specified query isn't charged",
@@ -10390,7 +10518,7 @@
                 "star_count": {
                     "description": "Number of Telegram Stars added",
                     "is_optional": false,
-                    "type": "int32"
+                    "type": "int53"
                 },
                 "is_top": {
                     "description": "True, if the reactor is one of the most active reactors; may be false if the reactor is the current user",
@@ -10409,6 +10537,22 @@
                 }
             },
             "type": "PaidReactor"
+        },
+        "liveStoryDonors": {
+            "description": "Contains a list of users and chats that spend most money on paid messages and reactions in a live story",
+            "args": {
+                "total_star_count": {
+                    "description": "Total amount of spend Telegram Stars",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "top_donors": {
+                    "description": "List of top donors in the live story",
+                    "is_optional": false,
+                    "type": "vector<paidReactor>"
+                }
+            },
+            "type": "LiveStoryDonors"
         },
         "messageForwardInfo": {
             "description": "Contains information about a forwarded message",
@@ -11033,7 +11177,7 @@
                     "type": "MessageReplyTo"
                 },
                 "topic_id": {
-                    "description": "Identifier of the topic within the chat to which the message belongs; may be null if none",
+                    "description": "Identifier of the topic within the chat to which the message belongs; may be null if none; may change when the chat is converted to a forum or back",
                     "is_optional": true,
                     "type": "MessageTopic"
                 },
@@ -15064,6 +15208,22 @@
             "args": {},
             "type": "LinkPreviewType"
         },
+        "linkPreviewTypeLiveStory": {
+            "description": "The link is a link to a live story group call",
+            "args": {
+                "story_poster_chat_id": {
+                    "description": "The identifier of the chat that posted the story",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "story_id": {
+                    "description": "Story identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
         "linkPreviewTypeMessage": {
             "description": "The link is a link to a text or a poll Telegram message",
             "args": {},
@@ -18171,7 +18331,12 @@
                     "type": "int64"
                 },
                 "month_count": {
-                    "description": "Number of months the Telegram Premium subscription will be active",
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation; 0 if the number of months isn't integer",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "day_count": {
+                    "description": "Number of days the Telegram Premium subscription will be active",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -18227,7 +18392,12 @@
                     "type": "int64"
                 },
                 "month_count": {
-                    "description": "Number of months the Telegram Premium subscription will be active after code activation",
+                    "description": "Number of months the Telegram Premium subscription will be active after code activation; 0 if the number of months isn't integer",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "day_count": {
+                    "description": "Number of days the Telegram Premium subscription will be active after code activation",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -19205,6 +19375,11 @@
             "args": {
                 "send_date": {
                     "description": "Point in time (Unix timestamp) when the message will be sent. The date must be within 367 days in the future",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "repeat_period": {
+                    "description": "Period after which the message will be sent again; in seconds; 0 if never; for Telegram Premium users only; may be non-zero only in sendMessage and forwardMessages with one message requests; must be one of 0, 86400, 7 * 86400, 14 * 86400, 30 * 86400, 91 * 86400, 182 * 86400, 365 * 86400, or additionally 60, or 300 in the Test DC",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -21156,6 +21331,22 @@
             },
             "type": "StoryContent"
         },
+        "storyContentLive": {
+            "description": "A live story",
+            "args": {
+                "group_call_id": {
+                    "description": "Identifier of the corresponding group call. The group call can be received through the method getGroupCall",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "is_rtmp_stream": {
+                    "description": "True, if the call is an RTMP stream instead of an ordinary group call",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "StoryContent"
+        },
         "storyContentUnsupported": {
             "description": "A story content that is not supported in the current TDLib version",
             "args": {},
@@ -21336,7 +21527,7 @@
                     "type": "Bool"
                 },
                 "can_be_added_to_album": {
-                    "description": "True, if the story can be added to an album",
+                    "description": "True, if the story can be added to an album using createStoryAlbum and addStoryAlbumStories",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -21357,6 +21548,11 @@
                 },
                 "can_be_replied": {
                     "description": "True, if the story can be replied in the chat with the user that posted the story",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_set_privacy_settings": {
+                    "description": "True, if the story privacy settings can be changed",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -21533,6 +21729,11 @@
                 },
                 "is_for_close_friends": {
                     "description": "True, if the story is available only to close friends",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_live": {
+                    "description": "True, if the story is a live story",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -21800,7 +22001,7 @@
                     "type": "int32"
                 },
                 "content": {
-                    "description": "Content of the preview",
+                    "description": "Content of the preview; may only be of the types storyContentPhoto, storyContentVideo, or storyContentUnsupported",
                     "is_optional": false,
                     "type": "StoryContent"
                 }
@@ -22538,8 +22739,8 @@
             "args": {},
             "type": "GroupCallVideoQuality"
         },
-        "videoChatStream": {
-            "description": "Describes an available stream in a video chat",
+        "groupCallStream": {
+            "description": "Describes an available stream in a video chat or a live story",
             "args": {
                 "channel_id": {
                     "description": "Identifier of an audio/video channel",
@@ -22557,18 +22758,18 @@
                     "type": "int53"
                 }
             },
-            "type": "VideoChatStream"
+            "type": "GroupCallStream"
         },
-        "videoChatStreams": {
-            "description": "Represents a list of video chat streams",
+        "groupCallStreams": {
+            "description": "Represents a list of group call streams",
             "args": {
                 "streams": {
-                    "description": "A list of video chat streams",
+                    "description": "A list of group call streams",
                     "is_optional": false,
-                    "type": "vector<videoChatStream>"
+                    "type": "vector<groupCallStream>"
                 }
             },
-            "type": "VideoChatStreams"
+            "type": "GroupCallStreams"
         },
         "rtmpUrl": {
             "description": "Represents an RTMP URL",
@@ -22616,9 +22817,14 @@
                     "type": "string"
                 },
                 "invite_link": {
-                    "description": "Invite link for the group call; for group calls that aren't bound to a chat. For video chats call getVideoChatInviteLink to get the link",
+                    "description": "Invite link for the group call; for group calls that aren't bound to a chat. For video chats call getVideoChatInviteLink to get the link. For live stories in chats with username call getInternalLink with internalLinkTypeLiveStory",
                     "is_optional": false,
                     "type": "string"
+                },
+                "paid_message_star_count": {
+                    "description": "The minimum number of Telegram Stars that must be paid by general participant for each sent message to the call; for live stories only",
+                    "is_optional": false,
+                    "type": "int53"
                 },
                 "scheduled_start_date": {
                     "description": "Point in time (Unix timestamp) when the group call is expected to be started by an administrator; 0 if it is already active or was ended; for video chats only",
@@ -22640,8 +22846,13 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "is_live_story": {
+                    "description": "True, if the call is a live story of a chat",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_rtmp_stream": {
-                    "description": "True, if the call is an RTMP stream instead of an ordinary video chat; for video chats only",
+                    "description": "True, if the call is an RTMP stream instead of an ordinary video chat; for video chats and live stories only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -22661,7 +22872,7 @@
                     "type": "Bool"
                 },
                 "can_be_managed": {
-                    "description": "True, if the current user can manage the group call; for video chats only",
+                    "description": "True, if the current user can manage the group call; for video chats and live stories only",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -22679,6 +22890,11 @@
                     "description": "True, if all group call participants are loaded",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "message_sender_id": {
+                    "description": "Message sender chosen to send messages to the group call; for live stories only; may be null if the call isn't a live story",
+                    "is_optional": true,
+                    "type": "MessageSender"
                 },
                 "recent_speakers": {
                     "description": "At most 3 recently speaking users in the group call",
@@ -22711,12 +22927,22 @@
                     "type": "Bool"
                 },
                 "can_send_messages": {
-                    "description": "True, if users can send messages to the group call",
+                    "description": "True, if the current user can send messages to the group call",
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "can_toggle_can_send_messages": {
-                    "description": "True, if the current user can enable or disable sending messages in the group call",
+                "are_messages_allowed": {
+                    "description": "True, if sending of messages is allowed in the group call",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_toggle_are_messages_allowed": {
+                    "description": "True, if the current user can enable or disable sending of messages in the group call",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_delete_messages": {
+                    "description": "True, if the user can delete messages in the group call",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -22902,6 +23128,88 @@
                 }
             },
             "type": "GroupCallInfo"
+        },
+        "groupCallMessage": {
+            "description": "Represents a message sent in a group call",
+            "args": {
+                "message_id": {
+                    "description": "Unique message identifier within the group call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "sender_id": {
+                    "description": "Identifier of the sender of the message",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the message was sent",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "text": {
+                    "description": "Text of the message. If empty, then the message is a paid reaction in a live story",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "paid_message_star_count": {
+                    "description": "The number of Telegram Stars that were paid to send the message; for live stories only",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "is_from_owner": {
+                    "description": "True, if the message is sent by the owner of the call and must be treated as a message of the maximum level; for live stories only",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "can_be_deleted": {
+                    "description": "True, if the message can be deleted by the current user; for live stories only",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "GroupCallMessage"
+        },
+        "groupCallMessageLevel": {
+            "description": "Represents a level of features for a message sent in a live story group call",
+            "args": {
+                "min_star_count": {
+                    "description": "The minimum number of Telegram Stars required to get features of the level",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "pin_duration": {
+                    "description": "The amount of time the message of this level will be pinned, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "max_text_length": {
+                    "description": "The maximum allowed length of the message text",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "max_custom_emoji_count": {
+                    "description": "The maximum allowed number of custom emoji in the message text",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "first_color": {
+                    "description": "The first color used to show the message text in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "second_color": {
+                    "description": "The second color used to show the message text in the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "background_color": {
+                    "description": "Background color for the message the RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "GroupCallMessageLevel"
         },
         "inviteGroupCallParticipantResultUserPrivacyRestricted": {
             "description": "The user can't be invited due to their privacy settings",
@@ -27132,6 +27440,39 @@
             },
             "type": "CanPostStoryResult"
         },
+        "canPostStoryResultLiveStoryIsActive": {
+            "description": "The user or the chat has an active live story. The live story must be deleted first",
+            "args": {
+                "story_id": {
+                    "description": "Identifier of the active live story",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "CanPostStoryResult"
+        },
+        "startLiveStoryResultOk": {
+            "description": "The live story was successfully posted",
+            "args": {
+                "story": {
+                    "description": "The live story",
+                    "is_optional": false,
+                    "type": "story"
+                }
+            },
+            "type": "StartLiveStoryResult"
+        },
+        "startLiveStoryResultFail": {
+            "description": "The live story failed to post with an error to be handled",
+            "args": {
+                "error_type": {
+                    "description": "Type of the error; other error types may be returned as regular errors",
+                    "is_optional": false,
+                    "type": "CanPostStoryResult"
+                }
+            },
+            "type": "StartLiveStoryResult"
+        },
         "canTransferOwnershipResultOk": {
             "description": "The session can be used",
             "args": {},
@@ -28353,6 +28694,11 @@
             "args": {},
             "type": "UserPrivacySetting"
         },
+        "userPrivacySettingShowProfileAudio": {
+            "description": "A privacy setting for managing whether the user's profile audio files are visible",
+            "args": {},
+            "type": "UserPrivacySetting"
+        },
         "userPrivacySettingAllowChatInvites": {
             "description": "A privacy setting for managing whether the user can be invited to chats",
             "args": {},
@@ -29176,6 +29522,22 @@
             "args": {},
             "type": "InternalLinkType"
         },
+        "internalLinkTypeLiveStory": {
+            "description": "The link is a link to a live story. Call searchPublicChat with the given chat username, then getChatActiveStories to get active stories in the chat, then find a live story among active stories of the chat, and then joinLiveStory to join the live story",
+            "args": {
+                "story_poster_username": {
+                    "description": "Username of the poster of the story",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeLoginEmailSettings": {
+            "description": "The link is a link to the login email set up section of the application settings, forcing set up of the login email",
+            "args": {},
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeMainWebApp": {
             "description": "The link is a link to the main Web App of a bot. Call searchPublicChat with the given bot username, check that the user is a bot and has the main Web App. If the bot can be added to attachment menu, then use getAttachmentMenuBot to receive information about the bot, then if the bot isn't added to side menu, show a disclaimer about Mini Apps being third-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu, then if the user accepts the terms and confirms adding, use toggleBotIsAddedToAttachmentMenu to add the bot. Then, use getMainWebApp with the given start parameter and mode and open the returned URL as a Web App",
             "args": {
@@ -29265,6 +29627,11 @@
             },
             "type": "InternalLinkType"
         },
+        "internalLinkTypePasswordSettings": {
+            "description": "The link is a link to the password section of the application settings",
+            "args": {},
+            "type": "InternalLinkType"
+        },
         "internalLinkTypePhoneNumberConfirmation": {
             "description": "The link can be used to confirm ownership of a phone number to prevent account deletion. Call sendPhoneNumberCode with the given phone number and with phoneNumberCodeTypeConfirmOwnership with the given hash to process the link. If succeeded, call checkPhoneNumberCode to check entered by the user code, or resendPhoneNumberCode to resend it",
             "args": {
@@ -29279,6 +29646,11 @@
                     "type": "string"
                 }
             },
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypePhoneNumberPrivacySettings": {
+            "description": "The link is a link to the phone number privacy settings section of the application settings",
+            "args": {},
             "type": "InternalLinkType"
         },
         "internalLinkTypePremiumFeatures": {
@@ -30413,6 +30785,17 @@
                     "description": "The link to open when the suggestion is clicked",
                     "is_optional": false,
                     "type": "string"
+                }
+            },
+            "type": "SuggestedAction"
+        },
+        "suggestedActionSetLoginEmailAddress": {
+            "description": "Suggests the user to add login email address. Call isLoginEmailAddressRequired, and then setLoginEmailAddress or checkLoginEmailAddressCode to change the login email address",
+            "args": {
+                "can_be_hidden": {
+                    "description": "True, if the suggested action can be hidden using hideSuggestedAction. Otherwise, the user must not be able to use the app without setting up the email address",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "SuggestedAction"
@@ -32676,6 +33059,11 @@
                     "description": "Notification settings for the topic",
                     "is_optional": false,
                     "type": "chatNotificationSettings"
+                },
+                "draft_message": {
+                    "description": "A draft of a message in the topic; may be null if none",
+                    "is_optional": true,
+                    "type": "draftMessage"
                 }
             },
             "type": "Update"
@@ -33242,8 +33630,24 @@
             },
             "type": "Update"
         },
-        "updateGroupCallNewMessage": {
-            "description": "A new message was received in a group call. It must be shown for at most getOption(\"group_call_message_show_time_max\") seconds after receiving",
+        "updateNewGroupCallMessage": {
+            "description": "A new message was received in a group call",
+            "args": {
+                "group_call_id": {
+                    "description": "Identifier of the group call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "message": {
+                    "description": "The message",
+                    "is_optional": false,
+                    "type": "groupCallMessage"
+                }
+            },
+            "type": "Update"
+        },
+        "updateNewGroupCallPaidReaction": {
+            "description": "A new paid reaction was received in a live story group call",
             "args": {
                 "group_call_id": {
                     "description": "Identifier of the group call",
@@ -33251,14 +33655,67 @@
                     "type": "int32"
                 },
                 "sender_id": {
-                    "description": "Identifier of the sender of the message",
+                    "description": "Identifier of the sender of the reaction",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
-                "text": {
-                    "description": "Text of the message",
+                "star_count": {
+                    "description": "The number of Telegram Stars that were paid to send the reaction",
                     "is_optional": false,
-                    "type": "formattedText"
+                    "type": "int53"
+                }
+            },
+            "type": "Update"
+        },
+        "updateGroupCallMessageSendFailed": {
+            "description": "A group call message failed to send",
+            "args": {
+                "group_call_id": {
+                    "description": "Identifier of the group call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "message_id": {
+                    "description": "Message identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "error": {
+                    "description": "The cause of the message sending failure",
+                    "is_optional": false,
+                    "type": "error"
+                }
+            },
+            "type": "Update"
+        },
+        "updateGroupCallMessagesDeleted": {
+            "description": "Some group call messages were deleted",
+            "args": {
+                "group_call_id": {
+                    "description": "Identifier of the group call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "message_ids": {
+                    "description": "Identifiers of the deleted messages",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "Update"
+        },
+        "updateLiveStoryTopDonors": {
+            "description": "The list of top donors in live story group call has changed",
+            "args": {
+                "group_call_id": {
+                    "description": "Identifier of the group call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "donors": {
+                    "description": "New list of live story donors",
+                    "is_optional": false,
+                    "type": "liveStoryDonors"
                 }
             },
             "type": "Update"
@@ -33455,6 +33912,17 @@
                     "description": "Point in time (Unix timestamp) when stealth mode can be enabled again; 0 if there is no active cooldown",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "Update"
+        },
+        "updateTrustedMiniAppBots": {
+            "description": "Lists of bots which Mini Apps must be allowed to read text from clipboard and must be opened without a warning",
+            "args": {
+                "bot_user_ids": {
+                    "description": "List of user identifiers of the bots; the corresponding users may not be sent using updateUser updates and may not be accessible",
+                    "is_optional": false,
+                    "type": "vector<int53>"
                 }
             },
             "type": "Update"
@@ -33907,6 +34375,17 @@
                     "description": "Point in time (Unix timestamp) when the weekly number of tries will reset; 0 if unknown",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "Update"
+        },
+        "updateGroupCallMessageLevels": {
+            "description": "The levels of live story group call messages have changed",
+            "args": {
+                "levels": {
+                    "description": "New description of the levels in decreasing order of groupCallMessageLevel.min_star_count",
+                    "is_optional": false,
+                    "type": "vector<groupCallMessageLevel>"
                 }
             },
             "type": "Update"
@@ -34936,8 +35415,13 @@
             },
             "type": "PasswordState"
         },
+        "isLoginEmailAddressRequired": {
+            "description": "Checks whether the current user is required to set login email address",
+            "args": {},
+            "type": "Ok"
+        },
         "setLoginEmailAddress": {
-            "description": "Changes the login email address of the user. The email address can be changed only if the current user already has login email and passwordState.login_email_address_pattern is non-empty. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode. To use Apple ID/Google ID instead of an email address, call checkLoginEmailAddressCode directly",
+            "description": "Changes the login email address of the user. The email address can be changed only if the current user already has login email and passwordState.login_email_address_pattern is non-empty, or the user received suggestedActionSetLoginEmailAddress and isLoginEmailAddressRequired succeeds. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode. To use Apple ID/Google ID instead of an email address, call checkLoginEmailAddressCode directly",
             "args": {
                 "new_login_email_address": {
                     "description": "New login email address",
@@ -41546,7 +42030,7 @@
                     "type": "StoryPrivacySettings"
                 },
                 "album_ids": {
-                    "description": "Identifiers of story albums to which the story will be added upon posting. An album can have up to getOption(\"story_album_story_count_max\")",
+                    "description": "Identifiers of story albums to which the story will be added upon posting. An album can have up to getOption(\"story_album_size_max\") stories",
                     "is_optional": false,
                     "type": "vector<int32>"
                 },
@@ -41572,6 +42056,42 @@
                 }
             },
             "type": "Story"
+        },
+        "startLiveStory": {
+            "description": "Starts a new live story on behalf of a chat; requires can_post_stories administrator right for channel chats",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat that will start the live story. Pass Saved Messages chat identifier when starting a live story on behalf of the current user, or a channel chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "privacy_settings": {
+                    "description": "The privacy settings for the story; ignored for stories posted on behalf of channel chats",
+                    "is_optional": false,
+                    "type": "StoryPrivacySettings"
+                },
+                "protect_content": {
+                    "description": "Pass true if the content of the story must be protected from screenshotting",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_rtmp_stream": {
+                    "description": "Pass true to create an RTMP stream instead of an ordinary group call",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "enable_messages": {
+                    "description": "Pass true to allow viewers of the story to send messages",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "paid_message_star_count": {
+                    "description": "The minimum number of Telegram Stars that must be paid by viewers for each sent message to the call; 0-getOption(\"paid_group_call_message_star_count_max\")",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "StartLiveStoryResult"
         },
         "editStory": {
             "description": "Changes content and caption of a story. Can be called only if story.can_be_edited == true",
@@ -41626,7 +42146,7 @@
             "type": "Ok"
         },
         "setStoryPrivacySettings": {
-            "description": "Changes privacy settings of a story. The method can be called only for stories posted on behalf of the current user and if story.can_be_edited == true",
+            "description": "Changes privacy settings of a story. The method can be called only for stories posted on behalf of the current user and if story.can_set_privacy_settings == true",
             "args": {
                 "story_id": {
                     "description": "Identifier of the story",
@@ -41823,7 +42343,7 @@
             "type": "AvailableReactions"
         },
         "setStoryReaction": {
-            "description": "Changes chosen reaction on a story that has already been sent",
+            "description": "Changes chosen reaction on a story that has already been sent; not supported for live stories",
             "args": {
                 "story_poster_chat_id": {
                     "description": "The identifier of the poster of the story",
@@ -42033,7 +42553,7 @@
                     "type": "string"
                 },
                 "story_ids": {
-                    "description": "Identifiers of stories to add to the album; 0-getOption(\"story_album_story_count_max\") identifiers",
+                    "description": "Identifiers of stories to add to the album; 0-getOption(\"story_album_size_max\") identifiers",
                     "is_optional": false,
                     "type": "vector<int32>"
                 }
@@ -42107,7 +42627,7 @@
                     "type": "int32"
                 },
                 "story_ids": {
-                    "description": "Identifier of the stories to add to the album; 1-getOption(\"story_album_story_count_max\") identifiers. If after addition the album has more than getOption(\"story_album_story_count_max\") stories, then the last one are removed from the album",
+                    "description": "Identifier of the stories to add to the album; 1-getOption(\"story_album_size_max\") identifiers. If after addition the album has more than getOption(\"story_album_size_max\") stories, then the last one are removed from the album",
                     "is_optional": false,
                     "type": "vector<int32>"
                 }
@@ -43132,7 +43652,7 @@
             "type": "Ok"
         },
         "addOffer": {
-            "description": "Sent a suggested post based on a previously sent message in a channel direct messages chat. Can be also used to suggest price or time change for an existing suggested post. Returns the sent message",
+            "description": "Sends a suggested post based on a previously sent message in a channel direct messages chat. Can be also used to suggest price or time change for an existing suggested post. Returns the sent message",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the channel direct messages chat",
@@ -43319,7 +43839,7 @@
                     "type": "int53"
                 },
                 "default_participant_id": {
-                    "description": "Default group call participant identifier to join the video chats",
+                    "description": "Default group call participant identifier to join the video chats in the chat",
                     "is_optional": false,
                     "type": "MessageSender"
                 }
@@ -43385,6 +43905,28 @@
             },
             "type": "RtmpUrl"
         },
+        "getLiveStoryRtmpUrl": {
+            "description": "Returns RTMP URL for streaming to a live story; requires can_post_stories administrator right for channel chats",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "RtmpUrl"
+        },
+        "replaceLiveStoryRtmpUrl": {
+            "description": "Replaces the current RTMP URL for streaming to a live story; requires owner privileges for channel chats",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "RtmpUrl"
+        },
         "getGroupCall": {
             "description": "Returns information about a group call",
             "args": {
@@ -43424,7 +43966,7 @@
             "type": "Ok"
         },
         "joinGroupCall": {
-            "description": "Joins a group call that is not bound to a chat",
+            "description": "Joins a regular group call that is not bound to a chat",
             "args": {
                 "input_group_call": {
                     "description": "The group call to join",
@@ -43448,7 +43990,7 @@
                     "type": "int32"
                 },
                 "participant_id": {
-                    "description": "Identifier of a group call participant, which will be used to join the call; pass null to join as self; video chats only",
+                    "description": "Identifier of a group call participant, which will be used to join the call; pass null to join as self",
                     "is_optional": true,
                     "type": "MessageSender"
                 },
@@ -43465,8 +44007,24 @@
             },
             "type": "Text"
         },
+        "joinLiveStory": {
+            "description": "Joins a group call of an active live story. Returns join response payload for tgcalls",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "join_parameters": {
+                    "description": "Parameters to join the call",
+                    "is_optional": false,
+                    "type": "groupCallJoinParameters"
+                }
+            },
+            "type": "Text"
+        },
         "startGroupCallScreenSharing": {
-            "description": "Starts screen sharing in a joined group call. Returns join response payload for tgcalls",
+            "description": "Starts screen sharing in a joined group call; not supported in live stories. Returns join response payload for tgcalls",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -43487,7 +44045,7 @@
             "type": "Text"
         },
         "toggleGroupCallScreenSharingIsPaused": {
-            "description": "Pauses or unpauses screen sharing in a joined group call",
+            "description": "Pauses or unpauses screen sharing in a joined group call; not supported in live stories",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -43503,7 +44061,7 @@
             "type": "Ok"
         },
         "endGroupCallScreenSharing": {
-            "description": "Ends screen sharing in a joined group call",
+            "description": "Ends screen sharing in a joined group call; not supported in live stories",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -43545,18 +44103,56 @@
             },
             "type": "Ok"
         },
-        "toggleGroupCallCanSendMessages": {
-            "description": "Toggles whether participants of a group call can send messages there. Requires groupCall.can_toggle_can_send_messages right",
+        "toggleGroupCallAreMessagesAllowed": {
+            "description": "Toggles whether participants of a group call can send messages there. Requires groupCall.can_toggle_are_messages_allowed right",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
                     "is_optional": false,
                     "type": "int32"
                 },
-                "can_send_messages": {
-                    "description": "New value of the can_send_messages setting",
+                "are_messages_allowed": {
+                    "description": "New value of the are_messages_allowed setting",
                     "is_optional": false,
                     "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "getLiveStoryStreamer": {
+            "description": "Returns information about the user or the chat that streams to a live story; for live stories that aren't an RTMP stream only",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "GroupCallParticipant"
+        },
+        "getLiveStoryAvailableMessageSenders": {
+            "description": "Returns the list of message sender identifiers, on whose behalf messages can be sent to a live story",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "ChatMessageSenders"
+        },
+        "setLiveStoryMessageSender": {
+            "description": "Selects a message sender to send messages in a live story call",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "message_sender_id": {
+                    "description": "New message sender for the group call",
+                    "is_optional": false,
+                    "type": "MessageSender"
                 }
             },
             "type": "Ok"
@@ -43570,12 +44166,108 @@
                     "type": "int32"
                 },
                 "text": {
-                    "description": "Text of the message to send; 1-getOption(\"group_call_message_text_length_max\") characters",
+                    "description": "Text of the message to send; 1-getOption(\"group_call_message_text_length_max\") characters for non-live-stories; see updateGroupCallMessageLevels for live story restrictions, which depends on paid_message_star_count. Can't contain line feeds for live stories",
                     "is_optional": false,
                     "type": "formattedText"
+                },
+                "paid_message_star_count": {
+                    "description": "The number of Telegram Stars the user agreed to pay to send the message; for live stories only; 0-getOption(\"paid_group_call_message_star_count_max\"). Must be 0 for messages sent to live stories posted by the current user",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "Ok"
+        },
+        "addPendingLiveStoryReaction": {
+            "description": "Adds pending paid reaction in a live story group call. Can't be used in live stories posted by the current user. Call commitPendingLiveStoryReactions or removePendingLiveStoryReactions to actually send all pending reactions when the undo timer is over or abort the sending",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "star_count": {
+                    "description": "Number of Telegram Stars to be used for the reaction. The total number of pending paid reactions must not exceed getOption(\"paid_group_call_message_star_count_max\")",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "commitPendingLiveStoryReactions": {
+            "description": "Applies all pending paid reactions in a live story group call",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "removePendingLiveStoryReactions": {
+            "description": "Removes all pending paid reactions in a live story group call",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteGroupCallMessages": {
+            "description": "Deletes messages in a group call; for live story calls only. Requires groupCallMessage.can_be_deleted right",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "message_ids": {
+                    "description": "Identifiers of the messages to be deleted",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                },
+                "report_spam": {
+                    "description": "Pass true to report the messages as spam",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "deleteGroupCallMessagesBySender": {
+            "description": "Deletes all messages sent by the specified message sender in a group call; for live story calls only. Requires groupCall.can_delete_messages right",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "sender_id": {
+                    "description": "Identifier of the sender of messages to delete",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "report_spam": {
+                    "description": "Pass true to report the messages as spam",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "getLiveStoryTopDonors": {
+            "description": "Returns the list of top live story donors",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier of the live story",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "LiveStoryDonors"
         },
         "inviteGroupCallParticipant": {
             "description": "Invites a user to an active group call; for group calls not bound to a chat only. Sends a service message of the type messageGroupCall. The group call can have at most getOption(\"group_call_participant_count_max\") participants",
@@ -43742,6 +44434,22 @@
             },
             "type": "Ok"
         },
+        "setGroupCallPaidMessageStarCount": {
+            "description": "Changes the minimum number of Telegram Stars that must be paid by general participant for each sent message to a live story call. Requires groupCall.can_be_managed right",
+            "args": {
+                "group_call_id": {
+                    "description": "Group call identifier; must be an identifier of a live story call",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "paid_message_star_count": {
+                    "description": "The new minimum number of Telegram Stars; 0-getOption(\"paid_group_call_message_star_count_max\")",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
         "setGroupCallParticipantIsSpeaking": {
             "description": "Informs TDLib that speaking state of a participant of an active group call has changed. Returns identifier of the participant if it is found",
             "args": {
@@ -43764,7 +44472,7 @@
             "type": "MessageSender"
         },
         "toggleGroupCallParticipantIsMuted": {
-            "description": "Toggles whether a participant of an active group call is muted, unmuted, or allowed to unmute themselves",
+            "description": "Toggles whether a participant of an active group call is muted, unmuted, or allowed to unmute themselves; not supported for live stories",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -43785,7 +44493,7 @@
             "type": "Ok"
         },
         "setGroupCallParticipantVolumeLevel": {
-            "description": "Changes volume level of a participant of an active group call. If the current user can manage the group call or is the owner of the group call, then the participant's volume level will be changed for all users with the default volume level",
+            "description": "Changes volume level of a participant of an active group call; not supported for live stories. If the current user can manage the group call or is the owner of the group call, then the participant's volume level will be changed for all users with the default volume level",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -43843,7 +44551,7 @@
             "type": "GroupCallParticipants"
         },
         "loadGroupCallParticipants": {
-            "description": "Loads more participants of a group call. The loaded participants will be received through updates. Use the field groupCall.loaded_all_participants to check whether all participants have already been loaded",
+            "description": "Loads more participants of a group call; not supported in live stories. The loaded participants will be received through updates. Use the field groupCall.loaded_all_participants to check whether all participants have already been loaded",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier. The group call must be previously received through getGroupCall and must be joined or being joined",
@@ -43870,7 +44578,7 @@
             "type": "Ok"
         },
         "endGroupCall": {
-            "description": "Ends a group call. Requires groupCall.can_be_managed right for video chats or groupCall.is_owned otherwise",
+            "description": "Ends a group call. Requires groupCall.can_be_managed right for video chats and live stories or groupCall.is_owned otherwise",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -43880,8 +44588,8 @@
             },
             "type": "Ok"
         },
-        "getVideoChatStreams": {
-            "description": "Returns information about available video chat streams",
+        "getGroupCallStreams": {
+            "description": "Returns information about available streams in a video chat or a live story",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -43889,10 +44597,10 @@
                     "type": "int32"
                 }
             },
-            "type": "VideoChatStreams"
+            "type": "GroupCallStreams"
         },
-        "getVideoChatStreamSegment": {
-            "description": "Returns a file with a segment of a video chat stream in a modified OGG format for audio or MPEG-4 format for video",
+        "getGroupCallStreamSegment": {
+            "description": "Returns a file with a segment of a video chat or live story in a modified OGG format for audio or MPEG-4 format for video",
             "args": {
                 "group_call_id": {
                     "description": "Group call identifier",
@@ -46882,7 +47590,7 @@
                     "type": "string"
                 },
                 "received_gift_ids": {
-                    "description": "Identifier of the gifts to add to the collection; 0-getOption(\"gift_collection_gift_count_max\") identifiers",
+                    "description": "Identifier of the gifts to add to the collection; 0-getOption(\"gift_collection_size_max\") identifiers",
                     "is_optional": false,
                     "type": "vector<string>"
                 }
@@ -46956,7 +47664,7 @@
                     "type": "int32"
                 },
                 "received_gift_ids": {
-                    "description": "Identifier of the gifts to add to the collection; 1-getOption(\"gift_collection_gift_count_max\") identifiers. If after addition the collection has more than getOption(\"gift_collection_gift_count_max\") gifts, then the last one are removed from the collection",
+                    "description": "Identifier of the gifts to add to the collection; 1-getOption(\"gift_collection_size_max\") identifiers. If after addition the collection has more than getOption(\"gift_collection_size_max\") gifts, then the last one are removed from the collection",
                     "is_optional": false,
                     "type": "vector<string>"
                 }
