@@ -600,12 +600,27 @@ class TDLibFunctions:
             }
         )
 
+    async def isLoginEmailAddressRequired(
+        self,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Checks whether the current user is required to set login email address
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "isLoginEmailAddressRequired",
+            }
+        )
+
     async def setLoginEmailAddress(
         self, new_login_email_address: str = ""
     ) -> Union[
         "pytdbot.types.Error", "pytdbot.types.EmailAddressAuthenticationCodeInfo"
     ]:
-        r"""Changes the login email address of the user\. The email address can be changed only if the current user already has login email and passwordState\.login\_email\_address\_pattern is non\-empty\. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode\. To use Apple ID/Google ID instead of an email address, call checkLoginEmailAddressCode directly
+        r"""Changes the login email address of the user\. The email address can be changed only if the current user already has login email and passwordState\.login\_email\_address\_pattern is non\-empty, or the user received suggestedActionSetLoginEmailAddress and isLoginEmailAddressRequired succeeds\. The change will not be applied until the new login email address is confirmed with checkLoginEmailAddressCode\. To use Apple ID/Google ID instead of an email address, call checkLoginEmailAddressCode directly
 
         Parameters:
             new_login_email_address (:class:`str`):
@@ -10023,7 +10038,7 @@ class TDLibFunctions:
                 The privacy settings for the story; ignored for stories posted on behalf of supergroup and channel chats
 
             album_ids (List[:class:`int`]):
-                Identifiers of story albums to which the story will be added upon posting\. An album can have up to getOption\(\"story\_album\_story\_count\_max\"\)
+                Identifiers of story albums to which the story will be added upon posting\. An album can have up to getOption\(\"story\_album\_size\_max\"\) stories
 
             active_period (:class:`int`):
                 Period after which the story is moved to archive, in seconds; must be one of 6 \* 3600, 12 \* 3600, 86400, or 2 \* 86400 for Telegram Premium users, and 86400 otherwise
@@ -10054,6 +10069,52 @@ class TDLibFunctions:
                 "from_story_full_id": from_story_full_id,
                 "is_posted_to_chat_page": is_posted_to_chat_page,
                 "protect_content": protect_content,
+            }
+        )
+
+    async def startLiveStory(
+        self,
+        chat_id: int = 0,
+        privacy_settings: "pytdbot.types.StoryPrivacySettings" = None,
+        protect_content: bool = False,
+        is_rtmp_stream: bool = False,
+        enable_messages: bool = False,
+        paid_message_star_count: int = 0,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.StartLiveStoryResult"]:
+        r"""Starts a new live story on behalf of a chat; requires can\_post\_stories administrator right for channel chats
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat that will start the live story\. Pass Saved Messages chat identifier when starting a live story on behalf of the current user, or a channel chat identifier
+
+            privacy_settings (:class:`~pytdbot.types.StoryPrivacySettings`):
+                The privacy settings for the story; ignored for stories posted on behalf of channel chats
+
+            protect_content (:class:`bool`):
+                Pass true if the content of the story must be protected from screenshotting
+
+            is_rtmp_stream (:class:`bool`):
+                Pass true to create an RTMP stream instead of an ordinary group call
+
+            enable_messages (:class:`bool`):
+                Pass true to allow viewers of the story to send messages
+
+            paid_message_star_count (:class:`int`):
+                The minimum number of Telegram Stars that must be paid by viewers for each sent message to the call; 0\-getOption\(\"paid\_group\_call\_message\_star\_count\_max\"\)
+
+        Returns:
+            :class:`~pytdbot.types.StartLiveStoryResult`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "startLiveStory",
+                "chat_id": chat_id,
+                "privacy_settings": privacy_settings,
+                "protect_content": protect_content,
+                "is_rtmp_stream": is_rtmp_stream,
+                "enable_messages": enable_messages,
+                "paid_message_star_count": paid_message_star_count,
             }
         )
 
@@ -10134,7 +10195,7 @@ class TDLibFunctions:
         story_id: int = 0,
         privacy_settings: "pytdbot.types.StoryPrivacySettings" = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Changes privacy settings of a story\. The method can be called only for stories posted on behalf of the current user and if story\.can\_be\_edited \=\= true
+        r"""Changes privacy settings of a story\. The method can be called only for stories posted on behalf of the current user and if story\.can\_set\_privacy\_settings \=\= true
 
         Parameters:
             story_id (:class:`int`):
@@ -10433,7 +10494,7 @@ class TDLibFunctions:
         reaction_type: "pytdbot.types.ReactionType" = None,
         update_recent_reactions: bool = False,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Changes chosen reaction on a story that has already been sent
+        r"""Changes chosen reaction on a story that has already been sent; not supported for live stories
 
         Parameters:
             story_poster_chat_id (:class:`int`):
@@ -10706,7 +10767,7 @@ class TDLibFunctions:
                 Name of the album; 1\-12 characters
 
             story_ids (List[:class:`int`]):
-                Identifiers of stories to add to the album; 0\-getOption\(\"story\_album\_story\_count\_max\"\) identifiers
+                Identifiers of stories to add to the album; 0\-getOption\(\"story\_album\_size\_max\"\) identifiers
 
         Returns:
             :class:`~pytdbot.types.StoryAlbum`
@@ -10810,7 +10871,7 @@ class TDLibFunctions:
                 Identifier of the story album
 
             story_ids (List[:class:`int`]):
-                Identifier of the stories to add to the album; 1\-getOption\(\"story\_album\_story\_count\_max\"\) identifiers\. If after addition the album has more than getOption\(\"story\_album\_story\_count\_max\"\) stories, then the last one are removed from the album
+                Identifier of the stories to add to the album; 1\-getOption\(\"story\_album\_size\_max\"\) identifiers\. If after addition the album has more than getOption\(\"story\_album\_size\_max\"\) stories, then the last one are removed from the album
 
         Returns:
             :class:`~pytdbot.types.StoryAlbum`
@@ -12324,7 +12385,7 @@ class TDLibFunctions:
         message_id: int = 0,
         options: "pytdbot.types.MessageSendOptions" = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        r"""Sent a suggested post based on a previously sent message in a channel direct messages chat\. Can be also used to suggest price or time change for an existing suggested post\. Returns the sent message
+        r"""Sends a suggested post based on a previously sent message in a channel direct messages chat\. Can be also used to suggest price or time change for an existing suggested post\. Returns the sent message
 
         Parameters:
             chat_id (:class:`int`):
@@ -12575,7 +12636,7 @@ class TDLibFunctions:
                 Chat identifier
 
             default_participant_id (:class:`~pytdbot.types.MessageSender`):
-                Default group call participant identifier to join the video chats
+                Default group call participant identifier to join the video chats in the chat
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -12674,6 +12735,38 @@ class TDLibFunctions:
             {"@type": "replaceVideoChatRtmpUrl", "chat_id": chat_id}
         )
 
+    async def getLiveStoryRtmpUrl(
+        self, chat_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.RtmpUrl"]:
+        r"""Returns RTMP URL for streaming to a live story; requires can\_post\_stories administrator right for channel chats
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+        Returns:
+            :class:`~pytdbot.types.RtmpUrl`
+        """
+
+        return await self.invoke({"@type": "getLiveStoryRtmpUrl", "chat_id": chat_id})
+
+    async def replaceLiveStoryRtmpUrl(
+        self, chat_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.RtmpUrl"]:
+        r"""Replaces the current RTMP URL for streaming to a live story; requires owner privileges for channel chats
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+        Returns:
+            :class:`~pytdbot.types.RtmpUrl`
+        """
+
+        return await self.invoke(
+            {"@type": "replaceLiveStoryRtmpUrl", "chat_id": chat_id}
+        )
+
     async def getGroupCall(
         self, group_call_id: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.GroupCall"]:
@@ -12737,7 +12830,7 @@ class TDLibFunctions:
         input_group_call: "pytdbot.types.InputGroupCall" = None,
         join_parameters: "pytdbot.types.GroupCallJoinParameters" = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.GroupCallInfo"]:
-        r"""Joins a group call that is not bound to a chat
+        r"""Joins a regular group call that is not bound to a chat
 
         Parameters:
             input_group_call (:class:`~pytdbot.types.InputGroupCall`):
@@ -12772,7 +12865,7 @@ class TDLibFunctions:
                 Group call identifier
 
             participant_id (:class:`~pytdbot.types.MessageSender`):
-                Identifier of a group call participant, which will be used to join the call; pass null to join as self; video chats only
+                Identifier of a group call participant, which will be used to join the call; pass null to join as self
 
             join_parameters (:class:`~pytdbot.types.GroupCallJoinParameters`):
                 Parameters to join the call
@@ -12794,10 +12887,36 @@ class TDLibFunctions:
             }
         )
 
+    async def joinLiveStory(
+        self,
+        group_call_id: int = 0,
+        join_parameters: "pytdbot.types.GroupCallJoinParameters" = None,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Text"]:
+        r"""Joins a group call of an active live story\. Returns join response payload for tgcalls
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+            join_parameters (:class:`~pytdbot.types.GroupCallJoinParameters`):
+                Parameters to join the call
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "joinLiveStory",
+                "group_call_id": group_call_id,
+                "join_parameters": join_parameters,
+            }
+        )
+
     async def startGroupCallScreenSharing(
         self, group_call_id: int = 0, audio_source_id: int = 0, payload: str = ""
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Text"]:
-        r"""Starts screen sharing in a joined group call\. Returns join response payload for tgcalls
+        r"""Starts screen sharing in a joined group call; not supported in live stories\. Returns join response payload for tgcalls
 
         Parameters:
             group_call_id (:class:`int`):
@@ -12825,7 +12944,7 @@ class TDLibFunctions:
     async def toggleGroupCallScreenSharingIsPaused(
         self, group_call_id: int = 0, is_paused: bool = False
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Pauses or unpauses screen sharing in a joined group call
+        r"""Pauses or unpauses screen sharing in a joined group call; not supported in live stories
 
         Parameters:
             group_call_id (:class:`int`):
@@ -12849,7 +12968,7 @@ class TDLibFunctions:
     async def endGroupCallScreenSharing(
         self, group_call_id: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Ends screen sharing in a joined group call
+        r"""Ends screen sharing in a joined group call; not supported in live stories
 
         Parameters:
             group_call_id (:class:`int`):
@@ -12911,17 +13030,17 @@ class TDLibFunctions:
             }
         )
 
-    async def toggleGroupCallCanSendMessages(
-        self, group_call_id: int = 0, can_send_messages: bool = False
+    async def toggleGroupCallAreMessagesAllowed(
+        self, group_call_id: int = 0, are_messages_allowed: bool = False
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Toggles whether participants of a group call can send messages there\. Requires groupCall\.can\_toggle\_can\_send\_messages right
+        r"""Toggles whether participants of a group call can send messages there\. Requires groupCall\.can\_toggle\_are\_messages\_allowed right
 
         Parameters:
             group_call_id (:class:`int`):
                 Group call identifier
 
-            can_send_messages (:class:`bool`):
-                New value of the can\_send\_messages setting
+            are_messages_allowed (:class:`bool`):
+                New value of the are\_messages\_allowed setting
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -12929,14 +13048,80 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "toggleGroupCallCanSendMessages",
+                "@type": "toggleGroupCallAreMessagesAllowed",
                 "group_call_id": group_call_id,
-                "can_send_messages": can_send_messages,
+                "are_messages_allowed": are_messages_allowed,
+            }
+        )
+
+    async def getLiveStoryStreamer(
+        self, group_call_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.GroupCallParticipant"]:
+        r"""Returns information about the user or the chat that streams to a live story; for live stories that aren't an RTMP stream only
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+        Returns:
+            :class:`~pytdbot.types.GroupCallParticipant`
+        """
+
+        return await self.invoke(
+            {"@type": "getLiveStoryStreamer", "group_call_id": group_call_id}
+        )
+
+    async def getLiveStoryAvailableMessageSenders(
+        self, group_call_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.ChatMessageSenders"]:
+        r"""Returns the list of message sender identifiers, on whose behalf messages can be sent to a live story
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+        Returns:
+            :class:`~pytdbot.types.ChatMessageSenders`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getLiveStoryAvailableMessageSenders",
+                "group_call_id": group_call_id,
+            }
+        )
+
+    async def setLiveStoryMessageSender(
+        self,
+        group_call_id: int = 0,
+        message_sender_id: "pytdbot.types.MessageSender" = None,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Selects a message sender to send messages in a live story call
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+            message_sender_id (:class:`~pytdbot.types.MessageSender`):
+                New message sender for the group call
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setLiveStoryMessageSender",
+                "group_call_id": group_call_id,
+                "message_sender_id": message_sender_id,
             }
         )
 
     async def sendGroupCallMessage(
-        self, group_call_id: int = 0, text: "pytdbot.types.FormattedText" = None
+        self,
+        group_call_id: int = 0,
+        text: "pytdbot.types.FormattedText" = None,
+        paid_message_star_count: int = 0,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         r"""Sends a message to other participants of a group call\. Requires groupCall\.can\_send\_messages right
 
@@ -12945,7 +13130,10 @@ class TDLibFunctions:
                 Group call identifier
 
             text (:class:`~pytdbot.types.FormattedText`):
-                Text of the message to send; 1\-getOption\(\"group\_call\_message\_text\_length\_max\"\) characters
+                Text of the message to send; 1\-getOption\(\"group\_call\_message\_text\_length\_max\"\) characters for non\-live\-stories; see updateGroupCallMessageLevels for live story restrictions, which depends on paid\_message\_star\_count\. Can't contain line feeds for live stories
+
+            paid_message_star_count (:class:`int`):
+                The number of Telegram Stars the user agreed to pay to send the message; for live stories only; 0\-getOption\(\"paid\_group\_call\_message\_star\_count\_max\"\)\. Must be 0 for messages sent to live stories posted by the current user
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -12956,7 +13144,145 @@ class TDLibFunctions:
                 "@type": "sendGroupCallMessage",
                 "group_call_id": group_call_id,
                 "text": text,
+                "paid_message_star_count": paid_message_star_count,
             }
+        )
+
+    async def addPendingLiveStoryReaction(
+        self, group_call_id: int = 0, star_count: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Adds pending paid reaction in a live story group call\. Can't be used in live stories posted by the current user\. Call commitPendingLiveStoryReactions or removePendingLiveStoryReactions to actually send all pending reactions when the undo timer is over or abort the sending
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+            star_count (:class:`int`):
+                Number of Telegram Stars to be used for the reaction\. The total number of pending paid reactions must not exceed getOption\(\"paid\_group\_call\_message\_star\_count\_max\"\)
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addPendingLiveStoryReaction",
+                "group_call_id": group_call_id,
+                "star_count": star_count,
+            }
+        )
+
+    async def commitPendingLiveStoryReactions(
+        self, group_call_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Applies all pending paid reactions in a live story group call
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "commitPendingLiveStoryReactions", "group_call_id": group_call_id}
+        )
+
+    async def removePendingLiveStoryReactions(
+        self, group_call_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Removes all pending paid reactions in a live story group call
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "removePendingLiveStoryReactions", "group_call_id": group_call_id}
+        )
+
+    async def deleteGroupCallMessages(
+        self,
+        group_call_id: int = 0,
+        message_ids: List[int] = None,
+        report_spam: bool = False,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Deletes messages in a group call; for live story calls only\. Requires groupCallMessage\.can\_be\_deleted right
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+            message_ids (List[:class:`int`]):
+                Identifiers of the messages to be deleted
+
+            report_spam (:class:`bool`):
+                Pass true to report the messages as spam
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteGroupCallMessages",
+                "group_call_id": group_call_id,
+                "message_ids": message_ids,
+                "report_spam": report_spam,
+            }
+        )
+
+    async def deleteGroupCallMessagesBySender(
+        self,
+        group_call_id: int = 0,
+        sender_id: "pytdbot.types.MessageSender" = None,
+        report_spam: bool = False,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Deletes all messages sent by the specified message sender in a group call; for live story calls only\. Requires groupCall\.can\_delete\_messages right
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier
+
+            sender_id (:class:`~pytdbot.types.MessageSender`):
+                Identifier of the sender of messages to delete
+
+            report_spam (:class:`bool`):
+                Pass true to report the messages as spam
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "deleteGroupCallMessagesBySender",
+                "group_call_id": group_call_id,
+                "sender_id": sender_id,
+                "report_spam": report_spam,
+            }
+        )
+
+    async def getLiveStoryTopDonors(
+        self, group_call_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.LiveStoryDonors"]:
+        r"""Returns the list of top live story donors
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier of the live story
+
+        Returns:
+            :class:`~pytdbot.types.LiveStoryDonors`
+        """
+
+        return await self.invoke(
+            {"@type": "getLiveStoryTopDonors", "group_call_id": group_call_id}
         )
 
     async def inviteGroupCallParticipant(
@@ -13201,6 +13527,30 @@ class TDLibFunctions:
             }
         )
 
+    async def setGroupCallPaidMessageStarCount(
+        self, group_call_id: int = 0, paid_message_star_count: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Changes the minimum number of Telegram Stars that must be paid by general participant for each sent message to a live story call\. Requires groupCall\.can\_be\_managed right
+
+        Parameters:
+            group_call_id (:class:`int`):
+                Group call identifier; must be an identifier of a live story call
+
+            paid_message_star_count (:class:`int`):
+                The new minimum number of Telegram Stars; 0\-getOption\(\"paid\_group\_call\_message\_star\_count\_max\"\)
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "setGroupCallPaidMessageStarCount",
+                "group_call_id": group_call_id,
+                "paid_message_star_count": paid_message_star_count,
+            }
+        )
+
     async def setGroupCallParticipantIsSpeaking(
         self, group_call_id: int = 0, audio_source: int = 0, is_speaking: bool = False
     ) -> Union["pytdbot.types.Error", "pytdbot.types.MessageSender"]:
@@ -13235,7 +13585,7 @@ class TDLibFunctions:
         participant_id: "pytdbot.types.MessageSender" = None,
         is_muted: bool = False,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Toggles whether a participant of an active group call is muted, unmuted, or allowed to unmute themselves
+        r"""Toggles whether a participant of an active group call is muted, unmuted, or allowed to unmute themselves; not supported for live stories
 
         Parameters:
             group_call_id (:class:`int`):
@@ -13266,7 +13616,7 @@ class TDLibFunctions:
         participant_id: "pytdbot.types.MessageSender" = None,
         volume_level: int = 0,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Changes volume level of a participant of an active group call\. If the current user can manage the group call or is the owner of the group call, then the participant's volume level will be changed for all users with the default volume level
+        r"""Changes volume level of a participant of an active group call; not supported for live stories\. If the current user can manage the group call or is the owner of the group call, then the participant's volume level will be changed for all users with the default volume level
 
         Parameters:
             group_call_id (:class:`int`):
@@ -13349,7 +13699,7 @@ class TDLibFunctions:
     async def loadGroupCallParticipants(
         self, group_call_id: int = 0, limit: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Loads more participants of a group call\. The loaded participants will be received through updates\. Use the field groupCall\.loaded\_all\_participants to check whether all participants have already been loaded
+        r"""Loads more participants of a group call; not supported in live stories\. The loaded participants will be received through updates\. Use the field groupCall\.loaded\_all\_participants to check whether all participants have already been loaded
 
         Parameters:
             group_call_id (:class:`int`):
@@ -13390,7 +13740,7 @@ class TDLibFunctions:
     async def endGroupCall(
         self, group_call_id: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Ends a group call\. Requires groupCall\.can\_be\_managed right for video chats or groupCall\.is\_owned otherwise
+        r"""Ends a group call\. Requires groupCall\.can\_be\_managed right for video chats and live stories or groupCall\.is\_owned otherwise
 
         Parameters:
             group_call_id (:class:`int`):
@@ -13404,24 +13754,24 @@ class TDLibFunctions:
             {"@type": "endGroupCall", "group_call_id": group_call_id}
         )
 
-    async def getVideoChatStreams(
+    async def getGroupCallStreams(
         self, group_call_id: int = 0
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.VideoChatStreams"]:
-        r"""Returns information about available video chat streams
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.GroupCallStreams"]:
+        r"""Returns information about available streams in a video chat or a live story
 
         Parameters:
             group_call_id (:class:`int`):
                 Group call identifier
 
         Returns:
-            :class:`~pytdbot.types.VideoChatStreams`
+            :class:`~pytdbot.types.GroupCallStreams`
         """
 
         return await self.invoke(
-            {"@type": "getVideoChatStreams", "group_call_id": group_call_id}
+            {"@type": "getGroupCallStreams", "group_call_id": group_call_id}
         )
 
-    async def getVideoChatStreamSegment(
+    async def getGroupCallStreamSegment(
         self,
         group_call_id: int = 0,
         time_offset: int = 0,
@@ -13429,7 +13779,7 @@ class TDLibFunctions:
         channel_id: int = 0,
         video_quality: "pytdbot.types.GroupCallVideoQuality" = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Data"]:
-        r"""Returns a file with a segment of a video chat stream in a modified OGG format for audio or MPEG\-4 format for video
+        r"""Returns a file with a segment of a video chat or live story in a modified OGG format for audio or MPEG\-4 format for video
 
         Parameters:
             group_call_id (:class:`int`):
@@ -13453,7 +13803,7 @@ class TDLibFunctions:
 
         return await self.invoke(
             {
-                "@type": "getVideoChatStreamSegment",
+                "@type": "getGroupCallStreamSegment",
                 "group_call_id": group_call_id,
                 "time_offset": time_offset,
                 "scale": scale,
@@ -17879,7 +18229,7 @@ class TDLibFunctions:
                 Name of the collection; 1\-12 characters
 
             received_gift_ids (List[:class:`str`]):
-                Identifier of the gifts to add to the collection; 0\-getOption\(\"gift\_collection\_gift\_count\_max\"\) identifiers
+                Identifier of the gifts to add to the collection; 0\-getOption\(\"gift\_collection\_size\_max\"\) identifiers
 
         Returns:
             :class:`~pytdbot.types.GiftCollection`
@@ -17991,7 +18341,7 @@ class TDLibFunctions:
                 Identifier of the gift collection
 
             received_gift_ids (List[:class:`str`]):
-                Identifier of the gifts to add to the collection; 1\-getOption\(\"gift\_collection\_gift\_count\_max\"\) identifiers\. If after addition the collection has more than getOption\(\"gift\_collection\_gift\_count\_max\"\) gifts, then the last one are removed from the collection
+                Identifier of the gifts to add to the collection; 1\-getOption\(\"gift\_collection\_size\_max\"\) identifiers\. If after addition the collection has more than getOption\(\"gift\_collection\_size\_max\"\) gifts, then the last one are removed from the collection
 
         Returns:
             :class:`~pytdbot.types.GiftCollection`
