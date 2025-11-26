@@ -203,6 +203,7 @@ class Client(Decorators, Methods):
         self._current_handlers = {}
         self._results: Dict[str, asyncio.Future] = {}
         self._workers_tasks = None
+        self.__rabbitmq_iterator_task = None
         self.__authorization_state = None
         self.__cache = {"is_coro_filter": {}}
         self.__local_handlers = {
@@ -1122,13 +1123,8 @@ class Client(Decorators, Methods):
             client_properties={
                 "connection_name": f"Pytdbot instance {self._rabbitmq_instance_id}"
             },
-            timeout=10.0,
         )
-
         self.__rchannel = await self.__rconnection.channel()
-        await self.__rchannel.set_qos(
-            prefetch_count=self.queue_size, all_channels=False
-        )
 
         self.logger.info("Connected to TDLib server via RabbitMQ")
 
@@ -1155,7 +1151,6 @@ class Client(Decorators, Methods):
         self.is_running = True
 
         await self.__rqueues["responses"].consume(self.__on_update, no_ack=True)
-        await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
 
         await self._set_options()
 
@@ -1166,16 +1161,22 @@ class Client(Decorators, Methods):
             await self.process_update(obj_to_dict(update))
 
         if not self.no_updates:
-            await self.__rqueues["updates"].consume(
-                self.__handle_rabbitmq_message, no_ack=not self.server_ack
+            self.__rabbitmq_iterator_task = self.loop.create_task(
+                self.__rabbitmq_iterator()
             )
 
-    async def __handle_rabbitmq_message(self, message: aio_pika.IncomingMessage):
-        if self.queue.qsize() > self.queue_size:
-            await message.nack(requeue=True)
-            return
+        await self.__rqueues["notify"].consume(self.__on_update, no_ack=True)
 
-        self.queue.put_nowait(message)
+    async def __rabbitmq_iterator(self):
+        async with self.__rqueues["updates"].iterator(
+            no_ack=not self.server_ack
+        ) as iterator:
+            async for message in iterator:
+                if self.queue.qsize() > self.queue_size:
+                    await message.nack(requeue=True)
+                    continue
+
+                self.queue.put_nowait(message)
 
     async def __rabbitmq_worker(self):
         while self.is_running:
@@ -1234,6 +1235,9 @@ class Client(Decorators, Methods):
     def __stop_client(self) -> None:
         self.is_authenticated = False
         self.is_running = False
+
+        if self.__rabbitmq_iterator_task:
+            self.__rabbitmq_iterator_task.cancel()
 
         if self.__is_queue_worker:
             for worker_task in self._workers_tasks:
