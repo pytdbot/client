@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.57",
-    "commit_hash": "f0d04d357c4ab2d4a7288e52dbeec3c2d9dd0a2d",
+    "version": "1.8.58",
+    "commit_hash": "889bdf06029f98f3d04cac874dafab6f4f847c47",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -300,6 +300,14 @@
             ],
             "functions": []
         },
+        "AuctionState": {
+            "description": "Describes state of an auction",
+            "types": [
+                "auctionStateActive",
+                "auctionStateFinished"
+            ],
+            "functions": []
+        },
         "TransactionDirection": {
             "description": "Describes direction of transactions in a transaction list",
             "types": [
@@ -330,6 +338,7 @@
                 "starTransactionTypeBotSubscriptionSale",
                 "starTransactionTypeChannelSubscriptionPurchase",
                 "starTransactionTypeChannelSubscriptionSale",
+                "starTransactionTypeGiftAuctionBid",
                 "starTransactionTypeGiftPurchase",
                 "starTransactionTypeGiftTransfer",
                 "starTransactionTypeGiftOriginalDetailsDrop",
@@ -851,6 +860,7 @@
                 "linkPreviewTypeEmbeddedVideoPlayer",
                 "linkPreviewTypeExternalAudio",
                 "linkPreviewTypeExternalVideo",
+                "linkPreviewTypeGiftAuction",
                 "linkPreviewTypeGiftCollection",
                 "linkPreviewTypeGroupCall",
                 "linkPreviewTypeInvoice",
@@ -2159,6 +2169,7 @@
                 "internalLinkTypeDirectMessagesChat",
                 "internalLinkTypeEditProfileSettings",
                 "internalLinkTypeGame",
+                "internalLinkTypeGiftAuction",
                 "internalLinkTypeGiftCollection",
                 "internalLinkTypeGroupCall",
                 "internalLinkTypeInstantView",
@@ -2523,6 +2534,8 @@
                 "updateGroupCallMessagesDeleted",
                 "updateLiveStoryTopDonors",
                 "updateNewCallSignalingData",
+                "updateGiftAuctionState",
+                "updateActiveGiftAuctions",
                 "updateUserPrivacySettingRules",
                 "updateUnreadMessageCount",
                 "updateUnreadChatCount",
@@ -6432,6 +6445,43 @@
             },
             "type": "GiftSettings"
         },
+        "giftAuction": {
+            "description": "Describes an auction on which a gift can be purchased",
+            "args": {
+                "id": {
+                    "description": "Identifier of the auction",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "gifts_per_round": {
+                    "description": "Number of gifts distributed in each round",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "GiftAuction"
+        },
+        "giftBackground": {
+            "description": "Describes background of a gift",
+            "args": {
+                "center_color": {
+                    "description": "Center color in RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "edge_color": {
+                    "description": "Edge color in RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "text_color": {
+                    "description": "Text color in RGB format",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "GiftBackground"
+        },
         "giftPurchaseLimits": {
             "description": "Describes the maximum number of times that a specific gift can be purchased",
             "args": {
@@ -6767,6 +6817,11 @@
                     "description": "True, if the gift can be bought only by Telegram Premium subscribers",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "auction_info": {
+                    "description": "Information about the auction on which the gift can be purchased; may be null if the gift can be purchased directly",
+                    "is_optional": true,
+                    "type": "giftAuction"
                 },
                 "next_send_date": {
                     "description": "Point in time (Unix timestamp) when the gift can be sent next time by the current user; can be 0 or a date in the past. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now",
@@ -7456,6 +7511,213 @@
             },
             "type": "GiftUpgradePreview"
         },
+        "auctionBid": {
+            "description": "Describes a bid in an auction",
+            "args": {
+                "star_count": {
+                    "description": "The number of Telegram Stars that were put in the bid",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "bid_date": {
+                    "description": "Point in time (Unix timestamp) when the bid was made",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "position": {
+                    "description": "Position of the bid in the list of all bids",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "AuctionBid"
+        },
+        "userAuctionBid": {
+            "description": "Describes a bid of the current user in an auction",
+            "args": {
+                "star_count": {
+                    "description": "The number of Telegram Stars that were put in the bid",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "bid_date": {
+                    "description": "Point in time (Unix timestamp) when the bid was made",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "next_bid_star_count": {
+                    "description": "The minimum number of Telegram Stars that can be put for the next bid",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "owner_id": {
+                    "description": "Identifier of the user or the chat that will receive the auctioned item. If the auction is opened in context of another user or chat, then a warning is supposed to be shown to the current user",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "was_returned": {
+                    "description": "True, if the bid was returned to the user, because it was outbid and can't win anymore",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "UserAuctionBid"
+        },
+        "auctionStateActive": {
+            "description": "Contains information about an ongoing auction",
+            "args": {
+                "start_date": {
+                    "description": "Point in time (Unix timestamp) when the auction started",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "end_date": {
+                    "description": "Point in time (Unix timestamp) when the auction will be ended",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "min_bid": {
+                    "description": "The minimum possible bid in the auction in Telegram Stars",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "bid_levels": {
+                    "description": "A sparse list of bids that were made in the auction",
+                    "is_optional": false,
+                    "type": "vector<auctionBid>"
+                },
+                "top_bidder_user_ids": {
+                    "description": "User identifiers of at most 3 users with the biggest bids",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                },
+                "current_round_end_date": {
+                    "description": "Point in time (Unix timestamp) when the current round will end",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "current_round_number": {
+                    "description": "1-based number of the current round",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "total_round_count": {
+                    "description": "The total number of rounds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "left_item_count": {
+                    "description": "The number of items that have to be distributed on the auciton",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "acquired_item_count": {
+                    "description": "The number of items that were purchased by the current user on the auciton",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "user_bid": {
+                    "description": "Bid of the current user in the auction; may be null if none",
+                    "is_optional": true,
+                    "type": "userAuctionBid"
+                }
+            },
+            "type": "AuctionState"
+        },
+        "auctionStateFinished": {
+            "description": "Contains information about a finished auction",
+            "args": {
+                "start_date": {
+                    "description": "Point in time (Unix timestamp) when the auction started",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "end_date": {
+                    "description": "Point in time (Unix timestamp) when the auction will be ended",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "average_price": {
+                    "description": "Average price of bought items in Telegram Stars",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "acquired_item_count": {
+                    "description": "The number of items that were purchased by the current user on the auciton",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "AuctionState"
+        },
+        "giftAuctionState": {
+            "description": "Represent auction state of a gift",
+            "args": {
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "gift"
+                },
+                "state": {
+                    "description": "Auction state of the gift",
+                    "is_optional": false,
+                    "type": "AuctionState"
+                }
+            },
+            "type": "GiftAuctionState"
+        },
+        "giftAuctionAcquiredGift": {
+            "description": "Represents a gift that was acquired by the current user on an auction",
+            "args": {
+                "receiver_id": {
+                    "description": "Receiver of the gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "date": {
+                    "description": "Point in time (Unix timestamp) when the gift was acquired",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "star_count": {
+                    "description": "The number of Telegram Stars that were paid for the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "auction_round_number": {
+                    "description": "Identifier of the auction round in which the gift was acquired",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "auction_round_position": {
+                    "description": "Position of the user in the round among all auction participants",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "text": {
+                    "description": "Message added to the gift",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "is_private": {
+                    "description": "True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "GiftAuctionAcquiredGift"
+        },
+        "giftAuctionAcquiredGifts": {
+            "description": "Represents a list of gifts that were acquired by the current user on an auction",
+            "args": {
+                "gifts": {
+                    "description": "The list of acquired gifts",
+                    "is_optional": false,
+                    "type": "vector<giftAuctionAcquiredGift>"
+                }
+            },
+            "type": "GiftAuctionAcquiredGifts"
+        },
         "transactionDirectionIncoming": {
             "description": "The transaction is incoming and increases the amount of owned currency",
             "args": {},
@@ -7751,6 +8013,22 @@
                     "description": "The number of seconds between consecutive Telegram Star debitings",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "StarTransactionType"
+        },
+        "starTransactionTypeGiftAuctionBid": {
+            "description": "The transaction is a bid on a gift auction; for regular users only",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user that will receive the gift",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "gift"
                 }
             },
             "type": "StarTransactionType"
@@ -15187,6 +15465,27 @@
             },
             "type": "LinkPreviewType"
         },
+        "linkPreviewTypeGiftAuction": {
+            "description": "The link is a link to a gift auction",
+            "args": {
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "gift"
+                },
+                "gift_background": {
+                    "description": "Background of the gift",
+                    "is_optional": false,
+                    "type": "giftBackground"
+                },
+                "auction_end_date": {
+                    "description": "Point in time (Unix timestamp) when the auction will be ended",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "LinkPreviewType"
+        },
         "linkPreviewTypeGiftCollection": {
             "description": "The link is a link to a gift collection",
             "args": {
@@ -18696,6 +18995,11 @@
                 },
                 "is_upgrade_separate": {
                     "description": "True, if the upgrade was bought after the gift was sent. In this case, prepaid upgrade cost must not be added to the gift cost",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_from_auction": {
+                    "description": "True, if the message is a notification about a gift won on an auction",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -29452,6 +29756,17 @@
             },
             "type": "InternalLinkType"
         },
+        "internalLinkTypeGiftAuction": {
+            "description": "The link is a link to a gift auction. Call getGiftAuctionState with the given auction identifier to process the link",
+            "args": {
+                "auction_id": {
+                    "description": "Unique identifier of the auction",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeGiftCollection": {
             "description": "The link is a link to a gift collection. Call searchPublicChat with the given username, then call getReceivedGifts with the received gift owner identifier and the given collection identifier, then show the collection if received",
             "args": {
@@ -33732,6 +34047,28 @@
                     "description": "The data",
                     "is_optional": false,
                     "type": "bytes"
+                }
+            },
+            "type": "Update"
+        },
+        "updateGiftAuctionState": {
+            "description": "State of a gift auction was updated",
+            "args": {
+                "state": {
+                    "description": "New state of the auction",
+                    "is_optional": false,
+                    "type": "giftAuctionState"
+                }
+            },
+            "type": "Update"
+        },
+        "updateActiveGiftAuctions": {
+            "description": "The list of auctions in which participate the current user has changed",
+            "args": {
+                "states": {
+                    "description": "New states of the auctions",
+                    "is_optional": false,
+                    "type": "vector<giftAuctionState>"
                 }
             },
             "type": "Update"
@@ -47204,6 +47541,97 @@
                     "description": "Pass true to additionally pay for the gift upgrade and allow the receiver to upgrade it for free",
                     "is_optional": false,
                     "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "getGiftAuctionState": {
+            "description": "Returns auction state for a gift",
+            "args": {
+                "auction_id": {
+                    "description": "Unique identifier of the auction",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "GiftAuctionState"
+        },
+        "getGiftAuctionAcquiredGifts": {
+            "description": "Returns the gifts that were acquired by the current user on a gift auction",
+            "args": {
+                "gift_id": {
+                    "description": "Identifier of the auctioned gift",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "GiftAuctionAcquiredGifts"
+        },
+        "openGiftAuction": {
+            "description": "Informs TDLib that a gift auction was opened by the user",
+            "args": {
+                "gift_id": {
+                    "description": "Identifier of the gift, which auction was opened",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Ok"
+        },
+        "closeGiftAuction": {
+            "description": "Informs TDLib that a gift auction was closed by the user",
+            "args": {
+                "gift_id": {
+                    "description": "Identifier of the gift, which auction was closed",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Ok"
+        },
+        "placeGiftAuctionBid": {
+            "description": "Places a bid on an auction gift",
+            "args": {
+                "gift_id": {
+                    "description": "Identifier of the gift to place the bid on",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "star_count": {
+                    "description": "The number of Telegram Stars to place in the bid",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "user_id": {
+                    "description": "Identifier of the user that will receive the gift",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "text": {
+                    "description": "Text to show along with the gift; 0-getOption(\"gift_text_length_max\") characters. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed. Must be empty if the receiver enabled paid messages",
+                    "is_optional": false,
+                    "type": "formattedText"
+                },
+                "is_private": {
+                    "description": "Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
+        },
+        "increaseGiftAuctionBid": {
+            "description": "Increases a bid for an auction gift without changing gift text and receiver",
+            "args": {
+                "gift_id": {
+                    "description": "Identifier of the gift to put the bid on",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "star_count": {
+                    "description": "The number of Telegram Stars to put in the bid",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "Ok"
