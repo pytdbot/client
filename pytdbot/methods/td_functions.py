@@ -17705,6 +17705,135 @@ class TDLibFunctions:
             }
         )
 
+    async def getGiftAuctionState(
+        self, auction_id: str = ""
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.GiftAuctionState"]:
+        r"""Returns auction state for a gift
+
+        Parameters:
+            auction_id (:class:`str`):
+                Unique identifier of the auction
+
+        Returns:
+            :class:`~pytdbot.types.GiftAuctionState`
+        """
+
+        return await self.invoke(
+            {"@type": "getGiftAuctionState", "auction_id": auction_id}
+        )
+
+    async def getGiftAuctionAcquiredGifts(
+        self, gift_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.GiftAuctionAcquiredGifts"]:
+        r"""Returns the gifts that were acquired by the current user on a gift auction
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the auctioned gift
+
+        Returns:
+            :class:`~pytdbot.types.GiftAuctionAcquiredGifts`
+        """
+
+        return await self.invoke(
+            {"@type": "getGiftAuctionAcquiredGifts", "gift_id": gift_id}
+        )
+
+    async def openGiftAuction(
+        self, gift_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Informs TDLib that a gift auction was opened by the user
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the gift, which auction was opened
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "openGiftAuction", "gift_id": gift_id})
+
+    async def closeGiftAuction(
+        self, gift_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Informs TDLib that a gift auction was closed by the user
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the gift, which auction was closed
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke({"@type": "closeGiftAuction", "gift_id": gift_id})
+
+    async def placeGiftAuctionBid(
+        self,
+        gift_id: int = 0,
+        star_count: int = 0,
+        user_id: int = 0,
+        text: "pytdbot.types.FormattedText" = None,
+        is_private: bool = False,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Places a bid on an auction gift
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the gift to place the bid on
+
+            star_count (:class:`int`):
+                The number of Telegram Stars to place in the bid
+
+            user_id (:class:`int`):
+                Identifier of the user that will receive the gift
+
+            text (:class:`~pytdbot.types.FormattedText`):
+                Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed\. Must be empty if the receiver enabled paid messages
+
+            is_private (:class:`bool`):
+                Pass true to show gift text and sender only to the gift receiver; otherwise, everyone will be able to see them
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "placeGiftAuctionBid",
+                "gift_id": gift_id,
+                "star_count": star_count,
+                "user_id": user_id,
+                "text": text,
+                "is_private": is_private,
+            }
+        )
+
+    async def increaseGiftAuctionBid(
+        self, gift_id: int = 0, star_count: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Increases a bid for an auction gift without changing gift text and receiver
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the gift to put the bid on
+
+            star_count (:class:`int`):
+                The number of Telegram Stars to put in the bid
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "increaseGiftAuctionBid",
+                "gift_id": gift_id,
+                "star_count": star_count,
+            }
+        )
+
     async def sellGift(
         self, business_connection_id: str = "", received_gift_id: str = ""
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:

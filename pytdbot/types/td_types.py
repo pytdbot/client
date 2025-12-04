@@ -1,10 +1,10 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
-    FileBoundMethods,
-    CallbackQueryBoundMethods,
     MessageSenderBoundMethods,
     MessageBoundMethods,
+    CallbackQueryBoundMethods,
+    FileBoundMethods,
 )
 import pytdbot
 
@@ -227,6 +227,12 @@ class GiftResaleResult:
 
 class SentGift:
     r"""Represents content of a gift received by a user or a channel chat"""
+
+    pass
+
+
+class AuctionState:
+    r"""Describes state of an auction"""
 
     pass
 
@@ -10920,6 +10926,7 @@ class PremiumPaymentOption(TlObject):
             InternalLinkTypeDirectMessagesChat,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGiftAuction,
             InternalLinkTypeGiftCollection,
             InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
@@ -11831,6 +11838,107 @@ class GiftSettings(TlObject):
         return data_class
 
 
+class GiftAuction(TlObject):
+    r"""Describes an auction on which a gift can be purchased
+
+    Parameters:
+        id (:class:`str`):
+            Identifier of the auction
+
+        gifts_per_round (:class:`int`):
+            Number of gifts distributed in each round
+
+    """
+
+    def __init__(self, id: str = "", gifts_per_round: int = 0) -> None:
+        self.id: Union[str, None] = id
+        r"""Identifier of the auction"""
+        self.gifts_per_round: int = int(gifts_per_round)
+        r"""Number of gifts distributed in each round"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftAuction"]:
+        return "giftAuction"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftAuction"]:
+        return "GiftAuction"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "gifts_per_round": self.gifts_per_round,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftAuction", None]:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", "")
+            data_class.gifts_per_round = int(data.get("gifts_per_round", 0))
+
+        return data_class
+
+
+class GiftBackground(TlObject):
+    r"""Describes background of a gift
+
+    Parameters:
+        center_color (:class:`int`):
+            Center color in RGB format
+
+        edge_color (:class:`int`):
+            Edge color in RGB format
+
+        text_color (:class:`int`):
+            Text color in RGB format
+
+    """
+
+    def __init__(
+        self, center_color: int = 0, edge_color: int = 0, text_color: int = 0
+    ) -> None:
+        self.center_color: int = int(center_color)
+        r"""Center color in RGB format"""
+        self.edge_color: int = int(edge_color)
+        r"""Edge color in RGB format"""
+        self.text_color: int = int(text_color)
+        r"""Text color in RGB format"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftBackground"]:
+        return "giftBackground"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftBackground"]:
+        return "GiftBackground"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "center_color": self.center_color,
+            "edge_color": self.edge_color,
+            "text_color": self.text_color,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftBackground", None]:
+        if data:
+            data_class = cls()
+            data_class.center_color = int(data.get("center_color", 0))
+            data_class.edge_color = int(data.get("edge_color", 0))
+            data_class.text_color = int(data.get("text_color", 0))
+
+        return data_class
+
+
 class GiftPurchaseLimits(TlObject):
     r"""Describes the maximum number of times that a specific gift can be purchased
 
@@ -12690,6 +12798,9 @@ class Gift(TlObject):
         is_premium (:class:`bool`):
             True, if the gift can be bought only by Telegram Premium subscribers
 
+        auction_info (:class:`~pytdbot.types.GiftAuction`):
+            Information about the auction on which the gift can be purchased; may be null if the gift can be purchased directly
+
         next_send_date (:class:`int`):
             Point in time \(Unix timestamp\) when the gift can be sent next time by the current user; can be 0 or a date in the past\. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now
 
@@ -12718,6 +12829,7 @@ class Gift(TlObject):
         has_colors: bool = False,
         is_for_birthday: bool = False,
         is_premium: bool = False,
+        auction_info: GiftAuction = None,
         next_send_date: int = 0,
         user_limits: GiftPurchaseLimits = None,
         overall_limits: GiftPurchaseLimits = None,
@@ -12742,6 +12854,8 @@ class Gift(TlObject):
         r"""True, if the gift is a birthday gift"""
         self.is_premium: bool = bool(is_premium)
         r"""True, if the gift can be bought only by Telegram Premium subscribers"""
+        self.auction_info: Union[GiftAuction, None] = auction_info
+        r"""Information about the auction on which the gift can be purchased; may be null if the gift can be purchased directly"""
         self.next_send_date: int = int(next_send_date)
         r"""Point in time \(Unix timestamp\) when the gift can be sent next time by the current user; can be 0 or a date in the past\. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now"""
         self.user_limits: Union[GiftPurchaseLimits, None] = user_limits
@@ -12776,6 +12890,7 @@ class Gift(TlObject):
             "has_colors": self.has_colors,
             "is_for_birthday": self.is_for_birthday,
             "is_premium": self.is_premium,
+            "auction_info": self.auction_info,
             "next_send_date": self.next_send_date,
             "user_limits": self.user_limits,
             "overall_limits": self.overall_limits,
@@ -12798,6 +12913,7 @@ class Gift(TlObject):
             data_class.has_colors = data.get("has_colors", False)
             data_class.is_for_birthday = data.get("is_for_birthday", False)
             data_class.is_premium = data.get("is_premium", False)
+            data_class.auction_info = data.get("auction_info", None)
             data_class.next_send_date = int(data.get("next_send_date", 0))
             data_class.user_limits = data.get("user_limits", None)
             data_class.overall_limits = data.get("overall_limits", None)
@@ -14393,6 +14509,497 @@ class GiftUpgradePreview(TlObject):
         return data_class
 
 
+class AuctionBid(TlObject):
+    r"""Describes a bid in an auction
+
+    Parameters:
+        star_count (:class:`int`):
+            The number of Telegram Stars that were put in the bid
+
+        bid_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the bid was made
+
+        position (:class:`int`):
+            Position of the bid in the list of all bids
+
+    """
+
+    def __init__(
+        self, star_count: int = 0, bid_date: int = 0, position: int = 0
+    ) -> None:
+        self.star_count: int = int(star_count)
+        r"""The number of Telegram Stars that were put in the bid"""
+        self.bid_date: int = int(bid_date)
+        r"""Point in time \(Unix timestamp\) when the bid was made"""
+        self.position: int = int(position)
+        r"""Position of the bid in the list of all bids"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["auctionBid"]:
+        return "auctionBid"
+
+    @classmethod
+    def getClass(self) -> Literal["AuctionBid"]:
+        return "AuctionBid"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "bid_date": self.bid_date,
+            "position": self.position,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["AuctionBid", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.bid_date = int(data.get("bid_date", 0))
+            data_class.position = int(data.get("position", 0))
+
+        return data_class
+
+
+class UserAuctionBid(TlObject):
+    r"""Describes a bid of the current user in an auction
+
+    Parameters:
+        star_count (:class:`int`):
+            The number of Telegram Stars that were put in the bid
+
+        bid_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the bid was made
+
+        next_bid_star_count (:class:`int`):
+            The minimum number of Telegram Stars that can be put for the next bid
+
+        owner_id (:class:`~pytdbot.types.MessageSender`):
+            Identifier of the user or the chat that will receive the auctioned item\. If the auction is opened in context of another user or chat, then a warning is supposed to be shown to the current user
+
+        was_returned (:class:`bool`):
+            True, if the bid was returned to the user, because it was outbid and can't win anymore
+
+    """
+
+    def __init__(
+        self,
+        star_count: int = 0,
+        bid_date: int = 0,
+        next_bid_star_count: int = 0,
+        owner_id: MessageSender = None,
+        was_returned: bool = False,
+    ) -> None:
+        self.star_count: int = int(star_count)
+        r"""The number of Telegram Stars that were put in the bid"""
+        self.bid_date: int = int(bid_date)
+        r"""Point in time \(Unix timestamp\) when the bid was made"""
+        self.next_bid_star_count: int = int(next_bid_star_count)
+        r"""The minimum number of Telegram Stars that can be put for the next bid"""
+        self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
+        r"""Identifier of the user or the chat that will receive the auctioned item\. If the auction is opened in context of another user or chat, then a warning is supposed to be shown to the current user"""
+        self.was_returned: bool = bool(was_returned)
+        r"""True, if the bid was returned to the user, because it was outbid and can't win anymore"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["userAuctionBid"]:
+        return "userAuctionBid"
+
+    @classmethod
+    def getClass(self) -> Literal["UserAuctionBid"]:
+        return "UserAuctionBid"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "star_count": self.star_count,
+            "bid_date": self.bid_date,
+            "next_bid_star_count": self.next_bid_star_count,
+            "owner_id": self.owner_id,
+            "was_returned": self.was_returned,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UserAuctionBid", None]:
+        if data:
+            data_class = cls()
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.bid_date = int(data.get("bid_date", 0))
+            data_class.next_bid_star_count = int(data.get("next_bid_star_count", 0))
+            data_class.owner_id = data.get("owner_id", None)
+            data_class.was_returned = data.get("was_returned", False)
+
+        return data_class
+
+
+class AuctionStateActive(TlObject, AuctionState):
+    r"""Contains information about an ongoing auction
+
+    Parameters:
+        start_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the auction started
+
+        end_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the auction will be ended
+
+        min_bid (:class:`int`):
+            The minimum possible bid in the auction in Telegram Stars
+
+        bid_levels (List[:class:`~pytdbot.types.AuctionBid`]):
+            A sparse list of bids that were made in the auction
+
+        top_bidder_user_ids (List[:class:`int`]):
+            User identifiers of at most 3 users with the biggest bids
+
+        current_round_end_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the current round will end
+
+        current_round_number (:class:`int`):
+            1\-based number of the current round
+
+        total_round_count (:class:`int`):
+            The total number of rounds
+
+        left_item_count (:class:`int`):
+            The number of items that have to be distributed on the auciton
+
+        acquired_item_count (:class:`int`):
+            The number of items that were purchased by the current user on the auciton
+
+        user_bid (:class:`~pytdbot.types.UserAuctionBid`):
+            Bid of the current user in the auction; may be null if none
+
+    """
+
+    def __init__(
+        self,
+        start_date: int = 0,
+        end_date: int = 0,
+        min_bid: int = 0,
+        bid_levels: List[AuctionBid] = None,
+        top_bidder_user_ids: List[int] = None,
+        current_round_end_date: int = 0,
+        current_round_number: int = 0,
+        total_round_count: int = 0,
+        left_item_count: int = 0,
+        acquired_item_count: int = 0,
+        user_bid: UserAuctionBid = None,
+    ) -> None:
+        self.start_date: int = int(start_date)
+        r"""Point in time \(Unix timestamp\) when the auction started"""
+        self.end_date: int = int(end_date)
+        r"""Point in time \(Unix timestamp\) when the auction will be ended"""
+        self.min_bid: int = int(min_bid)
+        r"""The minimum possible bid in the auction in Telegram Stars"""
+        self.bid_levels: List[AuctionBid] = bid_levels or []
+        r"""A sparse list of bids that were made in the auction"""
+        self.top_bidder_user_ids: List[int] = top_bidder_user_ids or []
+        r"""User identifiers of at most 3 users with the biggest bids"""
+        self.current_round_end_date: int = int(current_round_end_date)
+        r"""Point in time \(Unix timestamp\) when the current round will end"""
+        self.current_round_number: int = int(current_round_number)
+        r"""1\-based number of the current round"""
+        self.total_round_count: int = int(total_round_count)
+        r"""The total number of rounds"""
+        self.left_item_count: int = int(left_item_count)
+        r"""The number of items that have to be distributed on the auciton"""
+        self.acquired_item_count: int = int(acquired_item_count)
+        r"""The number of items that were purchased by the current user on the auciton"""
+        self.user_bid: Union[UserAuctionBid, None] = user_bid
+        r"""Bid of the current user in the auction; may be null if none"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["auctionStateActive"]:
+        return "auctionStateActive"
+
+    @classmethod
+    def getClass(self) -> Literal["AuctionState"]:
+        return "AuctionState"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "min_bid": self.min_bid,
+            "bid_levels": self.bid_levels,
+            "top_bidder_user_ids": self.top_bidder_user_ids,
+            "current_round_end_date": self.current_round_end_date,
+            "current_round_number": self.current_round_number,
+            "total_round_count": self.total_round_count,
+            "left_item_count": self.left_item_count,
+            "acquired_item_count": self.acquired_item_count,
+            "user_bid": self.user_bid,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["AuctionStateActive", None]:
+        if data:
+            data_class = cls()
+            data_class.start_date = int(data.get("start_date", 0))
+            data_class.end_date = int(data.get("end_date", 0))
+            data_class.min_bid = int(data.get("min_bid", 0))
+            data_class.bid_levels = data.get("bid_levels", None)
+            data_class.top_bidder_user_ids = data.get("top_bidder_user_ids", None)
+            data_class.current_round_end_date = int(
+                data.get("current_round_end_date", 0)
+            )
+            data_class.current_round_number = int(data.get("current_round_number", 0))
+            data_class.total_round_count = int(data.get("total_round_count", 0))
+            data_class.left_item_count = int(data.get("left_item_count", 0))
+            data_class.acquired_item_count = int(data.get("acquired_item_count", 0))
+            data_class.user_bid = data.get("user_bid", None)
+
+        return data_class
+
+
+class AuctionStateFinished(TlObject, AuctionState):
+    r"""Contains information about a finished auction
+
+    Parameters:
+        start_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the auction started
+
+        end_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the auction will be ended
+
+        average_price (:class:`int`):
+            Average price of bought items in Telegram Stars
+
+        acquired_item_count (:class:`int`):
+            The number of items that were purchased by the current user on the auciton
+
+    """
+
+    def __init__(
+        self,
+        start_date: int = 0,
+        end_date: int = 0,
+        average_price: int = 0,
+        acquired_item_count: int = 0,
+    ) -> None:
+        self.start_date: int = int(start_date)
+        r"""Point in time \(Unix timestamp\) when the auction started"""
+        self.end_date: int = int(end_date)
+        r"""Point in time \(Unix timestamp\) when the auction will be ended"""
+        self.average_price: int = int(average_price)
+        r"""Average price of bought items in Telegram Stars"""
+        self.acquired_item_count: int = int(acquired_item_count)
+        r"""The number of items that were purchased by the current user on the auciton"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["auctionStateFinished"]:
+        return "auctionStateFinished"
+
+    @classmethod
+    def getClass(self) -> Literal["AuctionState"]:
+        return "AuctionState"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "average_price": self.average_price,
+            "acquired_item_count": self.acquired_item_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["AuctionStateFinished", None]:
+        if data:
+            data_class = cls()
+            data_class.start_date = int(data.get("start_date", 0))
+            data_class.end_date = int(data.get("end_date", 0))
+            data_class.average_price = int(data.get("average_price", 0))
+            data_class.acquired_item_count = int(data.get("acquired_item_count", 0))
+
+        return data_class
+
+
+class GiftAuctionState(TlObject):
+    r"""Represent auction state of a gift
+
+    Parameters:
+        gift (:class:`~pytdbot.types.Gift`):
+            The gift
+
+        state (:class:`~pytdbot.types.AuctionState`):
+            Auction state of the gift
+
+    """
+
+    def __init__(self, gift: Gift = None, state: AuctionState = None) -> None:
+        self.gift: Union[Gift, None] = gift
+        r"""The gift"""
+        self.state: Union[AuctionStateActive, AuctionStateFinished, None] = state
+        r"""Auction state of the gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftAuctionState"]:
+        return "giftAuctionState"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftAuctionState"]:
+        return "GiftAuctionState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "gift": self.gift, "state": self.state}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftAuctionState", None]:
+        if data:
+            data_class = cls()
+            data_class.gift = data.get("gift", None)
+            data_class.state = data.get("state", None)
+
+        return data_class
+
+
+class GiftAuctionAcquiredGift(TlObject):
+    r"""Represents a gift that was acquired by the current user on an auction
+
+    Parameters:
+        receiver_id (:class:`~pytdbot.types.MessageSender`):
+            Receiver of the gift
+
+        date (:class:`int`):
+            Point in time \(Unix timestamp\) when the gift was acquired
+
+        star_count (:class:`int`):
+            The number of Telegram Stars that were paid for the gift
+
+        auction_round_number (:class:`int`):
+            Identifier of the auction round in which the gift was acquired
+
+        auction_round_position (:class:`int`):
+            Position of the user in the round among all auction participants
+
+        text (:class:`~pytdbot.types.FormattedText`):
+            Message added to the gift
+
+        is_private (:class:`bool`):
+            True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them
+
+    """
+
+    def __init__(
+        self,
+        receiver_id: MessageSender = None,
+        date: int = 0,
+        star_count: int = 0,
+        auction_round_number: int = 0,
+        auction_round_position: int = 0,
+        text: FormattedText = None,
+        is_private: bool = False,
+    ) -> None:
+        self.receiver_id: Union[MessageSenderUser, MessageSenderChat, None] = (
+            receiver_id
+        )
+        r"""Receiver of the gift"""
+        self.date: int = int(date)
+        r"""Point in time \(Unix timestamp\) when the gift was acquired"""
+        self.star_count: int = int(star_count)
+        r"""The number of Telegram Stars that were paid for the gift"""
+        self.auction_round_number: int = int(auction_round_number)
+        r"""Identifier of the auction round in which the gift was acquired"""
+        self.auction_round_position: int = int(auction_round_position)
+        r"""Position of the user in the round among all auction participants"""
+        self.text: Union[FormattedText, None] = text
+        r"""Message added to the gift"""
+        self.is_private: bool = bool(is_private)
+        r"""True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftAuctionAcquiredGift"]:
+        return "giftAuctionAcquiredGift"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftAuctionAcquiredGift"]:
+        return "GiftAuctionAcquiredGift"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "receiver_id": self.receiver_id,
+            "date": self.date,
+            "star_count": self.star_count,
+            "auction_round_number": self.auction_round_number,
+            "auction_round_position": self.auction_round_position,
+            "text": self.text,
+            "is_private": self.is_private,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftAuctionAcquiredGift", None]:
+        if data:
+            data_class = cls()
+            data_class.receiver_id = data.get("receiver_id", None)
+            data_class.date = int(data.get("date", 0))
+            data_class.star_count = int(data.get("star_count", 0))
+            data_class.auction_round_number = int(data.get("auction_round_number", 0))
+            data_class.auction_round_position = int(
+                data.get("auction_round_position", 0)
+            )
+            data_class.text = data.get("text", None)
+            data_class.is_private = data.get("is_private", False)
+
+        return data_class
+
+
+class GiftAuctionAcquiredGifts(TlObject):
+    r"""Represents a list of gifts that were acquired by the current user on an auction
+
+    Parameters:
+        gifts (List[:class:`~pytdbot.types.GiftAuctionAcquiredGift`]):
+            The list of acquired gifts
+
+    """
+
+    def __init__(self, gifts: List[GiftAuctionAcquiredGift] = None) -> None:
+        self.gifts: List[GiftAuctionAcquiredGift] = gifts or []
+        r"""The list of acquired gifts"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftAuctionAcquiredGifts"]:
+        return "giftAuctionAcquiredGifts"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftAuctionAcquiredGifts"]:
+        return "GiftAuctionAcquiredGifts"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "gifts": self.gifts}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftAuctionAcquiredGifts", None]:
+        if data:
+            data_class = cls()
+            data_class.gifts = data.get("gifts", None)
+
+        return data_class
+
+
 class TransactionDirectionIncoming(TlObject, TransactionDirection):
     r"""The transaction is incoming and increases the amount of owned currency"""
 
@@ -15336,6 +15943,48 @@ class StarTransactionTypeChannelSubscriptionSale(TlObject, StarTransactionType):
             data_class = cls()
             data_class.user_id = int(data.get("user_id", 0))
             data_class.subscription_period = int(data.get("subscription_period", 0))
+
+        return data_class
+
+
+class StarTransactionTypeGiftAuctionBid(TlObject, StarTransactionType):
+    r"""The transaction is a bid on a gift auction; for regular users only
+
+    Parameters:
+        owner_id (:class:`~pytdbot.types.MessageSender`):
+            Identifier of the user that will receive the gift
+
+        gift (:class:`~pytdbot.types.Gift`):
+            The gift
+
+    """
+
+    def __init__(self, owner_id: MessageSender = None, gift: Gift = None) -> None:
+        self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
+        r"""Identifier of the user that will receive the gift"""
+        self.gift: Union[Gift, None] = gift
+        r"""The gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["starTransactionTypeGiftAuctionBid"]:
+        return "starTransactionTypeGiftAuctionBid"
+
+    @classmethod
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "owner_id": self.owner_id, "gift": self.gift}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StarTransactionTypeGiftAuctionBid", None]:
+        if data:
+            data_class = cls()
+            data_class.owner_id = data.get("owner_id", None)
+            data_class.gift = data.get("gift", None)
 
         return data_class
 
@@ -16488,6 +17137,7 @@ class StarTransaction(TlObject):
             StarTransactionTypeBotSubscriptionSale,
             StarTransactionTypeChannelSubscriptionPurchase,
             StarTransactionTypeChannelSubscriptionSale,
+            StarTransactionTypeGiftAuctionBid,
             StarTransactionTypeGiftPurchase,
             StarTransactionTypeGiftTransfer,
             StarTransactionTypeGiftOriginalDetailsDrop,
@@ -18551,6 +19201,7 @@ class BotInfo(TlObject):
             InternalLinkTypeDirectMessagesChat,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGiftAuction,
             InternalLinkTypeGiftCollection,
             InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
@@ -18612,6 +19263,7 @@ class BotInfo(TlObject):
             InternalLinkTypeDirectMessagesChat,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGiftAuction,
             InternalLinkTypeGiftCollection,
             InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
@@ -18673,6 +19325,7 @@ class BotInfo(TlObject):
             InternalLinkTypeDirectMessagesChat,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGiftAuction,
             InternalLinkTypeGiftCollection,
             InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
@@ -18734,6 +19387,7 @@ class BotInfo(TlObject):
             InternalLinkTypeDirectMessagesChat,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGiftAuction,
             InternalLinkTypeGiftCollection,
             InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
@@ -36016,6 +36670,7 @@ class WebPageInstantView(TlObject):
             InternalLinkTypeDirectMessagesChat,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGiftAuction,
             InternalLinkTypeGiftCollection,
             InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
@@ -36926,6 +37581,64 @@ class LinkPreviewTypeExternalVideo(TlObject, LinkPreviewType):
             data_class.width = int(data.get("width", 0))
             data_class.height = int(data.get("height", 0))
             data_class.duration = int(data.get("duration", 0))
+
+        return data_class
+
+
+class LinkPreviewTypeGiftAuction(TlObject, LinkPreviewType):
+    r"""The link is a link to a gift auction
+
+    Parameters:
+        gift (:class:`~pytdbot.types.Gift`):
+            The gift
+
+        gift_background (:class:`~pytdbot.types.GiftBackground`):
+            Background of the gift
+
+        auction_end_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the auction will be ended
+
+    """
+
+    def __init__(
+        self,
+        gift: Gift = None,
+        gift_background: GiftBackground = None,
+        auction_end_date: int = 0,
+    ) -> None:
+        self.gift: Union[Gift, None] = gift
+        r"""The gift"""
+        self.gift_background: Union[GiftBackground, None] = gift_background
+        r"""Background of the gift"""
+        self.auction_end_date: int = int(auction_end_date)
+        r"""Point in time \(Unix timestamp\) when the auction will be ended"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["linkPreviewTypeGiftAuction"]:
+        return "linkPreviewTypeGiftAuction"
+
+    @classmethod
+    def getClass(self) -> Literal["LinkPreviewType"]:
+        return "LinkPreviewType"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "gift": self.gift,
+            "gift_background": self.gift_background,
+            "auction_end_date": self.auction_end_date,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["LinkPreviewTypeGiftAuction", None]:
+        if data:
+            data_class = cls()
+            data_class.gift = data.get("gift", None)
+            data_class.gift_background = data.get("gift_background", None)
+            data_class.auction_end_date = int(data.get("auction_end_date", 0))
 
         return data_class
 
@@ -37852,6 +38565,7 @@ class LinkPreview(TlObject):
             LinkPreviewTypeEmbeddedVideoPlayer,
             LinkPreviewTypeExternalAudio,
             LinkPreviewTypeExternalVideo,
+            LinkPreviewTypeGiftAuction,
             LinkPreviewTypeGiftCollection,
             LinkPreviewTypeGroupCall,
             LinkPreviewTypeInvoice,
@@ -46969,6 +47683,9 @@ class MessageGift(TlObject, MessageContent):
         is_upgrade_separate (:class:`bool`):
             True, if the upgrade was bought after the gift was sent\. In this case, prepaid upgrade cost must not be added to the gift cost
 
+        is_from_auction (:class:`bool`):
+            True, if the message is a notification about a gift won on an auction
+
         is_private (:class:`bool`):
             True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them
 
@@ -47008,6 +47725,7 @@ class MessageGift(TlObject, MessageContent):
         sell_star_count: int = 0,
         prepaid_upgrade_star_count: int = 0,
         is_upgrade_separate: bool = False,
+        is_from_auction: bool = False,
         is_private: bool = False,
         is_saved: bool = False,
         is_prepaid_upgrade: bool = False,
@@ -47036,6 +47754,8 @@ class MessageGift(TlObject, MessageContent):
         r"""Number of Telegram Stars that were paid by the sender for the ability to upgrade the gift"""
         self.is_upgrade_separate: bool = bool(is_upgrade_separate)
         r"""True, if the upgrade was bought after the gift was sent\. In this case, prepaid upgrade cost must not be added to the gift cost"""
+        self.is_from_auction: bool = bool(is_from_auction)
+        r"""True, if the message is a notification about a gift won on an auction"""
         self.is_private: bool = bool(is_private)
         r"""True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone will be able to see them"""
         self.is_saved: bool = bool(is_saved)
@@ -47077,6 +47797,7 @@ class MessageGift(TlObject, MessageContent):
             "sell_star_count": self.sell_star_count,
             "prepaid_upgrade_star_count": self.prepaid_upgrade_star_count,
             "is_upgrade_separate": self.is_upgrade_separate,
+            "is_from_auction": self.is_from_auction,
             "is_private": self.is_private,
             "is_saved": self.is_saved,
             "is_prepaid_upgrade": self.is_prepaid_upgrade,
@@ -47102,6 +47823,7 @@ class MessageGift(TlObject, MessageContent):
                 data.get("prepaid_upgrade_star_count", 0)
             )
             data_class.is_upgrade_separate = data.get("is_upgrade_separate", False)
+            data_class.is_from_auction = data.get("is_from_auction", False)
             data_class.is_private = data.get("is_private", False)
             data_class.is_saved = data.get("is_saved", False)
             data_class.is_prepaid_upgrade = data.get("is_prepaid_upgrade", False)
@@ -62043,6 +62765,7 @@ class TargetChatInternalLink(TlObject, TargetChat):
             InternalLinkTypeDirectMessagesChat,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGiftAuction,
             InternalLinkTypeGiftCollection,
             InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
@@ -69902,6 +70625,7 @@ class PremiumFeatures(TlObject):
             InternalLinkTypeDirectMessagesChat,
             InternalLinkTypeEditProfileSettings,
             InternalLinkTypeGame,
+            InternalLinkTypeGiftAuction,
             InternalLinkTypeGiftCollection,
             InternalLinkTypeGroupCall,
             InternalLinkTypeInstantView,
@@ -80225,6 +80949,42 @@ class InternalLinkTypeGame(TlObject, InternalLinkType):
             data_class = cls()
             data_class.bot_username = data.get("bot_username", "")
             data_class.game_short_name = data.get("game_short_name", "")
+
+        return data_class
+
+
+class InternalLinkTypeGiftAuction(TlObject, InternalLinkType):
+    r"""The link is a link to a gift auction\. Call getGiftAuctionState with the given auction identifier to process the link
+
+    Parameters:
+        auction_id (:class:`str`):
+            Unique identifier of the auction
+
+    """
+
+    def __init__(self, auction_id: str = "") -> None:
+        self.auction_id: Union[str, None] = auction_id
+        r"""Unique identifier of the auction"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["internalLinkTypeGiftAuction"]:
+        return "internalLinkTypeGiftAuction"
+
+    @classmethod
+    def getClass(self) -> Literal["InternalLinkType"]:
+        return "InternalLinkType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "auction_id": self.auction_id}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InternalLinkTypeGiftAuction", None]:
+        if data:
+            data_class = cls()
+            data_class.auction_id = data.get("auction_id", "")
 
         return data_class
 
@@ -93812,6 +94572,78 @@ class UpdateNewCallSignalingData(TlObject, Update):
             data_class = cls()
             data_class.call_id = int(data.get("call_id", 0))
             data_class.data = b64decode(data.get("data", b""))
+
+        return data_class
+
+
+class UpdateGiftAuctionState(TlObject, Update):
+    r"""State of a gift auction was updated
+
+    Parameters:
+        state (:class:`~pytdbot.types.GiftAuctionState`):
+            New state of the auction
+
+    """
+
+    def __init__(self, state: GiftAuctionState = None) -> None:
+        self.state: Union[GiftAuctionState, None] = state
+        r"""New state of the auction"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateGiftAuctionState"]:
+        return "updateGiftAuctionState"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "state": self.state}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateGiftAuctionState", None]:
+        if data:
+            data_class = cls()
+            data_class.state = data.get("state", None)
+
+        return data_class
+
+
+class UpdateActiveGiftAuctions(TlObject, Update):
+    r"""The list of auctions in which participate the current user has changed
+
+    Parameters:
+        states (List[:class:`~pytdbot.types.GiftAuctionState`]):
+            New states of the auctions
+
+    """
+
+    def __init__(self, states: List[GiftAuctionState] = None) -> None:
+        self.states: List[GiftAuctionState] = states or []
+        r"""New states of the auctions"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateActiveGiftAuctions"]:
+        return "updateActiveGiftAuctions"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "states": self.states}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateActiveGiftAuctions", None]:
+        if data:
+            data_class = cls()
+            data_class.states = data.get("states", None)
 
         return data_class
 

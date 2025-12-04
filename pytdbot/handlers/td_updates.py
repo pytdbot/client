@@ -5852,6 +5852,124 @@ class Updates:
 
         return decorator
 
+    def on_updateGiftAuctionState(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+        timeout: float = None,
+    ) -> Callable:
+        r"""State of a gift auction was updated
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateGiftAuctionState",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateGiftAuctionState",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateGiftAuctionState",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
+    def on_updateActiveGiftAuctions(
+        self: "pytdbot.Client" = None,
+        filters: "pytdbot.filters.Filter" = None,
+        position: int = None,
+        timeout: float = None,
+    ) -> Callable:
+        r"""The list of auctions in which participate the current user has changed
+
+        Parameters:
+            filters (:class:`pytdbot.filters.Filter`, *optional*):
+                An update filter
+
+            position (``int``, *optional*):
+                The function position in handlers list. Default is ``None`` (append)
+
+            timeout (``float``, *optional*):
+                Max execution time for the handler before it timeout. Default is ``None``
+
+        Raises:
+            :py:class:`TypeError`
+        """
+
+        def decorator(func: Callable) -> Callable:
+            if hasattr(func, "_handler"):
+                return func
+            elif isinstance(self, pytdbot.Client):
+                if iscoroutinefunction(func):
+                    self.add_handler(
+                        update_type="updateActiveGiftAuctions",
+                        func=func,
+                        filters=filters,
+                        position=position,
+                        inner_object=False,
+                        timeout=timeout,
+                    )
+                else:
+                    raise TypeError("Handler must be async")
+            elif isinstance(self, pytdbot.filters.Filter):
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateActiveGiftAuctions",
+                    filter=self,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            else:
+                func._handler = Handler(
+                    func=func,
+                    update_type="updateActiveGiftAuctions",
+                    filter=filters,
+                    position=position,
+                    inner_object=False,
+                    timeout=timeout,
+                )
+            return func
+
+        return decorator
+
     def on_updateUserPrivacySettingRules(
         self: "pytdbot.Client" = None,
         filters: "pytdbot.filters.Filter" = None,
