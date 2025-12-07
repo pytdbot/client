@@ -151,8 +151,8 @@ class TdJson:
             client_id,
             json_dumps(
                 data,
-                encode=not self.using_binding,
-                null_terminated=not self.using_binding,
+                encode=True,
+                null_terminated=True,
             ),
         )
 
@@ -169,8 +169,8 @@ class TdJson:
         if res := self._td_execute(
             json_dumps(
                 data,
-                encode=not self.using_binding,
-                null_terminated=not self.using_binding,
+                encode=True,
+                null_terminated=True,
             )
         ):
             return json_loads(res)
