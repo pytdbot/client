@@ -1,10 +1,10 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
-    MessageSenderBoundMethods,
-    MessageBoundMethods,
-    CallbackQueryBoundMethods,
     FileBoundMethods,
+    MessageBoundMethods,
+    MessageSenderBoundMethods,
+    CallbackQueryBoundMethods,
 )
 import pytdbot
 
@@ -155,6 +155,12 @@ class InputChatPhoto:
 
 class GiftResalePrice:
     r"""Describes price of a resold gift"""
+
+    pass
+
+
+class GiftPurchaseOfferState:
+    r"""Describes state of a gift purchase offer"""
 
     pass
 
@@ -2193,6 +2199,118 @@ class TermsOfService(TlObject):
         return data_class
 
 
+class Passkey(TlObject):
+    r"""Describes a passkey
+
+    Parameters:
+        id (:class:`str`):
+            Unique identifier of the passkey
+
+        name (:class:`str`):
+            Name of the passkey
+
+        addition_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the passkey was added
+
+        last_usage_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the passkey was used last time; 0 if never
+
+        software_icon_custom_emoji_id (:class:`int`):
+            Identifier of the custom emoji that is used as the icon of the software, which created the passkey; 0 if unknown
+
+    """
+
+    def __init__(
+        self,
+        id: str = "",
+        name: str = "",
+        addition_date: int = 0,
+        last_usage_date: int = 0,
+        software_icon_custom_emoji_id: int = 0,
+    ) -> None:
+        self.id: Union[str, None] = id
+        r"""Unique identifier of the passkey"""
+        self.name: Union[str, None] = name
+        r"""Name of the passkey"""
+        self.addition_date: int = int(addition_date)
+        r"""Point in time \(Unix timestamp\) when the passkey was added"""
+        self.last_usage_date: int = int(last_usage_date)
+        r"""Point in time \(Unix timestamp\) when the passkey was used last time; 0 if never"""
+        self.software_icon_custom_emoji_id: int = int(software_icon_custom_emoji_id)
+        r"""Identifier of the custom emoji that is used as the icon of the software, which created the passkey; 0 if unknown"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["passkey"]:
+        return "passkey"
+
+    @classmethod
+    def getClass(self) -> Literal["Passkey"]:
+        return "Passkey"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "id": self.id,
+            "name": self.name,
+            "addition_date": self.addition_date,
+            "last_usage_date": self.last_usage_date,
+            "software_icon_custom_emoji_id": self.software_icon_custom_emoji_id,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["Passkey", None]:
+        if data:
+            data_class = cls()
+            data_class.id = data.get("id", "")
+            data_class.name = data.get("name", "")
+            data_class.addition_date = int(data.get("addition_date", 0))
+            data_class.last_usage_date = int(data.get("last_usage_date", 0))
+            data_class.software_icon_custom_emoji_id = int(
+                data.get("software_icon_custom_emoji_id", 0)
+            )
+
+        return data_class
+
+
+class Passkeys(TlObject):
+    r"""Contains a list of passkeys
+
+    Parameters:
+        passkeys (List[:class:`~pytdbot.types.Passkey`]):
+            List of passkeys
+
+    """
+
+    def __init__(self, passkeys: List[Passkey] = None) -> None:
+        self.passkeys: List[Passkey] = passkeys or []
+        r"""List of passkeys"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["passkeys"]:
+        return "passkeys"
+
+    @classmethod
+    def getClass(self) -> Literal["Passkeys"]:
+        return "Passkeys"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "passkeys": self.passkeys}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["Passkeys", None]:
+        if data:
+            data_class = cls()
+            data_class.passkeys = data.get("passkeys", None)
+
+        return data_class
+
+
 class AuthorizationStateWaitTdlibParameters(TlObject, AuthorizationState):
     r"""Initialization parameters are needed\. Call setTdlibParameters to provide them"""
 
@@ -2224,7 +2342,7 @@ class AuthorizationStateWaitTdlibParameters(TlObject, AuthorizationState):
 
 
 class AuthorizationStateWaitPhoneNumber(TlObject, AuthorizationState):
-    r"""TDLib needs the user's phone number to authorize\. Call setAuthenticationPhoneNumber to provide the phone number, or use requestQrCodeAuthentication or checkAuthenticationBotToken for other authentication options"""
+    r"""TDLib needs the user's phone number to authorize\. Call setAuthenticationPhoneNumber to provide the phone number, or use requestQrCodeAuthentication, getAuthenticationPasskeyParameters, or checkAuthenticationBotToken for other authentication options"""
 
     def __init__(self) -> None:
         pass
@@ -6155,7 +6273,7 @@ class AlternativeVideo(TlObject):
             Video height
 
         codec (:class:`str`):
-            Codec used for video file encoding, for example, \"h264\", \"h265\", or \"av1\"
+            Codec used for video file encoding, for example, \"h264\", \"h265\", \"av1\", or \"av01\"
 
         hls_file (:class:`~pytdbot.types.File`):
             HLS file describing the video
@@ -6181,7 +6299,7 @@ class AlternativeVideo(TlObject):
         self.height: int = int(height)
         r"""Video height"""
         self.codec: Union[str, None] = codec
-        r"""Codec used for video file encoding, for example, \"h264\", \"h265\", or \"av1\""""
+        r"""Codec used for video file encoding, for example, \"h264\", \"h265\", \"av1\", or \"av01\""""
         self.hls_file: Union[File, None] = hls_file
         r"""HLS file describing the video"""
         self.video: Union[File, None] = video
@@ -9284,7 +9402,7 @@ class ChatAdministratorRights(TlObject):
             True, if the administrator can invite new users to the chat
 
         can_restrict_members (:class:`bool`):
-            True, if the administrator can restrict, ban, or unban chat members or view supergroup statistics; always true for channels
+            True, if the administrator can restrict, ban, or unban chat members or view supergroup statistics
 
         can_pin_messages (:class:`bool`):
             True, if the administrator can pin messages; applicable to basic groups and supergroups only
@@ -9347,7 +9465,7 @@ class ChatAdministratorRights(TlObject):
         self.can_invite_users: bool = bool(can_invite_users)
         r"""True, if the administrator can invite new users to the chat"""
         self.can_restrict_members: bool = bool(can_restrict_members)
-        r"""True, if the administrator can restrict, ban, or unban chat members or view supergroup statistics; always true for channels"""
+        r"""True, if the administrator can restrict, ban, or unban chat members or view supergroup statistics"""
         self.can_pin_messages: bool = bool(can_pin_messages)
         r"""True, if the administrator can pin messages; applicable to basic groups and supergroups only"""
         self.can_manage_topics: bool = bool(can_manage_topics)
@@ -9495,6 +9613,90 @@ class GiftResalePriceTon(TlObject, GiftResalePrice):
         if data:
             data_class = cls()
             data_class.toncoin_cent_count = int(data.get("toncoin_cent_count", 0))
+
+        return data_class
+
+
+class GiftPurchaseOfferStatePending(TlObject, GiftPurchaseOfferState):
+    r"""The offer must be accepted or rejected"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftPurchaseOfferStatePending"]:
+        return "giftPurchaseOfferStatePending"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftPurchaseOfferState"]:
+        return "GiftPurchaseOfferState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftPurchaseOfferStatePending", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class GiftPurchaseOfferStateAccepted(TlObject, GiftPurchaseOfferState):
+    r"""The offer was accepted"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftPurchaseOfferStateAccepted"]:
+        return "giftPurchaseOfferStateAccepted"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftPurchaseOfferState"]:
+        return "GiftPurchaseOfferState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftPurchaseOfferStateAccepted", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
+class GiftPurchaseOfferStateRejected(TlObject, GiftPurchaseOfferState):
+    r"""The offer was rejected"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftPurchaseOfferStateRejected"]:
+        return "giftPurchaseOfferStateRejected"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftPurchaseOfferState"]:
+        return "GiftPurchaseOfferState"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftPurchaseOfferStateRejected", None]:
+        if data:
+            data_class = cls()
 
         return data_class
 
@@ -11331,7 +11533,7 @@ class PremiumGiftCodeInfo(TlObject):
             True, if the gift code was created for a giveaway
 
         giveaway_message_id (:class:`int`):
-            Identifier of the corresponding giveaway message in the creator\_id chat; can be 0 or an identifier of a deleted message
+            Identifier of the corresponding giveaway message in the creator\_id chat; may be 0 or an identifier of a deleted message
 
         month_count (:class:`int`):
             Number of months the Telegram Premium subscription will be active after code activation; 0 if the number of months isn't integer
@@ -11365,7 +11567,7 @@ class PremiumGiftCodeInfo(TlObject):
         self.is_from_giveaway: bool = bool(is_from_giveaway)
         r"""True, if the gift code was created for a giveaway"""
         self.giveaway_message_id: int = int(giveaway_message_id)
-        r"""Identifier of the corresponding giveaway message in the creator\_id chat; can be 0 or an identifier of a deleted message"""
+        r"""Identifier of the corresponding giveaway message in the creator\_id chat; may be 0 or an identifier of a deleted message"""
         self.month_count: int = int(month_count)
         r"""Number of months the Telegram Premium subscription will be active after code activation; 0 if the number of months isn't integer"""
         self.day_count: int = int(day_count)
@@ -11848,13 +12050,20 @@ class GiftAuction(TlObject):
         gifts_per_round (:class:`int`):
             Number of gifts distributed in each round
 
+        start_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the auction will start
+
     """
 
-    def __init__(self, id: str = "", gifts_per_round: int = 0) -> None:
+    def __init__(
+        self, id: str = "", gifts_per_round: int = 0, start_date: int = 0
+    ) -> None:
         self.id: Union[str, None] = id
         r"""Identifier of the auction"""
         self.gifts_per_round: int = int(gifts_per_round)
         r"""Number of gifts distributed in each round"""
+        self.start_date: int = int(start_date)
+        r"""Point in time \(Unix timestamp\) when the auction will start"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -11872,6 +12081,7 @@ class GiftAuction(TlObject):
             "@type": self.getType(),
             "id": self.id,
             "gifts_per_round": self.gifts_per_round,
+            "start_date": self.start_date,
         }
 
     @classmethod
@@ -11880,6 +12090,7 @@ class GiftAuction(TlObject):
             data_class = cls()
             data_class.id = data.get("id", "")
             data_class.gifts_per_round = int(data.get("gifts_per_round", 0))
+            data_class.start_date = int(data.get("start_date", 0))
 
         return data_class
 
@@ -12210,13 +12421,13 @@ class UpgradedGiftOriginUpgrade(TlObject, UpgradedGiftOrigin):
 
     Parameters:
         gift_message_id (:class:`int`):
-            Identifier of the message with the regular gift that was upgraded; can be 0 or an identifier of a deleted message
+            Identifier of the message with the regular gift that was upgraded; may be 0 or an identifier of a deleted message
 
     """
 
     def __init__(self, gift_message_id: int = 0) -> None:
         self.gift_message_id: int = int(gift_message_id)
-        r"""Identifier of the message with the regular gift that was upgraded; can be 0 or an identifier of a deleted message"""
+        r"""Identifier of the message with the regular gift that was upgraded; may be 0 or an identifier of a deleted message"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -12274,13 +12485,13 @@ class UpgradedGiftOriginResale(TlObject, UpgradedGiftOrigin):
 
     Parameters:
         price (:class:`~pytdbot.types.GiftResalePrice`):
-            Price paid by the sender for the gift
+            Price paid for the gift
 
     """
 
     def __init__(self, price: GiftResalePrice = None) -> None:
         self.price: Union[GiftResalePriceStar, GiftResalePriceTon, None] = price
-        r"""Price paid by the sender for the gift"""
+        r"""Price paid for the gift"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -12357,6 +12568,42 @@ class UpgradedGiftOriginPrepaidUpgrade(TlObject, UpgradedGiftOrigin):
     def from_dict(cls, data: dict) -> Union["UpgradedGiftOriginPrepaidUpgrade", None]:
         if data:
             data_class = cls()
+
+        return data_class
+
+
+class UpgradedGiftOriginOffer(TlObject, UpgradedGiftOrigin):
+    r"""The gift was bought through an offer
+
+    Parameters:
+        price (:class:`~pytdbot.types.GiftResalePrice`):
+            Price paid for the gift
+
+    """
+
+    def __init__(self, price: GiftResalePrice = None) -> None:
+        self.price: Union[GiftResalePriceStar, GiftResalePriceTon, None] = price
+        r"""Price paid for the gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["upgradedGiftOriginOffer"]:
+        return "upgradedGiftOriginOffer"
+
+    @classmethod
+    def getClass(self) -> Literal["UpgradedGiftOrigin"]:
+        return "UpgradedGiftOrigin"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "price": self.price}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpgradedGiftOriginOffer", None]:
+        if data:
+            data_class = cls()
+            data_class.price = data.get("price", None)
 
         return data_class
 
@@ -12789,6 +13036,9 @@ class Gift(TlObject):
         upgrade_star_count (:class:`int`):
             Number of Telegram Stars that must be paid to upgrade the gift; 0 if upgrade isn't possible
 
+        upgrade_variant_count (:class:`int`):
+            Number of unique gift variants that are available for the upgraded gift; 0 if unknown
+
         has_colors (:class:`bool`):
             True, if the gift can be used to customize the user's name, and backgrounds of profile photo, reply header, and link preview
 
@@ -12802,13 +13052,16 @@ class Gift(TlObject):
             Information about the auction on which the gift can be purchased; may be null if the gift can be purchased directly
 
         next_send_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the gift can be sent next time by the current user; can be 0 or a date in the past\. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now
+            Point in time \(Unix timestamp\) when the gift can be sent next time by the current user; may be 0 or a date in the past\. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now
 
         user_limits (:class:`~pytdbot.types.GiftPurchaseLimits`):
             Number of times the gift can be purchased by the current user; may be null if not limited
 
         overall_limits (:class:`~pytdbot.types.GiftPurchaseLimits`):
             Number of times the gift can be purchased all users; may be null if not limited
+
+        background (:class:`~pytdbot.types.GiftBackground`):
+            Background of the gift
 
         first_send_date (:class:`int`):
             Point in time \(Unix timestamp\) when the gift was send for the first time; for sold out gifts only
@@ -12826,6 +13079,7 @@ class Gift(TlObject):
         star_count: int = 0,
         default_sell_star_count: int = 0,
         upgrade_star_count: int = 0,
+        upgrade_variant_count: int = 0,
         has_colors: bool = False,
         is_for_birthday: bool = False,
         is_premium: bool = False,
@@ -12833,6 +13087,7 @@ class Gift(TlObject):
         next_send_date: int = 0,
         user_limits: GiftPurchaseLimits = None,
         overall_limits: GiftPurchaseLimits = None,
+        background: GiftBackground = None,
         first_send_date: int = 0,
         last_send_date: int = 0,
     ) -> None:
@@ -12848,6 +13103,8 @@ class Gift(TlObject):
         r"""Number of Telegram Stars that can be claimed by the receiver instead of the regular gift by default\. If the gift was paid with just bought Telegram Stars, then full value can be claimed"""
         self.upgrade_star_count: int = int(upgrade_star_count)
         r"""Number of Telegram Stars that must be paid to upgrade the gift; 0 if upgrade isn't possible"""
+        self.upgrade_variant_count: int = int(upgrade_variant_count)
+        r"""Number of unique gift variants that are available for the upgraded gift; 0 if unknown"""
         self.has_colors: bool = bool(has_colors)
         r"""True, if the gift can be used to customize the user's name, and backgrounds of profile photo, reply header, and link preview"""
         self.is_for_birthday: bool = bool(is_for_birthday)
@@ -12857,11 +13114,13 @@ class Gift(TlObject):
         self.auction_info: Union[GiftAuction, None] = auction_info
         r"""Information about the auction on which the gift can be purchased; may be null if the gift can be purchased directly"""
         self.next_send_date: int = int(next_send_date)
-        r"""Point in time \(Unix timestamp\) when the gift can be sent next time by the current user; can be 0 or a date in the past\. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now"""
+        r"""Point in time \(Unix timestamp\) when the gift can be sent next time by the current user; may be 0 or a date in the past\. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now"""
         self.user_limits: Union[GiftPurchaseLimits, None] = user_limits
         r"""Number of times the gift can be purchased by the current user; may be null if not limited"""
         self.overall_limits: Union[GiftPurchaseLimits, None] = overall_limits
         r"""Number of times the gift can be purchased all users; may be null if not limited"""
+        self.background: Union[GiftBackground, None] = background
+        r"""Background of the gift"""
         self.first_send_date: int = int(first_send_date)
         r"""Point in time \(Unix timestamp\) when the gift was send for the first time; for sold out gifts only"""
         self.last_send_date: int = int(last_send_date)
@@ -12887,6 +13146,7 @@ class Gift(TlObject):
             "star_count": self.star_count,
             "default_sell_star_count": self.default_sell_star_count,
             "upgrade_star_count": self.upgrade_star_count,
+            "upgrade_variant_count": self.upgrade_variant_count,
             "has_colors": self.has_colors,
             "is_for_birthday": self.is_for_birthday,
             "is_premium": self.is_premium,
@@ -12894,6 +13154,7 @@ class Gift(TlObject):
             "next_send_date": self.next_send_date,
             "user_limits": self.user_limits,
             "overall_limits": self.overall_limits,
+            "background": self.background,
             "first_send_date": self.first_send_date,
             "last_send_date": self.last_send_date,
         }
@@ -12910,6 +13171,7 @@ class Gift(TlObject):
                 data.get("default_sell_star_count", 0)
             )
             data_class.upgrade_star_count = int(data.get("upgrade_star_count", 0))
+            data_class.upgrade_variant_count = int(data.get("upgrade_variant_count", 0))
             data_class.has_colors = data.get("has_colors", False)
             data_class.is_for_birthday = data.get("is_for_birthday", False)
             data_class.is_premium = data.get("is_premium", False)
@@ -12917,6 +13179,7 @@ class Gift(TlObject):
             data_class.next_send_date = int(data.get("next_send_date", 0))
             data_class.user_limits = data.get("user_limits", None)
             data_class.overall_limits = data.get("overall_limits", None)
+            data_class.background = data.get("background", None)
             data_class.first_send_date = int(data.get("first_send_date", 0))
             data_class.last_send_date = int(data.get("last_send_date", 0))
 
@@ -12993,11 +13256,17 @@ class UpgradedGift(TlObject):
         resale_parameters (:class:`~pytdbot.types.GiftResaleParameters`):
             Resale parameters of the gift; may be null if resale isn't possible
 
+        can_send_purchase_offer (:class:`bool`):
+            True, if an offer to purchase the gift can be sent using sendGiftPurchaseOffer
+
         value_currency (:class:`str`):
             ISO 4217 currency code of the currency in which value of the gift is represented; may be empty if unavailable
 
         value_amount (:class:`int`):
             Estimated value of the gift; in the smallest units of the currency; 0 if unavailable
+
+        value_usd_amount (:class:`int`):
+            Estimated value of the gift in USD; in USD cents; 0 if unavailable
 
     """
 
@@ -13025,8 +13294,10 @@ class UpgradedGift(TlObject):
         original_details: UpgradedGiftOriginalDetails = None,
         colors: UpgradedGiftColors = None,
         resale_parameters: GiftResaleParameters = None,
+        can_send_purchase_offer: bool = False,
         value_currency: str = "",
         value_amount: int = 0,
+        value_usd_amount: int = 0,
     ) -> None:
         self.id: int = int(id)
         r"""Unique identifier of the gift"""
@@ -13074,10 +13345,14 @@ class UpgradedGift(TlObject):
         r"""Colors that can be set for user's name, background of empty chat photo, replies to messages and link previews; may be null if none"""
         self.resale_parameters: Union[GiftResaleParameters, None] = resale_parameters
         r"""Resale parameters of the gift; may be null if resale isn't possible"""
+        self.can_send_purchase_offer: bool = bool(can_send_purchase_offer)
+        r"""True, if an offer to purchase the gift can be sent using sendGiftPurchaseOffer"""
         self.value_currency: Union[str, None] = value_currency
         r"""ISO 4217 currency code of the currency in which value of the gift is represented; may be empty if unavailable"""
         self.value_amount: int = int(value_amount)
         r"""Estimated value of the gift; in the smallest units of the currency; 0 if unavailable"""
+        self.value_usd_amount: int = int(value_usd_amount)
+        r"""Estimated value of the gift in USD; in USD cents; 0 if unavailable"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -13115,8 +13390,10 @@ class UpgradedGift(TlObject):
             "original_details": self.original_details,
             "colors": self.colors,
             "resale_parameters": self.resale_parameters,
+            "can_send_purchase_offer": self.can_send_purchase_offer,
             "value_currency": self.value_currency,
             "value_amount": self.value_amount,
+            "value_usd_amount": self.value_usd_amount,
         }
 
     @classmethod
@@ -13145,8 +13422,12 @@ class UpgradedGift(TlObject):
             data_class.original_details = data.get("original_details", None)
             data_class.colors = data.get("colors", None)
             data_class.resale_parameters = data.get("resale_parameters", None)
+            data_class.can_send_purchase_offer = data.get(
+                "can_send_purchase_offer", False
+            )
             data_class.value_currency = data.get("value_currency", "")
             data_class.value_amount = int(data.get("value_amount", 0))
+            data_class.value_usd_amount = int(data.get("value_usd_amount", 0))
 
         return data_class
 
@@ -14172,6 +14453,9 @@ class ReceivedGift(TlObject):
         text (:class:`~pytdbot.types.FormattedText`):
             Message added to the gift
 
+        unique_gift_number (:class:`int`):
+            Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned
+
         is_private (:class:`bool`):
             True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone are able to see them
 
@@ -14233,6 +14517,7 @@ class ReceivedGift(TlObject):
         received_gift_id: str = "",
         sender_id: MessageSender = None,
         text: FormattedText = None,
+        unique_gift_number: int = 0,
         is_private: bool = False,
         is_saved: bool = False,
         is_pinned: bool = False,
@@ -14258,6 +14543,8 @@ class ReceivedGift(TlObject):
         r"""Identifier of a user or a chat that sent the gift; may be null if unknown"""
         self.text: Union[FormattedText, None] = text
         r"""Message added to the gift"""
+        self.unique_gift_number: int = int(unique_gift_number)
+        r"""Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned"""
         self.is_private: bool = bool(is_private)
         r"""True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone are able to see them"""
         self.is_saved: bool = bool(is_saved)
@@ -14314,6 +14601,7 @@ class ReceivedGift(TlObject):
             "received_gift_id": self.received_gift_id,
             "sender_id": self.sender_id,
             "text": self.text,
+            "unique_gift_number": self.unique_gift_number,
             "is_private": self.is_private,
             "is_saved": self.is_saved,
             "is_pinned": self.is_pinned,
@@ -14341,6 +14629,7 @@ class ReceivedGift(TlObject):
             data_class.received_gift_id = data.get("received_gift_id", "")
             data_class.sender_id = data.get("sender_id", None)
             data_class.text = data.get("text", None)
+            data_class.unique_gift_number = int(data.get("unique_gift_number", 0))
             data_class.is_private = data.get("is_private", False)
             data_class.is_saved = data.get("is_saved", False)
             data_class.is_pinned = data.get("is_pinned", False)
@@ -14509,6 +14798,64 @@ class GiftUpgradePreview(TlObject):
         return data_class
 
 
+class GiftUpgradeVariants(TlObject):
+    r"""Contains all possible variants of upgraded gifts for the given regular gift
+
+    Parameters:
+        models (List[:class:`~pytdbot.types.UpgradedGiftModel`]):
+            Models that can be chosen for the gift after upgrade
+
+        symbols (List[:class:`~pytdbot.types.UpgradedGiftSymbol`]):
+            Symbols that can be chosen for the gift after upgrade
+
+        backdrops (List[:class:`~pytdbot.types.UpgradedGiftBackdrop`]):
+            Backdrops that can be chosen for the gift after upgrade
+
+    """
+
+    def __init__(
+        self,
+        models: List[UpgradedGiftModel] = None,
+        symbols: List[UpgradedGiftSymbol] = None,
+        backdrops: List[UpgradedGiftBackdrop] = None,
+    ) -> None:
+        self.models: List[UpgradedGiftModel] = models or []
+        r"""Models that can be chosen for the gift after upgrade"""
+        self.symbols: List[UpgradedGiftSymbol] = symbols or []
+        r"""Symbols that can be chosen for the gift after upgrade"""
+        self.backdrops: List[UpgradedGiftBackdrop] = backdrops or []
+        r"""Backdrops that can be chosen for the gift after upgrade"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["giftUpgradeVariants"]:
+        return "giftUpgradeVariants"
+
+    @classmethod
+    def getClass(self) -> Literal["GiftUpgradeVariants"]:
+        return "GiftUpgradeVariants"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "models": self.models,
+            "symbols": self.symbols,
+            "backdrops": self.backdrops,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["GiftUpgradeVariants", None]:
+        if data:
+            data_class = cls()
+            data_class.models = data.get("models", None)
+            data_class.symbols = data.get("symbols", None)
+            data_class.backdrops = data.get("backdrops", None)
+
+        return data_class
+
+
 class AuctionBid(TlObject):
     r"""Describes a bid in an auction
 
@@ -14638,12 +14985,78 @@ class UserAuctionBid(TlObject):
         return data_class
 
 
+class AuctionRound(TlObject):
+    r"""Describes a round of an auction
+
+    Parameters:
+        number (:class:`int`):
+            1\-based number of the round
+
+        duration (:class:`int`):
+            Duration of the round, in seconds
+
+        extend_time (:class:`int`):
+            The number of seconds for which the round will be extended if there are changes in the top winners
+
+        top_winner_count (:class:`int`):
+            The number of top winners who trigger round extension if changed
+
+    """
+
+    def __init__(
+        self,
+        number: int = 0,
+        duration: int = 0,
+        extend_time: int = 0,
+        top_winner_count: int = 0,
+    ) -> None:
+        self.number: int = int(number)
+        r"""1\-based number of the round"""
+        self.duration: int = int(duration)
+        r"""Duration of the round, in seconds"""
+        self.extend_time: int = int(extend_time)
+        r"""The number of seconds for which the round will be extended if there are changes in the top winners"""
+        self.top_winner_count: int = int(top_winner_count)
+        r"""The number of top winners who trigger round extension if changed"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["auctionRound"]:
+        return "auctionRound"
+
+    @classmethod
+    def getClass(self) -> Literal["AuctionRound"]:
+        return "AuctionRound"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "number": self.number,
+            "duration": self.duration,
+            "extend_time": self.extend_time,
+            "top_winner_count": self.top_winner_count,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["AuctionRound", None]:
+        if data:
+            data_class = cls()
+            data_class.number = int(data.get("number", 0))
+            data_class.duration = int(data.get("duration", 0))
+            data_class.extend_time = int(data.get("extend_time", 0))
+            data_class.top_winner_count = int(data.get("top_winner_count", 0))
+
+        return data_class
+
+
 class AuctionStateActive(TlObject, AuctionState):
-    r"""Contains information about an ongoing auction
+    r"""Contains information about an ongoing or scheduled auction
 
     Parameters:
         start_date (:class:`int`):
-            Point in time \(Unix timestamp\) when the auction started
+            Point in time \(Unix timestamp\) when the auction started or will start
 
         end_date (:class:`int`):
             Point in time \(Unix timestamp\) when the auction will be ended
@@ -14657,6 +15070,9 @@ class AuctionStateActive(TlObject, AuctionState):
         top_bidder_user_ids (List[:class:`int`]):
             User identifiers of at most 3 users with the biggest bids
 
+        rounds (List[:class:`~pytdbot.types.AuctionRound`]):
+            Rounds of the auction in which their duration or extension rules are changed
+
         current_round_end_date (:class:`int`):
             Point in time \(Unix timestamp\) when the current round will end
 
@@ -14666,11 +15082,14 @@ class AuctionStateActive(TlObject, AuctionState):
         total_round_count (:class:`int`):
             The total number of rounds
 
+        distributed_item_count (:class:`int`):
+            The number of items that were purchased on the auction by all users
+
         left_item_count (:class:`int`):
-            The number of items that have to be distributed on the auciton
+            The number of items that have to be distributed on the auction
 
         acquired_item_count (:class:`int`):
-            The number of items that were purchased by the current user on the auciton
+            The number of items that were purchased by the current user on the auction
 
         user_bid (:class:`~pytdbot.types.UserAuctionBid`):
             Bid of the current user in the auction; may be null if none
@@ -14684,15 +15103,17 @@ class AuctionStateActive(TlObject, AuctionState):
         min_bid: int = 0,
         bid_levels: List[AuctionBid] = None,
         top_bidder_user_ids: List[int] = None,
+        rounds: List[AuctionRound] = None,
         current_round_end_date: int = 0,
         current_round_number: int = 0,
         total_round_count: int = 0,
+        distributed_item_count: int = 0,
         left_item_count: int = 0,
         acquired_item_count: int = 0,
         user_bid: UserAuctionBid = None,
     ) -> None:
         self.start_date: int = int(start_date)
-        r"""Point in time \(Unix timestamp\) when the auction started"""
+        r"""Point in time \(Unix timestamp\) when the auction started or will start"""
         self.end_date: int = int(end_date)
         r"""Point in time \(Unix timestamp\) when the auction will be ended"""
         self.min_bid: int = int(min_bid)
@@ -14701,16 +15122,20 @@ class AuctionStateActive(TlObject, AuctionState):
         r"""A sparse list of bids that were made in the auction"""
         self.top_bidder_user_ids: List[int] = top_bidder_user_ids or []
         r"""User identifiers of at most 3 users with the biggest bids"""
+        self.rounds: List[AuctionRound] = rounds or []
+        r"""Rounds of the auction in which their duration or extension rules are changed"""
         self.current_round_end_date: int = int(current_round_end_date)
         r"""Point in time \(Unix timestamp\) when the current round will end"""
         self.current_round_number: int = int(current_round_number)
         r"""1\-based number of the current round"""
         self.total_round_count: int = int(total_round_count)
         r"""The total number of rounds"""
+        self.distributed_item_count: int = int(distributed_item_count)
+        r"""The number of items that were purchased on the auction by all users"""
         self.left_item_count: int = int(left_item_count)
-        r"""The number of items that have to be distributed on the auciton"""
+        r"""The number of items that have to be distributed on the auction"""
         self.acquired_item_count: int = int(acquired_item_count)
-        r"""The number of items that were purchased by the current user on the auciton"""
+        r"""The number of items that were purchased by the current user on the auction"""
         self.user_bid: Union[UserAuctionBid, None] = user_bid
         r"""Bid of the current user in the auction; may be null if none"""
 
@@ -14733,9 +15158,11 @@ class AuctionStateActive(TlObject, AuctionState):
             "min_bid": self.min_bid,
             "bid_levels": self.bid_levels,
             "top_bidder_user_ids": self.top_bidder_user_ids,
+            "rounds": self.rounds,
             "current_round_end_date": self.current_round_end_date,
             "current_round_number": self.current_round_number,
             "total_round_count": self.total_round_count,
+            "distributed_item_count": self.distributed_item_count,
             "left_item_count": self.left_item_count,
             "acquired_item_count": self.acquired_item_count,
             "user_bid": self.user_bid,
@@ -14750,11 +15177,15 @@ class AuctionStateActive(TlObject, AuctionState):
             data_class.min_bid = int(data.get("min_bid", 0))
             data_class.bid_levels = data.get("bid_levels", None)
             data_class.top_bidder_user_ids = data.get("top_bidder_user_ids", None)
+            data_class.rounds = data.get("rounds", None)
             data_class.current_round_end_date = int(
                 data.get("current_round_end_date", 0)
             )
             data_class.current_round_number = int(data.get("current_round_number", 0))
             data_class.total_round_count = int(data.get("total_round_count", 0))
+            data_class.distributed_item_count = int(
+                data.get("distributed_item_count", 0)
+            )
             data_class.left_item_count = int(data.get("left_item_count", 0))
             data_class.acquired_item_count = int(data.get("acquired_item_count", 0))
             data_class.user_bid = data.get("user_bid", None)
@@ -14776,7 +15207,16 @@ class AuctionStateFinished(TlObject, AuctionState):
             Average price of bought items in Telegram Stars
 
         acquired_item_count (:class:`int`):
-            The number of items that were purchased by the current user on the auciton
+            The number of items that were purchased by the current user on the auction
+
+        telegram_listed_item_count (:class:`int`):
+            Number of items from the auction being resold on Telegram
+
+        fragment_listed_item_count (:class:`int`):
+            Number of items from the auction being resold on Fragment
+
+        fragment_url (:class:`str`):
+            The HTTPS link to the Fragment for the resold items; may be empty if there are no such items being sold on Fragment
 
     """
 
@@ -14786,6 +15226,9 @@ class AuctionStateFinished(TlObject, AuctionState):
         end_date: int = 0,
         average_price: int = 0,
         acquired_item_count: int = 0,
+        telegram_listed_item_count: int = 0,
+        fragment_listed_item_count: int = 0,
+        fragment_url: str = "",
     ) -> None:
         self.start_date: int = int(start_date)
         r"""Point in time \(Unix timestamp\) when the auction started"""
@@ -14794,7 +15237,13 @@ class AuctionStateFinished(TlObject, AuctionState):
         self.average_price: int = int(average_price)
         r"""Average price of bought items in Telegram Stars"""
         self.acquired_item_count: int = int(acquired_item_count)
-        r"""The number of items that were purchased by the current user on the auciton"""
+        r"""The number of items that were purchased by the current user on the auction"""
+        self.telegram_listed_item_count: int = int(telegram_listed_item_count)
+        r"""Number of items from the auction being resold on Telegram"""
+        self.fragment_listed_item_count: int = int(fragment_listed_item_count)
+        r"""Number of items from the auction being resold on Fragment"""
+        self.fragment_url: Union[str, None] = fragment_url
+        r"""The HTTPS link to the Fragment for the resold items; may be empty if there are no such items being sold on Fragment"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -14814,6 +15263,9 @@ class AuctionStateFinished(TlObject, AuctionState):
             "end_date": self.end_date,
             "average_price": self.average_price,
             "acquired_item_count": self.acquired_item_count,
+            "telegram_listed_item_count": self.telegram_listed_item_count,
+            "fragment_listed_item_count": self.fragment_listed_item_count,
+            "fragment_url": self.fragment_url,
         }
 
     @classmethod
@@ -14824,6 +15276,13 @@ class AuctionStateFinished(TlObject, AuctionState):
             data_class.end_date = int(data.get("end_date", 0))
             data_class.average_price = int(data.get("average_price", 0))
             data_class.acquired_item_count = int(data.get("acquired_item_count", 0))
+            data_class.telegram_listed_item_count = int(
+                data.get("telegram_listed_item_count", 0)
+            )
+            data_class.fragment_listed_item_count = int(
+                data.get("fragment_listed_item_count", 0)
+            )
+            data_class.fragment_url = data.get("fragment_url", "")
 
         return data_class
 
@@ -14889,6 +15348,9 @@ class GiftAuctionAcquiredGift(TlObject):
         auction_round_position (:class:`int`):
             Position of the user in the round among all auction participants
 
+        unique_gift_number (:class:`int`):
+            Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned
+
         text (:class:`~pytdbot.types.FormattedText`):
             Message added to the gift
 
@@ -14904,6 +15366,7 @@ class GiftAuctionAcquiredGift(TlObject):
         star_count: int = 0,
         auction_round_number: int = 0,
         auction_round_position: int = 0,
+        unique_gift_number: int = 0,
         text: FormattedText = None,
         is_private: bool = False,
     ) -> None:
@@ -14919,6 +15382,8 @@ class GiftAuctionAcquiredGift(TlObject):
         r"""Identifier of the auction round in which the gift was acquired"""
         self.auction_round_position: int = int(auction_round_position)
         r"""Position of the user in the round among all auction participants"""
+        self.unique_gift_number: int = int(unique_gift_number)
+        r"""Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned"""
         self.text: Union[FormattedText, None] = text
         r"""Message added to the gift"""
         self.is_private: bool = bool(is_private)
@@ -14943,6 +15408,7 @@ class GiftAuctionAcquiredGift(TlObject):
             "star_count": self.star_count,
             "auction_round_number": self.auction_round_number,
             "auction_round_position": self.auction_round_position,
+            "unique_gift_number": self.unique_gift_number,
             "text": self.text,
             "is_private": self.is_private,
         }
@@ -14958,6 +15424,7 @@ class GiftAuctionAcquiredGift(TlObject):
             data_class.auction_round_position = int(
                 data.get("auction_round_position", 0)
             )
+            data_class.unique_gift_number = int(data.get("unique_gift_number", 0))
             data_class.text = data.get("text", None)
             data_class.is_private = data.get("is_private", False)
 
@@ -15057,7 +15524,7 @@ class TransactionDirectionOutgoing(TlObject, TransactionDirection):
 
 
 class StarTransactionTypePremiumBotDeposit(TlObject, StarTransactionType):
-    r"""The transaction is a deposit of Telegram Stars from the Premium bot; for regular users only"""
+    r"""The transaction is a deposit of Telegram Stars from the Premium bot; relevant for regular users only"""
 
     def __init__(self) -> None:
         pass
@@ -15087,7 +15554,7 @@ class StarTransactionTypePremiumBotDeposit(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeAppStoreDeposit(TlObject, StarTransactionType):
-    r"""The transaction is a deposit of Telegram Stars from App Store; for regular users only"""
+    r"""The transaction is a deposit of Telegram Stars from App Store; relevant for regular users only"""
 
     def __init__(self) -> None:
         pass
@@ -15115,7 +15582,7 @@ class StarTransactionTypeAppStoreDeposit(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeGooglePlayDeposit(TlObject, StarTransactionType):
-    r"""The transaction is a deposit of Telegram Stars from Google Play; for regular users only"""
+    r"""The transaction is a deposit of Telegram Stars from Google Play; relevant for regular users only"""
 
     def __init__(self) -> None:
         pass
@@ -15145,7 +15612,7 @@ class StarTransactionTypeGooglePlayDeposit(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeFragmentDeposit(TlObject, StarTransactionType):
-    r"""The transaction is a deposit of Telegram Stars from Fragment; for regular users and bots only"""
+    r"""The transaction is a deposit of Telegram Stars from Fragment; relevant for regular users and bots only"""
 
     def __init__(self) -> None:
         pass
@@ -15173,7 +15640,7 @@ class StarTransactionTypeFragmentDeposit(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeUserDeposit(TlObject, StarTransactionType):
-    r"""The transaction is a deposit of Telegram Stars by another user; for regular users only
+    r"""The transaction is a deposit of Telegram Stars by another user; relevant for regular users only
 
     Parameters:
         user_id (:class:`int`):
@@ -15219,14 +15686,14 @@ class StarTransactionTypeUserDeposit(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeGiveawayDeposit(TlObject, StarTransactionType):
-    r"""The transaction is a deposit of Telegram Stars from a giveaway; for regular users only
+    r"""The transaction is a deposit of Telegram Stars from a giveaway; relevant for regular users only
 
     Parameters:
         chat_id (:class:`int`):
             Identifier of a supergroup or a channel chat that created the giveaway
 
         giveaway_message_id (:class:`int`):
-            Identifier of the message with the giveaway; can be 0 or an identifier of a deleted message
+            Identifier of the message with the giveaway; may be 0 or an identifier of a deleted message
 
     """
 
@@ -15234,7 +15701,7 @@ class StarTransactionTypeGiveawayDeposit(TlObject, StarTransactionType):
         self.chat_id: int = int(chat_id)
         r"""Identifier of a supergroup or a channel chat that created the giveaway"""
         self.giveaway_message_id: int = int(giveaway_message_id)
-        r"""Identifier of the message with the giveaway; can be 0 or an identifier of a deleted message"""
+        r"""Identifier of the message with the giveaway; may be 0 or an identifier of a deleted message"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -15265,7 +15732,7 @@ class StarTransactionTypeGiveawayDeposit(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeFragmentWithdrawal(TlObject, StarTransactionType):
-    r"""The transaction is a withdrawal of earned Telegram Stars to Fragment; for regular users, bots, supergroup and channel chats only
+    r"""The transaction is a withdrawal of earned Telegram Stars to Fragment; relevant for regular users, bots, supergroup and channel chats only
 
     Parameters:
         withdrawal_state (:class:`~pytdbot.types.RevenueWithdrawalState`):
@@ -15308,7 +15775,7 @@ class StarTransactionTypeFragmentWithdrawal(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeTelegramAdsWithdrawal(TlObject, StarTransactionType):
-    r"""The transaction is a withdrawal of earned Telegram Stars to Telegram Ad platform; for bots and channel chats only"""
+    r"""The transaction is a withdrawal of earned Telegram Stars to Telegram Ad platform; relevant for bots and channel chats only"""
 
     def __init__(self) -> None:
         pass
@@ -15338,7 +15805,7 @@ class StarTransactionTypeTelegramAdsWithdrawal(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeTelegramApiUsage(TlObject, StarTransactionType):
-    r"""The transaction is a payment for Telegram API usage; for bots only
+    r"""The transaction is a payment for Telegram API usage; relevant for bots only
 
     Parameters:
         request_count (:class:`int`):
@@ -15376,7 +15843,7 @@ class StarTransactionTypeTelegramApiUsage(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeBotPaidMediaPurchase(TlObject, StarTransactionType):
-    r"""The transaction is a purchase of paid media from a bot or a business account by the current user; for regular users only
+    r"""The transaction is a purchase of paid media from a bot or a business account by the current user; relevant for regular users only
 
     Parameters:
         user_id (:class:`int`):
@@ -15420,7 +15887,7 @@ class StarTransactionTypeBotPaidMediaPurchase(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeBotPaidMediaSale(TlObject, StarTransactionType):
-    r"""The transaction is a sale of paid media by the bot or a business account managed by the bot; for bots only
+    r"""The transaction is a sale of paid media by the bot or a business account managed by the bot; relevant for bots only
 
     Parameters:
         user_id (:class:`int`):
@@ -15488,14 +15955,14 @@ class StarTransactionTypeBotPaidMediaSale(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeChannelPaidMediaPurchase(TlObject, StarTransactionType):
-    r"""The transaction is a purchase of paid media from a channel by the current user; for regular users only
+    r"""The transaction is a purchase of paid media from a channel by the current user; relevant for regular users only
 
     Parameters:
         chat_id (:class:`int`):
             Identifier of the channel chat that sent the paid media
 
         message_id (:class:`int`):
-            Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message
+            Identifier of the corresponding message with paid media; may be 0 or an identifier of a deleted message
 
         media (List[:class:`~pytdbot.types.PaidMedia`]):
             The bought media if the transaction wasn't refunded
@@ -15508,7 +15975,7 @@ class StarTransactionTypeChannelPaidMediaPurchase(TlObject, StarTransactionType)
         self.chat_id: int = int(chat_id)
         r"""Identifier of the channel chat that sent the paid media"""
         self.message_id: int = int(message_id)
-        r"""Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message"""
+        r"""Identifier of the corresponding message with paid media; may be 0 or an identifier of a deleted message"""
         self.media: List[PaidMedia] = media or []
         r"""The bought media if the transaction wasn't refunded"""
 
@@ -15545,14 +16012,14 @@ class StarTransactionTypeChannelPaidMediaPurchase(TlObject, StarTransactionType)
 
 
 class StarTransactionTypeChannelPaidMediaSale(TlObject, StarTransactionType):
-    r"""The transaction is a sale of paid media by the channel chat; for channel chats only
+    r"""The transaction is a sale of paid media by the channel chat; relevant for channel chats only
 
     Parameters:
         user_id (:class:`int`):
             Identifier of the user that bought the media
 
         message_id (:class:`int`):
-            Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message
+            Identifier of the corresponding message with paid media; may be 0 or an identifier of a deleted message
 
         media (List[:class:`~pytdbot.types.PaidMedia`]):
             The bought media
@@ -15565,7 +16032,7 @@ class StarTransactionTypeChannelPaidMediaSale(TlObject, StarTransactionType):
         self.user_id: int = int(user_id)
         r"""Identifier of the user that bought the media"""
         self.message_id: int = int(message_id)
-        r"""Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message"""
+        r"""Identifier of the corresponding message with paid media; may be 0 or an identifier of a deleted message"""
         self.media: List[PaidMedia] = media or []
         r"""The bought media"""
 
@@ -15602,7 +16069,7 @@ class StarTransactionTypeChannelPaidMediaSale(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeBotInvoicePurchase(TlObject, StarTransactionType):
-    r"""The transaction is a purchase of a product from a bot or a business account by the current user; for regular users only
+    r"""The transaction is a purchase of a product from a bot or a business account by the current user; relevant for regular users only
 
     Parameters:
         user_id (:class:`int`):
@@ -15650,7 +16117,7 @@ class StarTransactionTypeBotInvoicePurchase(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeBotInvoiceSale(TlObject, StarTransactionType):
-    r"""The transaction is a sale of a product by the bot; for bots only
+    r"""The transaction is a sale of a product by the bot; relevant for bots only
 
     Parameters:
         user_id (:class:`int`):
@@ -15716,7 +16183,7 @@ class StarTransactionTypeBotInvoiceSale(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeBotSubscriptionPurchase(TlObject, StarTransactionType):
-    r"""The transaction is a purchase of a subscription from a bot or a business account by the current user; for regular users only
+    r"""The transaction is a purchase of a subscription from a bot or a business account by the current user; relevant for regular users only
 
     Parameters:
         user_id (:class:`int`):
@@ -15776,7 +16243,7 @@ class StarTransactionTypeBotSubscriptionPurchase(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeBotSubscriptionSale(TlObject, StarTransactionType):
-    r"""The transaction is a sale of a subscription by the bot; for bots only
+    r"""The transaction is a sale of a subscription by the bot; relevant for bots only
 
     Parameters:
         user_id (:class:`int`):
@@ -15852,7 +16319,7 @@ class StarTransactionTypeBotSubscriptionSale(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeChannelSubscriptionPurchase(TlObject, StarTransactionType):
-    r"""The transaction is a purchase of a subscription to a channel chat by the current user; for regular users only
+    r"""The transaction is a purchase of a subscription to a channel chat by the current user; relevant for regular users only
 
     Parameters:
         chat_id (:class:`int`):
@@ -15900,7 +16367,7 @@ class StarTransactionTypeChannelSubscriptionPurchase(TlObject, StarTransactionTy
 
 
 class StarTransactionTypeChannelSubscriptionSale(TlObject, StarTransactionType):
-    r"""The transaction is a sale of a subscription by the channel chat; for channel chats only
+    r"""The transaction is a sale of a subscription by the channel chat; relevant for channel chats only
 
     Parameters:
         user_id (:class:`int`):
@@ -15948,7 +16415,7 @@ class StarTransactionTypeChannelSubscriptionSale(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeGiftAuctionBid(TlObject, StarTransactionType):
-    r"""The transaction is a bid on a gift auction; for regular users only
+    r"""The transaction is a bid on a gift auction; relevant for regular users only
 
     Parameters:
         owner_id (:class:`~pytdbot.types.MessageSender`):
@@ -15990,7 +16457,7 @@ class StarTransactionTypeGiftAuctionBid(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeGiftPurchase(TlObject, StarTransactionType):
-    r"""The transaction is a purchase of a regular gift; for regular users and bots only
+    r"""The transaction is a purchase of a regular gift; relevant for regular users and bots only
 
     Parameters:
         owner_id (:class:`~pytdbot.types.MessageSender`):
@@ -16031,8 +16498,46 @@ class StarTransactionTypeGiftPurchase(TlObject, StarTransactionType):
         return data_class
 
 
+class StarTransactionTypeGiftPurchaseOffer(TlObject, StarTransactionType):
+    r"""The transaction is an offer of gift purchase; relevant for regular users only
+
+    Parameters:
+        gift (:class:`~pytdbot.types.UpgradedGift`):
+            The gift
+
+    """
+
+    def __init__(self, gift: UpgradedGift = None) -> None:
+        self.gift: Union[UpgradedGift, None] = gift
+        r"""The gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["starTransactionTypeGiftPurchaseOffer"]:
+        return "starTransactionTypeGiftPurchaseOffer"
+
+    @classmethod
+    def getClass(self) -> Literal["StarTransactionType"]:
+        return "StarTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "gift": self.gift}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["StarTransactionTypeGiftPurchaseOffer", None]:
+        if data:
+            data_class = cls()
+            data_class.gift = data.get("gift", None)
+
+        return data_class
+
+
 class StarTransactionTypeGiftTransfer(TlObject, StarTransactionType):
-    r"""The transaction is a transfer of an upgraded gift; for regular users only
+    r"""The transaction is a transfer of an upgraded gift; relevant for regular users only
 
     Parameters:
         owner_id (:class:`~pytdbot.types.MessageSender`):
@@ -16076,7 +16581,7 @@ class StarTransactionTypeGiftTransfer(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeGiftOriginalDetailsDrop(TlObject, StarTransactionType):
-    r"""The transaction is a drop of original details of an upgraded gift; for regular users only
+    r"""The transaction is a drop of original details of an upgraded gift; relevant for regular users only
 
     Parameters:
         owner_id (:class:`~pytdbot.types.MessageSender`):
@@ -16122,7 +16627,7 @@ class StarTransactionTypeGiftOriginalDetailsDrop(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeGiftSale(TlObject, StarTransactionType):
-    r"""The transaction is a sale of a received gift; for regular users and channel chats only
+    r"""The transaction is a sale of a received gift; relevant for regular users and channel chats only
 
     Parameters:
         user_id (:class:`int`):
@@ -16164,7 +16669,7 @@ class StarTransactionTypeGiftSale(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeGiftUpgrade(TlObject, StarTransactionType):
-    r"""The transaction is an upgrade of a gift; for regular users only
+    r"""The transaction is an upgrade of a gift; relevant for regular users only
 
     Parameters:
         user_id (:class:`int`):
@@ -16206,7 +16711,7 @@ class StarTransactionTypeGiftUpgrade(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeGiftUpgradePurchase(TlObject, StarTransactionType):
-    r"""The transaction is a purchase of an upgrade of a gift owned by another user or channel; for regular users only
+    r"""The transaction is a purchase of an upgrade of a gift owned by another user or channel; relevant for regular users only
 
     Parameters:
         owner_id (:class:`~pytdbot.types.MessageSender`):
@@ -16250,7 +16755,7 @@ class StarTransactionTypeGiftUpgradePurchase(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeUpgradedGiftPurchase(TlObject, StarTransactionType):
-    r"""The transaction is a purchase of an upgraded gift for some user or channel; for regular users only
+    r"""The transaction is a purchase of an upgraded gift for some user or channel; relevant for regular users only
 
     Parameters:
         user_id (:class:`int`):
@@ -16294,7 +16799,7 @@ class StarTransactionTypeUpgradedGiftPurchase(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeUpgradedGiftSale(TlObject, StarTransactionType):
-    r"""The transaction is a sale of an upgraded gift; for regular users only
+    r"""The transaction is a sale of an upgraded gift; relevant for regular users only
 
     Parameters:
         user_id (:class:`int`):
@@ -16309,6 +16814,9 @@ class StarTransactionTypeUpgradedGiftSale(TlObject, StarTransactionType):
         commission_star_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of Telegram Stars that were received by Telegram; can be negative for refunds
 
+        via_offer (:class:`bool`):
+            True, if the gift was sold through a purchase offer
+
     """
 
     def __init__(
@@ -16317,6 +16825,7 @@ class StarTransactionTypeUpgradedGiftSale(TlObject, StarTransactionType):
         gift: UpgradedGift = None,
         commission_per_mille: int = 0,
         commission_star_amount: StarAmount = None,
+        via_offer: bool = False,
     ) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user that bought the gift"""
@@ -16326,6 +16835,8 @@ class StarTransactionTypeUpgradedGiftSale(TlObject, StarTransactionType):
         r"""The number of Telegram Stars received by the Telegram for each 1000 Telegram Stars received by the seller of the gift"""
         self.commission_star_amount: Union[StarAmount, None] = commission_star_amount
         r"""The amount of Telegram Stars that were received by Telegram; can be negative for refunds"""
+        self.via_offer: bool = bool(via_offer)
+        r"""True, if the gift was sold through a purchase offer"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -16345,6 +16856,7 @@ class StarTransactionTypeUpgradedGiftSale(TlObject, StarTransactionType):
             "gift": self.gift,
             "commission_per_mille": self.commission_per_mille,
             "commission_star_amount": self.commission_star_amount,
+            "via_offer": self.via_offer,
         }
 
     @classmethod
@@ -16357,19 +16869,20 @@ class StarTransactionTypeUpgradedGiftSale(TlObject, StarTransactionType):
             data_class.gift = data.get("gift", None)
             data_class.commission_per_mille = int(data.get("commission_per_mille", 0))
             data_class.commission_star_amount = data.get("commission_star_amount", None)
+            data_class.via_offer = data.get("via_offer", False)
 
         return data_class
 
 
 class StarTransactionTypeChannelPaidReactionSend(TlObject, StarTransactionType):
-    r"""The transaction is a sending of a paid reaction to a message in a channel chat by the current user; for regular users only
+    r"""The transaction is a sending of a paid reaction to a message in a channel chat by the current user; relevant for regular users only
 
     Parameters:
         chat_id (:class:`int`):
             Identifier of the channel chat
 
         message_id (:class:`int`):
-            Identifier of the reacted message; can be 0 or an identifier of a deleted message
+            Identifier of the reacted message; may be 0 or an identifier of a deleted message
 
     """
 
@@ -16377,7 +16890,7 @@ class StarTransactionTypeChannelPaidReactionSend(TlObject, StarTransactionType):
         self.chat_id: int = int(chat_id)
         r"""Identifier of the channel chat"""
         self.message_id: int = int(message_id)
-        r"""Identifier of the reacted message; can be 0 or an identifier of a deleted message"""
+        r"""Identifier of the reacted message; may be 0 or an identifier of a deleted message"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -16410,14 +16923,14 @@ class StarTransactionTypeChannelPaidReactionSend(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeChannelPaidReactionReceive(TlObject, StarTransactionType):
-    r"""The transaction is a receiving of a paid reaction to a message by the channel chat; for channel chats only
+    r"""The transaction is a receiving of a paid reaction to a message by the channel chat; relevant for channel chats only
 
     Parameters:
         user_id (:class:`int`):
             Identifier of the user that added the paid reaction
 
         message_id (:class:`int`):
-            Identifier of the reacted message; can be 0 or an identifier of a deleted message
+            Identifier of the reacted message; may be 0 or an identifier of a deleted message
 
     """
 
@@ -16425,7 +16938,7 @@ class StarTransactionTypeChannelPaidReactionReceive(TlObject, StarTransactionTyp
         self.user_id: int = int(user_id)
         r"""Identifier of the user that added the paid reaction"""
         self.message_id: int = int(message_id)
-        r"""Identifier of the reacted message; can be 0 or an identifier of a deleted message"""
+        r"""Identifier of the reacted message; may be 0 or an identifier of a deleted message"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -16458,7 +16971,7 @@ class StarTransactionTypeChannelPaidReactionReceive(TlObject, StarTransactionTyp
 
 
 class StarTransactionTypeAffiliateProgramCommission(TlObject, StarTransactionType):
-    r"""The transaction is a receiving of a commission from an affiliate program; for regular users, bots and channel chats only
+    r"""The transaction is a receiving of a commission from an affiliate program; relevant for regular users, bots and channel chats only
 
     Parameters:
         chat_id (:class:`int`):
@@ -16506,7 +17019,7 @@ class StarTransactionTypeAffiliateProgramCommission(TlObject, StarTransactionTyp
 
 
 class StarTransactionTypePaidMessageSend(TlObject, StarTransactionType):
-    r"""The transaction is a sending of a paid message; for regular users only
+    r"""The transaction is a sending of a paid message; relevant for regular users only
 
     Parameters:
         chat_id (:class:`int`):
@@ -16552,7 +17065,7 @@ class StarTransactionTypePaidMessageSend(TlObject, StarTransactionType):
 
 
 class StarTransactionTypePaidMessageReceive(TlObject, StarTransactionType):
-    r"""The transaction is a receiving of a paid message; for regular users, supergroup and channel chats only
+    r"""The transaction is a receiving of a paid message; relevant for regular users, supergroup and channel chats only
 
     Parameters:
         sender_id (:class:`~pytdbot.types.MessageSender`):
@@ -16620,7 +17133,7 @@ class StarTransactionTypePaidMessageReceive(TlObject, StarTransactionType):
 
 
 class StarTransactionTypePaidGroupCallMessageSend(TlObject, StarTransactionType):
-    r"""The transaction is a sending of a paid group call message; for regular users only
+    r"""The transaction is a sending of a paid group call message; relevant for regular users only
 
     Parameters:
         chat_id (:class:`int`):
@@ -16658,7 +17171,7 @@ class StarTransactionTypePaidGroupCallMessageSend(TlObject, StarTransactionType)
 
 
 class StarTransactionTypePaidGroupCallMessageReceive(TlObject, StarTransactionType):
-    r"""The transaction is a receiving of a paid group call message; for regular users and channel chats only
+    r"""The transaction is a receiving of a paid group call message; relevant for regular users and channel chats only
 
     Parameters:
         sender_id (:class:`~pytdbot.types.MessageSender`):
@@ -16718,7 +17231,7 @@ class StarTransactionTypePaidGroupCallMessageReceive(TlObject, StarTransactionTy
 
 
 class StarTransactionTypePaidGroupCallReactionSend(TlObject, StarTransactionType):
-    r"""The transaction is a sending of a paid group reaction; for regular users only
+    r"""The transaction is a sending of a paid group reaction; relevant for regular users only
 
     Parameters:
         chat_id (:class:`int`):
@@ -16756,7 +17269,7 @@ class StarTransactionTypePaidGroupCallReactionSend(TlObject, StarTransactionType
 
 
 class StarTransactionTypePaidGroupCallReactionReceive(TlObject, StarTransactionType):
-    r"""The transaction is a receiving of a paid group call reaction; for regular users and channel chats only
+    r"""The transaction is a receiving of a paid group call reaction; relevant for regular users and channel chats only
 
     Parameters:
         sender_id (:class:`~pytdbot.types.MessageSender`):
@@ -16816,7 +17329,7 @@ class StarTransactionTypePaidGroupCallReactionReceive(TlObject, StarTransactionT
 
 
 class StarTransactionTypeSuggestedPostPaymentSend(TlObject, StarTransactionType):
-    r"""The transaction is a payment for a suggested post; for regular users only
+    r"""The transaction is a payment for a suggested post; relevant for regular users only
 
     Parameters:
         chat_id (:class:`int`):
@@ -16854,7 +17367,7 @@ class StarTransactionTypeSuggestedPostPaymentSend(TlObject, StarTransactionType)
 
 
 class StarTransactionTypeSuggestedPostPaymentReceive(TlObject, StarTransactionType):
-    r"""The transaction is a receiving of a payment for a suggested post by the channel chat; for channel chats only
+    r"""The transaction is a receiving of a payment for a suggested post by the channel chat; relevant for channel chats only
 
     Parameters:
         user_id (:class:`int`):
@@ -16892,7 +17405,7 @@ class StarTransactionTypeSuggestedPostPaymentReceive(TlObject, StarTransactionTy
 
 
 class StarTransactionTypePremiumPurchase(TlObject, StarTransactionType):
-    r"""The transaction is a purchase of Telegram Premium subscription; for regular users and bots only
+    r"""The transaction is a purchase of Telegram Premium subscription; relevant for regular users and bots only
 
     Parameters:
         user_id (:class:`int`):
@@ -16947,7 +17460,7 @@ class StarTransactionTypePremiumPurchase(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeBusinessBotTransferSend(TlObject, StarTransactionType):
-    r"""The transaction is a transfer of Telegram Stars to a business bot; for regular users only
+    r"""The transaction is a transfer of Telegram Stars to a business bot; relevant for regular users only
 
     Parameters:
         user_id (:class:`int`):
@@ -16985,7 +17498,7 @@ class StarTransactionTypeBusinessBotTransferSend(TlObject, StarTransactionType):
 
 
 class StarTransactionTypeBusinessBotTransferReceive(TlObject, StarTransactionType):
-    r"""The transaction is a transfer of Telegram Stars from a business account; for bots only
+    r"""The transaction is a transfer of Telegram Stars from a business account; relevant for bots only
 
     Parameters:
         user_id (:class:`int`):
@@ -17023,7 +17536,7 @@ class StarTransactionTypeBusinessBotTransferReceive(TlObject, StarTransactionTyp
 
 
 class StarTransactionTypePublicPostSearch(TlObject, StarTransactionType):
-    r"""The transaction is a payment for search of posts in public Telegram channels; for regular users only"""
+    r"""The transaction is a payment for search of posts in public Telegram channels; relevant for regular users only"""
 
     def __init__(self) -> None:
         pass
@@ -17139,6 +17652,7 @@ class StarTransaction(TlObject):
             StarTransactionTypeChannelSubscriptionSale,
             StarTransactionTypeGiftAuctionBid,
             StarTransactionTypeGiftPurchase,
+            StarTransactionTypeGiftPurchaseOffer,
             StarTransactionTypeGiftTransfer,
             StarTransactionTypeGiftOriginalDetailsDrop,
             StarTransactionTypeGiftSale,
@@ -17304,6 +17818,49 @@ class TonTransactionTypeFragmentDeposit(TlObject, TonTransactionType):
         return data_class
 
 
+class TonTransactionTypeFragmentWithdrawal(TlObject, TonTransactionType):
+    r"""The transaction is a withdrawal of earned Toncoins to Fragment
+
+    Parameters:
+        withdrawal_state (:class:`~pytdbot.types.RevenueWithdrawalState`):
+            State of the withdrawal; may be null for refunds from Fragment
+
+    """
+
+    def __init__(self, withdrawal_state: RevenueWithdrawalState = None) -> None:
+        self.withdrawal_state: Union[
+            RevenueWithdrawalStatePending,
+            RevenueWithdrawalStateSucceeded,
+            RevenueWithdrawalStateFailed,
+            None,
+        ] = withdrawal_state
+        r"""State of the withdrawal; may be null for refunds from Fragment"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["tonTransactionTypeFragmentWithdrawal"]:
+        return "tonTransactionTypeFragmentWithdrawal"
+
+    @classmethod
+    def getClass(self) -> Literal["TonTransactionType"]:
+        return "TonTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "withdrawal_state": self.withdrawal_state}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["TonTransactionTypeFragmentWithdrawal", None]:
+        if data:
+            data_class = cls()
+            data_class.withdrawal_state = data.get("withdrawal_state", None)
+
+        return data_class
+
+
 class TonTransactionTypeSuggestedPostPayment(TlObject, TonTransactionType):
     r"""The transaction is a payment for a suggested post
 
@@ -17342,8 +17899,46 @@ class TonTransactionTypeSuggestedPostPayment(TlObject, TonTransactionType):
         return data_class
 
 
+class TonTransactionTypeGiftPurchaseOffer(TlObject, TonTransactionType):
+    r"""The transaction is an offer of gift purchase
+
+    Parameters:
+        gift (:class:`~pytdbot.types.UpgradedGift`):
+            The gift
+
+    """
+
+    def __init__(self, gift: UpgradedGift = None) -> None:
+        self.gift: Union[UpgradedGift, None] = gift
+        r"""The gift"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["tonTransactionTypeGiftPurchaseOffer"]:
+        return "tonTransactionTypeGiftPurchaseOffer"
+
+    @classmethod
+    def getClass(self) -> Literal["TonTransactionType"]:
+        return "TonTransactionType"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "gift": self.gift}
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["TonTransactionTypeGiftPurchaseOffer", None]:
+        if data:
+            data_class = cls()
+            data_class.gift = data.get("gift", None)
+
+        return data_class
+
+
 class TonTransactionTypeUpgradedGiftPurchase(TlObject, TonTransactionType):
-    r"""The transaction is a purchase of an upgraded gift for some user or channel; for regular users only
+    r"""The transaction is a purchase of an upgraded gift for some user or channel
 
     Parameters:
         user_id (:class:`int`):
@@ -17387,7 +17982,7 @@ class TonTransactionTypeUpgradedGiftPurchase(TlObject, TonTransactionType):
 
 
 class TonTransactionTypeUpgradedGiftSale(TlObject, TonTransactionType):
-    r"""The transaction is a sale of an upgraded gift; for regular users only
+    r"""The transaction is a sale of an upgraded gift
 
     Parameters:
         user_id (:class:`int`):
@@ -17402,6 +17997,9 @@ class TonTransactionTypeUpgradedGiftSale(TlObject, TonTransactionType):
         commission_toncoin_amount (:class:`int`):
             The amount of Toncoins that were received by the Telegram; in the smallest units of the currency
 
+        via_offer (:class:`bool`):
+            True, if the gift was sold through a purchase offer
+
     """
 
     def __init__(
@@ -17410,6 +18008,7 @@ class TonTransactionTypeUpgradedGiftSale(TlObject, TonTransactionType):
         gift: UpgradedGift = None,
         commission_per_mille: int = 0,
         commission_toncoin_amount: int = 0,
+        via_offer: bool = False,
     ) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user that bought the gift"""
@@ -17419,6 +18018,8 @@ class TonTransactionTypeUpgradedGiftSale(TlObject, TonTransactionType):
         r"""The number of Toncoins received by the Telegram for each 1000 Toncoins received by the seller of the gift"""
         self.commission_toncoin_amount: int = int(commission_toncoin_amount)
         r"""The amount of Toncoins that were received by the Telegram; in the smallest units of the currency"""
+        self.via_offer: bool = bool(via_offer)
+        r"""True, if the gift was sold through a purchase offer"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -17438,6 +18039,7 @@ class TonTransactionTypeUpgradedGiftSale(TlObject, TonTransactionType):
             "gift": self.gift,
             "commission_per_mille": self.commission_per_mille,
             "commission_toncoin_amount": self.commission_toncoin_amount,
+            "via_offer": self.via_offer,
         }
 
     @classmethod
@@ -17450,6 +18052,7 @@ class TonTransactionTypeUpgradedGiftSale(TlObject, TonTransactionType):
             data_class.commission_toncoin_amount = int(
                 data.get("commission_toncoin_amount", 0)
             )
+            data_class.via_offer = data.get("via_offer", False)
 
         return data_class
 
@@ -17521,7 +18124,9 @@ class TonTransaction(TlObject):
         r"""Point in time \(Unix timestamp\) when the transaction was completed"""
         self.type: Union[
             TonTransactionTypeFragmentDeposit,
+            TonTransactionTypeFragmentWithdrawal,
             TonTransactionTypeSuggestedPostPayment,
+            TonTransactionTypeGiftPurchaseOffer,
             TonTransactionTypeUpgradedGiftPurchase,
             TonTransactionTypeUpgradedGiftSale,
             TonTransactionTypeUnsupported,
@@ -24969,6 +25574,8 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageGift,
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
+            MessageUpgradedGiftPurchaseOffer,
+            MessageUpgradedGiftPurchaseOfferDeclined,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -25608,6 +26215,8 @@ class Message(TlObject, MessageBoundMethods):
             MessageGift,
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
+            MessageUpgradedGiftPurchaseOffer,
+            MessageUpgradedGiftPurchaseOfferDeclined,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -26744,6 +27353,8 @@ class SponsoredMessage(TlObject):
             MessageGift,
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
+            MessageUpgradedGiftPurchaseOffer,
+            MessageUpgradedGiftPurchaseOfferDeclined,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -37592,24 +38203,14 @@ class LinkPreviewTypeGiftAuction(TlObject, LinkPreviewType):
         gift (:class:`~pytdbot.types.Gift`):
             The gift
 
-        gift_background (:class:`~pytdbot.types.GiftBackground`):
-            Background of the gift
-
         auction_end_date (:class:`int`):
             Point in time \(Unix timestamp\) when the auction will be ended
 
     """
 
-    def __init__(
-        self,
-        gift: Gift = None,
-        gift_background: GiftBackground = None,
-        auction_end_date: int = 0,
-    ) -> None:
+    def __init__(self, gift: Gift = None, auction_end_date: int = 0) -> None:
         self.gift: Union[Gift, None] = gift
         r"""The gift"""
-        self.gift_background: Union[GiftBackground, None] = gift_background
-        r"""Background of the gift"""
         self.auction_end_date: int = int(auction_end_date)
         r"""Point in time \(Unix timestamp\) when the auction will be ended"""
 
@@ -37628,7 +38229,6 @@ class LinkPreviewTypeGiftAuction(TlObject, LinkPreviewType):
         return {
             "@type": self.getType(),
             "gift": self.gift,
-            "gift_background": self.gift_background,
             "auction_end_date": self.auction_end_date,
         }
 
@@ -37637,7 +38237,6 @@ class LinkPreviewTypeGiftAuction(TlObject, LinkPreviewType):
         if data:
             data_class = cls()
             data_class.gift = data.get("gift", None)
-            data_class.gift_background = data.get("gift_background", None)
             data_class.auction_end_date = int(data.get("auction_end_date", 0))
 
         return data_class
@@ -46559,7 +47158,7 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
             Identifier of the chat, containing the corresponding invoice message
 
         invoice_message_id (:class:`int`):
-            Identifier of the message with the corresponding invoice; can be 0 or an identifier of a deleted message
+            Identifier of the message with the corresponding invoice; may be 0 or an identifier of a deleted message
 
         currency (:class:`str`):
             Currency for the price of the product
@@ -46595,7 +47194,7 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
         self.invoice_chat_id: int = int(invoice_chat_id)
         r"""Identifier of the chat, containing the corresponding invoice message"""
         self.invoice_message_id: int = int(invoice_message_id)
-        r"""Identifier of the message with the corresponding invoice; can be 0 or an identifier of a deleted message"""
+        r"""Identifier of the message with the corresponding invoice; may be 0 or an identifier of a deleted message"""
         self.currency: Union[str, None] = currency
         r"""Currency for the price of the product"""
         self.total_amount: int = int(total_amount)
@@ -47208,7 +47807,7 @@ class MessageGiveawayCompleted(TlObject, MessageContent):
 
     Parameters:
         giveaway_message_id (:class:`int`):
-            Identifier of the message with the giveaway; can be 0 if the message was deleted
+            Identifier of the message with the giveaway; may be 0 or an identifier of a deleted message
 
         winner_count (:class:`int`):
             Number of winners in the giveaway
@@ -47229,7 +47828,7 @@ class MessageGiveawayCompleted(TlObject, MessageContent):
         unclaimed_prize_count: int = 0,
     ) -> None:
         self.giveaway_message_id: int = int(giveaway_message_id)
-        r"""Identifier of the message with the giveaway; can be 0 if the message was deleted"""
+        r"""Identifier of the message with the giveaway; may be 0 or an identifier of a deleted message"""
         self.winner_count: int = int(winner_count)
         r"""Number of winners in the giveaway"""
         self.is_star_giveaway: bool = bool(is_star_giveaway)
@@ -47587,7 +48186,7 @@ class MessageGiveawayPrizeStars(TlObject, MessageContent):
             Identifier of the supergroup or channel chat, which was automatically boosted by the winners of the giveaway
 
         giveaway_message_id (:class:`int`):
-            Identifier of the message with the giveaway in the boosted chat; can be 0 if the message was deleted
+            Identifier of the message with the giveaway in the boosted chat; may be 0 or an identifier of a deleted message
 
         is_unclaimed (:class:`bool`):
             True, if the corresponding winner wasn't chosen and the Telegram Stars were received by the owner of the boosted chat
@@ -47613,7 +48212,7 @@ class MessageGiveawayPrizeStars(TlObject, MessageContent):
         self.boosted_chat_id: int = int(boosted_chat_id)
         r"""Identifier of the supergroup or channel chat, which was automatically boosted by the winners of the giveaway"""
         self.giveaway_message_id: int = int(giveaway_message_id)
-        r"""Identifier of the message with the giveaway in the boosted chat; can be 0 if the message was deleted"""
+        r"""Identifier of the message with the giveaway in the boosted chat; may be 0 or an identifier of a deleted message"""
         self.is_unclaimed: bool = bool(is_unclaimed)
         r"""True, if the corresponding winner wasn't chosen and the Telegram Stars were received by the owner of the boosted chat"""
         self.sticker: Union[Sticker, None] = sticker
@@ -47674,6 +48273,9 @@ class MessageGift(TlObject, MessageContent):
         text (:class:`~pytdbot.types.FormattedText`):
             Message added to the gift
 
+        unique_gift_number (:class:`int`):
+            Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned
+
         sell_star_count (:class:`int`):
             Number of Telegram Stars that can be claimed by the receiver instead of the regular gift; 0 if the gift can't be sold by the receiver
 
@@ -47722,6 +48324,7 @@ class MessageGift(TlObject, MessageContent):
         receiver_id: MessageSender = None,
         received_gift_id: str = "",
         text: FormattedText = None,
+        unique_gift_number: int = 0,
         sell_star_count: int = 0,
         prepaid_upgrade_star_count: int = 0,
         is_upgrade_separate: bool = False,
@@ -47748,6 +48351,8 @@ class MessageGift(TlObject, MessageContent):
         r"""Unique identifier of the received gift for the current user; only for the receiver of the gift"""
         self.text: Union[FormattedText, None] = text
         r"""Message added to the gift"""
+        self.unique_gift_number: int = int(unique_gift_number)
+        r"""Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned"""
         self.sell_star_count: int = int(sell_star_count)
         r"""Number of Telegram Stars that can be claimed by the receiver instead of the regular gift; 0 if the gift can't be sold by the receiver"""
         self.prepaid_upgrade_star_count: int = int(prepaid_upgrade_star_count)
@@ -47794,6 +48399,7 @@ class MessageGift(TlObject, MessageContent):
             "receiver_id": self.receiver_id,
             "received_gift_id": self.received_gift_id,
             "text": self.text,
+            "unique_gift_number": self.unique_gift_number,
             "sell_star_count": self.sell_star_count,
             "prepaid_upgrade_star_count": self.prepaid_upgrade_star_count,
             "is_upgrade_separate": self.is_upgrade_separate,
@@ -47818,6 +48424,7 @@ class MessageGift(TlObject, MessageContent):
             data_class.receiver_id = data.get("receiver_id", None)
             data_class.received_gift_id = data.get("received_gift_id", "")
             data_class.text = data.get("text", None)
+            data_class.unique_gift_number = int(data.get("unique_gift_number", 0))
             data_class.sell_star_count = int(data.get("sell_star_count", 0))
             data_class.prepaid_upgrade_star_count = int(
                 data.get("prepaid_upgrade_star_count", 0)
@@ -47914,6 +48521,7 @@ class MessageUpgradedGift(TlObject, MessageContent):
             UpgradedGiftOriginResale,
             UpgradedGiftOriginBlockchain,
             UpgradedGiftOriginPrepaidUpgrade,
+            UpgradedGiftOriginOffer,
             None,
         ] = origin
         r"""Origin of the upgraded gift"""
@@ -48029,6 +48637,7 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
             UpgradedGiftOriginResale,
             UpgradedGiftOriginBlockchain,
             UpgradedGiftOriginPrepaidUpgrade,
+            UpgradedGiftOriginOffer,
             None,
         ] = origin
         r"""Origin of the upgraded gift"""
@@ -48061,6 +48670,145 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
             data_class.sender_id = data.get("sender_id", None)
             data_class.receiver_id = data.get("receiver_id", None)
             data_class.origin = data.get("origin", None)
+
+        return data_class
+
+
+class MessageUpgradedGiftPurchaseOffer(TlObject, MessageContent):
+    r"""An offer to purchase an upgraded gift was sent or received
+
+    Parameters:
+        gift (:class:`~pytdbot.types.UpgradedGift`):
+            The gift
+
+        state (:class:`~pytdbot.types.GiftPurchaseOfferState`):
+            State of the offer
+
+        price (:class:`~pytdbot.types.GiftResalePrice`):
+            The proposed price
+
+        expiration_date (:class:`int`):
+            Point in time \(Unix timestamp\) when the offer will expire or has expired
+
+    """
+
+    def __init__(
+        self,
+        gift: UpgradedGift = None,
+        state: GiftPurchaseOfferState = None,
+        price: GiftResalePrice = None,
+        expiration_date: int = 0,
+    ) -> None:
+        self.gift: Union[UpgradedGift, None] = gift
+        r"""The gift"""
+        self.state: Union[
+            GiftPurchaseOfferStatePending,
+            GiftPurchaseOfferStateAccepted,
+            GiftPurchaseOfferStateRejected,
+            None,
+        ] = state
+        r"""State of the offer"""
+        self.price: Union[GiftResalePriceStar, GiftResalePriceTon, None] = price
+        r"""The proposed price"""
+        self.expiration_date: int = int(expiration_date)
+        r"""Point in time \(Unix timestamp\) when the offer will expire or has expired"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageUpgradedGiftPurchaseOffer"]:
+        return "messageUpgradedGiftPurchaseOffer"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "gift": self.gift,
+            "state": self.state,
+            "price": self.price,
+            "expiration_date": self.expiration_date,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageUpgradedGiftPurchaseOffer", None]:
+        if data:
+            data_class = cls()
+            data_class.gift = data.get("gift", None)
+            data_class.state = data.get("state", None)
+            data_class.price = data.get("price", None)
+            data_class.expiration_date = int(data.get("expiration_date", 0))
+
+        return data_class
+
+
+class MessageUpgradedGiftPurchaseOfferDeclined(TlObject, MessageContent):
+    r"""An offer to purchase a gift was declined or expired
+
+    Parameters:
+        gift (:class:`~pytdbot.types.UpgradedGift`):
+            The gift
+
+        price (:class:`~pytdbot.types.GiftResalePrice`):
+            The proposed price
+
+        offer_message_id (:class:`int`):
+            Identifier of the message with purchase offer which was declined or expired; may be 0 or an identifier of a deleted message
+
+        was_expired (:class:`bool`):
+            True, if the offer has expired; otherwise, the offer was explicitly declined
+
+    """
+
+    def __init__(
+        self,
+        gift: UpgradedGift = None,
+        price: GiftResalePrice = None,
+        offer_message_id: int = 0,
+        was_expired: bool = False,
+    ) -> None:
+        self.gift: Union[UpgradedGift, None] = gift
+        r"""The gift"""
+        self.price: Union[GiftResalePriceStar, GiftResalePriceTon, None] = price
+        r"""The proposed price"""
+        self.offer_message_id: int = int(offer_message_id)
+        r"""Identifier of the message with purchase offer which was declined or expired; may be 0 or an identifier of a deleted message"""
+        self.was_expired: bool = bool(was_expired)
+        r"""True, if the offer has expired; otherwise, the offer was explicitly declined"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageUpgradedGiftPurchaseOfferDeclined"]:
+        return "messageUpgradedGiftPurchaseOfferDeclined"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "gift": self.gift,
+            "price": self.price,
+            "offer_message_id": self.offer_message_id,
+            "was_expired": self.was_expired,
+        }
+
+    @classmethod
+    def from_dict(
+        cls, data: dict
+    ) -> Union["MessageUpgradedGiftPurchaseOfferDeclined", None]:
+        if data:
+            data_class = cls()
+            data_class.gift = data.get("gift", None)
+            data_class.price = data.get("price", None)
+            data_class.offer_message_id = int(data.get("offer_message_id", 0))
+            data_class.was_expired = data.get("was_expired", False)
 
         return data_class
 
@@ -48207,7 +48955,7 @@ class MessageChecklistTasksDone(TlObject, MessageContent):
 
     Parameters:
         checklist_message_id (:class:`int`):
-            Identifier of the message with the checklist; can be 0 if the message was deleted
+            Identifier of the message with the checklist; may be 0 or an identifier of a deleted message
 
         marked_as_done_task_ids (List[:class:`int`]):
             Identifiers of tasks that were marked as done
@@ -48224,7 +48972,7 @@ class MessageChecklistTasksDone(TlObject, MessageContent):
         marked_as_not_done_task_ids: List[int] = None,
     ) -> None:
         self.checklist_message_id: int = int(checklist_message_id)
-        r"""Identifier of the message with the checklist; can be 0 if the message was deleted"""
+        r"""Identifier of the message with the checklist; may be 0 or an identifier of a deleted message"""
         self.marked_as_done_task_ids: List[int] = marked_as_done_task_ids or []
         r"""Identifiers of tasks that were marked as done"""
         self.marked_as_not_done_task_ids: List[int] = marked_as_not_done_task_ids or []
@@ -48269,7 +49017,7 @@ class MessageChecklistTasksAdded(TlObject, MessageContent):
 
     Parameters:
         checklist_message_id (:class:`int`):
-            Identifier of the message with the checklist; can be 0 if the message was deleted
+            Identifier of the message with the checklist; may be 0 or an identifier of a deleted message
 
         tasks (List[:class:`~pytdbot.types.ChecklistTask`]):
             List of tasks added to the checklist
@@ -48280,7 +49028,7 @@ class MessageChecklistTasksAdded(TlObject, MessageContent):
         self, checklist_message_id: int = 0, tasks: List[ChecklistTask] = None
     ) -> None:
         self.checklist_message_id: int = int(checklist_message_id)
-        r"""Identifier of the message with the checklist; can be 0 if the message was deleted"""
+        r"""Identifier of the message with the checklist; may be 0 or an identifier of a deleted message"""
         self.tasks: List[ChecklistTask] = tasks or []
         r"""List of tasks added to the checklist"""
 
@@ -48317,7 +49065,7 @@ class MessageSuggestedPostApprovalFailed(TlObject, MessageContent):
 
     Parameters:
         suggested_post_message_id (:class:`int`):
-            Identifier of the message with the suggested post; can be 0 if the message was deleted
+            Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message
 
         price (:class:`~pytdbot.types.SuggestedPostPrice`):
             Price of the suggested post
@@ -48328,7 +49076,7 @@ class MessageSuggestedPostApprovalFailed(TlObject, MessageContent):
         self, suggested_post_message_id: int = 0, price: SuggestedPostPrice = None
     ) -> None:
         self.suggested_post_message_id: int = int(suggested_post_message_id)
-        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        r"""Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message"""
         self.price: Union[SuggestedPostPriceStar, SuggestedPostPriceTon, None] = price
         r"""Price of the suggested post"""
 
@@ -48367,7 +49115,7 @@ class MessageSuggestedPostApproved(TlObject, MessageContent):
 
     Parameters:
         suggested_post_message_id (:class:`int`):
-            Identifier of the message with the suggested post; can be 0 if the message was deleted
+            Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message
 
         price (:class:`~pytdbot.types.SuggestedPostPrice`):
             Price of the suggested post; may be null if the post is non\-paid
@@ -48384,7 +49132,7 @@ class MessageSuggestedPostApproved(TlObject, MessageContent):
         send_date: int = 0,
     ) -> None:
         self.suggested_post_message_id: int = int(suggested_post_message_id)
-        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        r"""Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message"""
         self.price: Union[SuggestedPostPriceStar, SuggestedPostPriceTon, None] = price
         r"""Price of the suggested post; may be null if the post is non\-paid"""
         self.send_date: int = int(send_date)
@@ -48427,7 +49175,7 @@ class MessageSuggestedPostDeclined(TlObject, MessageContent):
 
     Parameters:
         suggested_post_message_id (:class:`int`):
-            Identifier of the message with the suggested post; can be 0 if the message was deleted
+            Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message
 
         comment (:class:`str`):
             Comment added by administrator of the channel when the post was declined
@@ -48436,7 +49184,7 @@ class MessageSuggestedPostDeclined(TlObject, MessageContent):
 
     def __init__(self, suggested_post_message_id: int = 0, comment: str = "") -> None:
         self.suggested_post_message_id: int = int(suggested_post_message_id)
-        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        r"""Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message"""
         self.comment: Union[str, None] = comment
         r"""Comment added by administrator of the channel when the post was declined"""
 
@@ -48475,7 +49223,7 @@ class MessageSuggestedPostPaid(TlObject, MessageContent):
 
     Parameters:
         suggested_post_message_id (:class:`int`):
-            Identifier of the message with the suggested post; can be 0 if the message was deleted
+            Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message
 
         star_amount (:class:`~pytdbot.types.StarAmount`):
             The amount of received Telegram Stars
@@ -48492,7 +49240,7 @@ class MessageSuggestedPostPaid(TlObject, MessageContent):
         ton_amount: int = 0,
     ) -> None:
         self.suggested_post_message_id: int = int(suggested_post_message_id)
-        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        r"""Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message"""
         self.star_amount: Union[StarAmount, None] = star_amount
         r"""The amount of received Telegram Stars"""
         self.ton_amount: int = int(ton_amount)
@@ -48535,7 +49283,7 @@ class MessageSuggestedPostRefunded(TlObject, MessageContent):
 
     Parameters:
         suggested_post_message_id (:class:`int`):
-            Identifier of the message with the suggested post; can be 0 if the message was deleted
+            Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message
 
         reason (:class:`~pytdbot.types.SuggestedPostRefundReason`):
             Reason of the refund
@@ -48548,7 +49296,7 @@ class MessageSuggestedPostRefunded(TlObject, MessageContent):
         reason: SuggestedPostRefundReason = None,
     ) -> None:
         self.suggested_post_message_id: int = int(suggested_post_message_id)
-        r"""Identifier of the message with the suggested post; can be 0 if the message was deleted"""
+        r"""Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message"""
         self.reason: Union[
             SuggestedPostRefundReasonPostDeleted,
             SuggestedPostRefundReasonPaymentRefunded,
@@ -50100,7 +50848,7 @@ class MessageSendOptions(TlObject):
             Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, to a chat with paid messages, to a channel direct messages chat, live location messages and self\-destructing messages can't be scheduled
 
         effect_id (:class:`int`):
-            Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage and sendMessageAlbum in private chats
+            Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage, sendMessageAlbum in private chats and forwardMessages with one message to private chats
 
         sending_id (:class:`int`):
             Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates
@@ -50150,7 +50898,7 @@ class MessageSendOptions(TlObject):
         ] = scheduling_state
         r"""Message scheduling state; pass null to send message immediately\. Messages sent to a secret chat, to a chat with paid messages, to a channel direct messages chat, live location messages and self\-destructing messages can't be scheduled"""
         self.effect_id: int = int(effect_id)
-        r"""Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage and sendMessageAlbum in private chats"""
+        r"""Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage, sendMessageAlbum in private chats and forwardMessages with one message to private chats"""
         self.sending_id: int = int(sending_id)
         r"""Non\-persistent identifier, which will be returned back in messageSendingStatePending object and can be used to match sent messages and corresponding updateNewMessage updates"""
         self.only_preview: bool = bool(only_preview)
@@ -56933,6 +57681,8 @@ class QuickReplyMessage(TlObject):
             MessageGift,
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
+            MessageUpgradedGiftPurchaseOffer,
+            MessageUpgradedGiftPurchaseOfferDeclined,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -69991,6 +70741,34 @@ class PremiumFeatureChecklists(TlObject, PremiumFeature):
         return data_class
 
 
+class PremiumFeaturePaidMessages(TlObject, PremiumFeature):
+    r"""The ability to require a payment for incoming messages in new chats"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["premiumFeaturePaidMessages"]:
+        return "premiumFeaturePaidMessages"
+
+    @classmethod
+    def getClass(self) -> Literal["PremiumFeature"]:
+        return "PremiumFeature"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["PremiumFeaturePaidMessages", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class BusinessFeatureLocation(TlObject, BusinessFeature):
     r"""The ability to set location"""
 
@@ -70827,6 +71605,7 @@ class PremiumSourceFeature(TlObject, PremiumSource):
             PremiumFeatureBusiness,
             PremiumFeatureMessageEffects,
             PremiumFeatureChecklists,
+            PremiumFeaturePaidMessages,
             None,
         ] = feature
         r"""The used feature"""
@@ -71053,6 +71832,7 @@ class PremiumFeaturePromotionAnimation(TlObject):
             PremiumFeatureBusiness,
             PremiumFeatureMessageEffects,
             PremiumFeatureChecklists,
+            PremiumFeaturePaidMessages,
             None,
         ] = feature
         r"""Premium feature"""
@@ -85853,6 +86633,34 @@ class SuggestedActionSetLoginEmailAddress(TlObject, SuggestedAction):
         return data_class
 
 
+class SuggestedActionAddLoginPasskey(TlObject, SuggestedAction):
+    r"""Suggests the user to add a passkey for login using addLoginPasskey"""
+
+    def __init__(self) -> None:
+        pass
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["suggestedActionAddLoginPasskey"]:
+        return "suggestedActionAddLoginPasskey"
+
+    @classmethod
+    def getClass(self) -> Literal["SuggestedAction"]:
+        return "SuggestedAction"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType()}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["SuggestedActionAddLoginPasskey", None]:
+        if data:
+            data_class = cls()
+
+        return data_class
+
+
 class Count(TlObject):
     r"""Contains a counter
 
@@ -89736,6 +90544,8 @@ class UpdateMessageContent(TlObject, Update):
             MessageGift,
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
+            MessageUpgradedGiftPurchaseOffer,
+            MessageUpgradedGiftPurchaseOfferDeclined,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -93547,6 +94357,8 @@ class UpdateServiceNotification(TlObject, Update):
             MessageGift,
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
+            MessageUpgradedGiftPurchaseOffer,
+            MessageUpgradedGiftPurchaseOfferDeclined,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,

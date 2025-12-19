@@ -275,6 +275,62 @@ class TDLibFunctions:
             {"@type": "requestQrCodeAuthentication", "other_user_ids": other_user_ids}
         )
 
+    async def getAuthenticationPasskeyParameters(
+        self,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Text"]:
+        r"""Returns parameters for authentication using a passkey as JSON\-serialized string
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getAuthenticationPasskeyParameters",
+            }
+        )
+
+    async def checkAuthenticationPasskey(
+        self,
+        credential_id: str = "",
+        client_data: str = "",
+        authenticator_data: bytes = b"",
+        signature: bytes = b"",
+        user_handle: bytes = b"",
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Checks a passkey to log in to the corresponding account\. Call getAuthenticationPasskeyParameters to get parameters for the passkey\. Works only when the current authorization state is authorizationStateWaitPhoneNumber or authorizationStateWaitOtherDeviceConfirmation, or if there is no pending authentication query and the current authorization state is authorizationStateWaitPremiumPurchase, authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword
+
+        Parameters:
+            credential_id (:class:`str`):
+                Base64url\-encoded identifier of the credential
+
+            client_data (:class:`str`):
+                JSON\-encoded client data
+
+            authenticator_data (:class:`bytes`):
+                Authenticator data of the application that created the credential
+
+            signature (:class:`bytes`):
+                Cryptographic signature of the credential
+
+            user_handle (:class:`bytes`):
+                User handle of the passkey
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "checkAuthenticationPasskey",
+                "credential_id": credential_id,
+                "client_data": client_data,
+                "authenticator_data": authenticator_data,
+                "signature": signature,
+                "user_handle": user_handle,
+            }
+        )
+
     async def registerUser(
         self,
         first_name: str = "",
@@ -1074,7 +1130,7 @@ class TDLibFunctions:
     async def getRepliedMessage(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, and the topic creation message for topic messages without non\-bundled replied message\. Returns a 404 error if the message doesn't exist
+        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferDeclined, and the topic creation message for topic messages without non\-bundled replied message\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -5222,7 +5278,7 @@ class TDLibFunctions:
     async def transferBusinessAccountStars(
         self, business_connection_id: str = "", star_count: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Transfer Telegram Stars from the business account to the business bot; for bots only
+        r"""Transfers Telegram Stars from the business account to the business bot; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -5986,6 +6042,77 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "forum_topic_id": forum_topic_id,
             }
+        )
+
+    async def getPasskeyParameters(
+        self,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Text"]:
+        r"""Returns parameters for creating of a new passkey as JSON\-serialized string
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getPasskeyParameters",
+            }
+        )
+
+    async def addLoginPasskey(
+        self, client_data: str = "", attestation_object: bytes = b""
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Passkey"]:
+        r"""Adds a passkey allowed to be used for the login by the current user and returns the added passkey\. Call getPasskeyParameters to get parameters for creating of the passkey
+
+        Parameters:
+            client_data (:class:`str`):
+                JSON\-encoded client data
+
+            attestation_object (:class:`bytes`):
+                Passkey attestation object
+
+        Returns:
+            :class:`~pytdbot.types.Passkey`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "addLoginPasskey",
+                "client_data": client_data,
+                "attestation_object": attestation_object,
+            }
+        )
+
+    async def getLoginPasskeys(
+        self,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Passkeys"]:
+        r"""Returns the list of passkeys allowed to be used for the login by the current user
+
+        Returns:
+            :class:`~pytdbot.types.Passkeys`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getLoginPasskeys",
+            }
+        )
+
+    async def removeLoginPasskey(
+        self, passkey_id: str = ""
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Removes a passkey from the list of passkeys allowed to be used for the login by the current user
+
+        Parameters:
+            passkey_id (:class:`str`):
+                Unique identifier of the passkey to remove
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {"@type": "removeLoginPasskey", "passkey_id": passkey_id}
         )
 
     async def getEmojiReaction(
@@ -9921,7 +10048,7 @@ class TDLibFunctions:
     async def readChatList(
         self, chat_list: "pytdbot.types.ChatList" = None
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Traverse all chats in a chat list and marks all messages in the chats as read
+        r"""Traverses all chats in a chat list and marks all messages in the chats as read
 
         Parameters:
             chat_list (:class:`~pytdbot.types.ChatList`):
@@ -11406,7 +11533,7 @@ class TDLibFunctions:
         file_type: "pytdbot.types.FileType" = None,
         priority: int = 0,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.File"]:
-        r"""Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes\. In all other cases there is no need to preliminary upload a file\. Updates updateFile will be used to notify about upload progress\. The upload will not be completed until the file is sent in a message
+        r"""Preliminarily uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes\. In all other cases there is no need to preliminary upload a file\. Updates updateFile will be used to notify about upload progress\. The upload will not be completed until the file is sent in a message
 
         Parameters:
             file (:class:`~pytdbot.types.InputFile`):
@@ -11743,7 +11870,7 @@ class TDLibFunctions:
     async def setApplicationVerificationToken(
         self, verification_id: int = 0, token: str = ""
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Application or reCAPTCHA verification has been completed\. Can be called before authorization
+        r"""Informs TDLib that application or reCAPTCHA verification has been completed\. Can be called before authorization
 
         Parameters:
             verification_id (:class:`int`):
@@ -14475,6 +14602,37 @@ class TDLibFunctions:
             }
         )
 
+    async def getStickerOutlineSvgPath(
+        self,
+        sticker_file_id: int = 0,
+        for_animated_emoji: bool = False,
+        for_clicked_animated_emoji_message: bool = False,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Text"]:
+        r"""Returns outline of a sticker as an SVG path\. This is an offline method\. Returns an empty string if the outline isn't known
+
+        Parameters:
+            sticker_file_id (:class:`int`):
+                File identifier of the sticker
+
+            for_animated_emoji (:class:`bool`):
+                Pass true to get the outline scaled for animated emoji
+
+            for_clicked_animated_emoji_message (:class:`bool`):
+                Pass true to get the outline scaled for clicked animated emoji message
+
+        Returns:
+            :class:`~pytdbot.types.Text`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getStickerOutlineSvgPath",
+                "sticker_file_id": sticker_file_id,
+                "for_animated_emoji": for_animated_emoji,
+                "for_clicked_animated_emoji_message": for_clicked_animated_emoji_message,
+            }
+        )
+
     async def getStickers(
         self,
         sticker_type: "pytdbot.types.StickerType" = None,
@@ -15060,7 +15218,7 @@ class TDLibFunctions:
     async def getKeywordEmojis(
         self, text: str = "", input_language_codes: List[str] = None
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Emojis"]:
-        r"""Return emojis matching the keyword\. Supported only if the file database is enabled\. Order of results is unspecified
+        r"""Returns emojis matching the keyword\. Supported only if the file database is enabled\. Order of results is unspecified
 
         Parameters:
             text (:class:`str`):
@@ -15804,7 +15962,7 @@ class TDLibFunctions:
     async def checkPhoneNumberCode(
         self, code: str = ""
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Check the authentication code and completes the request for which the code was sent if appropriate
+        r"""Checks the authentication code and completes the request for which the code was sent if appropriate
 
         Parameters:
             code (:class:`str`):
@@ -16367,7 +16525,7 @@ class TDLibFunctions:
     async def deleteBotMediaPreviews(
         self, bot_user_id: int = 0, language_code: str = "", file_ids: List[int] = None
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Delete media previews from the list of media previews of a bot
+        r"""Deletes media previews from the list of media previews of a bot
 
         Parameters:
             bot_user_id (:class:`int`):
@@ -17947,6 +18105,23 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "getGiftUpgradePreview", "gift_id": gift_id})
 
+    async def getGiftUpgradeVariants(
+        self, gift_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.GiftUpgradeVariants"]:
+        r"""Returns all possible variants of upgraded gifts for a regular gift
+
+        Parameters:
+            gift_id (:class:`int`):
+                Identifier of the gift
+
+        Returns:
+            :class:`~pytdbot.types.GiftUpgradeVariants`
+        """
+
+        return await self.invoke(
+            {"@type": "getGiftUpgradeVariants", "gift_id": gift_id}
+        )
+
     async def upgradeGift(
         self,
         business_connection_id: str = "",
@@ -18105,6 +18280,71 @@ class TDLibFunctions:
             }
         )
 
+    async def sendGiftPurchaseOffer(
+        self,
+        owner_id: "pytdbot.types.MessageSender" = None,
+        gift_name: str = "",
+        price: "pytdbot.types.GiftResalePrice" = None,
+        duration: int = 0,
+        paid_message_star_count: int = 0,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Sends an offer to purchase an upgraded gift
+
+        Parameters:
+            owner_id (:class:`~pytdbot.types.MessageSender`):
+                Identifier of the user or the channel chat that currently owns the gift and will receive the offer
+
+            gift_name (:class:`str`):
+                Name of the upgraded gift
+
+            price (:class:`~pytdbot.types.GiftResalePrice`):
+                The price that the user agreed to pay for the gift
+
+            duration (:class:`int`):
+                Duration of the offer, in seconds; must be one of 21600, 43200, 86400, 129600, 172800, or 259200\. Can also be 120 if Telegram test environment is used
+
+            paid_message_star_count (:class:`int`):
+                The number of Telegram Stars the user agreed to pay additionally for sending of the offer message to the current gift owner; pass userFullInfo\.outgoing\_paid\_message\_star\_count for users and 0 otherwise
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "sendGiftPurchaseOffer",
+                "owner_id": owner_id,
+                "gift_name": gift_name,
+                "price": price,
+                "duration": duration,
+                "paid_message_star_count": paid_message_star_count,
+            }
+        )
+
+    async def processGiftPurchaseOffer(
+        self, message_id: int = 0, approve: bool = False
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Handles a pending gift purchase offer
+
+        Parameters:
+            message_id (:class:`int`):
+                Identifier of the message with the gift purchase offer
+
+            approve (:class:`bool`):
+                Pass true to approve the request; pass false to decline it
+
+        Returns:
+            :class:`~pytdbot.types.Ok`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "processGiftPurchaseOffer",
+                "message_id": message_id,
+                "approve": approve,
+            }
+        )
+
     async def getReceivedGifts(
         self,
         business_connection_id: str = "",
@@ -18259,6 +18499,21 @@ class TDLibFunctions:
                 "@type": "getUpgradedGiftWithdrawalUrl",
                 "received_gift_id": received_gift_id,
                 "password": password,
+            }
+        )
+
+    async def getUpgradedGiftsPromotionalAnimation(
+        self,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Animation"]:
+        r"""Returns promotional anumation for upgraded gifts
+
+        Returns:
+            :class:`~pytdbot.types.Animation`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getUpgradedGiftsPromotionalAnimation",
             }
         )
 
@@ -19163,7 +19418,7 @@ class TDLibFunctions:
     async def canSendMessageToUser(
         self, user_id: int = 0, only_local: bool = False
     ) -> Union["pytdbot.types.Error", "pytdbot.types.CanSendMessageToUserResult"]:
-        r"""Check whether the current user can message another user or try to create a chat with them
+        r"""Checks whether the current user can message another user or try to create a chat with them
 
         Parameters:
             user_id (:class:`int`):
@@ -20909,7 +21164,7 @@ class TDLibFunctions:
     async def checkPremiumGiftCode(
         self, code: str = ""
     ) -> Union["pytdbot.types.Error", "pytdbot.types.PremiumGiftCodeInfo"]:
-        r"""Return information about a Telegram Premium gift code
+        r"""Returns information about a Telegram Premium gift code
 
         Parameters:
             code (:class:`str`):
