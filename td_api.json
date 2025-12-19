@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.58",
-    "commit_hash": "889bdf06029f98f3d04cac874dafab6f4f847c47",
+    "version": "1.8.59",
+    "commit_hash": "cecbf129676ee284817ddfe94af87405a3ed5d2b",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -192,6 +192,15 @@
             ],
             "functions": []
         },
+        "GiftPurchaseOfferState": {
+            "description": "Describes state of a gift purchase offer",
+            "types": [
+                "giftPurchaseOfferStatePending",
+                "giftPurchaseOfferStateAccepted",
+                "giftPurchaseOfferStateRejected"
+            ],
+            "functions": []
+        },
         "SuggestedPostPrice": {
             "description": "Describes price of a suggested post",
             "types": [
@@ -260,7 +269,8 @@
                 "upgradedGiftOriginTransfer",
                 "upgradedGiftOriginResale",
                 "upgradedGiftOriginBlockchain",
-                "upgradedGiftOriginPrepaidUpgrade"
+                "upgradedGiftOriginPrepaidUpgrade",
+                "upgradedGiftOriginOffer"
             ],
             "functions": []
         },
@@ -340,6 +350,7 @@
                 "starTransactionTypeChannelSubscriptionSale",
                 "starTransactionTypeGiftAuctionBid",
                 "starTransactionTypeGiftPurchase",
+                "starTransactionTypeGiftPurchaseOffer",
                 "starTransactionTypeGiftTransfer",
                 "starTransactionTypeGiftOriginalDetailsDrop",
                 "starTransactionTypeGiftSale",
@@ -370,7 +381,9 @@
             "description": "Describes type of transaction with Toncoins",
             "types": [
                 "tonTransactionTypeFragmentDeposit",
+                "tonTransactionTypeFragmentWithdrawal",
                 "tonTransactionTypeSuggestedPostPayment",
+                "tonTransactionTypeGiftPurchaseOffer",
                 "tonTransactionTypeUpgradedGiftPurchase",
                 "tonTransactionTypeUpgradedGiftSale",
                 "tonTransactionTypeUnsupported"
@@ -1112,6 +1125,8 @@
                 "messageGift",
                 "messageUpgradedGift",
                 "messageRefundedUpgradedGift",
+                "messageUpgradedGiftPurchaseOffer",
+                "messageUpgradedGiftPurchaseOfferDeclined",
                 "messagePaidMessagesRefunded",
                 "messagePaidMessagePriceChanged",
                 "messageDirectMessagePriceChanged",
@@ -1702,7 +1717,8 @@
                 "premiumFeatureLastSeenTimes",
                 "premiumFeatureBusiness",
                 "premiumFeatureMessageEffects",
-                "premiumFeatureChecklists"
+                "premiumFeatureChecklists",
+                "premiumFeaturePaidMessages"
             ],
             "functions": []
         },
@@ -2332,7 +2348,8 @@
                 "suggestedActionExtendPremium",
                 "suggestedActionExtendStarSubscriptions",
                 "suggestedActionCustom",
-                "suggestedActionSetLoginEmailAddress"
+                "suggestedActionSetLoginEmailAddress",
+                "suggestedActionAddLoginPasskey"
             ],
             "functions": []
         },
@@ -2948,13 +2965,55 @@
             },
             "type": "TermsOfService"
         },
+        "passkey": {
+            "description": "Describes a passkey",
+            "args": {
+                "id": {
+                    "description": "Unique identifier of the passkey",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Name of the passkey",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "addition_date": {
+                    "description": "Point in time (Unix timestamp) when the passkey was added",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "last_usage_date": {
+                    "description": "Point in time (Unix timestamp) when the passkey was used last time; 0 if never",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "software_icon_custom_emoji_id": {
+                    "description": "Identifier of the custom emoji that is used as the icon of the software, which created the passkey; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "Passkey"
+        },
+        "passkeys": {
+            "description": "Contains a list of passkeys",
+            "args": {
+                "passkeys": {
+                    "description": "List of passkeys",
+                    "is_optional": false,
+                    "type": "vector<passkey>"
+                }
+            },
+            "type": "Passkeys"
+        },
         "authorizationStateWaitTdlibParameters": {
             "description": "Initialization parameters are needed. Call setTdlibParameters to provide them",
             "args": {},
             "type": "AuthorizationState"
         },
         "authorizationStateWaitPhoneNumber": {
-            "description": "TDLib needs the user's phone number to authorize. Call setAuthenticationPhoneNumber to provide the phone number, or use requestQrCodeAuthentication or checkAuthenticationBotToken for other authentication options",
+            "description": "TDLib needs the user's phone number to authorize. Call setAuthenticationPhoneNumber to provide the phone number, or use requestQrCodeAuthentication, getAuthenticationPasskeyParameters, or checkAuthenticationBotToken for other authentication options",
             "args": {},
             "type": "AuthorizationState"
         },
@@ -4383,7 +4442,7 @@
                     "type": "int32"
                 },
                 "codec": {
-                    "description": "Codec used for video file encoding, for example, \"h264\", \"h265\", or \"av1\"",
+                    "description": "Codec used for video file encoding, for example, \"h264\", \"h265\", \"av1\", or \"av01\"",
                     "is_optional": false,
                     "type": "string"
                 },
@@ -5542,7 +5601,7 @@
                     "type": "Bool"
                 },
                 "can_restrict_members": {
-                    "description": "True, if the administrator can restrict, ban, or unban chat members or view supergroup statistics; always true for channels",
+                    "description": "True, if the administrator can restrict, ban, or unban chat members or view supergroup statistics",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -5615,6 +5674,21 @@
                 }
             },
             "type": "GiftResalePrice"
+        },
+        "giftPurchaseOfferStatePending": {
+            "description": "The offer must be accepted or rejected",
+            "args": {},
+            "type": "GiftPurchaseOfferState"
+        },
+        "giftPurchaseOfferStateAccepted": {
+            "description": "The offer was accepted",
+            "args": {},
+            "type": "GiftPurchaseOfferState"
+        },
+        "giftPurchaseOfferStateRejected": {
+            "description": "The offer was rejected",
+            "args": {},
+            "type": "GiftPurchaseOfferState"
         },
         "suggestedPostPriceStar": {
             "description": "Describes price of a suggested post in Telegram Stars",
@@ -6251,7 +6325,7 @@
                     "type": "Bool"
                 },
                 "giveaway_message_id": {
-                    "description": "Identifier of the corresponding giveaway message in the creator_id chat; can be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the corresponding giveaway message in the creator_id chat; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -6457,6 +6531,11 @@
                     "description": "Number of gifts distributed in each round",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "start_date": {
+                    "description": "Point in time (Unix timestamp) when the auction will start",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "GiftAuction"
@@ -6576,7 +6655,7 @@
             "description": "The gift was obtained by upgrading of a previously received gift",
             "args": {
                 "gift_message_id": {
-                    "description": "Identifier of the message with the regular gift that was upgraded; can be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the message with the regular gift that was upgraded; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -6592,7 +6671,7 @@
             "description": "The gift was bought from another user",
             "args": {
                 "price": {
-                    "description": "Price paid by the sender for the gift",
+                    "description": "Price paid for the gift",
                     "is_optional": false,
                     "type": "GiftResalePrice"
                 }
@@ -6607,6 +6686,17 @@
         "upgradedGiftOriginPrepaidUpgrade": {
             "description": "The sender or receiver of the message has paid for upgraid of the gift, which has been completed",
             "args": {},
+            "type": "UpgradedGiftOrigin"
+        },
+        "upgradedGiftOriginOffer": {
+            "description": "The gift was bought through an offer",
+            "args": {
+                "price": {
+                    "description": "Price paid for the gift",
+                    "is_optional": false,
+                    "type": "GiftResalePrice"
+                }
+            },
             "type": "UpgradedGiftOrigin"
         },
         "upgradedGiftModel": {
@@ -6803,6 +6893,11 @@
                     "is_optional": false,
                     "type": "int53"
                 },
+                "upgrade_variant_count": {
+                    "description": "Number of unique gift variants that are available for the upgraded gift; 0 if unknown",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "has_colors": {
                     "description": "True, if the gift can be used to customize the user's name, and backgrounds of profile photo, reply header, and link preview",
                     "is_optional": false,
@@ -6824,7 +6919,7 @@
                     "type": "giftAuction"
                 },
                 "next_send_date": {
-                    "description": "Point in time (Unix timestamp) when the gift can be sent next time by the current user; can be 0 or a date in the past. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now",
+                    "description": "Point in time (Unix timestamp) when the gift can be sent next time by the current user; may be 0 or a date in the past. If the date is in the future, then call canSendGift to get the reason, why the gift can't be sent now",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -6837,6 +6932,11 @@
                     "description": "Number of times the gift can be purchased all users; may be null if not limited",
                     "is_optional": true,
                     "type": "giftPurchaseLimits"
+                },
+                "background": {
+                    "description": "Background of the gift",
+                    "is_optional": false,
+                    "type": "giftBackground"
                 },
                 "first_send_date": {
                     "description": "Point in time (Unix timestamp) when the gift was send for the first time; for sold out gifts only",
@@ -6964,6 +7064,11 @@
                     "is_optional": true,
                     "type": "giftResaleParameters"
                 },
+                "can_send_purchase_offer": {
+                    "description": "True, if an offer to purchase the gift can be sent using sendGiftPurchaseOffer",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "value_currency": {
                     "description": "ISO 4217 currency code of the currency in which value of the gift is represented; may be empty if unavailable",
                     "is_optional": true,
@@ -6971,6 +7076,11 @@
                 },
                 "value_amount": {
                     "description": "Estimated value of the gift; in the smallest units of the currency; 0 if unavailable",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "value_usd_amount": {
+                    "description": "Estimated value of the gift in USD; in USD cents; 0 if unavailable",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -7361,6 +7471,11 @@
                     "is_optional": false,
                     "type": "formattedText"
                 },
+                "unique_gift_number": {
+                    "description": "Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "is_private": {
                     "description": "True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone are able to see them",
                     "is_optional": false,
@@ -7511,6 +7626,27 @@
             },
             "type": "GiftUpgradePreview"
         },
+        "giftUpgradeVariants": {
+            "description": "Contains all possible variants of upgraded gifts for the given regular gift",
+            "args": {
+                "models": {
+                    "description": "Models that can be chosen for the gift after upgrade",
+                    "is_optional": false,
+                    "type": "vector<upgradedGiftModel>"
+                },
+                "symbols": {
+                    "description": "Symbols that can be chosen for the gift after upgrade",
+                    "is_optional": false,
+                    "type": "vector<upgradedGiftSymbol>"
+                },
+                "backdrops": {
+                    "description": "Backdrops that can be chosen for the gift after upgrade",
+                    "is_optional": false,
+                    "type": "vector<upgradedGiftBackdrop>"
+                }
+            },
+            "type": "GiftUpgradeVariants"
+        },
         "auctionBid": {
             "description": "Describes a bid in an auction",
             "args": {
@@ -7563,11 +7699,37 @@
             },
             "type": "UserAuctionBid"
         },
+        "auctionRound": {
+            "description": "Describes a round of an auction",
+            "args": {
+                "number": {
+                    "description": "1-based number of the round",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "duration": {
+                    "description": "Duration of the round, in seconds",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "extend_time": {
+                    "description": "The number of seconds for which the round will be extended if there are changes in the top winners",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "top_winner_count": {
+                    "description": "The number of top winners who trigger round extension if changed",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "AuctionRound"
+        },
         "auctionStateActive": {
-            "description": "Contains information about an ongoing auction",
+            "description": "Contains information about an ongoing or scheduled auction",
             "args": {
                 "start_date": {
-                    "description": "Point in time (Unix timestamp) when the auction started",
+                    "description": "Point in time (Unix timestamp) when the auction started or will start",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -7591,6 +7753,11 @@
                     "is_optional": false,
                     "type": "vector<int53>"
                 },
+                "rounds": {
+                    "description": "Rounds of the auction in which their duration or extension rules are changed",
+                    "is_optional": false,
+                    "type": "vector<auctionRound>"
+                },
                 "current_round_end_date": {
                     "description": "Point in time (Unix timestamp) when the current round will end",
                     "is_optional": false,
@@ -7606,13 +7773,18 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "distributed_item_count": {
+                    "description": "The number of items that were purchased on the auction by all users",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "left_item_count": {
-                    "description": "The number of items that have to be distributed on the auciton",
+                    "description": "The number of items that have to be distributed on the auction",
                     "is_optional": false,
                     "type": "int32"
                 },
                 "acquired_item_count": {
-                    "description": "The number of items that were purchased by the current user on the auciton",
+                    "description": "The number of items that were purchased by the current user on the auction",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -7643,9 +7815,24 @@
                     "type": "int53"
                 },
                 "acquired_item_count": {
-                    "description": "The number of items that were purchased by the current user on the auciton",
+                    "description": "The number of items that were purchased by the current user on the auction",
                     "is_optional": false,
                     "type": "int32"
+                },
+                "telegram_listed_item_count": {
+                    "description": "Number of items from the auction being resold on Telegram",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "fragment_listed_item_count": {
+                    "description": "Number of items from the auction being resold on Fragment",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "fragment_url": {
+                    "description": "The HTTPS link to the Fragment for the resold items; may be empty if there are no such items being sold on Fragment",
+                    "is_optional": true,
+                    "type": "string"
                 }
             },
             "type": "AuctionState"
@@ -7694,6 +7881,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "unique_gift_number": {
+                    "description": "Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned",
+                    "is_optional": false,
+                    "type": "int32"
+                },
                 "text": {
                     "description": "Message added to the gift",
                     "is_optional": false,
@@ -7729,27 +7921,27 @@
             "type": "TransactionDirection"
         },
         "starTransactionTypePremiumBotDeposit": {
-            "description": "The transaction is a deposit of Telegram Stars from the Premium bot; for regular users only",
+            "description": "The transaction is a deposit of Telegram Stars from the Premium bot; relevant for regular users only",
             "args": {},
             "type": "StarTransactionType"
         },
         "starTransactionTypeAppStoreDeposit": {
-            "description": "The transaction is a deposit of Telegram Stars from App Store; for regular users only",
+            "description": "The transaction is a deposit of Telegram Stars from App Store; relevant for regular users only",
             "args": {},
             "type": "StarTransactionType"
         },
         "starTransactionTypeGooglePlayDeposit": {
-            "description": "The transaction is a deposit of Telegram Stars from Google Play; for regular users only",
+            "description": "The transaction is a deposit of Telegram Stars from Google Play; relevant for regular users only",
             "args": {},
             "type": "StarTransactionType"
         },
         "starTransactionTypeFragmentDeposit": {
-            "description": "The transaction is a deposit of Telegram Stars from Fragment; for regular users and bots only",
+            "description": "The transaction is a deposit of Telegram Stars from Fragment; relevant for regular users and bots only",
             "args": {},
             "type": "StarTransactionType"
         },
         "starTransactionTypeUserDeposit": {
-            "description": "The transaction is a deposit of Telegram Stars by another user; for regular users only",
+            "description": "The transaction is a deposit of Telegram Stars by another user; relevant for regular users only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that gifted Telegram Stars; 0 if the user was anonymous",
@@ -7765,7 +7957,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiveawayDeposit": {
-            "description": "The transaction is a deposit of Telegram Stars from a giveaway; for regular users only",
+            "description": "The transaction is a deposit of Telegram Stars from a giveaway; relevant for regular users only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of a supergroup or a channel chat that created the giveaway",
@@ -7773,7 +7965,7 @@
                     "type": "int53"
                 },
                 "giveaway_message_id": {
-                    "description": "Identifier of the message with the giveaway; can be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the message with the giveaway; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -7781,7 +7973,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeFragmentWithdrawal": {
-            "description": "The transaction is a withdrawal of earned Telegram Stars to Fragment; for regular users, bots, supergroup and channel chats only",
+            "description": "The transaction is a withdrawal of earned Telegram Stars to Fragment; relevant for regular users, bots, supergroup and channel chats only",
             "args": {
                 "withdrawal_state": {
                     "description": "State of the withdrawal; may be null for refunds from Fragment",
@@ -7792,12 +7984,12 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeTelegramAdsWithdrawal": {
-            "description": "The transaction is a withdrawal of earned Telegram Stars to Telegram Ad platform; for bots and channel chats only",
+            "description": "The transaction is a withdrawal of earned Telegram Stars to Telegram Ad platform; relevant for bots and channel chats only",
             "args": {},
             "type": "StarTransactionType"
         },
         "starTransactionTypeTelegramApiUsage": {
-            "description": "The transaction is a payment for Telegram API usage; for bots only",
+            "description": "The transaction is a payment for Telegram API usage; relevant for bots only",
             "args": {
                 "request_count": {
                     "description": "The number of billed requests",
@@ -7808,7 +8000,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeBotPaidMediaPurchase": {
-            "description": "The transaction is a purchase of paid media from a bot or a business account by the current user; for regular users only",
+            "description": "The transaction is a purchase of paid media from a bot or a business account by the current user; relevant for regular users only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the bot or the business account user that sent the paid media",
@@ -7824,7 +8016,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeBotPaidMediaSale": {
-            "description": "The transaction is a sale of paid media by the bot or a business account managed by the bot; for bots only",
+            "description": "The transaction is a sale of paid media by the bot or a business account managed by the bot; relevant for bots only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that bought the media",
@@ -7850,7 +8042,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeChannelPaidMediaPurchase": {
-            "description": "The transaction is a purchase of paid media from a channel by the current user; for regular users only",
+            "description": "The transaction is a purchase of paid media from a channel by the current user; relevant for regular users only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the channel chat that sent the paid media",
@@ -7858,7 +8050,7 @@
                     "type": "int53"
                 },
                 "message_id": {
-                    "description": "Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the corresponding message with paid media; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -7871,7 +8063,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeChannelPaidMediaSale": {
-            "description": "The transaction is a sale of paid media by the channel chat; for channel chats only",
+            "description": "The transaction is a sale of paid media by the channel chat; relevant for channel chats only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that bought the media",
@@ -7879,7 +8071,7 @@
                     "type": "int53"
                 },
                 "message_id": {
-                    "description": "Identifier of the corresponding message with paid media; can be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the corresponding message with paid media; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -7892,7 +8084,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeBotInvoicePurchase": {
-            "description": "The transaction is a purchase of a product from a bot or a business account by the current user; for regular users only",
+            "description": "The transaction is a purchase of a product from a bot or a business account by the current user; relevant for regular users only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the bot or the business account user that created the invoice",
@@ -7908,7 +8100,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeBotInvoiceSale": {
-            "description": "The transaction is a sale of a product by the bot; for bots only",
+            "description": "The transaction is a sale of a product by the bot; relevant for bots only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that bought the product",
@@ -7934,7 +8126,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeBotSubscriptionPurchase": {
-            "description": "The transaction is a purchase of a subscription from a bot or a business account by the current user; for regular users only",
+            "description": "The transaction is a purchase of a subscription from a bot or a business account by the current user; relevant for regular users only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the bot or the business account user that created the subscription link",
@@ -7955,7 +8147,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeBotSubscriptionSale": {
-            "description": "The transaction is a sale of a subscription by the bot; for bots only",
+            "description": "The transaction is a sale of a subscription by the bot; relevant for bots only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that bought the subscription",
@@ -7986,7 +8178,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeChannelSubscriptionPurchase": {
-            "description": "The transaction is a purchase of a subscription to a channel chat by the current user; for regular users only",
+            "description": "The transaction is a purchase of a subscription to a channel chat by the current user; relevant for regular users only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the channel chat that created the subscription",
@@ -8002,7 +8194,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeChannelSubscriptionSale": {
-            "description": "The transaction is a sale of a subscription by the channel chat; for channel chats only",
+            "description": "The transaction is a sale of a subscription by the channel chat; relevant for channel chats only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that bought the subscription",
@@ -8018,7 +8210,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiftAuctionBid": {
-            "description": "The transaction is a bid on a gift auction; for regular users only",
+            "description": "The transaction is a bid on a gift auction; relevant for regular users only",
             "args": {
                 "owner_id": {
                     "description": "Identifier of the user that will receive the gift",
@@ -8034,7 +8226,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiftPurchase": {
-            "description": "The transaction is a purchase of a regular gift; for regular users and bots only",
+            "description": "The transaction is a purchase of a regular gift; relevant for regular users and bots only",
             "args": {
                 "owner_id": {
                     "description": "Identifier of the user or the channel that received the gift",
@@ -8049,8 +8241,19 @@
             },
             "type": "StarTransactionType"
         },
+        "starTransactionTypeGiftPurchaseOffer": {
+            "description": "The transaction is an offer of gift purchase; relevant for regular users only",
+            "args": {
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "upgradedGift"
+                }
+            },
+            "type": "StarTransactionType"
+        },
         "starTransactionTypeGiftTransfer": {
-            "description": "The transaction is a transfer of an upgraded gift; for regular users only",
+            "description": "The transaction is a transfer of an upgraded gift; relevant for regular users only",
             "args": {
                 "owner_id": {
                     "description": "Identifier of the user or the channel that received the gift",
@@ -8066,7 +8269,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiftOriginalDetailsDrop": {
-            "description": "The transaction is a drop of original details of an upgraded gift; for regular users only",
+            "description": "The transaction is a drop of original details of an upgraded gift; relevant for regular users only",
             "args": {
                 "owner_id": {
                     "description": "Identifier of the user or the channel that owns the gift",
@@ -8082,7 +8285,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiftSale": {
-            "description": "The transaction is a sale of a received gift; for regular users and channel chats only",
+            "description": "The transaction is a sale of a received gift; relevant for regular users and channel chats only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that sent the gift",
@@ -8098,7 +8301,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiftUpgrade": {
-            "description": "The transaction is an upgrade of a gift; for regular users only",
+            "description": "The transaction is an upgrade of a gift; relevant for regular users only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that initially sent the gift",
@@ -8114,7 +8317,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeGiftUpgradePurchase": {
-            "description": "The transaction is a purchase of an upgrade of a gift owned by another user or channel; for regular users only",
+            "description": "The transaction is a purchase of an upgrade of a gift owned by another user or channel; relevant for regular users only",
             "args": {
                 "owner_id": {
                     "description": "Owner of the upgraded gift",
@@ -8130,7 +8333,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeUpgradedGiftPurchase": {
-            "description": "The transaction is a purchase of an upgraded gift for some user or channel; for regular users only",
+            "description": "The transaction is a purchase of an upgraded gift for some user or channel; relevant for regular users only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that sold the gift",
@@ -8146,7 +8349,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeUpgradedGiftSale": {
-            "description": "The transaction is a sale of an upgraded gift; for regular users only",
+            "description": "The transaction is a sale of an upgraded gift; relevant for regular users only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that bought the gift",
@@ -8167,12 +8370,17 @@
                     "description": "The amount of Telegram Stars that were received by Telegram; can be negative for refunds",
                     "is_optional": false,
                     "type": "starAmount"
+                },
+                "via_offer": {
+                    "description": "True, if the gift was sold through a purchase offer",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "StarTransactionType"
         },
         "starTransactionTypeChannelPaidReactionSend": {
-            "description": "The transaction is a sending of a paid reaction to a message in a channel chat by the current user; for regular users only",
+            "description": "The transaction is a sending of a paid reaction to a message in a channel chat by the current user; relevant for regular users only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the channel chat",
@@ -8180,7 +8388,7 @@
                     "type": "int53"
                 },
                 "message_id": {
-                    "description": "Identifier of the reacted message; can be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the reacted message; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -8188,7 +8396,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeChannelPaidReactionReceive": {
-            "description": "The transaction is a receiving of a paid reaction to a message by the channel chat; for channel chats only",
+            "description": "The transaction is a receiving of a paid reaction to a message by the channel chat; relevant for channel chats only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that added the paid reaction",
@@ -8196,7 +8404,7 @@
                     "type": "int53"
                 },
                 "message_id": {
-                    "description": "Identifier of the reacted message; can be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the reacted message; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -8204,7 +8412,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeAffiliateProgramCommission": {
-            "description": "The transaction is a receiving of a commission from an affiliate program; for regular users, bots and channel chats only",
+            "description": "The transaction is a receiving of a commission from an affiliate program; relevant for regular users, bots and channel chats only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat that created the affiliate program",
@@ -8220,7 +8428,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypePaidMessageSend": {
-            "description": "The transaction is a sending of a paid message; for regular users only",
+            "description": "The transaction is a sending of a paid message; relevant for regular users only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat that received the payment",
@@ -8236,7 +8444,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypePaidMessageReceive": {
-            "description": "The transaction is a receiving of a paid message; for regular users, supergroup and channel chats only",
+            "description": "The transaction is a receiving of a paid message; relevant for regular users, supergroup and channel chats only",
             "args": {
                 "sender_id": {
                     "description": "Identifier of the sender of the message",
@@ -8262,7 +8470,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypePaidGroupCallMessageSend": {
-            "description": "The transaction is a sending of a paid group call message; for regular users only",
+            "description": "The transaction is a sending of a paid group call message; relevant for regular users only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat that received the payment",
@@ -8273,7 +8481,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypePaidGroupCallMessageReceive": {
-            "description": "The transaction is a receiving of a paid group call message; for regular users and channel chats only",
+            "description": "The transaction is a receiving of a paid group call message; relevant for regular users and channel chats only",
             "args": {
                 "sender_id": {
                     "description": "Identifier of the sender of the message",
@@ -8294,7 +8502,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypePaidGroupCallReactionSend": {
-            "description": "The transaction is a sending of a paid group reaction; for regular users only",
+            "description": "The transaction is a sending of a paid group reaction; relevant for regular users only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat that received the payment",
@@ -8305,7 +8513,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypePaidGroupCallReactionReceive": {
-            "description": "The transaction is a receiving of a paid group call reaction; for regular users and channel chats only",
+            "description": "The transaction is a receiving of a paid group call reaction; relevant for regular users and channel chats only",
             "args": {
                 "sender_id": {
                     "description": "Identifier of the sender of the reaction",
@@ -8326,7 +8534,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeSuggestedPostPaymentSend": {
-            "description": "The transaction is a payment for a suggested post; for regular users only",
+            "description": "The transaction is a payment for a suggested post; relevant for regular users only",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the channel chat that posted the post",
@@ -8337,7 +8545,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeSuggestedPostPaymentReceive": {
-            "description": "The transaction is a receiving of a payment for a suggested post by the channel chat; for channel chats only",
+            "description": "The transaction is a receiving of a payment for a suggested post by the channel chat; relevant for channel chats only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that paid for the suggested post",
@@ -8348,7 +8556,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypePremiumPurchase": {
-            "description": "The transaction is a purchase of Telegram Premium subscription; for regular users and bots only",
+            "description": "The transaction is a purchase of Telegram Premium subscription; relevant for regular users and bots only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that received the Telegram Premium subscription",
@@ -8369,7 +8577,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeBusinessBotTransferSend": {
-            "description": "The transaction is a transfer of Telegram Stars to a business bot; for regular users only",
+            "description": "The transaction is a transfer of Telegram Stars to a business bot; relevant for regular users only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the bot that received Telegram Stars",
@@ -8380,7 +8588,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypeBusinessBotTransferReceive": {
-            "description": "The transaction is a transfer of Telegram Stars from a business account; for bots only",
+            "description": "The transaction is a transfer of Telegram Stars from a business account; relevant for bots only",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that sent Telegram Stars",
@@ -8391,7 +8599,7 @@
             "type": "StarTransactionType"
         },
         "starTransactionTypePublicPostSearch": {
-            "description": "The transaction is a payment for search of posts in public Telegram channels; for regular users only",
+            "description": "The transaction is a payment for search of posts in public Telegram channels; relevant for regular users only",
             "args": {},
             "type": "StarTransactionType"
         },
@@ -8468,6 +8676,17 @@
             },
             "type": "TonTransactionType"
         },
+        "tonTransactionTypeFragmentWithdrawal": {
+            "description": "The transaction is a withdrawal of earned Toncoins to Fragment",
+            "args": {
+                "withdrawal_state": {
+                    "description": "State of the withdrawal; may be null for refunds from Fragment",
+                    "is_optional": true,
+                    "type": "RevenueWithdrawalState"
+                }
+            },
+            "type": "TonTransactionType"
+        },
         "tonTransactionTypeSuggestedPostPayment": {
             "description": "The transaction is a payment for a suggested post",
             "args": {
@@ -8479,8 +8698,19 @@
             },
             "type": "TonTransactionType"
         },
+        "tonTransactionTypeGiftPurchaseOffer": {
+            "description": "The transaction is an offer of gift purchase",
+            "args": {
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "upgradedGift"
+                }
+            },
+            "type": "TonTransactionType"
+        },
         "tonTransactionTypeUpgradedGiftPurchase": {
-            "description": "The transaction is a purchase of an upgraded gift for some user or channel; for regular users only",
+            "description": "The transaction is a purchase of an upgraded gift for some user or channel",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that sold the gift",
@@ -8496,7 +8726,7 @@
             "type": "TonTransactionType"
         },
         "tonTransactionTypeUpgradedGiftSale": {
-            "description": "The transaction is a sale of an upgraded gift; for regular users only",
+            "description": "The transaction is a sale of an upgraded gift",
             "args": {
                 "user_id": {
                     "description": "Identifier of the user that bought the gift",
@@ -8517,6 +8747,11 @@
                     "description": "The amount of Toncoins that were received by the Telegram; in the smallest units of the currency",
                     "is_optional": false,
                     "type": "int53"
+                },
+                "via_offer": {
+                    "description": "True, if the gift was sold through a purchase offer",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "TonTransactionType"
@@ -15473,11 +15708,6 @@
                     "is_optional": false,
                     "type": "gift"
                 },
-                "gift_background": {
-                    "description": "Background of the gift",
-                    "is_optional": false,
-                    "type": "giftBackground"
-                },
                 "auction_end_date": {
                     "description": "Point in time (Unix timestamp) when the auction will be ended",
                     "is_optional": false,
@@ -18462,7 +18692,7 @@
                     "type": "int53"
                 },
                 "invoice_message_id": {
-                    "description": "Identifier of the message with the corresponding invoice; can be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the message with the corresponding invoice; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -18754,7 +18984,7 @@
             "description": "A giveaway without public winners has been completed for the chat",
             "args": {
                 "giveaway_message_id": {
-                    "description": "Identifier of the message with the giveaway; can be 0 if the message was deleted",
+                    "description": "Identifier of the message with the giveaway; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -18938,7 +19168,7 @@
                     "type": "int53"
                 },
                 "giveaway_message_id": {
-                    "description": "Identifier of the message with the giveaway in the boosted chat; can be 0 if the message was deleted",
+                    "description": "Identifier of the message with the giveaway in the boosted chat; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -18982,6 +19212,11 @@
                     "description": "Message added to the gift",
                     "is_optional": false,
                     "type": "formattedText"
+                },
+                "unique_gift_number": {
+                    "description": "Unique number of the gift among gifts upgraded from the same gift after upgrade; 0 if yet unassigned",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "sell_star_count": {
                     "description": "Number of Telegram Stars that can be claimed by the receiver instead of the regular gift; 0 if the gift can't be sold by the receiver",
@@ -19148,6 +19383,58 @@
             },
             "type": "MessageContent"
         },
+        "messageUpgradedGiftPurchaseOffer": {
+            "description": "An offer to purchase an upgraded gift was sent or received",
+            "args": {
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "upgradedGift"
+                },
+                "state": {
+                    "description": "State of the offer",
+                    "is_optional": false,
+                    "type": "GiftPurchaseOfferState"
+                },
+                "price": {
+                    "description": "The proposed price",
+                    "is_optional": false,
+                    "type": "GiftResalePrice"
+                },
+                "expiration_date": {
+                    "description": "Point in time (Unix timestamp) when the offer will expire or has expired",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageUpgradedGiftPurchaseOfferDeclined": {
+            "description": "An offer to purchase a gift was declined or expired",
+            "args": {
+                "gift": {
+                    "description": "The gift",
+                    "is_optional": false,
+                    "type": "upgradedGift"
+                },
+                "price": {
+                    "description": "The proposed price",
+                    "is_optional": false,
+                    "type": "GiftResalePrice"
+                },
+                "offer_message_id": {
+                    "description": "Identifier of the message with purchase offer which was declined or expired; may be 0 or an identifier of a deleted message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "was_expired": {
+                    "description": "True, if the offer has expired; otherwise, the offer was explicitly declined",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "MessageContent"
+        },
         "messagePaidMessagesRefunded": {
             "description": "Paid messages were refunded",
             "args": {
@@ -19195,7 +19482,7 @@
             "description": "Some tasks from a checklist were marked as done or not done",
             "args": {
                 "checklist_message_id": {
-                    "description": "Identifier of the message with the checklist; can be 0 if the message was deleted",
+                    "description": "Identifier of the message with the checklist; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19216,7 +19503,7 @@
             "description": "Some tasks were added to a checklist",
             "args": {
                 "checklist_message_id": {
-                    "description": "Identifier of the message with the checklist; can be 0 if the message was deleted",
+                    "description": "Identifier of the message with the checklist; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19232,7 +19519,7 @@
             "description": "Approval of suggested post has failed, because the user which proposed the post had no enough funds",
             "args": {
                 "suggested_post_message_id": {
-                    "description": "Identifier of the message with the suggested post; can be 0 if the message was deleted",
+                    "description": "Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19248,7 +19535,7 @@
             "description": "A suggested post was approved",
             "args": {
                 "suggested_post_message_id": {
-                    "description": "Identifier of the message with the suggested post; can be 0 if the message was deleted",
+                    "description": "Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19269,7 +19556,7 @@
             "description": "A suggested post was declined",
             "args": {
                 "suggested_post_message_id": {
-                    "description": "Identifier of the message with the suggested post; can be 0 if the message was deleted",
+                    "description": "Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19285,7 +19572,7 @@
             "description": "A suggested post was published for getOption(\"suggested_post_lifetime_min\") seconds and payment for the post was received",
             "args": {
                 "suggested_post_message_id": {
-                    "description": "Identifier of the message with the suggested post; can be 0 if the message was deleted",
+                    "description": "Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19306,7 +19593,7 @@
             "description": "A suggested post was refunded",
             "args": {
                 "suggested_post_message_id": {
-                    "description": "Identifier of the message with the suggested post; can be 0 if the message was deleted",
+                    "description": "Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19766,7 +20053,7 @@
                     "type": "MessageSchedulingState"
                 },
                 "effect_id": {
-                    "description": "Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage and sendMessageAlbum in private chats",
+                    "description": "Identifier of the effect to apply to the message; pass 0 if none; applicable only to sendMessage, sendMessageAlbum in private chats and forwardMessages with one message to private chats",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -26571,6 +26858,11 @@
             "args": {},
             "type": "PremiumFeature"
         },
+        "premiumFeaturePaidMessages": {
+            "description": "The ability to require a payment for incoming messages in new chats",
+            "args": {},
+            "type": "PremiumFeature"
+        },
         "businessFeatureLocation": {
             "description": "The ability to set location",
             "args": {},
@@ -31115,6 +31407,11 @@
             },
             "type": "SuggestedAction"
         },
+        "suggestedActionAddLoginPasskey": {
+            "description": "Suggests the user to add a passkey for login using addLoginPasskey",
+            "args": {},
+            "type": "SuggestedAction"
+        },
         "count": {
             "description": "Contains a counter",
             "args": {
@@ -35567,6 +35864,42 @@
             },
             "type": "Ok"
         },
+        "getAuthenticationPasskeyParameters": {
+            "description": "Returns parameters for authentication using a passkey as JSON-serialized string",
+            "args": {},
+            "type": "Text"
+        },
+        "checkAuthenticationPasskey": {
+            "description": "Checks a passkey to log in to the corresponding account. Call getAuthenticationPasskeyParameters to get parameters for the passkey. Works only when the current authorization state is authorizationStateWaitPhoneNumber or authorizationStateWaitOtherDeviceConfirmation, or if there is no pending authentication query and the current authorization state is authorizationStateWaitPremiumPurchase, authorizationStateWaitEmailAddress, authorizationStateWaitEmailCode, authorizationStateWaitCode, authorizationStateWaitRegistration, or authorizationStateWaitPassword",
+            "args": {
+                "credential_id": {
+                    "description": "Base64url-encoded identifier of the credential",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "client_data": {
+                    "description": "JSON-encoded client data",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "authenticator_data": {
+                    "description": "Authenticator data of the application that created the credential",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "signature": {
+                    "description": "Cryptographic signature of the credential",
+                    "is_optional": false,
+                    "type": "bytes"
+                },
+                "user_handle": {
+                    "description": "User handle of the passkey",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "Ok"
+        },
         "registerUser": {
             "description": "Finishes user registration. Works only when the current authorization state is authorizationStateWaitRegistration",
             "args": {
@@ -36026,7 +36359,7 @@
             "type": "Message"
         },
         "getRepliedMessage": {
-            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, and the topic creation message for topic messages without non-bundled replied message. Returns a 404 error if the message doesn't exist",
+            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferDeclined, and the topic creation message for topic messages without non-bundled replied message. Returns a 404 error if the message doesn't exist",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat the message belongs to",
@@ -39020,7 +39353,7 @@
             "type": "StarAmount"
         },
         "transferBusinessAccountStars": {
-            "description": "Transfer Telegram Stars from the business account to the business bot; for bots only",
+            "description": "Transfers Telegram Stars from the business account to the business bot; for bots only",
             "args": {
                 "business_connection_id": {
                     "description": "Unique identifier of business connection",
@@ -39542,6 +39875,43 @@
                     "description": "Forum topic identifier in which messages will be unpinned",
                     "is_optional": false,
                     "type": "int32"
+                }
+            },
+            "type": "Ok"
+        },
+        "getPasskeyParameters": {
+            "description": "Returns parameters for creating of a new passkey as JSON-serialized string",
+            "args": {},
+            "type": "Text"
+        },
+        "addLoginPasskey": {
+            "description": "Adds a passkey allowed to be used for the login by the current user and returns the added passkey. Call getPasskeyParameters to get parameters for creating of the passkey",
+            "args": {
+                "client_data": {
+                    "description": "JSON-encoded client data",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "attestation_object": {
+                    "description": "Passkey attestation object",
+                    "is_optional": false,
+                    "type": "bytes"
+                }
+            },
+            "type": "Passkey"
+        },
+        "getLoginPasskeys": {
+            "description": "Returns the list of passkeys allowed to be used for the login by the current user",
+            "args": {},
+            "type": "Passkeys"
+        },
+        "removeLoginPasskey": {
+            "description": "Removes a passkey from the list of passkeys allowed to be used for the login by the current user",
+            "args": {
+                "passkey_id": {
+                    "description": "Unique identifier of the passkey to remove",
+                    "is_optional": false,
+                    "type": "string"
                 }
             },
             "type": "Ok"
@@ -42280,7 +42650,7 @@
             "type": "Ok"
         },
         "readChatList": {
-            "description": "Traverse all chats in a chat list and marks all messages in the chats as read",
+            "description": "Traverses all chats in a chat list and marks all messages in the chats as read",
             "args": {
                 "chat_list": {
                     "description": "Chat list in which to mark all chats as read",
@@ -43288,7 +43658,7 @@
             "type": "Text"
         },
         "preliminaryUploadFile": {
-            "description": "Preliminary uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes. In all other cases there is no need to preliminary upload a file. Updates updateFile will be used to notify about upload progress. The upload will not be completed until the file is sent in a message",
+            "description": "Preliminarily uploads a file to the cloud before sending it in a message, which can be useful for uploading of being recorded voice and video notes. In all other cases there is no need to preliminary upload a file. Updates updateFile will be used to notify about upload progress. The upload will not be completed until the file is sent in a message",
             "args": {
                 "file": {
                     "description": "File to upload",
@@ -43531,7 +43901,7 @@
             "type": "FoundFileDownloads"
         },
         "setApplicationVerificationToken": {
-            "description": "Application or reCAPTCHA verification has been completed. Can be called before authorization",
+            "description": "Informs TDLib that application or reCAPTCHA verification has been completed. Can be called before authorization",
             "args": {
                 "verification_id": {
                     "description": "Unique identifier for the verification process as received from updateApplicationVerificationRequired or updateApplicationRecaptchaVerificationRequired",
@@ -45418,6 +45788,27 @@
             },
             "type": "Outline"
         },
+        "getStickerOutlineSvgPath": {
+            "description": "Returns outline of a sticker as an SVG path. This is an offline method. Returns an empty string if the outline isn't known",
+            "args": {
+                "sticker_file_id": {
+                    "description": "File identifier of the sticker",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "for_animated_emoji": {
+                    "description": "Pass true to get the outline scaled for animated emoji",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "for_clicked_animated_emoji_message": {
+                    "description": "Pass true to get the outline scaled for clicked animated emoji message",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Text"
+        },
         "getStickers": {
             "description": "Returns stickers from the installed sticker sets that correspond to any of the given emoji or can be found by sticker-specific keywords. If the query is non-empty, then favorite, recently used or trending stickers may also be returned",
             "args": {
@@ -45818,7 +46209,7 @@
             "type": "EmojiKeywords"
         },
         "getKeywordEmojis": {
-            "description": "Return emojis matching the keyword. Supported only if the file database is enabled. Order of results is unspecified",
+            "description": "Returns emojis matching the keyword. Supported only if the file database is enabled. Order of results is unspecified",
             "args": {
                 "text": {
                     "description": "Text to search for",
@@ -46288,7 +46679,7 @@
             "type": "AuthenticationCodeInfo"
         },
         "checkPhoneNumberCode": {
-            "description": "Check the authentication code and completes the request for which the code was sent if appropriate",
+            "description": "Checks the authentication code and completes the request for which the code was sent if appropriate",
             "args": {
                 "code": {
                     "description": "Authentication code to check",
@@ -46663,7 +47054,7 @@
             "type": "Ok"
         },
         "deleteBotMediaPreviews": {
-            "description": "Delete media previews from the list of media previews of a bot",
+            "description": "Deletes media previews from the list of media previews of a bot",
             "args": {
                 "bot_user_id": {
                     "description": "Identifier of the target bot. The bot must be owned and must have the main Web App",
@@ -47711,6 +48102,17 @@
             },
             "type": "GiftUpgradePreview"
         },
+        "getGiftUpgradeVariants": {
+            "description": "Returns all possible variants of upgraded gifts for a regular gift",
+            "args": {
+                "gift_id": {
+                    "description": "Identifier of the gift",
+                    "is_optional": false,
+                    "type": "int64"
+                }
+            },
+            "type": "GiftUpgradeVariants"
+        },
         "upgradeGift": {
             "description": "Upgrades a regular gift",
             "args": {
@@ -47820,6 +48222,53 @@
                 }
             },
             "type": "GiftResaleResult"
+        },
+        "sendGiftPurchaseOffer": {
+            "description": "Sends an offer to purchase an upgraded gift",
+            "args": {
+                "owner_id": {
+                    "description": "Identifier of the user or the channel chat that currently owns the gift and will receive the offer",
+                    "is_optional": false,
+                    "type": "MessageSender"
+                },
+                "gift_name": {
+                    "description": "Name of the upgraded gift",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "price": {
+                    "description": "The price that the user agreed to pay for the gift",
+                    "is_optional": false,
+                    "type": "GiftResalePrice"
+                },
+                "duration": {
+                    "description": "Duration of the offer, in seconds; must be one of 21600, 43200, 86400, 129600, 172800, or 259200. Can also be 120 if Telegram test environment is used",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "paid_message_star_count": {
+                    "description": "The number of Telegram Stars the user agreed to pay additionally for sending of the offer message to the current gift owner; pass userFullInfo.outgoing_paid_message_star_count for users and 0 otherwise",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "Ok"
+        },
+        "processGiftPurchaseOffer": {
+            "description": "Handles a pending gift purchase offer",
+            "args": {
+                "message_id": {
+                    "description": "Identifier of the message with the gift purchase offer",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "approve": {
+                    "description": "Pass true to approve the request; pass false to decline it",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "Ok"
         },
         "getReceivedGifts": {
             "description": "Returns gifts received by the given user or chat",
@@ -47945,6 +48394,11 @@
                 }
             },
             "type": "HttpUrl"
+        },
+        "getUpgradedGiftsPromotionalAnimation": {
+            "description": "Returns promotional anumation for upgraded gifts",
+            "args": {},
+            "type": "Animation"
         },
         "setGiftResalePrice": {
             "description": "Changes resale price of a unique gift owned by the current user",
@@ -48530,7 +48984,7 @@
             "type": "Ok"
         },
         "canSendMessageToUser": {
-            "description": "Check whether the current user can message another user or try to create a chat with them",
+            "description": "Checks whether the current user can message another user or try to create a chat with them",
             "args": {
                 "user_id": {
                     "description": "Identifier of the other user",
@@ -49706,7 +50160,7 @@
             "type": "PremiumGiveawayPaymentOptions"
         },
         "checkPremiumGiftCode": {
-            "description": "Return information about a Telegram Premium gift code",
+            "description": "Returns information about a Telegram Premium gift code",
             "args": {
                 "code": {
                     "description": "The code to check",
