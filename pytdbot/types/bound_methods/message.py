@@ -250,6 +250,36 @@ class MessageBoundMethods:
             )
         )
 
+    async def kick(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Kick the message sender"""
+
+        return await self.setChatMemberStatus(
+            status=pytdbot.types.ChatMemberStatusLeft()
+        )
+
+    async def restrict(
+        self,
+        permissions: "pytdbot.types.ChatPermissions",
+        restricted_until_date: int = 0,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        r"""Restrict the message sender
+
+        Parameters:
+            permissions (:class:`pytdbot.types.ChatPermissions`):
+                New user permissions
+
+            restricted_until_date (``int``, *optional*):
+                Point in time (Unix timestamp) when restrictions will be lifted for the user; 0 if never. If the user is restricted for more than 366 days or for less than 30 seconds from the current time, the user is considered to be restricted forever. Always 0 in basic groups
+        """
+
+        return await self.setChatMemberStatus(
+            status=pytdbot.types.ChatMemberStatusRestricted(
+                is_member=True,
+                permissions=permissions,
+                restricted_until_date=restricted_until_date,
+            )
+        )
+
     async def delete(
         self,
         revoke: bool = True,
