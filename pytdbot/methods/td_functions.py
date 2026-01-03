@@ -1130,7 +1130,7 @@ class TDLibFunctions:
     async def getRepliedMessage(
         self, chat_id: int = 0, message_id: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
-        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferDeclined, and the topic creation message for topic messages without non\-bundled replied message\. Returns a 404 error if the message doesn't exist
+        r"""Returns information about a non\-bundled message that is replied by a given message\. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferRejected, and the topic creation message for topic messages without non\-bundled replied message\. Returns a 404 error if the message doesn't exist
 
         Parameters:
             chat_id (:class:`int`):
@@ -3580,7 +3580,7 @@ class TDLibFunctions:
                 Identifier of the message
 
             to_language_code (:class:`str`):
-                Language code of the language to which the message is translated\. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh\-CN\", \"zh\", \"zh\-Hans\", \"zh\-TW\", \"zh\-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"
+                Language code of the language to which the message is translated\. See translateText\.to\_language\_code for the list of supported values
 
         Returns:
             :class:`~pytdbot.types.FormattedText`
@@ -3592,6 +3592,37 @@ class TDLibFunctions:
                 "chat_id": chat_id,
                 "message_id": message_id,
                 "to_language_code": to_language_code,
+            }
+        )
+
+    async def summarizeMessage(
+        self,
+        chat_id: int = 0,
+        message_id: int = 0,
+        translate_to_language_code: str = "",
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.FormattedText"]:
+        r"""Summarizes content of the message with non\-empty summary\_language\_code
+
+        Parameters:
+            chat_id (:class:`int`):
+                Identifier of the chat to which the message belongs
+
+            message_id (:class:`int`):
+                Identifier of the message
+
+            translate_to_language_code (:class:`str`):
+                Pass a language code to which the summary will be translated; may be empty if translation isn't needed\. See translateText\.to\_language\_code for the list of supported values
+
+        Returns:
+            :class:`~pytdbot.types.FormattedText`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "summarizeMessage",
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "translate_to_language_code": translate_to_language_code,
             }
         )
 
@@ -9817,6 +9848,21 @@ class TDLibFunctions:
             {
                 "@type": "clearAllDraftMessages",
                 "exclude_secret_chats": exclude_secret_chats,
+            }
+        )
+
+    async def getStakeDiceState(
+        self,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.StakeDiceState"]:
+        r"""Returns the current state of stake dice
+
+        Returns:
+            :class:`~pytdbot.types.StakeDiceState`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getStakeDiceState",
             }
         )
 
@@ -18322,7 +18368,7 @@ class TDLibFunctions:
         )
 
     async def processGiftPurchaseOffer(
-        self, message_id: int = 0, approve: bool = False
+        self, message_id: int = 0, accept: bool = False
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         r"""Handles a pending gift purchase offer
 
@@ -18330,8 +18376,8 @@ class TDLibFunctions:
             message_id (:class:`int`):
                 Identifier of the message with the gift purchase offer
 
-            approve (:class:`bool`):
-                Pass true to approve the request; pass false to decline it
+            accept (:class:`bool`):
+                Pass true to accept the request; pass false to reject it
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -18341,7 +18387,7 @@ class TDLibFunctions:
             {
                 "@type": "processGiftPurchaseOffer",
                 "message_id": message_id,
-                "approve": approve,
+                "accept": accept,
             }
         )
 

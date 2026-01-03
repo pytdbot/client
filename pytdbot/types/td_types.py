@@ -1,10 +1,10 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
-    FileBoundMethods,
-    MessageBoundMethods,
     MessageSenderBoundMethods,
+    MessageBoundMethods,
     CallbackQueryBoundMethods,
+    FileBoundMethods,
 )
 import pytdbot
 
@@ -5305,7 +5305,7 @@ class Sticker(TlObject):
             Sticker height; as defined by the sender
 
         emoji (:class:`str`):
-            Emoji corresponding to the sticker
+            Emoji corresponding to the sticker; may be empty if unknown
 
         format (:class:`~pytdbot.types.StickerFormat`):
             Sticker format
@@ -5342,7 +5342,7 @@ class Sticker(TlObject):
         self.height: int = int(height)
         r"""Sticker height; as defined by the sender"""
         self.emoji: Union[str, None] = emoji
-        r"""Emoji corresponding to the sticker"""
+        r"""Emoji corresponding to the sticker; may be empty if unknown"""
         self.format: Union[
             StickerFormatWebp, StickerFormatTgs, StickerFormatWebm, None
         ] = format
@@ -6067,6 +6067,94 @@ class Game(TlObject):
             data_class.description = data.get("description", "")
             data_class.photo = data.get("photo", None)
             data_class.animation = data.get("animation", None)
+
+        return data_class
+
+
+class StakeDiceState(TlObject):
+    r"""Describes state of the stake dice
+
+    Parameters:
+        state_hash (:class:`str`):
+            Hash of the state to use for sending the next dice; may be empty if the stake dice can't be sent by the current user
+
+        stake_toncoin_amount (:class:`int`):
+            The amount of Toncoins that was staked in the previous roll; in the smallest units of the currency
+
+        suggested_stake_toncoin_amounts (List[:class:`int`]):
+            The amounts of Toncoins that are suggested to be staked; in the smallest units of the currency
+
+        current_streak (:class:`int`):
+            The number of rolled sixes towards the streak; 0\-2
+
+        prize_per_mille (List[:class:`int`]):
+            The number of Toncoins received by the user for each 1000 Toncoins staked if the dice outcome is 1\-6 correspondingly; may be empty if the stake dice can't be sent by the current user
+
+        streak_prize_per_mille (:class:`int`):
+            The number of Toncoins received by the user for each 1000 Toncoins staked if the dice outcome is 6 three times in a row with the same stake
+
+    """
+
+    def __init__(
+        self,
+        state_hash: str = "",
+        stake_toncoin_amount: int = 0,
+        suggested_stake_toncoin_amounts: List[int] = None,
+        current_streak: int = 0,
+        prize_per_mille: List[int] = None,
+        streak_prize_per_mille: int = 0,
+    ) -> None:
+        self.state_hash: Union[str, None] = state_hash
+        r"""Hash of the state to use for sending the next dice; may be empty if the stake dice can't be sent by the current user"""
+        self.stake_toncoin_amount: int = int(stake_toncoin_amount)
+        r"""The amount of Toncoins that was staked in the previous roll; in the smallest units of the currency"""
+        self.suggested_stake_toncoin_amounts: List[int] = (
+            suggested_stake_toncoin_amounts or []
+        )
+        r"""The amounts of Toncoins that are suggested to be staked; in the smallest units of the currency"""
+        self.current_streak: int = int(current_streak)
+        r"""The number of rolled sixes towards the streak; 0\-2"""
+        self.prize_per_mille: List[int] = prize_per_mille or []
+        r"""The number of Toncoins received by the user for each 1000 Toncoins staked if the dice outcome is 1\-6 correspondingly; may be empty if the stake dice can't be sent by the current user"""
+        self.streak_prize_per_mille: int = int(streak_prize_per_mille)
+        r"""The number of Toncoins received by the user for each 1000 Toncoins staked if the dice outcome is 6 three times in a row with the same stake"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["stakeDiceState"]:
+        return "stakeDiceState"
+
+    @classmethod
+    def getClass(self) -> Literal["StakeDiceState"]:
+        return "StakeDiceState"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "state_hash": self.state_hash,
+            "stake_toncoin_amount": self.stake_toncoin_amount,
+            "suggested_stake_toncoin_amounts": self.suggested_stake_toncoin_amounts,
+            "current_streak": self.current_streak,
+            "prize_per_mille": self.prize_per_mille,
+            "streak_prize_per_mille": self.streak_prize_per_mille,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["StakeDiceState", None]:
+        if data:
+            data_class = cls()
+            data_class.state_hash = data.get("state_hash", "")
+            data_class.stake_toncoin_amount = int(data.get("stake_toncoin_amount", 0))
+            data_class.suggested_stake_toncoin_amounts = data.get(
+                "suggested_stake_toncoin_amounts", None
+            )
+            data_class.current_streak = int(data.get("current_streak", 0))
+            data_class.prize_per_mille = data.get("prize_per_mille", None)
+            data_class.streak_prize_per_mille = int(
+                data.get("streak_prize_per_mille", 0)
+            )
 
         return data_class
 
@@ -9550,13 +9638,13 @@ class GiftResalePriceStar(TlObject, GiftResalePrice):
 
     Parameters:
         star_count (:class:`int`):
-            The amount of Telegram Stars expected to be paid for the gift\. Must be in range getOption\(\"gift\_resale\_star\_count\_min\"\)\-getOption\(\"gift\_resale\_star\_count\_max\"\) for gifts put for resale
+            The amount of Telegram Stars expected to be paid for the gift\. Must be in the range getOption\(\"gift\_resale\_star\_count\_min\"\)\-getOption\(\"gift\_resale\_star\_count\_max\"\) for gifts put for resale
 
     """
 
     def __init__(self, star_count: int = 0) -> None:
         self.star_count: int = int(star_count)
-        r"""The amount of Telegram Stars expected to be paid for the gift\. Must be in range getOption\(\"gift\_resale\_star\_count\_min\"\)\-getOption\(\"gift\_resale\_star\_count\_max\"\) for gifts put for resale"""
+        r"""The amount of Telegram Stars expected to be paid for the gift\. Must be in the range getOption\(\"gift\_resale\_star\_count\_min\"\)\-getOption\(\"gift\_resale\_star\_count\_max\"\) for gifts put for resale"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -9586,13 +9674,13 @@ class GiftResalePriceTon(TlObject, GiftResalePrice):
 
     Parameters:
         toncoin_cent_count (:class:`int`):
-            The amount of 1/100 of Toncoin expected to be paid for the gift\. Must be in range getOption\(\"gift\_resale\_toncoin\_cent\_count\_min\"\)\-getOption\(\"gift\_resale\_toncoin\_cent\_count\_max\"\)
+            The amount of 1/100 of Toncoin expected to be paid for the gift\. Must be in the range getOption\(\"gift\_resale\_toncoin\_cent\_count\_min\"\)\-getOption\(\"gift\_resale\_toncoin\_cent\_count\_max\"\)
 
     """
 
     def __init__(self, toncoin_cent_count: int = 0) -> None:
         self.toncoin_cent_count: int = int(toncoin_cent_count)
-        r"""The amount of 1/100 of Toncoin expected to be paid for the gift\. Must be in range getOption\(\"gift\_resale\_toncoin\_cent\_count\_min\"\)\-getOption\(\"gift\_resale\_toncoin\_cent\_count\_max\"\)"""
+        r"""The amount of 1/100 of Toncoin expected to be paid for the gift\. Must be in the range getOption\(\"gift\_resale\_toncoin\_cent\_count\_min\"\)\-getOption\(\"gift\_resale\_toncoin\_cent\_count\_max\"\)"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -25471,7 +25559,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             Point in time \(Unix timestamp\) when the message was sent if the message was from another chat or topic; 0 for messages from the same chat
 
         content (:class:`~pytdbot.types.MessageContent`):
-            Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote
+            Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageStakeDice, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote
 
     """
 
@@ -25525,6 +25613,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageDice,
             MessageGame,
             MessagePoll,
+            MessageStakeDice,
             MessageStory,
             MessageChecklist,
             MessageInvoice,
@@ -25575,7 +25664,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
             MessageUpgradedGiftPurchaseOffer,
-            MessageUpgradedGiftPurchaseOfferDeclined,
+            MessageUpgradedGiftPurchaseOfferRejected,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -25598,7 +25687,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
             MessageUnsupported,
             None,
         ] = content
-        r"""Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote"""
+        r"""Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media\. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageStakeDice, messageSticker, messageStory, messageText \(for link preview\), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -26009,6 +26098,9 @@ class Message(TlObject, MessageBoundMethods):
         restriction_info (:class:`~pytdbot.types.RestrictionInfo`):
             Information about the restrictions that must be applied to the message content; may be null if none
 
+        summary_language_code (:class:`str`):
+            IETF language tag of the message language on which it can be summarized; empty if summary isn't available for the message
+
         content (:class:`~pytdbot.types.MessageContent`):
             Content of the message
 
@@ -26054,6 +26146,7 @@ class Message(TlObject, MessageBoundMethods):
         media_album_id: int = 0,
         effect_id: int = 0,
         restriction_info: RestrictionInfo = None,
+        summary_language_code: str = "",
         content: MessageContent = None,
         reply_markup: ReplyMarkup = None,
     ) -> None:
@@ -26144,6 +26237,8 @@ class Message(TlObject, MessageBoundMethods):
         r"""Unique identifier of the effect added to the message; 0 if none"""
         self.restriction_info: Union[RestrictionInfo, None] = restriction_info
         r"""Information about the restrictions that must be applied to the message content; may be null if none"""
+        self.summary_language_code: Union[str, None] = summary_language_code
+        r"""IETF language tag of the message language on which it can be summarized; empty if summary isn't available for the message"""
         self.content: Union[
             MessageText,
             MessageAnimation,
@@ -26166,6 +26261,7 @@ class Message(TlObject, MessageBoundMethods):
             MessageDice,
             MessageGame,
             MessagePoll,
+            MessageStakeDice,
             MessageStory,
             MessageChecklist,
             MessageInvoice,
@@ -26216,7 +26312,7 @@ class Message(TlObject, MessageBoundMethods):
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
             MessageUpgradedGiftPurchaseOffer,
-            MessageUpgradedGiftPurchaseOfferDeclined,
+            MessageUpgradedGiftPurchaseOfferRejected,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -26298,6 +26394,7 @@ class Message(TlObject, MessageBoundMethods):
             "media_album_id": self.media_album_id,
             "effect_id": self.effect_id,
             "restriction_info": self.restriction_info,
+            "summary_language_code": self.summary_language_code,
             "content": self.content,
             "reply_markup": self.reply_markup,
         }
@@ -26351,6 +26448,7 @@ class Message(TlObject, MessageBoundMethods):
             data_class.media_album_id = int(data.get("media_album_id", 0))
             data_class.effect_id = int(data.get("effect_id", 0))
             data_class.restriction_info = data.get("restriction_info", None)
+            data_class.summary_language_code = data.get("summary_language_code", "")
             data_class.content = data.get("content", None)
             data_class.reply_markup = data.get("reply_markup", None)
 
@@ -27304,6 +27402,7 @@ class SponsoredMessage(TlObject):
             MessageDice,
             MessageGame,
             MessagePoll,
+            MessageStakeDice,
             MessageStory,
             MessageChecklist,
             MessageInvoice,
@@ -27354,7 +27453,7 @@ class SponsoredMessage(TlObject):
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
             MessageUpgradedGiftPurchaseOffer,
-            MessageUpgradedGiftPurchaseOfferDeclined,
+            MessageUpgradedGiftPurchaseOfferRejected,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -28736,6 +28835,7 @@ class DraftMessage(TlObject):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -45513,7 +45613,7 @@ class MessageDice(TlObject, MessageContent):
             Emoji on which the dice throw animation is based
 
         value (:class:`int`):
-            The dice value\. If the value is 0, the dice don't have final state yet
+            The dice value\. If the value is 0, then the dice don't have final state yet
 
         success_animation_frame_number (:class:`int`):
             Number of frame after which a success animation like a shower of confetti needs to be shown on updateMessageSendSucceeded
@@ -45539,7 +45639,7 @@ class MessageDice(TlObject, MessageContent):
         self.emoji: Union[str, None] = emoji
         r"""Emoji on which the dice throw animation is based"""
         self.value: int = int(value)
-        r"""The dice value\. If the value is 0, the dice don't have final state yet"""
+        r"""The dice value\. If the value is 0, then the dice don't have final state yet"""
         self.success_animation_frame_number: int = int(success_animation_frame_number)
         r"""Number of frame after which a success animation like a shower of confetti needs to be shown on updateMessageSendSucceeded"""
 
@@ -45647,6 +45747,84 @@ class MessagePoll(TlObject, MessageContent):
         if data:
             data_class = cls()
             data_class.poll = data.get("poll", None)
+
+        return data_class
+
+
+class MessageStakeDice(TlObject, MessageContent):
+    r"""A stake dice message\. The dice value is randomly generated by the server
+
+    Parameters:
+        initial_state (:class:`~pytdbot.types.DiceStickers`):
+            The animated stickers with the initial dice animation; may be null if unknown\. The update updateMessageContent will be sent when the sticker became known
+
+        final_state (:class:`~pytdbot.types.DiceStickers`):
+            The animated stickers with the final dice animation; may be null if unknown\. The update updateMessageContent will be sent when the sticker became known
+
+        value (:class:`int`):
+            The dice value\. If the value is 0, then the dice don't have final state yet
+
+        stake_toncoin_amount (:class:`int`):
+            The amount of Toncoins that were staked; in the smallest units of the currency
+
+        prize_toncoin_amount (:class:`int`):
+            The amount of Toncoins that were gained from the roll; in the smallest units of the currency; \-1 if the dice don't have final state yet
+
+    """
+
+    def __init__(
+        self,
+        initial_state: DiceStickers = None,
+        final_state: DiceStickers = None,
+        value: int = 0,
+        stake_toncoin_amount: int = 0,
+        prize_toncoin_amount: int = 0,
+    ) -> None:
+        self.initial_state: Union[
+            DiceStickersRegular, DiceStickersSlotMachine, None
+        ] = initial_state
+        r"""The animated stickers with the initial dice animation; may be null if unknown\. The update updateMessageContent will be sent when the sticker became known"""
+        self.final_state: Union[DiceStickersRegular, DiceStickersSlotMachine, None] = (
+            final_state
+        )
+        r"""The animated stickers with the final dice animation; may be null if unknown\. The update updateMessageContent will be sent when the sticker became known"""
+        self.value: int = int(value)
+        r"""The dice value\. If the value is 0, then the dice don't have final state yet"""
+        self.stake_toncoin_amount: int = int(stake_toncoin_amount)
+        r"""The amount of Toncoins that were staked; in the smallest units of the currency"""
+        self.prize_toncoin_amount: int = int(prize_toncoin_amount)
+        r"""The amount of Toncoins that were gained from the roll; in the smallest units of the currency; \-1 if the dice don't have final state yet"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["messageStakeDice"]:
+        return "messageStakeDice"
+
+    @classmethod
+    def getClass(self) -> Literal["MessageContent"]:
+        return "MessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "initial_state": self.initial_state,
+            "final_state": self.final_state,
+            "value": self.value,
+            "stake_toncoin_amount": self.stake_toncoin_amount,
+            "prize_toncoin_amount": self.prize_toncoin_amount,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["MessageStakeDice", None]:
+        if data:
+            data_class = cls()
+            data_class.initial_state = data.get("initial_state", None)
+            data_class.final_state = data.get("final_state", None)
+            data_class.value = int(data.get("value", 0))
+            data_class.stake_toncoin_amount = int(data.get("stake_toncoin_amount", 0))
+            data_class.prize_toncoin_amount = int(data.get("prize_toncoin_amount", 0))
 
         return data_class
 
@@ -48745,8 +48923,8 @@ class MessageUpgradedGiftPurchaseOffer(TlObject, MessageContent):
         return data_class
 
 
-class MessageUpgradedGiftPurchaseOfferDeclined(TlObject, MessageContent):
-    r"""An offer to purchase a gift was declined or expired
+class MessageUpgradedGiftPurchaseOfferRejected(TlObject, MessageContent):
+    r"""An offer to purchase a gift was rejected or expired
 
     Parameters:
         gift (:class:`~pytdbot.types.UpgradedGift`):
@@ -48756,10 +48934,10 @@ class MessageUpgradedGiftPurchaseOfferDeclined(TlObject, MessageContent):
             The proposed price
 
         offer_message_id (:class:`int`):
-            Identifier of the message with purchase offer which was declined or expired; may be 0 or an identifier of a deleted message
+            Identifier of the message with purchase offer which was rejected or expired; may be 0 or an identifier of a deleted message
 
         was_expired (:class:`bool`):
-            True, if the offer has expired; otherwise, the offer was explicitly declined
+            True, if the offer has expired; otherwise, the offer was explicitly rejected
 
     """
 
@@ -48775,16 +48953,16 @@ class MessageUpgradedGiftPurchaseOfferDeclined(TlObject, MessageContent):
         self.price: Union[GiftResalePriceStar, GiftResalePriceTon, None] = price
         r"""The proposed price"""
         self.offer_message_id: int = int(offer_message_id)
-        r"""Identifier of the message with purchase offer which was declined or expired; may be 0 or an identifier of a deleted message"""
+        r"""Identifier of the message with purchase offer which was rejected or expired; may be 0 or an identifier of a deleted message"""
         self.was_expired: bool = bool(was_expired)
-        r"""True, if the offer has expired; otherwise, the offer was explicitly declined"""
+        r"""True, if the offer has expired; otherwise, the offer was explicitly rejected"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
 
     @classmethod
-    def getType(self) -> Literal["messageUpgradedGiftPurchaseOfferDeclined"]:
-        return "messageUpgradedGiftPurchaseOfferDeclined"
+    def getType(self) -> Literal["messageUpgradedGiftPurchaseOfferRejected"]:
+        return "messageUpgradedGiftPurchaseOfferRejected"
 
     @classmethod
     def getClass(self) -> Literal["MessageContent"]:
@@ -48802,7 +48980,7 @@ class MessageUpgradedGiftPurchaseOfferDeclined(TlObject, MessageContent):
     @classmethod
     def from_dict(
         cls, data: dict
-    ) -> Union["MessageUpgradedGiftPurchaseOfferDeclined", None]:
+    ) -> Union["MessageUpgradedGiftPurchaseOfferRejected", None]:
         if data:
             data_class = cls()
             data_class.gift = data.get("gift", None)
@@ -51033,7 +51211,7 @@ class InputMessageText(TlObject, InputMessageContent):
             Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options
 
         clear_draft (:class:`bool`):
-            True, if a chat message draft must be deleted
+            True, if the chat message draft must be deleted
 
     """
 
@@ -51050,7 +51228,7 @@ class InputMessageText(TlObject, InputMessageContent):
         )
         r"""Options to be used for generation of a link preview; may be null if none; pass null to use default link preview options"""
         self.clear_draft: bool = bool(clear_draft)
-        r"""True, if a chat message draft must be deleted"""
+        r"""True, if the chat message draft must be deleted"""
 
     def __str__(self):
         return str(pytdbot.utils.obj_to_json(self, indent=4))
@@ -52368,6 +52546,64 @@ class InputMessagePoll(TlObject, InputMessageContent):
             data_class.open_period = int(data.get("open_period", 0))
             data_class.close_date = int(data.get("close_date", 0))
             data_class.is_closed = data.get("is_closed", False)
+
+        return data_class
+
+
+class InputMessageStakeDice(TlObject, InputMessageContent):
+    r"""A stake dice message
+
+    Parameters:
+        state_hash (:class:`str`):
+            Hash of the stake dice state\. The state hash can be used only if it was received recently enough\. Otherwise, a new state must be requested using getStakeDiceState
+
+        stake_toncoin_amount (:class:`int`):
+            The amount of Toncoins that will be staked; in the smallest units of the currency\. Must be in the range getOption\(\"stake\_dice\_stake\_amount\_min\"\)\-getOption\(\"stake\_dice\_stake\_amount\_max\"\)
+
+        clear_draft (:class:`bool`):
+            True, if the chat message draft must be deleted
+
+    """
+
+    def __init__(
+        self,
+        state_hash: str = "",
+        stake_toncoin_amount: int = 0,
+        clear_draft: bool = False,
+    ) -> None:
+        self.state_hash: Union[str, None] = state_hash
+        r"""Hash of the stake dice state\. The state hash can be used only if it was received recently enough\. Otherwise, a new state must be requested using getStakeDiceState"""
+        self.stake_toncoin_amount: int = int(stake_toncoin_amount)
+        r"""The amount of Toncoins that will be staked; in the smallest units of the currency\. Must be in the range getOption\(\"stake\_dice\_stake\_amount\_min\"\)\-getOption\(\"stake\_dice\_stake\_amount\_max\"\)"""
+        self.clear_draft: bool = bool(clear_draft)
+        r"""True, if the chat message draft must be deleted"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["inputMessageStakeDice"]:
+        return "inputMessageStakeDice"
+
+    @classmethod
+    def getClass(self) -> Literal["InputMessageContent"]:
+        return "InputMessageContent"
+
+    def to_dict(self) -> dict:
+        return {
+            "@type": self.getType(),
+            "state_hash": self.state_hash,
+            "stake_toncoin_amount": self.stake_toncoin_amount,
+            "clear_draft": self.clear_draft,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["InputMessageStakeDice", None]:
+        if data:
+            data_class = cls()
+            data_class.state_hash = data.get("state_hash", "")
+            data_class.stake_toncoin_amount = int(data.get("stake_toncoin_amount", 0))
+            data_class.clear_draft = data.get("clear_draft", False)
 
         return data_class
 
@@ -57632,6 +57868,7 @@ class QuickReplyMessage(TlObject):
             MessageDice,
             MessageGame,
             MessagePoll,
+            MessageStakeDice,
             MessageStory,
             MessageChecklist,
             MessageInvoice,
@@ -57682,7 +57919,7 @@ class QuickReplyMessage(TlObject):
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
             MessageUpgradedGiftPurchaseOffer,
-            MessageUpgradedGiftPurchaseOfferDeclined,
+            MessageUpgradedGiftPurchaseOfferRejected,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -63678,6 +63915,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -63816,6 +64054,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -63938,6 +64177,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -64056,6 +64296,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -64192,6 +64433,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -64389,6 +64631,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -64523,6 +64766,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -64645,6 +64889,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -64763,6 +65008,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -64905,6 +65151,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -65025,6 +65272,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
             InputMessageGame,
             InputMessageInvoice,
             InputMessagePoll,
+            InputMessageStakeDice,
             InputMessageStory,
             InputMessageChecklist,
             InputMessageForwarded,
@@ -90495,6 +90743,7 @@ class UpdateMessageContent(TlObject, Update):
             MessageDice,
             MessageGame,
             MessagePoll,
+            MessageStakeDice,
             MessageStory,
             MessageChecklist,
             MessageInvoice,
@@ -90545,7 +90794,7 @@ class UpdateMessageContent(TlObject, Update):
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
             MessageUpgradedGiftPurchaseOffer,
-            MessageUpgradedGiftPurchaseOfferDeclined,
+            MessageUpgradedGiftPurchaseOfferRejected,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -94308,6 +94557,7 @@ class UpdateServiceNotification(TlObject, Update):
             MessageDice,
             MessageGame,
             MessagePoll,
+            MessageStakeDice,
             MessageStory,
             MessageChecklist,
             MessageInvoice,
@@ -94358,7 +94608,7 @@ class UpdateServiceNotification(TlObject, Update):
             MessageUpgradedGift,
             MessageRefundedUpgradedGift,
             MessageUpgradedGiftPurchaseOffer,
-            MessageUpgradedGiftPurchaseOfferDeclined,
+            MessageUpgradedGiftPurchaseOfferRejected,
             MessagePaidMessagesRefunded,
             MessagePaidMessagePriceChanged,
             MessageDirectMessagePriceChanged,
@@ -97508,6 +97758,42 @@ class UpdateDiceEmojis(TlObject, Update):
         if data:
             data_class = cls()
             data_class.emojis = data.get("emojis", None)
+
+        return data_class
+
+
+class UpdateStakeDiceState(TlObject, Update):
+    r"""The stake dice state has changed
+
+    Parameters:
+        state (:class:`~pytdbot.types.StakeDiceState`):
+            The new state\. The state can be used only if it was received recently enough\. Otherwise, a new state must be requested using getStakeDiceState
+
+    """
+
+    def __init__(self, state: StakeDiceState = None) -> None:
+        self.state: Union[StakeDiceState, None] = state
+        r"""The new state\. The state can be used only if it was received recently enough\. Otherwise, a new state must be requested using getStakeDiceState"""
+
+    def __str__(self):
+        return str(pytdbot.utils.obj_to_json(self, indent=4))
+
+    @classmethod
+    def getType(self) -> Literal["updateStakeDiceState"]:
+        return "updateStakeDiceState"
+
+    @classmethod
+    def getClass(self) -> Literal["Update"]:
+        return "Update"
+
+    def to_dict(self) -> dict:
+        return {"@type": self.getType(), "state": self.state}
+
+    @classmethod
+    def from_dict(cls, data: dict) -> Union["UpdateStakeDiceState", None]:
+        if data:
+            data_class = cls()
+            data_class.state = data.get("state", None)
 
         return data_class
 
