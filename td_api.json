@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.59",
-    "commit_hash": "cecbf129676ee284817ddfe94af87405a3ed5d2b",
+    "version": "1.8.60",
+    "commit_hash": "0da5c72f8365fb4857096e716d53175ddbdf5a15",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -1076,6 +1076,7 @@
                 "messageDice",
                 "messageGame",
                 "messagePoll",
+                "messageStakeDice",
                 "messageStory",
                 "messageChecklist",
                 "messageInvoice",
@@ -1126,7 +1127,7 @@
                 "messageUpgradedGift",
                 "messageRefundedUpgradedGift",
                 "messageUpgradedGiftPurchaseOffer",
-                "messageUpgradedGiftPurchaseOfferDeclined",
+                "messageUpgradedGiftPurchaseOfferRejected",
                 "messagePaidMessagesRefunded",
                 "messagePaidMessagePriceChanged",
                 "messageDirectMessagePriceChanged",
@@ -1223,6 +1224,7 @@
                 "inputMessageGame",
                 "inputMessageInvoice",
                 "inputMessagePoll",
+                "inputMessageStakeDice",
                 "inputMessageStory",
                 "inputMessageChecklist",
                 "inputMessageForwarded"
@@ -2598,6 +2600,7 @@
                 "updateSpeechRecognitionTrial",
                 "updateGroupCallMessageLevels",
                 "updateDiceEmojis",
+                "updateStakeDiceState",
                 "updateAnimatedEmojiMessageClicked",
                 "updateAnimationSearchParameters",
                 "updateSuggestedActions",
@@ -4021,8 +4024,8 @@
                     "type": "int32"
                 },
                 "emoji": {
-                    "description": "Emoji corresponding to the sticker",
-                    "is_optional": false,
+                    "description": "Emoji corresponding to the sticker; may be empty if unknown",
+                    "is_optional": true,
                     "type": "string"
                 },
                 "format": {
@@ -4335,6 +4338,42 @@
                 }
             },
             "type": "Game"
+        },
+        "stakeDiceState": {
+            "description": "Describes state of the stake dice",
+            "args": {
+                "state_hash": {
+                    "description": "Hash of the state to use for sending the next dice; may be empty if the stake dice can't be sent by the current user",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "stake_toncoin_amount": {
+                    "description": "The amount of Toncoins that was staked in the previous roll; in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "suggested_stake_toncoin_amounts": {
+                    "description": "The amounts of Toncoins that are suggested to be staked; in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "vector<int53>"
+                },
+                "current_streak": {
+                    "description": "The number of rolled sixes towards the streak; 0-2",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "prize_per_mille": {
+                    "description": "The number of Toncoins received by the user for each 1000 Toncoins staked if the dice outcome is 1-6 correspondingly; may be empty if the stake dice can't be sent by the current user",
+                    "is_optional": true,
+                    "type": "vector<int32>"
+                },
+                "streak_prize_per_mille": {
+                    "description": "The number of Toncoins received by the user for each 1000 Toncoins staked if the dice outcome is 6 three times in a row with the same stake",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "StakeDiceState"
         },
         "webApp": {
             "description": "Describes a Web App. Use getInternalLink with internalLinkTypeWebApp to share the Web App",
@@ -5657,7 +5696,7 @@
             "description": "Describes price of a resold gift in Telegram Stars",
             "args": {
                 "star_count": {
-                    "description": "The amount of Telegram Stars expected to be paid for the gift. Must be in range getOption(\"gift_resale_star_count_min\")-getOption(\"gift_resale_star_count_max\") for gifts put for resale",
+                    "description": "The amount of Telegram Stars expected to be paid for the gift. Must be in the range getOption(\"gift_resale_star_count_min\")-getOption(\"gift_resale_star_count_max\") for gifts put for resale",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -5668,7 +5707,7 @@
             "description": "Describes price of a resold gift in Toncoins",
             "args": {
                 "toncoin_cent_count": {
-                    "description": "The amount of 1/100 of Toncoin expected to be paid for the gift. Must be in range getOption(\"gift_resale_toncoin_cent_count_min\")-getOption(\"gift_resale_toncoin_cent_count_max\")",
+                    "description": "The amount of 1/100 of Toncoin expected to be paid for the gift. Must be in the range getOption(\"gift_resale_toncoin_cent_count_min\")-getOption(\"gift_resale_toncoin_cent_count_max\")",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -11469,7 +11508,7 @@
                     "type": "int32"
                 },
                 "content": {
-                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
+                    "description": "Media content of the message if the message was from another chat or topic; may be null for messages from the same chat and messages without media. Can be only one of the following types: messageAnimation, messageAudio, messageChecklist, messageContact, messageDice, messageDocument, messageGame, messageGiveaway, messageGiveawayWinners, messageInvoice, messageLocation, messagePaidMedia, messagePhoto, messagePoll, messageStakeDice, messageSticker, messageStory, messageText (for link preview), messageVenue, messageVideo, messageVideoNote, or messageVoiceNote",
                     "is_optional": true,
                     "type": "MessageContent"
                 }
@@ -11748,6 +11787,11 @@
                     "description": "Information about the restrictions that must be applied to the message content; may be null if none",
                     "is_optional": true,
                     "type": "restrictionInfo"
+                },
+                "summary_language_code": {
+                    "description": "IETF language tag of the message language on which it can be summarized; empty if summary isn't available for the message",
+                    "is_optional": false,
+                    "type": "string"
                 },
                 "content": {
                     "description": "Content of the message",
@@ -18154,7 +18198,7 @@
                     "type": "string"
                 },
                 "value": {
-                    "description": "The dice value. If the value is 0, the dice don't have final state yet",
+                    "description": "The dice value. If the value is 0, then the dice don't have final state yet",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -18184,6 +18228,37 @@
                     "description": "The poll description",
                     "is_optional": false,
                     "type": "poll"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageStakeDice": {
+            "description": "A stake dice message. The dice value is randomly generated by the server",
+            "args": {
+                "initial_state": {
+                    "description": "The animated stickers with the initial dice animation; may be null if unknown. The update updateMessageContent will be sent when the sticker became known",
+                    "is_optional": true,
+                    "type": "DiceStickers"
+                },
+                "final_state": {
+                    "description": "The animated stickers with the final dice animation; may be null if unknown. The update updateMessageContent will be sent when the sticker became known",
+                    "is_optional": true,
+                    "type": "DiceStickers"
+                },
+                "value": {
+                    "description": "The dice value. If the value is 0, then the dice don't have final state yet",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "stake_toncoin_amount": {
+                    "description": "The amount of Toncoins that were staked; in the smallest units of the currency",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "prize_toncoin_amount": {
+                    "description": "The amount of Toncoins that were gained from the roll; in the smallest units of the currency; -1 if the dice don't have final state yet",
+                    "is_optional": false,
+                    "type": "int53"
                 }
             },
             "type": "MessageContent"
@@ -19409,8 +19484,8 @@
             },
             "type": "MessageContent"
         },
-        "messageUpgradedGiftPurchaseOfferDeclined": {
-            "description": "An offer to purchase a gift was declined or expired",
+        "messageUpgradedGiftPurchaseOfferRejected": {
+            "description": "An offer to purchase a gift was rejected or expired",
             "args": {
                 "gift": {
                     "description": "The gift",
@@ -19423,12 +19498,12 @@
                     "type": "GiftResalePrice"
                 },
                 "offer_message_id": {
-                    "description": "Identifier of the message with purchase offer which was declined or expired; may be 0 or an identifier of a deleted message",
+                    "description": "Identifier of the message with purchase offer which was rejected or expired; may be 0 or an identifier of a deleted message",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "was_expired": {
-                    "description": "True, if the offer has expired; otherwise, the offer was explicitly declined",
+                    "description": "True, if the offer has expired; otherwise, the offer was explicitly rejected",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -20110,7 +20185,7 @@
                     "type": "linkPreviewOptions"
                 },
                 "clear_draft": {
-                    "description": "True, if a chat message draft must be deleted",
+                    "description": "True, if the chat message draft must be deleted",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -20662,6 +20737,27 @@
                 },
                 "is_closed": {
                     "description": "True, if the poll needs to be sent already closed; for bots only",
+                    "is_optional": false,
+                    "type": "Bool"
+                }
+            },
+            "type": "InputMessageContent"
+        },
+        "inputMessageStakeDice": {
+            "description": "A stake dice message",
+            "args": {
+                "state_hash": {
+                    "description": "Hash of the stake dice state. The state hash can be used only if it was received recently enough. Otherwise, a new state must be requested using getStakeDiceState",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "stake_toncoin_amount": {
+                    "description": "The amount of Toncoins that will be staked; in the smallest units of the currency. Must be in the range getOption(\"stake_dice_stake_amount_min\")-getOption(\"stake_dice_stake_amount_max\")",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "clear_draft": {
+                    "description": "True, if the chat message draft must be deleted",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -35035,6 +35131,17 @@
             },
             "type": "Update"
         },
+        "updateStakeDiceState": {
+            "description": "The stake dice state has changed",
+            "args": {
+                "state": {
+                    "description": "The new state. The state can be used only if it was received recently enough. Otherwise, a new state must be requested using getStakeDiceState",
+                    "is_optional": false,
+                    "type": "stakeDiceState"
+                }
+            },
+            "type": "Update"
+        },
         "updateAnimatedEmojiMessageClicked": {
             "description": "Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played",
             "args": {
@@ -36359,7 +36466,7 @@
             "type": "Message"
         },
         "getRepliedMessage": {
-            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferDeclined, and the topic creation message for topic messages without non-bundled replied message. Returns a 404 error if the message doesn't exist",
+            "description": "Returns information about a non-bundled message that is replied by a given message. Also, returns the pinned message for messagePinMessage, the game message for messageGameScore, the invoice message for messagePaymentSuccessful, the message with a previously set same background for messageChatSetBackground, the giveaway message for messageGiveawayCompleted, the checklist message for messageChecklistTasksDone, messageChecklistTasksAdded, the message with suggested post information for messageSuggestedPostApprovalFailed, messageSuggestedPostApproved, messageSuggestedPostDeclined, messageSuggestedPostPaid, messageSuggestedPostRefunded, the message with the regular gift that was upgraded for messageUpgradedGift with origin of the type upgradedGiftOriginUpgrade, the message with gift purchase offer for messageUpgradedGiftPurchaseOfferRejected, and the topic creation message for topic messages without non-bundled replied message. Returns a 404 error if the message doesn't exist",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the chat the message belongs to",
@@ -38107,8 +38214,29 @@
                     "type": "int53"
                 },
                 "to_language_code": {
-                    "description": "Language code of the language to which the message is translated. Must be one of \"af\", \"sq\", \"am\", \"ar\", \"hy\", \"az\", \"eu\", \"be\", \"bn\", \"bs\", \"bg\", \"ca\", \"ceb\", \"zh-CN\", \"zh\", \"zh-Hans\", \"zh-TW\", \"zh-Hant\", \"co\", \"hr\", \"cs\", \"da\", \"nl\", \"en\", \"eo\", \"et\", \"fi\", \"fr\", \"fy\", \"gl\", \"ka\", \"de\", \"el\", \"gu\", \"ht\", \"ha\", \"haw\", \"he\", \"iw\", \"hi\", \"hmn\", \"hu\", \"is\", \"ig\", \"id\", \"in\", \"ga\", \"it\", \"ja\", \"jv\", \"kn\", \"kk\", \"km\", \"rw\", \"ko\", \"ku\", \"ky\", \"lo\", \"la\", \"lv\", \"lt\", \"lb\", \"mk\", \"mg\", \"ms\", \"ml\", \"mt\", \"mi\", \"mr\", \"mn\", \"my\", \"ne\", \"no\", \"ny\", \"or\", \"ps\", \"fa\", \"pl\", \"pt\", \"pa\", \"ro\", \"ru\", \"sm\", \"gd\", \"sr\", \"st\", \"sn\", \"sd\", \"si\", \"sk\", \"sl\", \"so\", \"es\", \"su\", \"sw\", \"sv\", \"tl\", \"tg\", \"ta\", \"tt\", \"te\", \"th\", \"tr\", \"tk\", \"uk\", \"ur\", \"ug\", \"uz\", \"vi\", \"cy\", \"xh\", \"yi\", \"ji\", \"yo\", \"zu\"",
+                    "description": "Language code of the language to which the message is translated. See translateText.to_language_code for the list of supported values",
                     "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "FormattedText"
+        },
+        "summarizeMessage": {
+            "description": "Summarizes content of the message with non-empty summary_language_code",
+            "args": {
+                "chat_id": {
+                    "description": "Identifier of the chat to which the message belongs",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "message_id": {
+                    "description": "Identifier of the message",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "translate_to_language_code": {
+                    "description": "Pass a language code to which the summary will be translated; may be empty if translation isn't needed. See translateText.to_language_code for the list of supported values",
+                    "is_optional": true,
                     "type": "string"
                 }
             },
@@ -42514,6 +42642,11 @@
                 }
             },
             "type": "Ok"
+        },
+        "getStakeDiceState": {
+            "description": "Returns the current state of stake dice",
+            "args": {},
+            "type": "StakeDiceState"
         },
         "getSavedNotificationSound": {
             "description": "Returns saved notification sound by its identifier. Returns a 404 error if there is no saved notification sound with the specified identifier",
@@ -48262,8 +48395,8 @@
                     "is_optional": false,
                     "type": "int53"
                 },
-                "approve": {
-                    "description": "Pass true to approve the request; pass false to decline it",
+                "accept": {
+                    "description": "Pass true to accept the request; pass false to reject it",
                     "is_optional": false,
                     "type": "Bool"
                 }
