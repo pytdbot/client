@@ -203,6 +203,7 @@ class Client(Decorators, Methods):
         self._current_handlers = {}
         self._results: Dict[str, asyncio.Future] = {}
         self._workers_tasks = None
+        self.__wait_login: asyncio.Event = None
         self.__rabbitmq_iterator_task = None
         self.__authorization_state = None
         self.__cache = {"is_coro_filter": {}}
@@ -309,8 +310,13 @@ class Client(Decorators, Methods):
             {"@type": "cancelScheduledEvent", "event_id": event_id}
         )
 
-    async def start(self) -> None:
-        r"""Start pytdbot client"""
+    async def start(self, wait_login: bool = True) -> None:
+        r"""Start pytdbot client
+
+        Parameters:
+            wait_login (``bool``, *optional*):
+                Whether to wait until the client is logged in. For bots only. Default is ``True``
+        """
 
         if not self.is_running:
             self.logger.info("Starting pytdbot client...")
@@ -318,6 +324,8 @@ class Client(Decorators, Methods):
             if self.is_rabbitmq:
                 await self.__start_rabbitmq()
             elif not self.client_manager:
+                self.__wait_login = asyncio.Event() if not self.user_bot else None
+
                 self.client_manager = ClientManager(
                     self, self.lib_path, self.td_verbosity, loop=self.loop
                 )
@@ -350,6 +358,9 @@ class Client(Decorators, Methods):
         self.loop.create_task(
             self.getOption("version")
         )  # Ping TDLib to start processing updates
+
+        if wait_login and self.__wait_login:
+            await self.__wait_login.wait()
 
     def add_handler(
         self,
@@ -1047,6 +1058,9 @@ class Client(Decorators, Methods):
             self.me = await self.getMe()
             if isinstance(self.me, types.Error):
                 self.logger.error(f"Get me error: {self.me.message}")
+
+            if self.__wait_login:
+                self.__wait_login.set()
 
             self.logger.info(
                 f"Logged in as {self.me.first_name} "
