@@ -2739,7 +2739,7 @@ class TDLibFunctions:
                 The maximum number of messages to be returned; up to 100\. For optimal performance, the number of returned messages is chosen by TDLib and can be smaller than the specified limit
 
             star_count (:class:`int`):
-                The amount of Telegram Stars the user agreed to pay for the search; pass 0 for free searches
+                The Telegram Star amount the user agreed to pay for the search; pass 0 for free searches
 
         Returns:
             :class:`~pytdbot.types.FoundPublicPosts`
@@ -5289,7 +5289,7 @@ class TDLibFunctions:
     async def getBusinessAccountStarAmount(
         self, business_connection_id: str = ""
     ) -> Union["pytdbot.types.Error", "pytdbot.types.StarAmount"]:
-        r"""Returns the amount of Telegram Stars owned by a business account; for bots only
+        r"""Returns the Telegram Star amount owned by a business account; for bots only
 
         Parameters:
             business_connection_id (:class:`str`):
@@ -7075,7 +7075,7 @@ class TDLibFunctions:
                 Button identifier
 
             allow_write_access (:class:`bool`):
-                Pass true to allow the bot to send messages to the current user
+                Pass true to allow the bot to send messages to the current user\. Phone number access can't be requested using the button
 
         Returns:
             :class:`~pytdbot.types.HttpUrl`
@@ -7230,7 +7230,7 @@ class TDLibFunctions:
                 Identifier of the inline query
 
             is_personal (:class:`bool`):
-                Pass true if results may be cached and returned only for the user that sent the query\. By default, results may be returned to any user who sends the same query
+                Pass true if results may be cached and returned only for the user who sent the query\. By default, results may be returned to any user who sends the same query
 
             button (:class:`~pytdbot.types.InlineQueryResultsButton`):
                 Button to be shown above inline query results; pass null if none
@@ -7938,7 +7938,7 @@ class TDLibFunctions:
                 Chat identifier
 
             topic_id (:class:`~pytdbot.types.MessageTopic`):
-                Identifier of the topic in which the action is performed
+                Identifier of the topic in which the action is performed; pass null if none
 
             business_connection_id (:class:`str`):
                 Unique identifier of business connection on behalf of which to send the request; for bots only
@@ -8161,16 +8161,22 @@ class TDLibFunctions:
         return await self.invoke({"@type": "getExternalLinkInfo", "link": link})
 
     async def getExternalLink(
-        self, link: str = "", allow_write_access: bool = False
+        self,
+        link: str = "",
+        allow_write_access: bool = False,
+        allow_phone_number_access: bool = False,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.HttpUrl"]:
-        r"""Returns an HTTP URL which can be used to automatically authorize the current user on a website after clicking an HTTP link\. Use the method getExternalLinkInfo to find whether a prior user confirmation is needed
+        r"""Returns an HTTP URL which can be used to automatically authorize the current user on a website after clicking an HTTP link\. Use the method getExternalLinkInfo to find whether a prior user confirmation is needed\. May return an empty link if just a toast about successful login has to be shown
 
         Parameters:
             link (:class:`str`):
                 The HTTP link
 
             allow_write_access (:class:`bool`):
-                Pass true if the current user allowed the bot, returned in getExternalLinkInfo, to send them messages
+                Pass true if the current user allowed the bot that was returned in getExternalLinkInfo, to send them messages
+
+            allow_phone_number_access (:class:`bool`):
+                Pass true if the current user allowed the bot that was returned in getExternalLinkInfo, to access their phone number
 
         Returns:
             :class:`~pytdbot.types.HttpUrl`
@@ -8181,6 +8187,7 @@ class TDLibFunctions:
                 "@type": "getExternalLink",
                 "link": link,
                 "allow_write_access": allow_write_access,
+                "allow_phone_number_access": allow_phone_number_access,
             }
         )
 
@@ -9701,7 +9708,7 @@ class TDLibFunctions:
                 Point in time \(Unix timestamp\) when the user will be unbanned; 0 if never\. If the user is banned for more than 366 days or for less than 30 seconds from the current time, the user is considered to be banned forever\. Ignored in basic groups and if a chat is banned
 
             revoke_messages (:class:`bool`):
-                Pass true to delete all messages in the chat for the user that is being removed\. Always true for supergroups and channels
+                Pass true to delete all messages in the chat for the user who is being removed\. Always true for supergroups and channels
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -9758,6 +9765,23 @@ class TDLibFunctions:
                 "user_id": user_id,
                 "password": password,
             }
+        )
+
+    async def getChatOwnerAfterLeaving(
+        self, chat_id: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.User"]:
+        r"""Returns the user who will become the owner of the chat after 7 days if the current user does not return to the chat during that period; requires owner privileges in the chat\. Available only for supergroups and channel chats
+
+        Parameters:
+            chat_id (:class:`int`):
+                Chat identifier
+
+        Returns:
+            :class:`~pytdbot.types.User`
+        """
+
+        return await self.invoke(
+            {"@type": "getChatOwnerAfterLeaving", "chat_id": chat_id}
         )
 
     async def getChatMember(
@@ -12450,7 +12474,7 @@ class TDLibFunctions:
                 Chat identifier
 
             user_id (:class:`int`):
-                Identifier of the user that sent the request
+                Identifier of the user who sent the request
 
             approve (:class:`bool`):
                 Pass true to approve the request; pass false to decline it
@@ -17991,7 +18015,7 @@ class TDLibFunctions:
                 The number of Telegram Stars to place in the bid
 
             user_id (:class:`int`):
-                Identifier of the user that will receive the gift
+                Identifier of the user who will receive the gift
 
             text (:class:`~pytdbot.types.FormattedText`):
                 Text to show along with the gift; 0\-getOption\(\"gift\_text\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed\. Must be empty if the receiver enabled paid messages
@@ -18137,35 +18161,51 @@ class TDLibFunctions:
         )
 
     async def getGiftUpgradePreview(
-        self, gift_id: int = 0
+        self, regular_gift_id: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.GiftUpgradePreview"]:
         r"""Returns examples of possible upgraded gifts for a regular gift
 
         Parameters:
-            gift_id (:class:`int`):
-                Identifier of the gift
+            regular_gift_id (:class:`int`):
+                Identifier of the regular gift
 
         Returns:
             :class:`~pytdbot.types.GiftUpgradePreview`
         """
 
-        return await self.invoke({"@type": "getGiftUpgradePreview", "gift_id": gift_id})
+        return await self.invoke(
+            {"@type": "getGiftUpgradePreview", "regular_gift_id": regular_gift_id}
+        )
 
-    async def getGiftUpgradeVariants(
-        self, gift_id: int = 0
+    async def getUpgradedGiftVariants(
+        self,
+        regular_gift_id: int = 0,
+        return_upgrade_models: bool = False,
+        return_craft_models: bool = False,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.GiftUpgradeVariants"]:
         r"""Returns all possible variants of upgraded gifts for a regular gift
 
         Parameters:
-            gift_id (:class:`int`):
-                Identifier of the gift
+            regular_gift_id (:class:`int`):
+                Identifier of the regular gift
+
+            return_upgrade_models (:class:`bool`):
+                Pass true to get models that can be obtained by upgrading a regular gift
+
+            return_craft_models (:class:`bool`):
+                Pass true to get models that can be obtained by crafting a gift from upgraded gifts
 
         Returns:
             :class:`~pytdbot.types.GiftUpgradeVariants`
         """
 
         return await self.invoke(
-            {"@type": "getGiftUpgradeVariants", "gift_id": gift_id}
+            {
+                "@type": "getUpgradedGiftVariants",
+                "regular_gift_id": regular_gift_id,
+                "return_upgrade_models": return_upgrade_models,
+                "return_craft_models": return_craft_models,
+            }
         )
 
     async def upgradeGift(
@@ -18188,7 +18228,7 @@ class TDLibFunctions:
                 Pass true to keep the original gift text, sender and receiver in the upgraded gift
 
             star_count (:class:`int`):
-                The amount of Telegram Stars required to pay for the upgrade\. It the gift has prepaid\_upgrade\_star\_count \> 0, then pass 0, otherwise, pass gift\.upgrade\_star\_count
+                The Telegram Star amount required to pay for the upgrade\. It the gift has prepaid\_upgrade\_star\_count \> 0, then pass 0, otherwise, pass gift\.upgrade\_star\_count
 
         Returns:
             :class:`~pytdbot.types.UpgradeGiftResult`
@@ -18220,7 +18260,7 @@ class TDLibFunctions:
                 Prepaid upgrade hash as received along with the gift
 
             star_count (:class:`int`):
-                The amount of Telegram Stars the user agreed to pay for the upgrade; must be equal to gift\.upgrade\_star\_count
+                The Telegram Star amount the user agreed to pay for the upgrade; must be equal to gift\.upgrade\_star\_count
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -18233,6 +18273,23 @@ class TDLibFunctions:
                 "prepaid_upgrade_hash": prepaid_upgrade_hash,
                 "star_count": star_count,
             }
+        )
+
+    async def craftGift(
+        self, received_gift_ids: List[str] = None
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.CraftGiftResult"]:
+        r"""Crafts a new gift from other gifts that will be permanently lost
+
+        Parameters:
+            received_gift_ids (List[:class:`str`]):
+                Identifier of the gifts to use for crafting
+
+        Returns:
+            :class:`~pytdbot.types.CraftGiftResult`
+        """
+
+        return await self.invoke(
+            {"@type": "craftGift", "received_gift_ids": received_gift_ids}
         )
 
     async def transferGift(
@@ -18255,7 +18312,7 @@ class TDLibFunctions:
                 Identifier of the user or the channel chat that will receive the gift
 
             star_count (:class:`int`):
-                The amount of Telegram Stars required to pay for the transfer
+                The Telegram Star amount required to pay for the transfer
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -18281,7 +18338,7 @@ class TDLibFunctions:
                 Identifier of the gift
 
             star_count (:class:`int`):
-                The amount of Telegram Stars required to pay for the operation
+                The Telegram Star amount required to pay for the operation
 
         Returns:
             :class:`~pytdbot.types.Ok`
@@ -18494,6 +18551,34 @@ class TDLibFunctions:
             {"@type": "getReceivedGift", "received_gift_id": received_gift_id}
         )
 
+    async def getGiftsForCrafting(
+        self, regular_gift_id: int = 0, offset: str = "", limit: int = 0
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.GiftsForCrafting"]:
+        r"""Returns upgraded gifts of the current user who can be used to craft another gifts
+
+        Parameters:
+            regular_gift_id (:class:`int`):
+                Identifier of the regular gift that will be used for crafting
+
+            offset (:class:`str`):
+                Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results
+
+            limit (:class:`int`):
+                The maximum number of gifts to be returned; must be positive and can't be greater than 100\. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit
+
+        Returns:
+            :class:`~pytdbot.types.GiftsForCrafting`
+        """
+
+        return await self.invoke(
+            {
+                "@type": "getGiftsForCrafting",
+                "regular_gift_id": regular_gift_id,
+                "offset": offset,
+                "limit": limit,
+            }
+        )
+
     async def getUpgradedGift(
         self, name: str = ""
     ) -> Union["pytdbot.types.Error", "pytdbot.types.UpgradedGift"]:
@@ -18591,6 +18676,7 @@ class TDLibFunctions:
         self,
         gift_id: int = 0,
         order: "pytdbot.types.GiftForResaleOrder" = None,
+        for_crafting: bool = False,
         attributes: List["pytdbot.types.UpgradedGiftAttributeId"] = None,
         offset: str = "",
         limit: int = 0,
@@ -18603,6 +18689,9 @@ class TDLibFunctions:
 
             order (:class:`~pytdbot.types.GiftForResaleOrder`):
                 Order in which the results will be sorted
+
+            for_crafting (:class:`bool`):
+                Pass true to get only gifts suitable for crafting
 
             attributes (List[:class:`~pytdbot.types.UpgradedGiftAttributeId`]):
                 Attributes used to filter received gifts\. If multiple attributes of the same type are specified, then all of them are allowed\. If none attributes of specific type are specified, then all values for this attribute type are allowed
@@ -18622,6 +18711,7 @@ class TDLibFunctions:
                 "@type": "searchGiftsForResale",
                 "gift_id": gift_id,
                 "order": order,
+                "for_crafting": for_crafting,
                 "attributes": attributes,
                 "offset": offset,
                 "limit": limit,
@@ -18881,7 +18971,7 @@ class TDLibFunctions:
 
         Parameters:
             user_id (:class:`int`):
-                Identifier of the user that did the payment
+                Identifier of the user who did the payment
 
             telegram_payment_charge_id (:class:`str`):
                 Telegram payment identifier
@@ -18901,7 +18991,7 @@ class TDLibFunctions:
     async def getSupportUser(
         self,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.User"]:
-        r"""Returns a user that can be contacted to get support
+        r"""Returns a user who can be contacted to get support
 
         Returns:
             :class:`~pytdbot.types.User`
@@ -19440,7 +19530,7 @@ class TDLibFunctions:
     async def setChatPaidMessageStarCount(
         self, chat_id: int = 0, paid_message_star_count: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Changes the amount of Telegram Stars that must be paid to send a message to a supergroup chat; requires can\_restrict\_members administrator right and supergroupFullInfo\.can\_enable\_paid\_messages
+        r"""Changes the Telegram Star amount that must be paid to send a message to a supergroup chat; requires can\_restrict\_members administrator right and supergroupFullInfo\.can\_enable\_paid\_messages
 
         Parameters:
             chat_id (:class:`int`):
@@ -20414,7 +20504,7 @@ class TDLibFunctions:
         user_id: int = 0,
         errors: List["pytdbot.types.InputPassportElementError"] = None,
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
-        r"""Informs the user that some of the elements in their Telegram Passport contain errors; for bots only\. The user will not be able to resend the elements, until the errors are fixed
+        r"""Informs the user who some of the elements in their Telegram Passport contain errors; for bots only\. The user will not be able to resend the elements, until the errors are fixed
 
         Parameters:
             user_id (:class:`int`):
@@ -21351,7 +21441,7 @@ class TDLibFunctions:
 
         Parameters:
             user_id (:class:`int`):
-                Identifier of the user that will receive Telegram Stars; pass 0 to get options for an unspecified user
+                Identifier of the user who will receive Telegram Stars; pass 0 to get options for an unspecified user
 
         Returns:
             :class:`~pytdbot.types.StarPaymentOptions`
@@ -21687,7 +21777,7 @@ class TDLibFunctions:
     async def getConnectedAffiliateProgram(
         self, affiliate: "pytdbot.types.AffiliateType" = None, bot_user_id: int = 0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.ConnectedAffiliateProgram"]:
-        r"""Returns an affiliate program that were connected to the given affiliate by identifier of the bot that created the program
+        r"""Returns an affiliate program that was connected to the given affiliate by identifier of the bot that created the program
 
         Parameters:
             affiliate (:class:`~pytdbot.types.AffiliateType`):
@@ -22029,79 +22119,53 @@ class TDLibFunctions:
         )
 
     async def addProxy(
-        self,
-        server: str = "",
-        port: int = 0,
-        enable: bool = False,
-        type: "pytdbot.types.ProxyType" = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Proxy"]:
+        self, proxy: "pytdbot.types.Proxy" = None, enable: bool = False
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.AddedProxy"]:
         r"""Adds a proxy server for network requests\. Can be called before authorization
 
         Parameters:
-            server (:class:`str`):
-                Proxy server domain or IP address
-
-            port (:class:`int`):
-                Proxy server port
+            proxy (:class:`~pytdbot.types.Proxy`):
+                The proxy to add
 
             enable (:class:`bool`):
                 Pass true to immediately enable the proxy
 
-            type (:class:`~pytdbot.types.ProxyType`):
-                Proxy type
-
         Returns:
-            :class:`~pytdbot.types.Proxy`
+            :class:`~pytdbot.types.AddedProxy`
         """
 
         return await self.invoke(
-            {
-                "@type": "addProxy",
-                "server": server,
-                "port": port,
-                "enable": enable,
-                "type": type,
-            }
+            {"@type": "addProxy", "proxy": proxy, "enable": enable}
         )
 
     async def editProxy(
         self,
         proxy_id: int = 0,
-        server: str = "",
-        port: int = 0,
+        proxy: "pytdbot.types.Proxy" = None,
         enable: bool = False,
-        type: "pytdbot.types.ProxyType" = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Proxy"]:
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.AddedProxy"]:
         r"""Edits an existing proxy server for network requests\. Can be called before authorization
 
         Parameters:
             proxy_id (:class:`int`):
                 Proxy identifier
 
-            server (:class:`str`):
-                Proxy server domain or IP address
-
-            port (:class:`int`):
-                Proxy server port
+            proxy (:class:`~pytdbot.types.Proxy`):
+                The new information about the proxy
 
             enable (:class:`bool`):
                 Pass true to immediately enable the proxy
 
-            type (:class:`~pytdbot.types.ProxyType`):
-                Proxy type
-
         Returns:
-            :class:`~pytdbot.types.Proxy`
+            :class:`~pytdbot.types.AddedProxy`
         """
 
         return await self.invoke(
             {
                 "@type": "editProxy",
                 "proxy_id": proxy_id,
-                "server": server,
-                "port": port,
+                "proxy": proxy,
                 "enable": enable,
-                "type": type,
             }
         )
 
@@ -22148,11 +22212,13 @@ class TDLibFunctions:
 
         return await self.invoke({"@type": "removeProxy", "proxy_id": proxy_id})
 
-    async def getProxies(self) -> Union["pytdbot.types.Error", "pytdbot.types.Proxies"]:
+    async def getProxies(
+        self,
+    ) -> Union["pytdbot.types.Error", "pytdbot.types.AddedProxies"]:
         r"""Returns the list of proxies that are currently set up\. Can be called before authorization
 
         Returns:
-            :class:`~pytdbot.types.Proxies`
+            :class:`~pytdbot.types.AddedProxies`
         """
 
         return await self.invoke(
@@ -22161,35 +22227,20 @@ class TDLibFunctions:
             }
         )
 
-    async def getProxyLink(
-        self, proxy_id: int = 0
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.HttpUrl"]:
-        r"""Returns an HTTPS link, which can be used to add a proxy\. Available only for SOCKS5 and MTProto proxies\. Can be called before authorization
-
-        Parameters:
-            proxy_id (:class:`int`):
-                Proxy identifier
-
-        Returns:
-            :class:`~pytdbot.types.HttpUrl`
-        """
-
-        return await self.invoke({"@type": "getProxyLink", "proxy_id": proxy_id})
-
     async def pingProxy(
-        self, proxy_id: int = 0
+        self, proxy: "pytdbot.types.Proxy" = None
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Seconds"]:
         r"""Computes time needed to receive a response from a Telegram server through a proxy\. Can be called before authorization
 
         Parameters:
-            proxy_id (:class:`int`):
-                Proxy identifier\. Use 0 to ping a Telegram server without a proxy
+            proxy (:class:`~pytdbot.types.Proxy`):
+                The proxy to test; pass null to ping a Telegram server without a proxy
 
         Returns:
             :class:`~pytdbot.types.Seconds`
         """
 
-        return await self.invoke({"@type": "pingProxy", "proxy_id": proxy_id})
+        return await self.invoke({"@type": "pingProxy", "proxy": proxy})
 
     async def setLogStream(
         self, log_stream: "pytdbot.types.LogStream" = None
@@ -22510,24 +22561,13 @@ class TDLibFunctions:
         )
 
     async def testProxy(
-        self,
-        server: str = "",
-        port: int = 0,
-        type: "pytdbot.types.ProxyType" = None,
-        dc_id: int = 0,
-        timeout: float = 0.0,
+        self, proxy: "pytdbot.types.Proxy" = None, dc_id: int = 0, timeout: float = 0.0
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         r"""Sends a simple network request to the Telegram servers via proxy; for testing only\. Can be called before authorization
 
         Parameters:
-            server (:class:`str`):
-                Proxy server domain or IP address
-
-            port (:class:`int`):
-                Proxy server port
-
-            type (:class:`~pytdbot.types.ProxyType`):
-                Proxy type
+            proxy (:class:`~pytdbot.types.Proxy`):
+                The proxy to test
 
             dc_id (:class:`int`):
                 Identifier of a datacenter with which to test connection
@@ -22540,14 +22580,7 @@ class TDLibFunctions:
         """
 
         return await self.invoke(
-            {
-                "@type": "testProxy",
-                "server": server,
-                "port": port,
-                "type": type,
-                "dc_id": dc_id,
-                "timeout": timeout,
-            }
+            {"@type": "testProxy", "proxy": proxy, "dc_id": dc_id, "timeout": timeout}
         )
 
     async def testGetDifference(
