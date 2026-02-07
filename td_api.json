@@ -1,7 +1,7 @@
 {
     "name": "Auto-generated JSON TDLib API for Pytdbot ~ https://github.com/pytdbot/client",
-    "version": "1.8.60",
-    "commit_hash": "0da5c72f8365fb4857096e716d53175ddbdf5a15",
+    "version": "1.8.61",
+    "commit_hash": "11e254af695060d8890024dd7faa1cc2d6685ef8",
     "classes": {
         "AuthenticationCodeType": {
             "description": "Provides information about the method by which an authentication code is delivered to the user",
@@ -270,9 +270,33 @@
                 "upgradedGiftOriginResale",
                 "upgradedGiftOriginBlockchain",
                 "upgradedGiftOriginPrepaidUpgrade",
-                "upgradedGiftOriginOffer"
+                "upgradedGiftOriginOffer",
+                "upgradedGiftOriginCraft"
             ],
             "functions": []
+        },
+        "UpgradedGiftAttributeRarity": {
+            "description": "Describes rarity of an upgraded gift attribute",
+            "types": [
+                "upgradedGiftAttributeRarityPerMille",
+                "upgradedGiftAttributeRarityUncommon",
+                "upgradedGiftAttributeRarityRare",
+                "upgradedGiftAttributeRarityEpic",
+                "upgradedGiftAttributeRarityLegendary"
+            ],
+            "functions": []
+        },
+        "CraftGiftResult": {
+            "description": "Contains result of gift crafting",
+            "types": [
+                "craftGiftResultSuccess",
+                "craftGiftResultTooEarly",
+                "craftGiftResultInvalidGift",
+                "craftGiftResultFail"
+            ],
+            "functions": [
+                "craftGift"
+            ]
         },
         "UpgradedGiftAttributeId": {
             "description": "Contains identifier of an upgraded gift attribute to search for",
@@ -386,6 +410,8 @@
                 "tonTransactionTypeGiftPurchaseOffer",
                 "tonTransactionTypeUpgradedGiftPurchase",
                 "tonTransactionTypeUpgradedGiftSale",
+                "tonTransactionTypeStakeDiceStake",
+                "tonTransactionTypeStakeDicePayout",
                 "tonTransactionTypeUnsupported"
             ],
             "functions": []
@@ -689,6 +715,16 @@
                 "chatActionBarAddContact",
                 "chatActionBarSharePhoneNumber",
                 "chatActionBarJoinRequest"
+            ],
+            "functions": []
+        },
+        "ButtonStyle": {
+            "description": "Describes style of a button",
+            "types": [
+                "buttonStyleDefault",
+                "buttonStylePrimary",
+                "buttonStyleDanger",
+                "buttonStyleSuccess"
             ],
             "functions": []
         },
@@ -1091,6 +1127,8 @@
                 "messageChatChangeTitle",
                 "messageChatChangePhoto",
                 "messageChatDeletePhoto",
+                "messageChatOwnerLeft",
+                "messageChatOwnerChanged",
                 "messageChatAddMembers",
                 "messageChatJoinByLink",
                 "messageChatJoinByRequest",
@@ -1338,6 +1376,16 @@
                 "inputStoryAreaTypeLink",
                 "inputStoryAreaTypeWeather",
                 "inputStoryAreaTypeUpgradedGift"
+            ],
+            "functions": []
+        },
+        "StoryContentType": {
+            "description": "Contains the type of the content of a story",
+            "types": [
+                "storyContentTypePhoto",
+                "storyContentTypeVideo",
+                "storyContentTypeLive",
+                "storyContentTypeUnsupported"
             ],
             "functions": []
         },
@@ -2165,10 +2213,36 @@
                 "reportStory"
             ]
         },
+        "SettingsSection": {
+            "description": "Describes a section of the application settings",
+            "types": [
+                "settingsSectionAppearance",
+                "settingsSectionAskQuestion",
+                "settingsSectionBusiness",
+                "settingsSectionChatFolders",
+                "settingsSectionDataAndStorage",
+                "settingsSectionDevices",
+                "settingsSectionEditProfile",
+                "settingsSectionFaq",
+                "settingsSectionFeatures",
+                "settingsSectionInAppBrowser",
+                "settingsSectionLanguage",
+                "settingsSectionMyStars",
+                "settingsSectionMyToncoins",
+                "settingsSectionNotifications",
+                "settingsSectionPowerSaving",
+                "settingsSectionPremium",
+                "settingsSectionPrivacyAndSecurity",
+                "settingsSectionPrivacyPolicy",
+                "settingsSectionQrCode",
+                "settingsSectionSearch",
+                "settingsSectionSendGift"
+            ],
+            "functions": []
+        },
         "InternalLinkType": {
             "description": "Describes an internal https://t.me or tg: link, which must be processed by the application in a special way",
             "types": [
-                "internalLinkTypeActiveSessions",
                 "internalLinkTypeAttachmentMenuBot",
                 "internalLinkTypeAuthenticationCode",
                 "internalLinkTypeBackground",
@@ -2176,16 +2250,14 @@
                 "internalLinkTypeBotStart",
                 "internalLinkTypeBotStartInGroup",
                 "internalLinkTypeBusinessChat",
-                "internalLinkTypeBuyStars",
-                "internalLinkTypeChangePhoneNumber",
+                "internalLinkTypeCallsPage",
                 "internalLinkTypeChatAffiliateProgram",
                 "internalLinkTypeChatBoost",
                 "internalLinkTypeChatFolderInvite",
-                "internalLinkTypeChatFolderSettings",
                 "internalLinkTypeChatInvite",
-                "internalLinkTypeDefaultMessageAutoDeleteTimerSettings",
+                "internalLinkTypeChatSelection",
+                "internalLinkTypeContactsPage",
                 "internalLinkTypeDirectMessagesChat",
-                "internalLinkTypeEditProfileSettings",
                 "internalLinkTypeGame",
                 "internalLinkTypeGiftAuction",
                 "internalLinkTypeGiftCollection",
@@ -2193,34 +2265,33 @@
                 "internalLinkTypeInstantView",
                 "internalLinkTypeInvoice",
                 "internalLinkTypeLanguagePack",
-                "internalLinkTypeLanguageSettings",
                 "internalLinkTypeLiveStory",
-                "internalLinkTypeLoginEmailSettings",
                 "internalLinkTypeMainWebApp",
                 "internalLinkTypeMessage",
                 "internalLinkTypeMessageDraft",
-                "internalLinkTypeMyStars",
-                "internalLinkTypeMyToncoins",
+                "internalLinkTypeMyProfilePage",
+                "internalLinkTypeNewChannelChat",
+                "internalLinkTypeNewGroupChat",
+                "internalLinkTypeNewPrivateChat",
+                "internalLinkTypeNewStory",
                 "internalLinkTypePassportDataRequest",
-                "internalLinkTypePasswordSettings",
                 "internalLinkTypePhoneNumberConfirmation",
-                "internalLinkTypePhoneNumberPrivacySettings",
-                "internalLinkTypePremiumFeatures",
-                "internalLinkTypePremiumGift",
+                "internalLinkTypePremiumFeaturesPage",
                 "internalLinkTypePremiumGiftCode",
-                "internalLinkTypePrivacyAndSecuritySettings",
+                "internalLinkTypePremiumGiftPurchase",
                 "internalLinkTypeProxy",
                 "internalLinkTypePublicChat",
                 "internalLinkTypeQrCodeAuthentication",
                 "internalLinkTypeRestorePurchases",
+                "internalLinkTypeSavedMessages",
+                "internalLinkTypeSearch",
                 "internalLinkTypeSettings",
+                "internalLinkTypeStarPurchase",
                 "internalLinkTypeStickerSet",
                 "internalLinkTypeStory",
                 "internalLinkTypeStoryAlbum",
                 "internalLinkTypeTheme",
-                "internalLinkTypeThemeSettings",
                 "internalLinkTypeUnknownDeepLink",
-                "internalLinkTypeUnsupportedProxy",
                 "internalLinkTypeUpgradedGift",
                 "internalLinkTypeUserPhoneNumber",
                 "internalLinkTypeUserToken",
@@ -4348,7 +4419,7 @@
                     "type": "string"
                 },
                 "stake_toncoin_amount": {
-                    "description": "The amount of Toncoins that was staked in the previous roll; in the smallest units of the currency",
+                    "description": "The Toncoin amount that was staked in the previous roll; in the smallest units of the currency",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -4732,6 +4803,11 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
+                "allows_users_to_create_topics": {
+                    "description": "True, if users can create and delete topics in the chat with the bot",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_inline": {
                     "description": "True, if the bot supports inline queries",
                     "is_optional": false,
@@ -4929,7 +5005,7 @@
             "type": "Birthdate"
         },
         "closeBirthdayUser": {
-            "description": "Describes a user that had or will have a birthday soon",
+            "description": "Describes a user who had or will have a birthday soon",
             "args": {
                 "user_id": {
                     "description": "User identifier",
@@ -5118,7 +5194,7 @@
                     "type": "Bool"
                 },
                 "can_view_gifts_and_stars": {
-                    "description": "True, if the bot can view gifts and amount of Telegram Stars owned by the business account",
+                    "description": "True, if the bot can view gifts and Telegram Star amount owned by the business account",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -5696,7 +5772,7 @@
             "description": "Describes price of a resold gift in Telegram Stars",
             "args": {
                 "star_count": {
-                    "description": "The amount of Telegram Stars expected to be paid for the gift. Must be in the range getOption(\"gift_resale_star_count_min\")-getOption(\"gift_resale_star_count_max\") for gifts put for resale",
+                    "description": "The Telegram Star amount expected to be paid for the gift. Must be in the range getOption(\"gift_resale_star_count_min\")-getOption(\"gift_resale_star_count_max\") for gifts put for resale",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -5733,7 +5809,7 @@
             "description": "Describes price of a suggested post in Telegram Stars",
             "args": {
                 "star_count": {
-                    "description": "The amount of Telegram Stars expected to be paid for the post; getOption(\"suggested_post_star_count_min\")-getOption(\"suggested_post_star_count_max\")",
+                    "description": "The Telegram Star amount expected to be paid for the post; getOption(\"suggested_post_star_count_min\")-getOption(\"suggested_post_star_count_max\")",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -5824,10 +5900,10 @@
             "type": "SuggestedPostRefundReason"
         },
         "starAmount": {
-            "description": "Describes a possibly non-integer amount of Telegram Stars",
+            "description": "Describes a possibly non-integer Telegram Star amount",
             "args": {
                 "star_count": {
-                    "description": "The integer amount of Telegram Stars rounded to 0",
+                    "description": "The integer Telegram Star amount rounded to 0",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -5890,7 +5966,7 @@
                     "type": "int32"
                 },
                 "star_count": {
-                    "description": "The amount of Telegram Stars that must be paid for each period",
+                    "description": "The Telegram Star amount that must be paid for each period",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -6057,7 +6133,7 @@
                     "type": "int53"
                 },
                 "star_amount": {
-                    "description": "The amount of Telegram Stars that were received by the affiliate; can be negative for refunds",
+                    "description": "The Telegram Star amount that was received by the affiliate; can be negative for refunds",
                     "is_optional": false,
                     "type": "starAmount"
                 }
@@ -6260,7 +6336,7 @@
                     "type": "int53"
                 },
                 "star_count": {
-                    "description": "The alternative amount of Telegram Stars to pay; 0 if payment in Telegram Stars is not possible",
+                    "description": "The alternative Telegram Star amount to pay; 0 if payment in Telegram Stars is not possible",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -6349,7 +6425,7 @@
             "description": "Contains information about a Telegram Premium gift code",
             "args": {
                 "creator_id": {
-                    "description": "Identifier of a chat or a user that created the gift code; may be null if unknown. If null and the code is from messagePremiumGiftCode message, then creator_id from the message can be used",
+                    "description": "Identifier of a chat or a user who created the gift code; may be null if unknown. If null and the code is from messagePremiumGiftCode message, then creator_id from the message can be used",
                     "is_optional": true,
                     "type": "MessageSender"
                 },
@@ -6738,6 +6814,42 @@
             },
             "type": "UpgradedGiftOrigin"
         },
+        "upgradedGiftOriginCraft": {
+            "description": "The gift was crafted from other gifts",
+            "args": {},
+            "type": "UpgradedGiftOrigin"
+        },
+        "upgradedGiftAttributeRarityPerMille": {
+            "description": "The rarity is represented as the numeric frequence of the model",
+            "args": {
+                "per_mille": {
+                    "description": "The number of upgraded gifts that receive this attribute for each 1000 gifts upgraded; if 0, then it can be shown as \"<0.1%\"",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "UpgradedGiftAttributeRarity"
+        },
+        "upgradedGiftAttributeRarityUncommon": {
+            "description": "The attribute is uncommon",
+            "args": {},
+            "type": "UpgradedGiftAttributeRarity"
+        },
+        "upgradedGiftAttributeRarityRare": {
+            "description": "The attribute is rare",
+            "args": {},
+            "type": "UpgradedGiftAttributeRarity"
+        },
+        "upgradedGiftAttributeRarityEpic": {
+            "description": "The attribute is epic",
+            "args": {},
+            "type": "UpgradedGiftAttributeRarity"
+        },
+        "upgradedGiftAttributeRarityLegendary": {
+            "description": "The attribute is legendary",
+            "args": {},
+            "type": "UpgradedGiftAttributeRarity"
+        },
         "upgradedGiftModel": {
             "description": "Describes a model of an upgraded gift",
             "args": {
@@ -6751,10 +6863,15 @@
                     "is_optional": false,
                     "type": "sticker"
                 },
-                "rarity_per_mille": {
-                    "description": "The number of upgraded gifts that receive this model for each 1000 gifts upgraded",
+                "rarity": {
+                    "description": "The rarity of the model",
                     "is_optional": false,
-                    "type": "int32"
+                    "type": "UpgradedGiftAttributeRarity"
+                },
+                "is_crafted": {
+                    "description": "True, if the model can be obtained only through gift crafting",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "UpgradedGiftModel"
@@ -6772,10 +6889,10 @@
                     "is_optional": false,
                     "type": "sticker"
                 },
-                "rarity_per_mille": {
-                    "description": "The number of upgraded gifts that receive this symbol for each 1000 gifts upgraded",
+                "rarity": {
+                    "description": "The rarity of the symbol",
                     "is_optional": false,
-                    "type": "int32"
+                    "type": "UpgradedGiftAttributeRarity"
                 }
             },
             "type": "UpgradedGiftSymbol"
@@ -6824,10 +6941,10 @@
                     "is_optional": false,
                     "type": "upgradedGiftBackdropColors"
                 },
-                "rarity_per_mille": {
-                    "description": "The number of upgraded gifts that receive this backdrop for each 1000 gifts upgraded",
+                "rarity": {
+                    "description": "The rarity of the backdrop",
                     "is_optional": false,
-                    "type": "int32"
+                    "type": "UpgradedGiftAttributeRarity"
                 }
             },
             "type": "UpgradedGiftBackdrop"
@@ -7033,6 +7150,16 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "is_burned": {
+                    "description": "True, if the gift was used to craft another gift",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "is_crafted": {
+                    "description": "True, if the gift was craft from another gifts",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
                 "is_premium": {
                     "description": "True, if the original gift could have been bought only by Telegram Premium subscribers",
                     "is_optional": false,
@@ -7094,7 +7221,7 @@
                     "type": "upgradedGiftOriginalDetails"
                 },
                 "colors": {
-                    "description": "Colors that can be set for user's name, background of empty chat photo, replies to messages and link previews; may be null if none",
+                    "description": "Colors that can be set for user's name, background of empty chat photo, replies to messages and link previews; may be null if none or unknown",
                     "is_optional": true,
                     "type": "upgradedGiftColors"
                 },
@@ -7107,6 +7234,11 @@
                     "description": "True, if an offer to purchase the gift can be sent using sendGiftPurchaseOffer",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "craft_probability_per_mille": {
+                    "description": "Probability that the gift adds to the chance of successful crafting of a new gift; 0 if the gift can't be used for crafting",
+                    "is_optional": false,
+                    "type": "int32"
                 },
                 "value_currency": {
                     "description": "ISO 4217 currency code of the currency in which value of the gift is represented; may be empty if unavailable",
@@ -7150,7 +7282,7 @@
                     "type": "int32"
                 },
                 "initial_sale_star_count": {
-                    "description": "Amount of Telegram Stars that were paid for the gift",
+                    "description": "The Telegram Star amount that was paid for the gift",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -7253,6 +7385,43 @@
             },
             "type": "UpgradeGiftResult"
         },
+        "craftGiftResultSuccess": {
+            "description": "Crafting was successful",
+            "args": {
+                "gift": {
+                    "description": "The created gift",
+                    "is_optional": false,
+                    "type": "upgradedGift"
+                },
+                "received_gift_id": {
+                    "description": "Unique identifier of the received gift for the current user",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "CraftGiftResult"
+        },
+        "craftGiftResultTooEarly": {
+            "description": "Crafting isn't possible because one of the gifts can't be used for crafting yet",
+            "args": {
+                "retry_after": {
+                    "description": "Time left before the gift can be used for crafting",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "CraftGiftResult"
+        },
+        "craftGiftResultInvalidGift": {
+            "description": "Crafting isn't possible because one of the gifts isn't suitable for crafting",
+            "args": {},
+            "type": "CraftGiftResult"
+        },
+        "craftGiftResultFail": {
+            "description": "Crafting has failed",
+            "args": {},
+            "type": "CraftGiftResult"
+        },
         "availableGift": {
             "description": "Describes a gift that is available for purchase",
             "args": {
@@ -7299,7 +7468,7 @@
                     "type": "int32"
                 },
                 "star_count": {
-                    "description": "The amount of Telegram Stars required to pay to upgrade the gift",
+                    "description": "The Telegram Star amount required to pay to upgrade the gift",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -7456,7 +7625,13 @@
         },
         "giftResaleResultOk": {
             "description": "Operation was successfully completed",
-            "args": {},
+            "args": {
+                "received_gift_id": {
+                    "description": "Unique identifier of the received gift; only for the gifts sent to the current user",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
             "type": "GiftResaleResult"
         },
         "giftResaleResultPriceIncreased": {
@@ -7604,6 +7779,11 @@
                     "description": "If non-empty, then the user can pay for an upgrade of the gift using buyGiftUpgrade",
                     "is_optional": true,
                     "type": "string"
+                },
+                "craft_date": {
+                    "description": "Point in time (Unix timestamp) when the gift can be used to craft another gift can be in the past; only for the receiver of the gift",
+                    "is_optional": false,
+                    "type": "int32"
                 }
             },
             "type": "ReceivedGift"
@@ -7633,6 +7813,43 @@
                 }
             },
             "type": "ReceivedGifts"
+        },
+        "attributeCraftPersistenceProbability": {
+            "description": "Describes chance of the crafted gift to have the backdrop or symbol of one of the original gifts",
+            "args": {
+                "persistence_chance_per_mille": {
+                    "description": "The 4 numbers that describe probability of the craft result to have the same attribute as one of the original gifts if 1, 2, 3, or 4 gifts with the attribute are used in the craft. Each number represents the number of crafted gifts with the original attribute per 1000 successful craftings",
+                    "is_optional": false,
+                    "type": "vector<int32>"
+                }
+            },
+            "type": "AttributeCraftPersistenceProbability"
+        },
+        "giftsForCrafting": {
+            "description": "Represents a list of gifts received by a user or a chat",
+            "args": {
+                "total_count": {
+                    "description": "The total number of received gifts",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "gifts": {
+                    "description": "The list of gifts",
+                    "is_optional": false,
+                    "type": "vector<receivedGift>"
+                },
+                "attribute_persistence_probabilities": {
+                    "description": "The 4 objects that describe probabilities of the crafted gift to have the backdrop or symbol of one of the original gifts for the cases when 1, 2, 3 or 4 gifts are used in the craft correspondingly",
+                    "is_optional": false,
+                    "type": "vector<attributeCraftPersistenceProbability>"
+                },
+                "next_offset": {
+                    "description": "The offset for the next request. If empty, then there are no more results",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "GiftsForCrafting"
         },
         "giftUpgradePreview": {
             "description": "Contains examples of possible upgraded gifts for the given regular gift",
@@ -7983,7 +8200,7 @@
             "description": "The transaction is a deposit of Telegram Stars by another user; relevant for regular users only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that gifted Telegram Stars; 0 if the user was anonymous",
+                    "description": "Identifier of the user who gifted Telegram Stars; 0 if the user was anonymous",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8042,7 +8259,7 @@
             "description": "The transaction is a purchase of paid media from a bot or a business account by the current user; relevant for regular users only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the bot or the business account user that sent the paid media",
+                    "description": "Identifier of the bot or the business account user who sent the paid media",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8058,7 +8275,7 @@
             "description": "The transaction is a sale of paid media by the bot or a business account managed by the bot; relevant for bots only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that bought the media",
+                    "description": "Identifier of the user who bought the media",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8105,7 +8322,7 @@
             "description": "The transaction is a sale of paid media by the channel chat; relevant for channel chats only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that bought the media",
+                    "description": "Identifier of the user who bought the media",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8126,7 +8343,7 @@
             "description": "The transaction is a purchase of a product from a bot or a business account by the current user; relevant for regular users only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the bot or the business account user that created the invoice",
+                    "description": "Identifier of the bot or the business account user who created the invoice",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8142,7 +8359,7 @@
             "description": "The transaction is a sale of a product by the bot; relevant for bots only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that bought the product",
+                    "description": "Identifier of the user who bought the product",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8168,7 +8385,7 @@
             "description": "The transaction is a purchase of a subscription from a bot or a business account by the current user; relevant for regular users only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the bot or the business account user that created the subscription link",
+                    "description": "Identifier of the bot or the business account user who created the subscription link",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8189,7 +8406,7 @@
             "description": "The transaction is a sale of a subscription by the bot; relevant for bots only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that bought the subscription",
+                    "description": "Identifier of the user who bought the subscription",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8236,7 +8453,7 @@
             "description": "The transaction is a sale of a subscription by the channel chat; relevant for channel chats only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that bought the subscription",
+                    "description": "Identifier of the user who bought the subscription",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8252,7 +8469,7 @@
             "description": "The transaction is a bid on a gift auction; relevant for regular users only",
             "args": {
                 "owner_id": {
-                    "description": "Identifier of the user that will receive the gift",
+                    "description": "Identifier of the user who will receive the gift",
                     "is_optional": false,
                     "type": "MessageSender"
                 },
@@ -8327,7 +8544,7 @@
             "description": "The transaction is a sale of a received gift; relevant for regular users and channel chats only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that sent the gift",
+                    "description": "Identifier of the user who sent the gift",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8343,7 +8560,7 @@
             "description": "The transaction is an upgrade of a gift; relevant for regular users only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that initially sent the gift",
+                    "description": "Identifier of the user who initially sent the gift",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8375,7 +8592,7 @@
             "description": "The transaction is a purchase of an upgraded gift for some user or channel; relevant for regular users only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that sold the gift",
+                    "description": "Identifier of the user who sold the gift",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8391,7 +8608,7 @@
             "description": "The transaction is a sale of an upgraded gift; relevant for regular users only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that bought the gift",
+                    "description": "Identifier of the user who bought the gift",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8406,7 +8623,7 @@
                     "type": "int32"
                 },
                 "commission_star_amount": {
-                    "description": "The amount of Telegram Stars that were received by Telegram; can be negative for refunds",
+                    "description": "The Telegram Star amount that was received by Telegram; can be negative for refunds",
                     "is_optional": false,
                     "type": "starAmount"
                 },
@@ -8438,7 +8655,7 @@
             "description": "The transaction is a receiving of a paid reaction to a message by the channel chat; relevant for channel chats only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that added the paid reaction",
+                    "description": "Identifier of the user who added the paid reaction",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8501,7 +8718,7 @@
                     "type": "int32"
                 },
                 "commission_star_amount": {
-                    "description": "The amount of Telegram Stars that were received by Telegram; can be negative for refunds",
+                    "description": "The Telegram Star amount that was received by Telegram; can be negative for refunds",
                     "is_optional": false,
                     "type": "starAmount"
                 }
@@ -8533,7 +8750,7 @@
                     "type": "int32"
                 },
                 "commission_star_amount": {
-                    "description": "The amount of Telegram Stars that were received by Telegram; can be negative for refunds",
+                    "description": "The Telegram Star amount that was received by Telegram; can be negative for refunds",
                     "is_optional": false,
                     "type": "starAmount"
                 }
@@ -8565,7 +8782,7 @@
                     "type": "int32"
                 },
                 "commission_star_amount": {
-                    "description": "The amount of Telegram Stars that were received by Telegram; can be negative for refunds",
+                    "description": "The Telegram Star amount that was received by Telegram; can be negative for refunds",
                     "is_optional": false,
                     "type": "starAmount"
                 }
@@ -8587,7 +8804,7 @@
             "description": "The transaction is a receiving of a payment for a suggested post by the channel chat; relevant for channel chats only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that paid for the suggested post",
+                    "description": "Identifier of the user who paid for the suggested post",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -8598,7 +8815,7 @@
             "description": "The transaction is a purchase of Telegram Premium subscription; relevant for regular users and bots only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that received the Telegram Premium subscription",
+                    "description": "Identifier of the user who received the Telegram Premium subscription",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8630,7 +8847,7 @@
             "description": "The transaction is a transfer of Telegram Stars from a business account; relevant for bots only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that sent Telegram Stars",
+                    "description": "Identifier of the user who sent Telegram Stars",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -8752,7 +8969,7 @@
             "description": "The transaction is a purchase of an upgraded gift for some user or channel",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that sold the gift",
+                    "description": "Identifier of the user who sold the gift",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8768,7 +8985,7 @@
             "description": "The transaction is a sale of an upgraded gift",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that bought the gift",
+                    "description": "Identifier of the user who bought the gift",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8783,7 +9000,7 @@
                     "type": "int32"
                 },
                 "commission_toncoin_amount": {
-                    "description": "The amount of Toncoins that were received by the Telegram; in the smallest units of the currency",
+                    "description": "The Toncoin amount that was received by the Telegram; in the smallest units of the currency",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -8793,6 +9010,16 @@
                     "type": "Bool"
                 }
             },
+            "type": "TonTransactionType"
+        },
+        "tonTransactionTypeStakeDiceStake": {
+            "description": "The transaction is a payment for stake dice throw",
+            "args": {},
+            "type": "TonTransactionType"
+        },
+        "tonTransactionTypeStakeDicePayout": {
+            "description": "The transaction is a payment for successful stake dice throw",
+            "args": {},
             "type": "TonTransactionType"
         },
         "tonTransactionTypeUnsupported": {
@@ -8976,7 +9203,7 @@
                     "type": "string"
                 },
                 "won_star_count": {
-                    "description": "The amount of Telegram Stars won by the current user; 0 if the user isn't a winner in the giveaway or the giveaway isn't a Telegram Star giveaway",
+                    "description": "The Telegram Star amount won by the current user; 0 if the user isn't a winner in the giveaway or the giveaway isn't a Telegram Star giveaway",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -9822,7 +10049,7 @@
                     "type": "MessageSender"
                 },
                 "inviter_user_id": {
-                    "description": "Identifier of a user that invited/promoted/banned this member in the chat; 0 if unknown",
+                    "description": "Identifier of a user who invited/promoted/banned this member in the chat; 0 if unknown",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -10245,7 +10472,7 @@
             "type": "ChatInviteLinkInfo"
         },
         "chatJoinRequest": {
-            "description": "Describes a user that sent a join request and waits for administrator approval",
+            "description": "Describes a user who sent a join request and waits for administrator approval",
             "args": {
                 "user_id": {
                     "description": "User identifier",
@@ -10797,7 +11024,7 @@
             "description": "The message was sent by a known user",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that sent the message",
+                    "description": "Identifier of the user who sent the message",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -10920,7 +11147,7 @@
             "description": "The message was originally sent by a known user",
             "args": {
                 "sender_user_id": {
-                    "description": "Identifier of the user that originally sent the message",
+                    "description": "Identifier of the user who originally sent the message",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -11060,7 +11287,7 @@
             "type": "PaidReactionType"
         },
         "paidReactor": {
-            "description": "Contains information about a user that added paid reactions",
+            "description": "Contains information about a user who added paid reactions",
             "args": {
                 "sender_id": {
                     "description": "Identifier of the user or chat that added the reactions; may be null for anonymous reactors that aren't the current user",
@@ -13304,7 +13531,7 @@
             "type": "Chats"
         },
         "failedToAddMember": {
-            "description": "Contains information about a user that has failed to be added to a chat",
+            "description": "Contains information about a user who has failed to be added to a chat",
             "args": {
                 "user_id": {
                     "description": "User identifier",
@@ -13362,7 +13589,7 @@
             "type": "PublicChatType"
         },
         "accountInfo": {
-            "description": "Contains basic information about another user that started a chat with the current user",
+            "description": "Contains basic information about another user who started a chat with the current user",
             "args": {
                 "registration_month": {
                     "description": "Month when the user was registered in Telegram; 0-12; may be 0 if unknown",
@@ -13454,6 +13681,26 @@
                 }
             },
             "type": "ChatActionBar"
+        },
+        "buttonStyleDefault": {
+            "description": "The button has default style",
+            "args": {},
+            "type": "ButtonStyle"
+        },
+        "buttonStylePrimary": {
+            "description": "The button has dark blue color",
+            "args": {},
+            "type": "ButtonStyle"
+        },
+        "buttonStyleDanger": {
+            "description": "The button has red color",
+            "args": {},
+            "type": "ButtonStyle"
+        },
+        "buttonStyleSuccess": {
+            "description": "The button has green color",
+            "args": {},
+            "type": "ButtonStyle"
         },
         "keyboardButtonTypeText": {
             "description": "A simple button, with text that must be sent when the button is pressed",
@@ -13627,6 +13874,16 @@
                     "is_optional": false,
                     "type": "string"
                 },
+                "icon_custom_emoji_id": {
+                    "description": "Identifier of the custom emoji that must be shown on the button; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "style": {
+                    "description": "Style of the button",
+                    "is_optional": false,
+                    "type": "ButtonStyle"
+                },
                 "type": {
                     "description": "Type of the button",
                     "is_optional": false,
@@ -13756,6 +14013,16 @@
                     "is_optional": false,
                     "type": "string"
                 },
+                "icon_custom_emoji_id": {
+                    "description": "Identifier of the custom emoji that must be shown on the button; 0 if none",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "style": {
+                    "description": "Style of the button",
+                    "is_optional": false,
+                    "type": "ButtonStyle"
+                },
                 "type": {
                     "description": "Type of the button",
                     "is_optional": false,
@@ -13876,6 +14143,31 @@
                     "description": "True, if the user must be asked for the permission to the bot to send them messages",
                     "is_optional": false,
                     "type": "Bool"
+                },
+                "request_phone_number_access": {
+                    "description": "True, if the user must be asked for the permission to share their phone number",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "browser": {
+                    "description": "The version of a browser used for the authorization; may be empty if irrelevant",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "platform": {
+                    "description": "Operating system the browser is running on; may be empty if irrelevant",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "ip_address": {
+                    "description": "IP address from which the authorization is performed, in human-readable format; may be empty if irrelevant",
+                    "is_optional": true,
+                    "type": "string"
+                },
+                "location": {
+                    "description": "Human-readable description of a country and a region from which the authorization is performed, based on the IP address; may be empty if irrelevant",
+                    "is_optional": true,
+                    "type": "string"
                 }
             },
             "type": "LoginUrlInfo"
@@ -18251,12 +18543,12 @@
                     "type": "int32"
                 },
                 "stake_toncoin_amount": {
-                    "description": "The amount of Toncoins that were staked; in the smallest units of the currency",
+                    "description": "The Toncoin amount that was staked; in the smallest units of the currency",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "prize_toncoin_amount": {
-                    "description": "The amount of Toncoins that were gained from the roll; in the smallest units of the currency; -1 if the dice don't have final state yet",
+                    "description": "The Toncoin amount that was gained from the roll; in the smallest units of the currency; -1 if the dice don't have final state yet",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -18370,6 +18662,11 @@
         "messageGroupCall": {
             "description": "A message with information about a group call not bound to a chat. If the message is incoming, the call isn't active, isn't missed, and has no duration, and getOption(\"can_accept_calls\") is true, then incoming call screen must be shown to the user. Use getGroupCallParticipants to show current group call participants on the screen. Use joinGroupCall to accept the call or declineGroupCallInvitation to decline it. If the call become active or missed, then the call screen must be hidden",
             "args": {
+                "unique_id": {
+                    "description": "Persistent unique group call identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                },
                 "is_active": {
                     "description": "True, if the call is active, i.e. the called user joined the call",
                     "is_optional": false,
@@ -18504,6 +18801,28 @@
         "messageChatDeletePhoto": {
             "description": "A deleted chat photo",
             "args": {},
+            "type": "MessageContent"
+        },
+        "messageChatOwnerLeft": {
+            "description": "The owner of the chat has left",
+            "args": {
+                "new_owner_user_id": {
+                    "description": "Identifier of the user who will become the new owner of the chat if the previous owner isn't return; 0 if none",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "MessageContent"
+        },
+        "messageChatOwnerChanged": {
+            "description": "The owner of the chat has changed",
+            "args": {
+                "new_owner_user_id": {
+                    "description": "Identifier of the user who is the new owner of the chat",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
             "type": "MessageContent"
         },
         "messageChatAddMembers": {
@@ -18900,12 +19219,12 @@
             "description": "Telegram Premium was gifted to a user",
             "args": {
                 "gifter_user_id": {
-                    "description": "The identifier of a user that gifted Telegram Premium; 0 if the gift was anonymous or is outgoing",
+                    "description": "The identifier of a user who gifted Telegram Premium; 0 if the gift was anonymous or is outgoing",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "receiver_user_id": {
-                    "description": "The identifier of a user that received Telegram Premium; 0 if the gift is incoming",
+                    "description": "The identifier of a user who received Telegram Premium; 0 if the gift is incoming",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -18956,7 +19275,7 @@
             "description": "A Telegram Premium gift code was created for the user",
             "args": {
                 "creator_id": {
-                    "description": "Identifier of a chat or a user that created the gift code; may be null if unknown",
+                    "description": "Identifier of a chat or a user who created the gift code; may be null if unknown",
                     "is_optional": true,
                     "type": "MessageSender"
                 },
@@ -19146,12 +19465,12 @@
             "description": "Telegram Stars were gifted to a user",
             "args": {
                 "gifter_user_id": {
-                    "description": "The identifier of a user that gifted Telegram Stars; 0 if the gift was anonymous or is outgoing",
+                    "description": "The identifier of a user who gifted Telegram Stars; 0 if the gift was anonymous or is outgoing",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "receiver_user_id": {
-                    "description": "The identifier of a user that received Telegram Stars; 0 if the gift is incoming",
+                    "description": "The identifier of a user who received Telegram Stars; 0 if the gift is incoming",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19197,17 +19516,17 @@
             "description": "Toncoins were gifted to a user",
             "args": {
                 "gifter_user_id": {
-                    "description": "The identifier of a user that gifted Toncoins; 0 if the gift was anonymous or is outgoing",
+                    "description": "The identifier of a user who gifted Toncoins; 0 if the gift was anonymous or is outgoing",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "receiver_user_id": {
-                    "description": "The identifier of a user that received Toncoins; 0 if the gift is incoming",
+                    "description": "The identifier of a user who received Toncoins; 0 if the gift is incoming",
                     "is_optional": false,
                     "type": "int53"
                 },
                 "ton_amount": {
-                    "description": "The received amount of Toncoins, in the smallest units of the cryptocurrency",
+                    "description": "The received Toncoin amount, in the smallest units of the cryptocurrency",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -19426,6 +19745,11 @@
                 },
                 "export_date": {
                     "description": "Point in time (Unix timestamp) when the gift can be transferred to the TON blockchain as an NFT; can be in the past; 0 if NFT export isn't possible; only for the receiver of the gift",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "craft_date": {
+                    "description": "Point in time (Unix timestamp) when the gift can be used to craft another gift can be in the past; only for the receiver of the gift",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -20752,7 +21076,7 @@
                     "type": "string"
                 },
                 "stake_toncoin_amount": {
-                    "description": "The amount of Toncoins that will be staked; in the smallest units of the currency. Must be in the range getOption(\"stake_dice_stake_amount_min\")-getOption(\"stake_dice_stake_amount_max\")",
+                    "description": "The Toncoin amount that will be staked; in the smallest units of the currency. Must be in the range getOption(\"stake_dice_stake_amount_min\")-getOption(\"stake_dice_stake_amount_max\")",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -21991,6 +22315,26 @@
             },
             "type": "StoryVideo"
         },
+        "storyContentTypePhoto": {
+            "description": "A photo story",
+            "args": {},
+            "type": "StoryContentType"
+        },
+        "storyContentTypeVideo": {
+            "description": "A video story",
+            "args": {},
+            "type": "StoryContentType"
+        },
+        "storyContentTypeLive": {
+            "description": "A live story",
+            "args": {},
+            "type": "StoryContentType"
+        },
+        "storyContentTypeUnsupported": {
+            "description": "A story of unknown content type",
+            "args": {},
+            "type": "StoryContentType"
+        },
         "storyContentPhoto": {
             "description": "A photo story",
             "args": {
@@ -22234,7 +22578,7 @@
                     "type": "Bool"
                 },
                 "can_be_replied": {
-                    "description": "True, if the story can be replied in the chat with the user that posted the story",
+                    "description": "True, if the story can be replied in the chat with the user who posted the story",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -22879,7 +23223,7 @@
             "description": "The chat created a giveaway",
             "args": {
                 "user_id": {
-                    "description": "Identifier of a user that won in the giveaway; 0 if none",
+                    "description": "Identifier of a user who won in the giveaway; 0 if none",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -23498,6 +23842,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "unique_id": {
+                    "description": "Persistent unique group call identifier",
+                    "is_optional": false,
+                    "type": "int64"
+                },
                 "title": {
                     "description": "Group call title; for video chats only",
                     "is_optional": false,
@@ -24019,6 +24368,11 @@
                     "is_optional": false,
                     "type": "int32"
                 },
+                "unique_id": {
+                    "description": "Persistent unique call identifier; 0 if isn't assigned yet by the server",
+                    "is_optional": false,
+                    "type": "int64"
+                },
                 "user_id": {
                     "description": "User identifier of the other call participant",
                     "is_optional": false,
@@ -24406,7 +24760,7 @@
                     "type": "string"
                 },
                 "user_id": {
-                    "description": "Identifier of the business user that created the connection",
+                    "description": "Identifier of the business user who created the connection",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -27147,7 +27501,7 @@
             "type": "PremiumSource"
         },
         "premiumSourceLink": {
-            "description": "A user opened an internal link of the type internalLinkTypePremiumFeatures",
+            "description": "A user opened an internal link of the type internalLinkTypePremiumFeaturesPage",
             "args": {
                 "referrer": {
                     "description": "The referrer from the link",
@@ -28114,7 +28468,7 @@
             "description": "The weekly limit for the number of posted stories exceeded. The user needs to buy Telegram Premium or wait specified time",
             "args": {
                 "retry_after": {
-                    "description": "Time left before the user can post the next story",
+                    "description": "Time left before the user can post the next story, in seconds",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -28125,7 +28479,7 @@
             "description": "The monthly limit for the number of posted stories exceeded. The user needs to buy Telegram Premium or wait specified time",
             "args": {
                 "retry_after": {
-                    "description": "Time left before the user can post the next story",
+                    "description": "Time left before the user can post the next story, in seconds",
                     "is_optional": false,
                     "type": "int32"
                 }
@@ -29114,6 +29468,27 @@
             },
             "type": "NotificationGroup"
         },
+        "proxy": {
+            "description": "Describes a proxy server",
+            "args": {
+                "server": {
+                    "description": "Proxy server domain or IP address",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "port": {
+                    "description": "Proxy server port",
+                    "is_optional": false,
+                    "type": "int32"
+                },
+                "type": {
+                    "description": "Type of the proxy",
+                    "is_optional": false,
+                    "type": "ProxyType"
+                }
+            },
+            "type": "Proxy"
+        },
         "optionValueBoolean": {
             "description": "Represents a boolean option",
             "args": {
@@ -29915,10 +30290,194 @@
             },
             "type": "ReportStoryResult"
         },
-        "internalLinkTypeActiveSessions": {
-            "description": "The link is a link to the Devices section of the application. Use getActiveSessions to get the list of active sessions and show them to the user",
+        "settingsSectionAppearance": {
+            "description": "The appearance section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"themes\", \"themes/edit\", \"themes/create\", \"wallpapers\", \"wallpapers/edit\", \"wallpapers/set\", \"wallpapers/choose-photo\", \"your-color/profile\", \"your-color/profile/add-icons\", \"your-color/profile/use-gift\", \"your-color/profile/reset\", \"your-color/name\", \"your-color/name/add-icons\", \"your-color/name/use-gift\", \"night-mode\", \"auto-night-mode\", \"text-size\", \"text-size/use-system\", \"message-corners\", \"animations\", \"stickers-and-emoji\", \"stickers-and-emoji/edit\", \"stickers-and-emoji/trending\", \"stickers-and-emoji/archived\", \"stickers-and-emoji/archived/edit\", \"stickers-and-emoji/emoji\", \"stickers-and-emoji/emoji/edit\", \"stickers-and-emoji/emoji/archived\", \"stickers-and-emoji/emoji/archived/edit\", \"stickers-and-emoji/emoji/suggest\", \"stickers-and-emoji/emoji/quick-reaction\", \"stickers-and-emoji/emoji/quick-reaction/choose\", \"stickers-and-emoji/suggest-by-emoji\", \"stickers-and-emoji/large-emoji\", \"stickers-and-emoji/dynamic-order\", \"stickers-and-emoji/emoji/show-more\", \"app-icon\", \"tap-for-next-media\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionAskQuestion": {
+            "description": "The \"Ask a question\" section",
             "args": {},
-            "type": "InternalLinkType"
+            "type": "SettingsSection"
+        },
+        "settingsSectionBusiness": {
+            "description": "The \"Telegram Business\" section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"do-not-hide-ads\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionChatFolders": {
+            "description": "The chat folder settings section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"edit\", \"create\", \"add-recommended\", \"show-tags\", \"tab-view\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionDataAndStorage": {
+            "description": "The data and storage settings section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"storage\", \"storage/edit\", \"storage/auto-remove\", \"storage/clear-cache\", \"storage/max-cache\", \"usage\", \"usage/mobile\", \"usage/wifi\", \"usage/reset\", \"usage/roaming\", \"auto-download/mobile\", \"auto-download/mobile/enable\", \"auto-download/mobile/usage\", \"auto-download/mobile/photos\", \"auto-download/mobile/stories\", \"auto-download/mobile/videos\", \"auto-download/mobile/files\", \"auto-download/wifi\", \"auto-download/wifi/enable\", \"auto-download/wifi/usage\", \"auto-download/wifi/photos\", \"auto-download/wifi/stories\", \"auto-download/wifi/videos\", \"auto-download/wifi/files\", \"auto-download/roaming\", \"auto-download/roaming/enable\", \"auto-download/roaming/usage\", \"auto-download/roaming/photos\", \"auto-download/roaming/stories\", \"auto-download/roaming/videos\", \"auto-download/roaming/files\", \"auto-download/reset\", \"save-to-photos/chats\", \"save-to-photos/chats/max-video-size\", \"save-to-photos/chats/add-exception\", \"save-to-photos/chats/delete-all\", \"save-to-photos/groups\", \"save-to-photos/groups/max-video-size\", \"save-to-photos/groups/add-exception\", \"save-to-photos/groups/delete-all\", \"save-to-photos/channels\", \"save-to-photos/channels/max-video-size\", \"save-to-photos/channels/add-exception\", \"save-to-photos/channels/delete-all\", \"less-data-calls\", \"open-links\", \"share-sheet\", \"share-sheet/suggested-chats\", \"share-sheet/suggest-by\", \"share-sheet/reset\", \"saved-edited-photos\", \"pause-music\", \"raise-to-listen\", \"raise-to-speak\", \"show-18-content\", \"proxy\", \"proxy/edit\", \"proxy/use-proxy\", \"proxy/add-proxy\", \"proxy/share-list\", \"proxy/use-for-calls\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionDevices": {
+            "description": "The Devices section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"edit\", \"link-desktop\", \"terminate-sessions\", \"auto-terminate\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionEditProfile": {
+            "description": "The profile edit section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"set-photo\", \"first-name\", \"last-name\", \"emoji-status\", \"bio\", \"birthday\", \"change-number\", \"username\", \"your-color\", \"channel\", \"add-account\", \"log-out\", \"profile-color/profile\", \"profile-color/profile/add-icons\", \"profile-color/profile/use-gift\", \"profile-color/name\", \"profile-color/name/add-icons\", \"profile-color/name/use-gift\", \"profile-photo/use-emoji\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionFaq": {
+            "description": "The FAQ section",
+            "args": {},
+            "type": "SettingsSection"
+        },
+        "settingsSectionFeatures": {
+            "description": "The \"Telegram Features\" section",
+            "args": {},
+            "type": "SettingsSection"
+        },
+        "settingsSectionInAppBrowser": {
+            "description": "The in-app browser settings section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"enable-browser\", \"clear-cookies\", \"clear-cache\", \"history\", \"clear-history\", \"never-open\", \"clear-list\", \"search\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionLanguage": {
+            "description": "The application language section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"show-button\" for Show Translate Button toggle, \"translate-chats\" for Translate Entire Chats toggle, \"do-not-translate\" - for Do Not Translate language list",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionMyStars": {
+            "description": "The Telegram Star balance and transaction section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"top-up\", \"stats\", \"gift\", \"earn\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionMyToncoins": {
+            "description": "The Toncoin balance and transaction section",
+            "args": {},
+            "type": "SettingsSection"
+        },
+        "settingsSectionNotifications": {
+            "description": "The notification settings section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"accounts\", \"private-chats\", \"private-chats/edit\", \"private-chats/show\", \"private-chats/preview\", \"private-chats/sound\", \"private-chats/add-exception\", \"private-chats/delete-exceptions\", \"private-chats/light-color\", \"private-chats/vibrate\", \"private-chats/priority\", \"groups\", \"groups/edit\", \"groups/show\", \"groups/preview\", \"groups/sound\", \"groups/add-exception\", \"groups/delete-exceptions\", \"groups/light-color\", \"groups/vibrate\", \"groups/priority\", \"channels\", \"channels/edit\", \"channels/show\", \"channels/preview\", \"channels/sound\", \"channels/add-exception\", \"channels/delete-exceptions\", \"channels/light-color\", \"channels/vibrate\", \"channels/priority\", \"stories\", \"stories/new\", \"stories/important\", \"stories/show-sender\", \"stories/sound\", \"stories/add-exception\", \"stories/delete-exceptions\", \"stories/light-color\", \"stories/vibrate\", \"stories/priority\", \"reactions\", \"reactions/messages\", \"reactions/stories\", \"reactions/show-sender\", \"reactions/sound\", \"reactions/light-color\", \"reactions/vibrate\", \"reactions/priority\", \"in-app-sounds\", \"in-app-vibrate\", \"in-app-preview\", \"in-chat-sounds\", \"in-app-popup\", \"lock-screen-names\", \"include-channels\", \"include-muted-chats\", \"count-unread-messages\", \"new-contacts\", \"pinned-messages\", \"reset\", \"web\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionPowerSaving": {
+            "description": "The power saving settings section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"videos\", \"gifs\", \"stickers\", \"emoji\", \"effects\", \"preload\", \"background\", \"call-animations\", \"particles\", \"transitions\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionPremium": {
+            "description": "The \"Telegram Premium\" section",
+            "args": {},
+            "type": "SettingsSection"
+        },
+        "settingsSectionPrivacyAndSecurity": {
+            "description": "The privacy and security section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"blocked\", \"blocked/edit\", \"blocked/block-user\", \"blocked/block-user/chats\", \"blocked/block-user/contacts\", \"active-websites\", \"active-websites/edit\", \"active-websites/disconnect-all\", \"passcode\", \"passcode/disable\", \"passcode/change\", \"passcode/auto-lock\", \"passcode/face-id\", \"passcode/fingerprint\", \"2sv\", \"2sv/change\", \"2sv/disable\", \"2sv/change-email\", \"passkey\", \"passkey/create\", \"auto-delete\", \"auto-delete/set-custom\", \"login-email\", \"phone-number\", \"phone-number/never\", \"phone-number/always\", \"last-seen\", \"last-seen/never\", \"last-seen/always\", \"last-seen/hide-read-time\", \"profile-photos\", \"profile-photos/never\", \"profile-photos/always\", \"profile-photos/set-public\", \"profile-photos/update-public\", \"profile-photos/remove-public\", \"bio\", \"bio/never\", \"bio/always\", \"gifts\", \"gifts/show-icon\", \"gifts/never\", \"gifts/always\", \"gifts/accepted-types\", \"birthday\", \"birthday/add\", \"birthday/never\", \"birthday/always\", \"saved-music\", \"saved-music/never\", \"saved-music/always\", \"forwards\", \"forwards/never\", \"forwards/always\", \"calls\", \"calls/never\", \"calls/always\", \"calls/p2p\", \"calls/p2p/never\", \"calls/p2p/always\", \"calls/ios-integration\", \"voice\", \"voice/never\", \"voice/always\", \"messages\", \"messages/set-price\", \"messages/exceptions\", \"invites\", \"invites/never\", \"invites/always\", \"self-destruct\", \"data-settings\", \"data-settings/sync-contacts\", \"data-settings/delete-synced\", \"data-settings/suggest-contacts\", \"data-settings/delete-cloud-drafts\", \"data-settings/clear-payment-info\", \"data-settings/link-previews\", \"data-settings/bot-settings\", \"data-settings/map-provider\", \"archive-and-mute\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionPrivacyPolicy": {
+            "description": "The \"Privacy Policy\" section",
+            "args": {},
+            "type": "SettingsSection"
+        },
+        "settingsSectionQrCode": {
+            "description": "The current user's QR code section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"share\", \"scan\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
+        },
+        "settingsSectionSearch": {
+            "description": "Search in Settings",
+            "args": {},
+            "type": "SettingsSection"
+        },
+        "settingsSectionSendGift": {
+            "description": "The \"Send a gift\" section",
+            "args": {
+                "subsection": {
+                    "description": "Subsection of the section; may be one of \"\", \"self\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "SettingsSection"
         },
         "internalLinkTypeAttachmentMenuBot": {
             "description": "The link is a link to an attachment menu bot to be opened in the specified or a chosen chat. Process given target_chat to open the chat. Then, call searchPublicChat with the given bot username, check that the user is a bot and can be added to attachment menu. Then, use getAttachmentMenuBot to receive information about the bot. If the bot isn't added to attachment menu, then show a disclaimer about Mini Apps being third-party applications, ask the user to accept their Terms of service and confirm adding the bot to side and attachment menu. If the user accept the terms and confirms adding, then use toggleBotIsAddedToAttachmentMenu to add the bot. If the attachment menu bot can't be used in the opened chat, show an error to the user. If the bot is added to attachment menu and can be used in the chat, then use openWebApp with the given URL",
@@ -30032,25 +30591,15 @@
             },
             "type": "InternalLinkType"
         },
-        "internalLinkTypeBuyStars": {
-            "description": "The link is a link to the Telegram Star purchase section of the application",
+        "internalLinkTypeCallsPage": {
+            "description": "The link is a link to the Call tab or page",
             "args": {
-                "star_count": {
-                    "description": "The number of Telegram Stars that must be owned by the user",
-                    "is_optional": false,
-                    "type": "int53"
-                },
-                "purpose": {
-                    "description": "Purpose of Telegram Star purchase. Arbitrary string specified by the server, for example, \"subs\" if the Telegram Stars are required to extend channel subscriptions",
+                "section": {
+                    "description": "Section of the page; may be one of \"\", \"all\", \"missed\", \"edit\", \"show-tab\", \"start-call\"",
                     "is_optional": false,
                     "type": "string"
                 }
             },
-            "type": "InternalLinkType"
-        },
-        "internalLinkTypeChangePhoneNumber": {
-            "description": "The link is a link to the change phone number section of the application",
-            "args": {},
             "type": "InternalLinkType"
         },
         "internalLinkTypeChatAffiliateProgram": {
@@ -30091,11 +30640,6 @@
             },
             "type": "InternalLinkType"
         },
-        "internalLinkTypeChatFolderSettings": {
-            "description": "The link is a link to the folder section of the application settings",
-            "args": {},
-            "type": "InternalLinkType"
-        },
         "internalLinkTypeChatInvite": {
             "description": "The link is a chat invite link. Call checkChatInviteLink with the given invite link to process the link. If the link is valid and the user wants to join the chat, then call joinChatByInviteLink",
             "args": {
@@ -30107,9 +30651,20 @@
             },
             "type": "InternalLinkType"
         },
-        "internalLinkTypeDefaultMessageAutoDeleteTimerSettings": {
-            "description": "The link is a link to the default message auto-delete timer settings section of the application settings",
+        "internalLinkTypeChatSelection": {
+            "description": "The link is a link that allows to select some chats",
             "args": {},
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeContactsPage": {
+            "description": "The link is a link to the Contacts tab or page",
+            "args": {
+                "section": {
+                    "description": "Section of the page; may be one of \"\", \"search\", \"sort\", \"new\", \"invite\", \"manage\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
             "type": "InternalLinkType"
         },
         "internalLinkTypeDirectMessagesChat": {
@@ -30121,11 +30676,6 @@
                     "type": "string"
                 }
             },
-            "type": "InternalLinkType"
-        },
-        "internalLinkTypeEditProfileSettings": {
-            "description": "The link is a link to the edit profile section of the application settings",
-            "args": {},
             "type": "InternalLinkType"
         },
         "internalLinkTypeGame": {
@@ -30220,11 +30770,6 @@
             },
             "type": "InternalLinkType"
         },
-        "internalLinkTypeLanguageSettings": {
-            "description": "The link is a link to the language section of the application settings",
-            "args": {},
-            "type": "InternalLinkType"
-        },
         "internalLinkTypeLiveStory": {
             "description": "The link is a link to a live story. Call searchPublicChat with the given chat username, then getChatActiveStories to get active stories in the chat, then find a live story among active stories of the chat, and then joinLiveStory to join the live story",
             "args": {
@@ -30234,11 +30779,6 @@
                     "type": "string"
                 }
             },
-            "type": "InternalLinkType"
-        },
-        "internalLinkTypeLoginEmailSettings": {
-            "description": "The link is a link to the login email set up section of the application settings, forcing set up of the login email",
-            "args": {},
             "type": "InternalLinkType"
         },
         "internalLinkTypeMainWebApp": {
@@ -30289,14 +30829,41 @@
             },
             "type": "InternalLinkType"
         },
-        "internalLinkTypeMyStars": {
-            "description": "The link is a link to the screen with information about Telegram Star balance and transactions of the current user",
+        "internalLinkTypeMyProfilePage": {
+            "description": "The link is a link to the My Profile application page",
+            "args": {
+                "section": {
+                    "description": "Section of the page; may be one of \"\", \"posts\", \"posts/all-stories\", \"posts/add-album\", \"gifts\", \"archived-posts\"",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeNewChannelChat": {
+            "description": "The link is a link to the screen for creating a new channel chat",
             "args": {},
             "type": "InternalLinkType"
         },
-        "internalLinkTypeMyToncoins": {
-            "description": "The link is a link to the screen with information about Toncoin balance and transactions of the current user",
+        "internalLinkTypeNewGroupChat": {
+            "description": "The link is a link to the screen for creating a new group chat",
             "args": {},
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeNewPrivateChat": {
+            "description": "The link is a link to the screen for creating a new private chat with a contact",
+            "args": {},
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeNewStory": {
+            "description": "The link is a link to open the story posting interface",
+            "args": {
+                "content_type": {
+                    "description": "The type of the content of the story to post; may be null if unspecified",
+                    "is_optional": true,
+                    "type": "StoryContentType"
+                }
+            },
             "type": "InternalLinkType"
         },
         "internalLinkTypePassportDataRequest": {
@@ -30330,11 +30897,6 @@
             },
             "type": "InternalLinkType"
         },
-        "internalLinkTypePasswordSettings": {
-            "description": "The link is a link to the password section of the application settings",
-            "args": {},
-            "type": "InternalLinkType"
-        },
         "internalLinkTypePhoneNumberConfirmation": {
             "description": "The link can be used to confirm ownership of a phone number to prevent account deletion. Call sendPhoneNumberCode with the given phone number and with phoneNumberCodeTypeConfirmOwnership with the given hash to process the link. If succeeded, call checkPhoneNumberCode to check entered by the user code, or resendPhoneNumberCode to resend it",
             "args": {
@@ -30351,24 +30913,8 @@
             },
             "type": "InternalLinkType"
         },
-        "internalLinkTypePhoneNumberPrivacySettings": {
-            "description": "The link is a link to the phone number privacy settings section of the application settings",
-            "args": {},
-            "type": "InternalLinkType"
-        },
-        "internalLinkTypePremiumFeatures": {
+        "internalLinkTypePremiumFeaturesPage": {
             "description": "The link is a link to the Premium features screen of the application from which the user can subscribe to Telegram Premium. Call getPremiumFeatures with the given referrer to process the link",
-            "args": {
-                "referrer": {
-                    "description": "Referrer specified in the link",
-                    "is_optional": false,
-                    "type": "string"
-                }
-            },
-            "type": "InternalLinkType"
-        },
-        "internalLinkTypePremiumGift": {
-            "description": "The link is a link to the screen for gifting Telegram Premium subscriptions to friends via inputInvoiceTelegram with telegramPaymentPurposePremiumGift payments or in-store purchases",
             "args": {
                 "referrer": {
                     "description": "Referrer specified in the link",
@@ -30389,28 +30935,24 @@
             },
             "type": "InternalLinkType"
         },
-        "internalLinkTypePrivacyAndSecuritySettings": {
-            "description": "The link is a link to the privacy and security section of the application settings",
-            "args": {},
+        "internalLinkTypePremiumGiftPurchase": {
+            "description": "The link is a link to the screen for gifting Telegram Premium subscriptions to friends via inputInvoiceTelegram with telegramPaymentPurposePremiumGift payments or in-store purchases",
+            "args": {
+                "referrer": {
+                    "description": "Referrer specified in the link",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
             "type": "InternalLinkType"
         },
         "internalLinkTypeProxy": {
             "description": "The link is a link to a proxy. Call addProxy with the given parameters to process the link and add the proxy",
             "args": {
-                "server": {
-                    "description": "Proxy server domain or IP address",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "port": {
-                    "description": "Proxy server port",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "type": {
-                    "description": "Type of the proxy",
-                    "is_optional": false,
-                    "type": "ProxyType"
+                "proxy": {
+                    "description": "The proxy; may be null if the proxy is unsupported, in which case an alert can be shown to the user",
+                    "is_optional": true,
+                    "type": "proxy"
                 }
             },
             "type": "InternalLinkType"
@@ -30446,9 +30988,41 @@
             "args": {},
             "type": "InternalLinkType"
         },
+        "internalLinkTypeSavedMessages": {
+            "description": "The link is a link to the Saved Messages chat. Call createPrivateChat with getOption(\"my_id\") and open the chat",
+            "args": {},
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeSearch": {
+            "description": "The link is a link to the global chat and messages search field",
+            "args": {},
+            "type": "InternalLinkType"
+        },
         "internalLinkTypeSettings": {
             "description": "The link is a link to application settings",
-            "args": {},
+            "args": {
+                "section": {
+                    "description": "Section of the application settings to open; may be null if none",
+                    "is_optional": true,
+                    "type": "SettingsSection"
+                }
+            },
+            "type": "InternalLinkType"
+        },
+        "internalLinkTypeStarPurchase": {
+            "description": "The link is a link to the Telegram Star purchase section of the application",
+            "args": {
+                "star_count": {
+                    "description": "The number of Telegram Stars that must be owned by the user",
+                    "is_optional": false,
+                    "type": "int53"
+                },
+                "purpose": {
+                    "description": "Purpose of Telegram Star purchase. Arbitrary string specified by the server, for example, \"subs\" if the Telegram Stars are required to extend channel subscriptions",
+                    "is_optional": false,
+                    "type": "string"
+                }
+            },
             "type": "InternalLinkType"
         },
         "internalLinkTypeStickerSet": {
@@ -30510,11 +31084,6 @@
             },
             "type": "InternalLinkType"
         },
-        "internalLinkTypeThemeSettings": {
-            "description": "The link is a link to the theme section of the application settings",
-            "args": {},
-            "type": "InternalLinkType"
-        },
         "internalLinkTypeUnknownDeepLink": {
             "description": "The link is an unknown tg: link. Call getDeepLinkInfo to process the link",
             "args": {
@@ -30524,11 +31093,6 @@
                     "type": "string"
                 }
             },
-            "type": "InternalLinkType"
-        },
-        "internalLinkTypeUnsupportedProxy": {
-            "description": "The link is a link to an unsupported proxy. An alert can be shown to the user",
-            "args": {},
             "type": "InternalLinkType"
         },
         "internalLinkTypeUpgradedGift": {
@@ -31654,21 +32218,11 @@
             },
             "type": "ProxyType"
         },
-        "proxy": {
-            "description": "Contains information about a proxy server",
+        "addedProxy": {
+            "description": "Contains information about a proxy server added to the list of proxies",
             "args": {
                 "id": {
                     "description": "Unique identifier of the proxy",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "server": {
-                    "description": "Proxy server domain or IP address",
-                    "is_optional": false,
-                    "type": "string"
-                },
-                "port": {
-                    "description": "Proxy server port",
                     "is_optional": false,
                     "type": "int32"
                 },
@@ -31682,24 +32236,24 @@
                     "is_optional": false,
                     "type": "Bool"
                 },
-                "type": {
-                    "description": "Type of the proxy",
+                "proxy": {
+                    "description": "The proxy",
                     "is_optional": false,
-                    "type": "ProxyType"
+                    "type": "proxy"
                 }
             },
-            "type": "Proxy"
+            "type": "AddedProxy"
         },
-        "proxies": {
-            "description": "Represents a list of proxy servers",
+        "addedProxies": {
+            "description": "Represents a list of added proxy servers",
             "args": {
                 "proxies": {
                     "description": "List of proxy servers",
                     "is_optional": false,
-                    "type": "vector<proxy>"
+                    "type": "vector<addedProxy>"
                 }
             },
-            "type": "Proxies"
+            "type": "AddedProxies"
         },
         "inputSticker": {
             "description": "A sticker to be added to a sticker set",
@@ -32260,7 +32814,7 @@
             "description": "Describes earnings from a published suggested post",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that paid for the suggested post",
+                    "description": "Identifier of the user who paid for the suggested post",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -32340,17 +32894,17 @@
             "description": "Contains information about Telegram Stars earned by a user or a chat",
             "args": {
                 "total_amount": {
-                    "description": "Total amount of Telegram Stars earned",
+                    "description": "Total Telegram Star amount earned",
                     "is_optional": false,
                     "type": "starAmount"
                 },
                 "current_amount": {
-                    "description": "The amount of Telegram Stars that aren't withdrawn yet",
+                    "description": "The Telegram Star amount that isn't withdrawn yet",
                     "is_optional": false,
                     "type": "starAmount"
                 },
                 "available_amount": {
-                    "description": "The amount of Telegram Stars that are available for withdrawal",
+                    "description": "The Telegram Star amount that is available for withdrawal",
                     "is_optional": false,
                     "type": "starAmount"
                 },
@@ -32392,17 +32946,17 @@
             "description": "Contains information about Toncoins earned by the current user",
             "args": {
                 "total_amount": {
-                    "description": "Total amount of Toncoins earned; in the smallest units of the cryptocurrency",
+                    "description": "Total Toncoin amount earned; in the smallest units of the cryptocurrency",
                     "is_optional": false,
                     "type": "int64"
                 },
                 "balance_amount": {
-                    "description": "Amount of Toncoins that aren't withdrawn yet; in the smallest units of the cryptocurrency",
+                    "description": "The Toncoin amount that isn't withdrawn yet; in the smallest units of the cryptocurrency",
                     "is_optional": false,
                     "type": "int64"
                 },
                 "available_amount": {
-                    "description": "Amount of Toncoins that are available for withdrawal; in the smallest units of the cryptocurrency",
+                    "description": "The Toncoin amount that is available for withdrawal; in the smallest units of the cryptocurrency",
                     "is_optional": false,
                     "type": "int64"
                 },
@@ -37626,7 +38180,7 @@
                     "type": "int32"
                 },
                 "star_count": {
-                    "description": "The amount of Telegram Stars the user agreed to pay for the search; pass 0 for free searches",
+                    "description": "The Telegram Star amount the user agreed to pay for the search; pass 0 for free searches",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -39470,7 +40024,7 @@
             "type": "Ok"
         },
         "getBusinessAccountStarAmount": {
-            "description": "Returns the amount of Telegram Stars owned by a business account; for bots only",
+            "description": "Returns the Telegram Star amount owned by a business account; for bots only",
             "args": {
                 "business_connection_id": {
                     "description": "Unique identifier of business connection",
@@ -40694,7 +41248,7 @@
                     "type": "int53"
                 },
                 "allow_write_access": {
-                    "description": "Pass true to allow the bot to send messages to the current user",
+                    "description": "Pass true to allow the bot to send messages to the current user. Phone number access can't be requested using the button",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -40803,7 +41357,7 @@
                     "type": "int64"
                 },
                 "is_personal": {
-                    "description": "Pass true if results may be cached and returned only for the user that sent the query. By default, results may be returned to any user who sends the same query",
+                    "description": "Pass true if results may be cached and returned only for the user who sent the query. By default, results may be returned to any user who sends the same query",
                     "is_optional": false,
                     "type": "Bool"
                 },
@@ -41316,8 +41870,8 @@
                     "type": "int53"
                 },
                 "topic_id": {
-                    "description": "Identifier of the topic in which the action is performed",
-                    "is_optional": false,
+                    "description": "Identifier of the topic in which the action is performed; pass null if none",
+                    "is_optional": true,
                     "type": "MessageTopic"
                 },
                 "business_connection_id": {
@@ -41478,7 +42032,7 @@
             "type": "LoginUrlInfo"
         },
         "getExternalLink": {
-            "description": "Returns an HTTP URL which can be used to automatically authorize the current user on a website after clicking an HTTP link. Use the method getExternalLinkInfo to find whether a prior user confirmation is needed",
+            "description": "Returns an HTTP URL which can be used to automatically authorize the current user on a website after clicking an HTTP link. Use the method getExternalLinkInfo to find whether a prior user confirmation is needed. May return an empty link if just a toast about successful login has to be shown",
             "args": {
                 "link": {
                     "description": "The HTTP link",
@@ -41486,7 +42040,12 @@
                     "type": "string"
                 },
                 "allow_write_access": {
-                    "description": "Pass true if the current user allowed the bot, returned in getExternalLinkInfo, to send them messages",
+                    "description": "Pass true if the current user allowed the bot that was returned in getExternalLinkInfo, to send them messages",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "allow_phone_number_access": {
+                    "description": "Pass true if the current user allowed the bot that was returned in getExternalLinkInfo, to access their phone number",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -42546,7 +43105,7 @@
                     "type": "int32"
                 },
                 "revoke_messages": {
-                    "description": "Pass true to delete all messages in the chat for the user that is being removed. Always true for supergroups and channels",
+                    "description": "Pass true to delete all messages in the chat for the user who is being removed. Always true for supergroups and channels",
                     "is_optional": false,
                     "type": "Bool"
                 }
@@ -42578,6 +43137,17 @@
                 }
             },
             "type": "Ok"
+        },
+        "getChatOwnerAfterLeaving": {
+            "description": "Returns the user who will become the owner of the chat after 7 days if the current user does not return to the chat during that period; requires owner privileges in the chat. Available only for supergroups and channel chats",
+            "args": {
+                "chat_id": {
+                    "description": "Chat identifier",
+                    "is_optional": false,
+                    "type": "int53"
+                }
+            },
+            "type": "User"
         },
         "getChatMember": {
             "description": "Returns information about a single member of a chat",
@@ -44416,7 +44986,7 @@
                     "type": "int53"
                 },
                 "user_id": {
-                    "description": "Identifier of the user that sent the request",
+                    "description": "Identifier of the user who sent the request",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -48127,7 +48697,7 @@
                     "type": "int53"
                 },
                 "user_id": {
-                    "description": "Identifier of the user that will receive the gift",
+                    "description": "Identifier of the user who will receive the gift",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -48227,21 +48797,31 @@
         "getGiftUpgradePreview": {
             "description": "Returns examples of possible upgraded gifts for a regular gift",
             "args": {
-                "gift_id": {
-                    "description": "Identifier of the gift",
+                "regular_gift_id": {
+                    "description": "Identifier of the regular gift",
                     "is_optional": false,
                     "type": "int64"
                 }
             },
             "type": "GiftUpgradePreview"
         },
-        "getGiftUpgradeVariants": {
+        "getUpgradedGiftVariants": {
             "description": "Returns all possible variants of upgraded gifts for a regular gift",
             "args": {
-                "gift_id": {
-                    "description": "Identifier of the gift",
+                "regular_gift_id": {
+                    "description": "Identifier of the regular gift",
                     "is_optional": false,
                     "type": "int64"
+                },
+                "return_upgrade_models": {
+                    "description": "Pass true to get models that can be obtained by upgrading a regular gift",
+                    "is_optional": false,
+                    "type": "Bool"
+                },
+                "return_craft_models": {
+                    "description": "Pass true to get models that can be obtained by crafting a gift from upgraded gifts",
+                    "is_optional": false,
+                    "type": "Bool"
                 }
             },
             "type": "GiftUpgradeVariants"
@@ -48265,7 +48845,7 @@
                     "type": "Bool"
                 },
                 "star_count": {
-                    "description": "The amount of Telegram Stars required to pay for the upgrade. It the gift has prepaid_upgrade_star_count > 0, then pass 0, otherwise, pass gift.upgrade_star_count",
+                    "description": "The Telegram Star amount required to pay for the upgrade. It the gift has prepaid_upgrade_star_count > 0, then pass 0, otherwise, pass gift.upgrade_star_count",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -48286,12 +48866,23 @@
                     "type": "string"
                 },
                 "star_count": {
-                    "description": "The amount of Telegram Stars the user agreed to pay for the upgrade; must be equal to gift.upgrade_star_count",
+                    "description": "The Telegram Star amount the user agreed to pay for the upgrade; must be equal to gift.upgrade_star_count",
                     "is_optional": false,
                     "type": "int53"
                 }
             },
             "type": "Ok"
+        },
+        "craftGift": {
+            "description": "Crafts a new gift from other gifts that will be permanently lost",
+            "args": {
+                "received_gift_ids": {
+                    "description": "Identifier of the gifts to use for crafting",
+                    "is_optional": false,
+                    "type": "vector<string>"
+                }
+            },
+            "type": "CraftGiftResult"
         },
         "transferGift": {
             "description": "Sends an upgraded gift to another user or channel chat",
@@ -48312,7 +48903,7 @@
                     "type": "MessageSender"
                 },
                 "star_count": {
-                    "description": "The amount of Telegram Stars required to pay for the transfer",
+                    "description": "The Telegram Star amount required to pay for the transfer",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -48328,7 +48919,7 @@
                     "type": "string"
                 },
                 "star_count": {
-                    "description": "The amount of Telegram Stars required to pay for the operation",
+                    "description": "The Telegram Star amount required to pay for the operation",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -48490,6 +49081,27 @@
             },
             "type": "ReceivedGift"
         },
+        "getGiftsForCrafting": {
+            "description": "Returns upgraded gifts of the current user who can be used to craft another gifts",
+            "args": {
+                "regular_gift_id": {
+                    "description": "Identifier of the regular gift that will be used for crafting",
+                    "is_optional": false,
+                    "type": "int64"
+                },
+                "offset": {
+                    "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results",
+                    "is_optional": false,
+                    "type": "string"
+                },
+                "limit": {
+                    "description": "The maximum number of gifts to be returned; must be positive and can't be greater than 100. For optimal performance, the number of returned objects is chosen by TDLib and can be smaller than the specified limit",
+                    "is_optional": false,
+                    "type": "int32"
+                }
+            },
+            "type": "GiftsForCrafting"
+        },
         "getUpgradedGift": {
             "description": "Returns information about an upgraded gift by its name",
             "args": {
@@ -48561,6 +49173,11 @@
                     "description": "Order in which the results will be sorted",
                     "is_optional": false,
                     "type": "GiftForResaleOrder"
+                },
+                "for_crafting": {
+                    "description": "Pass true to get only gifts suitable for crafting",
+                    "is_optional": false,
+                    "type": "Bool"
                 },
                 "attributes": {
                     "description": "Attributes used to filter received gifts. If multiple attributes of the same type are specified, then all of them are allowed. If none attributes of specific type are specified, then all values for this attribute type are allowed",
@@ -48748,7 +49365,7 @@
             "description": "Refunds a previously done payment in Telegram Stars; for bots only",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that did the payment",
+                    "description": "Identifier of the user who did the payment",
                     "is_optional": false,
                     "type": "int53"
                 },
@@ -48761,7 +49378,7 @@
             "type": "Ok"
         },
         "getSupportUser": {
-            "description": "Returns a user that can be contacted to get support",
+            "description": "Returns a user who can be contacted to get support",
             "args": {},
             "type": "User"
         },
@@ -49101,7 +49718,7 @@
             "type": "Ok"
         },
         "setChatPaidMessageStarCount": {
-            "description": "Changes the amount of Telegram Stars that must be paid to send a message to a supergroup chat; requires can_restrict_members administrator right and supergroupFullInfo.can_enable_paid_messages",
+            "description": "Changes the Telegram Star amount that must be paid to send a message to a supergroup chat; requires can_restrict_members administrator right and supergroupFullInfo.can_enable_paid_messages",
             "args": {
                 "chat_id": {
                     "description": "Identifier of the supergroup chat",
@@ -49763,7 +50380,7 @@
             "type": "Ok"
         },
         "setPassportElementErrors": {
-            "description": "Informs the user that some of the elements in their Telegram Passport contain errors; for bots only. The user will not be able to resend the elements, until the errors are fixed",
+            "description": "Informs the user who some of the elements in their Telegram Passport contain errors; for bots only. The user will not be able to resend the elements, until the errors are fixed",
             "args": {
                 "user_id": {
                     "description": "User identifier",
@@ -50391,7 +51008,7 @@
             "description": "Returns available options for Telegram Stars gifting",
             "args": {
                 "user_id": {
-                    "description": "Identifier of the user that will receive Telegram Stars; pass 0 to get options for an unspecified user",
+                    "description": "Identifier of the user who will receive Telegram Stars; pass 0 to get options for an unspecified user",
                     "is_optional": false,
                     "type": "int53"
                 }
@@ -50616,7 +51233,7 @@
             "type": "ConnectedAffiliateProgram"
         },
         "getConnectedAffiliateProgram": {
-            "description": "Returns an affiliate program that were connected to the given affiliate by identifier of the bot that created the program",
+            "description": "Returns an affiliate program that was connected to the given affiliate by identifier of the bot that created the program",
             "args": {
                 "affiliate": {
                     "description": "The affiliate to which the affiliate program will be connected",
@@ -50836,28 +51453,18 @@
         "addProxy": {
             "description": "Adds a proxy server for network requests. Can be called before authorization",
             "args": {
-                "server": {
-                    "description": "Proxy server domain or IP address",
+                "proxy": {
+                    "description": "The proxy to add",
                     "is_optional": false,
-                    "type": "string"
-                },
-                "port": {
-                    "description": "Proxy server port",
-                    "is_optional": false,
-                    "type": "int32"
+                    "type": "proxy"
                 },
                 "enable": {
                     "description": "Pass true to immediately enable the proxy",
                     "is_optional": false,
                     "type": "Bool"
-                },
-                "type": {
-                    "description": "Proxy type",
-                    "is_optional": false,
-                    "type": "ProxyType"
                 }
             },
-            "type": "Proxy"
+            "type": "AddedProxy"
         },
         "editProxy": {
             "description": "Edits an existing proxy server for network requests. Can be called before authorization",
@@ -50867,28 +51474,18 @@
                     "is_optional": false,
                     "type": "int32"
                 },
-                "server": {
-                    "description": "Proxy server domain or IP address",
+                "proxy": {
+                    "description": "The new information about the proxy",
                     "is_optional": false,
-                    "type": "string"
-                },
-                "port": {
-                    "description": "Proxy server port",
-                    "is_optional": false,
-                    "type": "int32"
+                    "type": "proxy"
                 },
                 "enable": {
                     "description": "Pass true to immediately enable the proxy",
                     "is_optional": false,
                     "type": "Bool"
-                },
-                "type": {
-                    "description": "Proxy type",
-                    "is_optional": false,
-                    "type": "ProxyType"
                 }
             },
-            "type": "Proxy"
+            "type": "AddedProxy"
         },
         "enableProxy": {
             "description": "Enables a proxy. Only one proxy can be enabled at a time. Can be called before authorization",
@@ -50920,26 +51517,15 @@
         "getProxies": {
             "description": "Returns the list of proxies that are currently set up. Can be called before authorization",
             "args": {},
-            "type": "Proxies"
-        },
-        "getProxyLink": {
-            "description": "Returns an HTTPS link, which can be used to add a proxy. Available only for SOCKS5 and MTProto proxies. Can be called before authorization",
-            "args": {
-                "proxy_id": {
-                    "description": "Proxy identifier",
-                    "is_optional": false,
-                    "type": "int32"
-                }
-            },
-            "type": "HttpUrl"
+            "type": "AddedProxies"
         },
         "pingProxy": {
             "description": "Computes time needed to receive a response from a Telegram server through a proxy. Can be called before authorization",
             "args": {
-                "proxy_id": {
-                    "description": "Proxy identifier. Use 0 to ping a Telegram server without a proxy",
-                    "is_optional": false,
-                    "type": "int32"
+                "proxy": {
+                    "description": "The proxy to test; pass null to ping a Telegram server without a proxy",
+                    "is_optional": true,
+                    "type": "proxy"
                 }
             },
             "type": "Seconds"
@@ -51146,20 +51732,10 @@
         "testProxy": {
             "description": "Sends a simple network request to the Telegram servers via proxy; for testing only. Can be called before authorization",
             "args": {
-                "server": {
-                    "description": "Proxy server domain or IP address",
+                "proxy": {
+                    "description": "The proxy to test",
                     "is_optional": false,
-                    "type": "string"
-                },
-                "port": {
-                    "description": "Proxy server port",
-                    "is_optional": false,
-                    "type": "int32"
-                },
-                "type": {
-                    "description": "Proxy type",
-                    "is_optional": false,
-                    "type": "ProxyType"
+                    "type": "proxy"
                 },
                 "dc_id": {
                     "description": "Identifier of a datacenter with which to test connection",
