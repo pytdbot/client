@@ -22,7 +22,7 @@ setup(
     author_email="let.me.code.safe@gmail.com",
     url="https://github.com/pytdbot/client",
     license="MIT",
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     install_requires=requirements,
     extras_require={
         "tdjson": ["tdjson"],
