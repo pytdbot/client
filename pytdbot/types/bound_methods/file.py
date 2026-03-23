@@ -18,7 +18,7 @@ class FileBoundMethods:
 
         file_id = None
         if isinstance(self, pytdbot.types.RemoteFile):
-            file_info = await self._client.getRemoteFile(self.id)
+            file_info = await self._client.getRemoteFile(remote_file_id=self.id)
             if not file_info:
                 return file_info
 
@@ -40,7 +40,7 @@ class FileBoundMethods:
 
         file_id = None
         if isinstance(self, pytdbot.types.RemoteFile):
-            file_info = await self._client.getRemoteFile(self.id)
+            file_info = await self._client.getRemoteFile(remote_file_id=self.id)
             if not file_info:
                 return file_info
 

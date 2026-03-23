@@ -1,10 +1,10 @@
 from typing import Union, Literal, List
 from base64 import b64decode
 from .bound_methods import (
+    FileBoundMethods,
     CallbackQueryBoundMethods,
     MessageBoundMethods,
     MessageSenderBoundMethods,
-    FileBoundMethods,
 )
 import pytdbot
 
@@ -1239,7 +1239,7 @@ class Error(TlObject):
 
     """
 
-    def __init__(self, code: int = 0, message: str = "") -> None:
+    def __init__(self, *, code: int = 0, message: str = "") -> None:
         self.code: int = int(code)
         r"""Error code; subject to future changes\. If the error code is 406, the error message must not be processed in any way and must not be displayed to the user"""
         self.message: Union[str, None] = message
@@ -1306,7 +1306,7 @@ class AuthenticationCodeTypeTelegramMessage(TlObject, AuthenticationCodeType):
 
     """
 
-    def __init__(self, length: int = 0) -> None:
+    def __init__(self, *, length: int = 0) -> None:
         self.length: int = int(length)
         r"""Length of the code"""
 
@@ -1344,7 +1344,7 @@ class AuthenticationCodeTypeSms(TlObject, AuthenticationCodeType):
 
     """
 
-    def __init__(self, length: int = 0) -> None:
+    def __init__(self, *, length: int = 0) -> None:
         self.length: int = int(length)
         r"""Length of the code"""
 
@@ -1380,7 +1380,7 @@ class AuthenticationCodeTypeSmsWord(TlObject, AuthenticationCodeType):
 
     """
 
-    def __init__(self, first_letter: str = "") -> None:
+    def __init__(self, *, first_letter: str = "") -> None:
         self.first_letter: Union[str, None] = first_letter
         r"""The first letters of the word if known"""
 
@@ -1416,7 +1416,7 @@ class AuthenticationCodeTypeSmsPhrase(TlObject, AuthenticationCodeType):
 
     """
 
-    def __init__(self, first_word: str = "") -> None:
+    def __init__(self, *, first_word: str = "") -> None:
         self.first_word: Union[str, None] = first_word
         r"""The first word of the phrase if known"""
 
@@ -1452,7 +1452,7 @@ class AuthenticationCodeTypeCall(TlObject, AuthenticationCodeType):
 
     """
 
-    def __init__(self, length: int = 0) -> None:
+    def __init__(self, *, length: int = 0) -> None:
         self.length: int = int(length)
         r"""Length of the code"""
 
@@ -1488,7 +1488,7 @@ class AuthenticationCodeTypeFlashCall(TlObject, AuthenticationCodeType):
 
     """
 
-    def __init__(self, pattern: str = "") -> None:
+    def __init__(self, *, pattern: str = "") -> None:
         self.pattern: Union[str, None] = pattern
         r"""Pattern of the phone number from which the call will be made"""
 
@@ -1527,7 +1527,7 @@ class AuthenticationCodeTypeMissedCall(TlObject, AuthenticationCodeType):
 
     """
 
-    def __init__(self, phone_number_prefix: str = "", length: int = 0) -> None:
+    def __init__(self, *, phone_number_prefix: str = "", length: int = 0) -> None:
         self.phone_number_prefix: Union[str, None] = phone_number_prefix
         r"""Prefix of the phone number from which the call will be made"""
         self.length: int = int(length)
@@ -1573,7 +1573,7 @@ class AuthenticationCodeTypeFragment(TlObject, AuthenticationCodeType):
 
     """
 
-    def __init__(self, url: str = "", length: int = 0) -> None:
+    def __init__(self, *, url: str = "", length: int = 0) -> None:
         self.url: Union[str, None] = url
         r"""URL to open to receive the code"""
         self.length: int = int(length)
@@ -1617,6 +1617,7 @@ class AuthenticationCodeTypeFirebaseAndroid(TlObject, AuthenticationCodeType):
 
     def __init__(
         self,
+        *,
         device_verification_parameters: FirebaseDeviceVerificationParameters = None,
         length: int = 0,
     ) -> None:
@@ -1677,7 +1678,7 @@ class AuthenticationCodeTypeFirebaseIos(TlObject, AuthenticationCodeType):
     """
 
     def __init__(
-        self, receipt: str = "", push_timeout: int = 0, length: int = 0
+        self, *, receipt: str = "", push_timeout: int = 0, length: int = 0
     ) -> None:
         self.receipt: Union[str, None] = receipt
         r"""Receipt of successful application token validation to compare with receipt from push notification"""
@@ -1736,6 +1737,7 @@ class AuthenticationCodeInfo(TlObject):
 
     def __init__(
         self,
+        *,
         phone_number: str = "",
         type: AuthenticationCodeType = None,
         next_type: AuthenticationCodeType = None,
@@ -1818,7 +1820,7 @@ class EmailAddressAuthenticationCodeInfo(TlObject):
 
     """
 
-    def __init__(self, email_address_pattern: str = "", length: int = 0) -> None:
+    def __init__(self, *, email_address_pattern: str = "", length: int = 0) -> None:
         self.email_address_pattern: Union[str, None] = email_address_pattern
         r"""Pattern of the email address to which an authentication code was sent"""
         self.length: int = int(length)
@@ -1861,7 +1863,7 @@ class EmailAddressAuthenticationCode(TlObject, EmailAddressAuthentication):
 
     """
 
-    def __init__(self, code: str = "") -> None:
+    def __init__(self, *, code: str = "") -> None:
         self.code: Union[str, None] = code
         r"""The code"""
 
@@ -1897,7 +1899,7 @@ class EmailAddressAuthenticationAppleId(TlObject, EmailAddressAuthentication):
 
     """
 
-    def __init__(self, token: str = "") -> None:
+    def __init__(self, *, token: str = "") -> None:
         self.token: Union[str, None] = token
         r"""The token"""
 
@@ -1933,7 +1935,7 @@ class EmailAddressAuthenticationGoogleId(TlObject, EmailAddressAuthentication):
 
     """
 
-    def __init__(self, token: str = "") -> None:
+    def __init__(self, *, token: str = "") -> None:
         self.token: Union[str, None] = token
         r"""The token"""
 
@@ -1969,7 +1971,7 @@ class EmailAddressResetStateAvailable(TlObject, EmailAddressResetState):
 
     """
 
-    def __init__(self, wait_period: int = 0) -> None:
+    def __init__(self, *, wait_period: int = 0) -> None:
         self.wait_period: int = int(wait_period)
         r"""Time required to wait before the email address can be reset; 0 if the user is subscribed to Telegram Premium"""
 
@@ -2005,7 +2007,7 @@ class EmailAddressResetStatePending(TlObject, EmailAddressResetState):
 
     """
 
-    def __init__(self, reset_in: int = 0) -> None:
+    def __init__(self, *, reset_in: int = 0) -> None:
         self.reset_in: int = int(reset_in)
         r"""Left time before the email address will be reset, in seconds\. updateAuthorizationState is not sent when this field changes"""
 
@@ -2048,7 +2050,7 @@ class TextEntity(TlObject):
     """
 
     def __init__(
-        self, offset: int = 0, length: int = 0, type: TextEntityType = None
+        self, *, offset: int = 0, length: int = 0, type: TextEntityType = None
     ) -> None:
         self.offset: int = int(offset)
         r"""Offset of the entity, in UTF\-16 code units"""
@@ -2121,7 +2123,7 @@ class TextEntities(TlObject):
 
     """
 
-    def __init__(self, entities: List[TextEntity] = None) -> None:
+    def __init__(self, *, entities: List[TextEntity] = None) -> None:
         self.entities: List[TextEntity] = entities or []
         r"""List of text entities"""
 
@@ -2160,7 +2162,7 @@ class FormattedText(TlObject):
 
     """
 
-    def __init__(self, text: str = "", entities: List[TextEntity] = None) -> None:
+    def __init__(self, *, text: str = "", entities: List[TextEntity] = None) -> None:
         self.text: Union[str, None] = text
         r"""The text"""
         self.entities: List[TextEntity] = entities or []
@@ -2207,6 +2209,7 @@ class TermsOfService(TlObject):
 
     def __init__(
         self,
+        *,
         text: FormattedText = None,
         min_user_age: int = 0,
         show_popup: bool = False,
@@ -2271,6 +2274,7 @@ class Passkey(TlObject):
 
     def __init__(
         self,
+        *,
         id: str = "",
         name: str = "",
         addition_date: int = 0,
@@ -2333,7 +2337,7 @@ class Passkeys(TlObject):
 
     """
 
-    def __init__(self, passkeys: List[Passkey] = None) -> None:
+    def __init__(self, *, passkeys: List[Passkey] = None) -> None:
         self.passkeys: List[Passkey] = passkeys or []
         r"""List of passkeys"""
 
@@ -2435,6 +2439,7 @@ class AuthorizationStateWaitPremiumPurchase(TlObject, AuthorizationState):
 
     def __init__(
         self,
+        *,
         store_product_id: str = "",
         support_email_address: str = "",
         support_email_subject: str = "",
@@ -2491,7 +2496,7 @@ class AuthorizationStateWaitEmailAddress(TlObject, AuthorizationState):
     """
 
     def __init__(
-        self, allow_apple_id: bool = False, allow_google_id: bool = False
+        self, *, allow_apple_id: bool = False, allow_google_id: bool = False
     ) -> None:
         self.allow_apple_id: bool = bool(allow_apple_id)
         r"""True, if authorization through Apple ID is allowed"""
@@ -2546,6 +2551,7 @@ class AuthorizationStateWaitEmailCode(TlObject, AuthorizationState):
 
     def __init__(
         self,
+        *,
         allow_apple_id: bool = False,
         allow_google_id: bool = False,
         code_info: EmailAddressAuthenticationCodeInfo = None,
@@ -2605,7 +2611,7 @@ class AuthorizationStateWaitCode(TlObject, AuthorizationState):
 
     """
 
-    def __init__(self, code_info: AuthenticationCodeInfo = None) -> None:
+    def __init__(self, *, code_info: AuthenticationCodeInfo = None) -> None:
         self.code_info: Union[AuthenticationCodeInfo, None] = code_info
         r"""Information about the authorization code that was sent"""
 
@@ -2641,7 +2647,7 @@ class AuthorizationStateWaitOtherDeviceConfirmation(TlObject, AuthorizationState
 
     """
 
-    def __init__(self, link: str = "") -> None:
+    def __init__(self, *, link: str = "") -> None:
         self.link: Union[str, None] = link
         r"""A tg:// URL for the QR code\. The link will be updated frequently"""
 
@@ -2679,7 +2685,7 @@ class AuthorizationStateWaitRegistration(TlObject, AuthorizationState):
 
     """
 
-    def __init__(self, terms_of_service: TermsOfService = None) -> None:
+    def __init__(self, *, terms_of_service: TermsOfService = None) -> None:
         self.terms_of_service: Union[TermsOfService, None] = terms_of_service
         r"""Telegram terms of service"""
 
@@ -2726,6 +2732,7 @@ class AuthorizationStateWaitPassword(TlObject, AuthorizationState):
 
     def __init__(
         self,
+        *,
         password_hint: str = "",
         has_recovery_email_address: bool = False,
         has_passport_data: bool = False,
@@ -2901,7 +2908,7 @@ class FirebaseDeviceVerificationParametersSafetyNet(
 
     """
 
-    def __init__(self, nonce: bytes = b"") -> None:
+    def __init__(self, *, nonce: bytes = b"") -> None:
         self.nonce: Union[bytes, None] = nonce
         r"""Nonce to pass to the SafetyNet Attestation API"""
 
@@ -2944,7 +2951,7 @@ class FirebaseDeviceVerificationParametersPlayIntegrity(
 
     """
 
-    def __init__(self, nonce: str = "", cloud_project_number: int = 0) -> None:
+    def __init__(self, *, nonce: str = "", cloud_project_number: int = 0) -> None:
         self.nonce: Union[str, None] = nonce
         r"""Base64url\-encoded nonce to pass to the Play Integrity API"""
         self.cloud_project_number: int = int(cloud_project_number)
@@ -3009,6 +3016,7 @@ class PasswordState(TlObject):
 
     def __init__(
         self,
+        *,
         has_password: bool = False,
         password_hint: str = "",
         has_recovery_email_address: bool = False,
@@ -3087,7 +3095,7 @@ class RecoveryEmailAddress(TlObject):
 
     """
 
-    def __init__(self, recovery_email_address: str = "") -> None:
+    def __init__(self, *, recovery_email_address: str = "") -> None:
         self.recovery_email_address: Union[str, None] = recovery_email_address
         r"""Recovery email address"""
 
@@ -3129,7 +3137,7 @@ class TemporaryPasswordState(TlObject):
 
     """
 
-    def __init__(self, has_password: bool = False, valid_for: int = 0) -> None:
+    def __init__(self, *, has_password: bool = False, valid_for: int = 0) -> None:
         self.has_password: bool = bool(has_password)
         r"""True, if a temporary password is available"""
         self.valid_for: int = int(valid_for)
@@ -3195,6 +3203,7 @@ class LocalFile(TlObject):
 
     def __init__(
         self,
+        *,
         path: str = "",
         can_be_downloaded: bool = False,
         can_be_deleted: bool = False,
@@ -3288,6 +3297,7 @@ class RemoteFile(TlObject, FileBoundMethods):
 
     def __init__(
         self,
+        *,
         id: str = "",
         unique_id: str = "",
         is_uploading_active: bool = False,
@@ -3364,6 +3374,7 @@ class File(TlObject, FileBoundMethods):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         size: int = 0,
         expected_size: int = 0,
@@ -3424,7 +3435,7 @@ class InputFileId(TlObject, InputFile):
 
     """
 
-    def __init__(self, id: int = 0) -> None:
+    def __init__(self, *, id: int = 0) -> None:
         self.id: int = int(id)
         r"""Unique file identifier"""
 
@@ -3460,7 +3471,7 @@ class InputFileRemote(TlObject, InputFile):
 
     """
 
-    def __init__(self, id: str = "") -> None:
+    def __init__(self, *, id: str = "") -> None:
         self.id: Union[str, None] = id
         r"""Remote file identifier"""
 
@@ -3496,7 +3507,7 @@ class InputFileLocal(TlObject, InputFile):
 
     """
 
-    def __init__(self, path: str = "") -> None:
+    def __init__(self, *, path: str = "") -> None:
         self.path: Union[str, None] = path
         r"""Local path to the file"""
 
@@ -3539,7 +3550,7 @@ class InputFileGenerated(TlObject, InputFile):
     """
 
     def __init__(
-        self, original_path: str = "", conversion: str = "", expected_size: int = 0
+        self, *, original_path: str = "", conversion: str = "", expected_size: int = 0
     ) -> None:
         self.original_path: Union[str, None] = original_path
         r"""Local path to a file from which the file is generated\. The path doesn't have to be a valid path and is used by TDLib only to detect name and MIME type of the generated file"""
@@ -3601,6 +3612,7 @@ class PhotoSize(TlObject):
 
     def __init__(
         self,
+        *,
         type: str = "",
         photo: File = None,
         width: int = 0,
@@ -3667,7 +3679,7 @@ class Minithumbnail(TlObject):
 
     """
 
-    def __init__(self, width: int = 0, height: int = 0, data: bytes = b"") -> None:
+    def __init__(self, *, width: int = 0, height: int = 0, data: bytes = b"") -> None:
         self.width: int = int(width)
         r"""Thumbnail width, usually doesn't exceed 40"""
         self.height: int = int(height)
@@ -3921,6 +3933,7 @@ class Thumbnail(TlObject):
 
     def __init__(
         self,
+        *,
         format: ThumbnailFormat = None,
         width: int = 0,
         height: int = 0,
@@ -4108,6 +4121,7 @@ class MaskPosition(TlObject):
 
     def __init__(
         self,
+        *,
         point: MaskPoint = None,
         x_shift: float = 0.0,
         y_shift: float = 0.0,
@@ -4333,7 +4347,7 @@ class StickerFullTypeRegular(TlObject, StickerFullType):
 
     """
 
-    def __init__(self, premium_animation: File = None) -> None:
+    def __init__(self, *, premium_animation: File = None) -> None:
         self.premium_animation: Union[File, None] = premium_animation
         r"""Premium animation of the sticker; may be null\. If present, only Telegram Premium users can use the sticker"""
 
@@ -4369,7 +4383,7 @@ class StickerFullTypeMask(TlObject, StickerFullType):
 
     """
 
-    def __init__(self, mask_position: MaskPosition = None) -> None:
+    def __init__(self, *, mask_position: MaskPosition = None) -> None:
         self.mask_position: Union[MaskPosition, None] = mask_position
         r"""Position where the mask is placed; may be null"""
 
@@ -4409,7 +4423,7 @@ class StickerFullTypeCustomEmoji(TlObject, StickerFullType):
     """
 
     def __init__(
-        self, custom_emoji_id: int = 0, needs_repainting: bool = False
+        self, *, custom_emoji_id: int = 0, needs_repainting: bool = False
     ) -> None:
         self.custom_emoji_id: int = int(custom_emoji_id)
         r"""Identifier of the custom emoji"""
@@ -4453,7 +4467,7 @@ class ClosedVectorPath(TlObject):
 
     """
 
-    def __init__(self, commands: List[VectorPathCommand] = None) -> None:
+    def __init__(self, *, commands: List[VectorPathCommand] = None) -> None:
         self.commands: List[VectorPathCommand] = commands or []
         r"""List of vector path commands"""
 
@@ -4489,7 +4503,7 @@ class Outline(TlObject):
 
     """
 
-    def __init__(self, paths: List[ClosedVectorPath] = None) -> None:
+    def __init__(self, *, paths: List[ClosedVectorPath] = None) -> None:
         self.paths: List[ClosedVectorPath] = paths or []
         r"""The list of closed vector paths"""
 
@@ -4539,6 +4553,7 @@ class PollOption(TlObject):
 
     def __init__(
         self,
+        *,
         text: FormattedText = None,
         voter_count: int = 0,
         vote_percentage: int = 0,
@@ -4599,7 +4614,7 @@ class PollTypeRegular(TlObject, PollType):
 
     """
 
-    def __init__(self, allow_multiple_answers: bool = False) -> None:
+    def __init__(self, *, allow_multiple_answers: bool = False) -> None:
         self.allow_multiple_answers: bool = bool(allow_multiple_answers)
         r"""True, if multiple answer options can be chosen simultaneously"""
 
@@ -4644,7 +4659,7 @@ class PollTypeQuiz(TlObject, PollType):
     """
 
     def __init__(
-        self, correct_option_id: int = 0, explanation: FormattedText = None
+        self, *, correct_option_id: int = 0, explanation: FormattedText = None
     ) -> None:
         self.correct_option_id: int = int(correct_option_id)
         r"""0\-based identifier of the correct answer option; \-1 for a yet unanswered poll"""
@@ -4699,6 +4714,7 @@ class ChecklistTask(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         text: FormattedText = None,
         completed_by: MessageSender = None,
@@ -4759,7 +4775,7 @@ class InputChecklistTask(TlObject):
 
     """
 
-    def __init__(self, id: int = 0, text: FormattedText = None) -> None:
+    def __init__(self, *, id: int = 0, text: FormattedText = None) -> None:
         self.id: int = int(id)
         r"""Unique identifier of the task; must be positive"""
         self.text: Union[FormattedText, None] = text
@@ -4815,6 +4831,7 @@ class Checklist(TlObject):
 
     def __init__(
         self,
+        *,
         title: FormattedText = None,
         tasks: List[ChecklistTask] = None,
         others_can_add_tasks: bool = False,
@@ -4895,6 +4912,7 @@ class InputChecklist(TlObject):
 
     def __init__(
         self,
+        *,
         title: FormattedText = None,
         tasks: List[InputChecklistTask] = None,
         others_can_add_tasks: bool = False,
@@ -4978,6 +4996,7 @@ class Animation(TlObject):
 
     def __init__(
         self,
+        *,
         duration: int = 0,
         width: int = 0,
         height: int = 0,
@@ -5084,6 +5103,7 @@ class Audio(TlObject):
 
     def __init__(
         self,
+        *,
         duration: int = 0,
         title: str = "",
         performer: str = "",
@@ -5171,7 +5191,7 @@ class Audios(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, audios: List[Audio] = None) -> None:
+    def __init__(self, *, total_count: int = 0, audios: List[Audio] = None) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of audio files found"""
         self.audios: List[Audio] = audios or []
@@ -5228,6 +5248,7 @@ class Document(TlObject):
 
     def __init__(
         self,
+        *,
         file_name: str = "",
         mime_type: str = "",
         minithumbnail: Minithumbnail = None,
@@ -5296,6 +5317,7 @@ class Photo(TlObject):
 
     def __init__(
         self,
+        *,
         has_stickers: bool = False,
         minithumbnail: Minithumbnail = None,
         sizes: List[PhotoSize] = None,
@@ -5372,6 +5394,7 @@ class Sticker(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         set_id: int = 0,
         width: int = 0,
@@ -5488,6 +5511,7 @@ class Video(TlObject):
 
     def __init__(
         self,
+        *,
         duration: int = 0,
         width: int = 0,
         height: int = 0,
@@ -5593,6 +5617,7 @@ class VideoNote(TlObject):
 
     def __init__(
         self,
+        *,
         duration: int = 0,
         waveform: bytes = b"",
         length: int = 0,
@@ -5684,6 +5709,7 @@ class VoiceNote(TlObject):
 
     def __init__(
         self,
+        *,
         duration: int = 0,
         waveform: bytes = b"",
         mime_type: str = "",
@@ -5765,6 +5791,7 @@ class AnimatedEmoji(TlObject):
 
     def __init__(
         self,
+        *,
         sticker: Sticker = None,
         sticker_width: int = 0,
         sticker_height: int = 0,
@@ -5839,6 +5866,7 @@ class Contact(TlObject):
 
     def __init__(
         self,
+        *,
         phone_number: str = "",
         first_name: str = "",
         last_name: str = "",
@@ -5907,6 +5935,7 @@ class Location(TlObject):
 
     def __init__(
         self,
+        *,
         latitude: float = 0.0,
         longitude: float = 0.0,
         horizontal_accuracy: float = 0.0,
@@ -5974,6 +6003,7 @@ class Venue(TlObject):
 
     def __init__(
         self,
+        *,
         location: Location = None,
         title: str = "",
         address: str = "",
@@ -6059,6 +6089,7 @@ class Game(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         short_name: str = "",
         title: str = "",
@@ -6146,6 +6177,7 @@ class StakeDiceState(TlObject):
 
     def __init__(
         self,
+        *,
         state_hash: str = "",
         stake_toncoin_amount: int = 0,
         suggested_stake_toncoin_amounts: List[int] = None,
@@ -6231,6 +6263,7 @@ class WebApp(TlObject):
 
     def __init__(
         self,
+        *,
         short_name: str = "",
         title: str = "",
         description: str = "",
@@ -6320,6 +6353,7 @@ class Poll(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         question: FormattedText = None,
         options: List[PollOption] = None,
@@ -6422,6 +6456,7 @@ class AlternativeVideo(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         width: int = 0,
         height: int = 0,
@@ -6498,6 +6533,7 @@ class VideoStoryboard(TlObject):
 
     def __init__(
         self,
+        *,
         storyboard_file: File = None,
         width: int = 0,
         height: int = 0,
@@ -6570,6 +6606,7 @@ class Background(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         is_default: bool = False,
         is_dark: bool = False,
@@ -6641,7 +6678,7 @@ class Backgrounds(TlObject):
 
     """
 
-    def __init__(self, backgrounds: List[Background] = None) -> None:
+    def __init__(self, *, backgrounds: List[Background] = None) -> None:
         self.backgrounds: List[Background] = backgrounds or []
         r"""A list of backgrounds"""
 
@@ -6681,7 +6718,7 @@ class ChatBackground(TlObject):
     """
 
     def __init__(
-        self, background: Background = None, dark_theme_dimming: int = 0
+        self, *, background: Background = None, dark_theme_dimming: int = 0
     ) -> None:
         self.background: Union[Background, None] = background
         r"""The background"""
@@ -6742,6 +6779,7 @@ class ProfilePhoto(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         small: File = None,
         big: File = None,
@@ -6821,6 +6859,7 @@ class ChatPhotoInfo(TlObject):
 
     def __init__(
         self,
+        *,
         small: File = None,
         big: File = None,
         minithumbnail: Minithumbnail = None,
@@ -7196,6 +7235,7 @@ class UserTypeBot(TlObject, UserType):
 
     def __init__(
         self,
+        *,
         can_be_edited: bool = False,
         can_join_groups: bool = False,
         can_read_all_group_messages: bool = False,
@@ -7334,7 +7374,7 @@ class BotCommand(TlObject):
 
     """
 
-    def __init__(self, command: str = "", description: str = "") -> None:
+    def __init__(self, *, command: str = "", description: str = "") -> None:
         self.command: Union[str, None] = command
         r"""Text of the bot command"""
         self.description: Union[str, None] = description
@@ -7380,7 +7420,9 @@ class BotCommands(TlObject):
 
     """
 
-    def __init__(self, bot_user_id: int = 0, commands: List[BotCommand] = None) -> None:
+    def __init__(
+        self, *, bot_user_id: int = 0, commands: List[BotCommand] = None
+    ) -> None:
         self.bot_user_id: int = int(bot_user_id)
         r"""Bot's user identifier"""
         self.commands: List[BotCommand] = commands or []
@@ -7426,7 +7468,7 @@ class BotMenuButton(TlObject):
 
     """
 
-    def __init__(self, text: str = "", url: str = "") -> None:
+    def __init__(self, *, text: str = "", url: str = "") -> None:
         self.text: Union[str, None] = text
         r"""Text of the button"""
         self.url: Union[str, None] = url
@@ -7476,6 +7518,7 @@ class BotVerificationParameters(TlObject):
 
     def __init__(
         self,
+        *,
         icon_custom_emoji_id: int = 0,
         organization_name: str = "",
         default_custom_description: FormattedText = None,
@@ -7545,6 +7588,7 @@ class BotVerification(TlObject):
 
     def __init__(
         self,
+        *,
         bot_user_id: int = 0,
         icon_custom_emoji_id: int = 0,
         custom_description: FormattedText = None,
@@ -7606,6 +7650,7 @@ class VerificationStatus(TlObject):
 
     def __init__(
         self,
+        *,
         is_verified: bool = False,
         is_scam: bool = False,
         is_fake: bool = False,
@@ -7668,7 +7713,7 @@ class ChatLocation(TlObject):
 
     """
 
-    def __init__(self, location: Location = None, address: str = "") -> None:
+    def __init__(self, *, location: Location = None, address: str = "") -> None:
         self.location: Union[Location, None] = location
         r"""The location"""
         self.address: Union[str, None] = address
@@ -7717,7 +7762,7 @@ class Birthdate(TlObject):
 
     """
 
-    def __init__(self, day: int = 0, month: int = 0, year: int = 0) -> None:
+    def __init__(self, *, day: int = 0, month: int = 0, year: int = 0) -> None:
         self.day: int = int(day)
         r"""Day of the month; 1\-31"""
         self.month: int = int(month)
@@ -7767,7 +7812,7 @@ class CloseBirthdayUser(TlObject):
 
     """
 
-    def __init__(self, user_id: int = 0, birthdate: Birthdate = None) -> None:
+    def __init__(self, *, user_id: int = 0, birthdate: Birthdate = None) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier"""
         self.birthdate: Union[Birthdate, None] = birthdate
@@ -7873,7 +7918,7 @@ class BusinessAwayMessageScheduleCustom(TlObject, BusinessAwayMessageSchedule):
 
     """
 
-    def __init__(self, start_date: int = 0, end_date: int = 0) -> None:
+    def __init__(self, *, start_date: int = 0, end_date: int = 0) -> None:
         self.start_date: int = int(start_date)
         r"""Point in time \(Unix timestamp\) when the away messages will start to be sent"""
         self.end_date: int = int(end_date)
@@ -7919,7 +7964,7 @@ class BusinessLocation(TlObject):
 
     """
 
-    def __init__(self, location: Location = None, address: str = "") -> None:
+    def __init__(self, *, location: Location = None, address: str = "") -> None:
         self.location: Union[Location, None] = location
         r"""The location; may be null if not specified"""
         self.address: Union[str, None] = address
@@ -7982,6 +8027,7 @@ class BusinessRecipients(TlObject):
 
     def __init__(
         self,
+        *,
         chat_ids: List[int] = None,
         excluded_chat_ids: List[int] = None,
         select_existing_chats: bool = False,
@@ -8063,6 +8109,7 @@ class BusinessAwayMessageSettings(TlObject):
 
     def __init__(
         self,
+        *,
         shortcut_id: int = 0,
         recipients: BusinessRecipients = None,
         schedule: BusinessAwayMessageSchedule = None,
@@ -8131,6 +8178,7 @@ class BusinessGreetingMessageSettings(TlObject):
 
     def __init__(
         self,
+        *,
         shortcut_id: int = 0,
         recipients: BusinessRecipients = None,
         inactivity_days: int = 0,
@@ -8222,6 +8270,7 @@ class BusinessBotRights(TlObject):
 
     def __init__(
         self,
+        *,
         can_reply: bool = False,
         can_read_messages: bool = False,
         can_delete_sent_messages: bool = False,
@@ -8347,6 +8396,7 @@ class BusinessConnectedBot(TlObject):
 
     def __init__(
         self,
+        *,
         bot_user_id: int = 0,
         recipients: BusinessRecipients = None,
         rights: BusinessBotRights = None,
@@ -8404,7 +8454,7 @@ class BusinessStartPage(TlObject):
     """
 
     def __init__(
-        self, title: str = "", message: str = "", sticker: Sticker = None
+        self, *, title: str = "", message: str = "", sticker: Sticker = None
     ) -> None:
         self.title: Union[str, None] = title
         r"""Title text of the start page"""
@@ -8459,7 +8509,7 @@ class InputBusinessStartPage(TlObject):
     """
 
     def __init__(
-        self, title: str = "", message: str = "", sticker: InputFile = None
+        self, *, title: str = "", message: str = "", sticker: InputFile = None
     ) -> None:
         self.title: Union[str, None] = title
         r"""Title text of the start page; 0\-getOption\(\"business\_start\_page\_title\_length\_max\"\) characters"""
@@ -8512,7 +8562,7 @@ class BusinessOpeningHoursInterval(TlObject):
 
     """
 
-    def __init__(self, start_minute: int = 0, end_minute: int = 0) -> None:
+    def __init__(self, *, start_minute: int = 0, end_minute: int = 0) -> None:
         self.start_minute: int = int(start_minute)
         r"""The minute's sequence number in a week, starting on Monday, marking the start of the time interval during which the business is open; 0\-7\*24\*60"""
         self.end_minute: int = int(end_minute)
@@ -8560,6 +8610,7 @@ class BusinessOpeningHours(TlObject):
 
     def __init__(
         self,
+        *,
         time_zone_id: str = "",
         opening_hours: List[BusinessOpeningHoursInterval] = None,
     ) -> None:
@@ -8628,6 +8679,7 @@ class BusinessInfo(TlObject):
 
     def __init__(
         self,
+        *,
         location: BusinessLocation = None,
         opening_hours: BusinessOpeningHours = None,
         local_opening_hours: BusinessOpeningHours = None,
@@ -8722,6 +8774,7 @@ class BusinessChatLink(TlObject):
 
     def __init__(
         self,
+        *,
         link: str = "",
         text: FormattedText = None,
         title: str = "",
@@ -8777,7 +8830,7 @@ class BusinessChatLinks(TlObject):
 
     """
 
-    def __init__(self, links: List[BusinessChatLink] = None) -> None:
+    def __init__(self, *, links: List[BusinessChatLink] = None) -> None:
         self.links: List[BusinessChatLink] = links or []
         r"""List of links"""
 
@@ -8816,7 +8869,7 @@ class InputBusinessChatLink(TlObject):
 
     """
 
-    def __init__(self, text: FormattedText = None, title: str = "") -> None:
+    def __init__(self, *, text: FormattedText = None, title: str = "") -> None:
         self.text: Union[FormattedText, None] = text
         r"""Message draft text that will be added to the input field"""
         self.title: Union[str, None] = title
@@ -8858,7 +8911,7 @@ class BusinessChatLinkInfo(TlObject):
 
     """
 
-    def __init__(self, chat_id: int = 0, text: FormattedText = None) -> None:
+    def __init__(self, *, chat_id: int = 0, text: FormattedText = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the private chat that created the link"""
         self.text: Union[FormattedText, None] = text
@@ -8900,7 +8953,7 @@ class ChatPhotoStickerTypeRegularOrMask(TlObject, ChatPhotoStickerType):
 
     """
 
-    def __init__(self, sticker_set_id: int = 0, sticker_id: int = 0) -> None:
+    def __init__(self, *, sticker_set_id: int = 0, sticker_id: int = 0) -> None:
         self.sticker_set_id: int = int(sticker_set_id)
         r"""Sticker set identifier"""
         self.sticker_id: int = int(sticker_id)
@@ -8943,7 +8996,7 @@ class ChatPhotoStickerTypeCustomEmoji(TlObject, ChatPhotoStickerType):
 
     """
 
-    def __init__(self, custom_emoji_id: int = 0) -> None:
+    def __init__(self, *, custom_emoji_id: int = 0) -> None:
         self.custom_emoji_id: int = int(custom_emoji_id)
         r"""Identifier of the custom emoji"""
 
@@ -8983,7 +9036,10 @@ class ChatPhotoSticker(TlObject):
     """
 
     def __init__(
-        self, type: ChatPhotoStickerType = None, background_fill: BackgroundFill = None
+        self,
+        *,
+        type: ChatPhotoStickerType = None,
+        background_fill: BackgroundFill = None,
     ) -> None:
         self.type: Union[
             ChatPhotoStickerTypeRegularOrMask, ChatPhotoStickerTypeCustomEmoji, None
@@ -9041,7 +9097,7 @@ class AnimatedChatPhoto(TlObject):
     """
 
     def __init__(
-        self, length: int = 0, file: File = None, main_frame_timestamp: float = 0.0
+        self, *, length: int = 0, file: File = None, main_frame_timestamp: float = 0.0
     ) -> None:
         self.length: int = int(length)
         r"""Animation width and height"""
@@ -9109,6 +9165,7 @@ class ChatPhoto(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         added_date: int = 0,
         minithumbnail: Minithumbnail = None,
@@ -9182,7 +9239,7 @@ class ChatPhotos(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, photos: List[ChatPhoto] = None) -> None:
+    def __init__(self, *, total_count: int = 0, photos: List[ChatPhoto] = None) -> None:
         self.total_count: int = int(total_count)
         r"""Total number of photos"""
         self.photos: List[ChatPhoto] = photos or []
@@ -9225,7 +9282,7 @@ class InputChatPhotoPrevious(TlObject, InputChatPhoto):
 
     """
 
-    def __init__(self, chat_photo_id: int = 0) -> None:
+    def __init__(self, *, chat_photo_id: int = 0) -> None:
         self.chat_photo_id: int = int(chat_photo_id)
         r"""Identifier of the current user's profile photo to reuse"""
 
@@ -9261,7 +9318,7 @@ class InputChatPhotoStatic(TlObject, InputChatPhoto):
 
     """
 
-    def __init__(self, photo: InputFile = None) -> None:
+    def __init__(self, *, photo: InputFile = None) -> None:
         self.photo: Union[
             InputFileId, InputFileRemote, InputFileLocal, InputFileGenerated, None
         ] = photo
@@ -9303,7 +9360,7 @@ class InputChatPhotoAnimation(TlObject, InputChatPhoto):
     """
 
     def __init__(
-        self, animation: InputFile = None, main_frame_timestamp: float = 0.0
+        self, *, animation: InputFile = None, main_frame_timestamp: float = 0.0
     ) -> None:
         self.animation: Union[
             InputFileId, InputFileRemote, InputFileLocal, InputFileGenerated, None
@@ -9349,7 +9406,7 @@ class InputChatPhotoSticker(TlObject, InputChatPhoto):
 
     """
 
-    def __init__(self, sticker: ChatPhotoSticker = None) -> None:
+    def __init__(self, *, sticker: ChatPhotoSticker = None) -> None:
         self.sticker: Union[ChatPhotoSticker, None] = sticker
         r"""Information about the sticker"""
 
@@ -9429,6 +9486,7 @@ class ChatPermissions(TlObject):
 
     def __init__(
         self,
+        *,
         can_send_basic_messages: bool = False,
         can_send_audios: bool = False,
         can_send_documents: bool = False,
@@ -9593,6 +9651,7 @@ class ChatAdministratorRights(TlObject):
 
     def __init__(
         self,
+        *,
         can_manage_chat: bool = False,
         can_change_info: bool = False,
         can_post_messages: bool = False,
@@ -9717,7 +9776,7 @@ class GiftResalePriceStar(TlObject, GiftResalePrice):
 
     """
 
-    def __init__(self, star_count: int = 0) -> None:
+    def __init__(self, *, star_count: int = 0) -> None:
         self.star_count: int = int(star_count)
         r"""The Telegram Star amount expected to be paid for the gift\. Must be in the range getOption\(\"gift\_resale\_star\_count\_min\"\)\-getOption\(\"gift\_resale\_star\_count\_max\"\) for gifts put for resale"""
 
@@ -9753,7 +9812,7 @@ class GiftResalePriceTon(TlObject, GiftResalePrice):
 
     """
 
-    def __init__(self, toncoin_cent_count: int = 0) -> None:
+    def __init__(self, *, toncoin_cent_count: int = 0) -> None:
         self.toncoin_cent_count: int = int(toncoin_cent_count)
         r"""The amount of 1/100 of Toncoin expected to be paid for the gift\. Must be in the range getOption\(\"gift\_resale\_toncoin\_cent\_count\_min\"\)\-getOption\(\"gift\_resale\_toncoin\_cent\_count\_max\"\)"""
 
@@ -9873,7 +9932,7 @@ class SuggestedPostPriceStar(TlObject, SuggestedPostPrice):
 
     """
 
-    def __init__(self, star_count: int = 0) -> None:
+    def __init__(self, *, star_count: int = 0) -> None:
         self.star_count: int = int(star_count)
         r"""The Telegram Star amount expected to be paid for the post; getOption\(\"suggested\_post\_star\_count\_min\"\)\-getOption\(\"suggested\_post\_star\_count\_max\"\)"""
 
@@ -9909,7 +9968,7 @@ class SuggestedPostPriceTon(TlObject, SuggestedPostPrice):
 
     """
 
-    def __init__(self, toncoin_cent_count: int = 0) -> None:
+    def __init__(self, *, toncoin_cent_count: int = 0) -> None:
         self.toncoin_cent_count: int = int(toncoin_cent_count)
         r"""The amount of 1/100 of Toncoin expected to be paid for the post; getOption\(\"suggested\_post\_toncoin\_cent\_count\_min\"\)\-getOption\(\"suggested\_post\_toncoin\_cent\_count\_max\"\)"""
 
@@ -10043,6 +10102,7 @@ class SuggestedPostInfo(TlObject):
 
     def __init__(
         self,
+        *,
         price: SuggestedPostPrice = None,
         send_date: int = 0,
         state: SuggestedPostState = None,
@@ -10111,7 +10171,7 @@ class InputSuggestedPostInfo(TlObject):
 
     """
 
-    def __init__(self, price: SuggestedPostPrice = None, send_date: int = 0) -> None:
+    def __init__(self, *, price: SuggestedPostPrice = None, send_date: int = 0) -> None:
         self.price: Union[SuggestedPostPriceStar, SuggestedPostPriceTon, None] = price
         r"""Price of the suggested post; pass null to suggest a post without payment\. If the current user isn't an administrator of the channel direct messages chat and has no enough funds to pay for the post, then the error \"BALANCE\_TOO\_LOW\" will be returned immediately"""
         self.send_date: int = int(send_date)
@@ -10217,7 +10277,7 @@ class StarAmount(TlObject):
 
     """
 
-    def __init__(self, star_count: int = 0, nanostar_count: int = 0) -> None:
+    def __init__(self, *, star_count: int = 0, nanostar_count: int = 0) -> None:
         self.star_count: int = int(star_count)
         r"""The integer Telegram Star amount rounded to 0"""
         self.nanostar_count: int = int(nanostar_count)
@@ -10263,7 +10323,7 @@ class StarSubscriptionTypeChannel(TlObject, StarSubscriptionType):
 
     """
 
-    def __init__(self, can_reuse: bool = False, invite_link: str = "") -> None:
+    def __init__(self, *, can_reuse: bool = False, invite_link: str = "") -> None:
         self.can_reuse: bool = bool(can_reuse)
         r"""True, if the subscription is active and the user can use the method reuseStarSubscription to join the subscribed chat again"""
         self.invite_link: Union[str, None] = invite_link
@@ -10317,6 +10377,7 @@ class StarSubscriptionTypeBot(TlObject, StarSubscriptionType):
 
     def __init__(
         self,
+        *,
         is_canceled_by_bot: bool = False,
         title: str = "",
         photo: Photo = None,
@@ -10375,7 +10436,7 @@ class StarSubscriptionPricing(TlObject):
 
     """
 
-    def __init__(self, period: int = 0, star_count: int = 0) -> None:
+    def __init__(self, *, period: int = 0, star_count: int = 0) -> None:
         self.period: int = int(period)
         r"""The number of seconds between consecutive Telegram Star debiting"""
         self.star_count: int = int(star_count)
@@ -10438,6 +10499,7 @@ class StarSubscription(TlObject):
 
     def __init__(
         self,
+        *,
         id: str = "",
         chat_id: int = 0,
         expiration_date: int = 0,
@@ -10521,6 +10583,7 @@ class StarSubscriptions(TlObject):
 
     def __init__(
         self,
+        *,
         star_amount: StarAmount = None,
         subscriptions: List[StarSubscription] = None,
         required_star_count: int = 0,
@@ -10604,7 +10667,7 @@ class AffiliateTypeBot(TlObject, AffiliateType):
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier of the bot"""
 
@@ -10640,7 +10703,7 @@ class AffiliateTypeChannel(TlObject, AffiliateType):
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the channel chat"""
 
@@ -10767,7 +10830,7 @@ class AffiliateProgramParameters(TlObject):
 
     """
 
-    def __init__(self, commission_per_mille: int = 0, month_count: int = 0) -> None:
+    def __init__(self, *, commission_per_mille: int = 0, month_count: int = 0) -> None:
         self.commission_per_mille: int = int(commission_per_mille)
         r"""The number of Telegram Stars received by the affiliate for each 1000 Telegram Stars received by the program owner; getOption\(\"affiliate\_program\_commission\_per\_mille\_min\"\)\-getOption\(\"affiliate\_program\_commission\_per\_mille\_max\"\)"""
         self.month_count: int = int(month_count)
@@ -10818,6 +10881,7 @@ class AffiliateProgramInfo(TlObject):
 
     def __init__(
         self,
+        *,
         parameters: AffiliateProgramParameters = None,
         end_date: int = 0,
         daily_revenue_per_user_amount: StarAmount = None,
@@ -10880,6 +10944,7 @@ class AffiliateInfo(TlObject):
 
     def __init__(
         self,
+        *,
         commission_per_mille: int = 0,
         affiliate_chat_id: int = 0,
         star_amount: StarAmount = None,
@@ -10933,7 +10998,9 @@ class FoundAffiliateProgram(TlObject):
 
     """
 
-    def __init__(self, bot_user_id: int = 0, info: AffiliateProgramInfo = None) -> None:
+    def __init__(
+        self, *, bot_user_id: int = 0, info: AffiliateProgramInfo = None
+    ) -> None:
         self.bot_user_id: int = int(bot_user_id)
         r"""User identifier of the bot created the program"""
         self.info: Union[AffiliateProgramInfo, None] = info
@@ -10984,6 +11051,7 @@ class FoundAffiliatePrograms(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         programs: List[FoundAffiliateProgram] = None,
         next_offset: str = "",
@@ -11054,6 +11122,7 @@ class ConnectedAffiliateProgram(TlObject):
 
     def __init__(
         self,
+        *,
         url: str = "",
         bot_user_id: int = 0,
         parameters: AffiliateProgramParameters = None,
@@ -11132,6 +11201,7 @@ class ConnectedAffiliatePrograms(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         programs: List[ConnectedAffiliateProgram] = None,
         next_offset: str = "",
@@ -11189,7 +11259,7 @@ class ProductInfo(TlObject):
     """
 
     def __init__(
-        self, title: str = "", description: FormattedText = None, photo: Photo = None
+        self, *, title: str = "", description: FormattedText = None, photo: Photo = None
     ) -> None:
         self.title: Union[str, None] = title
         r"""Product title"""
@@ -11254,6 +11324,7 @@ class PremiumPaymentOption(TlObject):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         amount: int = 0,
         discount_percentage: int = 0,
@@ -11387,6 +11458,7 @@ class PremiumStatePaymentOption(TlObject):
 
     def __init__(
         self,
+        *,
         payment_option: PremiumPaymentOption = None,
         is_current: bool = False,
         is_upgrade: bool = False,
@@ -11462,6 +11534,7 @@ class PremiumGiftPaymentOption(TlObject):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         amount: int = 0,
         star_count: int = 0,
@@ -11532,7 +11605,7 @@ class PremiumGiftPaymentOptions(TlObject):
 
     """
 
-    def __init__(self, options: List[PremiumGiftPaymentOption] = None) -> None:
+    def __init__(self, *, options: List[PremiumGiftPaymentOption] = None) -> None:
         self.options: List[PremiumGiftPaymentOption] = options or []
         r"""The list of options sorted by Telegram Premium subscription duration"""
 
@@ -11585,6 +11658,7 @@ class PremiumGiveawayPaymentOption(TlObject):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         amount: int = 0,
         winner_count: int = 0,
@@ -11652,7 +11726,7 @@ class PremiumGiveawayPaymentOptions(TlObject):
 
     """
 
-    def __init__(self, options: List[PremiumGiveawayPaymentOption] = None) -> None:
+    def __init__(self, *, options: List[PremiumGiveawayPaymentOption] = None) -> None:
         self.options: List[PremiumGiveawayPaymentOption] = options or []
         r"""The list of options"""
 
@@ -11711,6 +11785,7 @@ class PremiumGiftCodeInfo(TlObject):
 
     def __init__(
         self,
+        *,
         creator_id: MessageSender = None,
         creation_date: int = 0,
         is_from_giveaway: bool = False,
@@ -11800,6 +11875,7 @@ class StarPaymentOption(TlObject):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         amount: int = 0,
         star_count: int = 0,
@@ -11860,7 +11936,7 @@ class StarPaymentOptions(TlObject):
 
     """
 
-    def __init__(self, options: List[StarPaymentOption] = None) -> None:
+    def __init__(self, *, options: List[StarPaymentOption] = None) -> None:
         self.options: List[StarPaymentOption] = options or []
         r"""The list of options"""
 
@@ -11903,7 +11979,11 @@ class StarGiveawayWinnerOption(TlObject):
     """
 
     def __init__(
-        self, winner_count: int = 0, won_star_count: int = 0, is_default: bool = False
+        self,
+        *,
+        winner_count: int = 0,
+        won_star_count: int = 0,
+        is_default: bool = False,
     ) -> None:
         self.winner_count: int = int(winner_count)
         r"""The number of users that will be chosen as winners"""
@@ -11974,6 +12054,7 @@ class StarGiveawayPaymentOption(TlObject):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         amount: int = 0,
         star_count: int = 0,
@@ -12049,7 +12130,7 @@ class StarGiveawayPaymentOptions(TlObject):
 
     """
 
-    def __init__(self, options: List[StarGiveawayPaymentOption] = None) -> None:
+    def __init__(self, *, options: List[StarGiveawayPaymentOption] = None) -> None:
         self.options: List[StarGiveawayPaymentOption] = options or []
         r"""The list of options"""
 
@@ -12099,6 +12180,7 @@ class AcceptedGiftTypes(TlObject):
 
     def __init__(
         self,
+        *,
         unlimited_gifts: bool = False,
         limited_gifts: bool = False,
         upgraded_gifts: bool = False,
@@ -12164,6 +12246,7 @@ class GiftSettings(TlObject):
 
     def __init__(
         self,
+        *,
         show_gift_button: bool = False,
         accepted_gift_types: AcceptedGiftTypes = None,
     ) -> None:
@@ -12216,7 +12299,7 @@ class GiftAuction(TlObject):
     """
 
     def __init__(
-        self, id: str = "", gifts_per_round: int = 0, start_date: int = 0
+        self, *, id: str = "", gifts_per_round: int = 0, start_date: int = 0
     ) -> None:
         self.id: Union[str, None] = id
         r"""Identifier of the auction"""
@@ -12271,7 +12354,7 @@ class GiftBackground(TlObject):
     """
 
     def __init__(
-        self, center_color: int = 0, edge_color: int = 0, text_color: int = 0
+        self, *, center_color: int = 0, edge_color: int = 0, text_color: int = 0
     ) -> None:
         self.center_color: int = int(center_color)
         r"""Center color in RGB format"""
@@ -12322,7 +12405,7 @@ class GiftPurchaseLimits(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, remaining_count: int = 0) -> None:
+    def __init__(self, *, total_count: int = 0, remaining_count: int = 0) -> None:
         self.total_count: int = int(total_count)
         r"""The maximum number of times the gifts can be purchased"""
         self.remaining_count: int = int(remaining_count)
@@ -12373,6 +12456,7 @@ class GiftResaleParameters(TlObject):
 
     def __init__(
         self,
+        *,
         star_count: int = 0,
         toncoin_cent_count: int = 0,
         toncoin_only: bool = False,
@@ -12433,7 +12517,7 @@ class GiftCollection(TlObject):
     """
 
     def __init__(
-        self, id: int = 0, name: str = "", icon: Sticker = None, gift_count: int = 0
+        self, *, id: int = 0, name: str = "", icon: Sticker = None, gift_count: int = 0
     ) -> None:
         self.id: int = int(id)
         r"""Unique identifier of the collection"""
@@ -12485,7 +12569,7 @@ class GiftCollections(TlObject):
 
     """
 
-    def __init__(self, collections: List[GiftCollection] = None) -> None:
+    def __init__(self, *, collections: List[GiftCollection] = None) -> None:
         self.collections: List[GiftCollection] = collections or []
         r"""List of gift collections"""
 
@@ -12549,7 +12633,7 @@ class CanSendGiftResultFail(TlObject, CanSendGiftResult):
 
     """
 
-    def __init__(self, reason: FormattedText = None) -> None:
+    def __init__(self, *, reason: FormattedText = None) -> None:
         self.reason: Union[FormattedText, None] = reason
         r"""Reason to be shown to the user"""
 
@@ -12585,7 +12669,7 @@ class UpgradedGiftOriginUpgrade(TlObject, UpgradedGiftOrigin):
 
     """
 
-    def __init__(self, gift_message_id: int = 0) -> None:
+    def __init__(self, *, gift_message_id: int = 0) -> None:
         self.gift_message_id: int = int(gift_message_id)
         r"""Identifier of the message with the regular gift that was upgraded; may be 0 or an identifier of a deleted message"""
 
@@ -12649,7 +12733,7 @@ class UpgradedGiftOriginResale(TlObject, UpgradedGiftOrigin):
 
     """
 
-    def __init__(self, price: GiftResalePrice = None) -> None:
+    def __init__(self, *, price: GiftResalePrice = None) -> None:
         self.price: Union[GiftResalePriceStar, GiftResalePriceTon, None] = price
         r"""Price paid for the gift"""
 
@@ -12741,7 +12825,7 @@ class UpgradedGiftOriginOffer(TlObject, UpgradedGiftOrigin):
 
     """
 
-    def __init__(self, price: GiftResalePrice = None) -> None:
+    def __init__(self, *, price: GiftResalePrice = None) -> None:
         self.price: Union[GiftResalePriceStar, GiftResalePriceTon, None] = price
         r"""Price paid for the gift"""
 
@@ -12805,7 +12889,7 @@ class UpgradedGiftAttributeRarityPerMille(TlObject, UpgradedGiftAttributeRarity)
 
     """
 
-    def __init__(self, per_mille: int = 0) -> None:
+    def __init__(self, *, per_mille: int = 0) -> None:
         self.per_mille: int = int(per_mille)
         r"""The number of upgraded gifts that receive this attribute for each 1000 gifts upgraded; if 0, then it can be shown as \"<0\.1%\""""
 
@@ -12970,6 +13054,7 @@ class UpgradedGiftModel(TlObject):
 
     def __init__(
         self,
+        *,
         name: str = "",
         sticker: Sticker = None,
         rarity: UpgradedGiftAttributeRarity = None,
@@ -13040,6 +13125,7 @@ class UpgradedGiftSymbol(TlObject):
 
     def __init__(
         self,
+        *,
         name: str = "",
         sticker: Sticker = None,
         rarity: UpgradedGiftAttributeRarity = None,
@@ -13108,6 +13194,7 @@ class UpgradedGiftBackdropColors(TlObject):
 
     def __init__(
         self,
+        *,
         center_color: int = 0,
         edge_color: int = 0,
         symbol_color: int = 0,
@@ -13174,6 +13261,7 @@ class UpgradedGiftBackdrop(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         name: str = "",
         colors: UpgradedGiftBackdropColors = None,
@@ -13247,6 +13335,7 @@ class UpgradedGiftOriginalDetails(TlObject):
 
     def __init__(
         self,
+        *,
         sender_id: MessageSender = None,
         receiver_id: MessageSender = None,
         text: FormattedText = None,
@@ -13324,6 +13413,7 @@ class UpgradedGiftColors(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         model_custom_emoji_id: int = 0,
         symbol_custom_emoji_id: int = 0,
@@ -13450,6 +13540,7 @@ class Gift(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         publisher_chat_id: int = 0,
         sticker: Sticker = None,
@@ -13658,6 +13749,7 @@ class UpgradedGift(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         regular_gift_id: int = 0,
         publisher_chat_id: int = 0,
@@ -13885,6 +13977,7 @@ class UpgradedGiftValueInfo(TlObject):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         value: int = 0,
         is_value_average: bool = False,
@@ -14024,6 +14117,7 @@ class UpgradeGiftResult(TlObject):
 
     def __init__(
         self,
+        *,
         gift: UpgradedGift = None,
         received_gift_id: str = "",
         is_saved: bool = False,
@@ -14111,7 +14205,9 @@ class CraftGiftResultSuccess(TlObject, CraftGiftResult):
 
     """
 
-    def __init__(self, gift: UpgradedGift = None, received_gift_id: str = "") -> None:
+    def __init__(
+        self, *, gift: UpgradedGift = None, received_gift_id: str = ""
+    ) -> None:
         self.gift: Union[UpgradedGift, None] = gift
         r"""The created gift"""
         self.received_gift_id: Union[str, None] = received_gift_id
@@ -14154,7 +14250,7 @@ class CraftGiftResultTooEarly(TlObject, CraftGiftResult):
 
     """
 
-    def __init__(self, retry_after: int = 0) -> None:
+    def __init__(self, *, retry_after: int = 0) -> None:
         self.retry_after: int = int(retry_after)
         r"""Time left before the gift can be used for crafting"""
 
@@ -14257,6 +14353,7 @@ class AvailableGift(TlObject):
 
     def __init__(
         self,
+        *,
         gift: Gift = None,
         resale_count: int = 0,
         min_resale_star_count: int = 0,
@@ -14312,7 +14409,7 @@ class AvailableGifts(TlObject):
 
     """
 
-    def __init__(self, gifts: List[AvailableGift] = None) -> None:
+    def __init__(self, *, gifts: List[AvailableGift] = None) -> None:
         self.gifts: List[AvailableGift] = gifts or []
         r"""The list of gifts"""
 
@@ -14351,7 +14448,7 @@ class GiftUpgradePrice(TlObject):
 
     """
 
-    def __init__(self, date: int = 0, star_count: int = 0) -> None:
+    def __init__(self, *, date: int = 0, star_count: int = 0) -> None:
         self.date: int = int(date)
         r"""Point in time \(Unix timestamp\) when the price will be in effect"""
         self.star_count: int = int(star_count)
@@ -14394,7 +14491,7 @@ class UpgradedGiftAttributeIdModel(TlObject, UpgradedGiftAttributeId):
 
     """
 
-    def __init__(self, sticker_id: int = 0) -> None:
+    def __init__(self, *, sticker_id: int = 0) -> None:
         self.sticker_id: int = int(sticker_id)
         r"""Identifier of the sticker representing the model"""
 
@@ -14430,7 +14527,7 @@ class UpgradedGiftAttributeIdSymbol(TlObject, UpgradedGiftAttributeId):
 
     """
 
-    def __init__(self, sticker_id: int = 0) -> None:
+    def __init__(self, *, sticker_id: int = 0) -> None:
         self.sticker_id: int = int(sticker_id)
         r"""Identifier of the sticker representing the symbol"""
 
@@ -14466,7 +14563,7 @@ class UpgradedGiftAttributeIdBackdrop(TlObject, UpgradedGiftAttributeId):
 
     """
 
-    def __init__(self, backdrop_id: int = 0) -> None:
+    def __init__(self, *, backdrop_id: int = 0) -> None:
         self.backdrop_id: int = int(backdrop_id)
         r"""Identifier of the backdrop"""
 
@@ -14505,7 +14602,9 @@ class UpgradedGiftModelCount(TlObject):
 
     """
 
-    def __init__(self, model: UpgradedGiftModel = None, total_count: int = 0) -> None:
+    def __init__(
+        self, *, model: UpgradedGiftModel = None, total_count: int = 0
+    ) -> None:
         self.model: Union[UpgradedGiftModel, None] = model
         r"""The model"""
         self.total_count: int = int(total_count)
@@ -14551,7 +14650,9 @@ class UpgradedGiftSymbolCount(TlObject):
 
     """
 
-    def __init__(self, symbol: UpgradedGiftSymbol = None, total_count: int = 0) -> None:
+    def __init__(
+        self, *, symbol: UpgradedGiftSymbol = None, total_count: int = 0
+    ) -> None:
         self.symbol: Union[UpgradedGiftSymbol, None] = symbol
         r"""The symbol"""
         self.total_count: int = int(total_count)
@@ -14598,7 +14699,7 @@ class UpgradedGiftBackdropCount(TlObject):
     """
 
     def __init__(
-        self, backdrop: UpgradedGiftBackdrop = None, total_count: int = 0
+        self, *, backdrop: UpgradedGiftBackdrop = None, total_count: int = 0
     ) -> None:
         self.backdrop: Union[UpgradedGiftBackdrop, None] = backdrop
         r"""The backdrop"""
@@ -14729,7 +14830,9 @@ class GiftForResale(TlObject):
 
     """
 
-    def __init__(self, gift: UpgradedGift = None, received_gift_id: str = "") -> None:
+    def __init__(
+        self, *, gift: UpgradedGift = None, received_gift_id: str = ""
+    ) -> None:
         self.gift: Union[UpgradedGift, None] = gift
         r"""The gift"""
         self.received_gift_id: Union[str, None] = received_gift_id
@@ -14789,6 +14892,7 @@ class GiftsForResale(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         gifts: List[GiftForResale] = None,
         models: List[UpgradedGiftModelCount] = None,
@@ -14854,7 +14958,7 @@ class GiftResaleResultOk(TlObject, GiftResaleResult):
 
     """
 
-    def __init__(self, received_gift_id: str = "") -> None:
+    def __init__(self, *, received_gift_id: str = "") -> None:
         self.received_gift_id: Union[str, None] = received_gift_id
         r"""Unique identifier of the received gift; only for the gifts sent to the current user"""
 
@@ -14890,7 +14994,7 @@ class GiftResaleResultPriceIncreased(TlObject, GiftResaleResult):
 
     """
 
-    def __init__(self, price: GiftResalePrice = None) -> None:
+    def __init__(self, *, price: GiftResalePrice = None) -> None:
         self.price: Union[GiftResalePriceStar, GiftResalePriceTon, None] = price
         r"""New price for the gift"""
 
@@ -14926,7 +15030,7 @@ class SentGiftRegular(TlObject, SentGift):
 
     """
 
-    def __init__(self, gift: Gift = None) -> None:
+    def __init__(self, *, gift: Gift = None) -> None:
         self.gift: Union[Gift, None] = gift
         r"""The gift"""
 
@@ -14962,7 +15066,7 @@ class SentGiftUpgraded(TlObject, SentGift):
 
     """
 
-    def __init__(self, gift: UpgradedGift = None) -> None:
+    def __init__(self, *, gift: UpgradedGift = None) -> None:
         self.gift: Union[UpgradedGift, None] = gift
         r"""The gift"""
 
@@ -15066,6 +15170,7 @@ class ReceivedGift(TlObject):
 
     def __init__(
         self,
+        *,
         received_gift_id: str = "",
         sender_id: MessageSender = None,
         text: FormattedText = None,
@@ -15233,6 +15338,7 @@ class ReceivedGifts(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         gifts: List[ReceivedGift] = None,
         are_notifications_enabled: bool = False,
@@ -15290,7 +15396,7 @@ class AttributeCraftPersistenceProbability(TlObject):
 
     """
 
-    def __init__(self, persistence_chance_per_mille: List[int] = None) -> None:
+    def __init__(self, *, persistence_chance_per_mille: List[int] = None) -> None:
         self.persistence_chance_per_mille: List[int] = (
             persistence_chance_per_mille or []
         )
@@ -15346,6 +15452,7 @@ class GiftsForCrafting(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         gifts: List[ReceivedGift] = None,
         attribute_persistence_probabilities: List[
@@ -15421,6 +15528,7 @@ class GiftUpgradePreview(TlObject):
 
     def __init__(
         self,
+        *,
         models: List[UpgradedGiftModel] = None,
         symbols: List[UpgradedGiftSymbol] = None,
         backdrops: List[UpgradedGiftBackdrop] = None,
@@ -15489,6 +15597,7 @@ class GiftUpgradeVariants(TlObject):
 
     def __init__(
         self,
+        *,
         models: List[UpgradedGiftModel] = None,
         symbols: List[UpgradedGiftSymbol] = None,
         backdrops: List[UpgradedGiftBackdrop] = None,
@@ -15546,7 +15655,7 @@ class AuctionBid(TlObject):
     """
 
     def __init__(
-        self, star_count: int = 0, bid_date: int = 0, position: int = 0
+        self, *, star_count: int = 0, bid_date: int = 0, position: int = 0
     ) -> None:
         self.star_count: int = int(star_count)
         r"""The number of Telegram Stars that were put in the bid"""
@@ -15608,6 +15717,7 @@ class UserAuctionBid(TlObject):
 
     def __init__(
         self,
+        *,
         star_count: int = 0,
         bid_date: int = 0,
         next_bid_star_count: int = 0,
@@ -15679,6 +15789,7 @@ class AuctionRound(TlObject):
 
     def __init__(
         self,
+        *,
         number: int = 0,
         duration: int = 0,
         extend_time: int = 0,
@@ -15772,6 +15883,7 @@ class AuctionStateActive(TlObject, AuctionState):
 
     def __init__(
         self,
+        *,
         start_date: int = 0,
         end_date: int = 0,
         min_bid: int = 0,
@@ -15896,6 +16008,7 @@ class AuctionStateFinished(TlObject, AuctionState):
 
     def __init__(
         self,
+        *,
         start_date: int = 0,
         end_date: int = 0,
         average_price: int = 0,
@@ -15973,7 +16086,7 @@ class GiftAuctionState(TlObject):
 
     """
 
-    def __init__(self, gift: Gift = None, state: AuctionState = None) -> None:
+    def __init__(self, *, gift: Gift = None, state: AuctionState = None) -> None:
         self.gift: Union[Gift, None] = gift
         r"""The gift"""
         self.state: Union[AuctionStateActive, AuctionStateFinished, None] = state
@@ -16035,6 +16148,7 @@ class GiftAuctionAcquiredGift(TlObject):
 
     def __init__(
         self,
+        *,
         receiver_id: MessageSender = None,
         date: int = 0,
         star_count: int = 0,
@@ -16114,7 +16228,7 @@ class GiftAuctionAcquiredGifts(TlObject):
 
     """
 
-    def __init__(self, gifts: List[GiftAuctionAcquiredGift] = None) -> None:
+    def __init__(self, *, gifts: List[GiftAuctionAcquiredGift] = None) -> None:
         self.gifts: List[GiftAuctionAcquiredGift] = gifts or []
         r"""The list of acquired gifts"""
 
@@ -16325,7 +16439,7 @@ class StarTransactionTypeUserDeposit(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, user_id: int = 0, sticker: Sticker = None) -> None:
+    def __init__(self, *, user_id: int = 0, sticker: Sticker = None) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who gifted Telegram Stars; 0 if the user was anonymous"""
         self.sticker: Union[Sticker, None] = sticker
@@ -16371,7 +16485,7 @@ class StarTransactionTypeGiveawayDeposit(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, chat_id: int = 0, giveaway_message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, giveaway_message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of a supergroup or a channel chat that created the giveaway"""
         self.giveaway_message_id: int = int(giveaway_message_id)
@@ -16414,7 +16528,7 @@ class StarTransactionTypeFragmentWithdrawal(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, withdrawal_state: RevenueWithdrawalState = None) -> None:
+    def __init__(self, *, withdrawal_state: RevenueWithdrawalState = None) -> None:
         self.withdrawal_state: Union[
             RevenueWithdrawalStatePending,
             RevenueWithdrawalStateSucceeded,
@@ -16487,7 +16601,7 @@ class StarTransactionTypeTelegramApiUsage(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, request_count: int = 0) -> None:
+    def __init__(self, *, request_count: int = 0) -> None:
         self.request_count: int = int(request_count)
         r"""The number of billed requests"""
 
@@ -16528,7 +16642,7 @@ class StarTransactionTypeBotPaidMediaPurchase(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, user_id: int = 0, media: List[PaidMedia] = None) -> None:
+    def __init__(self, *, user_id: int = 0, media: List[PaidMedia] = None) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the bot or the business account user who sent the paid media"""
         self.media: List[PaidMedia] = media or []
@@ -16580,6 +16694,7 @@ class StarTransactionTypeBotPaidMediaSale(TlObject, StarTransactionType):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         media: List[PaidMedia] = None,
         payload: str = "",
@@ -16644,7 +16759,7 @@ class StarTransactionTypeChannelPaidMediaPurchase(TlObject, StarTransactionType)
     """
 
     def __init__(
-        self, chat_id: int = 0, message_id: int = 0, media: List[PaidMedia] = None
+        self, *, chat_id: int = 0, message_id: int = 0, media: List[PaidMedia] = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the channel chat that sent the paid media"""
@@ -16701,7 +16816,7 @@ class StarTransactionTypeChannelPaidMediaSale(TlObject, StarTransactionType):
     """
 
     def __init__(
-        self, user_id: int = 0, message_id: int = 0, media: List[PaidMedia] = None
+        self, *, user_id: int = 0, message_id: int = 0, media: List[PaidMedia] = None
     ) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who bought the media"""
@@ -16754,7 +16869,7 @@ class StarTransactionTypeBotInvoicePurchase(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, user_id: int = 0, product_info: ProductInfo = None) -> None:
+    def __init__(self, *, user_id: int = 0, product_info: ProductInfo = None) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the bot or the business account user who created the invoice"""
         self.product_info: Union[ProductInfo, None] = product_info
@@ -16810,6 +16925,7 @@ class StarTransactionTypeBotInvoiceSale(TlObject, StarTransactionType):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         product_info: ProductInfo = None,
         invoice_payload: bytes = b"",
@@ -16873,6 +16989,7 @@ class StarTransactionTypeBotSubscriptionPurchase(TlObject, StarTransactionType):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         subscription_period: int = 0,
         product_info: ProductInfo = None,
@@ -16939,6 +17056,7 @@ class StarTransactionTypeBotSubscriptionSale(TlObject, StarTransactionType):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         subscription_period: int = 0,
         product_info: ProductInfo = None,
@@ -17004,7 +17122,7 @@ class StarTransactionTypeChannelSubscriptionPurchase(TlObject, StarTransactionTy
 
     """
 
-    def __init__(self, chat_id: int = 0, subscription_period: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, subscription_period: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the channel chat that created the subscription"""
         self.subscription_period: int = int(subscription_period)
@@ -17052,7 +17170,7 @@ class StarTransactionTypeChannelSubscriptionSale(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, user_id: int = 0, subscription_period: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0, subscription_period: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who bought the subscription"""
         self.subscription_period: int = int(subscription_period)
@@ -17100,7 +17218,7 @@ class StarTransactionTypeGiftAuctionBid(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, owner_id: MessageSender = None, gift: Gift = None) -> None:
+    def __init__(self, *, owner_id: MessageSender = None, gift: Gift = None) -> None:
         self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
         r"""Identifier of the user who will receive the gift"""
         self.gift: Union[Gift, None] = gift
@@ -17142,7 +17260,7 @@ class StarTransactionTypeGiftPurchase(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, owner_id: MessageSender = None, gift: Gift = None) -> None:
+    def __init__(self, *, owner_id: MessageSender = None, gift: Gift = None) -> None:
         self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
         r"""Identifier of the user or the channel that received the gift"""
         self.gift: Union[Gift, None] = gift
@@ -17181,7 +17299,7 @@ class StarTransactionTypeGiftPurchaseOffer(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, gift: UpgradedGift = None) -> None:
+    def __init__(self, *, gift: UpgradedGift = None) -> None:
         self.gift: Union[UpgradedGift, None] = gift
         r"""The gift"""
 
@@ -17223,7 +17341,7 @@ class StarTransactionTypeGiftTransfer(TlObject, StarTransactionType):
     """
 
     def __init__(
-        self, owner_id: MessageSender = None, gift: UpgradedGift = None
+        self, *, owner_id: MessageSender = None, gift: UpgradedGift = None
     ) -> None:
         self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
         r"""Identifier of the user or the channel that received the gift"""
@@ -17267,7 +17385,7 @@ class StarTransactionTypeGiftOriginalDetailsDrop(TlObject, StarTransactionType):
     """
 
     def __init__(
-        self, owner_id: MessageSender = None, gift: UpgradedGift = None
+        self, *, owner_id: MessageSender = None, gift: UpgradedGift = None
     ) -> None:
         self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
         r"""Identifier of the user or the channel that owns the gift"""
@@ -17312,7 +17430,7 @@ class StarTransactionTypeGiftSale(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, user_id: int = 0, gift: Gift = None) -> None:
+    def __init__(self, *, user_id: int = 0, gift: Gift = None) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who sent the gift"""
         self.gift: Union[Gift, None] = gift
@@ -17354,7 +17472,7 @@ class StarTransactionTypeGiftUpgrade(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, user_id: int = 0, gift: UpgradedGift = None) -> None:
+    def __init__(self, *, user_id: int = 0, gift: UpgradedGift = None) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who initially sent the gift"""
         self.gift: Union[UpgradedGift, None] = gift
@@ -17396,7 +17514,7 @@ class StarTransactionTypeGiftUpgradePurchase(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, owner_id: MessageSender = None, gift: Gift = None) -> None:
+    def __init__(self, *, owner_id: MessageSender = None, gift: Gift = None) -> None:
         self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
         r"""Owner of the upgraded gift"""
         self.gift: Union[Gift, None] = gift
@@ -17440,7 +17558,7 @@ class StarTransactionTypeUpgradedGiftPurchase(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, user_id: int = 0, gift: UpgradedGift = None) -> None:
+    def __init__(self, *, user_id: int = 0, gift: UpgradedGift = None) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who sold the gift"""
         self.gift: Union[UpgradedGift, None] = gift
@@ -17495,6 +17613,7 @@ class StarTransactionTypeUpgradedGiftSale(TlObject, StarTransactionType):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         gift: UpgradedGift = None,
         commission_per_mille: int = 0,
@@ -17560,7 +17679,7 @@ class StarTransactionTypeChannelPaidReactionSend(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the channel chat"""
         self.message_id: int = int(message_id)
@@ -17608,7 +17727,7 @@ class StarTransactionTypeChannelPaidReactionReceive(TlObject, StarTransactionTyp
 
     """
 
-    def __init__(self, user_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0, message_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who added the paid reaction"""
         self.message_id: int = int(message_id)
@@ -17656,7 +17775,7 @@ class StarTransactionTypeAffiliateProgramCommission(TlObject, StarTransactionTyp
 
     """
 
-    def __init__(self, chat_id: int = 0, commission_per_mille: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, commission_per_mille: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat that created the affiliate program"""
         self.commission_per_mille: int = int(commission_per_mille)
@@ -17704,7 +17823,7 @@ class StarTransactionTypePaidMessageSend(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_count: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_count: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat that received the payment"""
         self.message_count: int = int(message_count)
@@ -17758,6 +17877,7 @@ class StarTransactionTypePaidMessageReceive(TlObject, StarTransactionType):
 
     def __init__(
         self,
+        *,
         sender_id: MessageSender = None,
         message_count: int = 0,
         commission_per_mille: int = 0,
@@ -17815,7 +17935,7 @@ class StarTransactionTypePaidGroupCallMessageSend(TlObject, StarTransactionType)
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat that received the payment"""
 
@@ -17861,6 +17981,7 @@ class StarTransactionTypePaidGroupCallMessageReceive(TlObject, StarTransactionTy
 
     def __init__(
         self,
+        *,
         sender_id: MessageSender = None,
         commission_per_mille: int = 0,
         commission_star_amount: StarAmount = None,
@@ -17913,7 +18034,7 @@ class StarTransactionTypePaidGroupCallReactionSend(TlObject, StarTransactionType
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat that received the payment"""
 
@@ -17959,6 +18080,7 @@ class StarTransactionTypePaidGroupCallReactionReceive(TlObject, StarTransactionT
 
     def __init__(
         self,
+        *,
         sender_id: MessageSender = None,
         commission_per_mille: int = 0,
         commission_star_amount: StarAmount = None,
@@ -18011,7 +18133,7 @@ class StarTransactionTypeSuggestedPostPaymentSend(TlObject, StarTransactionType)
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the channel chat that posted the post"""
 
@@ -18049,7 +18171,7 @@ class StarTransactionTypeSuggestedPostPaymentReceive(TlObject, StarTransactionTy
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who paid for the suggested post"""
 
@@ -18094,7 +18216,7 @@ class StarTransactionTypePremiumPurchase(TlObject, StarTransactionType):
     """
 
     def __init__(
-        self, user_id: int = 0, month_count: int = 0, sticker: Sticker = None
+        self, *, user_id: int = 0, month_count: int = 0, sticker: Sticker = None
     ) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who received the Telegram Premium subscription"""
@@ -18142,7 +18264,7 @@ class StarTransactionTypeBusinessBotTransferSend(TlObject, StarTransactionType):
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the bot that received Telegram Stars"""
 
@@ -18180,7 +18302,7 @@ class StarTransactionTypeBusinessBotTransferReceive(TlObject, StarTransactionTyp
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who sent Telegram Stars"""
 
@@ -18290,6 +18412,7 @@ class StarTransaction(TlObject):
 
     def __init__(
         self,
+        *,
         id: str = "",
         star_amount: StarAmount = None,
         is_refund: bool = False,
@@ -18405,6 +18528,7 @@ class StarTransactions(TlObject):
 
     def __init__(
         self,
+        *,
         star_amount: StarAmount = None,
         transactions: List[StarTransaction] = None,
         next_offset: str = "",
@@ -18458,7 +18582,7 @@ class TonTransactionTypeFragmentDeposit(TlObject, TonTransactionType):
 
     """
 
-    def __init__(self, is_gift: bool = False, sticker: Sticker = None) -> None:
+    def __init__(self, *, is_gift: bool = False, sticker: Sticker = None) -> None:
         self.is_gift: bool = bool(is_gift)
         r"""True, if the transaction is a gift from another user"""
         self.sticker: Union[Sticker, None] = sticker
@@ -18501,7 +18625,7 @@ class TonTransactionTypeFragmentWithdrawal(TlObject, TonTransactionType):
 
     """
 
-    def __init__(self, withdrawal_state: RevenueWithdrawalState = None) -> None:
+    def __init__(self, *, withdrawal_state: RevenueWithdrawalState = None) -> None:
         self.withdrawal_state: Union[
             RevenueWithdrawalStatePending,
             RevenueWithdrawalStateSucceeded,
@@ -18544,7 +18668,7 @@ class TonTransactionTypeSuggestedPostPayment(TlObject, TonTransactionType):
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the channel chat that posted the post"""
 
@@ -18582,7 +18706,7 @@ class TonTransactionTypeGiftPurchaseOffer(TlObject, TonTransactionType):
 
     """
 
-    def __init__(self, gift: UpgradedGift = None) -> None:
+    def __init__(self, *, gift: UpgradedGift = None) -> None:
         self.gift: Union[UpgradedGift, None] = gift
         r"""The gift"""
 
@@ -18623,7 +18747,7 @@ class TonTransactionTypeUpgradedGiftPurchase(TlObject, TonTransactionType):
 
     """
 
-    def __init__(self, user_id: int = 0, gift: UpgradedGift = None) -> None:
+    def __init__(self, *, user_id: int = 0, gift: UpgradedGift = None) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who sold the gift"""
         self.gift: Union[UpgradedGift, None] = gift
@@ -18678,6 +18802,7 @@ class TonTransactionTypeUpgradedGiftSale(TlObject, TonTransactionType):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         gift: UpgradedGift = None,
         commission_per_mille: int = 0,
@@ -18838,6 +18963,7 @@ class TonTransaction(TlObject):
 
     def __init__(
         self,
+        *,
         id: str = "",
         ton_amount: int = 0,
         is_refund: bool = False,
@@ -18917,6 +19043,7 @@ class TonTransactions(TlObject):
 
     def __init__(
         self,
+        *,
         ton_amount: int = 0,
         transactions: List[TonTransaction] = None,
         next_offset: str = "",
@@ -18967,7 +19094,7 @@ class ActiveStoryStateLive(TlObject, ActiveStoryState):
 
     """
 
-    def __init__(self, story_id: int = 0) -> None:
+    def __init__(self, *, story_id: int = 0) -> None:
         self.story_id: int = int(story_id)
         r"""Identifier of the active live story"""
 
@@ -19117,7 +19244,7 @@ class GiveawayParticipantStatusAlreadyWasMember(TlObject, GiveawayParticipantSta
 
     """
 
-    def __init__(self, joined_chat_date: int = 0) -> None:
+    def __init__(self, *, joined_chat_date: int = 0) -> None:
         self.joined_chat_date: int = int(joined_chat_date)
         r"""Point in time \(Unix timestamp\) when the user joined the chat"""
 
@@ -19155,7 +19282,7 @@ class GiveawayParticipantStatusAdministrator(TlObject, GiveawayParticipantStatus
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat administered by the user"""
 
@@ -19193,7 +19320,7 @@ class GiveawayParticipantStatusDisallowedCountry(TlObject, GiveawayParticipantSt
 
     """
 
-    def __init__(self, user_country_code: str = "") -> None:
+    def __init__(self, *, user_country_code: str = "") -> None:
         self.user_country_code: Union[str, None] = user_country_code
         r"""A two\-letter ISO 3166\-1 alpha\-2 country code of the user's country"""
 
@@ -19239,6 +19366,7 @@ class GiveawayInfoOngoing(TlObject, GiveawayInfo):
 
     def __init__(
         self,
+        *,
         creation_date: int = 0,
         status: GiveawayParticipantStatus = None,
         is_ended: bool = False,
@@ -19319,6 +19447,7 @@ class GiveawayInfoCompleted(TlObject, GiveawayInfo):
 
     def __init__(
         self,
+        *,
         creation_date: int = 0,
         actual_winners_selection_date: int = 0,
         was_refunded: bool = False,
@@ -19396,7 +19525,7 @@ class GiveawayPrizePremium(TlObject, GiveawayPrize):
 
     """
 
-    def __init__(self, month_count: int = 0) -> None:
+    def __init__(self, *, month_count: int = 0) -> None:
         self.month_count: int = int(month_count)
         r"""Number of months the Telegram Premium subscription will be active after code activation"""
 
@@ -19432,7 +19561,7 @@ class GiveawayPrizeStars(TlObject, GiveawayPrize):
 
     """
 
-    def __init__(self, star_count: int = 0) -> None:
+    def __init__(self, *, star_count: int = 0) -> None:
         self.star_count: int = int(star_count)
         r"""Number of Telegram Stars that will be shared by all winners"""
 
@@ -19482,6 +19611,7 @@ class AccentColor(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         built_in_accent_color_id: int = 0,
         light_theme_colors: List[int] = None,
@@ -19554,6 +19684,7 @@ class ProfileAccentColors(TlObject):
 
     def __init__(
         self,
+        *,
         palette_colors: List[int] = None,
         background_colors: List[int] = None,
         story_colors: List[int] = None,
@@ -19618,6 +19749,7 @@ class ProfileAccentColor(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         light_theme_colors: ProfileAccentColors = None,
         dark_theme_colors: ProfileAccentColors = None,
@@ -19696,6 +19828,7 @@ class UserRating(TlObject):
 
     def __init__(
         self,
+        *,
         level: int = 0,
         is_maximum_level_reached: bool = False,
         rating: int = 0,
@@ -19762,7 +19895,7 @@ class RestrictionInfo(TlObject):
     """
 
     def __init__(
-        self, restriction_reason: str = "", has_sensitive_content: bool = False
+        self, *, restriction_reason: str = "", has_sensitive_content: bool = False
     ) -> None:
         self.restriction_reason: Union[str, None] = restriction_reason
         r"""A human\-readable description of the reason why access to the content must be restricted\. If empty, then the content can be accessed, but may be covered by hidden with 18\+ spoiler anyway"""
@@ -19806,7 +19939,7 @@ class EmojiStatusTypeCustomEmoji(TlObject, EmojiStatusType):
 
     """
 
-    def __init__(self, custom_emoji_id: int = 0) -> None:
+    def __init__(self, *, custom_emoji_id: int = 0) -> None:
         self.custom_emoji_id: int = int(custom_emoji_id)
         r"""Identifier of the custom emoji in stickerFormatTgs format"""
 
@@ -19859,6 +19992,7 @@ class EmojiStatusTypeUpgradedGift(TlObject, EmojiStatusType):
 
     def __init__(
         self,
+        *,
         upgraded_gift_id: int = 0,
         gift_title: str = "",
         gift_name: str = "",
@@ -19929,7 +20063,9 @@ class EmojiStatus(TlObject):
 
     """
 
-    def __init__(self, type: EmojiStatusType = None, expiration_date: int = 0) -> None:
+    def __init__(
+        self, *, type: EmojiStatusType = None, expiration_date: int = 0
+    ) -> None:
         self.type: Union[
             EmojiStatusTypeCustomEmoji, EmojiStatusTypeUpgradedGift, None
         ] = type
@@ -19974,7 +20110,7 @@ class EmojiStatuses(TlObject):
 
     """
 
-    def __init__(self, emoji_statuses: List[EmojiStatus] = None) -> None:
+    def __init__(self, *, emoji_statuses: List[EmojiStatus] = None) -> None:
         self.emoji_statuses: List[EmojiStatus] = emoji_statuses or []
         r"""The list of emoji statuses identifiers"""
 
@@ -20010,7 +20146,7 @@ class EmojiStatusCustomEmojis(TlObject):
 
     """
 
-    def __init__(self, custom_emoji_ids: List[int] = None) -> None:
+    def __init__(self, *, custom_emoji_ids: List[int] = None) -> None:
         self.custom_emoji_ids: List[int] = custom_emoji_ids or []
         r"""The list of custom emoji identifiers"""
 
@@ -20057,6 +20193,7 @@ class Usernames(TlObject):
 
     def __init__(
         self,
+        *,
         active_usernames: List[str] = None,
         disabled_usernames: List[str] = None,
         editable_username: str = "",
@@ -20192,6 +20329,7 @@ class User(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         first_name: str = "",
         last_name: str = "",
@@ -20453,6 +20591,7 @@ class BotInfo(TlObject):
 
     def __init__(
         self,
+        *,
         short_description: str = "",
         description: str = "",
         photo: Photo = None,
@@ -20941,6 +21080,7 @@ class UserFullInfo(TlObject):
 
     def __init__(
         self,
+        *,
         personal_photo: ChatPhoto = None,
         photo: ChatPhoto = None,
         public_photo: ChatPhoto = None,
@@ -21159,7 +21299,7 @@ class Users(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, user_ids: List[int] = None) -> None:
+    def __init__(self, *, total_count: int = 0, user_ids: List[int] = None) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of users found"""
         self.user_ids: List[int] = user_ids or []
@@ -21205,7 +21345,7 @@ class FoundUsers(TlObject):
 
     """
 
-    def __init__(self, user_ids: List[int] = None, next_offset: str = "") -> None:
+    def __init__(self, *, user_ids: List[int] = None, next_offset: str = "") -> None:
         self.user_ids: List[int] = user_ids or []
         r"""Identifiers of the found users"""
         self.next_offset: Union[str, None] = next_offset
@@ -21255,7 +21395,7 @@ class ChatAdministrator(TlObject):
     """
 
     def __init__(
-        self, user_id: int = 0, custom_title: str = "", is_owner: bool = False
+        self, *, user_id: int = 0, custom_title: str = "", is_owner: bool = False
     ) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier of the administrator"""
@@ -21303,7 +21443,7 @@ class ChatAdministrators(TlObject):
 
     """
 
-    def __init__(self, administrators: List[ChatAdministrator] = None) -> None:
+    def __init__(self, *, administrators: List[ChatAdministrator] = None) -> None:
         self.administrators: List[ChatAdministrator] = administrators or []
         r"""A list of chat administrators"""
 
@@ -21342,7 +21482,7 @@ class ChatMemberStatusCreator(TlObject, ChatMemberStatus):
 
     """
 
-    def __init__(self, is_anonymous: bool = False, is_member: bool = False) -> None:
+    def __init__(self, *, is_anonymous: bool = False, is_member: bool = False) -> None:
         self.is_anonymous: bool = bool(is_anonymous)
         r"""True, if the creator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only"""
         self.is_member: bool = bool(is_member)
@@ -21389,7 +21529,7 @@ class ChatMemberStatusAdministrator(TlObject, ChatMemberStatus):
     """
 
     def __init__(
-        self, can_be_edited: bool = False, rights: ChatAdministratorRights = None
+        self, *, can_be_edited: bool = False, rights: ChatAdministratorRights = None
     ) -> None:
         self.can_be_edited: bool = bool(can_be_edited)
         r"""True, if the current user can edit the administrator privileges for the called user"""
@@ -21433,7 +21573,7 @@ class ChatMemberStatusMember(TlObject, ChatMemberStatus):
 
     """
 
-    def __init__(self, member_until_date: int = 0) -> None:
+    def __init__(self, *, member_until_date: int = 0) -> None:
         self.member_until_date: int = int(member_until_date)
         r"""Point in time \(Unix timestamp\) when the user will be removed from the chat because of the expired subscription; 0 if never\. Ignored in setChatMemberStatus"""
 
@@ -21477,6 +21617,7 @@ class ChatMemberStatusRestricted(TlObject, ChatMemberStatus):
 
     def __init__(
         self,
+        *,
         is_member: bool = False,
         restricted_until_date: int = 0,
         permissions: ChatPermissions = None,
@@ -21555,7 +21696,7 @@ class ChatMemberStatusBanned(TlObject, ChatMemberStatus):
 
     """
 
-    def __init__(self, banned_until_date: int = 0) -> None:
+    def __init__(self, *, banned_until_date: int = 0) -> None:
         self.banned_until_date: int = int(banned_until_date)
         r"""Point in time \(Unix timestamp\) when the user will be unbanned; 0 if never\. If the user is banned for more than 366 days or for less than 30 seconds from the current time, the user is considered to be banned forever\. Always 0 in basic groups"""
 
@@ -21605,6 +21746,7 @@ class ChatMember(TlObject):
 
     def __init__(
         self,
+        *,
         member_id: MessageSender = None,
         tag: str = "",
         inviter_user_id: int = 0,
@@ -21676,7 +21818,9 @@ class ChatMembers(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, members: List[ChatMember] = None) -> None:
+    def __init__(
+        self, *, total_count: int = 0, members: List[ChatMember] = None
+    ) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of chat members found"""
         self.members: List[ChatMember] = members or []
@@ -21803,7 +21947,7 @@ class ChatMembersFilterMention(TlObject, ChatMembersFilter):
 
     """
 
-    def __init__(self, topic_id: MessageTopic = None) -> None:
+    def __init__(self, *, topic_id: MessageTopic = None) -> None:
         self.topic_id: Union[
             MessageTopicThread,
             MessageTopicForum,
@@ -21957,7 +22101,7 @@ class SupergroupMembersFilterContacts(TlObject, SupergroupMembersFilter):
 
     """
 
-    def __init__(self, query: str = "") -> None:
+    def __init__(self, *, query: str = "") -> None:
         self.query: Union[str, None] = query
         r"""Query to search for"""
 
@@ -22023,7 +22167,7 @@ class SupergroupMembersFilterSearch(TlObject, SupergroupMembersFilter):
 
     """
 
-    def __init__(self, query: str = "") -> None:
+    def __init__(self, *, query: str = "") -> None:
         self.query: Union[str, None] = query
         r"""Query to search for"""
 
@@ -22059,7 +22203,7 @@ class SupergroupMembersFilterRestricted(TlObject, SupergroupMembersFilter):
 
     """
 
-    def __init__(self, query: str = "") -> None:
+    def __init__(self, *, query: str = "") -> None:
         self.query: Union[str, None] = query
         r"""Query to search for"""
 
@@ -22095,7 +22239,7 @@ class SupergroupMembersFilterBanned(TlObject, SupergroupMembersFilter):
 
     """
 
-    def __init__(self, query: str = "") -> None:
+    def __init__(self, *, query: str = "") -> None:
         self.query: Union[str, None] = query
         r"""Query to search for"""
 
@@ -22134,7 +22278,7 @@ class SupergroupMembersFilterMention(TlObject, SupergroupMembersFilter):
 
     """
 
-    def __init__(self, query: str = "", topic_id: MessageTopic = None) -> None:
+    def __init__(self, *, query: str = "", topic_id: MessageTopic = None) -> None:
         self.query: Union[str, None] = query
         r"""Query to search for"""
         self.topic_id: Union[
@@ -22248,6 +22392,7 @@ class ChatInviteLink(TlObject):
 
     def __init__(
         self,
+        *,
         invite_link: str = "",
         name: str = "",
         creator_user_id: int = 0,
@@ -22361,7 +22506,7 @@ class ChatInviteLinks(TlObject):
     """
 
     def __init__(
-        self, total_count: int = 0, invite_links: List[ChatInviteLink] = None
+        self, *, total_count: int = 0, invite_links: List[ChatInviteLink] = None
     ) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of chat invite links found"""
@@ -22413,6 +22558,7 @@ class ChatInviteLinkCount(TlObject):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         invite_link_count: int = 0,
         revoked_invite_link_count: int = 0,
@@ -22465,7 +22611,7 @@ class ChatInviteLinkCounts(TlObject):
 
     """
 
-    def __init__(self, invite_link_counts: List[ChatInviteLinkCount] = None) -> None:
+    def __init__(self, *, invite_link_counts: List[ChatInviteLinkCount] = None) -> None:
         self.invite_link_counts: List[ChatInviteLinkCount] = invite_link_counts or []
         r"""List of invite link counts"""
 
@@ -22512,6 +22658,7 @@ class ChatInviteLinkMember(TlObject):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         joined_chat_date: int = 0,
         via_chat_folder_invite_link: bool = False,
@@ -22573,7 +22720,7 @@ class ChatInviteLinkMembers(TlObject):
     """
 
     def __init__(
-        self, total_count: int = 0, members: List[ChatInviteLinkMember] = None
+        self, *, total_count: int = 0, members: List[ChatInviteLinkMember] = None
     ) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of chat members found"""
@@ -22709,6 +22856,7 @@ class ChatInviteLinkSubscriptionInfo(TlObject):
 
     def __init__(
         self,
+        *,
         pricing: StarSubscriptionPricing = None,
         can_reuse: bool = False,
         form_id: int = 0,
@@ -22797,6 +22945,7 @@ class ChatInviteLinkInfo(TlObject):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         accessible_for: int = 0,
         type: InviteLinkChatType = None,
@@ -22910,7 +23059,7 @@ class ChatJoinRequest(TlObject):
 
     """
 
-    def __init__(self, user_id: int = 0, date: int = 0, bio: str = "") -> None:
+    def __init__(self, *, user_id: int = 0, date: int = 0, bio: str = "") -> None:
         self.user_id: int = int(user_id)
         r"""User identifier"""
         self.date: int = int(date)
@@ -22961,7 +23110,7 @@ class ChatJoinRequests(TlObject):
     """
 
     def __init__(
-        self, total_count: int = 0, requests: List[ChatJoinRequest] = None
+        self, *, total_count: int = 0, requests: List[ChatJoinRequest] = None
     ) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of requests found"""
@@ -23008,7 +23157,7 @@ class ChatJoinRequestsInfo(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, user_ids: List[int] = None) -> None:
+    def __init__(self, *, total_count: int = 0, user_ids: List[int] = None) -> None:
         self.total_count: int = int(total_count)
         r"""Total number of pending join requests"""
         self.user_ids: List[int] = user_ids or []
@@ -23065,6 +23214,7 @@ class BasicGroup(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         member_count: int = 0,
         status: ChatMemberStatus = None,
@@ -23158,6 +23308,7 @@ class BasicGroupFullInfo(TlObject):
 
     def __init__(
         self,
+        *,
         photo: ChatPhoto = None,
         description: str = "",
         creator_user_id: int = 0,
@@ -23311,6 +23462,7 @@ class Supergroup(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         usernames: Usernames = None,
         date: int = 0,
@@ -23612,6 +23764,7 @@ class SupergroupFullInfo(TlObject):
 
     def __init__(
         self,
+        *,
         photo: ChatPhoto = None,
         description: str = "",
         member_count: int = 0,
@@ -23998,6 +24151,7 @@ class SecretChat(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         user_id: int = 0,
         state: SecretChatState = None,
@@ -24079,6 +24233,7 @@ class PublicPostSearchLimits(TlObject):
 
     def __init__(
         self,
+        *,
         daily_free_query_count: int = 0,
         remaining_free_query_count: int = 0,
         next_free_query_in: int = 0,
@@ -24143,7 +24298,7 @@ class MessageSenderUser(TlObject, MessageSender):
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who sent the message"""
 
@@ -24179,7 +24334,7 @@ class MessageSenderChat(TlObject, MessageSender):
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat that sent the message"""
 
@@ -24219,7 +24374,7 @@ class MessageSenders(TlObject):
     """
 
     def __init__(
-        self, total_count: int = 0, senders: List[MessageSender] = None
+        self, *, total_count: int = 0, senders: List[MessageSender] = None
     ) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of message senders found"""
@@ -24267,7 +24422,7 @@ class ChatMessageSender(TlObject):
     """
 
     def __init__(
-        self, sender: MessageSender = None, needs_premium: bool = False
+        self, *, sender: MessageSender = None, needs_premium: bool = False
     ) -> None:
         self.sender: Union[MessageSenderUser, MessageSenderChat, None] = sender
         r"""The message sender"""
@@ -24311,7 +24466,7 @@ class ChatMessageSenders(TlObject):
 
     """
 
-    def __init__(self, senders: List[ChatMessageSender] = None) -> None:
+    def __init__(self, *, senders: List[ChatMessageSender] = None) -> None:
         self.senders: List[ChatMessageSender] = senders or []
         r"""List of available message senders"""
 
@@ -24350,7 +24505,7 @@ class PollVoter(TlObject):
 
     """
 
-    def __init__(self, voter_id: MessageSender = None, date: int = 0) -> None:
+    def __init__(self, *, voter_id: MessageSender = None, date: int = 0) -> None:
         self.voter_id: Union[MessageSenderUser, MessageSenderChat, None] = voter_id
         r"""The voter identifier"""
         self.date: int = int(date)
@@ -24392,7 +24547,7 @@ class PollVoters(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, voters: List[PollVoter] = None) -> None:
+    def __init__(self, *, total_count: int = 0, voters: List[PollVoter] = None) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of poll voters found"""
         self.voters: List[PollVoter] = voters or []
@@ -24435,7 +24590,7 @@ class MessageReadDateRead(TlObject, MessageReadDate):
 
     """
 
-    def __init__(self, read_date: int = 0) -> None:
+    def __init__(self, *, read_date: int = 0) -> None:
         self.read_date: int = int(read_date)
         r"""Point in time \(Unix timestamp\) when the message was read by the other user"""
 
@@ -24588,7 +24743,7 @@ class MessageViewer(TlObject):
 
     """
 
-    def __init__(self, user_id: int = 0, view_date: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0, view_date: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier of the viewer"""
         self.view_date: int = int(view_date)
@@ -24631,7 +24786,7 @@ class MessageViewers(TlObject):
 
     """
 
-    def __init__(self, viewers: List[MessageViewer] = None) -> None:
+    def __init__(self, *, viewers: List[MessageViewer] = None) -> None:
         self.viewers: List[MessageViewer] = viewers or []
         r"""List of message viewers"""
 
@@ -24667,7 +24822,7 @@ class MessageOriginUser(TlObject, MessageOrigin):
 
     """
 
-    def __init__(self, sender_user_id: int = 0) -> None:
+    def __init__(self, *, sender_user_id: int = 0) -> None:
         self.sender_user_id: int = int(sender_user_id)
         r"""Identifier of the user who originally sent the message"""
 
@@ -24703,7 +24858,7 @@ class MessageOriginHiddenUser(TlObject, MessageOrigin):
 
     """
 
-    def __init__(self, sender_name: str = "") -> None:
+    def __init__(self, *, sender_name: str = "") -> None:
         self.sender_name: Union[str, None] = sender_name
         r"""Name of the sender"""
 
@@ -24742,7 +24897,7 @@ class MessageOriginChat(TlObject, MessageOrigin):
 
     """
 
-    def __init__(self, sender_chat_id: int = 0, author_signature: str = "") -> None:
+    def __init__(self, *, sender_chat_id: int = 0, author_signature: str = "") -> None:
         self.sender_chat_id: int = int(sender_chat_id)
         r"""Identifier of the chat that originally sent the message"""
         self.author_signature: Union[str, None] = author_signature
@@ -24792,7 +24947,7 @@ class MessageOriginChannel(TlObject, MessageOrigin):
     """
 
     def __init__(
-        self, chat_id: int = 0, message_id: int = 0, author_signature: str = ""
+        self, *, chat_id: int = 0, message_id: int = 0, author_signature: str = ""
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the channel chat to which the message was originally sent"""
@@ -24857,6 +25012,7 @@ class ForwardSource(TlObject):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_id: int = 0,
         sender_id: MessageSender = None,
@@ -24922,7 +25078,7 @@ class ReactionTypeEmoji(TlObject, ReactionType):
 
     """
 
-    def __init__(self, emoji: str = "") -> None:
+    def __init__(self, *, emoji: str = "") -> None:
         self.emoji: Union[str, None] = emoji
         r"""Text representation of the reaction"""
 
@@ -24958,7 +25114,7 @@ class ReactionTypeCustomEmoji(TlObject, ReactionType):
 
     """
 
-    def __init__(self, custom_emoji_id: int = 0) -> None:
+    def __init__(self, *, custom_emoji_id: int = 0) -> None:
         self.custom_emoji_id: int = int(custom_emoji_id)
         r"""Unique identifier of the custom emoji"""
 
@@ -25078,7 +25234,7 @@ class PaidReactionTypeChat(TlObject, PaidReactionType):
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat"""
 
@@ -25128,6 +25284,7 @@ class PaidReactor(TlObject):
 
     def __init__(
         self,
+        *,
         sender_id: MessageSender = None,
         star_count: int = 0,
         is_top: bool = False,
@@ -25192,7 +25349,7 @@ class LiveStoryDonors(TlObject):
     """
 
     def __init__(
-        self, total_star_count: int = 0, top_donors: List[PaidReactor] = None
+        self, *, total_star_count: int = 0, top_donors: List[PaidReactor] = None
     ) -> None:
         self.total_star_count: int = int(total_star_count)
         r"""Total amount of spend Telegram Stars"""
@@ -25247,6 +25404,7 @@ class MessageForwardInfo(TlObject):
 
     def __init__(
         self,
+        *,
         origin: MessageOrigin = None,
         date: int = 0,
         source: ForwardSource = None,
@@ -25315,7 +25473,7 @@ class MessageImportInfo(TlObject):
 
     """
 
-    def __init__(self, sender_name: str = "", date: int = 0) -> None:
+    def __init__(self, *, sender_name: str = "", date: int = 0) -> None:
         self.sender_name: Union[str, None] = sender_name
         r"""Name of the original sender"""
         self.date: int = int(date)
@@ -25372,6 +25530,7 @@ class MessageReplyInfo(TlObject):
 
     def __init__(
         self,
+        *,
         reply_count: int = 0,
         recent_replier_ids: List[MessageSender] = None,
         last_read_inbox_message_id: int = 0,
@@ -25450,6 +25609,7 @@ class MessageReaction(TlObject):
 
     def __init__(
         self,
+        *,
         type: ReactionType = None,
         total_count: int = 0,
         is_chosen: bool = False,
@@ -25525,6 +25685,7 @@ class MessageReactions(TlObject):
 
     def __init__(
         self,
+        *,
         reactions: List[MessageReaction] = None,
         are_tags: bool = False,
         paid_reactors: List[PaidReactor] = None,
@@ -25593,6 +25754,7 @@ class MessageInteractionInfo(TlObject):
 
     def __init__(
         self,
+        *,
         view_count: int = 0,
         forward_count: int = 0,
         reply_info: MessageReplyInfo = None,
@@ -25656,6 +25818,7 @@ class UnreadReaction(TlObject):
 
     def __init__(
         self,
+        *,
         type: ReactionType = None,
         sender_id: MessageSender = None,
         is_big: bool = False,
@@ -25708,7 +25871,7 @@ class MessageTopicThread(TlObject, MessageTopic):
 
     """
 
-    def __init__(self, message_thread_id: int = 0) -> None:
+    def __init__(self, *, message_thread_id: int = 0) -> None:
         self.message_thread_id: int = int(message_thread_id)
         r"""Unique identifier of the message thread"""
 
@@ -25744,7 +25907,7 @@ class MessageTopicForum(TlObject, MessageTopic):
 
     """
 
-    def __init__(self, forum_topic_id: int = 0) -> None:
+    def __init__(self, *, forum_topic_id: int = 0) -> None:
         self.forum_topic_id: int = int(forum_topic_id)
         r"""Unique identifier of the forum topic"""
 
@@ -25780,7 +25943,7 @@ class MessageTopicDirectMessages(TlObject, MessageTopic):
 
     """
 
-    def __init__(self, direct_messages_chat_topic_id: int = 0) -> None:
+    def __init__(self, *, direct_messages_chat_topic_id: int = 0) -> None:
         self.direct_messages_chat_topic_id: int = int(direct_messages_chat_topic_id)
         r"""Unique identifier of the topic"""
 
@@ -25821,7 +25984,7 @@ class MessageTopicSavedMessages(TlObject, MessageTopic):
 
     """
 
-    def __init__(self, saved_messages_topic_id: int = 0) -> None:
+    def __init__(self, *, saved_messages_topic_id: int = 0) -> None:
         self.saved_messages_topic_id: int = int(saved_messages_topic_id)
         r"""Unique identifier of the Saved Messages topic"""
 
@@ -25866,7 +26029,7 @@ class MessageEffectTypeEmojiReaction(TlObject, MessageEffectType):
     """
 
     def __init__(
-        self, select_animation: Sticker = None, effect_animation: Sticker = None
+        self, *, select_animation: Sticker = None, effect_animation: Sticker = None
     ) -> None:
         self.select_animation: Union[Sticker, None] = select_animation
         r"""Select animation for the effect in TGS format"""
@@ -25910,7 +26073,7 @@ class MessageEffectTypePremiumSticker(TlObject, MessageEffectType):
 
     """
 
-    def __init__(self, sticker: Sticker = None) -> None:
+    def __init__(self, *, sticker: Sticker = None) -> None:
         self.sticker: Union[Sticker, None] = sticker
         r"""The premium sticker\. The effect can be found at sticker\.full\_type\.premium\_animation"""
 
@@ -25960,6 +26123,7 @@ class MessageEffect(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         static_icon: Sticker = None,
         emoji: str = "",
@@ -26022,7 +26186,7 @@ class MessageSendingStatePending(TlObject, MessageSendingState):
 
     """
 
-    def __init__(self, sending_id: int = 0) -> None:
+    def __init__(self, *, sending_id: int = 0) -> None:
         self.sending_id: int = int(sending_id)
         r"""Non\-persistent message sending identifier, specified by the application"""
 
@@ -26078,6 +26242,7 @@ class MessageSendingStateFailed(TlObject, MessageSendingState):
 
     def __init__(
         self,
+        *,
         error: Error = None,
         can_retry: bool = False,
         need_another_sender: bool = False,
@@ -26161,7 +26326,7 @@ class TextQuote(TlObject):
     """
 
     def __init__(
-        self, text: FormattedText = None, position: int = 0, is_manual: bool = False
+        self, *, text: FormattedText = None, position: int = 0, is_manual: bool = False
     ) -> None:
         self.text: Union[FormattedText, None] = text
         r"""Text of the quote\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities can be present in the text"""
@@ -26212,7 +26377,7 @@ class InputTextQuote(TlObject):
 
     """
 
-    def __init__(self, text: FormattedText = None, position: int = 0) -> None:
+    def __init__(self, *, text: FormattedText = None, position: int = 0) -> None:
         self.text: Union[FormattedText, None] = text
         r"""Text of the quote; 0\-getOption\(\"message\_reply\_quote\_length\_max\"\) characters\. Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed to be kept and must be kept in the quote"""
         self.position: int = int(position)
@@ -26271,6 +26436,7 @@ class MessageReplyToMessage(TlObject, MessageReplyTo):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_id: int = 0,
         quote: TextQuote = None,
@@ -26449,7 +26615,7 @@ class MessageReplyToStory(TlObject, MessageReplyTo):
 
     """
 
-    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+    def __init__(self, *, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
         self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""The identifier of the poster of the story"""
         self.story_id: int = int(story_id)
@@ -26500,6 +26666,7 @@ class InputMessageReplyToMessage(TlObject, InputMessageReplyTo):
 
     def __init__(
         self,
+        *,
         message_id: int = 0,
         quote: InputTextQuote = None,
         checklist_task_id: int = 0,
@@ -26561,6 +26728,7 @@ class InputMessageReplyToExternalMessage(TlObject, InputMessageReplyTo):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_id: int = 0,
         quote: InputTextQuote = None,
@@ -26619,7 +26787,7 @@ class InputMessageReplyToStory(TlObject, InputMessageReplyTo):
 
     """
 
-    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+    def __init__(self, *, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
         self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""The identifier of the poster of the story\. Currently, stories can be replied only in the chat that posted the story; channel stories can't be replied"""
         self.story_id: int = int(story_id)
@@ -26665,7 +26833,7 @@ class FactCheck(TlObject):
 
     """
 
-    def __init__(self, text: FormattedText = None, country_code: str = "") -> None:
+    def __init__(self, *, text: FormattedText = None, country_code: str = "") -> None:
         self.text: Union[FormattedText, None] = text
         r"""Text of the fact\-check"""
         self.country_code: Union[str, None] = country_code
@@ -26824,6 +26992,7 @@ class Message(TlObject, MessageBoundMethods):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         sender_id: MessageSender = None,
         chat_id: int = 0,
@@ -27189,7 +27358,7 @@ class Messages(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, messages: List[Message] = None) -> None:
+    def __init__(self, *, total_count: int = 0, messages: List[Message] = None) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of messages found"""
         self.messages: List[Message] = messages or []
@@ -27240,6 +27409,7 @@ class FoundMessages(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         messages: List[Message] = None,
         next_offset: str = "",
@@ -27298,6 +27468,7 @@ class FoundChatMessages(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         messages: List[Message] = None,
         next_from_message_id: int = 0,
@@ -27359,6 +27530,7 @@ class FoundPublicPosts(TlObject):
 
     def __init__(
         self,
+        *,
         messages: List[Message] = None,
         next_offset: str = "",
         search_limits: PublicPostSearchLimits = None,
@@ -27420,7 +27592,9 @@ class MessagePosition(TlObject):
 
     """
 
-    def __init__(self, position: int = 0, message_id: int = 0, date: int = 0) -> None:
+    def __init__(
+        self, *, position: int = 0, message_id: int = 0, date: int = 0
+    ) -> None:
         self.position: int = int(position)
         r"""0\-based message position in the full list of suitable messages"""
         self.message_id: int = int(message_id)
@@ -27471,7 +27645,7 @@ class MessagePositions(TlObject):
     """
 
     def __init__(
-        self, total_count: int = 0, positions: List[MessagePosition] = None
+        self, *, total_count: int = 0, positions: List[MessagePosition] = None
     ) -> None:
         self.total_count: int = int(total_count)
         r"""Total number of messages found"""
@@ -27518,7 +27692,7 @@ class MessageCalendarDay(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, message: Message = None) -> None:
+    def __init__(self, *, total_count: int = 0, message: Message = None) -> None:
         self.total_count: int = int(total_count)
         r"""Total number of found messages sent on the day"""
         self.message: Union[Message, None] = message
@@ -27565,7 +27739,7 @@ class MessageCalendar(TlObject):
     """
 
     def __init__(
-        self, total_count: int = 0, days: List[MessageCalendarDay] = None
+        self, *, total_count: int = 0, days: List[MessageCalendarDay] = None
     ) -> None:
         self.total_count: int = int(total_count)
         r"""Total number of found messages"""
@@ -27613,7 +27787,7 @@ class BusinessMessage(TlObject):
     """
 
     def __init__(
-        self, message: Message = None, reply_to_message: Message = None
+        self, *, message: Message = None, reply_to_message: Message = None
     ) -> None:
         self.message: Union[Message, None] = message
         r"""The message"""
@@ -27657,7 +27831,7 @@ class BusinessMessages(TlObject):
 
     """
 
-    def __init__(self, messages: List[BusinessMessage] = None) -> None:
+    def __init__(self, *, messages: List[BusinessMessage] = None) -> None:
         self.messages: List[BusinessMessage] = messages or []
         r"""List of business messages"""
 
@@ -28009,7 +28183,7 @@ class AdvertisementSponsor(TlObject):
 
     """
 
-    def __init__(self, url: str = "", photo: Photo = None, info: str = "") -> None:
+    def __init__(self, *, url: str = "", photo: Photo = None, info: str = "") -> None:
         self.url: Union[str, None] = url
         r"""URL of the sponsor to be opened when the advertisement is clicked"""
         self.photo: Union[Photo, None] = photo
@@ -28085,6 +28259,7 @@ class SponsoredMessage(TlObject):
 
     def __init__(
         self,
+        *,
         message_id: int = 0,
         is_recommended: bool = False,
         can_be_reported: bool = False,
@@ -28275,7 +28450,7 @@ class SponsoredMessages(TlObject):
     """
 
     def __init__(
-        self, messages: List[SponsoredMessage] = None, messages_between: int = 0
+        self, *, messages: List[SponsoredMessage] = None, messages_between: int = 0
     ) -> None:
         self.messages: List[SponsoredMessage] = messages or []
         r"""List of sponsored messages"""
@@ -28330,6 +28505,7 @@ class SponsoredChat(TlObject):
 
     def __init__(
         self,
+        *,
         unique_id: int = 0,
         chat_id: int = 0,
         sponsor_info: str = "",
@@ -28385,7 +28561,7 @@ class SponsoredChats(TlObject):
 
     """
 
-    def __init__(self, chats: List[SponsoredChat] = None) -> None:
+    def __init__(self, *, chats: List[SponsoredChat] = None) -> None:
         self.chats: List[SponsoredChat] = chats or []
         r"""List of sponsored chats"""
 
@@ -28444,6 +28620,7 @@ class VideoMessageAdvertisement(TlObject):
 
     def __init__(
         self,
+        *,
         unique_id: int = 0,
         text: str = "",
         min_display_duration: int = 0,
@@ -28527,6 +28704,7 @@ class VideoMessageAdvertisements(TlObject):
 
     def __init__(
         self,
+        *,
         advertisements: List[VideoMessageAdvertisement] = None,
         start_delay: int = 0,
         between_delay: int = 0,
@@ -28580,7 +28758,7 @@ class ReportOption(TlObject):
 
     """
 
-    def __init__(self, id: bytes = b"", text: str = "") -> None:
+    def __init__(self, *, id: bytes = b"", text: str = "") -> None:
         self.id: Union[bytes, None] = id
         r"""Unique identifier of the option"""
         self.text: Union[str, None] = text
@@ -28678,7 +28856,7 @@ class ReportSponsoredResultOptionRequired(TlObject, ReportSponsoredResult):
 
     """
 
-    def __init__(self, title: str = "", options: List[ReportOption] = None) -> None:
+    def __init__(self, *, title: str = "", options: List[ReportOption] = None) -> None:
         self.title: Union[str, None] = title
         r"""Title for the option choice"""
         self.options: List[ReportOption] = options or []
@@ -28791,6 +28969,7 @@ class FileDownload(TlObject):
 
     def __init__(
         self,
+        *,
         file_id: int = 0,
         message: Message = None,
         add_date: int = 0,
@@ -28858,7 +29037,7 @@ class DownloadedFileCounts(TlObject):
     """
 
     def __init__(
-        self, active_count: int = 0, paused_count: int = 0, completed_count: int = 0
+        self, *, active_count: int = 0, paused_count: int = 0, completed_count: int = 0
     ) -> None:
         self.active_count: int = int(active_count)
         r"""Number of active file downloads found, including paused"""
@@ -28914,6 +29093,7 @@ class FoundFileDownloads(TlObject):
 
     def __init__(
         self,
+        *,
         total_counts: DownloadedFileCounts = None,
         files: List[FileDownload] = None,
         next_offset: str = "",
@@ -29101,6 +29281,7 @@ class ChatNotificationSettings(TlObject):
 
     def __init__(
         self,
+        *,
         use_default_mute_for: bool = False,
         mute_for: int = 0,
         use_default_sound: bool = False,
@@ -29264,6 +29445,7 @@ class ScopeNotificationSettings(TlObject):
 
     def __init__(
         self,
+        *,
         mute_for: int = 0,
         sound_id: int = 0,
         show_preview: bool = False,
@@ -29447,6 +29629,7 @@ class ReactionNotificationSettings(TlObject):
 
     def __init__(
         self,
+        *,
         message_reaction_source: ReactionNotificationSource = None,
         story_reaction_source: ReactionNotificationSource = None,
         sound_id: int = 0,
@@ -29528,6 +29711,7 @@ class DraftMessage(TlObject):
 
     def __init__(
         self,
+        *,
         reply_to: InputMessageReplyTo = None,
         date: int = 0,
         input_message_text: InputMessageContent = None,
@@ -29618,7 +29802,7 @@ class ChatTypePrivate(TlObject, ChatType):
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier"""
 
@@ -29654,7 +29838,7 @@ class ChatTypeBasicGroup(TlObject, ChatType):
 
     """
 
-    def __init__(self, basic_group_id: int = 0) -> None:
+    def __init__(self, *, basic_group_id: int = 0) -> None:
         self.basic_group_id: int = int(basic_group_id)
         r"""Basic group identifier"""
 
@@ -29693,7 +29877,7 @@ class ChatTypeSupergroup(TlObject, ChatType):
 
     """
 
-    def __init__(self, supergroup_id: int = 0, is_channel: bool = False) -> None:
+    def __init__(self, *, supergroup_id: int = 0, is_channel: bool = False) -> None:
         self.supergroup_id: int = int(supergroup_id)
         r"""Supergroup or channel identifier"""
         self.is_channel: bool = bool(is_channel)
@@ -29739,7 +29923,7 @@ class ChatTypeSecret(TlObject, ChatType):
 
     """
 
-    def __init__(self, secret_chat_id: int = 0, user_id: int = 0) -> None:
+    def __init__(self, *, secret_chat_id: int = 0, user_id: int = 0) -> None:
         self.secret_chat_id: int = int(secret_chat_id)
         r"""Secret chat identifier"""
         self.user_id: int = int(user_id)
@@ -29782,7 +29966,7 @@ class ChatFolderIcon(TlObject):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""The chosen icon name for short folder representation; one of \"All\", \"Unread\", \"Unmuted\", \"Bots\", \"Channels\", \"Groups\", \"Private\", \"Custom\", \"Setup\", \"Cat\", \"Crown\", \"Favorite\", \"Flower\", \"Game\", \"Home\", \"Love\", \"Mask\", \"Party\", \"Sport\", \"Study\", \"Trade\", \"Travel\", \"Work\", \"Airplane\", \"Book\", \"Light\", \"Like\", \"Money\", \"Note\", \"Palette\""""
 
@@ -29822,7 +30006,7 @@ class ChatFolderName(TlObject):
     """
 
     def __init__(
-        self, text: FormattedText = None, animate_custom_emoji: bool = False
+        self, *, text: FormattedText = None, animate_custom_emoji: bool = False
     ) -> None:
         self.text: Union[FormattedText, None] = text
         r"""The text of the chat folder name; 1\-12 characters without line feeds\. May contain only CustomEmoji entities"""
@@ -29910,6 +30094,7 @@ class ChatFolder(TlObject):
 
     def __init__(
         self,
+        *,
         name: ChatFolderName = None,
         icon: ChatFolderIcon = None,
         color_id: int = 0,
@@ -30037,6 +30222,7 @@ class ChatFolderInfo(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         name: ChatFolderName = None,
         icon: ChatFolderIcon = None,
@@ -30109,7 +30295,7 @@ class ChatFolderInviteLink(TlObject):
     """
 
     def __init__(
-        self, invite_link: str = "", name: str = "", chat_ids: List[int] = None
+        self, *, invite_link: str = "", name: str = "", chat_ids: List[int] = None
     ) -> None:
         self.invite_link: Union[str, None] = invite_link
         r"""The chat folder invite link"""
@@ -30157,7 +30343,7 @@ class ChatFolderInviteLinks(TlObject):
 
     """
 
-    def __init__(self, invite_links: List[ChatFolderInviteLink] = None) -> None:
+    def __init__(self, *, invite_links: List[ChatFolderInviteLink] = None) -> None:
         self.invite_links: List[ChatFolderInviteLink] = invite_links or []
         r"""List of the invite links"""
 
@@ -30201,6 +30387,7 @@ class ChatFolderInviteLinkInfo(TlObject):
 
     def __init__(
         self,
+        *,
         chat_folder_info: ChatFolderInfo = None,
         missing_chat_ids: List[int] = None,
         added_chat_ids: List[int] = None,
@@ -30254,7 +30441,7 @@ class RecommendedChatFolder(TlObject):
 
     """
 
-    def __init__(self, folder: ChatFolder = None, description: str = "") -> None:
+    def __init__(self, *, folder: ChatFolder = None, description: str = "") -> None:
         self.folder: Union[ChatFolder, None] = folder
         r"""The chat folder"""
         self.description: Union[str, None] = description
@@ -30297,7 +30484,7 @@ class RecommendedChatFolders(TlObject):
 
     """
 
-    def __init__(self, chat_folders: List[RecommendedChatFolder] = None) -> None:
+    def __init__(self, *, chat_folders: List[RecommendedChatFolder] = None) -> None:
         self.chat_folders: List[RecommendedChatFolder] = chat_folders or []
         r"""List of recommended chat folders"""
 
@@ -30341,6 +30528,7 @@ class ArchiveChatListSettings(TlObject):
 
     def __init__(
         self,
+        *,
         archive_and_mute_new_chats_from_unknown_users: bool = False,
         keep_unmuted_chats_archived: bool = False,
         keep_chats_from_folders_archived: bool = False,
@@ -30457,7 +30645,7 @@ class ChatListFolder(TlObject, ChatList):
 
     """
 
-    def __init__(self, chat_folder_id: int = 0) -> None:
+    def __init__(self, *, chat_folder_id: int = 0) -> None:
         self.chat_folder_id: int = int(chat_folder_id)
         r"""Chat folder identifier"""
 
@@ -30493,7 +30681,7 @@ class ChatLists(TlObject):
 
     """
 
-    def __init__(self, chat_lists: List[ChatList] = None) -> None:
+    def __init__(self, *, chat_lists: List[ChatList] = None) -> None:
         self.chat_lists: List[ChatList] = chat_lists or []
         r"""List of chat lists"""
 
@@ -30560,7 +30748,7 @@ class ChatSourcePublicServiceAnnouncement(TlObject, ChatSource):
 
     """
 
-    def __init__(self, type: str = "", text: str = "") -> None:
+    def __init__(self, *, type: str = "", text: str = "") -> None:
         self.type: Union[str, None] = type
         r"""The type of the announcement"""
         self.text: Union[str, None] = text
@@ -30612,6 +30800,7 @@ class ChatPosition(TlObject):
 
     def __init__(
         self,
+        *,
         list: ChatList = None,
         order: int = 0,
         is_pinned: bool = False,
@@ -30669,7 +30858,7 @@ class ChatAvailableReactionsAll(TlObject, ChatAvailableReactions):
 
     """
 
-    def __init__(self, max_reaction_count: int = 0) -> None:
+    def __init__(self, *, max_reaction_count: int = 0) -> None:
         self.max_reaction_count: int = int(max_reaction_count)
         r"""The maximum allowed number of reactions per message; 1\-11"""
 
@@ -30709,7 +30898,7 @@ class ChatAvailableReactionsSome(TlObject, ChatAvailableReactions):
     """
 
     def __init__(
-        self, reactions: List[ReactionType] = None, max_reaction_count: int = 0
+        self, *, reactions: List[ReactionType] = None, max_reaction_count: int = 0
     ) -> None:
         self.reactions: List[ReactionType] = reactions or []
         r"""The list of reactions"""
@@ -30760,7 +30949,7 @@ class SavedMessagesTag(TlObject):
     """
 
     def __init__(
-        self, tag: ReactionType = None, label: str = "", count: int = 0
+        self, *, tag: ReactionType = None, label: str = "", count: int = 0
     ) -> None:
         self.tag: Union[
             ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
@@ -30810,7 +30999,7 @@ class SavedMessagesTags(TlObject):
 
     """
 
-    def __init__(self, tags: List[SavedMessagesTag] = None) -> None:
+    def __init__(self, *, tags: List[SavedMessagesTag] = None) -> None:
         self.tags: List[SavedMessagesTag] = tags or []
         r"""List of tags"""
 
@@ -30857,6 +31046,7 @@ class BusinessBotManageBar(TlObject):
 
     def __init__(
         self,
+        *,
         bot_user_id: int = 0,
         manage_url: str = "",
         is_bot_paused: bool = False,
@@ -30920,6 +31110,7 @@ class VideoChat(TlObject):
 
     def __init__(
         self,
+        *,
         group_call_id: int = 0,
         has_participants: bool = False,
         default_participant_id: MessageSender = None,
@@ -31097,6 +31288,7 @@ class Chat(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         type: ChatType = None,
         title: str = "",
@@ -31397,7 +31589,7 @@ class Chats(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, chat_ids: List[int] = None) -> None:
+    def __init__(self, *, total_count: int = 0, chat_ids: List[int] = None) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of chats found"""
         self.chat_ids: List[int] = chat_ids or []
@@ -31448,6 +31640,7 @@ class FailedToAddMember(TlObject):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         premium_would_allow_invite: bool = False,
         premium_required_to_send_messages: bool = False,
@@ -31504,7 +31697,9 @@ class FailedToAddMembers(TlObject):
 
     """
 
-    def __init__(self, failed_to_add_members: List[FailedToAddMember] = None) -> None:
+    def __init__(
+        self, *, failed_to_add_members: List[FailedToAddMember] = None
+    ) -> None:
         self.failed_to_add_members: List[FailedToAddMember] = (
             failed_to_add_members or []
         )
@@ -31549,7 +31744,7 @@ class CreatedBasicGroupChat(TlObject):
     """
 
     def __init__(
-        self, chat_id: int = 0, failed_to_add_members: FailedToAddMembers = None
+        self, *, chat_id: int = 0, failed_to_add_members: FailedToAddMembers = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -31665,6 +31860,7 @@ class AccountInfo(TlObject):
 
     def __init__(
         self,
+        *,
         registration_month: int = 0,
         registration_year: int = 0,
         phone_number_country_code: str = "",
@@ -31729,7 +31925,7 @@ class ChatActionBarReportSpam(TlObject, ChatActionBar):
 
     """
 
-    def __init__(self, can_unarchive: bool = False) -> None:
+    def __init__(self, *, can_unarchive: bool = False) -> None:
         self.can_unarchive: bool = bool(can_unarchive)
         r"""If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings"""
 
@@ -31797,7 +31993,7 @@ class ChatActionBarReportAddBlock(TlObject, ChatActionBar):
     """
 
     def __init__(
-        self, can_unarchive: bool = False, account_info: AccountInfo = None
+        self, *, can_unarchive: bool = False, account_info: AccountInfo = None
     ) -> None:
         self.can_unarchive: bool = bool(can_unarchive)
         r"""If true, the chat was automatically archived and can be moved back to the main chat list using addChatToList simultaneously with setting chat notification settings to default using setChatNotificationSettings"""
@@ -31904,7 +32100,7 @@ class ChatActionBarJoinRequest(TlObject, ChatActionBar):
     """
 
     def __init__(
-        self, title: str = "", is_channel: bool = False, request_date: int = 0
+        self, *, title: str = "", is_channel: bool = False, request_date: int = 0
     ) -> None:
         self.title: Union[str, None] = title
         r"""Title of the chat to which the join request was sent"""
@@ -32153,7 +32349,9 @@ class KeyboardButtonTypeRequestPoll(TlObject, KeyboardButtonType):
 
     """
 
-    def __init__(self, force_regular: bool = False, force_quiz: bool = False) -> None:
+    def __init__(
+        self, *, force_regular: bool = False, force_quiz: bool = False
+    ) -> None:
         self.force_regular: bool = bool(force_regular)
         r"""If true, only regular polls must be allowed to create"""
         self.force_quiz: bool = bool(force_quiz)
@@ -32222,6 +32420,7 @@ class KeyboardButtonTypeRequestUsers(TlObject, KeyboardButtonType):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         restrict_user_is_bot: bool = False,
         user_is_bot: bool = False,
@@ -32342,6 +32541,7 @@ class KeyboardButtonTypeRequestChat(TlObject, KeyboardButtonType):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         chat_is_channel: bool = False,
         restrict_chat_is_forum: bool = False,
@@ -32454,7 +32654,7 @@ class KeyboardButtonTypeWebApp(TlObject, KeyboardButtonType):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""An HTTP URL to pass to getWebAppUrl"""
 
@@ -32501,6 +32701,7 @@ class KeyboardButton(TlObject):
 
     def __init__(
         self,
+        *,
         text: str = "",
         icon_custom_emoji_id: int = 0,
         style: ButtonStyle = None,
@@ -32571,7 +32772,7 @@ class InlineKeyboardButtonTypeUrl(TlObject, InlineKeyboardButtonType):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""HTTP or tg:// URL to open\. If the link is of the type internalLinkTypeWebApp, then the button must be marked as a Web App button"""
 
@@ -32613,7 +32814,7 @@ class InlineKeyboardButtonTypeLoginUrl(TlObject, InlineKeyboardButtonType):
 
     """
 
-    def __init__(self, url: str = "", id: int = 0, forward_text: str = "") -> None:
+    def __init__(self, *, url: str = "", id: int = 0, forward_text: str = "") -> None:
         self.url: Union[str, None] = url
         r"""An HTTP URL to pass to getLoginUrlInfo"""
         self.id: int = int(id)
@@ -32660,7 +32861,7 @@ class InlineKeyboardButtonTypeWebApp(TlObject, InlineKeyboardButtonType):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""An HTTP URL to pass to openWebApp"""
 
@@ -32696,7 +32897,7 @@ class InlineKeyboardButtonTypeCallback(TlObject, InlineKeyboardButtonType):
 
     """
 
-    def __init__(self, data: bytes = b"") -> None:
+    def __init__(self, *, data: bytes = b"") -> None:
         self.data: Union[bytes, None] = data
         r"""Data to be sent to the bot via a callback query"""
 
@@ -32732,7 +32933,7 @@ class InlineKeyboardButtonTypeCallbackWithPassword(TlObject, InlineKeyboardButto
 
     """
 
-    def __init__(self, data: bytes = b"") -> None:
+    def __init__(self, *, data: bytes = b"") -> None:
         self.data: Union[bytes, None] = data
         r"""Data to be sent to the bot via a callback query"""
 
@@ -32803,7 +33004,7 @@ class InlineKeyboardButtonTypeSwitchInline(TlObject, InlineKeyboardButtonType):
 
     """
 
-    def __init__(self, query: str = "", target_chat: TargetChat = None) -> None:
+    def __init__(self, *, query: str = "", target_chat: TargetChat = None) -> None:
         self.query: Union[str, None] = query
         r"""Inline query to be sent to the bot"""
         self.target_chat: Union[
@@ -32878,7 +33079,7 @@ class InlineKeyboardButtonTypeUser(TlObject, InlineKeyboardButtonType):
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier"""
 
@@ -32914,7 +33115,7 @@ class InlineKeyboardButtonTypeCopyText(TlObject, InlineKeyboardButtonType):
 
     """
 
-    def __init__(self, text: str = "") -> None:
+    def __init__(self, *, text: str = "") -> None:
         self.text: Union[str, None] = text
         r"""The text to copy to clipboard"""
 
@@ -32961,6 +33162,7 @@ class InlineKeyboardButton(TlObject):
 
     def __init__(
         self,
+        *,
         text: str = "",
         icon_custom_emoji_id: int = 0,
         style: ButtonStyle = None,
@@ -33034,7 +33236,7 @@ class ReplyMarkupRemoveKeyboard(TlObject, ReplyMarkup):
 
     """
 
-    def __init__(self, is_personal: bool = False) -> None:
+    def __init__(self, *, is_personal: bool = False) -> None:
         self.is_personal: bool = bool(is_personal)
         r"""True, if the keyboard is removed only for the mentioned users or the target user of a reply"""
 
@@ -33074,7 +33276,7 @@ class ReplyMarkupForceReply(TlObject, ReplyMarkup):
     """
 
     def __init__(
-        self, is_personal: bool = False, input_field_placeholder: str = ""
+        self, *, is_personal: bool = False, input_field_placeholder: str = ""
     ) -> None:
         self.is_personal: bool = bool(is_personal)
         r"""True, if a forced reply must automatically be shown to the current user\. For outgoing messages, specify true to show the forced reply only for the mentioned users and for the target user of a reply"""
@@ -33135,6 +33337,7 @@ class ReplyMarkupShowKeyboard(TlObject, ReplyMarkup):
 
     def __init__(
         self,
+        *,
         rows: List[List[KeyboardButton]] = None,
         is_persistent: bool = False,
         resize_keyboard: bool = False,
@@ -33200,7 +33403,7 @@ class ReplyMarkupInlineKeyboard(TlObject, ReplyMarkup):
 
     """
 
-    def __init__(self, rows: List[List[InlineKeyboardButton]] = None) -> None:
+    def __init__(self, *, rows: List[List[InlineKeyboardButton]] = None) -> None:
         self.rows: List[List[InlineKeyboardButton]] = rows or []
         r"""A list of rows of inline keyboard buttons"""
 
@@ -33239,7 +33442,7 @@ class LoginUrlInfoOpen(TlObject, LoginUrlInfo):
 
     """
 
-    def __init__(self, url: str = "", skip_confirmation: bool = False) -> None:
+    def __init__(self, *, url: str = "", skip_confirmation: bool = False) -> None:
         self.url: Union[str, None] = url
         r"""The URL to open"""
         self.skip_confirmation: bool = bool(skip_confirmation)
@@ -33293,6 +33496,7 @@ class LoginUrlInfoRequestConfirmation(TlObject, LoginUrlInfo):
 
     def __init__(
         self,
+        *,
         url: str = "",
         domain: str = "",
         bot_user_id: int = 0,
@@ -33383,6 +33587,7 @@ class OauthLinkInfo(TlObject):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         url: str = "",
         domain: str = "",
@@ -33524,6 +33729,7 @@ class ThemeParameters(TlObject):
 
     def __init__(
         self,
+        *,
         background_color: int = 0,
         secondary_background_color: int = 0,
         header_background_color: int = 0,
@@ -33740,6 +33946,7 @@ class FoundWebApp(TlObject):
 
     def __init__(
         self,
+        *,
         web_app: WebApp = None,
         request_write_access: bool = False,
         skip_confirmation: bool = False,
@@ -33793,7 +34000,7 @@ class WebAppInfo(TlObject):
 
     """
 
-    def __init__(self, launch_id: int = 0, url: str = "") -> None:
+    def __init__(self, *, launch_id: int = 0, url: str = "") -> None:
         self.launch_id: int = int(launch_id)
         r"""Unique identifier for the Web App launch"""
         self.url: Union[str, None] = url
@@ -33835,7 +34042,7 @@ class MainWebApp(TlObject):
 
     """
 
-    def __init__(self, url: str = "", mode: WebAppOpenMode = None) -> None:
+    def __init__(self, *, url: str = "", mode: WebAppOpenMode = None) -> None:
         self.url: Union[str, None] = url
         r"""URL of the Web App to open"""
         self.mode: Union[
@@ -33887,6 +34094,7 @@ class WebAppOpenParameters(TlObject):
 
     def __init__(
         self,
+        *,
         theme: ThemeParameters = None,
         application_name: str = "",
         mode: WebAppOpenMode = None,
@@ -33959,6 +34167,7 @@ class MessageThreadInfo(TlObject):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_thread_id: int = 0,
         reply_info: MessageReplyInfo = None,
@@ -34080,7 +34289,7 @@ class SavedMessagesTopicTypeSavedFromChat(TlObject, SavedMessagesTopicType):
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat"""
 
@@ -34135,6 +34344,7 @@ class SavedMessagesTopic(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         type: SavedMessagesTopicType = None,
         is_pinned: bool = False,
@@ -34240,6 +34450,7 @@ class DirectMessagesChatTopic(TlObject):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         id: int = 0,
         sender_id: MessageSender = None,
@@ -34344,7 +34555,7 @@ class ForumTopicIcon(TlObject):
 
     """
 
-    def __init__(self, color: int = 0, custom_emoji_id: int = 0) -> None:
+    def __init__(self, *, color: int = 0, custom_emoji_id: int = 0) -> None:
         self.color: int = int(color)
         r"""Color of the topic icon in RGB format"""
         self.custom_emoji_id: int = int(custom_emoji_id)
@@ -34419,6 +34630,7 @@ class ForumTopicInfo(TlObject):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         forum_topic_id: int = 0,
         name: str = "",
@@ -34541,6 +34753,7 @@ class ForumTopic(TlObject):
 
     def __init__(
         self,
+        *,
         info: ForumTopicInfo = None,
         last_message: Message = None,
         order: int = 0,
@@ -34651,6 +34864,7 @@ class ForumTopics(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         topics: List[ForumTopic] = None,
         next_offset_date: int = 0,
@@ -34729,6 +34943,7 @@ class LinkPreviewOptions(TlObject):
 
     def __init__(
         self,
+        *,
         is_disabled: bool = False,
         url: str = "",
         force_small_media: bool = False,
@@ -34803,6 +35018,7 @@ class SharedUser(TlObject):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         first_name: str = "",
         last_name: str = "",
@@ -34873,7 +35089,12 @@ class SharedChat(TlObject):
     """
 
     def __init__(
-        self, chat_id: int = 0, title: str = "", username: str = "", photo: Photo = None
+        self,
+        *,
+        chat_id: int = 0,
+        title: str = "",
+        username: str = "",
+        photo: Photo = None,
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -35082,6 +35303,7 @@ class ThemeSettings(TlObject):
 
     def __init__(
         self,
+        *,
         base_theme: BuiltInTheme = None,
         accent_color: int = 0,
         background: Background = None,
@@ -35163,7 +35385,7 @@ class RichTextPlain(TlObject, RichText):
 
     """
 
-    def __init__(self, text: str = "") -> None:
+    def __init__(self, *, text: str = "") -> None:
         self.text: Union[str, None] = text
         r"""Text"""
 
@@ -35199,7 +35421,7 @@ class RichTextBold(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35254,7 +35476,7 @@ class RichTextItalic(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35309,7 +35531,7 @@ class RichTextUnderline(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35364,7 +35586,7 @@ class RichTextStrikethrough(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35419,7 +35641,7 @@ class RichTextFixed(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35481,7 +35703,7 @@ class RichTextUrl(TlObject, RichText):
     """
 
     def __init__(
-        self, text: RichText = None, url: str = "", is_cached: bool = False
+        self, *, text: RichText = None, url: str = "", is_cached: bool = False
     ) -> None:
         self.text: Union[
             RichTextPlain,
@@ -35551,7 +35773,7 @@ class RichTextEmailAddress(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None, email_address: str = "") -> None:
+    def __init__(self, *, text: RichText = None, email_address: str = "") -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35613,7 +35835,7 @@ class RichTextSubscript(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35668,7 +35890,7 @@ class RichTextSuperscript(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35723,7 +35945,7 @@ class RichTextMarked(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35781,7 +36003,7 @@ class RichTextPhoneNumber(TlObject, RichText):
 
     """
 
-    def __init__(self, text: RichText = None, phone_number: str = "") -> None:
+    def __init__(self, *, text: RichText = None, phone_number: str = "") -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -35850,7 +36072,7 @@ class RichTextIcon(TlObject, RichText):
     """
 
     def __init__(
-        self, document: Document = None, width: int = 0, height: int = 0
+        self, *, document: Document = None, width: int = 0, height: int = 0
     ) -> None:
         self.document: Union[Document, None] = document
         r"""The image represented as a document\. The image can be in GIF, JPEG or PNG format"""
@@ -35905,7 +36127,7 @@ class RichTextReference(TlObject, RichText):
     """
 
     def __init__(
-        self, text: RichText = None, anchor_name: str = "", url: str = ""
+        self, *, text: RichText = None, anchor_name: str = "", url: str = ""
     ) -> None:
         self.text: Union[
             RichTextPlain,
@@ -35972,7 +36194,7 @@ class RichTextAnchor(TlObject, RichText):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""Anchor name"""
 
@@ -36015,7 +36237,7 @@ class RichTextAnchorLink(TlObject, RichText):
     """
 
     def __init__(
-        self, text: RichText = None, anchor_name: str = "", url: str = ""
+        self, *, text: RichText = None, anchor_name: str = "", url: str = ""
     ) -> None:
         self.text: Union[
             RichTextPlain,
@@ -36082,7 +36304,7 @@ class RichTexts(TlObject, RichText):
 
     """
 
-    def __init__(self, texts: List[RichText] = None) -> None:
+    def __init__(self, *, texts: List[RichText] = None) -> None:
         self.texts: List[RichText] = texts or []
         r"""Texts"""
 
@@ -36121,7 +36343,7 @@ class PageBlockCaption(TlObject):
 
     """
 
-    def __init__(self, text: RichText = None, credit: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None, credit: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -36201,7 +36423,7 @@ class PageBlockListItem(TlObject):
 
     """
 
-    def __init__(self, label: str = "", page_blocks: List[PageBlock] = None) -> None:
+    def __init__(self, *, label: str = "", page_blocks: List[PageBlock] = None) -> None:
         self.label: Union[str, None] = label
         r"""Item label"""
         self.page_blocks: List[PageBlock] = page_blocks or []
@@ -36429,6 +36651,7 @@ class PageBlockTableCell(TlObject):
 
     def __init__(
         self,
+        *,
         text: RichText = None,
         is_header: bool = False,
         colspan: int = 0,
@@ -36540,6 +36763,7 @@ class PageBlockRelatedArticle(TlObject):
 
     def __init__(
         self,
+        *,
         url: str = "",
         title: str = "",
         description: str = "",
@@ -36605,7 +36829,7 @@ class PageBlockTitle(TlObject, PageBlock):
 
     """
 
-    def __init__(self, title: RichText = None) -> None:
+    def __init__(self, *, title: RichText = None) -> None:
         self.title: Union[
             RichTextPlain,
             RichTextBold,
@@ -36660,7 +36884,7 @@ class PageBlockSubtitle(TlObject, PageBlock):
 
     """
 
-    def __init__(self, subtitle: RichText = None) -> None:
+    def __init__(self, *, subtitle: RichText = None) -> None:
         self.subtitle: Union[
             RichTextPlain,
             RichTextBold,
@@ -36718,7 +36942,7 @@ class PageBlockAuthorDate(TlObject, PageBlock):
 
     """
 
-    def __init__(self, author: RichText = None, publish_date: int = 0) -> None:
+    def __init__(self, *, author: RichText = None, publish_date: int = 0) -> None:
         self.author: Union[
             RichTextPlain,
             RichTextBold,
@@ -36780,7 +37004,7 @@ class PageBlockHeader(TlObject, PageBlock):
 
     """
 
-    def __init__(self, header: RichText = None) -> None:
+    def __init__(self, *, header: RichText = None) -> None:
         self.header: Union[
             RichTextPlain,
             RichTextBold,
@@ -36835,7 +37059,7 @@ class PageBlockSubheader(TlObject, PageBlock):
 
     """
 
-    def __init__(self, subheader: RichText = None) -> None:
+    def __init__(self, *, subheader: RichText = None) -> None:
         self.subheader: Union[
             RichTextPlain,
             RichTextBold,
@@ -36890,7 +37114,7 @@ class PageBlockKicker(TlObject, PageBlock):
 
     """
 
-    def __init__(self, kicker: RichText = None) -> None:
+    def __init__(self, *, kicker: RichText = None) -> None:
         self.kicker: Union[
             RichTextPlain,
             RichTextBold,
@@ -36945,7 +37169,7 @@ class PageBlockParagraph(TlObject, PageBlock):
 
     """
 
-    def __init__(self, text: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -37003,7 +37227,7 @@ class PageBlockPreformatted(TlObject, PageBlock):
 
     """
 
-    def __init__(self, text: RichText = None, language: str = "") -> None:
+    def __init__(self, *, text: RichText = None, language: str = "") -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -37061,7 +37285,7 @@ class PageBlockFooter(TlObject, PageBlock):
 
     """
 
-    def __init__(self, footer: RichText = None) -> None:
+    def __init__(self, *, footer: RichText = None) -> None:
         self.footer: Union[
             RichTextPlain,
             RichTextBold,
@@ -37144,7 +37368,7 @@ class PageBlockAnchor(TlObject, PageBlock):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""Name of the anchor"""
 
@@ -37180,7 +37404,7 @@ class PageBlockList(TlObject, PageBlock):
 
     """
 
-    def __init__(self, items: List[PageBlockListItem] = None) -> None:
+    def __init__(self, *, items: List[PageBlockListItem] = None) -> None:
         self.items: List[PageBlockListItem] = items or []
         r"""The items of the list"""
 
@@ -37219,7 +37443,7 @@ class PageBlockBlockQuote(TlObject, PageBlock):
 
     """
 
-    def __init__(self, text: RichText = None, credit: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None, credit: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -37299,7 +37523,7 @@ class PageBlockPullQuote(TlObject, PageBlock):
 
     """
 
-    def __init__(self, text: RichText = None, credit: RichText = None) -> None:
+    def __init__(self, *, text: RichText = None, credit: RichText = None) -> None:
         self.text: Union[
             RichTextPlain,
             RichTextBold,
@@ -37384,6 +37608,7 @@ class PageBlockAnimation(TlObject, PageBlock):
 
     def __init__(
         self,
+        *,
         animation: Animation = None,
         caption: PageBlockCaption = None,
         need_autoplay: bool = False,
@@ -37437,7 +37662,9 @@ class PageBlockAudio(TlObject, PageBlock):
 
     """
 
-    def __init__(self, audio: Audio = None, caption: PageBlockCaption = None) -> None:
+    def __init__(
+        self, *, audio: Audio = None, caption: PageBlockCaption = None
+    ) -> None:
         self.audio: Union[Audio, None] = audio
         r"""Audio file; may be null"""
         self.caption: Union[PageBlockCaption, None] = caption
@@ -37483,7 +37710,7 @@ class PageBlockPhoto(TlObject, PageBlock):
     """
 
     def __init__(
-        self, photo: Photo = None, caption: PageBlockCaption = None, url: str = ""
+        self, *, photo: Photo = None, caption: PageBlockCaption = None, url: str = ""
     ) -> None:
         self.photo: Union[Photo, None] = photo
         r"""Photo file; may be null"""
@@ -37542,6 +37769,7 @@ class PageBlockVideo(TlObject, PageBlock):
 
     def __init__(
         self,
+        *,
         video: Video = None,
         caption: PageBlockCaption = None,
         need_autoplay: bool = False,
@@ -37601,7 +37829,7 @@ class PageBlockVoiceNote(TlObject, PageBlock):
     """
 
     def __init__(
-        self, voice_note: VoiceNote = None, caption: PageBlockCaption = None
+        self, *, voice_note: VoiceNote = None, caption: PageBlockCaption = None
     ) -> None:
         self.voice_note: Union[VoiceNote, None] = voice_note
         r"""Voice note; may be null"""
@@ -37645,7 +37873,7 @@ class PageBlockCover(TlObject, PageBlock):
 
     """
 
-    def __init__(self, cover: PageBlock = None) -> None:
+    def __init__(self, *, cover: PageBlock = None) -> None:
         self.cover: Union[
             PageBlockTitle,
             PageBlockSubtitle,
@@ -37735,6 +37963,7 @@ class PageBlockEmbedded(TlObject, PageBlock):
 
     def __init__(
         self,
+        *,
         url: str = "",
         html: str = "",
         poster_photo: Photo = None,
@@ -37827,6 +38056,7 @@ class PageBlockEmbeddedPost(TlObject, PageBlock):
 
     def __init__(
         self,
+        *,
         url: str = "",
         author: str = "",
         author_photo: Photo = None,
@@ -37896,7 +38126,7 @@ class PageBlockCollage(TlObject, PageBlock):
     """
 
     def __init__(
-        self, page_blocks: List[PageBlock] = None, caption: PageBlockCaption = None
+        self, *, page_blocks: List[PageBlock] = None, caption: PageBlockCaption = None
     ) -> None:
         self.page_blocks: List[PageBlock] = page_blocks or []
         r"""Collage item contents"""
@@ -37944,7 +38174,7 @@ class PageBlockSlideshow(TlObject, PageBlock):
     """
 
     def __init__(
-        self, page_blocks: List[PageBlock] = None, caption: PageBlockCaption = None
+        self, *, page_blocks: List[PageBlock] = None, caption: PageBlockCaption = None
     ) -> None:
         self.page_blocks: List[PageBlock] = page_blocks or []
         r"""Slideshow item contents"""
@@ -37999,6 +38229,7 @@ class PageBlockChatLink(TlObject, PageBlock):
 
     def __init__(
         self,
+        *,
         title: str = "",
         photo: ChatPhotoInfo = None,
         accent_color_id: int = 0,
@@ -38065,6 +38296,7 @@ class PageBlockTable(TlObject, PageBlock):
 
     def __init__(
         self,
+        *,
         caption: RichText = None,
         cells: List[List[PageBlockTableCell]] = None,
         is_bordered: bool = False,
@@ -38147,6 +38379,7 @@ class PageBlockDetails(TlObject, PageBlock):
 
     def __init__(
         self,
+        *,
         header: RichText = None,
         page_blocks: List[PageBlock] = None,
         is_open: bool = False,
@@ -38220,7 +38453,7 @@ class PageBlockRelatedArticles(TlObject, PageBlock):
     """
 
     def __init__(
-        self, header: RichText = None, articles: List[PageBlockRelatedArticle] = None
+        self, *, header: RichText = None, articles: List[PageBlockRelatedArticle] = None
     ) -> None:
         self.header: Union[
             RichTextPlain,
@@ -38297,6 +38530,7 @@ class PageBlockMap(TlObject, PageBlock):
 
     def __init__(
         self,
+        *,
         location: Location = None,
         zoom: int = 0,
         width: int = 0,
@@ -38374,6 +38608,7 @@ class WebPageInstantView(TlObject):
 
     def __init__(
         self,
+        *,
         page_blocks: List[PageBlock] = None,
         view_count: int = 0,
         version: int = 0,
@@ -38496,7 +38731,7 @@ class LinkPreviewAlbumMediaPhoto(TlObject, LinkPreviewAlbumMedia):
 
     """
 
-    def __init__(self, photo: Photo = None) -> None:
+    def __init__(self, *, photo: Photo = None) -> None:
         self.photo: Union[Photo, None] = photo
         r"""Photo description"""
 
@@ -38532,7 +38767,7 @@ class LinkPreviewAlbumMediaVideo(TlObject, LinkPreviewAlbumMedia):
 
     """
 
-    def __init__(self, video: Video = None) -> None:
+    def __init__(self, *, video: Video = None) -> None:
         self.video: Union[Video, None] = video
         r"""Video description"""
 
@@ -38572,7 +38807,7 @@ class LinkPreviewTypeAlbum(TlObject, LinkPreviewType):
     """
 
     def __init__(
-        self, media: List[LinkPreviewAlbumMedia] = None, caption: str = ""
+        self, *, media: List[LinkPreviewAlbumMedia] = None, caption: str = ""
     ) -> None:
         self.media: List[LinkPreviewAlbumMedia] = media or []
         r"""The list of album media"""
@@ -38612,7 +38847,7 @@ class LinkPreviewTypeAnimation(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, animation: Animation = None) -> None:
+    def __init__(self, *, animation: Animation = None) -> None:
         self.animation: Union[Animation, None] = animation
         r"""The animation"""
 
@@ -38648,7 +38883,7 @@ class LinkPreviewTypeApp(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, photo: Photo = None) -> None:
+    def __init__(self, *, photo: Photo = None) -> None:
         self.photo: Union[Photo, None] = photo
         r"""Photo for the app"""
 
@@ -38684,7 +38919,7 @@ class LinkPreviewTypeArticle(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, photo: Photo = None) -> None:
+    def __init__(self, *, photo: Photo = None) -> None:
         self.photo: Union[Photo, None] = photo
         r"""Article's main photo; may be null"""
 
@@ -38720,7 +38955,7 @@ class LinkPreviewTypeAudio(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, audio: Audio = None) -> None:
+    def __init__(self, *, audio: Audio = None) -> None:
         self.audio: Union[Audio, None] = audio
         r"""The audio description"""
 
@@ -38760,7 +38995,7 @@ class LinkPreviewTypeBackground(TlObject, LinkPreviewType):
     """
 
     def __init__(
-        self, document: Document = None, background_type: BackgroundType = None
+        self, *, document: Document = None, background_type: BackgroundType = None
     ) -> None:
         self.document: Union[Document, None] = document
         r"""Document with the background; may be null for filled backgrounds"""
@@ -38810,7 +39045,7 @@ class LinkPreviewTypeChannelBoost(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, photo: ChatPhoto = None) -> None:
+    def __init__(self, *, photo: ChatPhoto = None) -> None:
         self.photo: Union[ChatPhoto, None] = photo
         r"""Photo of the chat; may be null"""
 
@@ -38854,6 +39089,7 @@ class LinkPreviewTypeChat(TlObject, LinkPreviewType):
 
     def __init__(
         self,
+        *,
         type: InviteLinkChatType = None,
         photo: ChatPhoto = None,
         creates_join_request: bool = False,
@@ -38909,7 +39145,7 @@ class LinkPreviewTypeDirectMessagesChat(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, photo: ChatPhoto = None) -> None:
+    def __init__(self, *, photo: ChatPhoto = None) -> None:
         self.photo: Union[ChatPhoto, None] = photo
         r"""Photo of the channel chat; may be null"""
 
@@ -38945,7 +39181,7 @@ class LinkPreviewTypeDocument(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, document: Document = None) -> None:
+    def __init__(self, *, document: Document = None) -> None:
         self.document: Union[Document, None] = document
         r"""The document description"""
 
@@ -38998,6 +39234,7 @@ class LinkPreviewTypeEmbeddedAnimationPlayer(TlObject, LinkPreviewType):
 
     def __init__(
         self,
+        *,
         url: str = "",
         animation: Animation = None,
         thumbnail: Photo = None,
@@ -39082,6 +39319,7 @@ class LinkPreviewTypeEmbeddedAudioPlayer(TlObject, LinkPreviewType):
 
     def __init__(
         self,
+        *,
         url: str = "",
         audio: Audio = None,
         thumbnail: Photo = None,
@@ -39164,6 +39402,7 @@ class LinkPreviewTypeEmbeddedVideoPlayer(TlObject, LinkPreviewType):
 
     def __init__(
         self,
+        *,
         url: str = "",
         video: Video = None,
         thumbnail: Photo = None,
@@ -39235,7 +39474,9 @@ class LinkPreviewTypeExternalAudio(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, url: str = "", mime_type: str = "", duration: int = 0) -> None:
+    def __init__(
+        self, *, url: str = "", mime_type: str = "", duration: int = 0
+    ) -> None:
         self.url: Union[str, None] = url
         r"""URL of the audio file"""
         self.mime_type: Union[str, None] = mime_type
@@ -39296,6 +39537,7 @@ class LinkPreviewTypeExternalVideo(TlObject, LinkPreviewType):
 
     def __init__(
         self,
+        *,
         url: str = "",
         mime_type: str = "",
         width: int = 0,
@@ -39359,7 +39601,7 @@ class LinkPreviewTypeGiftAuction(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, gift: Gift = None, auction_end_date: int = 0) -> None:
+    def __init__(self, *, gift: Gift = None, auction_end_date: int = 0) -> None:
         self.gift: Union[Gift, None] = gift
         r"""The gift"""
         self.auction_end_date: int = int(auction_end_date)
@@ -39402,7 +39644,7 @@ class LinkPreviewTypeGiftCollection(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, icons: List[Sticker] = None) -> None:
+    def __init__(self, *, icons: List[Sticker] = None) -> None:
         self.icons: List[Sticker] = icons or []
         r"""Icons for some gifts from the collection; may be empty"""
 
@@ -39497,7 +39739,7 @@ class LinkPreviewTypeLiveStory(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+    def __init__(self, *, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
         self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""The identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
@@ -39568,7 +39810,7 @@ class LinkPreviewTypePhoto(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, photo: Photo = None) -> None:
+    def __init__(self, *, photo: Photo = None) -> None:
         self.photo: Union[Photo, None] = photo
         r"""The photo"""
 
@@ -39660,7 +39902,7 @@ class LinkPreviewTypeSticker(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, sticker: Sticker = None) -> None:
+    def __init__(self, *, sticker: Sticker = None) -> None:
         self.sticker: Union[Sticker, None] = sticker
         r"""The sticker\. It can be an arbitrary WEBP image and can have dimensions bigger than 512"""
 
@@ -39696,7 +39938,7 @@ class LinkPreviewTypeStickerSet(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, stickers: List[Sticker] = None) -> None:
+    def __init__(self, *, stickers: List[Sticker] = None) -> None:
         self.stickers: List[Sticker] = stickers or []
         r"""Up to 4 stickers from the sticker set"""
 
@@ -39735,7 +39977,7 @@ class LinkPreviewTypeStory(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+    def __init__(self, *, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
         self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""The identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
@@ -39781,7 +40023,7 @@ class LinkPreviewTypeStoryAlbum(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, photo_icon: Photo = None, video_icon: Video = None) -> None:
+    def __init__(self, *, photo_icon: Photo = None, video_icon: Video = None) -> None:
         self.photo_icon: Union[Photo, None] = photo_icon
         r"""Icon of the album; may be null if none"""
         self.video_icon: Union[Video, None] = video_icon
@@ -39824,7 +40066,7 @@ class LinkPreviewTypeSupergroupBoost(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, photo: ChatPhoto = None) -> None:
+    def __init__(self, *, photo: ChatPhoto = None) -> None:
         self.photo: Union[ChatPhoto, None] = photo
         r"""Photo of the chat; may be null"""
 
@@ -39864,7 +40106,7 @@ class LinkPreviewTypeTheme(TlObject, LinkPreviewType):
     """
 
     def __init__(
-        self, documents: List[Document] = None, settings: ThemeSettings = None
+        self, *, documents: List[Document] = None, settings: ThemeSettings = None
     ) -> None:
         self.documents: List[Document] = documents or []
         r"""The list of files with theme description"""
@@ -39936,7 +40178,7 @@ class LinkPreviewTypeUpgradedGift(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, gift: UpgradedGift = None) -> None:
+    def __init__(self, *, gift: UpgradedGift = None) -> None:
         self.gift: Union[UpgradedGift, None] = gift
         r"""The gift"""
 
@@ -39975,7 +40217,7 @@ class LinkPreviewTypeUser(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, photo: ChatPhoto = None, is_bot: bool = False) -> None:
+    def __init__(self, *, photo: ChatPhoto = None, is_bot: bool = False) -> None:
         self.photo: Union[ChatPhoto, None] = photo
         r"""Photo of the user; may be null if none"""
         self.is_bot: bool = bool(is_bot)
@@ -40021,7 +40263,7 @@ class LinkPreviewTypeVideo(TlObject, LinkPreviewType):
     """
 
     def __init__(
-        self, video: Video = None, cover: Photo = None, start_timestamp: int = 0
+        self, *, video: Video = None, cover: Photo = None, start_timestamp: int = 0
     ) -> None:
         self.video: Union[Video, None] = video
         r"""The video description"""
@@ -40077,6 +40319,7 @@ class LinkPreviewTypeVideoChat(TlObject, LinkPreviewType):
 
     def __init__(
         self,
+        *,
         photo: ChatPhoto = None,
         is_live_stream: bool = False,
         joins_as_speaker: bool = False,
@@ -40127,7 +40370,7 @@ class LinkPreviewTypeVideoNote(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, video_note: VideoNote = None) -> None:
+    def __init__(self, *, video_note: VideoNote = None) -> None:
         self.video_note: Union[VideoNote, None] = video_note
         r"""The video note"""
 
@@ -40163,7 +40406,7 @@ class LinkPreviewTypeVoiceNote(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, voice_note: VoiceNote = None) -> None:
+    def __init__(self, *, voice_note: VoiceNote = None) -> None:
         self.voice_note: Union[VoiceNote, None] = voice_note
         r"""The voice note"""
 
@@ -40199,7 +40442,7 @@ class LinkPreviewTypeWebApp(TlObject, LinkPreviewType):
 
     """
 
-    def __init__(self, photo: Photo = None) -> None:
+    def __init__(self, *, photo: Photo = None) -> None:
         self.photo: Union[Photo, None] = photo
         r"""Web App photo; may be null if none"""
 
@@ -40273,6 +40516,7 @@ class LinkPreview(TlObject):
 
     def __init__(
         self,
+        *,
         url: str = "",
         display_url: str = "",
         site_name: str = "",
@@ -40429,6 +40673,7 @@ class CountryInfo(TlObject):
 
     def __init__(
         self,
+        *,
         country_code: str = "",
         name: str = "",
         english_name: str = "",
@@ -40489,7 +40734,7 @@ class Countries(TlObject):
 
     """
 
-    def __init__(self, countries: List[CountryInfo] = None) -> None:
+    def __init__(self, *, countries: List[CountryInfo] = None) -> None:
         self.countries: List[CountryInfo] = countries or []
         r"""The list of countries"""
 
@@ -40536,6 +40781,7 @@ class PhoneNumberInfo(TlObject):
 
     def __init__(
         self,
+        *,
         country: CountryInfo = None,
         country_calling_code: str = "",
         formatted_phone_number: str = "",
@@ -40591,7 +40837,7 @@ class CollectibleItemTypeUsername(TlObject, CollectibleItemType):
 
     """
 
-    def __init__(self, username: str = "") -> None:
+    def __init__(self, *, username: str = "") -> None:
         self.username: Union[str, None] = username
         r"""The username"""
 
@@ -40627,7 +40873,7 @@ class CollectibleItemTypePhoneNumber(TlObject, CollectibleItemType):
 
     """
 
-    def __init__(self, phone_number: str = "") -> None:
+    def __init__(self, *, phone_number: str = "") -> None:
         self.phone_number: Union[str, None] = phone_number
         r"""The phone number"""
 
@@ -40680,6 +40926,7 @@ class CollectibleItemInfo(TlObject):
 
     def __init__(
         self,
+        *,
         purchase_date: int = 0,
         currency: str = "",
         amount: int = 0,
@@ -40748,7 +40995,7 @@ class BankCardActionOpenUrl(TlObject):
 
     """
 
-    def __init__(self, text: str = "", url: str = "") -> None:
+    def __init__(self, *, text: str = "", url: str = "") -> None:
         self.text: Union[str, None] = text
         r"""Action text"""
         self.url: Union[str, None] = url
@@ -40791,7 +41038,7 @@ class BankCardInfo(TlObject):
     """
 
     def __init__(
-        self, title: str = "", actions: List[BankCardActionOpenUrl] = None
+        self, *, title: str = "", actions: List[BankCardActionOpenUrl] = None
     ) -> None:
         self.title: Union[str, None] = title
         r"""Title of the bank card description"""
@@ -40848,6 +41095,7 @@ class Address(TlObject):
 
     def __init__(
         self,
+        *,
         country_code: str = "",
         state: str = "",
         city: str = "",
@@ -40923,7 +41171,12 @@ class LocationAddress(TlObject):
     """
 
     def __init__(
-        self, country_code: str = "", state: str = "", city: str = "", street: str = ""
+        self,
+        *,
+        country_code: str = "",
+        state: str = "",
+        city: str = "",
+        street: str = "",
     ) -> None:
         self.country_code: Union[str, None] = country_code
         r"""A two\-letter ISO 3166\-1 alpha\-2 country code"""
@@ -40978,7 +41231,7 @@ class LabeledPricePart(TlObject):
 
     """
 
-    def __init__(self, label: str = "", amount: int = 0) -> None:
+    def __init__(self, *, label: str = "", amount: int = 0) -> None:
         self.label: Union[str, None] = label
         r"""Label for this portion of the product price"""
         self.amount: int = int(amount)
@@ -41061,6 +41314,7 @@ class Invoice(TlObject):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         price_parts: List[LabeledPricePart] = None,
         subscription_period: int = 0,
@@ -41190,6 +41444,7 @@ class OrderInfo(TlObject):
 
     def __init__(
         self,
+        *,
         name: str = "",
         phone_number: str = "",
         email_address: str = "",
@@ -41252,7 +41507,11 @@ class ShippingOption(TlObject):
     """
 
     def __init__(
-        self, id: str = "", title: str = "", price_parts: List[LabeledPricePart] = None
+        self,
+        *,
+        id: str = "",
+        title: str = "",
+        price_parts: List[LabeledPricePart] = None,
     ) -> None:
         self.id: Union[str, None] = id
         r"""Shipping option identifier"""
@@ -41303,7 +41562,7 @@ class SavedCredentials(TlObject):
 
     """
 
-    def __init__(self, id: str = "", title: str = "") -> None:
+    def __init__(self, *, id: str = "", title: str = "") -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the saved credentials"""
         self.title: Union[str, None] = title
@@ -41342,7 +41601,7 @@ class InputCredentialsSaved(TlObject, InputCredentials):
 
     """
 
-    def __init__(self, saved_credentials_id: str = "") -> None:
+    def __init__(self, *, saved_credentials_id: str = "") -> None:
         self.saved_credentials_id: Union[str, None] = saved_credentials_id
         r"""Identifier of the saved credentials"""
 
@@ -41384,7 +41643,7 @@ class InputCredentialsNew(TlObject, InputCredentials):
 
     """
 
-    def __init__(self, data: str = "", allow_save: bool = False) -> None:
+    def __init__(self, *, data: str = "", allow_save: bool = False) -> None:
         self.data: Union[str, None] = data
         r"""JSON\-encoded data with the credential identifier from the payment provider"""
         self.allow_save: bool = bool(allow_save)
@@ -41427,7 +41686,7 @@ class InputCredentialsApplePay(TlObject, InputCredentials):
 
     """
 
-    def __init__(self, data: str = "") -> None:
+    def __init__(self, *, data: str = "") -> None:
         self.data: Union[str, None] = data
         r"""JSON\-encoded data with the credential identifier"""
 
@@ -41463,7 +41722,7 @@ class InputCredentialsGooglePay(TlObject, InputCredentials):
 
     """
 
-    def __init__(self, data: str = "") -> None:
+    def __init__(self, *, data: str = "") -> None:
         self.data: Union[str, None] = data
         r"""JSON\-encoded data with the credential identifier"""
 
@@ -41502,7 +41761,7 @@ class PaymentProviderSmartGlocal(TlObject, PaymentProvider):
 
     """
 
-    def __init__(self, public_token: str = "", tokenize_url: str = "") -> None:
+    def __init__(self, *, public_token: str = "", tokenize_url: str = "") -> None:
         self.public_token: Union[str, None] = public_token
         r"""Public payment token"""
         self.tokenize_url: Union[str, None] = tokenize_url
@@ -41556,6 +41815,7 @@ class PaymentProviderStripe(TlObject, PaymentProvider):
 
     def __init__(
         self,
+        *,
         publishable_key: str = "",
         need_country: bool = False,
         need_postal_code: bool = False,
@@ -41611,7 +41871,7 @@ class PaymentProviderOther(TlObject, PaymentProvider):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""Payment form URL"""
 
@@ -41650,7 +41910,7 @@ class PaymentOption(TlObject):
 
     """
 
-    def __init__(self, title: str = "", url: str = "") -> None:
+    def __init__(self, *, title: str = "", url: str = "") -> None:
         self.title: Union[str, None] = title
         r"""Title for the payment option"""
         self.url: Union[str, None] = url
@@ -41712,6 +41972,7 @@ class PaymentFormTypeRegular(TlObject, PaymentFormType):
 
     def __init__(
         self,
+        *,
         invoice: Invoice = None,
         payment_provider_user_id: int = 0,
         payment_provider: PaymentProvider = None,
@@ -41798,7 +42059,7 @@ class PaymentFormTypeStars(TlObject, PaymentFormType):
 
     """
 
-    def __init__(self, star_count: int = 0) -> None:
+    def __init__(self, *, star_count: int = 0) -> None:
         self.star_count: int = int(star_count)
         r"""Number of Telegram Stars that will be paid"""
 
@@ -41834,7 +42095,7 @@ class PaymentFormTypeStarSubscription(TlObject, PaymentFormType):
 
     """
 
-    def __init__(self, pricing: StarSubscriptionPricing = None) -> None:
+    def __init__(self, *, pricing: StarSubscriptionPricing = None) -> None:
         self.pricing: Union[StarSubscriptionPricing, None] = pricing
         r"""Information about subscription plan"""
 
@@ -41881,6 +42142,7 @@ class PaymentForm(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         type: PaymentFormType = None,
         seller_bot_user_id: int = 0,
@@ -41945,7 +42207,7 @@ class ValidatedOrderInfo(TlObject):
     """
 
     def __init__(
-        self, order_info_id: str = "", shipping_options: List[ShippingOption] = None
+        self, *, order_info_id: str = "", shipping_options: List[ShippingOption] = None
     ) -> None:
         self.order_info_id: Union[str, None] = order_info_id
         r"""Temporary identifier of the order information"""
@@ -41992,7 +42254,7 @@ class PaymentResult(TlObject):
 
     """
 
-    def __init__(self, success: bool = False, verification_url: str = "") -> None:
+    def __init__(self, *, success: bool = False, verification_url: str = "") -> None:
         self.success: bool = bool(success)
         r"""True, if the payment request was successful; otherwise, the verification\_url will be non\-empty"""
         self.verification_url: Union[str, None] = verification_url
@@ -42052,6 +42314,7 @@ class PaymentReceiptTypeRegular(TlObject, PaymentReceiptType):
 
     def __init__(
         self,
+        *,
         payment_provider_user_id: int = 0,
         invoice: Invoice = None,
         order_info: OrderInfo = None,
@@ -42122,7 +42385,7 @@ class PaymentReceiptTypeStars(TlObject, PaymentReceiptType):
 
     """
 
-    def __init__(self, star_count: int = 0, transaction_id: str = "") -> None:
+    def __init__(self, *, star_count: int = 0, transaction_id: str = "") -> None:
         self.star_count: int = int(star_count)
         r"""Number of Telegram Stars that were paid"""
         self.transaction_id: Union[str, None] = transaction_id
@@ -42176,6 +42439,7 @@ class PaymentReceipt(TlObject):
 
     def __init__(
         self,
+        *,
         product_info: ProductInfo = None,
         date: int = 0,
         seller_bot_user_id: int = 0,
@@ -42236,7 +42500,7 @@ class InputInvoiceMessage(TlObject, InputInvoice):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier of the message"""
         self.message_id: int = int(message_id)
@@ -42279,7 +42543,7 @@ class InputInvoiceName(TlObject, InputInvoice):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""Name of the invoice"""
 
@@ -42315,7 +42579,7 @@ class InputInvoiceTelegram(TlObject, InputInvoice):
 
     """
 
-    def __init__(self, purpose: TelegramPaymentPurpose = None) -> None:
+    def __init__(self, *, purpose: TelegramPaymentPurpose = None) -> None:
         self.purpose: Union[
             TelegramPaymentPurposePremiumGift,
             TelegramPaymentPurposePremiumGiftCodes,
@@ -42371,6 +42635,7 @@ class PaidMediaPreview(TlObject, PaidMedia):
 
     def __init__(
         self,
+        *,
         width: int = 0,
         height: int = 0,
         duration: int = 0,
@@ -42426,7 +42691,7 @@ class PaidMediaPhoto(TlObject, PaidMedia):
 
     """
 
-    def __init__(self, photo: Photo = None) -> None:
+    def __init__(self, *, photo: Photo = None) -> None:
         self.photo: Union[Photo, None] = photo
         r"""The photo"""
 
@@ -42469,7 +42734,7 @@ class PaidMediaVideo(TlObject, PaidMedia):
     """
 
     def __init__(
-        self, video: Video = None, cover: Photo = None, start_timestamp: int = 0
+        self, *, video: Video = None, cover: Photo = None, start_timestamp: int = 0
     ) -> None:
         self.video: Union[Video, None] = video
         r"""The video"""
@@ -42565,6 +42830,7 @@ class GiveawayParameters(TlObject):
 
     def __init__(
         self,
+        *,
         boosted_chat_id: int = 0,
         additional_chat_ids: List[int] = None,
         winners_selection_date: int = 0,
@@ -42640,7 +42906,7 @@ class DatedFile(TlObject):
 
     """
 
-    def __init__(self, file: File = None, date: int = 0) -> None:
+    def __init__(self, *, file: File = None, date: int = 0) -> None:
         self.file: Union[File, None] = file
         r"""The file"""
         self.date: int = int(date)
@@ -43055,7 +43321,7 @@ class Date(TlObject):
 
     """
 
-    def __init__(self, day: int = 0, month: int = 0, year: int = 0) -> None:
+    def __init__(self, *, day: int = 0, month: int = 0, year: int = 0) -> None:
         self.day: int = int(day)
         r"""Day of the month; 1\-31"""
         self.month: int = int(month)
@@ -43131,6 +43397,7 @@ class PersonalDetails(TlObject):
 
     def __init__(
         self,
+        *,
         first_name: str = "",
         middle_name: str = "",
         last_name: str = "",
@@ -43233,6 +43500,7 @@ class IdentityDocument(TlObject):
 
     def __init__(
         self,
+        *,
         number: str = "",
         expiration_date: Date = None,
         front_side: DatedFile = None,
@@ -43315,6 +43583,7 @@ class InputIdentityDocument(TlObject):
 
     def __init__(
         self,
+        *,
         number: str = "",
         expiration_date: Date = None,
         front_side: InputFile = None,
@@ -43390,7 +43659,7 @@ class PersonalDocument(TlObject):
     """
 
     def __init__(
-        self, files: List[DatedFile] = None, translation: List[DatedFile] = None
+        self, *, files: List[DatedFile] = None, translation: List[DatedFile] = None
     ) -> None:
         self.files: List[DatedFile] = files or []
         r"""List of files containing the pages of the document"""
@@ -43438,7 +43707,7 @@ class InputPersonalDocument(TlObject):
     """
 
     def __init__(
-        self, files: List[InputFile] = None, translation: List[InputFile] = None
+        self, *, files: List[InputFile] = None, translation: List[InputFile] = None
     ) -> None:
         self.files: List[InputFile] = files or []
         r"""List of files containing the pages of the document"""
@@ -43482,7 +43751,7 @@ class PassportElementPersonalDetails(TlObject, PassportElement):
 
     """
 
-    def __init__(self, personal_details: PersonalDetails = None) -> None:
+    def __init__(self, *, personal_details: PersonalDetails = None) -> None:
         self.personal_details: Union[PersonalDetails, None] = personal_details
         r"""Personal details of the user"""
 
@@ -43518,7 +43787,7 @@ class PassportElementPassport(TlObject, PassportElement):
 
     """
 
-    def __init__(self, passport: IdentityDocument = None) -> None:
+    def __init__(self, *, passport: IdentityDocument = None) -> None:
         self.passport: Union[IdentityDocument, None] = passport
         r"""Passport"""
 
@@ -43554,7 +43823,7 @@ class PassportElementDriverLicense(TlObject, PassportElement):
 
     """
 
-    def __init__(self, driver_license: IdentityDocument = None) -> None:
+    def __init__(self, *, driver_license: IdentityDocument = None) -> None:
         self.driver_license: Union[IdentityDocument, None] = driver_license
         r"""Driver license"""
 
@@ -43590,7 +43859,7 @@ class PassportElementIdentityCard(TlObject, PassportElement):
 
     """
 
-    def __init__(self, identity_card: IdentityDocument = None) -> None:
+    def __init__(self, *, identity_card: IdentityDocument = None) -> None:
         self.identity_card: Union[IdentityDocument, None] = identity_card
         r"""Identity card"""
 
@@ -43626,7 +43895,7 @@ class PassportElementInternalPassport(TlObject, PassportElement):
 
     """
 
-    def __init__(self, internal_passport: IdentityDocument = None) -> None:
+    def __init__(self, *, internal_passport: IdentityDocument = None) -> None:
         self.internal_passport: Union[IdentityDocument, None] = internal_passport
         r"""Internal passport"""
 
@@ -43662,7 +43931,7 @@ class PassportElementAddress(TlObject, PassportElement):
 
     """
 
-    def __init__(self, address: Address = None) -> None:
+    def __init__(self, *, address: Address = None) -> None:
         self.address: Union[Address, None] = address
         r"""Address"""
 
@@ -43698,7 +43967,7 @@ class PassportElementUtilityBill(TlObject, PassportElement):
 
     """
 
-    def __init__(self, utility_bill: PersonalDocument = None) -> None:
+    def __init__(self, *, utility_bill: PersonalDocument = None) -> None:
         self.utility_bill: Union[PersonalDocument, None] = utility_bill
         r"""Utility bill"""
 
@@ -43734,7 +44003,7 @@ class PassportElementBankStatement(TlObject, PassportElement):
 
     """
 
-    def __init__(self, bank_statement: PersonalDocument = None) -> None:
+    def __init__(self, *, bank_statement: PersonalDocument = None) -> None:
         self.bank_statement: Union[PersonalDocument, None] = bank_statement
         r"""Bank statement"""
 
@@ -43770,7 +44039,7 @@ class PassportElementRentalAgreement(TlObject, PassportElement):
 
     """
 
-    def __init__(self, rental_agreement: PersonalDocument = None) -> None:
+    def __init__(self, *, rental_agreement: PersonalDocument = None) -> None:
         self.rental_agreement: Union[PersonalDocument, None] = rental_agreement
         r"""Rental agreement"""
 
@@ -43806,7 +44075,7 @@ class PassportElementPassportRegistration(TlObject, PassportElement):
 
     """
 
-    def __init__(self, passport_registration: PersonalDocument = None) -> None:
+    def __init__(self, *, passport_registration: PersonalDocument = None) -> None:
         self.passport_registration: Union[PersonalDocument, None] = (
             passport_registration
         )
@@ -43849,7 +44118,7 @@ class PassportElementTemporaryRegistration(TlObject, PassportElement):
 
     """
 
-    def __init__(self, temporary_registration: PersonalDocument = None) -> None:
+    def __init__(self, *, temporary_registration: PersonalDocument = None) -> None:
         self.temporary_registration: Union[PersonalDocument, None] = (
             temporary_registration
         )
@@ -43892,7 +44161,7 @@ class PassportElementPhoneNumber(TlObject, PassportElement):
 
     """
 
-    def __init__(self, phone_number: str = "") -> None:
+    def __init__(self, *, phone_number: str = "") -> None:
         self.phone_number: Union[str, None] = phone_number
         r"""Phone number"""
 
@@ -43928,7 +44197,7 @@ class PassportElementEmailAddress(TlObject, PassportElement):
 
     """
 
-    def __init__(self, email_address: str = "") -> None:
+    def __init__(self, *, email_address: str = "") -> None:
         self.email_address: Union[str, None] = email_address
         r"""Email address"""
 
@@ -43964,7 +44233,7 @@ class InputPassportElementPersonalDetails(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, personal_details: PersonalDetails = None) -> None:
+    def __init__(self, *, personal_details: PersonalDetails = None) -> None:
         self.personal_details: Union[PersonalDetails, None] = personal_details
         r"""Personal details of the user"""
 
@@ -44002,7 +44271,7 @@ class InputPassportElementPassport(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, passport: InputIdentityDocument = None) -> None:
+    def __init__(self, *, passport: InputIdentityDocument = None) -> None:
         self.passport: Union[InputIdentityDocument, None] = passport
         r"""The passport to be saved"""
 
@@ -44038,7 +44307,7 @@ class InputPassportElementDriverLicense(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, driver_license: InputIdentityDocument = None) -> None:
+    def __init__(self, *, driver_license: InputIdentityDocument = None) -> None:
         self.driver_license: Union[InputIdentityDocument, None] = driver_license
         r"""The driver license to be saved"""
 
@@ -44074,7 +44343,7 @@ class InputPassportElementIdentityCard(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, identity_card: InputIdentityDocument = None) -> None:
+    def __init__(self, *, identity_card: InputIdentityDocument = None) -> None:
         self.identity_card: Union[InputIdentityDocument, None] = identity_card
         r"""The identity card to be saved"""
 
@@ -44110,7 +44379,7 @@ class InputPassportElementInternalPassport(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, internal_passport: InputIdentityDocument = None) -> None:
+    def __init__(self, *, internal_passport: InputIdentityDocument = None) -> None:
         self.internal_passport: Union[InputIdentityDocument, None] = internal_passport
         r"""The internal passport to be saved"""
 
@@ -44148,7 +44417,7 @@ class InputPassportElementAddress(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, address: Address = None) -> None:
+    def __init__(self, *, address: Address = None) -> None:
         self.address: Union[Address, None] = address
         r"""The address to be saved"""
 
@@ -44184,7 +44453,7 @@ class InputPassportElementUtilityBill(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, utility_bill: InputPersonalDocument = None) -> None:
+    def __init__(self, *, utility_bill: InputPersonalDocument = None) -> None:
         self.utility_bill: Union[InputPersonalDocument, None] = utility_bill
         r"""The utility bill to be saved"""
 
@@ -44220,7 +44489,7 @@ class InputPassportElementBankStatement(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, bank_statement: InputPersonalDocument = None) -> None:
+    def __init__(self, *, bank_statement: InputPersonalDocument = None) -> None:
         self.bank_statement: Union[InputPersonalDocument, None] = bank_statement
         r"""The bank statement to be saved"""
 
@@ -44256,7 +44525,7 @@ class InputPassportElementRentalAgreement(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, rental_agreement: InputPersonalDocument = None) -> None:
+    def __init__(self, *, rental_agreement: InputPersonalDocument = None) -> None:
         self.rental_agreement: Union[InputPersonalDocument, None] = rental_agreement
         r"""The rental agreement to be saved"""
 
@@ -44294,7 +44563,7 @@ class InputPassportElementPassportRegistration(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, passport_registration: InputPersonalDocument = None) -> None:
+    def __init__(self, *, passport_registration: InputPersonalDocument = None) -> None:
         self.passport_registration: Union[InputPersonalDocument, None] = (
             passport_registration
         )
@@ -44337,7 +44606,7 @@ class InputPassportElementTemporaryRegistration(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, temporary_registration: InputPersonalDocument = None) -> None:
+    def __init__(self, *, temporary_registration: InputPersonalDocument = None) -> None:
         self.temporary_registration: Union[InputPersonalDocument, None] = (
             temporary_registration
         )
@@ -44380,7 +44649,7 @@ class InputPassportElementPhoneNumber(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, phone_number: str = "") -> None:
+    def __init__(self, *, phone_number: str = "") -> None:
         self.phone_number: Union[str, None] = phone_number
         r"""The phone number to be saved"""
 
@@ -44416,7 +44685,7 @@ class InputPassportElementEmailAddress(TlObject, InputPassportElement):
 
     """
 
-    def __init__(self, email_address: str = "") -> None:
+    def __init__(self, *, email_address: str = "") -> None:
         self.email_address: Union[str, None] = email_address
         r"""The email address to be saved"""
 
@@ -44452,7 +44721,7 @@ class PassportElements(TlObject):
 
     """
 
-    def __init__(self, elements: List[PassportElement] = None) -> None:
+    def __init__(self, *, elements: List[PassportElement] = None) -> None:
         self.elements: List[PassportElement] = elements or []
         r"""Telegram Passport elements"""
 
@@ -44518,7 +44787,7 @@ class PassportElementErrorSourceDataField(TlObject, PassportElementErrorSource):
 
     """
 
-    def __init__(self, field_name: str = "") -> None:
+    def __init__(self, *, field_name: str = "") -> None:
         self.field_name: Union[str, None] = field_name
         r"""Field name"""
 
@@ -44644,7 +44913,7 @@ class PassportElementErrorSourceTranslationFile(TlObject, PassportElementErrorSo
 
     """
 
-    def __init__(self, file_index: int = 0) -> None:
+    def __init__(self, *, file_index: int = 0) -> None:
         self.file_index: int = int(file_index)
         r"""Index of a file with the error"""
 
@@ -44712,7 +44981,7 @@ class PassportElementErrorSourceFile(TlObject, PassportElementErrorSource):
 
     """
 
-    def __init__(self, file_index: int = 0) -> None:
+    def __init__(self, *, file_index: int = 0) -> None:
         self.file_index: int = int(file_index)
         r"""Index of a file with the error"""
 
@@ -44784,6 +45053,7 @@ class PassportElementError(TlObject):
 
     def __init__(
         self,
+        *,
         type: PassportElementType = None,
         message: str = "",
         source: PassportElementErrorSource = None,
@@ -44871,6 +45141,7 @@ class PassportSuitableElement(TlObject):
 
     def __init__(
         self,
+        *,
         type: PassportElementType = None,
         is_selfie_required: bool = False,
         is_translation_required: bool = False,
@@ -44945,7 +45216,9 @@ class PassportRequiredElement(TlObject):
 
     """
 
-    def __init__(self, suitable_elements: List[PassportSuitableElement] = None) -> None:
+    def __init__(
+        self, *, suitable_elements: List[PassportSuitableElement] = None
+    ) -> None:
         self.suitable_elements: List[PassportSuitableElement] = suitable_elements or []
         r"""List of Telegram Passport elements any of which is enough to provide"""
 
@@ -44989,6 +45262,7 @@ class PassportAuthorizationForm(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         required_elements: List[PassportRequiredElement] = None,
         privacy_policy_url: str = "",
@@ -45044,6 +45318,7 @@ class PassportElementsWithErrors(TlObject):
 
     def __init__(
         self,
+        *,
         elements: List[PassportElement] = None,
         errors: List[PassportElementError] = None,
     ) -> None:
@@ -45096,7 +45371,7 @@ class EncryptedCredentials(TlObject):
     """
 
     def __init__(
-        self, data: bytes = b"", hash: bytes = b"", secret: bytes = b""
+        self, *, data: bytes = b"", hash: bytes = b"", secret: bytes = b""
     ) -> None:
         self.data: Union[bytes, None] = data
         r"""The encrypted credentials"""
@@ -45170,6 +45445,7 @@ class EncryptedPassportElement(TlObject):
 
     def __init__(
         self,
+        *,
         type: PassportElementType = None,
         data: bytes = b"",
         front_side: DatedFile = None,
@@ -45267,7 +45543,7 @@ class InputPassportElementErrorSourceUnspecified(
 
     """
 
-    def __init__(self, element_hash: bytes = b"") -> None:
+    def __init__(self, *, element_hash: bytes = b"") -> None:
         self.element_hash: Union[bytes, None] = element_hash
         r"""Current hash of the entire element"""
 
@@ -45310,7 +45586,7 @@ class InputPassportElementErrorSourceDataField(
 
     """
 
-    def __init__(self, field_name: str = "", data_hash: bytes = b"") -> None:
+    def __init__(self, *, field_name: str = "", data_hash: bytes = b"") -> None:
         self.field_name: Union[str, None] = field_name
         r"""Field name"""
         self.data_hash: Union[bytes, None] = data_hash
@@ -45357,7 +45633,7 @@ class InputPassportElementErrorSourceFrontSide(
 
     """
 
-    def __init__(self, file_hash: bytes = b"") -> None:
+    def __init__(self, *, file_hash: bytes = b"") -> None:
         self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file containing the front side"""
 
@@ -45397,7 +45673,7 @@ class InputPassportElementErrorSourceReverseSide(
 
     """
 
-    def __init__(self, file_hash: bytes = b"") -> None:
+    def __init__(self, *, file_hash: bytes = b"") -> None:
         self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file containing the reverse side"""
 
@@ -45435,7 +45711,7 @@ class InputPassportElementErrorSourceSelfie(TlObject, InputPassportElementErrorS
 
     """
 
-    def __init__(self, file_hash: bytes = b"") -> None:
+    def __init__(self, *, file_hash: bytes = b"") -> None:
         self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file containing the selfie"""
 
@@ -45475,7 +45751,7 @@ class InputPassportElementErrorSourceTranslationFile(
 
     """
 
-    def __init__(self, file_hash: bytes = b"") -> None:
+    def __init__(self, *, file_hash: bytes = b"") -> None:
         self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file containing the translation"""
 
@@ -45515,7 +45791,7 @@ class InputPassportElementErrorSourceTranslationFiles(
 
     """
 
-    def __init__(self, file_hashes: List[bytes] = None) -> None:
+    def __init__(self, *, file_hashes: List[bytes] = None) -> None:
         self.file_hashes: List[bytes] = file_hashes or []
         r"""Current hashes of all files with the translation"""
 
@@ -45553,7 +45829,7 @@ class InputPassportElementErrorSourceFile(TlObject, InputPassportElementErrorSou
 
     """
 
-    def __init__(self, file_hash: bytes = b"") -> None:
+    def __init__(self, *, file_hash: bytes = b"") -> None:
         self.file_hash: Union[bytes, None] = file_hash
         r"""Current hash of the file which has the error"""
 
@@ -45591,7 +45867,7 @@ class InputPassportElementErrorSourceFiles(TlObject, InputPassportElementErrorSo
 
     """
 
-    def __init__(self, file_hashes: List[bytes] = None) -> None:
+    def __init__(self, *, file_hashes: List[bytes] = None) -> None:
         self.file_hashes: List[bytes] = file_hashes or []
         r"""Current hashes of all attached files"""
 
@@ -45637,6 +45913,7 @@ class InputPassportElementError(TlObject):
 
     def __init__(
         self,
+        *,
         type: PassportElementType = None,
         message: str = "",
         source: InputPassportElementErrorSource = None,
@@ -45721,6 +45998,7 @@ class MessageText(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         text: FormattedText = None,
         link_preview: LinkPreview = None,
         link_preview_options: LinkPreviewOptions = None,
@@ -45787,6 +46065,7 @@ class MessageAnimation(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         animation: Animation = None,
         caption: FormattedText = None,
         show_caption_above_media: bool = False,
@@ -45852,7 +46131,7 @@ class MessageAudio(TlObject, MessageContent):
 
     """
 
-    def __init__(self, audio: Audio = None, caption: FormattedText = None) -> None:
+    def __init__(self, *, audio: Audio = None, caption: FormattedText = None) -> None:
         self.audio: Union[Audio, None] = audio
         r"""The audio description"""
         self.caption: Union[FormattedText, None] = caption
@@ -45895,7 +46174,7 @@ class MessageDocument(TlObject, MessageContent):
     """
 
     def __init__(
-        self, document: Document = None, caption: FormattedText = None
+        self, *, document: Document = None, caption: FormattedText = None
     ) -> None:
         self.document: Union[Document, None] = document
         r"""The document description"""
@@ -45950,6 +46229,7 @@ class MessagePaidMedia(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         star_count: int = 0,
         media: List[PaidMedia] = None,
         caption: FormattedText = None,
@@ -46021,6 +46301,7 @@ class MessagePhoto(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         photo: Photo = None,
         caption: FormattedText = None,
         show_caption_above_media: bool = False,
@@ -46086,7 +46367,7 @@ class MessageSticker(TlObject, MessageContent):
 
     """
 
-    def __init__(self, sticker: Sticker = None, is_premium: bool = False) -> None:
+    def __init__(self, *, sticker: Sticker = None, is_premium: bool = False) -> None:
         self.sticker: Union[Sticker, None] = sticker
         r"""The sticker description"""
         self.is_premium: bool = bool(is_premium)
@@ -46155,6 +46436,7 @@ class MessageVideo(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         video: Video = None,
         alternative_videos: List[AlternativeVideo] = None,
         storyboards: List[VideoStoryboard] = None,
@@ -46245,6 +46527,7 @@ class MessageVideoNote(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         video_note: VideoNote = None,
         is_viewed: bool = False,
         is_secret: bool = False,
@@ -46303,6 +46586,7 @@ class MessageVoiceNote(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         voice_note: VoiceNote = None,
         caption: FormattedText = None,
         is_listened: bool = False,
@@ -46479,6 +46763,7 @@ class MessageLocation(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         location: Location = None,
         live_period: int = 0,
         expires_in: int = 0,
@@ -46541,7 +46826,7 @@ class MessageVenue(TlObject, MessageContent):
 
     """
 
-    def __init__(self, venue: Venue = None) -> None:
+    def __init__(self, *, venue: Venue = None) -> None:
         self.venue: Union[Venue, None] = venue
         r"""The venue description"""
 
@@ -46577,7 +46862,7 @@ class MessageContact(TlObject, MessageContent):
 
     """
 
-    def __init__(self, contact: Contact = None) -> None:
+    def __init__(self, *, contact: Contact = None) -> None:
         self.contact: Union[Contact, None] = contact
         r"""The contact description"""
 
@@ -46616,7 +46901,9 @@ class MessageAnimatedEmoji(TlObject, MessageContent):
 
     """
 
-    def __init__(self, animated_emoji: AnimatedEmoji = None, emoji: str = "") -> None:
+    def __init__(
+        self, *, animated_emoji: AnimatedEmoji = None, emoji: str = ""
+    ) -> None:
         self.animated_emoji: Union[AnimatedEmoji, None] = animated_emoji
         r"""The animated emoji"""
         self.emoji: Union[str, None] = emoji
@@ -46673,6 +46960,7 @@ class MessageDice(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         initial_state: DiceStickers = None,
         final_state: DiceStickers = None,
         emoji: str = "",
@@ -46739,7 +47027,7 @@ class MessageGame(TlObject, MessageContent):
 
     """
 
-    def __init__(self, game: Game = None) -> None:
+    def __init__(self, *, game: Game = None) -> None:
         self.game: Union[Game, None] = game
         r"""The game description"""
 
@@ -46775,7 +47063,7 @@ class MessagePoll(TlObject, MessageContent):
 
     """
 
-    def __init__(self, poll: Poll = None) -> None:
+    def __init__(self, *, poll: Poll = None) -> None:
         self.poll: Union[Poll, None] = poll
         r"""The poll description"""
 
@@ -46825,6 +47113,7 @@ class MessageStakeDice(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         initial_state: DiceStickers = None,
         final_state: DiceStickers = None,
         value: int = 0,
@@ -46897,6 +47186,7 @@ class MessageStory(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         story_poster_chat_id: int = 0,
         story_id: int = 0,
         via_mention: bool = False,
@@ -46947,7 +47237,7 @@ class MessageChecklist(TlObject, MessageContent):
 
     """
 
-    def __init__(self, list: Checklist = None) -> None:
+    def __init__(self, *, list: Checklist = None) -> None:
         self.list: Union[Checklist, None] = list
         r"""The checklist description"""
 
@@ -47009,6 +47299,7 @@ class MessageInvoice(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         product_info: ProductInfo = None,
         currency: str = "",
         total_amount: int = 0,
@@ -47102,6 +47393,7 @@ class MessageCall(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         unique_id: int = 0,
         is_video: bool = False,
         discard_reason: CallDiscardReason = None,
@@ -47182,6 +47474,7 @@ class MessageGroupCall(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         unique_id: int = 0,
         is_active: bool = False,
         was_missed: bool = False,
@@ -47250,7 +47543,7 @@ class MessageVideoChatScheduled(TlObject, MessageContent):
 
     """
 
-    def __init__(self, group_call_id: int = 0, start_date: int = 0) -> None:
+    def __init__(self, *, group_call_id: int = 0, start_date: int = 0) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the video chat\. The video chat can be received through the method getGroupCall"""
         self.start_date: int = int(start_date)
@@ -47293,7 +47586,7 @@ class MessageVideoChatStarted(TlObject, MessageContent):
 
     """
 
-    def __init__(self, group_call_id: int = 0) -> None:
+    def __init__(self, *, group_call_id: int = 0) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the video chat\. The video chat can be received through the method getGroupCall"""
 
@@ -47329,7 +47622,7 @@ class MessageVideoChatEnded(TlObject, MessageContent):
 
     """
 
-    def __init__(self, duration: int = 0) -> None:
+    def __init__(self, *, duration: int = 0) -> None:
         self.duration: int = int(duration)
         r"""Call duration, in seconds"""
 
@@ -47368,7 +47661,7 @@ class MessageInviteVideoChatParticipants(TlObject, MessageContent):
 
     """
 
-    def __init__(self, group_call_id: int = 0, user_ids: List[int] = None) -> None:
+    def __init__(self, *, group_call_id: int = 0, user_ids: List[int] = None) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the video chat\. The video chat can be received through the method getGroupCall"""
         self.user_ids: List[int] = user_ids or []
@@ -47414,7 +47707,7 @@ class MessageBasicGroupChatCreate(TlObject, MessageContent):
 
     """
 
-    def __init__(self, title: str = "", member_user_ids: List[int] = None) -> None:
+    def __init__(self, *, title: str = "", member_user_ids: List[int] = None) -> None:
         self.title: Union[str, None] = title
         r"""Title of the basic group"""
         self.member_user_ids: List[int] = member_user_ids or []
@@ -47457,7 +47750,7 @@ class MessageSupergroupChatCreate(TlObject, MessageContent):
 
     """
 
-    def __init__(self, title: str = "") -> None:
+    def __init__(self, *, title: str = "") -> None:
         self.title: Union[str, None] = title
         r"""Title of the supergroup or channel"""
 
@@ -47493,7 +47786,7 @@ class MessageChatChangeTitle(TlObject, MessageContent):
 
     """
 
-    def __init__(self, title: str = "") -> None:
+    def __init__(self, *, title: str = "") -> None:
         self.title: Union[str, None] = title
         r"""New chat title"""
 
@@ -47529,7 +47822,7 @@ class MessageChatChangePhoto(TlObject, MessageContent):
 
     """
 
-    def __init__(self, photo: ChatPhoto = None) -> None:
+    def __init__(self, *, photo: ChatPhoto = None) -> None:
         self.photo: Union[ChatPhoto, None] = photo
         r"""New chat photo"""
 
@@ -47593,7 +47886,7 @@ class MessageChatOwnerLeft(TlObject, MessageContent):
 
     """
 
-    def __init__(self, new_owner_user_id: int = 0) -> None:
+    def __init__(self, *, new_owner_user_id: int = 0) -> None:
         self.new_owner_user_id: int = int(new_owner_user_id)
         r"""Identifier of the user who will become the new owner of the chat if the previous owner isn't return; 0 if none"""
 
@@ -47629,7 +47922,7 @@ class MessageChatOwnerChanged(TlObject, MessageContent):
 
     """
 
-    def __init__(self, new_owner_user_id: int = 0) -> None:
+    def __init__(self, *, new_owner_user_id: int = 0) -> None:
         self.new_owner_user_id: int = int(new_owner_user_id)
         r"""Identifier of the user who is the new owner of the chat"""
 
@@ -47673,6 +47966,7 @@ class MessageChatHasProtectedContentToggled(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         request_message_id: int = 0,
         old_has_protected_content: bool = False,
         new_has_protected_content: bool = False,
@@ -47729,7 +48023,7 @@ class MessageChatHasProtectedContentDisableRequested(TlObject, MessageContent):
 
     """
 
-    def __init__(self, is_expired: bool = False) -> None:
+    def __init__(self, *, is_expired: bool = False) -> None:
         self.is_expired: bool = bool(is_expired)
         r"""True, if the request has expired"""
 
@@ -47767,7 +48061,7 @@ class MessageChatAddMembers(TlObject, MessageContent):
 
     """
 
-    def __init__(self, member_user_ids: List[int] = None) -> None:
+    def __init__(self, *, member_user_ids: List[int] = None) -> None:
         self.member_user_ids: List[int] = member_user_ids or []
         r"""User identifiers of the new members"""
 
@@ -47859,7 +48153,7 @@ class MessageChatDeleteMember(TlObject, MessageContent):
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier of the deleted chat member"""
 
@@ -47895,7 +48189,7 @@ class MessageChatUpgradeTo(TlObject, MessageContent):
 
     """
 
-    def __init__(self, supergroup_id: int = 0) -> None:
+    def __init__(self, *, supergroup_id: int = 0) -> None:
         self.supergroup_id: int = int(supergroup_id)
         r"""Identifier of the supergroup to which the basic group was upgraded"""
 
@@ -47934,7 +48228,7 @@ class MessageChatUpgradeFrom(TlObject, MessageContent):
 
     """
 
-    def __init__(self, title: str = "", basic_group_id: int = 0) -> None:
+    def __init__(self, *, title: str = "", basic_group_id: int = 0) -> None:
         self.title: Union[str, None] = title
         r"""Title of the newly created supergroup"""
         self.basic_group_id: int = int(basic_group_id)
@@ -47977,7 +48271,7 @@ class MessagePinMessage(TlObject, MessageContent):
 
     """
 
-    def __init__(self, message_id: int = 0) -> None:
+    def __init__(self, *, message_id: int = 0) -> None:
         self.message_id: int = int(message_id)
         r"""Identifier of the pinned message, can be an identifier of a deleted message or 0"""
 
@@ -48049,6 +48343,7 @@ class MessageChatSetBackground(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         old_background_message_id: int = 0,
         background: ChatBackground = None,
         only_for_self: bool = False,
@@ -48101,7 +48396,7 @@ class MessageChatSetTheme(TlObject, MessageContent):
 
     """
 
-    def __init__(self, theme: ChatTheme = None) -> None:
+    def __init__(self, *, theme: ChatTheme = None) -> None:
         self.theme: Union[ChatThemeEmoji, ChatThemeGift, None] = theme
         r"""New theme for the chat; may be null if chat theme was reset to the default one"""
 
@@ -48141,7 +48436,7 @@ class MessageChatSetMessageAutoDeleteTime(TlObject, MessageContent):
     """
 
     def __init__(
-        self, message_auto_delete_time: int = 0, from_user_id: int = 0
+        self, *, message_auto_delete_time: int = 0, from_user_id: int = 0
     ) -> None:
         self.message_auto_delete_time: int = int(message_auto_delete_time)
         r"""New value auto\-delete or self\-destruct time, in seconds; 0 if disabled"""
@@ -48189,7 +48484,7 @@ class MessageChatBoost(TlObject, MessageContent):
 
     """
 
-    def __init__(self, boost_count: int = 0) -> None:
+    def __init__(self, *, boost_count: int = 0) -> None:
         self.boost_count: int = int(boost_count)
         r"""Number of times the chat was boosted"""
 
@@ -48233,6 +48528,7 @@ class MessageForumTopicCreated(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         name: str = "",
         is_name_implicit: bool = False,
         icon: ForumTopicIcon = None,
@@ -48291,6 +48587,7 @@ class MessageForumTopicEdited(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         name: str = "",
         edit_icon_custom_emoji_id: bool = False,
         icon_custom_emoji_id: int = 0,
@@ -48343,7 +48640,7 @@ class MessageForumTopicIsClosedToggled(TlObject, MessageContent):
 
     """
 
-    def __init__(self, is_closed: bool = False) -> None:
+    def __init__(self, *, is_closed: bool = False) -> None:
         self.is_closed: bool = bool(is_closed)
         r"""True, if the topic was closed; otherwise, the topic was reopened"""
 
@@ -48379,7 +48676,7 @@ class MessageForumTopicIsHiddenToggled(TlObject, MessageContent):
 
     """
 
-    def __init__(self, is_hidden: bool = False) -> None:
+    def __init__(self, *, is_hidden: bool = False) -> None:
         self.is_hidden: bool = bool(is_hidden)
         r"""True, if the topic was hidden; otherwise, the topic was unhidden"""
 
@@ -48415,7 +48712,7 @@ class MessageSuggestProfilePhoto(TlObject, MessageContent):
 
     """
 
-    def __init__(self, photo: ChatPhoto = None) -> None:
+    def __init__(self, *, photo: ChatPhoto = None) -> None:
         self.photo: Union[ChatPhoto, None] = photo
         r"""The suggested chat photo\. Use the method setProfilePhoto with inputChatPhotoPrevious to apply the photo"""
 
@@ -48451,7 +48748,7 @@ class MessageSuggestBirthdate(TlObject, MessageContent):
 
     """
 
-    def __init__(self, birthdate: Birthdate = None) -> None:
+    def __init__(self, *, birthdate: Birthdate = None) -> None:
         self.birthdate: Union[Birthdate, None] = birthdate
         r"""The suggested birthdate\. Use the method setBirthdate to apply the birthdate"""
 
@@ -48487,7 +48784,7 @@ class MessageCustomServiceAction(TlObject, MessageContent):
 
     """
 
-    def __init__(self, text: str = "") -> None:
+    def __init__(self, *, text: str = "") -> None:
         self.text: Union[str, None] = text
         r"""Message text to be shown in the chat"""
 
@@ -48530,7 +48827,7 @@ class MessageGameScore(TlObject, MessageContent):
     """
 
     def __init__(
-        self, game_message_id: int = 0, game_id: int = 0, score: int = 0
+        self, *, game_message_id: int = 0, game_id: int = 0, score: int = 0
     ) -> None:
         self.game_message_id: int = int(game_message_id)
         r"""Identifier of the message with the game, can be an identifier of a deleted message"""
@@ -48601,6 +48898,7 @@ class MessagePaymentSuccessful(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         invoice_chat_id: int = 0,
         invoice_message_id: int = 0,
         currency: str = "",
@@ -48707,6 +49005,7 @@ class MessagePaymentSuccessfulBot(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         total_amount: int = 0,
         subscription_until_date: int = 0,
@@ -48815,6 +49114,7 @@ class MessagePaymentRefunded(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         owner_id: MessageSender = None,
         currency: str = "",
         total_amount: int = 0,
@@ -48913,6 +49213,7 @@ class MessageGiftedPremium(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         gifter_user_id: int = 0,
         receiver_user_id: int = 0,
         text: FormattedText = None,
@@ -49033,6 +49334,7 @@ class MessagePremiumGiftCode(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         creator_id: MessageSender = None,
         text: FormattedText = None,
         is_from_giveaway: bool = False,
@@ -49128,7 +49430,7 @@ class MessageGiveawayCreated(TlObject, MessageContent):
 
     """
 
-    def __init__(self, star_count: int = 0) -> None:
+    def __init__(self, *, star_count: int = 0) -> None:
         self.star_count: int = int(star_count)
         r"""Number of Telegram Stars that will be shared by winners of the giveaway; 0 for Telegram Premium giveaways"""
 
@@ -49175,6 +49477,7 @@ class MessageGiveaway(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         parameters: GiveawayParameters = None,
         winner_count: int = 0,
         prize: GiveawayPrize = None,
@@ -49241,6 +49544,7 @@ class MessageGiveawayCompleted(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         giveaway_message_id: int = 0,
         winner_count: int = 0,
         is_star_giveaway: bool = False,
@@ -49328,6 +49632,7 @@ class MessageGiveawayWinners(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         boosted_chat_id: int = 0,
         giveaway_message_id: int = 0,
         additional_chat_count: int = 0,
@@ -49446,6 +49751,7 @@ class MessageGiftedStars(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         gifter_user_id: int = 0,
         receiver_user_id: int = 0,
         currency: str = "",
@@ -49540,6 +49846,7 @@ class MessageGiftedTon(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         gifter_user_id: int = 0,
         receiver_user_id: int = 0,
         ton_amount: int = 0,
@@ -49617,6 +49924,7 @@ class MessageGiveawayPrizeStars(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         star_count: int = 0,
         transaction_id: str = "",
         boosted_chat_id: int = 0,
@@ -49738,6 +50046,7 @@ class MessageGift(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         gift: Gift = None,
         sender_id: MessageSender = None,
         receiver_id: MessageSender = None,
@@ -49915,6 +50224,7 @@ class MessageUpgradedGift(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         gift: UpgradedGift = None,
         sender_id: MessageSender = None,
         receiver_id: MessageSender = None,
@@ -50046,6 +50356,7 @@ class MessageRefundedUpgradedGift(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         gift: Gift = None,
         sender_id: MessageSender = None,
         receiver_id: MessageSender = None,
@@ -50123,6 +50434,7 @@ class MessageUpgradedGiftPurchaseOffer(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         gift: UpgradedGift = None,
         state: GiftPurchaseOfferState = None,
         price: GiftResalePrice = None,
@@ -50194,6 +50506,7 @@ class MessageUpgradedGiftPurchaseOfferRejected(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         gift: UpgradedGift = None,
         price: GiftResalePrice = None,
         offer_message_id: int = 0,
@@ -50254,7 +50567,7 @@ class MessagePaidMessagesRefunded(TlObject, MessageContent):
 
     """
 
-    def __init__(self, message_count: int = 0, star_count: int = 0) -> None:
+    def __init__(self, *, message_count: int = 0, star_count: int = 0) -> None:
         self.message_count: int = int(message_count)
         r"""The number of refunded messages"""
         self.star_count: int = int(star_count)
@@ -50297,7 +50610,7 @@ class MessagePaidMessagePriceChanged(TlObject, MessageContent):
 
     """
 
-    def __init__(self, paid_message_star_count: int = 0) -> None:
+    def __init__(self, *, paid_message_star_count: int = 0) -> None:
         self.paid_message_star_count: int = int(paid_message_star_count)
         r"""The new number of Telegram Stars that must be paid by non\-administrator users of the supergroup chat for each sent message"""
 
@@ -50342,7 +50655,7 @@ class MessageDirectMessagePriceChanged(TlObject, MessageContent):
     """
 
     def __init__(
-        self, is_enabled: bool = False, paid_message_star_count: int = 0
+        self, *, is_enabled: bool = False, paid_message_star_count: int = 0
     ) -> None:
         self.is_enabled: bool = bool(is_enabled)
         r"""True, if direct messages group was enabled for the channel; false otherwise"""
@@ -50396,6 +50709,7 @@ class MessageChecklistTasksDone(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         checklist_message_id: int = 0,
         marked_as_done_task_ids: List[int] = None,
         marked_as_not_done_task_ids: List[int] = None,
@@ -50454,7 +50768,7 @@ class MessageChecklistTasksAdded(TlObject, MessageContent):
     """
 
     def __init__(
-        self, checklist_message_id: int = 0, tasks: List[ChecklistTask] = None
+        self, *, checklist_message_id: int = 0, tasks: List[ChecklistTask] = None
     ) -> None:
         self.checklist_message_id: int = int(checklist_message_id)
         r"""Identifier of the message with the checklist; may be 0 or an identifier of a deleted message"""
@@ -50502,7 +50816,7 @@ class MessageSuggestedPostApprovalFailed(TlObject, MessageContent):
     """
 
     def __init__(
-        self, suggested_post_message_id: int = 0, price: SuggestedPostPrice = None
+        self, *, suggested_post_message_id: int = 0, price: SuggestedPostPrice = None
     ) -> None:
         self.suggested_post_message_id: int = int(suggested_post_message_id)
         r"""Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message"""
@@ -50556,6 +50870,7 @@ class MessageSuggestedPostApproved(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         suggested_post_message_id: int = 0,
         price: SuggestedPostPrice = None,
         send_date: int = 0,
@@ -50611,7 +50926,9 @@ class MessageSuggestedPostDeclined(TlObject, MessageContent):
 
     """
 
-    def __init__(self, suggested_post_message_id: int = 0, comment: str = "") -> None:
+    def __init__(
+        self, *, suggested_post_message_id: int = 0, comment: str = ""
+    ) -> None:
         self.suggested_post_message_id: int = int(suggested_post_message_id)
         r"""Identifier of the message with the suggested post; may be 0 or an identifier of a deleted message"""
         self.comment: Union[str, None] = comment
@@ -50664,6 +50981,7 @@ class MessageSuggestedPostPaid(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         suggested_post_message_id: int = 0,
         star_amount: StarAmount = None,
         ton_amount: int = 0,
@@ -50721,6 +51039,7 @@ class MessageSuggestedPostRefunded(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         suggested_post_message_id: int = 0,
         reason: SuggestedPostRefundReason = None,
     ) -> None:
@@ -50803,7 +51122,7 @@ class MessageUsersShared(TlObject, MessageContent):
 
     """
 
-    def __init__(self, users: List[SharedUser] = None, button_id: int = 0) -> None:
+    def __init__(self, *, users: List[SharedUser] = None, button_id: int = 0) -> None:
         self.users: List[SharedUser] = users or []
         r"""The shared users"""
         self.button_id: int = int(button_id)
@@ -50849,7 +51168,7 @@ class MessageChatShared(TlObject, MessageContent):
 
     """
 
-    def __init__(self, chat: SharedChat = None, button_id: int = 0) -> None:
+    def __init__(self, *, chat: SharedChat = None, button_id: int = 0) -> None:
         self.chat: Union[SharedChat, None] = chat
         r"""The shared chat"""
         self.button_id: int = int(button_id)
@@ -50888,7 +51207,7 @@ class MessageBotWriteAccessAllowed(TlObject, MessageContent):
 
     """
 
-    def __init__(self, reason: BotWriteAccessAllowReason = None) -> None:
+    def __init__(self, *, reason: BotWriteAccessAllowReason = None) -> None:
         self.reason: Union[
             BotWriteAccessAllowReasonConnectedWebsite,
             BotWriteAccessAllowReasonAddedToAttachmentMenu,
@@ -50930,7 +51249,7 @@ class MessageWebAppDataSent(TlObject, MessageContent):
 
     """
 
-    def __init__(self, button_text: str = "") -> None:
+    def __init__(self, *, button_text: str = "") -> None:
         self.button_text: Union[str, None] = button_text
         r"""Text of the keyboardButtonTypeWebApp button, which opened the Web App"""
 
@@ -50969,7 +51288,7 @@ class MessageWebAppDataReceived(TlObject, MessageContent):
 
     """
 
-    def __init__(self, button_text: str = "", data: str = "") -> None:
+    def __init__(self, *, button_text: str = "", data: str = "") -> None:
         self.button_text: Union[str, None] = button_text
         r"""Text of the keyboardButtonTypeWebApp button, which opened the Web App"""
         self.data: Union[str, None] = data
@@ -51012,7 +51331,7 @@ class MessagePassportDataSent(TlObject, MessageContent):
 
     """
 
-    def __init__(self, types: List[PassportElementType] = None) -> None:
+    def __init__(self, *, types: List[PassportElementType] = None) -> None:
         self.types: List[PassportElementType] = types or []
         r"""List of Telegram Passport element types sent"""
 
@@ -51053,6 +51372,7 @@ class MessagePassportDataReceived(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         elements: List[EncryptedPassportElement] = None,
         credentials: EncryptedCredentials = None,
     ) -> None:
@@ -51106,6 +51426,7 @@ class MessageProximityAlertTriggered(TlObject, MessageContent):
 
     def __init__(
         self,
+        *,
         traveler_id: MessageSender = None,
         watcher_id: MessageSender = None,
         distance: int = 0,
@@ -51306,6 +51627,7 @@ class DateTimeFormattingTypeAbsolute(TlObject, DateTimeFormattingType):
 
     def __init__(
         self,
+        *,
         time_precision: DateTimePartPrecision = None,
         date_precision: DateTimePartPrecision = None,
         show_day_of_week: bool = False,
@@ -51442,7 +51764,7 @@ class TextEntityTypeCashtag(TlObject, TextEntityType):
 
 
 class TextEntityTypeBotCommand(TlObject, TextEntityType):
-    r"""A bot command, beginning with \"/\""""
+    r"""A bot command, beginning with \"/\" """
 
     def __init__(self) -> None:
         pass
@@ -51786,7 +52108,7 @@ class TextEntityTypePreCode(TlObject, TextEntityType):
 
     """
 
-    def __init__(self, language: str = "") -> None:
+    def __init__(self, *, language: str = "") -> None:
         self.language: Union[str, None] = language
         r"""Programming language of the code; as defined by the sender"""
 
@@ -51878,7 +52200,7 @@ class TextEntityTypeTextUrl(TlObject, TextEntityType):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""HTTP or tg:// URL to be opened when the link is clicked"""
 
@@ -51914,7 +52236,7 @@ class TextEntityTypeMentionName(TlObject, TextEntityType):
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the mentioned user"""
 
@@ -51950,7 +52272,7 @@ class TextEntityTypeCustomEmoji(TlObject, TextEntityType):
 
     """
 
-    def __init__(self, custom_emoji_id: int = 0) -> None:
+    def __init__(self, *, custom_emoji_id: int = 0) -> None:
         self.custom_emoji_id: int = int(custom_emoji_id)
         r"""Unique identifier of the custom emoji"""
 
@@ -51986,7 +52308,7 @@ class TextEntityTypeMediaTimestamp(TlObject, TextEntityType):
 
     """
 
-    def __init__(self, media_timestamp: int = 0) -> None:
+    def __init__(self, *, media_timestamp: int = 0) -> None:
         self.media_timestamp: int = int(media_timestamp)
         r"""Timestamp from which a video/audio/video note/voice note/story playing must start, in seconds\. The media can be in the content or the link preview of the current message, or in the same places in the replied message"""
 
@@ -52026,7 +52348,7 @@ class TextEntityTypeDateTime(TlObject, TextEntityType):
     """
 
     def __init__(
-        self, unix_time: int = 0, formatting_type: DateTimeFormattingType = None
+        self, *, unix_time: int = 0, formatting_type: DateTimeFormattingType = None
     ) -> None:
         self.unix_time: int = int(unix_time)
         r"""Point in time \(Unix timestamp\) representing the data and time"""
@@ -52079,7 +52401,7 @@ class InputThumbnail(TlObject):
     """
 
     def __init__(
-        self, thumbnail: InputFile = None, width: int = 0, height: int = 0
+        self, *, thumbnail: InputFile = None, width: int = 0, height: int = 0
     ) -> None:
         self.thumbnail: Union[
             InputFileId, InputFileRemote, InputFileLocal, InputFileGenerated, None
@@ -52168,6 +52490,7 @@ class InputPaidMediaTypeVideo(TlObject, InputPaidMediaType):
 
     def __init__(
         self,
+        *,
         cover: InputFile = None,
         start_timestamp: int = 0,
         duration: int = 0,
@@ -52242,6 +52565,7 @@ class InputPaidMedia(TlObject):
 
     def __init__(
         self,
+        *,
         type: InputPaidMediaType = None,
         media: InputFile = None,
         thumbnail: InputThumbnail = None,
@@ -52312,7 +52636,7 @@ class MessageSchedulingStateSendAtDate(TlObject, MessageSchedulingState):
 
     """
 
-    def __init__(self, send_date: int = 0, repeat_period: int = 0) -> None:
+    def __init__(self, *, send_date: int = 0, repeat_period: int = 0) -> None:
         self.send_date: int = int(send_date)
         r"""Point in time \(Unix timestamp\) when the message will be sent\. The date must be within 367 days in the future"""
         self.repeat_period: int = int(repeat_period)
@@ -52385,7 +52709,7 @@ class MessageSchedulingStateSendWhenVideoProcessed(TlObject, MessageSchedulingSt
 
     """
 
-    def __init__(self, send_date: int = 0) -> None:
+    def __init__(self, *, send_date: int = 0) -> None:
         self.send_date: int = int(send_date)
         r"""Approximate point in time \(Unix timestamp\) when the message is expected to be sent"""
 
@@ -52423,7 +52747,7 @@ class MessageSelfDestructTypeTimer(TlObject, MessageSelfDestructType):
 
     """
 
-    def __init__(self, self_destruct_time: int = 0) -> None:
+    def __init__(self, *, self_destruct_time: int = 0) -> None:
         self.self_destruct_time: int = int(self_destruct_time)
         r"""The message's self\-destruct time, in seconds; must be between 0 and 60 in private chats"""
 
@@ -52519,6 +52843,7 @@ class MessageSendOptions(TlObject):
 
     def __init__(
         self,
+        *,
         suggested_post_info: InputSuggestedPostInfo = None,
         disable_notification: bool = False,
         from_background: bool = False,
@@ -52633,6 +52958,7 @@ class MessageCopyOptions(TlObject):
 
     def __init__(
         self,
+        *,
         send_copy: bool = False,
         replace_caption: bool = False,
         new_caption: FormattedText = None,
@@ -52698,6 +53024,7 @@ class InputMessageText(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         text: FormattedText = None,
         link_preview_options: LinkPreviewOptions = None,
         clear_draft: bool = False,
@@ -52776,6 +53103,7 @@ class InputMessageAnimation(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         animation: InputFile = None,
         thumbnail: InputThumbnail = None,
         added_sticker_file_ids: List[int] = None,
@@ -52877,6 +53205,7 @@ class InputMessageAudio(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         audio: InputFile = None,
         album_cover_thumbnail: InputThumbnail = None,
         duration: int = 0,
@@ -52955,6 +53284,7 @@ class InputMessageDocument(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         document: InputFile = None,
         thumbnail: InputThumbnail = None,
         disable_content_type_detection: bool = False,
@@ -53028,6 +53358,7 @@ class InputMessagePaidMedia(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         star_count: int = 0,
         paid_media: List[InputPaidMedia] = None,
         caption: FormattedText = None,
@@ -53116,6 +53447,7 @@ class InputMessagePhoto(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         photo: InputFile = None,
         thumbnail: InputThumbnail = None,
         added_sticker_file_ids: List[int] = None,
@@ -53216,6 +53548,7 @@ class InputMessageSticker(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         sticker: InputFile = None,
         thumbnail: InputThumbnail = None,
         width: int = 0,
@@ -53316,6 +53649,7 @@ class InputMessageVideo(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         video: InputFile = None,
         thumbnail: InputThumbnail = None,
         cover: InputFile = None,
@@ -53438,6 +53772,7 @@ class InputMessageVideoNote(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         video_note: InputFile = None,
         thumbnail: InputThumbnail = None,
         duration: int = 0,
@@ -53516,6 +53851,7 @@ class InputMessageVoiceNote(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         voice_note: InputFile = None,
         duration: int = 0,
         waveform: bytes = b"",
@@ -53591,6 +53927,7 @@ class InputMessageLocation(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         location: Location = None,
         live_period: int = 0,
         heading: int = 0,
@@ -53648,7 +53985,7 @@ class InputMessageVenue(TlObject, InputMessageContent):
 
     """
 
-    def __init__(self, venue: Venue = None) -> None:
+    def __init__(self, *, venue: Venue = None) -> None:
         self.venue: Union[Venue, None] = venue
         r"""Venue to send"""
 
@@ -53684,7 +54021,7 @@ class InputMessageContact(TlObject, InputMessageContent):
 
     """
 
-    def __init__(self, contact: Contact = None) -> None:
+    def __init__(self, *, contact: Contact = None) -> None:
         self.contact: Union[Contact, None] = contact
         r"""Contact to send"""
 
@@ -53723,7 +54060,7 @@ class InputMessageDice(TlObject, InputMessageContent):
 
     """
 
-    def __init__(self, emoji: str = "", clear_draft: bool = False) -> None:
+    def __init__(self, *, emoji: str = "", clear_draft: bool = False) -> None:
         self.emoji: Union[str, None] = emoji
         r"""Emoji on which the dice throw animation is based"""
         self.clear_draft: bool = bool(clear_draft)
@@ -53769,7 +54106,7 @@ class InputMessageGame(TlObject, InputMessageContent):
 
     """
 
-    def __init__(self, bot_user_id: int = 0, game_short_name: str = "") -> None:
+    def __init__(self, *, bot_user_id: int = 0, game_short_name: str = "") -> None:
         self.bot_user_id: int = int(bot_user_id)
         r"""User identifier of the bot that owns the game"""
         self.game_short_name: Union[str, None] = game_short_name
@@ -53850,6 +54187,7 @@ class InputMessageInvoice(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         invoice: Invoice = None,
         title: str = "",
         description: str = "",
@@ -53970,6 +54308,7 @@ class InputMessagePoll(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         question: FormattedText = None,
         options: List[FormattedText] = None,
         is_anonymous: bool = False,
@@ -54048,6 +54387,7 @@ class InputMessageStakeDice(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         state_hash: str = "",
         stake_toncoin_amount: int = 0,
         clear_draft: bool = False,
@@ -54101,7 +54441,7 @@ class InputMessageStory(TlObject, InputMessageContent):
 
     """
 
-    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+    def __init__(self, *, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
         self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""Identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
@@ -54144,7 +54484,7 @@ class InputMessageChecklist(TlObject, InputMessageContent):
 
     """
 
-    def __init__(self, checklist: InputChecklist = None) -> None:
+    def __init__(self, *, checklist: InputChecklist = None) -> None:
         self.checklist: Union[InputChecklist, None] = checklist
         r"""The checklist to send"""
 
@@ -54197,6 +54537,7 @@ class InputMessageForwarded(TlObject, InputMessageContent):
 
     def __init__(
         self,
+        *,
         from_chat_id: int = 0,
         message_id: int = 0,
         in_game_share: bool = False,
@@ -54376,6 +54717,7 @@ class MessageProperties(TlObject):
 
     def __init__(
         self,
+        *,
         can_add_offer: bool = False,
         can_add_tasks: bool = False,
         can_be_approved: bool = False,
@@ -55252,7 +55594,7 @@ class ChatActionUploadingVideo(TlObject, ChatAction):
 
     """
 
-    def __init__(self, progress: int = 0) -> None:
+    def __init__(self, *, progress: int = 0) -> None:
         self.progress: int = int(progress)
         r"""Upload progress, as a percentage"""
 
@@ -55316,7 +55658,7 @@ class ChatActionUploadingVoiceNote(TlObject, ChatAction):
 
     """
 
-    def __init__(self, progress: int = 0) -> None:
+    def __init__(self, *, progress: int = 0) -> None:
         self.progress: int = int(progress)
         r"""Upload progress, as a percentage"""
 
@@ -55352,7 +55694,7 @@ class ChatActionUploadingPhoto(TlObject, ChatAction):
 
     """
 
-    def __init__(self, progress: int = 0) -> None:
+    def __init__(self, *, progress: int = 0) -> None:
         self.progress: int = int(progress)
         r"""Upload progress, as a percentage"""
 
@@ -55388,7 +55730,7 @@ class ChatActionUploadingDocument(TlObject, ChatAction):
 
     """
 
-    def __init__(self, progress: int = 0) -> None:
+    def __init__(self, *, progress: int = 0) -> None:
         self.progress: int = int(progress)
         r"""Upload progress, as a percentage"""
 
@@ -55564,7 +55906,7 @@ class ChatActionUploadingVideoNote(TlObject, ChatAction):
 
     """
 
-    def __init__(self, progress: int = 0) -> None:
+    def __init__(self, *, progress: int = 0) -> None:
         self.progress: int = int(progress)
         r"""Upload progress, as a percentage"""
 
@@ -55600,7 +55942,7 @@ class ChatActionWatchingAnimations(TlObject, ChatAction):
 
     """
 
-    def __init__(self, emoji: str = "") -> None:
+    def __init__(self, *, emoji: str = "") -> None:
         self.emoji: Union[str, None] = emoji
         r"""The animated emoji"""
 
@@ -55692,7 +56034,7 @@ class UserStatusOnline(TlObject, UserStatus):
 
     """
 
-    def __init__(self, expires: int = 0) -> None:
+    def __init__(self, *, expires: int = 0) -> None:
         self.expires: int = int(expires)
         r"""Point in time \(Unix timestamp\) when the user's online status will expire"""
 
@@ -55728,7 +56070,7 @@ class UserStatusOffline(TlObject, UserStatus):
 
     """
 
-    def __init__(self, was_online: int = 0) -> None:
+    def __init__(self, *, was_online: int = 0) -> None:
         self.was_online: int = int(was_online)
         r"""Point in time \(Unix timestamp\) when the user was last online"""
 
@@ -55764,7 +56106,7 @@ class UserStatusRecently(TlObject, UserStatus):
 
     """
 
-    def __init__(self, by_my_privacy_settings: bool = False) -> None:
+    def __init__(self, *, by_my_privacy_settings: bool = False) -> None:
         self.by_my_privacy_settings: bool = bool(by_my_privacy_settings)
         r"""Exact user's status is hidden because the current user enabled userPrivacySettingShowStatus privacy setting for the user and has no Telegram Premium"""
 
@@ -55805,7 +56147,7 @@ class UserStatusLastWeek(TlObject, UserStatus):
 
     """
 
-    def __init__(self, by_my_privacy_settings: bool = False) -> None:
+    def __init__(self, *, by_my_privacy_settings: bool = False) -> None:
         self.by_my_privacy_settings: bool = bool(by_my_privacy_settings)
         r"""Exact user's status is hidden because the current user enabled userPrivacySettingShowStatus privacy setting for the user and has no Telegram Premium"""
 
@@ -55846,7 +56188,7 @@ class UserStatusLastMonth(TlObject, UserStatus):
 
     """
 
-    def __init__(self, by_my_privacy_settings: bool = False) -> None:
+    def __init__(self, *, by_my_privacy_settings: bool = False) -> None:
         self.by_my_privacy_settings: bool = bool(by_my_privacy_settings)
         r"""Exact user's status is hidden because the current user enabled userPrivacySettingShowStatus privacy setting for the user and has no Telegram Premium"""
 
@@ -55890,7 +56232,7 @@ class EmojiKeyword(TlObject):
 
     """
 
-    def __init__(self, emoji: str = "", keyword: str = "") -> None:
+    def __init__(self, *, emoji: str = "", keyword: str = "") -> None:
         self.emoji: Union[str, None] = emoji
         r"""The emoji"""
         self.keyword: Union[str, None] = keyword
@@ -55929,7 +56271,7 @@ class EmojiKeywords(TlObject):
 
     """
 
-    def __init__(self, emoji_keywords: List[EmojiKeyword] = None) -> None:
+    def __init__(self, *, emoji_keywords: List[EmojiKeyword] = None) -> None:
         self.emoji_keywords: List[EmojiKeyword] = emoji_keywords or []
         r"""List of emojis with their keywords"""
 
@@ -55965,7 +56307,7 @@ class Stickers(TlObject):
 
     """
 
-    def __init__(self, stickers: List[Sticker] = None) -> None:
+    def __init__(self, *, stickers: List[Sticker] = None) -> None:
         self.stickers: List[Sticker] = stickers or []
         r"""List of stickers"""
 
@@ -56001,7 +56343,7 @@ class Emojis(TlObject):
 
     """
 
-    def __init__(self, emojis: List[str] = None) -> None:
+    def __init__(self, *, emojis: List[str] = None) -> None:
         self.emojis: List[str] = emojis or []
         r"""List of emojis"""
 
@@ -56081,6 +56423,7 @@ class StickerSet(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         title: str = "",
         name: str = "",
@@ -56241,6 +56584,7 @@ class StickerSetInfo(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         title: str = "",
         name: str = "",
@@ -56360,7 +56704,9 @@ class StickerSets(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, sets: List[StickerSetInfo] = None) -> None:
+    def __init__(
+        self, *, total_count: int = 0, sets: List[StickerSetInfo] = None
+    ) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of sticker sets found"""
         self.sets: List[StickerSetInfo] = sets or []
@@ -56411,6 +56757,7 @@ class TrendingStickerSets(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         sets: List[StickerSetInfo] = None,
         is_premium: bool = False,
@@ -56461,7 +56808,7 @@ class EmojiCategorySourceSearch(TlObject, EmojiCategorySource):
 
     """
 
-    def __init__(self, emojis: List[str] = None) -> None:
+    def __init__(self, *, emojis: List[str] = None) -> None:
         self.emojis: List[str] = emojis or []
         r"""List of emojis to search for"""
 
@@ -56536,6 +56883,7 @@ class EmojiCategory(TlObject):
 
     def __init__(
         self,
+        *,
         name: str = "",
         icon: Sticker = None,
         source: EmojiCategorySource = None,
@@ -56593,7 +56941,7 @@ class EmojiCategories(TlObject):
 
     """
 
-    def __init__(self, categories: List[EmojiCategory] = None) -> None:
+    def __init__(self, *, categories: List[EmojiCategory] = None) -> None:
         self.categories: List[EmojiCategory] = categories or []
         r"""List of categories"""
 
@@ -56744,7 +57092,7 @@ class CurrentWeather(TlObject):
 
     """
 
-    def __init__(self, temperature: float = 0.0, emoji: str = "") -> None:
+    def __init__(self, *, temperature: float = 0.0, emoji: str = "") -> None:
         self.temperature: float = float(temperature)
         r"""Temperature, in degree Celsius"""
         self.emoji: Union[str, None] = emoji
@@ -56804,6 +57152,7 @@ class StoryAreaPosition(TlObject):
 
     def __init__(
         self,
+        *,
         x_percentage: float = 0.0,
         y_percentage: float = 0.0,
         width_percentage: float = 0.0,
@@ -56875,7 +57224,7 @@ class StoryAreaTypeLocation(TlObject, StoryAreaType):
     """
 
     def __init__(
-        self, location: Location = None, address: LocationAddress = None
+        self, *, location: Location = None, address: LocationAddress = None
     ) -> None:
         self.location: Union[Location, None] = location
         r"""The location"""
@@ -56919,7 +57268,7 @@ class StoryAreaTypeVenue(TlObject, StoryAreaType):
 
     """
 
-    def __init__(self, venue: Venue = None) -> None:
+    def __init__(self, *, venue: Venue = None) -> None:
         self.venue: Union[Venue, None] = venue
         r"""Information about the venue"""
 
@@ -56966,6 +57315,7 @@ class StoryAreaTypeSuggestedReaction(TlObject, StoryAreaType):
 
     def __init__(
         self,
+        *,
         reaction_type: ReactionType = None,
         total_count: int = 0,
         is_dark: bool = False,
@@ -57026,7 +57376,7 @@ class StoryAreaTypeMessage(TlObject, StoryAreaType):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat with the message"""
         self.message_id: int = int(message_id)
@@ -57069,7 +57419,7 @@ class StoryAreaTypeLink(TlObject, StoryAreaType):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""HTTP or tg:// URL to be opened when the area is clicked"""
 
@@ -57112,7 +57462,7 @@ class StoryAreaTypeWeather(TlObject, StoryAreaType):
     """
 
     def __init__(
-        self, temperature: float = 0.0, emoji: str = "", background_color: int = 0
+        self, *, temperature: float = 0.0, emoji: str = "", background_color: int = 0
     ) -> None:
         self.temperature: float = float(temperature)
         r"""Temperature, in degree Celsius"""
@@ -57160,7 +57510,7 @@ class StoryAreaTypeUpgradedGift(TlObject, StoryAreaType):
 
     """
 
-    def __init__(self, gift_name: str = "") -> None:
+    def __init__(self, *, gift_name: str = "") -> None:
         self.gift_name: Union[str, None] = gift_name
         r"""Unique name of the upgraded gift"""
 
@@ -57200,7 +57550,7 @@ class StoryArea(TlObject):
     """
 
     def __init__(
-        self, position: StoryAreaPosition = None, type: StoryAreaType = None
+        self, *, position: StoryAreaPosition = None, type: StoryAreaType = None
     ) -> None:
         self.position: Union[StoryAreaPosition, None] = position
         r"""Position of the area"""
@@ -57253,7 +57603,7 @@ class InputStoryAreaTypeLocation(TlObject, InputStoryAreaType):
     """
 
     def __init__(
-        self, location: Location = None, address: LocationAddress = None
+        self, *, location: Location = None, address: LocationAddress = None
     ) -> None:
         self.location: Union[Location, None] = location
         r"""The location"""
@@ -57300,7 +57650,7 @@ class InputStoryAreaTypeFoundVenue(TlObject, InputStoryAreaType):
 
     """
 
-    def __init__(self, query_id: int = 0, result_id: str = "") -> None:
+    def __init__(self, *, query_id: int = 0, result_id: str = "") -> None:
         self.query_id: int = int(query_id)
         r"""Identifier of the inline query, used to found the venue"""
         self.result_id: Union[str, None] = result_id
@@ -57346,7 +57696,7 @@ class InputStoryAreaTypePreviousVenue(TlObject, InputStoryAreaType):
 
     """
 
-    def __init__(self, venue_provider: str = "", venue_id: str = "") -> None:
+    def __init__(self, *, venue_provider: str = "", venue_id: str = "") -> None:
         self.venue_provider: Union[str, None] = venue_provider
         r"""Provider of the venue"""
         self.venue_id: Union[str, None] = venue_id
@@ -57397,6 +57747,7 @@ class InputStoryAreaTypeSuggestedReaction(TlObject, InputStoryAreaType):
 
     def __init__(
         self,
+        *,
         reaction_type: ReactionType = None,
         is_dark: bool = False,
         is_flipped: bool = False,
@@ -57454,7 +57805,7 @@ class InputStoryAreaTypeMessage(TlObject, InputStoryAreaType):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat with the message\. Currently, the chat must be a supergroup or a channel chat"""
         self.message_id: int = int(message_id)
@@ -57497,7 +57848,7 @@ class InputStoryAreaTypeLink(TlObject, InputStoryAreaType):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""HTTP or tg:// URL to be opened when the area is clicked"""
 
@@ -57540,7 +57891,7 @@ class InputStoryAreaTypeWeather(TlObject, InputStoryAreaType):
     """
 
     def __init__(
-        self, temperature: float = 0.0, emoji: str = "", background_color: int = 0
+        self, *, temperature: float = 0.0, emoji: str = "", background_color: int = 0
     ) -> None:
         self.temperature: float = float(temperature)
         r"""Temperature, in degree Celsius"""
@@ -57588,7 +57939,7 @@ class InputStoryAreaTypeUpgradedGift(TlObject, InputStoryAreaType):
 
     """
 
-    def __init__(self, gift_name: str = "") -> None:
+    def __init__(self, *, gift_name: str = "") -> None:
         self.gift_name: Union[str, None] = gift_name
         r"""Unique name of the upgraded gift"""
 
@@ -57628,7 +57979,7 @@ class InputStoryArea(TlObject):
     """
 
     def __init__(
-        self, position: StoryAreaPosition = None, type: InputStoryAreaType = None
+        self, *, position: StoryAreaPosition = None, type: InputStoryAreaType = None
     ) -> None:
         self.position: Union[StoryAreaPosition, None] = position
         r"""Position of the area"""
@@ -57678,7 +58029,7 @@ class InputStoryAreas(TlObject):
 
     """
 
-    def __init__(self, areas: List[InputStoryArea] = None) -> None:
+    def __init__(self, *, areas: List[InputStoryArea] = None) -> None:
         self.areas: List[InputStoryArea] = areas or []
         r"""List of input story areas\. Currently, a story can have up to 10 inputStoryAreaTypeLocation, inputStoryAreaTypeFoundVenue, and inputStoryAreaTypePreviousVenue areas, up to getOption\(\"story\_suggested\_reaction\_area\_count\_max\"\) inputStoryAreaTypeSuggestedReaction areas, up to 1 inputStoryAreaTypeMessage area, up to getOption\(\"story\_link\_area\_count\_max\"\) inputStoryAreaTypeLink areas if the current user is a Telegram Premium user, up to 3 inputStoryAreaTypeWeather areas, and up to 1 inputStoryAreaTypeUpgradedGift area"""
 
@@ -57743,6 +58094,7 @@ class StoryVideo(TlObject):
 
     def __init__(
         self,
+        *,
         duration: float = 0.0,
         width: int = 0,
         height: int = 0,
@@ -57940,7 +58292,7 @@ class StoryContentPhoto(TlObject, StoryContent):
 
     """
 
-    def __init__(self, photo: Photo = None) -> None:
+    def __init__(self, *, photo: Photo = None) -> None:
         self.photo: Union[Photo, None] = photo
         r"""The photo"""
 
@@ -57980,7 +58332,7 @@ class StoryContentVideo(TlObject, StoryContent):
     """
 
     def __init__(
-        self, video: StoryVideo = None, alternative_video: StoryVideo = None
+        self, *, video: StoryVideo = None, alternative_video: StoryVideo = None
     ) -> None:
         self.video: Union[StoryVideo, None] = video
         r"""The video in MPEG4 format"""
@@ -58027,7 +58379,7 @@ class StoryContentLive(TlObject, StoryContent):
 
     """
 
-    def __init__(self, group_call_id: int = 0, is_rtmp_stream: bool = False) -> None:
+    def __init__(self, *, group_call_id: int = 0, is_rtmp_stream: bool = False) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the corresponding group call\. The group call can be received through the method getGroupCall"""
         self.is_rtmp_stream: bool = bool(is_rtmp_stream)
@@ -58102,7 +58454,7 @@ class InputStoryContentPhoto(TlObject, InputStoryContent):
     """
 
     def __init__(
-        self, photo: InputFile = None, added_sticker_file_ids: List[int] = None
+        self, *, photo: InputFile = None, added_sticker_file_ids: List[int] = None
     ) -> None:
         self.photo: Union[
             InputFileId, InputFileRemote, InputFileLocal, InputFileGenerated, None
@@ -58162,6 +58514,7 @@ class InputStoryContentVideo(TlObject, InputStoryContent):
 
     def __init__(
         self,
+        *,
         video: InputFile = None,
         added_sticker_file_ids: List[int] = None,
         duration: float = 0.0,
@@ -58283,7 +58636,7 @@ class StoryOriginPublicStory(TlObject, StoryOrigin):
 
     """
 
-    def __init__(self, chat_id: int = 0, story_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, story_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat that posted original story"""
         self.story_id: int = int(story_id)
@@ -58326,7 +58679,7 @@ class StoryOriginHiddenUser(TlObject, StoryOrigin):
 
     """
 
-    def __init__(self, poster_name: str = "") -> None:
+    def __init__(self, *, poster_name: str = "") -> None:
         self.poster_name: Union[str, None] = poster_name
         r"""Name of the user or the chat that posted the story"""
 
@@ -58366,7 +58719,7 @@ class StoryRepostInfo(TlObject):
     """
 
     def __init__(
-        self, origin: StoryOrigin = None, is_content_modified: bool = False
+        self, *, origin: StoryOrigin = None, is_content_modified: bool = False
     ) -> None:
         self.origin: Union[StoryOriginPublicStory, StoryOriginHiddenUser, None] = origin
         r"""Origin of the story that was reposted"""
@@ -58421,6 +58774,7 @@ class StoryInteractionInfo(TlObject):
 
     def __init__(
         self,
+        *,
         view_count: int = 0,
         forward_count: int = 0,
         reaction_count: int = 0,
@@ -58556,6 +58910,7 @@ class Story(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         poster_chat_id: int = 0,
         poster_id: MessageSender = None,
@@ -58758,6 +59113,7 @@ class Stories(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         stories: List[Story] = None,
         pinned_story_ids: List[int] = None,
@@ -58815,7 +59171,11 @@ class FoundStories(TlObject):
     """
 
     def __init__(
-        self, total_count: int = 0, stories: List[Story] = None, next_offset: str = ""
+        self,
+        *,
+        total_count: int = 0,
+        stories: List[Story] = None,
+        next_offset: str = "",
     ) -> None:
         self.total_count: int = int(total_count)
         r"""Approximate total number of stories found"""
@@ -58874,6 +59234,7 @@ class StoryAlbum(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         name: str = "",
         photo_icon: Photo = None,
@@ -58929,7 +59290,7 @@ class StoryAlbums(TlObject):
 
     """
 
-    def __init__(self, albums: List[StoryAlbum] = None) -> None:
+    def __init__(self, *, albums: List[StoryAlbum] = None) -> None:
         self.albums: List[StoryAlbum] = albums or []
         r"""List of story albums"""
 
@@ -58968,7 +59329,7 @@ class StoryFullId(TlObject):
 
     """
 
-    def __init__(self, poster_chat_id: int = 0, story_id: int = 0) -> None:
+    def __init__(self, *, poster_chat_id: int = 0, story_id: int = 0) -> None:
         self.poster_chat_id: int = int(poster_chat_id)
         r"""Identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
@@ -59022,6 +59383,7 @@ class StoryInfo(TlObject):
 
     def __init__(
         self,
+        *,
         story_id: int = 0,
         date: int = 0,
         is_for_close_friends: bool = False,
@@ -59094,6 +59456,7 @@ class ChatActiveStories(TlObject):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         list: StoryList = None,
         order: int = 0,
@@ -59159,7 +59522,7 @@ class StoryInteractionTypeView(TlObject, StoryInteractionType):
 
     """
 
-    def __init__(self, chosen_reaction_type: ReactionType = None) -> None:
+    def __init__(self, *, chosen_reaction_type: ReactionType = None) -> None:
         self.chosen_reaction_type: Union[
             ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
         ] = chosen_reaction_type
@@ -59200,7 +59563,7 @@ class StoryInteractionTypeForward(TlObject, StoryInteractionType):
 
     """
 
-    def __init__(self, message: Message = None) -> None:
+    def __init__(self, *, message: Message = None) -> None:
         self.message: Union[Message, None] = message
         r"""The message with story forward"""
 
@@ -59236,7 +59599,7 @@ class StoryInteractionTypeRepost(TlObject, StoryInteractionType):
 
     """
 
-    def __init__(self, story: Story = None) -> None:
+    def __init__(self, *, story: Story = None) -> None:
         self.story: Union[Story, None] = story
         r"""The reposted story"""
 
@@ -59283,6 +59646,7 @@ class StoryInteraction(TlObject):
 
     def __init__(
         self,
+        *,
         actor_id: MessageSender = None,
         interaction_date: int = 0,
         block_list: BlockList = None,
@@ -59357,6 +59721,7 @@ class StoryInteractions(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         total_forward_count: int = 0,
         total_reaction_count: int = 0,
@@ -59440,6 +59805,7 @@ class QuickReplyMessage(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         sending_state: MessageSendingState = None,
         can_be_edited: bool = False,
@@ -59622,7 +59988,7 @@ class QuickReplyMessages(TlObject):
 
     """
 
-    def __init__(self, messages: List[QuickReplyMessage] = None) -> None:
+    def __init__(self, *, messages: List[QuickReplyMessage] = None) -> None:
         self.messages: List[QuickReplyMessage] = messages or []
         r"""List of quick reply messages; messages may be null"""
 
@@ -59669,6 +60035,7 @@ class QuickReplyShortcut(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         name: str = "",
         first_message: QuickReplyMessage = None,
@@ -59724,7 +60091,7 @@ class PublicForwardMessage(TlObject, PublicForward):
 
     """
 
-    def __init__(self, message: Message = None) -> None:
+    def __init__(self, *, message: Message = None) -> None:
         self.message: Union[Message, None] = message
         r"""Information about the message"""
 
@@ -59760,7 +60127,7 @@ class PublicForwardStory(TlObject, PublicForward):
 
     """
 
-    def __init__(self, story: Story = None) -> None:
+    def __init__(self, *, story: Story = None) -> None:
         self.story: Union[Story, None] = story
         r"""Information about the story"""
 
@@ -59804,6 +60171,7 @@ class PublicForwards(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         forwards: List[PublicForward] = None,
         next_offset: str = "",
@@ -59857,7 +60225,7 @@ class BotMediaPreview(TlObject):
 
     """
 
-    def __init__(self, date: int = 0, content: StoryContent = None) -> None:
+    def __init__(self, *, date: int = 0, content: StoryContent = None) -> None:
         self.date: int = int(date)
         r"""Point in time \(Unix timestamp\) when the preview was added or changed last time"""
         self.content: Union[
@@ -59902,7 +60270,7 @@ class BotMediaPreviews(TlObject):
 
     """
 
-    def __init__(self, previews: List[BotMediaPreview] = None) -> None:
+    def __init__(self, *, previews: List[BotMediaPreview] = None) -> None:
         self.previews: List[BotMediaPreview] = previews or []
         r"""List of media previews"""
 
@@ -59942,7 +60310,10 @@ class BotMediaPreviewInfo(TlObject):
     """
 
     def __init__(
-        self, previews: List[BotMediaPreview] = None, language_codes: List[str] = None
+        self,
+        *,
+        previews: List[BotMediaPreview] = None,
+        language_codes: List[str] = None,
     ) -> None:
         self.previews: List[BotMediaPreview] = previews or []
         r"""List of media previews"""
@@ -60030,6 +60401,7 @@ class ChatBoostLevelFeatures(TlObject):
 
     def __init__(
         self,
+        *,
         level: int = 0,
         story_per_day_count: int = 0,
         custom_emoji_reaction_count: int = 0,
@@ -60195,6 +60567,7 @@ class ChatBoostFeatures(TlObject):
 
     def __init__(
         self,
+        *,
         features: List[ChatBoostLevelFeatures] = None,
         min_profile_background_custom_emoji_boost_level: int = 0,
         min_background_custom_emoji_boost_level: int = 0,
@@ -60317,7 +60690,7 @@ class ChatBoostSourceGiftCode(TlObject, ChatBoostSource):
 
     """
 
-    def __init__(self, user_id: int = 0, gift_code: str = "") -> None:
+    def __init__(self, *, user_id: int = 0, gift_code: str = "") -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of a user, for which the gift code was created"""
         self.gift_code: Union[str, None] = gift_code
@@ -60374,6 +60747,7 @@ class ChatBoostSourceGiveaway(TlObject, ChatBoostSource):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         gift_code: str = "",
         star_count: int = 0,
@@ -60434,7 +60808,7 @@ class ChatBoostSourcePremium(TlObject, ChatBoostSource):
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user"""
 
@@ -60484,6 +60858,7 @@ class PrepaidGiveaway(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         winner_count: int = 0,
         prize: GiveawayPrize = None,
@@ -60573,6 +60948,7 @@ class ChatBoostStatus(TlObject):
 
     def __init__(
         self,
+        *,
         boost_url: str = "",
         applied_slot_ids: List[int] = None,
         level: int = 0,
@@ -60678,6 +61054,7 @@ class ChatBoost(TlObject):
 
     def __init__(
         self,
+        *,
         id: str = "",
         count: int = 0,
         source: ChatBoostSource = None,
@@ -60751,6 +61128,7 @@ class FoundChatBoosts(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         boosts: List[ChatBoost] = None,
         next_offset: str = "",
@@ -60815,6 +61193,7 @@ class ChatBoostSlot(TlObject):
 
     def __init__(
         self,
+        *,
         slot_id: int = 0,
         currently_boosted_chat_id: int = 0,
         start_date: int = 0,
@@ -60877,7 +61256,7 @@ class ChatBoostSlots(TlObject):
 
     """
 
-    def __init__(self, slots: List[ChatBoostSlot] = None) -> None:
+    def __init__(self, *, slots: List[ChatBoostSlot] = None) -> None:
         self.slots: List[ChatBoostSlot] = slots or []
         r"""List of boost slots"""
 
@@ -60941,7 +61320,7 @@ class ResendCodeReasonVerificationFailed(TlObject, ResendCodeReason):
 
     """
 
-    def __init__(self, error_message: str = "") -> None:
+    def __init__(self, *, error_message: str = "") -> None:
         self.error_message: Union[str, None] = error_message
         r"""Cause of the verification failure, for example, \"PLAY\_SERVICES\_NOT\_AVAILABLE\", \"APNS\_RECEIVE\_TIMEOUT\", or \"APNS\_INIT\_FAILED\""""
 
@@ -61117,7 +61496,7 @@ class CallDiscardReasonUpgradeToGroupCall(TlObject, CallDiscardReason):
 
     """
 
-    def __init__(self, invite_link: str = "") -> None:
+    def __init__(self, *, invite_link: str = "") -> None:
         self.invite_link: Union[str, None] = invite_link
         r"""Invite link for the group call"""
 
@@ -61169,6 +61548,7 @@ class CallProtocol(TlObject):
 
     def __init__(
         self,
+        *,
         udp_p2p: bool = False,
         udp_reflector: bool = False,
         min_layer: int = 0,
@@ -61232,7 +61612,7 @@ class CallServerTypeTelegramReflector(TlObject, CallServerType):
 
     """
 
-    def __init__(self, peer_tag: bytes = b"", is_tcp: bool = False) -> None:
+    def __init__(self, *, peer_tag: bytes = b"", is_tcp: bool = False) -> None:
         self.peer_tag: Union[bytes, None] = peer_tag
         r"""A peer tag to be used with the reflector"""
         self.is_tcp: bool = bool(is_tcp)
@@ -61286,6 +61666,7 @@ class CallServerTypeWebrtc(TlObject, CallServerType):
 
     def __init__(
         self,
+        *,
         username: str = "",
         password: str = "",
         supports_turn: bool = False,
@@ -61355,6 +61736,7 @@ class CallServer(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         ip_address: str = "",
         ipv6_address: str = "",
@@ -61417,7 +61799,7 @@ class CallId(TlObject):
 
     """
 
-    def __init__(self, id: int = 0) -> None:
+    def __init__(self, *, id: int = 0) -> None:
         self.id: int = int(id)
         r"""Call identifier"""
 
@@ -61453,7 +61835,7 @@ class GroupCallId(TlObject):
 
     """
 
-    def __init__(self, id: int = 0) -> None:
+    def __init__(self, *, id: int = 0) -> None:
         self.id: int = int(id)
         r"""Group call identifier"""
 
@@ -61489,7 +61871,7 @@ class InputCallDiscarded(TlObject, InputCall):
 
     """
 
-    def __init__(self, call_id: int = 0) -> None:
+    def __init__(self, *, call_id: int = 0) -> None:
         self.call_id: int = int(call_id)
         r"""Identifier of the call"""
 
@@ -61528,7 +61910,7 @@ class InputCallFromMessage(TlObject, InputCall):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier of the message"""
         self.message_id: int = int(message_id)
@@ -61574,7 +61956,7 @@ class CallStatePending(TlObject, CallState):
 
     """
 
-    def __init__(self, is_created: bool = False, is_received: bool = False) -> None:
+    def __init__(self, *, is_created: bool = False, is_received: bool = False) -> None:
         self.is_created: bool = bool(is_created)
         r"""True, if the call has already been created by the server"""
         self.is_received: bool = bool(is_received)
@@ -61668,6 +62050,7 @@ class CallStateReady(TlObject, CallState):
 
     def __init__(
         self,
+        *,
         protocol: CallProtocol = None,
         servers: List[CallServer] = None,
         config: str = "",
@@ -61784,6 +62167,7 @@ class CallStateDiscarded(TlObject, CallState):
 
     def __init__(
         self,
+        *,
         reason: CallDiscardReason = None,
         need_rating: bool = False,
         need_debug_information: bool = False,
@@ -61849,7 +62233,7 @@ class CallStateError(TlObject, CallState):
 
     """
 
-    def __init__(self, error: Error = None) -> None:
+    def __init__(self, *, error: Error = None) -> None:
         self.error: Union[Error, None] = error
         r"""Error\. An error with the code 4005000 will be returned if an outgoing call is missed because of an expired timeout"""
 
@@ -61896,6 +62280,7 @@ class GroupCallJoinParameters(TlObject):
 
     def __init__(
         self,
+        *,
         audio_source_id: int = 0,
         payload: str = "",
         is_muted: bool = False,
@@ -62042,7 +62427,7 @@ class GroupCallStream(TlObject):
     """
 
     def __init__(
-        self, channel_id: int = 0, scale: int = 0, time_offset: int = 0
+        self, *, channel_id: int = 0, scale: int = 0, time_offset: int = 0
     ) -> None:
         self.channel_id: int = int(channel_id)
         r"""Identifier of an audio/video channel"""
@@ -62090,7 +62475,7 @@ class GroupCallStreams(TlObject):
 
     """
 
-    def __init__(self, streams: List[GroupCallStream] = None) -> None:
+    def __init__(self, *, streams: List[GroupCallStream] = None) -> None:
         self.streams: List[GroupCallStream] = streams or []
         r"""A list of group call streams"""
 
@@ -62129,7 +62514,7 @@ class RtmpUrl(TlObject):
 
     """
 
-    def __init__(self, url: str = "", stream_key: str = "") -> None:
+    def __init__(self, *, url: str = "", stream_key: str = "") -> None:
         self.url: Union[str, None] = url
         r"""The URL"""
         self.stream_key: Union[str, None] = stream_key
@@ -62172,7 +62557,7 @@ class GroupCallRecentSpeaker(TlObject):
     """
 
     def __init__(
-        self, participant_id: MessageSender = None, is_speaking: bool = False
+        self, *, participant_id: MessageSender = None, is_speaking: bool = False
     ) -> None:
         self.participant_id: Union[MessageSenderUser, MessageSenderChat, None] = (
             participant_id
@@ -62313,6 +62698,7 @@ class GroupCall(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         unique_id: int = 0,
         title: str = "",
@@ -62527,7 +62913,7 @@ class GroupCallVideoSourceGroup(TlObject):
 
     """
 
-    def __init__(self, semantics: str = "", source_ids: List[int] = None) -> None:
+    def __init__(self, *, semantics: str = "", source_ids: List[int] = None) -> None:
         self.semantics: Union[str, None] = semantics
         r"""The semantics of sources, one of \"SIM\" or \"FID\""""
         self.source_ids: List[int] = source_ids or []
@@ -62578,6 +62964,7 @@ class GroupCallParticipantVideoInfo(TlObject):
 
     def __init__(
         self,
+        *,
         source_groups: List[GroupCallVideoSourceGroup] = None,
         endpoint_id: str = "",
         is_paused: bool = False,
@@ -62681,6 +63068,7 @@ class GroupCallParticipant(TlObject):
 
     def __init__(
         self,
+        *,
         participant_id: MessageSender = None,
         audio_source_id: int = 0,
         screen_sharing_audio_source_id: int = 0,
@@ -62832,7 +63220,7 @@ class GroupCallParticipants(TlObject):
     """
 
     def __init__(
-        self, total_count: int = 0, participant_ids: List[MessageSender] = None
+        self, *, total_count: int = 0, participant_ids: List[MessageSender] = None
     ) -> None:
         self.total_count: int = int(total_count)
         r"""Total number of group call participants"""
@@ -62879,7 +63267,7 @@ class GroupCallInfo(TlObject):
 
     """
 
-    def __init__(self, group_call_id: int = 0, join_payload: str = "") -> None:
+    def __init__(self, *, group_call_id: int = 0, join_payload: str = "") -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the group call"""
         self.join_payload: Union[str, None] = join_payload
@@ -62942,6 +63330,7 @@ class GroupCallMessage(TlObject):
 
     def __init__(
         self,
+        *,
         message_id: int = 0,
         sender_id: MessageSender = None,
         date: int = 0,
@@ -63034,6 +63423,7 @@ class GroupCallMessageLevel(TlObject):
 
     def __init__(
         self,
+        *,
         min_star_count: int = 0,
         pin_duration: int = 0,
         max_text_length: int = 0,
@@ -63211,7 +63601,7 @@ class InviteGroupCallParticipantResultSuccess(
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat with the invitation message"""
         self.message_id: int = int(message_id)
@@ -63312,7 +63702,7 @@ class InputGroupCallLink(TlObject, InputGroupCall):
 
     """
 
-    def __init__(self, link: str = "") -> None:
+    def __init__(self, *, link: str = "") -> None:
         self.link: Union[str, None] = link
         r"""The link for the group call"""
 
@@ -63351,7 +63741,7 @@ class InputGroupCallMessage(TlObject, InputGroupCall):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat with the message"""
         self.message_id: int = int(message_id)
@@ -63663,6 +64053,7 @@ class Call(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         unique_id: int = 0,
         user_id: int = 0,
@@ -63769,7 +64160,7 @@ class FirebaseAuthenticationSettingsIos(TlObject, FirebaseAuthenticationSettings
 
     """
 
-    def __init__(self, device_token: str = "", is_app_sandbox: bool = False) -> None:
+    def __init__(self, *, device_token: str = "", is_app_sandbox: bool = False) -> None:
         self.device_token: Union[str, None] = device_token
         r"""Device token from Apple Push Notification service"""
         self.is_app_sandbox: bool = bool(is_app_sandbox)
@@ -63832,6 +64223,7 @@ class PhoneNumberAuthenticationSettings(TlObject):
 
     def __init__(
         self,
+        *,
         allow_flash_call: bool = False,
         allow_missed_call: bool = False,
         is_current_phone_number: bool = False,
@@ -63925,6 +64317,7 @@ class AddedReaction(TlObject):
 
     def __init__(
         self,
+        *,
         type: ReactionType = None,
         sender_id: MessageSender = None,
         is_outgoing: bool = False,
@@ -63990,6 +64383,7 @@ class AddedReactions(TlObject):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         reactions: List[AddedReaction] = None,
         next_offset: str = "",
@@ -64043,7 +64437,9 @@ class AvailableReaction(TlObject):
 
     """
 
-    def __init__(self, type: ReactionType = None, needs_premium: bool = False) -> None:
+    def __init__(
+        self, *, type: ReactionType = None, needs_premium: bool = False
+    ) -> None:
         self.type: Union[
             ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
         ] = type
@@ -64105,6 +64501,7 @@ class AvailableReactions(TlObject):
 
     def __init__(
         self,
+        *,
         top_reactions: List[AvailableReaction] = None,
         recent_reactions: List[AvailableReaction] = None,
         popular_reactions: List[AvailableReaction] = None,
@@ -64203,6 +64600,7 @@ class EmojiReaction(TlObject):
 
     def __init__(
         self,
+        *,
         emoji: str = "",
         title: str = "",
         is_active: bool = False,
@@ -64348,7 +64746,7 @@ class Animations(TlObject):
 
     """
 
-    def __init__(self, animations: List[Animation] = None) -> None:
+    def __init__(self, *, animations: List[Animation] = None) -> None:
         self.animations: List[Animation] = animations or []
         r"""List of animations"""
 
@@ -64384,7 +64782,7 @@ class DiceStickersRegular(TlObject, DiceStickers):
 
     """
 
-    def __init__(self, sticker: Sticker = None) -> None:
+    def __init__(self, *, sticker: Sticker = None) -> None:
         self.sticker: Union[Sticker, None] = sticker
         r"""The animated sticker with the dice animation"""
 
@@ -64434,6 +64832,7 @@ class DiceStickersSlotMachine(TlObject, DiceStickers):
 
     def __init__(
         self,
+        *,
         background: Sticker = None,
         lever: Sticker = None,
         left_reel: Sticker = None,
@@ -64505,6 +64904,7 @@ class ImportedContact(TlObject):
 
     def __init__(
         self,
+        *,
         phone_number: str = "",
         first_name: str = "",
         last_name: str = "",
@@ -64564,7 +64964,7 @@ class ImportedContacts(TlObject):
     """
 
     def __init__(
-        self, user_ids: List[int] = None, importer_count: List[int] = None
+        self, *, user_ids: List[int] = None, importer_count: List[int] = None
     ) -> None:
         self.user_ids: List[int] = user_ids or []
         r"""User identifiers of the imported contacts in the same order as they were specified in the request; 0 if the contact is not yet a registered user"""
@@ -64608,7 +65008,7 @@ class SpeechRecognitionResultPending(TlObject, SpeechRecognitionResult):
 
     """
 
-    def __init__(self, partial_text: str = "") -> None:
+    def __init__(self, *, partial_text: str = "") -> None:
         self.partial_text: Union[str, None] = partial_text
         r"""Partially recognized text"""
 
@@ -64644,7 +65044,7 @@ class SpeechRecognitionResultText(TlObject, SpeechRecognitionResult):
 
     """
 
-    def __init__(self, text: str = "") -> None:
+    def __init__(self, *, text: str = "") -> None:
         self.text: Union[str, None] = text
         r"""Recognized text"""
 
@@ -64680,7 +65080,7 @@ class SpeechRecognitionResultError(TlObject, SpeechRecognitionResult):
 
     """
 
-    def __init__(self, error: Error = None) -> None:
+    def __init__(self, *, error: Error = None) -> None:
         self.error: Union[Error, None] = error
         r"""Recognition error\. An error with a message \"MSG\_VOICE\_TOO\_LONG\" is returned when media duration is too big to be recognized"""
 
@@ -64733,6 +65133,7 @@ class BusinessConnection(TlObject):
 
     def __init__(
         self,
+        *,
         id: str = "",
         user_id: int = 0,
         user_chat_id: int = 0,
@@ -64801,7 +65202,7 @@ class AttachmentMenuBotColor(TlObject):
 
     """
 
-    def __init__(self, light_color: int = 0, dark_color: int = 0) -> None:
+    def __init__(self, *, light_color: int = 0, dark_color: int = 0) -> None:
         self.light_color: int = int(light_color)
         r"""Color in the RGB format for light themes"""
         self.dark_color: int = int(dark_color)
@@ -64912,6 +65313,7 @@ class AttachmentMenuBot(TlObject):
 
     def __init__(
         self,
+        *,
         bot_user_id: int = 0,
         supports_self_chat: bool = False,
         supports_user_chats: bool = False,
@@ -65068,7 +65470,7 @@ class SentWebAppMessage(TlObject):
 
     """
 
-    def __init__(self, inline_message_id: str = "") -> None:
+    def __init__(self, *, inline_message_id: str = "") -> None:
         self.inline_message_id: Union[str, None] = inline_message_id
         r"""Identifier of the sent inline message, if known"""
 
@@ -65104,7 +65506,7 @@ class BotWriteAccessAllowReasonConnectedWebsite(TlObject, BotWriteAccessAllowRea
 
     """
 
-    def __init__(self, domain_name: str = "") -> None:
+    def __init__(self, *, domain_name: str = "") -> None:
         self.domain_name: Union[str, None] = domain_name
         r"""Domain name of the connected website"""
 
@@ -65174,7 +65576,7 @@ class BotWriteAccessAllowReasonLaunchedWebApp(TlObject, BotWriteAccessAllowReaso
 
     """
 
-    def __init__(self, web_app: WebApp = None) -> None:
+    def __init__(self, *, web_app: WebApp = None) -> None:
         self.web_app: Union[WebApp, None] = web_app
         r"""Information about the Web App"""
 
@@ -65242,7 +65644,7 @@ class HttpUrl(TlObject):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""The URL"""
 
@@ -65281,7 +65683,7 @@ class UserLink(TlObject):
 
     """
 
-    def __init__(self, url: str = "", expires_in: int = 0) -> None:
+    def __init__(self, *, url: str = "", expires_in: int = 0) -> None:
         self.url: Union[str, None] = url
         r"""The URL"""
         self.expires_in: int = int(expires_in)
@@ -65331,6 +65733,7 @@ class TargetChatTypes(TlObject):
 
     def __init__(
         self,
+        *,
         allow_user_chats: bool = False,
         allow_bot_chats: bool = False,
         allow_group_chats: bool = False,
@@ -65414,7 +65817,7 @@ class TargetChatChosen(TlObject, TargetChat):
 
     """
 
-    def __init__(self, types: TargetChatTypes = None) -> None:
+    def __init__(self, *, types: TargetChatTypes = None) -> None:
         self.types: Union[TargetChatTypes, None] = types
         r"""Allowed types for the chat"""
 
@@ -65450,7 +65853,7 @@ class TargetChatInternalLink(TlObject, TargetChat):
 
     """
 
-    def __init__(self, link: InternalLinkType = None) -> None:
+    def __init__(self, *, link: InternalLinkType = None) -> None:
         self.link: Union[
             InternalLinkTypeAttachmentMenuBot,
             InternalLinkTypeAuthenticationCode,
@@ -65575,6 +65978,7 @@ class InputInlineQueryResultAnimation(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         title: str = "",
         thumbnail_url: str = "",
@@ -65720,6 +66124,7 @@ class InputInlineQueryResultArticle(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         url: str = "",
         title: str = "",
@@ -65849,6 +66254,7 @@ class InputInlineQueryResultAudio(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         title: str = "",
         performer: str = "",
@@ -65968,6 +66374,7 @@ class InputInlineQueryResultContact(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         contact: Contact = None,
         thumbnail_url: str = "",
@@ -66096,6 +66503,7 @@ class InputInlineQueryResultDocument(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         title: str = "",
         description: str = "",
@@ -66217,7 +66625,11 @@ class InputInlineQueryResultGame(TlObject, InputInlineQueryResult):
     """
 
     def __init__(
-        self, id: str = "", game_short_name: str = "", reply_markup: ReplyMarkup = None
+        self,
+        *,
+        id: str = "",
+        game_short_name: str = "",
+        reply_markup: ReplyMarkup = None,
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
@@ -66297,6 +66709,7 @@ class InputInlineQueryResultLocation(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         location: Location = None,
         live_period: int = 0,
@@ -66432,6 +66845,7 @@ class InputInlineQueryResultPhoto(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         title: str = "",
         description: str = "",
@@ -66561,6 +66975,7 @@ class InputInlineQueryResultSticker(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         thumbnail_url: str = "",
         sticker_url: str = "",
@@ -66680,6 +67095,7 @@ class InputInlineQueryResultVenue(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         venue: Venue = None,
         thumbnail_url: str = "",
@@ -66811,6 +67227,7 @@ class InputInlineQueryResultVideo(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         title: str = "",
         description: str = "",
@@ -66947,6 +67364,7 @@ class InputInlineQueryResultVoiceNote(TlObject, InputInlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         title: str = "",
         voice_note_url: str = "",
@@ -67055,6 +67473,7 @@ class InlineQueryResultArticle(TlObject, InlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         url: str = "",
         title: str = "",
@@ -67122,7 +67541,7 @@ class InlineQueryResultContact(TlObject, InlineQueryResult):
     """
 
     def __init__(
-        self, id: str = "", contact: Contact = None, thumbnail: Thumbnail = None
+        self, *, id: str = "", contact: Contact = None, thumbnail: Thumbnail = None
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
@@ -67181,6 +67600,7 @@ class InlineQueryResultLocation(TlObject, InlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         location: Location = None,
         title: str = "",
@@ -67243,7 +67663,7 @@ class InlineQueryResultVenue(TlObject, InlineQueryResult):
     """
 
     def __init__(
-        self, id: str = "", venue: Venue = None, thumbnail: Thumbnail = None
+        self, *, id: str = "", venue: Venue = None, thumbnail: Thumbnail = None
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
@@ -67294,7 +67714,7 @@ class InlineQueryResultGame(TlObject, InlineQueryResult):
 
     """
 
-    def __init__(self, id: str = "", game: Game = None) -> None:
+    def __init__(self, *, id: str = "", game: Game = None) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
         self.game: Union[Game, None] = game
@@ -67340,7 +67760,7 @@ class InlineQueryResultAnimation(TlObject, InlineQueryResult):
     """
 
     def __init__(
-        self, id: str = "", animation: Animation = None, title: str = ""
+        self, *, id: str = "", animation: Animation = None, title: str = ""
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
@@ -67391,7 +67811,7 @@ class InlineQueryResultAudio(TlObject, InlineQueryResult):
 
     """
 
-    def __init__(self, id: str = "", audio: Audio = None) -> None:
+    def __init__(self, *, id: str = "", audio: Audio = None) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
         self.audio: Union[Audio, None] = audio
@@ -67441,6 +67861,7 @@ class InlineQueryResultDocument(TlObject, InlineQueryResult):
 
     def __init__(
         self,
+        *,
         id: str = "",
         document: Document = None,
         title: str = "",
@@ -67506,7 +67927,12 @@ class InlineQueryResultPhoto(TlObject, InlineQueryResult):
     """
 
     def __init__(
-        self, id: str = "", photo: Photo = None, title: str = "", description: str = ""
+        self,
+        *,
+        id: str = "",
+        photo: Photo = None,
+        title: str = "",
+        description: str = "",
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
@@ -67561,7 +67987,7 @@ class InlineQueryResultSticker(TlObject, InlineQueryResult):
 
     """
 
-    def __init__(self, id: str = "", sticker: Sticker = None) -> None:
+    def __init__(self, *, id: str = "", sticker: Sticker = None) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
         self.sticker: Union[Sticker, None] = sticker
@@ -67610,7 +68036,12 @@ class InlineQueryResultVideo(TlObject, InlineQueryResult):
     """
 
     def __init__(
-        self, id: str = "", video: Video = None, title: str = "", description: str = ""
+        self,
+        *,
+        id: str = "",
+        video: Video = None,
+        title: str = "",
+        description: str = "",
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
@@ -67669,7 +68100,7 @@ class InlineQueryResultVoiceNote(TlObject, InlineQueryResult):
     """
 
     def __init__(
-        self, id: str = "", voice_note: VoiceNote = None, title: str = ""
+        self, *, id: str = "", voice_note: VoiceNote = None, title: str = ""
     ) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier of the query result"""
@@ -67717,7 +68148,7 @@ class InlineQueryResultsButtonTypeStartBot(TlObject, InlineQueryResultsButtonTyp
 
     """
 
-    def __init__(self, parameter: str = "") -> None:
+    def __init__(self, *, parameter: str = "") -> None:
         self.parameter: Union[str, None] = parameter
         r"""The parameter for the bot start message"""
 
@@ -67755,7 +68186,7 @@ class InlineQueryResultsButtonTypeWebApp(TlObject, InlineQueryResultsButtonType)
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""An HTTP URL to pass to getWebAppUrl"""
 
@@ -67795,7 +68226,7 @@ class InlineQueryResultsButton(TlObject):
     """
 
     def __init__(
-        self, text: str = "", type: InlineQueryResultsButtonType = None
+        self, *, text: str = "", type: InlineQueryResultsButtonType = None
     ) -> None:
         self.text: Union[str, None] = text
         r"""The text of the button"""
@@ -67850,6 +68281,7 @@ class InlineQueryResults(TlObject):
 
     def __init__(
         self,
+        *,
         inline_query_id: int = 0,
         button: InlineQueryResultsButton = None,
         results: List[InlineQueryResult] = None,
@@ -67908,7 +68340,7 @@ class PreparedInlineMessageId(TlObject):
 
     """
 
-    def __init__(self, id: str = "", expiration_date: int = 0) -> None:
+    def __init__(self, *, id: str = "", expiration_date: int = 0) -> None:
         self.id: Union[str, None] = id
         r"""Unique identifier for the message"""
         self.expiration_date: int = int(expiration_date)
@@ -67959,6 +68391,7 @@ class PreparedInlineMessage(TlObject):
 
     def __init__(
         self,
+        *,
         inline_query_id: int = 0,
         result: InlineQueryResult = None,
         chat_types: TargetChatTypes = None,
@@ -68023,7 +68456,7 @@ class CallbackQueryPayloadData(TlObject, CallbackQueryPayload):
 
     """
 
-    def __init__(self, data: bytes = b"") -> None:
+    def __init__(self, *, data: bytes = b"") -> None:
         self.data: Union[bytes, None] = data
         r"""Data that was attached to the callback button"""
 
@@ -68062,7 +68495,7 @@ class CallbackQueryPayloadDataWithPassword(TlObject, CallbackQueryPayload):
 
     """
 
-    def __init__(self, password: str = "", data: bytes = b"") -> None:
+    def __init__(self, *, password: str = "", data: bytes = b"") -> None:
         self.password: Union[str, None] = password
         r"""The 2\-step verification password for the current user"""
         self.data: Union[bytes, None] = data
@@ -68103,7 +68536,7 @@ class CallbackQueryPayloadGame(TlObject, CallbackQueryPayload):
 
     """
 
-    def __init__(self, game_short_name: str = "") -> None:
+    def __init__(self, *, game_short_name: str = "") -> None:
         self.game_short_name: Union[str, None] = game_short_name
         r"""A short name of the game that was attached to the callback button"""
 
@@ -68145,7 +68578,9 @@ class CallbackQueryAnswer(TlObject):
 
     """
 
-    def __init__(self, text: str = "", show_alert: bool = False, url: str = "") -> None:
+    def __init__(
+        self, *, text: str = "", show_alert: bool = False, url: str = ""
+    ) -> None:
         self.text: Union[str, None] = text
         r"""Text of the answer"""
         self.show_alert: bool = bool(show_alert)
@@ -68192,7 +68627,7 @@ class CustomRequestResult(TlObject):
 
     """
 
-    def __init__(self, result: str = "") -> None:
+    def __init__(self, *, result: str = "") -> None:
         self.result: Union[str, None] = result
         r"""A JSON\-serialized result"""
 
@@ -68234,7 +68669,7 @@ class GameHighScore(TlObject):
 
     """
 
-    def __init__(self, position: int = 0, user_id: int = 0, score: int = 0) -> None:
+    def __init__(self, *, position: int = 0, user_id: int = 0, score: int = 0) -> None:
         self.position: int = int(position)
         r"""Position in the high score table"""
         self.user_id: int = int(user_id)
@@ -68281,7 +68716,7 @@ class GameHighScores(TlObject):
 
     """
 
-    def __init__(self, scores: List[GameHighScore] = None) -> None:
+    def __init__(self, *, scores: List[GameHighScore] = None) -> None:
         self.scores: List[GameHighScore] = scores or []
         r"""A list of game high scores"""
 
@@ -68321,7 +68756,7 @@ class ChatEventMessageEdited(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, old_message: Message = None, new_message: Message = None
+        self, *, old_message: Message = None, new_message: Message = None
     ) -> None:
         self.old_message: Union[Message, None] = old_message
         r"""The original message before the edit"""
@@ -68369,7 +68804,10 @@ class ChatEventMessageDeleted(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, message: Message = None, can_report_anti_spam_false_positive: bool = False
+        self,
+        *,
+        message: Message = None,
+        can_report_anti_spam_false_positive: bool = False,
     ) -> None:
         self.message: Union[Message, None] = message
         r"""Deleted message"""
@@ -68417,7 +68855,7 @@ class ChatEventMessagePinned(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, message: Message = None) -> None:
+    def __init__(self, *, message: Message = None) -> None:
         self.message: Union[Message, None] = message
         r"""Pinned message"""
 
@@ -68453,7 +68891,7 @@ class ChatEventMessageUnpinned(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, message: Message = None) -> None:
+    def __init__(self, *, message: Message = None) -> None:
         self.message: Union[Message, None] = message
         r"""Unpinned message"""
 
@@ -68489,7 +68927,7 @@ class ChatEventPollStopped(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, message: Message = None) -> None:
+    def __init__(self, *, message: Message = None) -> None:
         self.message: Union[Message, None] = message
         r"""The message with the poll"""
 
@@ -68558,6 +68996,7 @@ class ChatEventMemberJoinedByInviteLink(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         invite_link: ChatInviteLink = None,
         via_chat_folder_invite_link: bool = False,
     ) -> None:
@@ -68609,7 +69048,7 @@ class ChatEventMemberJoinedByRequest(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, approver_user_id: int = 0, invite_link: ChatInviteLink = None
+        self, *, approver_user_id: int = 0, invite_link: ChatInviteLink = None
     ) -> None:
         self.approver_user_id: int = int(approver_user_id)
         r"""User identifier of the chat administrator, approved user join request"""
@@ -68656,7 +69095,7 @@ class ChatEventMemberInvited(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, user_id: int = 0, status: ChatMemberStatus = None) -> None:
+    def __init__(self, *, user_id: int = 0, status: ChatMemberStatus = None) -> None:
         self.user_id: int = int(user_id)
         r"""New member user identifier"""
         self.status: Union[
@@ -68739,6 +69178,7 @@ class ChatEventMemberPromoted(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         old_status: ChatMemberStatus = None,
         new_status: ChatMemberStatus = None,
@@ -68813,6 +69253,7 @@ class ChatEventMemberRestricted(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         member_id: MessageSender = None,
         old_status: ChatMemberStatus = None,
         new_status: ChatMemberStatus = None,
@@ -68885,7 +69326,9 @@ class ChatEventMemberTagChanged(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, user_id: int = 0, old_tag: str = "", new_tag: str = "") -> None:
+    def __init__(
+        self, *, user_id: int = 0, old_tag: str = "", new_tag: str = ""
+    ) -> None:
         self.user_id: int = int(user_id)
         r"""Affected chat member user identifier"""
         self.old_tag: Union[str, None] = old_tag
@@ -68940,6 +69383,7 @@ class ChatEventMemberSubscriptionExtended(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         old_status: ChatMemberStatus = None,
         new_status: ChatMemberStatus = None,
@@ -69013,6 +69457,7 @@ class ChatEventAvailableReactionsChanged(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         old_available_reactions: ChatAvailableReactions = None,
         new_available_reactions: ChatAvailableReactions = None,
     ) -> None:
@@ -69071,6 +69516,7 @@ class ChatEventBackgroundChanged(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         old_background: ChatBackground = None,
         new_background: ChatBackground = None,
     ) -> None:
@@ -69119,7 +69565,7 @@ class ChatEventDescriptionChanged(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, old_description: str = "", new_description: str = "") -> None:
+    def __init__(self, *, old_description: str = "", new_description: str = "") -> None:
         self.old_description: Union[str, None] = old_description
         r"""Previous chat description"""
         self.new_description: Union[str, None] = new_description
@@ -69166,7 +69612,10 @@ class ChatEventEmojiStatusChanged(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, old_emoji_status: EmojiStatus = None, new_emoji_status: EmojiStatus = None
+        self,
+        *,
+        old_emoji_status: EmojiStatus = None,
+        new_emoji_status: EmojiStatus = None,
     ) -> None:
         self.old_emoji_status: Union[EmojiStatus, None] = old_emoji_status
         r"""Previous emoji status; may be null if none"""
@@ -69214,7 +69663,7 @@ class ChatEventLinkedChatChanged(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, old_linked_chat_id: int = 0, new_linked_chat_id: int = 0
+        self, *, old_linked_chat_id: int = 0, new_linked_chat_id: int = 0
     ) -> None:
         self.old_linked_chat_id: int = int(old_linked_chat_id)
         r"""Previous supergroup linked chat identifier"""
@@ -69262,7 +69711,7 @@ class ChatEventLocationChanged(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, old_location: ChatLocation = None, new_location: ChatLocation = None
+        self, *, old_location: ChatLocation = None, new_location: ChatLocation = None
     ) -> None:
         self.old_location: Union[ChatLocation, None] = old_location
         r"""Previous location; may be null"""
@@ -69311,6 +69760,7 @@ class ChatEventMessageAutoDeleteTimeChanged(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         old_message_auto_delete_time: int = 0,
         new_message_auto_delete_time: int = 0,
     ) -> None:
@@ -69367,6 +69817,7 @@ class ChatEventPermissionsChanged(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         old_permissions: ChatPermissions = None,
         new_permissions: ChatPermissions = None,
     ) -> None:
@@ -69416,7 +69867,7 @@ class ChatEventPhotoChanged(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, old_photo: ChatPhoto = None, new_photo: ChatPhoto = None
+        self, *, old_photo: ChatPhoto = None, new_photo: ChatPhoto = None
     ) -> None:
         self.old_photo: Union[ChatPhoto, None] = old_photo
         r"""Previous chat photo value; may be null"""
@@ -69464,7 +69915,7 @@ class ChatEventSlowModeDelayChanged(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, old_slow_mode_delay: int = 0, new_slow_mode_delay: int = 0
+        self, *, old_slow_mode_delay: int = 0, new_slow_mode_delay: int = 0
     ) -> None:
         self.old_slow_mode_delay: int = int(old_slow_mode_delay)
         r"""Previous value of slow\_mode\_delay, in seconds"""
@@ -69512,7 +69963,7 @@ class ChatEventStickerSetChanged(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, old_sticker_set_id: int = 0, new_sticker_set_id: int = 0
+        self, *, old_sticker_set_id: int = 0, new_sticker_set_id: int = 0
     ) -> None:
         self.old_sticker_set_id: int = int(old_sticker_set_id)
         r"""Previous identifier of the chat sticker set; 0 if none"""
@@ -69560,7 +70011,7 @@ class ChatEventCustomEmojiStickerSetChanged(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, old_sticker_set_id: int = 0, new_sticker_set_id: int = 0
+        self, *, old_sticker_set_id: int = 0, new_sticker_set_id: int = 0
     ) -> None:
         self.old_sticker_set_id: int = int(old_sticker_set_id)
         r"""Previous identifier of the chat sticker set; 0 if none"""
@@ -69609,7 +70060,7 @@ class ChatEventTitleChanged(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, old_title: str = "", new_title: str = "") -> None:
+    def __init__(self, *, old_title: str = "", new_title: str = "") -> None:
         self.old_title: Union[str, None] = old_title
         r"""Previous chat title"""
         self.new_title: Union[str, None] = new_title
@@ -69655,7 +70106,7 @@ class ChatEventUsernameChanged(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, old_username: str = "", new_username: str = "") -> None:
+    def __init__(self, *, old_username: str = "", new_username: str = "") -> None:
         self.old_username: Union[str, None] = old_username
         r"""Previous chat username"""
         self.new_username: Union[str, None] = new_username
@@ -69702,7 +70153,7 @@ class ChatEventActiveUsernamesChanged(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, old_usernames: List[str] = None, new_usernames: List[str] = None
+        self, *, old_usernames: List[str] = None, new_usernames: List[str] = None
     ) -> None:
         self.old_usernames: List[str] = old_usernames or []
         r"""Previous list of active usernames"""
@@ -69757,6 +70208,7 @@ class ChatEventAccentColorChanged(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         old_accent_color_id: int = 0,
         old_background_custom_emoji_id: int = 0,
         new_accent_color_id: int = 0,
@@ -69827,6 +70279,7 @@ class ChatEventProfileAccentColorChanged(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         old_profile_accent_color_id: int = 0,
         old_profile_background_custom_emoji_id: int = 0,
         new_profile_accent_color_id: int = 0,
@@ -69894,7 +70347,7 @@ class ChatEventHasProtectedContentToggled(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, has_protected_content: bool = False) -> None:
+    def __init__(self, *, has_protected_content: bool = False) -> None:
         self.has_protected_content: bool = bool(has_protected_content)
         r"""New value of has\_protected\_content"""
 
@@ -69935,7 +70388,7 @@ class ChatEventInvitesToggled(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, can_invite_users: bool = False) -> None:
+    def __init__(self, *, can_invite_users: bool = False) -> None:
         self.can_invite_users: bool = bool(can_invite_users)
         r"""New value of can\_invite\_users permission"""
 
@@ -69971,7 +70424,7 @@ class ChatEventIsAllHistoryAvailableToggled(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, is_all_history_available: bool = False) -> None:
+    def __init__(self, *, is_all_history_available: bool = False) -> None:
         self.is_all_history_available: bool = bool(is_all_history_available)
         r"""New value of is\_all\_history\_available"""
 
@@ -70014,7 +70467,7 @@ class ChatEventHasAggressiveAntiSpamEnabledToggled(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, has_aggressive_anti_spam_enabled: bool = False) -> None:
+    def __init__(self, *, has_aggressive_anti_spam_enabled: bool = False) -> None:
         self.has_aggressive_anti_spam_enabled: bool = bool(
             has_aggressive_anti_spam_enabled
         )
@@ -70059,7 +70512,7 @@ class ChatEventSignMessagesToggled(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, sign_messages: bool = False) -> None:
+    def __init__(self, *, sign_messages: bool = False) -> None:
         self.sign_messages: bool = bool(sign_messages)
         r"""New value of sign\_messages"""
 
@@ -70095,7 +70548,7 @@ class ChatEventShowMessageSenderToggled(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, show_message_sender: bool = False) -> None:
+    def __init__(self, *, show_message_sender: bool = False) -> None:
         self.show_message_sender: bool = bool(show_message_sender)
         r"""New value of show\_message\_sender"""
 
@@ -70134,7 +70587,7 @@ class ChatEventAutomaticTranslationToggled(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, has_automatic_translation: bool = False) -> None:
+    def __init__(self, *, has_automatic_translation: bool = False) -> None:
         self.has_automatic_translation: bool = bool(has_automatic_translation)
         r"""New value of has\_automatic\_translation"""
 
@@ -70182,6 +70635,7 @@ class ChatEventInviteLinkEdited(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         old_invite_link: ChatInviteLink = None,
         new_invite_link: ChatInviteLink = None,
     ) -> None:
@@ -70227,7 +70681,7 @@ class ChatEventInviteLinkRevoked(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, invite_link: ChatInviteLink = None) -> None:
+    def __init__(self, *, invite_link: ChatInviteLink = None) -> None:
         self.invite_link: Union[ChatInviteLink, None] = invite_link
         r"""The invite link"""
 
@@ -70263,7 +70717,7 @@ class ChatEventInviteLinkDeleted(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, invite_link: ChatInviteLink = None) -> None:
+    def __init__(self, *, invite_link: ChatInviteLink = None) -> None:
         self.invite_link: Union[ChatInviteLink, None] = invite_link
         r"""The invite link"""
 
@@ -70299,7 +70753,7 @@ class ChatEventVideoChatCreated(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, group_call_id: int = 0) -> None:
+    def __init__(self, *, group_call_id: int = 0) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the video chat\. The video chat can be received through the method getGroupCall"""
 
@@ -70335,7 +70789,7 @@ class ChatEventVideoChatEnded(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, group_call_id: int = 0) -> None:
+    def __init__(self, *, group_call_id: int = 0) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the video chat\. The video chat can be received through the method getGroupCall"""
 
@@ -70371,7 +70825,7 @@ class ChatEventVideoChatMuteNewParticipantsToggled(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, mute_new_participants: bool = False) -> None:
+    def __init__(self, *, mute_new_participants: bool = False) -> None:
         self.mute_new_participants: bool = bool(mute_new_participants)
         r"""New value of the mute\_new\_participants setting"""
 
@@ -70416,7 +70870,7 @@ class ChatEventVideoChatParticipantIsMutedToggled(TlObject, ChatEventAction):
     """
 
     def __init__(
-        self, participant_id: MessageSender = None, is_muted: bool = False
+        self, *, participant_id: MessageSender = None, is_muted: bool = False
     ) -> None:
         self.participant_id: Union[MessageSenderUser, MessageSenderChat, None] = (
             participant_id
@@ -70468,7 +70922,7 @@ class ChatEventVideoChatParticipantVolumeLevelChanged(TlObject, ChatEventAction)
     """
 
     def __init__(
-        self, participant_id: MessageSender = None, volume_level: int = 0
+        self, *, participant_id: MessageSender = None, volume_level: int = 0
     ) -> None:
         self.participant_id: Union[MessageSenderUser, MessageSenderChat, None] = (
             participant_id
@@ -70516,7 +70970,7 @@ class ChatEventIsForumToggled(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, is_forum: bool = False) -> None:
+    def __init__(self, *, is_forum: bool = False) -> None:
         self.is_forum: bool = bool(is_forum)
         r"""New value of is\_forum"""
 
@@ -70552,7 +71006,7 @@ class ChatEventForumTopicCreated(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, topic_info: ForumTopicInfo = None) -> None:
+    def __init__(self, *, topic_info: ForumTopicInfo = None) -> None:
         self.topic_info: Union[ForumTopicInfo, None] = topic_info
         r"""Information about the topic"""
 
@@ -70593,6 +71047,7 @@ class ChatEventForumTopicEdited(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         old_topic_info: ForumTopicInfo = None,
         new_topic_info: ForumTopicInfo = None,
     ) -> None:
@@ -70638,7 +71093,7 @@ class ChatEventForumTopicToggleIsClosed(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, topic_info: ForumTopicInfo = None) -> None:
+    def __init__(self, *, topic_info: ForumTopicInfo = None) -> None:
         self.topic_info: Union[ForumTopicInfo, None] = topic_info
         r"""New information about the topic"""
 
@@ -70674,7 +71129,7 @@ class ChatEventForumTopicToggleIsHidden(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, topic_info: ForumTopicInfo = None) -> None:
+    def __init__(self, *, topic_info: ForumTopicInfo = None) -> None:
         self.topic_info: Union[ForumTopicInfo, None] = topic_info
         r"""New information about the topic"""
 
@@ -70710,7 +71165,7 @@ class ChatEventForumTopicDeleted(TlObject, ChatEventAction):
 
     """
 
-    def __init__(self, topic_info: ForumTopicInfo = None) -> None:
+    def __init__(self, *, topic_info: ForumTopicInfo = None) -> None:
         self.topic_info: Union[ForumTopicInfo, None] = topic_info
         r"""Information about the topic"""
 
@@ -70751,6 +71206,7 @@ class ChatEventForumTopicPinned(TlObject, ChatEventAction):
 
     def __init__(
         self,
+        *,
         old_topic_info: ForumTopicInfo = None,
         new_topic_info: ForumTopicInfo = None,
     ) -> None:
@@ -70807,6 +71263,7 @@ class ChatEvent(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         date: int = 0,
         member_id: MessageSender = None,
@@ -70917,7 +71374,7 @@ class ChatEvents(TlObject):
 
     """
 
-    def __init__(self, events: List[ChatEvent] = None) -> None:
+    def __init__(self, *, events: List[ChatEvent] = None) -> None:
         self.events: List[ChatEvent] = events or []
         r"""List of events"""
 
@@ -70997,6 +71454,7 @@ class ChatEventLogFilters(TlObject):
 
     def __init__(
         self,
+        *,
         message_edits: bool = False,
         message_deletions: bool = False,
         message_pins: bool = False,
@@ -71109,7 +71567,7 @@ class LanguagePackStringValueOrdinary(TlObject, LanguagePackStringValue):
 
     """
 
-    def __init__(self, value: str = "") -> None:
+    def __init__(self, *, value: str = "") -> None:
         self.value: Union[str, None] = value
         r"""String value"""
 
@@ -71162,6 +71620,7 @@ class LanguagePackStringValuePluralized(TlObject, LanguagePackStringValue):
 
     def __init__(
         self,
+        *,
         zero_value: str = "",
         one_value: str = "",
         two_value: str = "",
@@ -71258,7 +71717,7 @@ class LanguagePackString(TlObject):
 
     """
 
-    def __init__(self, key: str = "", value: LanguagePackStringValue = None) -> None:
+    def __init__(self, *, key: str = "", value: LanguagePackStringValue = None) -> None:
         self.key: Union[str, None] = key
         r"""String key"""
         self.value: Union[
@@ -71302,7 +71761,7 @@ class LanguagePackStrings(TlObject):
 
     """
 
-    def __init__(self, strings: List[LanguagePackString] = None) -> None:
+    def __init__(self, *, strings: List[LanguagePackString] = None) -> None:
         self.strings: List[LanguagePackString] = strings or []
         r"""A list of language pack strings"""
 
@@ -71376,6 +71835,7 @@ class LanguagePackInfo(TlObject):
 
     def __init__(
         self,
+        *,
         id: str = "",
         base_language_pack_id: str = "",
         name: str = "",
@@ -71478,7 +71938,7 @@ class LocalizationTargetInfo(TlObject):
 
     """
 
-    def __init__(self, language_packs: List[LanguagePackInfo] = None) -> None:
+    def __init__(self, *, language_packs: List[LanguagePackInfo] = None) -> None:
         self.language_packs: List[LanguagePackInfo] = language_packs or []
         r"""List of available language packs for this application"""
 
@@ -73352,6 +73812,7 @@ class PremiumLimit(TlObject):
 
     def __init__(
         self,
+        *,
         type: PremiumLimitType = None,
         default_value: int = 0,
         premium_value: int = 0,
@@ -73431,6 +73892,7 @@ class PremiumFeatures(TlObject):
 
     def __init__(
         self,
+        *,
         features: List[PremiumFeature] = None,
         limits: List[PremiumLimit] = None,
         payment_link: InternalLinkType = None,
@@ -73538,7 +74000,7 @@ class BusinessFeatures(TlObject):
 
     """
 
-    def __init__(self, features: List[BusinessFeature] = None) -> None:
+    def __init__(self, *, features: List[BusinessFeature] = None) -> None:
         self.features: List[BusinessFeature] = features or []
         r"""The list of available business features"""
 
@@ -73574,7 +74036,7 @@ class PremiumSourceLimitExceeded(TlObject, PremiumSource):
 
     """
 
-    def __init__(self, limit_type: PremiumLimitType = None) -> None:
+    def __init__(self, *, limit_type: PremiumLimitType = None) -> None:
         self.limit_type: Union[
             PremiumLimitTypeSupergroupCount,
             PremiumLimitTypePinnedChatCount,
@@ -73631,7 +74093,7 @@ class PremiumSourceFeature(TlObject, PremiumSource):
 
     """
 
-    def __init__(self, feature: PremiumFeature = None) -> None:
+    def __init__(self, *, feature: PremiumFeature = None) -> None:
         self.feature: Union[
             PremiumFeatureIncreasedLimits,
             PremiumFeatureIncreasedUploadFileSize,
@@ -73696,7 +74158,7 @@ class PremiumSourceBusinessFeature(TlObject, PremiumSource):
 
     """
 
-    def __init__(self, feature: BusinessFeature = None) -> None:
+    def __init__(self, *, feature: BusinessFeature = None) -> None:
         self.feature: Union[
             BusinessFeatureLocation,
             BusinessFeatureOpeningHours,
@@ -73745,7 +74207,7 @@ class PremiumSourceStoryFeature(TlObject, PremiumSource):
 
     """
 
-    def __init__(self, feature: PremiumStoryFeature = None) -> None:
+    def __init__(self, *, feature: PremiumStoryFeature = None) -> None:
         self.feature: Union[
             PremiumStoryFeaturePriorityOrder,
             PremiumStoryFeatureStealthMode,
@@ -73790,7 +74252,7 @@ class PremiumSourceLink(TlObject, PremiumSource):
 
     """
 
-    def __init__(self, referrer: str = "") -> None:
+    def __init__(self, *, referrer: str = "") -> None:
         self.referrer: Union[str, None] = referrer
         r"""The referrer from the link"""
 
@@ -73858,7 +74320,7 @@ class PremiumFeaturePromotionAnimation(TlObject):
     """
 
     def __init__(
-        self, feature: PremiumFeature = None, animation: Animation = None
+        self, *, feature: PremiumFeature = None, animation: Animation = None
     ) -> None:
         self.feature: Union[
             PremiumFeatureIncreasedLimits,
@@ -73935,7 +74397,7 @@ class BusinessFeaturePromotionAnimation(TlObject):
     """
 
     def __init__(
-        self, feature: BusinessFeature = None, animation: Animation = None
+        self, *, feature: BusinessFeature = None, animation: Animation = None
     ) -> None:
         self.feature: Union[
             BusinessFeatureLocation,
@@ -74003,6 +74465,7 @@ class PremiumState(TlObject):
 
     def __init__(
         self,
+        *,
         state: FormattedText = None,
         payment_options: List[PremiumStatePaymentOption] = None,
         animations: List[PremiumFeaturePromotionAnimation] = None,
@@ -74063,7 +74526,7 @@ class StorePaymentPurposePremiumSubscription(TlObject, StorePaymentPurpose):
 
     """
 
-    def __init__(self, is_restore: bool = False, is_upgrade: bool = False) -> None:
+    def __init__(self, *, is_restore: bool = False, is_upgrade: bool = False) -> None:
         self.is_restore: bool = bool(is_restore)
         r"""Pass true if this is a restore of a Telegram Premium purchase; only for App Store"""
         self.is_upgrade: bool = bool(is_upgrade)
@@ -74119,6 +74582,7 @@ class StorePaymentPurposePremiumGift(TlObject, StorePaymentPurpose):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         amount: int = 0,
         user_id: int = 0,
@@ -74188,6 +74652,7 @@ class StorePaymentPurposePremiumGiftCodes(TlObject, StorePaymentPurpose):
 
     def __init__(
         self,
+        *,
         boosted_chat_id: int = 0,
         currency: str = "",
         amount: int = 0,
@@ -74257,7 +74722,11 @@ class StorePaymentPurposePremiumGiveaway(TlObject, StorePaymentPurpose):
     """
 
     def __init__(
-        self, parameters: GiveawayParameters = None, currency: str = "", amount: int = 0
+        self,
+        *,
+        parameters: GiveawayParameters = None,
+        currency: str = "",
+        amount: int = 0,
     ) -> None:
         self.parameters: Union[GiveawayParameters, None] = parameters
         r"""Giveaway parameters"""
@@ -74319,6 +74788,7 @@ class StorePaymentPurposeStarGiveaway(TlObject, StorePaymentPurpose):
 
     def __init__(
         self,
+        *,
         parameters: GiveawayParameters = None,
         currency: str = "",
         amount: int = 0,
@@ -74389,7 +74859,12 @@ class StorePaymentPurposeStars(TlObject, StorePaymentPurpose):
     """
 
     def __init__(
-        self, currency: str = "", amount: int = 0, star_count: int = 0, chat_id: int = 0
+        self,
+        *,
+        currency: str = "",
+        amount: int = 0,
+        star_count: int = 0,
+        chat_id: int = 0,
     ) -> None:
         self.currency: Union[str, None] = currency
         r"""ISO 4217 currency code of the payment currency"""
@@ -74451,7 +74926,12 @@ class StorePaymentPurposeGiftedStars(TlObject, StorePaymentPurpose):
     """
 
     def __init__(
-        self, user_id: int = 0, currency: str = "", amount: int = 0, star_count: int = 0
+        self,
+        *,
+        user_id: int = 0,
+        currency: str = "",
+        amount: int = 0,
+        star_count: int = 0,
     ) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user to which Telegram Stars are gifted"""
@@ -74503,7 +74983,7 @@ class StoreTransactionAppStore(TlObject, StoreTransaction):
 
     """
 
-    def __init__(self, receipt: bytes = b"") -> None:
+    def __init__(self, *, receipt: bytes = b"") -> None:
         self.receipt: Union[bytes, None] = receipt
         r"""App Store receipt"""
 
@@ -74547,6 +75027,7 @@ class StoreTransactionGooglePlay(TlObject, StoreTransaction):
 
     def __init__(
         self,
+        *,
         package_name: str = "",
         store_product_id: str = "",
         purchase_token: str = "",
@@ -74611,6 +75092,7 @@ class TelegramPaymentPurposePremiumGift(TlObject, TelegramPaymentPurpose):
 
     def __init__(
         self,
+        *,
         currency: str = "",
         amount: int = 0,
         user_id: int = 0,
@@ -74688,6 +75170,7 @@ class TelegramPaymentPurposePremiumGiftCodes(TlObject, TelegramPaymentPurpose):
 
     def __init__(
         self,
+        *,
         boosted_chat_id: int = 0,
         currency: str = "",
         amount: int = 0,
@@ -74769,6 +75252,7 @@ class TelegramPaymentPurposePremiumGiveaway(TlObject, TelegramPaymentPurpose):
 
     def __init__(
         self,
+        *,
         parameters: GiveawayParameters = None,
         currency: str = "",
         amount: int = 0,
@@ -74841,7 +75325,12 @@ class TelegramPaymentPurposeStars(TlObject, TelegramPaymentPurpose):
     """
 
     def __init__(
-        self, currency: str = "", amount: int = 0, star_count: int = 0, chat_id: int = 0
+        self,
+        *,
+        currency: str = "",
+        amount: int = 0,
+        star_count: int = 0,
+        chat_id: int = 0,
     ) -> None:
         self.currency: Union[str, None] = currency
         r"""ISO 4217 currency code of the payment currency"""
@@ -74903,7 +75392,12 @@ class TelegramPaymentPurposeGiftedStars(TlObject, TelegramPaymentPurpose):
     """
 
     def __init__(
-        self, user_id: int = 0, currency: str = "", amount: int = 0, star_count: int = 0
+        self,
+        *,
+        user_id: int = 0,
+        currency: str = "",
+        amount: int = 0,
+        star_count: int = 0,
     ) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user to which Telegram Stars are gifted"""
@@ -74969,6 +75463,7 @@ class TelegramPaymentPurposeStarGiveaway(TlObject, TelegramPaymentPurpose):
 
     def __init__(
         self,
+        *,
         parameters: GiveawayParameters = None,
         currency: str = "",
         amount: int = 0,
@@ -75029,7 +75524,7 @@ class TelegramPaymentPurposeJoinChat(TlObject, TelegramPaymentPurpose):
 
     """
 
-    def __init__(self, invite_link: str = "") -> None:
+    def __init__(self, *, invite_link: str = "") -> None:
         self.invite_link: Union[str, None] = invite_link
         r"""Invite link to use"""
 
@@ -75068,7 +75563,7 @@ class DeviceTokenFirebaseCloudMessaging(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, token: str = "", encrypt: bool = False) -> None:
+    def __init__(self, *, token: str = "", encrypt: bool = False) -> None:
         self.token: Union[str, None] = token
         r"""Device registration token; may be empty to deregister a device"""
         self.encrypt: bool = bool(encrypt)
@@ -75110,7 +75605,7 @@ class DeviceTokenApplePush(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, device_token: str = "", is_app_sandbox: bool = False) -> None:
+    def __init__(self, *, device_token: str = "", is_app_sandbox: bool = False) -> None:
         self.device_token: Union[str, None] = device_token
         r"""Device token; may be empty to deregister a device"""
         self.is_app_sandbox: bool = bool(is_app_sandbox)
@@ -75161,6 +75656,7 @@ class DeviceTokenApplePushVoIP(TlObject, DeviceToken):
 
     def __init__(
         self,
+        *,
         device_token: str = "",
         is_app_sandbox: bool = False,
         encrypt: bool = False,
@@ -75211,7 +75707,7 @@ class DeviceTokenWindowsPush(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, access_token: str = "") -> None:
+    def __init__(self, *, access_token: str = "") -> None:
         self.access_token: Union[str, None] = access_token
         r"""The access token that will be used to send notifications; may be empty to deregister a device"""
 
@@ -75247,7 +75743,7 @@ class DeviceTokenMicrosoftPush(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, channel_uri: str = "") -> None:
+    def __init__(self, *, channel_uri: str = "") -> None:
         self.channel_uri: Union[str, None] = channel_uri
         r"""Push notification channel URI; may be empty to deregister a device"""
 
@@ -75283,7 +75779,7 @@ class DeviceTokenMicrosoftPushVoIP(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, channel_uri: str = "") -> None:
+    def __init__(self, *, channel_uri: str = "") -> None:
         self.channel_uri: Union[str, None] = channel_uri
         r"""Push notification channel URI; may be empty to deregister a device"""
 
@@ -75326,7 +75822,11 @@ class DeviceTokenWebPush(TlObject, DeviceToken):
     """
 
     def __init__(
-        self, endpoint: str = "", p256dh_base64url: str = "", auth_base64url: str = ""
+        self,
+        *,
+        endpoint: str = "",
+        p256dh_base64url: str = "",
+        auth_base64url: str = "",
     ) -> None:
         self.endpoint: Union[str, None] = endpoint
         r"""Absolute URL exposed by the push service where the application server can send push messages; may be empty to deregister a device"""
@@ -75374,7 +75874,7 @@ class DeviceTokenSimplePush(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, endpoint: str = "") -> None:
+    def __init__(self, *, endpoint: str = "") -> None:
         self.endpoint: Union[str, None] = endpoint
         r"""Absolute URL exposed by the push service where the application server can send push messages; may be empty to deregister a device"""
 
@@ -75410,7 +75910,7 @@ class DeviceTokenUbuntuPush(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, token: str = "") -> None:
+    def __init__(self, *, token: str = "") -> None:
         self.token: Union[str, None] = token
         r"""Token; may be empty to deregister a device"""
 
@@ -75446,7 +75946,7 @@ class DeviceTokenBlackBerryPush(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, token: str = "") -> None:
+    def __init__(self, *, token: str = "") -> None:
         self.token: Union[str, None] = token
         r"""Token; may be empty to deregister a device"""
 
@@ -75482,7 +75982,7 @@ class DeviceTokenTizenPush(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, reg_id: str = "") -> None:
+    def __init__(self, *, reg_id: str = "") -> None:
         self.reg_id: Union[str, None] = reg_id
         r"""Push service registration identifier; may be empty to deregister a device"""
 
@@ -75521,7 +76021,7 @@ class DeviceTokenHuaweiPush(TlObject, DeviceToken):
 
     """
 
-    def __init__(self, token: str = "", encrypt: bool = False) -> None:
+    def __init__(self, *, token: str = "", encrypt: bool = False) -> None:
         self.token: Union[str, None] = token
         r"""Device registration token; may be empty to deregister a device"""
         self.encrypt: bool = bool(encrypt)
@@ -75560,7 +76060,7 @@ class PushReceiverId(TlObject):
 
     """
 
-    def __init__(self, id: int = 0) -> None:
+    def __init__(self, *, id: int = 0) -> None:
         self.id: int = int(id)
         r"""The globally unique identifier of push notification subscription"""
 
@@ -75596,7 +76096,7 @@ class BackgroundFillSolid(TlObject, BackgroundFill):
 
     """
 
-    def __init__(self, color: int = 0) -> None:
+    def __init__(self, *, color: int = 0) -> None:
         self.color: int = int(color)
         r"""A color of the background in the RGB format"""
 
@@ -75639,7 +76139,7 @@ class BackgroundFillGradient(TlObject, BackgroundFill):
     """
 
     def __init__(
-        self, top_color: int = 0, bottom_color: int = 0, rotation_angle: int = 0
+        self, *, top_color: int = 0, bottom_color: int = 0, rotation_angle: int = 0
     ) -> None:
         self.top_color: int = int(top_color)
         r"""A top color of the background in the RGB format"""
@@ -75687,7 +76187,7 @@ class BackgroundFillFreeformGradient(TlObject, BackgroundFill):
 
     """
 
-    def __init__(self, colors: List[int] = None) -> None:
+    def __init__(self, *, colors: List[int] = None) -> None:
         self.colors: List[int] = colors or []
         r"""A list of 3 or 4 colors of the freeform gradient in the RGB format"""
 
@@ -75726,7 +76226,7 @@ class BackgroundTypeWallpaper(TlObject, BackgroundType):
 
     """
 
-    def __init__(self, is_blurred: bool = False, is_moving: bool = False) -> None:
+    def __init__(self, *, is_blurred: bool = False, is_moving: bool = False) -> None:
         self.is_blurred: bool = bool(is_blurred)
         r"""True, if the wallpaper must be downscaled to fit in 450x450 square and then box\-blurred with radius 12"""
         self.is_moving: bool = bool(is_moving)
@@ -75780,6 +76280,7 @@ class BackgroundTypePattern(TlObject, BackgroundType):
 
     def __init__(
         self,
+        *,
         fill: BackgroundFill = None,
         intensity: int = 0,
         is_inverted: bool = False,
@@ -75840,7 +76341,7 @@ class BackgroundTypeFill(TlObject, BackgroundType):
 
     """
 
-    def __init__(self, fill: BackgroundFill = None) -> None:
+    def __init__(self, *, fill: BackgroundFill = None) -> None:
         self.fill: Union[
             BackgroundFillSolid,
             BackgroundFillGradient,
@@ -75881,7 +76382,7 @@ class BackgroundTypeChatTheme(TlObject, BackgroundType):
 
     """
 
-    def __init__(self, theme_name: str = "") -> None:
+    def __init__(self, *, theme_name: str = "") -> None:
         self.theme_name: Union[str, None] = theme_name
         r"""Name of the emoji chat theme"""
 
@@ -75917,7 +76418,7 @@ class InputBackgroundLocal(TlObject, InputBackground):
 
     """
 
-    def __init__(self, background: InputFile = None) -> None:
+    def __init__(self, *, background: InputFile = None) -> None:
         self.background: Union[
             InputFileId, InputFileRemote, InputFileLocal, InputFileGenerated, None
         ] = background
@@ -75955,7 +76456,7 @@ class InputBackgroundRemote(TlObject, InputBackground):
 
     """
 
-    def __init__(self, background_id: int = 0) -> None:
+    def __init__(self, *, background_id: int = 0) -> None:
         self.background_id: int = int(background_id)
         r"""The background identifier"""
 
@@ -75991,7 +76492,7 @@ class InputBackgroundPrevious(TlObject, InputBackground):
 
     """
 
-    def __init__(self, message_id: int = 0) -> None:
+    def __init__(self, *, message_id: int = 0) -> None:
         self.message_id: int = int(message_id)
         r"""Identifier of the message with the background"""
 
@@ -76035,6 +76536,7 @@ class EmojiChatTheme(TlObject):
 
     def __init__(
         self,
+        *,
         name: str = "",
         light_settings: ThemeSettings = None,
         dark_settings: ThemeSettings = None,
@@ -76093,6 +76595,7 @@ class GiftChatTheme(TlObject):
 
     def __init__(
         self,
+        *,
         gift: UpgradedGift = None,
         light_settings: ThemeSettings = None,
         dark_settings: ThemeSettings = None,
@@ -76147,7 +76650,7 @@ class GiftChatThemes(TlObject):
     """
 
     def __init__(
-        self, themes: List[GiftChatTheme] = None, next_offset: str = ""
+        self, *, themes: List[GiftChatTheme] = None, next_offset: str = ""
     ) -> None:
         self.themes: List[GiftChatTheme] = themes or []
         r"""A list of chat themes"""
@@ -76191,7 +76694,7 @@ class ChatThemeEmoji(TlObject, ChatTheme):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""Name of the theme; full theme description is received through updateEmojiChatThemes"""
 
@@ -76227,7 +76730,7 @@ class ChatThemeGift(TlObject, ChatTheme):
 
     """
 
-    def __init__(self, gift_theme: GiftChatTheme = None) -> None:
+    def __init__(self, *, gift_theme: GiftChatTheme = None) -> None:
         self.gift_theme: Union[GiftChatTheme, None] = gift_theme
         r"""The chat theme"""
 
@@ -76263,7 +76766,7 @@ class InputChatThemeEmoji(TlObject, InputChatTheme):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""Name of the theme"""
 
@@ -76299,7 +76802,7 @@ class InputChatThemeGift(TlObject, InputChatTheme):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""Name of the upgraded gift\. A gift can be used only in one chat in a time\. When the same gift is used in another chat, theme in the previous chat is reset to default"""
 
@@ -76341,7 +76844,9 @@ class TimeZone(TlObject):
 
     """
 
-    def __init__(self, id: str = "", name: str = "", utc_time_offset: int = 0) -> None:
+    def __init__(
+        self, *, id: str = "", name: str = "", utc_time_offset: int = 0
+    ) -> None:
         self.id: Union[str, None] = id
         r"""Unique time zone identifier"""
         self.name: Union[str, None] = name
@@ -76388,7 +76893,7 @@ class TimeZones(TlObject):
 
     """
 
-    def __init__(self, time_zones: List[TimeZone] = None) -> None:
+    def __init__(self, *, time_zones: List[TimeZone] = None) -> None:
         self.time_zones: List[TimeZone] = time_zones or []
         r"""A list of time zones"""
 
@@ -76424,7 +76929,7 @@ class Hashtags(TlObject):
 
     """
 
-    def __init__(self, hashtags: List[str] = None) -> None:
+    def __init__(self, *, hashtags: List[str] = None) -> None:
         self.hashtags: List[str] = hashtags or []
         r"""A list of hashtags"""
 
@@ -76460,7 +76965,7 @@ class CanPostStoryResultOk(TlObject, CanPostStoryResult):
 
     """
 
-    def __init__(self, story_count: int = 0) -> None:
+    def __init__(self, *, story_count: int = 0) -> None:
         self.story_count: int = int(story_count)
         r"""Number of stories that can be posted by the user"""
 
@@ -76582,7 +77087,7 @@ class CanPostStoryResultWeeklyLimitExceeded(TlObject, CanPostStoryResult):
 
     """
 
-    def __init__(self, retry_after: int = 0) -> None:
+    def __init__(self, *, retry_after: int = 0) -> None:
         self.retry_after: int = int(retry_after)
         r"""Time left before the user can post the next story, in seconds"""
 
@@ -76620,7 +77125,7 @@ class CanPostStoryResultMonthlyLimitExceeded(TlObject, CanPostStoryResult):
 
     """
 
-    def __init__(self, retry_after: int = 0) -> None:
+    def __init__(self, *, retry_after: int = 0) -> None:
         self.retry_after: int = int(retry_after)
         r"""Time left before the user can post the next story, in seconds"""
 
@@ -76658,7 +77163,7 @@ class CanPostStoryResultLiveStoryIsActive(TlObject, CanPostStoryResult):
 
     """
 
-    def __init__(self, story_id: int = 0) -> None:
+    def __init__(self, *, story_id: int = 0) -> None:
         self.story_id: int = int(story_id)
         r"""Identifier of the active live story"""
 
@@ -76696,7 +77201,7 @@ class StartLiveStoryResultOk(TlObject, StartLiveStoryResult):
 
     """
 
-    def __init__(self, story: Story = None) -> None:
+    def __init__(self, *, story: Story = None) -> None:
         self.story: Union[Story, None] = story
         r"""The live story"""
 
@@ -76732,7 +77237,7 @@ class StartLiveStoryResultFail(TlObject, StartLiveStoryResult):
 
     """
 
-    def __init__(self, error_type: CanPostStoryResult = None) -> None:
+    def __init__(self, *, error_type: CanPostStoryResult = None) -> None:
         self.error_type: Union[
             CanPostStoryResultOk,
             CanPostStoryResultPremiumNeeded,
@@ -76835,7 +77340,7 @@ class CanTransferOwnershipResultPasswordTooFresh(TlObject, CanTransferOwnershipR
 
     """
 
-    def __init__(self, retry_after: int = 0) -> None:
+    def __init__(self, *, retry_after: int = 0) -> None:
         self.retry_after: int = int(retry_after)
         r"""Time left before the session can be used to transfer ownership of a chat, in seconds"""
 
@@ -76873,7 +77378,7 @@ class CanTransferOwnershipResultSessionTooFresh(TlObject, CanTransferOwnershipRe
 
     """
 
-    def __init__(self, retry_after: int = 0) -> None:
+    def __init__(self, *, retry_after: int = 0) -> None:
         self.retry_after: int = int(retry_after)
         r"""Time left before the session can be used to transfer ownership of a chat, in seconds"""
 
@@ -77205,7 +77710,7 @@ class ResetPasswordResultPending(TlObject, ResetPasswordResult):
 
     """
 
-    def __init__(self, pending_reset_date: int = 0) -> None:
+    def __init__(self, *, pending_reset_date: int = 0) -> None:
         self.pending_reset_date: int = int(pending_reset_date)
         r"""Point in time \(Unix timestamp\) after which the password can be reset immediately using resetPassword"""
 
@@ -77241,7 +77746,7 @@ class ResetPasswordResultDeclined(TlObject, ResetPasswordResult):
 
     """
 
-    def __init__(self, retry_date: int = 0) -> None:
+    def __init__(self, *, retry_date: int = 0) -> None:
         self.retry_date: int = int(retry_date)
         r"""Point in time \(Unix timestamp\) when the password reset can be retried"""
 
@@ -77277,7 +77782,7 @@ class MessageFileTypePrivate(TlObject, MessageFileType):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""Name of the other party; may be empty if unrecognized"""
 
@@ -77313,7 +77818,7 @@ class MessageFileTypeGroup(TlObject, MessageFileType):
 
     """
 
-    def __init__(self, title: str = "") -> None:
+    def __init__(self, *, title: str = "") -> None:
         self.title: Union[str, None] = title
         r"""Title of the group chat; may be empty if unrecognized"""
 
@@ -77377,7 +77882,7 @@ class PushMessageContentHidden(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, is_pinned: bool = False) -> None:
+    def __init__(self, *, is_pinned: bool = False) -> None:
         self.is_pinned: bool = bool(is_pinned)
         r"""True, if the message is a pinned message with the specified content"""
 
@@ -77420,7 +77925,7 @@ class PushMessageContentAnimation(TlObject, PushMessageContent):
     """
 
     def __init__(
-        self, animation: Animation = None, caption: str = "", is_pinned: bool = False
+        self, *, animation: Animation = None, caption: str = "", is_pinned: bool = False
     ) -> None:
         self.animation: Union[Animation, None] = animation
         r"""Message content; may be null"""
@@ -77471,7 +77976,7 @@ class PushMessageContentAudio(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, audio: Audio = None, is_pinned: bool = False) -> None:
+    def __init__(self, *, audio: Audio = None, is_pinned: bool = False) -> None:
         self.audio: Union[Audio, None] = audio
         r"""Message content; may be null"""
         self.is_pinned: bool = bool(is_pinned)
@@ -77517,7 +78022,7 @@ class PushMessageContentContact(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, name: str = "", is_pinned: bool = False) -> None:
+    def __init__(self, *, name: str = "", is_pinned: bool = False) -> None:
         self.name: Union[str, None] = name
         r"""Contact's name"""
         self.is_pinned: bool = bool(is_pinned)
@@ -77556,7 +78061,7 @@ class PushMessageContentContactRegistered(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, as_premium_account: bool = False) -> None:
+    def __init__(self, *, as_premium_account: bool = False) -> None:
         self.as_premium_account: bool = bool(as_premium_account)
         r"""True, if the user joined Telegram as a Telegram Premium account"""
 
@@ -77597,7 +78102,7 @@ class PushMessageContentDocument(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, document: Document = None, is_pinned: bool = False) -> None:
+    def __init__(self, *, document: Document = None, is_pinned: bool = False) -> None:
         self.document: Union[Document, None] = document
         r"""Message content; may be null"""
         self.is_pinned: bool = bool(is_pinned)
@@ -77643,7 +78148,7 @@ class PushMessageContentGame(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, title: str = "", is_pinned: bool = False) -> None:
+    def __init__(self, *, title: str = "", is_pinned: bool = False) -> None:
         self.title: Union[str, None] = title
         r"""Game title, empty for pinned game message"""
         self.is_pinned: bool = bool(is_pinned)
@@ -77693,7 +78198,7 @@ class PushMessageContentGameScore(TlObject, PushMessageContent):
     """
 
     def __init__(
-        self, title: str = "", score: int = 0, is_pinned: bool = False
+        self, *, title: str = "", score: int = 0, is_pinned: bool = False
     ) -> None:
         self.title: Union[str, None] = title
         r"""Game title, empty for pinned message"""
@@ -77744,7 +78249,7 @@ class PushMessageContentInvoice(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, price: str = "", is_pinned: bool = False) -> None:
+    def __init__(self, *, price: str = "", is_pinned: bool = False) -> None:
         self.price: Union[str, None] = price
         r"""Product price"""
         self.is_pinned: bool = bool(is_pinned)
@@ -77790,7 +78295,7 @@ class PushMessageContentLocation(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, is_live: bool = False, is_pinned: bool = False) -> None:
+    def __init__(self, *, is_live: bool = False, is_pinned: bool = False) -> None:
         self.is_live: bool = bool(is_live)
         r"""True, if the location is live"""
         self.is_pinned: bool = bool(is_pinned)
@@ -77836,7 +78341,7 @@ class PushMessageContentPaidMedia(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, star_count: int = 0, is_pinned: bool = False) -> None:
+    def __init__(self, *, star_count: int = 0, is_pinned: bool = False) -> None:
         self.star_count: int = int(star_count)
         r"""Number of Telegram Stars needed to buy access to the media in the message; 0 for pinned message"""
         self.is_pinned: bool = bool(is_pinned)
@@ -77890,6 +78395,7 @@ class PushMessageContentPhoto(TlObject, PushMessageContent):
 
     def __init__(
         self,
+        *,
         photo: Photo = None,
         caption: str = "",
         is_secret: bool = False,
@@ -77952,7 +78458,7 @@ class PushMessageContentPoll(TlObject, PushMessageContent):
     """
 
     def __init__(
-        self, question: str = "", is_regular: bool = False, is_pinned: bool = False
+        self, *, question: str = "", is_regular: bool = False, is_pinned: bool = False
     ) -> None:
         self.question: Union[str, None] = question
         r"""Poll question"""
@@ -78000,7 +78506,7 @@ class PushMessageContentPremiumGiftCode(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, month_count: int = 0) -> None:
+    def __init__(self, *, month_count: int = 0) -> None:
         self.month_count: int = int(month_count)
         r"""Number of months the Telegram Premium subscription will be active after code activation"""
 
@@ -78044,6 +78550,7 @@ class PushMessageContentGiveaway(TlObject, PushMessageContent):
 
     def __init__(
         self,
+        *,
         winner_count: int = 0,
         prize: GiveawayPrize = None,
         is_pinned: bool = False,
@@ -78097,7 +78604,9 @@ class PushMessageContentGift(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, star_count: int = 0, is_prepaid_upgrade: bool = False) -> None:
+    def __init__(
+        self, *, star_count: int = 0, is_prepaid_upgrade: bool = False
+    ) -> None:
         self.star_count: int = int(star_count)
         r"""Number of Telegram Stars that sender paid for the gift"""
         self.is_prepaid_upgrade: bool = bool(is_prepaid_upgrade)
@@ -78144,7 +78653,7 @@ class PushMessageContentUpgradedGift(TlObject, PushMessageContent):
     """
 
     def __init__(
-        self, is_upgrade: bool = False, is_prepaid_upgrade: bool = False
+        self, *, is_upgrade: bool = False, is_prepaid_upgrade: bool = False
     ) -> None:
         self.is_upgrade: bool = bool(is_upgrade)
         r"""True, if the gift was obtained by upgrading of a previously received gift; otherwise, if is\_prepaid\_upgrade \=\= false, then this is a transferred or resold gift"""
@@ -78223,7 +78732,7 @@ class PushMessageContentSticker(TlObject, PushMessageContent):
     """
 
     def __init__(
-        self, sticker: Sticker = None, emoji: str = "", is_pinned: bool = False
+        self, *, sticker: Sticker = None, emoji: str = "", is_pinned: bool = False
     ) -> None:
         self.sticker: Union[Sticker, None] = sticker
         r"""Message content; may be null"""
@@ -78274,7 +78783,7 @@ class PushMessageContentStory(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, is_mention: bool = False, is_pinned: bool = False) -> None:
+    def __init__(self, *, is_mention: bool = False, is_pinned: bool = False) -> None:
         self.is_mention: bool = bool(is_mention)
         r"""True, if the user was mentioned in the story"""
         self.is_pinned: bool = bool(is_pinned)
@@ -78320,7 +78829,7 @@ class PushMessageContentText(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, text: str = "", is_pinned: bool = False) -> None:
+    def __init__(self, *, text: str = "", is_pinned: bool = False) -> None:
         self.text: Union[str, None] = text
         r"""Message text"""
         self.is_pinned: bool = bool(is_pinned)
@@ -78362,7 +78871,7 @@ class PushMessageContentChecklist(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, title: str = "", is_pinned: bool = False) -> None:
+    def __init__(self, *, title: str = "", is_pinned: bool = False) -> None:
         self.title: Union[str, None] = title
         r"""Checklist title"""
         self.is_pinned: bool = bool(is_pinned)
@@ -78416,6 +78925,7 @@ class PushMessageContentVideo(TlObject, PushMessageContent):
 
     def __init__(
         self,
+        *,
         video: Video = None,
         caption: str = "",
         is_secret: bool = False,
@@ -78474,7 +78984,9 @@ class PushMessageContentVideoNote(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, video_note: VideoNote = None, is_pinned: bool = False) -> None:
+    def __init__(
+        self, *, video_note: VideoNote = None, is_pinned: bool = False
+    ) -> None:
         self.video_note: Union[VideoNote, None] = video_note
         r"""Message content; may be null"""
         self.is_pinned: bool = bool(is_pinned)
@@ -78520,7 +79032,9 @@ class PushMessageContentVoiceNote(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, voice_note: VoiceNote = None, is_pinned: bool = False) -> None:
+    def __init__(
+        self, *, voice_note: VoiceNote = None, is_pinned: bool = False
+    ) -> None:
         self.voice_note: Union[VoiceNote, None] = voice_note
         r"""Message content; may be null"""
         self.is_pinned: bool = bool(is_pinned)
@@ -78649,7 +79163,7 @@ class PushMessageContentInviteVideoChatParticipants(TlObject, PushMessageContent
 
     """
 
-    def __init__(self, is_current_user: bool = False) -> None:
+    def __init__(self, *, is_current_user: bool = False) -> None:
         self.is_current_user: bool = bool(is_current_user)
         r"""True, if the current user was invited to the video chat or the live stream"""
 
@@ -78695,6 +79209,7 @@ class PushMessageContentChatAddMembers(TlObject, PushMessageContent):
 
     def __init__(
         self,
+        *,
         member_name: str = "",
         is_current_user: bool = False,
         is_returned: bool = False,
@@ -78773,7 +79288,7 @@ class PushMessageContentChatChangeTitle(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, title: str = "") -> None:
+    def __init__(self, *, title: str = "") -> None:
         self.title: Union[str, None] = title
         r"""New chat title"""
 
@@ -78809,7 +79324,7 @@ class PushMessageContentChatSetBackground(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, is_same: bool = False) -> None:
+    def __init__(self, *, is_same: bool = False) -> None:
         self.is_same: bool = bool(is_same)
         r"""True, if the set background is the same as the background of the current user"""
 
@@ -78847,7 +79362,7 @@ class PushMessageContentChatSetTheme(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""If non\-empty, human\-readable name of the new theme\. Otherwise, the chat theme was reset to the default one"""
 
@@ -78891,6 +79406,7 @@ class PushMessageContentChatDeleteMember(TlObject, PushMessageContent):
 
     def __init__(
         self,
+        *,
         member_name: str = "",
         is_current_user: bool = False,
         is_left: bool = False,
@@ -78999,7 +79515,7 @@ class PushMessageContentRecurringPayment(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, amount: str = "") -> None:
+    def __init__(self, *, amount: str = "") -> None:
         self.amount: Union[str, None] = amount
         r"""The paid amount"""
 
@@ -79093,7 +79609,7 @@ class PushMessageContentProximityAlertTriggered(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, distance: int = 0) -> None:
+    def __init__(self, *, distance: int = 0) -> None:
         self.distance: int = int(distance)
         r"""The distance to the user"""
 
@@ -79131,7 +79647,7 @@ class PushMessageContentChecklistTasksAdded(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, task_count: int = 0) -> None:
+    def __init__(self, *, task_count: int = 0) -> None:
         self.task_count: int = int(task_count)
         r"""Number of added tasks"""
 
@@ -79169,7 +79685,7 @@ class PushMessageContentChecklistTasksDone(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, task_count: int = 0) -> None:
+    def __init__(self, *, task_count: int = 0) -> None:
         self.task_count: int = int(task_count)
         r"""Number of changed tasks"""
 
@@ -79207,7 +79723,7 @@ class PushMessageContentMessageForwards(TlObject, PushMessageContent):
 
     """
 
-    def __init__(self, total_count: int = 0) -> None:
+    def __init__(self, *, total_count: int = 0) -> None:
         self.total_count: int = int(total_count)
         r"""Number of forwarded messages"""
 
@@ -79257,6 +79773,7 @@ class PushMessageContentMediaAlbum(TlObject, PushMessageContent):
 
     def __init__(
         self,
+        *,
         total_count: int = 0,
         has_photos: bool = False,
         has_videos: bool = False,
@@ -79320,7 +79837,7 @@ class NotificationTypeNewMessage(TlObject, NotificationType):
 
     """
 
-    def __init__(self, message: Message = None, show_preview: bool = False) -> None:
+    def __init__(self, *, message: Message = None, show_preview: bool = False) -> None:
         self.message: Union[Message, None] = message
         r"""The message"""
         self.show_preview: bool = bool(show_preview)
@@ -79391,7 +79908,7 @@ class NotificationTypeNewCall(TlObject, NotificationType):
 
     """
 
-    def __init__(self, call_id: int = 0) -> None:
+    def __init__(self, *, call_id: int = 0) -> None:
         self.call_id: int = int(call_id)
         r"""Call identifier"""
 
@@ -79441,6 +79958,7 @@ class NotificationTypeNewPushMessage(TlObject, NotificationType):
 
     def __init__(
         self,
+        *,
         message_id: int = 0,
         sender_id: MessageSender = None,
         sender_name: str = "",
@@ -79677,6 +80195,7 @@ class NotificationSound(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         duration: int = 0,
         date: int = 0,
@@ -79742,7 +80261,7 @@ class NotificationSounds(TlObject):
 
     """
 
-    def __init__(self, notification_sounds: List[NotificationSound] = None) -> None:
+    def __init__(self, *, notification_sounds: List[NotificationSound] = None) -> None:
         self.notification_sounds: List[NotificationSound] = notification_sounds or []
         r"""A list of notification sounds"""
 
@@ -79792,6 +80311,7 @@ class Notification(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         date: int = 0,
         is_silent: bool = False,
@@ -79867,6 +80387,7 @@ class NotificationGroup(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         type: NotificationGroupType = None,
         chat_id: int = 0,
@@ -79939,7 +80460,9 @@ class Proxy(TlObject):
 
     """
 
-    def __init__(self, server: str = "", port: int = 0, type: ProxyType = None) -> None:
+    def __init__(
+        self, *, server: str = "", port: int = 0, type: ProxyType = None
+    ) -> None:
         self.server: Union[str, None] = server
         r"""Proxy server domain or IP address"""
         self.port: int = int(port)
@@ -79986,7 +80509,7 @@ class OptionValueBoolean(TlObject, OptionValue):
 
     """
 
-    def __init__(self, value: bool = False) -> None:
+    def __init__(self, *, value: bool = False) -> None:
         self.value: bool = bool(value)
         r"""The value of the option"""
 
@@ -80050,7 +80573,7 @@ class OptionValueInteger(TlObject, OptionValue):
 
     """
 
-    def __init__(self, value: int = 0) -> None:
+    def __init__(self, *, value: int = 0) -> None:
         self.value: int = int(value)
         r"""The value of the option"""
 
@@ -80086,7 +80609,7 @@ class OptionValueString(TlObject, OptionValue):
 
     """
 
-    def __init__(self, value: str = "") -> None:
+    def __init__(self, *, value: str = "") -> None:
         self.value: Union[str, None] = value
         r"""The value of the option"""
 
@@ -80125,7 +80648,7 @@ class JsonObjectMember(TlObject):
 
     """
 
-    def __init__(self, key: str = "", value: JsonValue = None) -> None:
+    def __init__(self, *, key: str = "", value: JsonValue = None) -> None:
         self.key: Union[str, None] = key
         r"""Member's key"""
         self.value: Union[
@@ -80200,7 +80723,7 @@ class JsonValueBoolean(TlObject, JsonValue):
 
     """
 
-    def __init__(self, value: bool = False) -> None:
+    def __init__(self, *, value: bool = False) -> None:
         self.value: bool = bool(value)
         r"""The value"""
 
@@ -80236,7 +80759,7 @@ class JsonValueNumber(TlObject, JsonValue):
 
     """
 
-    def __init__(self, value: float = 0.0) -> None:
+    def __init__(self, *, value: float = 0.0) -> None:
         self.value: float = float(value)
         r"""The value"""
 
@@ -80272,7 +80795,7 @@ class JsonValueString(TlObject, JsonValue):
 
     """
 
-    def __init__(self, value: str = "") -> None:
+    def __init__(self, *, value: str = "") -> None:
         self.value: Union[str, None] = value
         r"""The value"""
 
@@ -80308,7 +80831,7 @@ class JsonValueArray(TlObject, JsonValue):
 
     """
 
-    def __init__(self, values: List[JsonValue] = None) -> None:
+    def __init__(self, *, values: List[JsonValue] = None) -> None:
         self.values: List[JsonValue] = values or []
         r"""The list of array elements"""
 
@@ -80344,7 +80867,7 @@ class JsonValueObject(TlObject, JsonValue):
 
     """
 
-    def __init__(self, members: List[JsonObjectMember] = None) -> None:
+    def __init__(self, *, members: List[JsonObjectMember] = None) -> None:
         self.members: List[JsonObjectMember] = members or []
         r"""The list of object members"""
 
@@ -80380,7 +80903,7 @@ class StoryPrivacySettingsEveryone(TlObject, StoryPrivacySettings):
 
     """
 
-    def __init__(self, except_user_ids: List[int] = None) -> None:
+    def __init__(self, *, except_user_ids: List[int] = None) -> None:
         self.except_user_ids: List[int] = except_user_ids or []
         r"""Identifiers of the users that can't see the story; always unknown and empty for non\-owned stories"""
 
@@ -80416,7 +80939,7 @@ class StoryPrivacySettingsContacts(TlObject, StoryPrivacySettings):
 
     """
 
-    def __init__(self, except_user_ids: List[int] = None) -> None:
+    def __init__(self, *, except_user_ids: List[int] = None) -> None:
         self.except_user_ids: List[int] = except_user_ids or []
         r"""User identifiers of the contacts that can't see the story; always unknown and empty for non\-owned stories"""
 
@@ -80480,7 +81003,7 @@ class StoryPrivacySettingsSelectedUsers(TlObject, StoryPrivacySettings):
 
     """
 
-    def __init__(self, user_ids: List[int] = None) -> None:
+    def __init__(self, *, user_ids: List[int] = None) -> None:
         self.user_ids: List[int] = user_ids or []
         r"""Identifiers of the users; always unknown and empty for non\-owned stories"""
 
@@ -80632,7 +81155,7 @@ class UserPrivacySettingRuleAllowUsers(TlObject, UserPrivacySettingRule):
 
     """
 
-    def __init__(self, user_ids: List[int] = None) -> None:
+    def __init__(self, *, user_ids: List[int] = None) -> None:
         self.user_ids: List[int] = user_ids or []
         r"""The user identifiers, total number of users in all rules must not exceed 1000"""
 
@@ -80668,7 +81191,7 @@ class UserPrivacySettingRuleAllowChatMembers(TlObject, UserPrivacySettingRule):
 
     """
 
-    def __init__(self, chat_ids: List[int] = None) -> None:
+    def __init__(self, *, chat_ids: List[int] = None) -> None:
         self.chat_ids: List[int] = chat_ids or []
         r"""The chat identifiers, total number of chats in all rules must not exceed 20"""
 
@@ -80792,7 +81315,7 @@ class UserPrivacySettingRuleRestrictUsers(TlObject, UserPrivacySettingRule):
 
     """
 
-    def __init__(self, user_ids: List[int] = None) -> None:
+    def __init__(self, *, user_ids: List[int] = None) -> None:
         self.user_ids: List[int] = user_ids or []
         r"""The user identifiers, total number of users in all rules must not exceed 1000"""
 
@@ -80830,7 +81353,7 @@ class UserPrivacySettingRuleRestrictChatMembers(TlObject, UserPrivacySettingRule
 
     """
 
-    def __init__(self, chat_ids: List[int] = None) -> None:
+    def __init__(self, *, chat_ids: List[int] = None) -> None:
         self.chat_ids: List[int] = chat_ids or []
         r"""The chat identifiers, total number of chats in all rules must not exceed 20"""
 
@@ -80868,7 +81391,7 @@ class UserPrivacySettingRules(TlObject):
 
     """
 
-    def __init__(self, rules: List[UserPrivacySettingRule] = None) -> None:
+    def __init__(self, *, rules: List[UserPrivacySettingRule] = None) -> None:
         self.rules: List[UserPrivacySettingRule] = rules or []
         r"""A list of rules"""
 
@@ -81180,7 +81703,7 @@ class UserPrivacySettingAllowPeerToPeerCalls(TlObject, UserPrivacySetting):
 
 
 class UserPrivacySettingAllowFindingByPhoneNumber(TlObject, UserPrivacySetting):
-    r"""A privacy setting for managing whether the user can be found by their phone number\. Checked only if the phone number is not known to the other user\. Can be set only to \"Allow contacts\" or \"Allow all\""""
+    r"""A privacy setting for managing whether the user can be found by their phone number\. Checked only if the phone number is not known to the other user\. Can be set only to \"Allow contacts\" or \"Allow all\" """
 
     def __init__(self) -> None:
         pass
@@ -81310,7 +81833,7 @@ class ReadDatePrivacySettings(TlObject):
 
     """
 
-    def __init__(self, show_read_date: bool = False) -> None:
+    def __init__(self, *, show_read_date: bool = False) -> None:
         self.show_read_date: bool = bool(show_read_date)
         r"""True, if message read date is shown to other users in private chats\. If false and the current user isn't a Telegram Premium user, then they will not be able to see other's message read date"""
 
@@ -81351,6 +81874,7 @@ class NewChatPrivacySettings(TlObject):
 
     def __init__(
         self,
+        *,
         allow_new_chats_from_unknown_users: bool = False,
         incoming_paid_message_star_count: int = 0,
     ) -> None:
@@ -81434,7 +81958,7 @@ class CanSendMessageToUserResultUserHasPaidMessages(
 
     """
 
-    def __init__(self, outgoing_paid_message_star_count: int = 0) -> None:
+    def __init__(self, *, outgoing_paid_message_star_count: int = 0) -> None:
         self.outgoing_paid_message_star_count: int = int(
             outgoing_paid_message_star_count
         )
@@ -81541,7 +82065,7 @@ class AccountTtl(TlObject):
 
     """
 
-    def __init__(self, days: int = 0) -> None:
+    def __init__(self, *, days: int = 0) -> None:
         self.days: int = int(days)
         r"""Number of days of inactivity before the account will be flagged for deletion; 30\-730 days"""
 
@@ -81577,7 +82101,7 @@ class MessageAutoDeleteTime(TlObject):
 
     """
 
-    def __init__(self, time: int = 0) -> None:
+    def __init__(self, *, time: int = 0) -> None:
         self.time: int = int(time)
         r"""Message auto\-delete time, in seconds\. If 0, then messages aren't deleted automatically"""
 
@@ -82142,6 +82666,7 @@ class Session(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         is_current: bool = False,
         is_password_pending: bool = False,
@@ -82294,7 +82819,7 @@ class Sessions(TlObject):
     """
 
     def __init__(
-        self, sessions: List[Session] = None, inactive_session_ttl_days: int = 0
+        self, *, sessions: List[Session] = None, inactive_session_ttl_days: int = 0
     ) -> None:
         self.sessions: List[Session] = sessions or []
         r"""List of sessions"""
@@ -82351,6 +82876,7 @@ class UnconfirmedSession(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         log_in_date: int = 0,
         device_model: str = "",
@@ -82432,6 +82958,7 @@ class ConnectedWebsite(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         domain_name: str = "",
         bot_user_id: int = 0,
@@ -82512,7 +83039,7 @@ class ConnectedWebsites(TlObject):
 
     """
 
-    def __init__(self, websites: List[ConnectedWebsite] = None) -> None:
+    def __init__(self, *, websites: List[ConnectedWebsite] = None) -> None:
         self.websites: List[ConnectedWebsite] = websites or []
         r"""List of connected websites"""
 
@@ -82859,7 +83386,7 @@ class ReportChatResultOptionRequired(TlObject, ReportChatResult):
 
     """
 
-    def __init__(self, title: str = "", options: List[ReportOption] = None) -> None:
+    def __init__(self, *, title: str = "", options: List[ReportOption] = None) -> None:
         self.title: Union[str, None] = title
         r"""Title for the option choice"""
         self.options: List[ReportOption] = options or []
@@ -82901,7 +83428,7 @@ class ReportChatResultTextRequired(TlObject, ReportChatResult):
 
     """
 
-    def __init__(self, option_id: bytes = b"", is_optional: bool = False) -> None:
+    def __init__(self, *, option_id: bytes = b"", is_optional: bool = False) -> None:
         self.option_id: Union[bytes, None] = option_id
         r"""Option identifier for the next reportChat request"""
         self.is_optional: bool = bool(is_optional)
@@ -83003,7 +83530,7 @@ class ReportStoryResultOptionRequired(TlObject, ReportStoryResult):
 
     """
 
-    def __init__(self, title: str = "", options: List[ReportOption] = None) -> None:
+    def __init__(self, *, title: str = "", options: List[ReportOption] = None) -> None:
         self.title: Union[str, None] = title
         r"""Title for the option choice"""
         self.options: List[ReportOption] = options or []
@@ -83045,7 +83572,7 @@ class ReportStoryResultTextRequired(TlObject, ReportStoryResult):
 
     """
 
-    def __init__(self, option_id: bytes = b"", is_optional: bool = False) -> None:
+    def __init__(self, *, option_id: bytes = b"", is_optional: bool = False) -> None:
         self.option_id: Union[bytes, None] = option_id
         r"""Option identifier for the next reportStory request"""
         self.is_optional: bool = bool(is_optional)
@@ -83088,7 +83615,7 @@ class SettingsSectionAppearance(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"themes\", \"themes/edit\", \"themes/create\", \"wallpapers\", \"wallpapers/edit\", \"wallpapers/set\", \"wallpapers/choose\-photo\", \"your\-color/profile\", \"your\-color/profile/add\-icons\", \"your\-color/profile/use\-gift\", \"your\-color/profile/reset\", \"your\-color/name\", \"your\-color/name/add\-icons\", \"your\-color/name/use\-gift\", \"night\-mode\", \"auto\-night\-mode\", \"text\-size\", \"text\-size/use\-system\", \"message\-corners\", \"animations\", \"stickers\-and\-emoji\", \"stickers\-and\-emoji/edit\", \"stickers\-and\-emoji/trending\", \"stickers\-and\-emoji/archived\", \"stickers\-and\-emoji/archived/edit\", \"stickers\-and\-emoji/emoji\", \"stickers\-and\-emoji/emoji/edit\", \"stickers\-and\-emoji/emoji/archived\", \"stickers\-and\-emoji/emoji/archived/edit\", \"stickers\-and\-emoji/emoji/suggest\", \"stickers\-and\-emoji/emoji/quick\-reaction\", \"stickers\-and\-emoji/emoji/quick\-reaction/choose\", \"stickers\-and\-emoji/suggest\-by\-emoji\", \"stickers\-and\-emoji/large\-emoji\", \"stickers\-and\-emoji/dynamic\-order\", \"stickers\-and\-emoji/emoji/show\-more\", \"app\-icon\", \"tap\-for\-next\-media\""""
 
@@ -83152,7 +83679,7 @@ class SettingsSectionBusiness(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"do\-not\-hide\-ads\""""
 
@@ -83188,7 +83715,7 @@ class SettingsSectionChatFolders(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"edit\", \"create\", \"add\-recommended\", \"show\-tags\", \"tab\-view\""""
 
@@ -83224,7 +83751,7 @@ class SettingsSectionDataAndStorage(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"storage\", \"storage/edit\", \"storage/auto\-remove\", \"storage/clear\-cache\", \"storage/max\-cache\", \"usage\", \"usage/mobile\", \"usage/wifi\", \"usage/reset\", \"usage/roaming\", \"auto\-download/mobile\", \"auto\-download/mobile/enable\", \"auto\-download/mobile/usage\", \"auto\-download/mobile/photos\", \"auto\-download/mobile/stories\", \"auto\-download/mobile/videos\", \"auto\-download/mobile/files\", \"auto\-download/wifi\", \"auto\-download/wifi/enable\", \"auto\-download/wifi/usage\", \"auto\-download/wifi/photos\", \"auto\-download/wifi/stories\", \"auto\-download/wifi/videos\", \"auto\-download/wifi/files\", \"auto\-download/roaming\", \"auto\-download/roaming/enable\", \"auto\-download/roaming/usage\", \"auto\-download/roaming/photos\", \"auto\-download/roaming/stories\", \"auto\-download/roaming/videos\", \"auto\-download/roaming/files\", \"auto\-download/reset\", \"save\-to\-photos/chats\", \"save\-to\-photos/chats/max\-video\-size\", \"save\-to\-photos/chats/add\-exception\", \"save\-to\-photos/chats/delete\-all\", \"save\-to\-photos/groups\", \"save\-to\-photos/groups/max\-video\-size\", \"save\-to\-photos/groups/add\-exception\", \"save\-to\-photos/groups/delete\-all\", \"save\-to\-photos/channels\", \"save\-to\-photos/channels/max\-video\-size\", \"save\-to\-photos/channels/add\-exception\", \"save\-to\-photos/channels/delete\-all\", \"less\-data\-calls\", \"open\-links\", \"share\-sheet\", \"share\-sheet/suggested\-chats\", \"share\-sheet/suggest\-by\", \"share\-sheet/reset\", \"saved\-edited\-photos\", \"pause\-music\", \"raise\-to\-listen\", \"raise\-to\-speak\", \"show\-18\-content\", \"proxy\", \"proxy/edit\", \"proxy/use\-proxy\", \"proxy/add\-proxy\", \"proxy/share\-list\", \"proxy/use\-for\-calls\""""
 
@@ -83260,7 +83787,7 @@ class SettingsSectionDevices(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"edit\", \"link\-desktop\", \"terminate\-sessions\", \"auto\-terminate\""""
 
@@ -83296,7 +83823,7 @@ class SettingsSectionEditProfile(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"set\-photo\", \"first\-name\", \"last\-name\", \"emoji\-status\", \"bio\", \"birthday\", \"change\-number\", \"username\", \"your\-color\", \"channel\", \"add\-account\", \"log\-out\", \"profile\-color/profile\", \"profile\-color/profile/add\-icons\", \"profile\-color/profile/use\-gift\", \"profile\-color/name\", \"profile\-color/name/add\-icons\", \"profile\-color/name/use\-gift\", \"profile\-photo/use\-emoji\""""
 
@@ -83388,7 +83915,7 @@ class SettingsSectionInAppBrowser(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"enable\-browser\", \"clear\-cookies\", \"clear\-cache\", \"history\", \"clear\-history\", \"never\-open\", \"clear\-list\", \"search\""""
 
@@ -83424,7 +83951,7 @@ class SettingsSectionLanguage(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"show\-button\" for Show Translate Button toggle, \"translate\-chats\" for Translate Entire Chats toggle, \"do\-not\-translate\" \- for Do Not Translate language list"""
 
@@ -83460,7 +83987,7 @@ class SettingsSectionMyStars(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"top\-up\", \"stats\", \"gift\", \"earn\""""
 
@@ -83524,7 +84051,7 @@ class SettingsSectionNotifications(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"accounts\", \"private\-chats\", \"private\-chats/edit\", \"private\-chats/show\", \"private\-chats/preview\", \"private\-chats/sound\", \"private\-chats/add\-exception\", \"private\-chats/delete\-exceptions\", \"private\-chats/light\-color\", \"private\-chats/vibrate\", \"private\-chats/priority\", \"groups\", \"groups/edit\", \"groups/show\", \"groups/preview\", \"groups/sound\", \"groups/add\-exception\", \"groups/delete\-exceptions\", \"groups/light\-color\", \"groups/vibrate\", \"groups/priority\", \"channels\", \"channels/edit\", \"channels/show\", \"channels/preview\", \"channels/sound\", \"channels/add\-exception\", \"channels/delete\-exceptions\", \"channels/light\-color\", \"channels/vibrate\", \"channels/priority\", \"stories\", \"stories/new\", \"stories/important\", \"stories/show\-sender\", \"stories/sound\", \"stories/add\-exception\", \"stories/delete\-exceptions\", \"stories/light\-color\", \"stories/vibrate\", \"stories/priority\", \"reactions\", \"reactions/messages\", \"reactions/stories\", \"reactions/show\-sender\", \"reactions/sound\", \"reactions/light\-color\", \"reactions/vibrate\", \"reactions/priority\", \"in\-app\-sounds\", \"in\-app\-vibrate\", \"in\-app\-preview\", \"in\-chat\-sounds\", \"in\-app\-popup\", \"lock\-screen\-names\", \"include\-channels\", \"include\-muted\-chats\", \"count\-unread\-messages\", \"new\-contacts\", \"pinned\-messages\", \"reset\", \"web\""""
 
@@ -83560,7 +84087,7 @@ class SettingsSectionPowerSaving(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"videos\", \"gifs\", \"stickers\", \"emoji\", \"effects\", \"preload\", \"background\", \"call\-animations\", \"particles\", \"transitions\""""
 
@@ -83624,7 +84151,7 @@ class SettingsSectionPrivacyAndSecurity(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"blocked\", \"blocked/edit\", \"blocked/block\-user\", \"blocked/block\-user/chats\", \"blocked/block\-user/contacts\", \"active\-websites\", \"active\-websites/edit\", \"active\-websites/disconnect\-all\", \"passcode\", \"passcode/disable\", \"passcode/change\", \"passcode/auto\-lock\", \"passcode/face\-id\", \"passcode/fingerprint\", \"2sv\", \"2sv/change\", \"2sv/disable\", \"2sv/change\-email\", \"passkey\", \"passkey/create\", \"auto\-delete\", \"auto\-delete/set\-custom\", \"login\-email\", \"phone\-number\", \"phone\-number/never\", \"phone\-number/always\", \"last\-seen\", \"last\-seen/never\", \"last\-seen/always\", \"last\-seen/hide\-read\-time\", \"profile\-photos\", \"profile\-photos/never\", \"profile\-photos/always\", \"profile\-photos/set\-public\", \"profile\-photos/update\-public\", \"profile\-photos/remove\-public\", \"bio\", \"bio/never\", \"bio/always\", \"gifts\", \"gifts/show\-icon\", \"gifts/never\", \"gifts/always\", \"gifts/accepted\-types\", \"birthday\", \"birthday/add\", \"birthday/never\", \"birthday/always\", \"saved\-music\", \"saved\-music/never\", \"saved\-music/always\", \"forwards\", \"forwards/never\", \"forwards/always\", \"calls\", \"calls/never\", \"calls/always\", \"calls/p2p\", \"calls/p2p/never\", \"calls/p2p/always\", \"calls/ios\-integration\", \"voice\", \"voice/never\", \"voice/always\", \"messages\", \"messages/set\-price\", \"messages/exceptions\", \"invites\", \"invites/never\", \"invites/always\", \"self\-destruct\", \"data\-settings\", \"data\-settings/sync\-contacts\", \"data\-settings/delete\-synced\", \"data\-settings/suggest\-contacts\", \"data\-settings/delete\-cloud\-drafts\", \"data\-settings/clear\-payment\-info\", \"data\-settings/link\-previews\", \"data\-settings/bot\-settings\", \"data\-settings/map\-provider\", \"archive\-and\-mute\""""
 
@@ -83688,7 +84215,7 @@ class SettingsSectionQrCode(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"share\", \"scan\""""
 
@@ -83752,7 +84279,7 @@ class SettingsSectionSendGift(TlObject, SettingsSection):
 
     """
 
-    def __init__(self, subsection: str = "") -> None:
+    def __init__(self, *, subsection: str = "") -> None:
         self.subsection: Union[str, None] = subsection
         r"""Subsection of the section; may be one of \"\", \"self\""""
 
@@ -83795,7 +84322,7 @@ class InternalLinkTypeAttachmentMenuBot(TlObject, InternalLinkType):
     """
 
     def __init__(
-        self, target_chat: TargetChat = None, bot_username: str = "", url: str = ""
+        self, *, target_chat: TargetChat = None, bot_username: str = "", url: str = ""
     ) -> None:
         self.target_chat: Union[
             TargetChatCurrent, TargetChatChosen, TargetChatInternalLink, None
@@ -83845,7 +84372,7 @@ class InternalLinkTypeAuthenticationCode(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, code: str = "") -> None:
+    def __init__(self, *, code: str = "") -> None:
         self.code: Union[str, None] = code
         r"""The authentication code"""
 
@@ -83881,7 +84408,7 @@ class InternalLinkTypeBackground(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, background_name: str = "") -> None:
+    def __init__(self, *, background_name: str = "") -> None:
         self.background_name: Union[str, None] = background_name
         r"""Name of the background"""
 
@@ -83922,6 +84449,7 @@ class InternalLinkTypeBotAddToChannel(TlObject, InternalLinkType):
 
     def __init__(
         self,
+        *,
         bot_username: str = "",
         administrator_rights: ChatAdministratorRights = None,
     ) -> None:
@@ -83976,7 +84504,11 @@ class InternalLinkTypeBotStart(TlObject, InternalLinkType):
     """
 
     def __init__(
-        self, bot_username: str = "", start_parameter: str = "", autostart: bool = False
+        self,
+        *,
+        bot_username: str = "",
+        start_parameter: str = "",
+        autostart: bool = False,
     ) -> None:
         self.bot_username: Union[str, None] = bot_username
         r"""Username of the bot"""
@@ -84032,6 +84564,7 @@ class InternalLinkTypeBotStartInGroup(TlObject, InternalLinkType):
 
     def __init__(
         self,
+        *,
         bot_username: str = "",
         start_parameter: str = "",
         administrator_rights: ChatAdministratorRights = None,
@@ -84084,7 +84617,7 @@ class InternalLinkTypeBusinessChat(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, link_name: str = "") -> None:
+    def __init__(self, *, link_name: str = "") -> None:
         self.link_name: Union[str, None] = link_name
         r"""Name of the link"""
 
@@ -84120,7 +84653,7 @@ class InternalLinkTypeCallsPage(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, section: str = "") -> None:
+    def __init__(self, *, section: str = "") -> None:
         self.section: Union[str, None] = section
         r"""Section of the page; may be one of \"\", \"all\", \"missed\", \"edit\", \"show\-tab\", \"start\-call\""""
 
@@ -84159,7 +84692,7 @@ class InternalLinkTypeChatAffiliateProgram(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, username: str = "", referrer: str = "") -> None:
+    def __init__(self, *, username: str = "", referrer: str = "") -> None:
         self.username: Union[str, None] = username
         r"""Username to be passed to searchChatAffiliateProgram"""
         self.referrer: Union[str, None] = referrer
@@ -84204,7 +84737,7 @@ class InternalLinkTypeChatBoost(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""URL to be passed to getChatBoostLinkInfo"""
 
@@ -84240,7 +84773,7 @@ class InternalLinkTypeChatFolderInvite(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, invite_link: str = "") -> None:
+    def __init__(self, *, invite_link: str = "") -> None:
         self.invite_link: Union[str, None] = invite_link
         r"""Internal representation of the invite link"""
 
@@ -84276,7 +84809,7 @@ class InternalLinkTypeChatInvite(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, invite_link: str = "") -> None:
+    def __init__(self, *, invite_link: str = "") -> None:
         self.invite_link: Union[str, None] = invite_link
         r"""Internal representation of the invite link"""
 
@@ -84340,7 +84873,7 @@ class InternalLinkTypeContactsPage(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, section: str = "") -> None:
+    def __init__(self, *, section: str = "") -> None:
         self.section: Union[str, None] = section
         r"""Section of the page; may be one of \"\", \"search\", \"sort\", \"new\", \"invite\", \"manage\""""
 
@@ -84376,7 +84909,7 @@ class InternalLinkTypeDirectMessagesChat(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, channel_username: str = "") -> None:
+    def __init__(self, *, channel_username: str = "") -> None:
         self.channel_username: Union[str, None] = channel_username
         r"""Username of the channel"""
 
@@ -84415,7 +84948,7 @@ class InternalLinkTypeGame(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, bot_username: str = "", game_short_name: str = "") -> None:
+    def __init__(self, *, bot_username: str = "", game_short_name: str = "") -> None:
         self.bot_username: Union[str, None] = bot_username
         r"""Username of the bot that owns the game"""
         self.game_short_name: Union[str, None] = game_short_name
@@ -84458,7 +84991,7 @@ class InternalLinkTypeGiftAuction(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, auction_id: str = "") -> None:
+    def __init__(self, *, auction_id: str = "") -> None:
         self.auction_id: Union[str, None] = auction_id
         r"""Unique identifier of the auction"""
 
@@ -84497,7 +85030,9 @@ class InternalLinkTypeGiftCollection(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, gift_owner_username: str = "", collection_id: int = 0) -> None:
+    def __init__(
+        self, *, gift_owner_username: str = "", collection_id: int = 0
+    ) -> None:
         self.gift_owner_username: Union[str, None] = gift_owner_username
         r"""Username of the owner of the gift collection"""
         self.collection_id: int = int(collection_id)
@@ -84540,7 +85075,7 @@ class InternalLinkTypeGroupCall(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, invite_link: str = "") -> None:
+    def __init__(self, *, invite_link: str = "") -> None:
         self.invite_link: Union[str, None] = invite_link
         r"""Internal representation of the invite link"""
 
@@ -84579,7 +85114,7 @@ class InternalLinkTypeInstantView(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, url: str = "", fallback_url: str = "") -> None:
+    def __init__(self, *, url: str = "", fallback_url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""URL to be passed to getWebPageInstantView"""
         self.fallback_url: Union[str, None] = fallback_url
@@ -84622,7 +85157,7 @@ class InternalLinkTypeInvoice(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, invoice_name: str = "") -> None:
+    def __init__(self, *, invoice_name: str = "") -> None:
         self.invoice_name: Union[str, None] = invoice_name
         r"""Name of the invoice"""
 
@@ -84658,7 +85193,7 @@ class InternalLinkTypeLanguagePack(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, language_pack_id: str = "") -> None:
+    def __init__(self, *, language_pack_id: str = "") -> None:
         self.language_pack_id: Union[str, None] = language_pack_id
         r"""Language pack identifier"""
 
@@ -84694,7 +85229,7 @@ class InternalLinkTypeLiveStory(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, story_poster_username: str = "") -> None:
+    def __init__(self, *, story_poster_username: str = "") -> None:
         self.story_poster_username: Union[str, None] = story_poster_username
         r"""Username of the poster of the story"""
 
@@ -84741,6 +85276,7 @@ class InternalLinkTypeMainWebApp(TlObject, InternalLinkType):
 
     def __init__(
         self,
+        *,
         bot_username: str = "",
         start_parameter: str = "",
         mode: WebAppOpenMode = None,
@@ -84796,7 +85332,7 @@ class InternalLinkTypeMessage(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""URL to be passed to getMessageLinkInfo"""
 
@@ -84835,7 +85371,9 @@ class InternalLinkTypeMessageDraft(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, text: FormattedText = None, contains_link: bool = False) -> None:
+    def __init__(
+        self, *, text: FormattedText = None, contains_link: bool = False
+    ) -> None:
         self.text: Union[FormattedText, None] = text
         r"""Message draft text"""
         self.contains_link: bool = bool(contains_link)
@@ -84878,7 +85416,7 @@ class InternalLinkTypeMyProfilePage(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, section: str = "") -> None:
+    def __init__(self, *, section: str = "") -> None:
         self.section: Union[str, None] = section
         r"""Section of the page; may be one of \"\", \"posts\", \"posts/all\-stories\", \"posts/add\-album\", \"gifts\", \"archived\-posts\""""
 
@@ -84998,7 +85536,7 @@ class InternalLinkTypeNewStory(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, content_type: StoryContentType = None) -> None:
+    def __init__(self, *, content_type: StoryContentType = None) -> None:
         self.content_type: Union[
             StoryContentTypePhoto,
             StoryContentTypeVideo,
@@ -85040,7 +85578,7 @@ class InternalLinkTypeOauth(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, url: str = "") -> None:
+    def __init__(self, *, url: str = "") -> None:
         self.url: Union[str, None] = url
         r"""URL to be passed to getOauthLinkInfo"""
 
@@ -85090,6 +85628,7 @@ class InternalLinkTypePassportDataRequest(TlObject, InternalLinkType):
 
     def __init__(
         self,
+        *,
         bot_user_id: int = 0,
         scope: str = "",
         public_key: str = "",
@@ -85155,7 +85694,7 @@ class InternalLinkTypePhoneNumberConfirmation(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, hash: str = "", phone_number: str = "") -> None:
+    def __init__(self, *, hash: str = "", phone_number: str = "") -> None:
         self.hash: Union[str, None] = hash
         r"""Hash value from the link"""
         self.phone_number: Union[str, None] = phone_number
@@ -85200,7 +85739,7 @@ class InternalLinkTypePremiumFeaturesPage(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, referrer: str = "") -> None:
+    def __init__(self, *, referrer: str = "") -> None:
         self.referrer: Union[str, None] = referrer
         r"""Referrer specified in the link"""
 
@@ -85238,7 +85777,7 @@ class InternalLinkTypePremiumGiftCode(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, code: str = "") -> None:
+    def __init__(self, *, code: str = "") -> None:
         self.code: Union[str, None] = code
         r"""The Telegram Premium gift code"""
 
@@ -85274,7 +85813,7 @@ class InternalLinkTypePremiumGiftPurchase(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, referrer: str = "") -> None:
+    def __init__(self, *, referrer: str = "") -> None:
         self.referrer: Union[str, None] = referrer
         r"""Referrer specified in the link"""
 
@@ -85312,7 +85851,7 @@ class InternalLinkTypeProxy(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, proxy: Proxy = None) -> None:
+    def __init__(self, *, proxy: Proxy = None) -> None:
         self.proxy: Union[Proxy, None] = proxy
         r"""The proxy; may be null if the proxy is unsupported, in which case an alert can be shown to the user"""
 
@@ -85355,7 +85894,11 @@ class InternalLinkTypePublicChat(TlObject, InternalLinkType):
     """
 
     def __init__(
-        self, chat_username: str = "", draft_text: str = "", open_profile: bool = False
+        self,
+        *,
+        chat_username: str = "",
+        draft_text: str = "",
+        open_profile: bool = False,
     ) -> None:
         self.chat_username: Union[str, None] = chat_username
         r"""Username of the chat"""
@@ -85517,7 +86060,7 @@ class InternalLinkTypeSettings(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, section: SettingsSection = None) -> None:
+    def __init__(self, *, section: SettingsSection = None) -> None:
         self.section: Union[
             SettingsSectionAppearance,
             SettingsSectionAskQuestion,
@@ -85579,7 +86122,7 @@ class InternalLinkTypeStarPurchase(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, star_count: int = 0, purpose: str = "") -> None:
+    def __init__(self, *, star_count: int = 0, purpose: str = "") -> None:
         self.star_count: int = int(star_count)
         r"""The number of Telegram Stars that must be owned by the user"""
         self.purpose: Union[str, None] = purpose
@@ -85626,7 +86169,7 @@ class InternalLinkTypeStickerSet(TlObject, InternalLinkType):
     """
 
     def __init__(
-        self, sticker_set_name: str = "", expect_custom_emoji: bool = False
+        self, *, sticker_set_name: str = "", expect_custom_emoji: bool = False
     ) -> None:
         self.sticker_set_name: Union[str, None] = sticker_set_name
         r"""Name of the sticker set"""
@@ -85673,7 +86216,7 @@ class InternalLinkTypeStory(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, story_poster_username: str = "", story_id: int = 0) -> None:
+    def __init__(self, *, story_poster_username: str = "", story_id: int = 0) -> None:
         self.story_poster_username: Union[str, None] = story_poster_username
         r"""Username of the poster of the story"""
         self.story_id: int = int(story_id)
@@ -85720,7 +86263,7 @@ class InternalLinkTypeStoryAlbum(TlObject, InternalLinkType):
     """
 
     def __init__(
-        self, story_album_owner_username: str = "", story_album_id: int = 0
+        self, *, story_album_owner_username: str = "", story_album_id: int = 0
     ) -> None:
         self.story_album_owner_username: Union[str, None] = story_album_owner_username
         r"""Username of the owner of the story album"""
@@ -85766,7 +86309,7 @@ class InternalLinkTypeTheme(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, theme_name: str = "") -> None:
+    def __init__(self, *, theme_name: str = "") -> None:
         self.theme_name: Union[str, None] = theme_name
         r"""Name of the theme"""
 
@@ -85802,7 +86345,7 @@ class InternalLinkTypeUnknownDeepLink(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, link: str = "") -> None:
+    def __init__(self, *, link: str = "") -> None:
         self.link: Union[str, None] = link
         r"""Link to be passed to getDeepLinkInfo"""
 
@@ -85838,7 +86381,7 @@ class InternalLinkTypeUpgradedGift(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, name: str = "") -> None:
+    def __init__(self, *, name: str = "") -> None:
         self.name: Union[str, None] = name
         r"""Name of the unique gift"""
 
@@ -85881,7 +86424,11 @@ class InternalLinkTypeUserPhoneNumber(TlObject, InternalLinkType):
     """
 
     def __init__(
-        self, phone_number: str = "", draft_text: str = "", open_profile: bool = False
+        self,
+        *,
+        phone_number: str = "",
+        draft_text: str = "",
+        open_profile: bool = False,
     ) -> None:
         self.phone_number: Union[str, None] = phone_number
         r"""Phone number of the user"""
@@ -85929,7 +86476,7 @@ class InternalLinkTypeUserToken(TlObject, InternalLinkType):
 
     """
 
-    def __init__(self, token: str = "") -> None:
+    def __init__(self, *, token: str = "") -> None:
         self.token: Union[str, None] = token
         r"""The token"""
 
@@ -85973,6 +86520,7 @@ class InternalLinkTypeVideoChat(TlObject, InternalLinkType):
 
     def __init__(
         self,
+        *,
         chat_username: str = "",
         invite_hash: str = "",
         is_live_stream: bool = False,
@@ -86034,6 +86582,7 @@ class InternalLinkTypeWebApp(TlObject, InternalLinkType):
 
     def __init__(
         self,
+        *,
         bot_username: str = "",
         web_app_short_name: str = "",
         start_parameter: str = "",
@@ -86097,7 +86646,7 @@ class MessageLink(TlObject):
 
     """
 
-    def __init__(self, link: str = "", is_public: bool = False) -> None:
+    def __init__(self, *, link: str = "", is_public: bool = False) -> None:
         self.link: Union[str, None] = link
         r"""The link"""
         self.is_public: bool = bool(is_public)
@@ -86153,6 +86702,7 @@ class MessageLinkInfo(TlObject):
 
     def __init__(
         self,
+        *,
         is_public: bool = False,
         chat_id: int = 0,
         topic_id: MessageTopic = None,
@@ -86227,7 +86777,7 @@ class ChatBoostLink(TlObject):
 
     """
 
-    def __init__(self, link: str = "", is_public: bool = False) -> None:
+    def __init__(self, *, link: str = "", is_public: bool = False) -> None:
         self.link: Union[str, None] = link
         r"""The link"""
         self.is_public: bool = bool(is_public)
@@ -86269,7 +86819,7 @@ class ChatBoostLinkInfo(TlObject):
 
     """
 
-    def __init__(self, is_public: bool = False, chat_id: int = 0) -> None:
+    def __init__(self, *, is_public: bool = False, chat_id: int = 0) -> None:
         self.is_public: bool = bool(is_public)
         r"""True, if the link will work for non\-members of the chat"""
         self.chat_id: int = int(chat_id)
@@ -87019,7 +87569,7 @@ class StorageStatisticsByFileType(TlObject):
     """
 
     def __init__(
-        self, file_type: FileType = None, size: int = 0, count: int = 0
+        self, *, file_type: FileType = None, size: int = 0, count: int = 0
     ) -> None:
         self.file_type: Union[
             FileTypeNone,
@@ -87103,6 +87653,7 @@ class StorageStatisticsByChat(TlObject):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         size: int = 0,
         count: int = 0,
@@ -87166,6 +87717,7 @@ class StorageStatistics(TlObject):
 
     def __init__(
         self,
+        *,
         size: int = 0,
         count: int = 0,
         by_chat: List[StorageStatisticsByChat] = None,
@@ -87230,6 +87782,7 @@ class StorageStatisticsFast(TlObject):
 
     def __init__(
         self,
+        *,
         files_size: int = 0,
         file_count: int = 0,
         database_size: int = 0,
@@ -87292,7 +87845,7 @@ class DatabaseStatistics(TlObject):
 
     """
 
-    def __init__(self, statistics: str = "") -> None:
+    def __init__(self, *, statistics: str = "") -> None:
         self.statistics: Union[str, None] = statistics
         r"""Database statistics in an unspecified human\-readable format"""
 
@@ -87479,6 +88032,7 @@ class NetworkStatisticsEntryFile(TlObject, NetworkStatisticsEntry):
 
     def __init__(
         self,
+        *,
         file_type: FileType = None,
         network_type: NetworkType = None,
         sent_bytes: int = 0,
@@ -87577,6 +88131,7 @@ class NetworkStatisticsEntryCall(TlObject, NetworkStatisticsEntry):
 
     def __init__(
         self,
+        *,
         network_type: NetworkType = None,
         sent_bytes: int = 0,
         received_bytes: int = 0,
@@ -87643,7 +88198,7 @@ class NetworkStatistics(TlObject):
     """
 
     def __init__(
-        self, since_date: int = 0, entries: List[NetworkStatisticsEntry] = None
+        self, *, since_date: int = 0, entries: List[NetworkStatisticsEntry] = None
     ) -> None:
         self.since_date: int = int(since_date)
         r"""Point in time \(Unix timestamp\) from which the statistics are collected"""
@@ -87713,6 +88268,7 @@ class AutoDownloadSettings(TlObject):
 
     def __init__(
         self,
+        *,
         is_auto_download_enabled: bool = False,
         max_photo_file_size: int = 0,
         max_video_file_size: int = 0,
@@ -87805,6 +88361,7 @@ class AutoDownloadSettingsPresets(TlObject):
 
     def __init__(
         self,
+        *,
         low: AutoDownloadSettings = None,
         medium: AutoDownloadSettings = None,
         high: AutoDownloadSettings = None,
@@ -87939,7 +88496,7 @@ class AutosaveSettingsScopeChat(TlObject, AutosaveSettingsScope):
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
 
@@ -87983,6 +88540,7 @@ class ScopeAutosaveSettings(TlObject):
 
     def __init__(
         self,
+        *,
         autosave_photos: bool = False,
         autosave_videos: bool = False,
         max_video_file_size: int = 0,
@@ -88037,7 +88595,7 @@ class AutosaveSettingsException(TlObject):
     """
 
     def __init__(
-        self, chat_id: int = 0, settings: ScopeAutosaveSettings = None
+        self, *, chat_id: int = 0, settings: ScopeAutosaveSettings = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -88092,6 +88650,7 @@ class AutosaveSettings(TlObject):
 
     def __init__(
         self,
+        *,
         private_chat_settings: ScopeAutosaveSettings = None,
         group_settings: ScopeAutosaveSettings = None,
         channel_settings: ScopeAutosaveSettings = None,
@@ -88296,7 +88855,11 @@ class AgeVerificationParameters(TlObject):
     """
 
     def __init__(
-        self, min_age: int = 0, verification_bot_username: str = "", country: str = ""
+        self,
+        *,
+        min_age: int = 0,
+        verification_bot_username: str = "",
+        country: str = "",
     ) -> None:
         self.min_age: int = int(min_age)
         r"""The minimum age required to view restricted content"""
@@ -88570,7 +89133,7 @@ class FoundPosition(TlObject):
 
     """
 
-    def __init__(self, position: int = 0) -> None:
+    def __init__(self, *, position: int = 0) -> None:
         self.position: int = int(position)
         r"""The position of the match"""
 
@@ -88609,7 +89172,7 @@ class FoundPositions(TlObject):
 
     """
 
-    def __init__(self, total_count: int = 0, positions: List[int] = None) -> None:
+    def __init__(self, *, total_count: int = 0, positions: List[int] = None) -> None:
         self.total_count: int = int(total_count)
         r"""Total number of matched objects"""
         self.positions: List[int] = positions or []
@@ -88652,7 +89215,7 @@ class TMeUrlTypeUser(TlObject, TMeUrlType):
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user"""
 
@@ -88688,7 +89251,7 @@ class TMeUrlTypeSupergroup(TlObject, TMeUrlType):
 
     """
 
-    def __init__(self, supergroup_id: int = 0) -> None:
+    def __init__(self, *, supergroup_id: int = 0) -> None:
         self.supergroup_id: int = int(supergroup_id)
         r"""Identifier of the supergroup or channel"""
 
@@ -88724,7 +89287,7 @@ class TMeUrlTypeChatInvite(TlObject, TMeUrlType):
 
     """
 
-    def __init__(self, info: ChatInviteLinkInfo = None) -> None:
+    def __init__(self, *, info: ChatInviteLinkInfo = None) -> None:
         self.info: Union[ChatInviteLinkInfo, None] = info
         r"""Information about the chat invite link"""
 
@@ -88760,7 +89323,7 @@ class TMeUrlTypeStickerSet(TlObject, TMeUrlType):
 
     """
 
-    def __init__(self, sticker_set_id: int = 0) -> None:
+    def __init__(self, *, sticker_set_id: int = 0) -> None:
         self.sticker_set_id: int = int(sticker_set_id)
         r"""Identifier of the sticker set"""
 
@@ -88799,7 +89362,7 @@ class TMeUrl(TlObject):
 
     """
 
-    def __init__(self, url: str = "", type: TMeUrlType = None) -> None:
+    def __init__(self, *, url: str = "", type: TMeUrlType = None) -> None:
         self.url: Union[str, None] = url
         r"""URL"""
         self.type: Union[
@@ -88844,7 +89407,7 @@ class TMeUrls(TlObject):
 
     """
 
-    def __init__(self, urls: List[TMeUrl] = None) -> None:
+    def __init__(self, *, urls: List[TMeUrl] = None) -> None:
         self.urls: List[TMeUrl] = urls or []
         r"""List of URLs"""
 
@@ -88994,7 +89557,7 @@ class SuggestedActionConvertToBroadcastGroup(TlObject, SuggestedAction):
 
     """
 
-    def __init__(self, supergroup_id: int = 0) -> None:
+    def __init__(self, *, supergroup_id: int = 0) -> None:
         self.supergroup_id: int = int(supergroup_id)
         r"""Supergroup identifier"""
 
@@ -89032,7 +89595,7 @@ class SuggestedActionSetPassword(TlObject, SuggestedAction):
 
     """
 
-    def __init__(self, authorization_delay: int = 0) -> None:
+    def __init__(self, *, authorization_delay: int = 0) -> None:
         self.authorization_delay: int = int(authorization_delay)
         r"""The number of days to pass between consecutive authorizations if the user declines to set password; if 0, then the user is advised to set the password for security reasons"""
 
@@ -89243,7 +89806,7 @@ class SuggestedActionExtendPremium(TlObject, SuggestedAction):
 
     """
 
-    def __init__(self, manage_premium_subscription_url: str = "") -> None:
+    def __init__(self, *, manage_premium_subscription_url: str = "") -> None:
         self.manage_premium_subscription_url: Union[str, None] = (
             manage_premium_subscription_url
         )
@@ -89327,6 +89890,7 @@ class SuggestedActionCustom(TlObject, SuggestedAction):
 
     def __init__(
         self,
+        *,
         name: str = "",
         title: FormattedText = None,
         description: FormattedText = None,
@@ -89382,7 +89946,7 @@ class SuggestedActionSetLoginEmailAddress(TlObject, SuggestedAction):
 
     """
 
-    def __init__(self, can_be_hidden: bool = False) -> None:
+    def __init__(self, *, can_be_hidden: bool = False) -> None:
         self.can_be_hidden: bool = bool(can_be_hidden)
         r"""True, if the suggested action can be hidden using hideSuggestedAction\. Otherwise, the user must not be able to use the app without setting up the email address"""
 
@@ -89448,7 +90012,7 @@ class Count(TlObject):
 
     """
 
-    def __init__(self, count: int = 0) -> None:
+    def __init__(self, *, count: int = 0) -> None:
         self.count: int = int(count)
         r"""Count"""
 
@@ -89484,7 +90048,7 @@ class Text(TlObject):
 
     """
 
-    def __init__(self, text: str = "") -> None:
+    def __init__(self, *, text: str = "") -> None:
         self.text: Union[str, None] = text
         r"""Text"""
 
@@ -89520,7 +90084,7 @@ class Data(TlObject):
 
     """
 
-    def __init__(self, data: bytes = b"") -> None:
+    def __init__(self, *, data: bytes = b"") -> None:
         self.data: Union[bytes, None] = data
         r"""Data"""
 
@@ -89556,7 +90120,7 @@ class Seconds(TlObject):
 
     """
 
-    def __init__(self, seconds: float = 0.0) -> None:
+    def __init__(self, *, seconds: float = 0.0) -> None:
         self.seconds: float = float(seconds)
         r"""Number of seconds"""
 
@@ -89592,7 +90156,7 @@ class FileDownloadedPrefixSize(TlObject):
 
     """
 
-    def __init__(self, size: int = 0) -> None:
+    def __init__(self, *, size: int = 0) -> None:
         self.size: int = int(size)
         r"""The prefix size, in bytes"""
 
@@ -89628,7 +90192,7 @@ class StarCount(TlObject):
 
     """
 
-    def __init__(self, star_count: int = 0) -> None:
+    def __init__(self, *, star_count: int = 0) -> None:
         self.star_count: int = int(star_count)
         r"""Number of Telegram Stars"""
 
@@ -89668,7 +90232,7 @@ class DeepLinkInfo(TlObject):
     """
 
     def __init__(
-        self, text: FormattedText = None, need_update_application: bool = False
+        self, *, text: FormattedText = None, need_update_application: bool = False
     ) -> None:
         self.text: Union[FormattedText, None] = text
         r"""Text to be shown to the user"""
@@ -89714,7 +90278,7 @@ class TextParseModeMarkdown(TlObject, TextParseMode):
 
     """
 
-    def __init__(self, version: int = 0) -> None:
+    def __init__(self, *, version: int = 0) -> None:
         self.version: int = int(version)
         r"""Version of the parser: 0 or 1 \- Telegram Bot API \"Markdown\" parse mode, 2 \- Telegram Bot API \"MarkdownV2\" parse mode"""
 
@@ -89781,7 +90345,7 @@ class ProxyTypeSocks5(TlObject, ProxyType):
 
     """
 
-    def __init__(self, username: str = "", password: str = "") -> None:
+    def __init__(self, *, username: str = "", password: str = "") -> None:
         self.username: Union[str, None] = username
         r"""Username for logging in; may be empty"""
         self.password: Union[str, None] = password
@@ -89831,7 +90395,7 @@ class ProxyTypeHttp(TlObject, ProxyType):
     """
 
     def __init__(
-        self, username: str = "", password: str = "", http_only: bool = False
+        self, *, username: str = "", password: str = "", http_only: bool = False
     ) -> None:
         self.username: Union[str, None] = username
         r"""Username for logging in; may be empty"""
@@ -89879,7 +90443,7 @@ class ProxyTypeMtproto(TlObject, ProxyType):
 
     """
 
-    def __init__(self, secret: str = "") -> None:
+    def __init__(self, *, secret: str = "") -> None:
         self.secret: Union[str, None] = secret
         r"""The proxy's secret in hexadecimal encoding"""
 
@@ -89926,6 +90490,7 @@ class AddedProxy(TlObject):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         last_used_date: int = 0,
         is_enabled: bool = False,
@@ -89981,7 +90546,7 @@ class AddedProxies(TlObject):
 
     """
 
-    def __init__(self, proxies: List[AddedProxy] = None) -> None:
+    def __init__(self, *, proxies: List[AddedProxy] = None) -> None:
         self.proxies: List[AddedProxy] = proxies or []
         r"""List of proxy servers"""
 
@@ -90031,6 +90596,7 @@ class InputSticker(TlObject):
 
     def __init__(
         self,
+        *,
         sticker: InputFile = None,
         format: StickerFormat = None,
         emojis: str = "",
@@ -90098,7 +90664,7 @@ class DateRange(TlObject):
 
     """
 
-    def __init__(self, start_date: int = 0, end_date: int = 0) -> None:
+    def __init__(self, *, start_date: int = 0, end_date: int = 0) -> None:
         self.start_date: int = int(start_date)
         r"""Point in time \(Unix timestamp\) at which the date range begins"""
         self.end_date: int = int(end_date)
@@ -90149,6 +90715,7 @@ class StatisticalValue(TlObject):
 
     def __init__(
         self,
+        *,
         value: float = 0.0,
         previous_value: float = 0.0,
         growth_rate_percentage: float = 0.0,
@@ -90202,7 +90769,7 @@ class StatisticalGraphData(TlObject, StatisticalGraph):
 
     """
 
-    def __init__(self, json_data: str = "", zoom_token: str = "") -> None:
+    def __init__(self, *, json_data: str = "", zoom_token: str = "") -> None:
         self.json_data: Union[str, None] = json_data
         r"""Graph data in JSON format"""
         self.zoom_token: Union[str, None] = zoom_token
@@ -90245,7 +90812,7 @@ class StatisticalGraphAsync(TlObject, StatisticalGraph):
 
     """
 
-    def __init__(self, token: str = "") -> None:
+    def __init__(self, *, token: str = "") -> None:
         self.token: Union[str, None] = token
         r"""The token to use for data loading"""
 
@@ -90281,7 +90848,7 @@ class StatisticalGraphError(TlObject, StatisticalGraph):
 
     """
 
-    def __init__(self, error_message: str = "") -> None:
+    def __init__(self, *, error_message: str = "") -> None:
         self.error_message: Union[str, None] = error_message
         r"""The error message"""
 
@@ -90317,7 +90884,7 @@ class ChatStatisticsObjectTypeMessage(TlObject, ChatStatisticsObjectType):
 
     """
 
-    def __init__(self, message_id: int = 0) -> None:
+    def __init__(self, *, message_id: int = 0) -> None:
         self.message_id: int = int(message_id)
         r"""Message identifier"""
 
@@ -90353,7 +90920,7 @@ class ChatStatisticsObjectTypeStory(TlObject, ChatStatisticsObjectType):
 
     """
 
-    def __init__(self, story_id: int = 0) -> None:
+    def __init__(self, *, story_id: int = 0) -> None:
         self.story_id: int = int(story_id)
         r"""Story identifier"""
 
@@ -90400,6 +90967,7 @@ class ChatStatisticsInteractionInfo(TlObject):
 
     def __init__(
         self,
+        *,
         object_type: ChatStatisticsObjectType = None,
         view_count: int = 0,
         forward_count: int = 0,
@@ -90465,6 +91033,7 @@ class ChatStatisticsMessageSenderInfo(TlObject):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         sent_message_count: int = 0,
         average_character_count: int = 0,
@@ -90528,6 +91097,7 @@ class ChatStatisticsAdministratorActionsInfo(TlObject):
 
     def __init__(
         self,
+        *,
         user_id: int = 0,
         deleted_message_count: int = 0,
         banned_user_count: int = 0,
@@ -90588,7 +91158,7 @@ class ChatStatisticsInviterInfo(TlObject):
 
     """
 
-    def __init__(self, user_id: int = 0, added_member_count: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0, added_member_count: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier"""
         self.added_member_count: int = int(added_member_count)
@@ -90678,6 +91248,7 @@ class ChatStatisticsSupergroup(TlObject, ChatStatistics):
 
     def __init__(
         self,
+        *,
         period: DateRange = None,
         member_count: StatisticalValue = None,
         message_count: StatisticalValue = None,
@@ -90876,6 +91447,7 @@ class ChatStatisticsChannel(TlObject, ChatStatistics):
 
     def __init__(
         self,
+        *,
         period: DateRange = None,
         member_count: StatisticalValue = None,
         mean_message_view_count: StatisticalValue = None,
@@ -91095,6 +91667,7 @@ class ChatRevenueAmount(TlObject):
 
     def __init__(
         self,
+        *,
         cryptocurrency: str = "",
         total_amount: int = 0,
         balance_amount: int = 0,
@@ -91166,6 +91739,7 @@ class ChatRevenueStatistics(TlObject):
 
     def __init__(
         self,
+        *,
         revenue_by_hour_graph: StatisticalGraph = None,
         revenue_graph: StatisticalGraph = None,
         revenue_amount: ChatRevenueAmount = None,
@@ -91230,6 +91804,7 @@ class MessageStatistics(TlObject):
 
     def __init__(
         self,
+        *,
         message_interaction_graph: StatisticalGraph = None,
         message_reaction_graph: StatisticalGraph = None,
     ) -> None:
@@ -91286,6 +91861,7 @@ class StoryStatistics(TlObject):
 
     def __init__(
         self,
+        *,
         story_interaction_graph: StatisticalGraph = None,
         story_reaction_graph: StatisticalGraph = None,
     ) -> None:
@@ -91368,7 +91944,7 @@ class RevenueWithdrawalStateSucceeded(TlObject, RevenueWithdrawalState):
 
     """
 
-    def __init__(self, date: int = 0, url: str = "") -> None:
+    def __init__(self, *, date: int = 0, url: str = "") -> None:
         self.date: int = int(date)
         r"""Point in time \(Unix timestamp\) when the withdrawal was completed"""
         self.url: Union[str, None] = url
@@ -91470,7 +92046,7 @@ class ChatRevenueTransactionTypeSponsoredMessageEarnings(
 
     """
 
-    def __init__(self, start_date: int = 0, end_date: int = 0) -> None:
+    def __init__(self, *, start_date: int = 0, end_date: int = 0) -> None:
         self.start_date: int = int(start_date)
         r"""Point in time \(Unix timestamp\) when the earnings started"""
         self.end_date: int = int(end_date)
@@ -91517,7 +92093,7 @@ class ChatRevenueTransactionTypeSuggestedPostEarnings(
 
     """
 
-    def __init__(self, user_id: int = 0) -> None:
+    def __init__(self, *, user_id: int = 0) -> None:
         self.user_id: int = int(user_id)
         r"""Identifier of the user who paid for the suggested post"""
 
@@ -91561,7 +92137,7 @@ class ChatRevenueTransactionTypeFragmentWithdrawal(
     """
 
     def __init__(
-        self, withdrawal_date: int = 0, state: RevenueWithdrawalState = None
+        self, *, withdrawal_date: int = 0, state: RevenueWithdrawalState = None
     ) -> None:
         self.withdrawal_date: int = int(withdrawal_date)
         r"""Point in time \(Unix timestamp\) when the earnings withdrawal started"""
@@ -91612,7 +92188,7 @@ class ChatRevenueTransactionTypeFragmentRefund(TlObject, ChatRevenueTransactionT
 
     """
 
-    def __init__(self, refund_date: int = 0) -> None:
+    def __init__(self, *, refund_date: int = 0) -> None:
         self.refund_date: int = int(refund_date)
         r"""Point in time \(Unix timestamp\) when the transaction was refunded"""
 
@@ -91658,6 +92234,7 @@ class ChatRevenueTransaction(TlObject):
 
     def __init__(
         self,
+        *,
         cryptocurrency: str = "",
         cryptocurrency_amount: int = 0,
         type: ChatRevenueTransactionType = None,
@@ -91723,6 +92300,7 @@ class ChatRevenueTransactions(TlObject):
 
     def __init__(
         self,
+        *,
         ton_amount: int = 0,
         transactions: List[ChatRevenueTransaction] = None,
         next_offset: str = "",
@@ -91787,6 +92365,7 @@ class StarRevenueStatus(TlObject):
 
     def __init__(
         self,
+        *,
         total_amount: StarAmount = None,
         current_amount: StarAmount = None,
         available_amount: StarAmount = None,
@@ -91855,6 +92434,7 @@ class StarRevenueStatistics(TlObject):
 
     def __init__(
         self,
+        *,
         revenue_by_day_graph: StatisticalGraph = None,
         status: StarRevenueStatus = None,
         usd_rate: float = 0.0,
@@ -91918,6 +92498,7 @@ class TonRevenueStatus(TlObject):
 
     def __init__(
         self,
+        *,
         total_amount: int = 0,
         balance_amount: int = 0,
         available_amount: int = 0,
@@ -91981,6 +92562,7 @@ class TonRevenueStatistics(TlObject):
 
     def __init__(
         self,
+        *,
         revenue_by_day_graph: StatisticalGraph = None,
         status: TonRevenueStatus = None,
         usd_rate: float = 0.0,
@@ -92036,7 +92618,7 @@ class Point(TlObject):
 
     """
 
-    def __init__(self, x: float = 0.0, y: float = 0.0) -> None:
+    def __init__(self, *, x: float = 0.0, y: float = 0.0) -> None:
         self.x: float = float(x)
         r"""The point's first coordinate"""
         self.y: float = float(y)
@@ -92075,7 +92657,7 @@ class VectorPathCommandLine(TlObject, VectorPathCommand):
 
     """
 
-    def __init__(self, end_point: Point = None) -> None:
+    def __init__(self, *, end_point: Point = None) -> None:
         self.end_point: Union[Point, None] = end_point
         r"""The end point of the straight line"""
 
@@ -92119,6 +92701,7 @@ class VectorPathCommandCubicBezierCurve(TlObject, VectorPathCommand):
 
     def __init__(
         self,
+        *,
         start_control_point: Point = None,
         end_control_point: Point = None,
         end_point: Point = None,
@@ -92283,7 +92866,7 @@ class BotCommandScopeChat(TlObject, BotCommandScope):
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
 
@@ -92319,7 +92902,7 @@ class BotCommandScopeChatAdministrators(TlObject, BotCommandScope):
 
     """
 
-    def __init__(self, chat_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
 
@@ -92358,7 +92941,7 @@ class BotCommandScopeChatMember(TlObject, BotCommandScope):
 
     """
 
-    def __init__(self, chat_id: int = 0, user_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, user_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.user_id: int = int(user_id)
@@ -92457,7 +93040,7 @@ class PhoneNumberCodeTypeConfirmOwnership(TlObject, PhoneNumberCodeType):
 
     """
 
-    def __init__(self, hash: str = "") -> None:
+    def __init__(self, *, hash: str = "") -> None:
         self.hash: Union[str, None] = hash
         r"""Hash value from the link"""
 
@@ -92530,7 +93113,7 @@ class LogStreamFile(TlObject, LogStream):
     """
 
     def __init__(
-        self, path: str = "", max_file_size: int = 0, redirect_stderr: bool = False
+        self, *, path: str = "", max_file_size: int = 0, redirect_stderr: bool = False
     ) -> None:
         self.path: Union[str, None] = path
         r"""Path to the file to where the internal TDLib log will be written"""
@@ -92606,7 +93189,7 @@ class LogVerbosityLevel(TlObject):
 
     """
 
-    def __init__(self, verbosity_level: int = 0) -> None:
+    def __init__(self, *, verbosity_level: int = 0) -> None:
         self.verbosity_level: int = int(verbosity_level)
         r"""Log verbosity level"""
 
@@ -92642,7 +93225,7 @@ class LogTags(TlObject):
 
     """
 
-    def __init__(self, tags: List[str] = None) -> None:
+    def __init__(self, *, tags: List[str] = None) -> None:
         self.tags: List[str] = tags or []
         r"""List of log tags"""
 
@@ -92685,7 +93268,7 @@ class UserSupportInfo(TlObject):
     """
 
     def __init__(
-        self, message: FormattedText = None, author: str = "", date: int = 0
+        self, *, message: FormattedText = None, author: str = "", date: int = 0
     ) -> None:
         self.message: Union[FormattedText, None] = message
         r"""Information message"""
@@ -92733,7 +93316,7 @@ class TestInt(TlObject):
 
     """
 
-    def __init__(self, value: int = 0) -> None:
+    def __init__(self, *, value: int = 0) -> None:
         self.value: int = int(value)
         r"""Number"""
 
@@ -92769,7 +93352,7 @@ class TestString(TlObject):
 
     """
 
-    def __init__(self, value: str = "") -> None:
+    def __init__(self, *, value: str = "") -> None:
         self.value: Union[str, None] = value
         r"""String"""
 
@@ -92805,7 +93388,7 @@ class TestBytes(TlObject):
 
     """
 
-    def __init__(self, value: bytes = b"") -> None:
+    def __init__(self, *, value: bytes = b"") -> None:
         self.value: Union[bytes, None] = value
         r"""Bytes"""
 
@@ -92841,7 +93424,7 @@ class TestVectorInt(TlObject):
 
     """
 
-    def __init__(self, value: List[int] = None) -> None:
+    def __init__(self, *, value: List[int] = None) -> None:
         self.value: List[int] = value or []
         r"""Vector of numbers"""
 
@@ -92877,7 +93460,7 @@ class TestVectorIntObject(TlObject):
 
     """
 
-    def __init__(self, value: List[TestInt] = None) -> None:
+    def __init__(self, *, value: List[TestInt] = None) -> None:
         self.value: List[TestInt] = value or []
         r"""Vector of objects"""
 
@@ -92913,7 +93496,7 @@ class TestVectorString(TlObject):
 
     """
 
-    def __init__(self, value: List[str] = None) -> None:
+    def __init__(self, *, value: List[str] = None) -> None:
         self.value: List[str] = value or []
         r"""Vector of strings"""
 
@@ -92949,7 +93532,7 @@ class TestVectorStringObject(TlObject):
 
     """
 
-    def __init__(self, value: List[TestString] = None) -> None:
+    def __init__(self, *, value: List[TestString] = None) -> None:
         self.value: List[TestString] = value or []
         r"""Vector of objects"""
 
@@ -92985,7 +93568,7 @@ class UpdateAuthorizationState(TlObject, Update):
 
     """
 
-    def __init__(self, authorization_state: AuthorizationState = None) -> None:
+    def __init__(self, *, authorization_state: AuthorizationState = None) -> None:
         self.authorization_state: Union[
             AuthorizationStateWaitTdlibParameters,
             AuthorizationStateWaitPhoneNumber,
@@ -93039,7 +93622,7 @@ class UpdateNewMessage(TlObject, Update):
 
     """
 
-    def __init__(self, message: Message = None) -> None:
+    def __init__(self, *, message: Message = None) -> None:
         self.message: Union[Message, None] = message
         r"""The new message"""
 
@@ -93078,7 +93661,7 @@ class UpdateMessageSendAcknowledged(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""The chat identifier of the sent message"""
         self.message_id: int = int(message_id)
@@ -93124,7 +93707,7 @@ class UpdateMessageSendSucceeded(TlObject, Update):
 
     """
 
-    def __init__(self, message: Message = None, old_message_id: int = 0) -> None:
+    def __init__(self, *, message: Message = None, old_message_id: int = 0) -> None:
         self.message: Union[Message, None] = message
         r"""The sent message\. Almost any field of the new message can be different from the corresponding field of the original message\. For example, the field scheduling\_state may change, making the message scheduled, or non\-scheduled"""
         self.old_message_id: int = int(old_message_id)
@@ -93174,7 +93757,7 @@ class UpdateMessageSendFailed(TlObject, Update):
     """
 
     def __init__(
-        self, message: Message = None, old_message_id: int = 0, error: Error = None
+        self, *, message: Message = None, old_message_id: int = 0, error: Error = None
     ) -> None:
         self.message: Union[Message, None] = message
         r"""The failed to send message"""
@@ -93229,7 +93812,11 @@ class UpdateMessageContent(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, message_id: int = 0, new_content: MessageContent = None
+        self,
+        *,
+        chat_id: int = 0,
+        message_id: int = 0,
+        new_content: MessageContent = None,
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -93387,6 +93974,7 @@ class UpdateMessageEdited(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_id: int = 0,
         edit_date: int = 0,
@@ -93455,7 +94043,7 @@ class UpdateMessageIsPinned(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, message_id: int = 0, is_pinned: bool = False
+        self, *, chat_id: int = 0, message_id: int = 0, is_pinned: bool = False
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -93511,6 +94099,7 @@ class UpdateMessageInteractionInfo(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_id: int = 0,
         interaction_info: MessageInteractionInfo = None,
@@ -93564,7 +94153,7 @@ class UpdateMessageContentOpened(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.message_id: int = int(message_id)
@@ -93614,7 +94203,7 @@ class UpdateMessageMentionRead(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, message_id: int = 0, unread_mention_count: int = 0
+        self, *, chat_id: int = 0, message_id: int = 0, unread_mention_count: int = 0
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -93673,6 +94262,7 @@ class UpdateMessageUnreadReactions(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_id: int = 0,
         unread_reactions: List[UnreadReaction] = None,
@@ -93735,7 +94325,7 @@ class UpdateMessageFactCheck(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, message_id: int = 0, fact_check: FactCheck = None
+        self, *, chat_id: int = 0, message_id: int = 0, fact_check: FactCheck = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -93791,6 +94381,7 @@ class UpdateMessageSuggestedPostInfo(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_id: int = 0,
         suggested_post_info: SuggestedPostInfo = None,
@@ -93844,7 +94435,7 @@ class UpdateMessageLiveLocationViewed(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat with the live location message"""
         self.message_id: int = int(message_id)
@@ -93890,7 +94481,7 @@ class UpdateVideoPublished(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_id: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_id: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat with the message"""
         self.message_id: int = int(message_id)
@@ -93933,7 +94524,7 @@ class UpdateNewChat(TlObject, Update):
 
     """
 
-    def __init__(self, chat: Chat = None) -> None:
+    def __init__(self, *, chat: Chat = None) -> None:
         self.chat: Union[Chat, None] = chat
         r"""The chat"""
 
@@ -93972,7 +94563,7 @@ class UpdateChatTitle(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, title: str = "") -> None:
+    def __init__(self, *, chat_id: int = 0, title: str = "") -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.title: Union[str, None] = title
@@ -94014,7 +94605,7 @@ class UpdateChatPhoto(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, photo: ChatPhotoInfo = None) -> None:
+    def __init__(self, *, chat_id: int = 0, photo: ChatPhotoInfo = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.photo: Union[ChatPhotoInfo, None] = photo
@@ -94070,6 +94661,7 @@ class UpdateChatAccentColors(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         accent_color_id: int = 0,
         background_custom_emoji_id: int = 0,
@@ -94148,7 +94740,9 @@ class UpdateChatPermissions(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, permissions: ChatPermissions = None) -> None:
+    def __init__(
+        self, *, chat_id: int = 0, permissions: ChatPermissions = None
+    ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.permissions: Union[ChatPermissions, None] = permissions
@@ -94199,6 +94793,7 @@ class UpdateChatLastMessage(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         last_message: Message = None,
         positions: List[ChatPosition] = None,
@@ -94252,7 +94847,7 @@ class UpdateChatPosition(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, position: ChatPosition = None) -> None:
+    def __init__(self, *, chat_id: int = 0, position: ChatPosition = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.position: Union[ChatPosition, None] = position
@@ -94298,7 +94893,7 @@ class UpdateChatAddedToList(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, chat_list: ChatList = None) -> None:
+    def __init__(self, *, chat_id: int = 0, chat_list: ChatList = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.chat_list: Union[ChatListMain, ChatListArchive, ChatListFolder, None] = (
@@ -94346,7 +94941,7 @@ class UpdateChatRemovedFromList(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, chat_list: ChatList = None) -> None:
+    def __init__(self, *, chat_id: int = 0, chat_list: ChatList = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.chat_list: Union[ChatListMain, ChatListArchive, ChatListFolder, None] = (
@@ -94399,6 +94994,7 @@ class UpdateChatReadInbox(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         last_read_inbox_message_id: int = 0,
         unread_count: int = 0,
@@ -94454,7 +95050,9 @@ class UpdateChatReadOutbox(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, last_read_outbox_message_id: int = 0) -> None:
+    def __init__(
+        self, *, chat_id: int = 0, last_read_outbox_message_id: int = 0
+    ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.last_read_outbox_message_id: int = int(last_read_outbox_message_id)
@@ -94502,7 +95100,7 @@ class UpdateChatActionBar(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, action_bar: ChatActionBar = None) -> None:
+    def __init__(self, *, chat_id: int = 0, action_bar: ChatActionBar = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.action_bar: Union[
@@ -94557,7 +95155,7 @@ class UpdateChatBusinessBotManageBar(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, business_bot_manage_bar: BusinessBotManageBar = None
+        self, *, chat_id: int = 0, business_bot_manage_bar: BusinessBotManageBar = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -94609,7 +95207,7 @@ class UpdateChatAvailableReactions(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, available_reactions: ChatAvailableReactions = None
+        self, *, chat_id: int = 0, available_reactions: ChatAvailableReactions = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -94663,6 +95261,7 @@ class UpdateChatDraftMessage(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         draft_message: DraftMessage = None,
         positions: List[ChatPosition] = None,
@@ -94716,7 +95315,7 @@ class UpdateChatEmojiStatus(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, emoji_status: EmojiStatus = None) -> None:
+    def __init__(self, *, chat_id: int = 0, emoji_status: EmojiStatus = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.emoji_status: Union[EmojiStatus, None] = emoji_status
@@ -94763,7 +95362,7 @@ class UpdateChatMessageSender(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, message_sender_id: MessageSender = None
+        self, *, chat_id: int = 0, message_sender_id: MessageSender = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -94812,7 +95411,7 @@ class UpdateChatMessageAutoDeleteTime(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, message_auto_delete_time: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, message_auto_delete_time: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.message_auto_delete_time: int = int(message_auto_delete_time)
@@ -94861,7 +95460,10 @@ class UpdateChatNotificationSettings(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, notification_settings: ChatNotificationSettings = None
+        self,
+        *,
+        chat_id: int = 0,
+        notification_settings: ChatNotificationSettings = None,
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -94911,7 +95513,7 @@ class UpdateChatPendingJoinRequests(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, pending_join_requests: ChatJoinRequestsInfo = None
+        self, *, chat_id: int = 0, pending_join_requests: ChatJoinRequestsInfo = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -94960,7 +95562,9 @@ class UpdateChatReplyMarkup(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, reply_markup_message: Message = None) -> None:
+    def __init__(
+        self, *, chat_id: int = 0, reply_markup_message: Message = None
+    ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.reply_markup_message: Union[Message, None] = reply_markup_message
@@ -95006,7 +95610,7 @@ class UpdateChatBackground(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, background: ChatBackground = None) -> None:
+    def __init__(self, *, chat_id: int = 0, background: ChatBackground = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.background: Union[ChatBackground, None] = background
@@ -95052,7 +95656,7 @@ class UpdateChatTheme(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, theme: ChatTheme = None) -> None:
+    def __init__(self, *, chat_id: int = 0, theme: ChatTheme = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.theme: Union[ChatThemeEmoji, ChatThemeGift, None] = theme
@@ -95094,7 +95698,7 @@ class UpdateChatUnreadMentionCount(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, unread_mention_count: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, unread_mention_count: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.unread_mention_count: int = int(unread_mention_count)
@@ -95140,7 +95744,7 @@ class UpdateChatUnreadReactionCount(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, unread_reaction_count: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, unread_reaction_count: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.unread_reaction_count: int = int(unread_reaction_count)
@@ -95186,7 +95790,7 @@ class UpdateChatVideoChat(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, video_chat: VideoChat = None) -> None:
+    def __init__(self, *, chat_id: int = 0, video_chat: VideoChat = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.video_chat: Union[VideoChat, None] = video_chat
@@ -95233,7 +95837,7 @@ class UpdateChatDefaultDisableNotification(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, default_disable_notification: bool = False
+        self, *, chat_id: int = 0, default_disable_notification: bool = False
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -95284,7 +95888,9 @@ class UpdateChatHasProtectedContent(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, has_protected_content: bool = False) -> None:
+    def __init__(
+        self, *, chat_id: int = 0, has_protected_content: bool = False
+    ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.has_protected_content: bool = bool(has_protected_content)
@@ -95330,7 +95936,7 @@ class UpdateChatIsTranslatable(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, is_translatable: bool = False) -> None:
+    def __init__(self, *, chat_id: int = 0, is_translatable: bool = False) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.is_translatable: bool = bool(is_translatable)
@@ -95376,7 +95982,7 @@ class UpdateChatIsMarkedAsUnread(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, is_marked_as_unread: bool = False) -> None:
+    def __init__(self, *, chat_id: int = 0, is_marked_as_unread: bool = False) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.is_marked_as_unread: bool = bool(is_marked_as_unread)
@@ -95422,7 +96028,7 @@ class UpdateChatViewAsTopics(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, view_as_topics: bool = False) -> None:
+    def __init__(self, *, chat_id: int = 0, view_as_topics: bool = False) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.view_as_topics: bool = bool(view_as_topics)
@@ -95468,7 +96074,7 @@ class UpdateChatBlockList(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, block_list: BlockList = None) -> None:
+    def __init__(self, *, chat_id: int = 0, block_list: BlockList = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.block_list: Union[BlockListMain, BlockListStories, None] = block_list
@@ -95514,7 +96120,9 @@ class UpdateChatHasScheduledMessages(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, has_scheduled_messages: bool = False) -> None:
+    def __init__(
+        self, *, chat_id: int = 0, has_scheduled_messages: bool = False
+    ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.has_scheduled_messages: bool = bool(has_scheduled_messages)
@@ -95567,6 +96175,7 @@ class UpdateChatFolders(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_folders: List[ChatFolderInfo] = None,
         main_chat_list_position: int = 0,
         are_tags_enabled: bool = False,
@@ -95622,7 +96231,7 @@ class UpdateChatOnlineMemberCount(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, online_member_count: int = 0) -> None:
+    def __init__(self, *, chat_id: int = 0, online_member_count: int = 0) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat"""
         self.online_member_count: int = int(online_member_count)
@@ -95665,7 +96274,7 @@ class UpdateSavedMessagesTopic(TlObject, Update):
 
     """
 
-    def __init__(self, topic: SavedMessagesTopic = None) -> None:
+    def __init__(self, *, topic: SavedMessagesTopic = None) -> None:
         self.topic: Union[SavedMessagesTopic, None] = topic
         r"""New data about the topic"""
 
@@ -95701,7 +96310,7 @@ class UpdateSavedMessagesTopicCount(TlObject, Update):
 
     """
 
-    def __init__(self, topic_count: int = 0) -> None:
+    def __init__(self, *, topic_count: int = 0) -> None:
         self.topic_count: int = int(topic_count)
         r"""Approximate total number of Saved Messages topics"""
 
@@ -95737,7 +96346,7 @@ class UpdateDirectMessagesChatTopic(TlObject, Update):
 
     """
 
-    def __init__(self, topic: DirectMessagesChatTopic = None) -> None:
+    def __init__(self, *, topic: DirectMessagesChatTopic = None) -> None:
         self.topic: Union[DirectMessagesChatTopic, None] = topic
         r"""New data about the topic"""
 
@@ -95780,7 +96389,7 @@ class UpdateTopicMessageCount(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, topic_id: MessageTopic = None, message_count: int = 0
+        self, *, chat_id: int = 0, topic_id: MessageTopic = None, message_count: int = 0
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat in topic of which the number of messages has changed"""
@@ -95834,7 +96443,7 @@ class UpdateQuickReplyShortcut(TlObject, Update):
 
     """
 
-    def __init__(self, shortcut: QuickReplyShortcut = None) -> None:
+    def __init__(self, *, shortcut: QuickReplyShortcut = None) -> None:
         self.shortcut: Union[QuickReplyShortcut, None] = shortcut
         r"""New data about the shortcut"""
 
@@ -95870,7 +96479,7 @@ class UpdateQuickReplyShortcutDeleted(TlObject, Update):
 
     """
 
-    def __init__(self, shortcut_id: int = 0) -> None:
+    def __init__(self, *, shortcut_id: int = 0) -> None:
         self.shortcut_id: int = int(shortcut_id)
         r"""The identifier of the deleted shortcut"""
 
@@ -95906,7 +96515,7 @@ class UpdateQuickReplyShortcuts(TlObject, Update):
 
     """
 
-    def __init__(self, shortcut_ids: List[int] = None) -> None:
+    def __init__(self, *, shortcut_ids: List[int] = None) -> None:
         self.shortcut_ids: List[int] = shortcut_ids or []
         r"""The new list of identifiers of quick reply shortcuts"""
 
@@ -95946,7 +96555,7 @@ class UpdateQuickReplyShortcutMessages(TlObject, Update):
     """
 
     def __init__(
-        self, shortcut_id: int = 0, messages: List[QuickReplyMessage] = None
+        self, *, shortcut_id: int = 0, messages: List[QuickReplyMessage] = None
     ) -> None:
         self.shortcut_id: int = int(shortcut_id)
         r"""The identifier of the shortcut"""
@@ -95990,7 +96599,7 @@ class UpdateForumTopicInfo(TlObject, Update):
 
     """
 
-    def __init__(self, info: ForumTopicInfo = None) -> None:
+    def __init__(self, *, info: ForumTopicInfo = None) -> None:
         self.info: Union[ForumTopicInfo, None] = info
         r"""New information about the topic"""
 
@@ -96052,6 +96661,7 @@ class UpdateForumTopic(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         forum_topic_id: int = 0,
         is_pinned: bool = False,
@@ -96143,6 +96753,7 @@ class UpdateScopeNotificationSettings(TlObject, Update):
 
     def __init__(
         self,
+        *,
         scope: NotificationSettingsScope = None,
         notification_settings: ScopeNotificationSettings = None,
     ) -> None:
@@ -96196,7 +96807,7 @@ class UpdateReactionNotificationSettings(TlObject, Update):
     """
 
     def __init__(
-        self, notification_settings: ReactionNotificationSettings = None
+        self, *, notification_settings: ReactionNotificationSettings = None
     ) -> None:
         self.notification_settings: Union[ReactionNotificationSettings, None] = (
             notification_settings
@@ -96242,7 +96853,7 @@ class UpdateNotification(TlObject, Update):
     """
 
     def __init__(
-        self, notification_group_id: int = 0, notification: Notification = None
+        self, *, notification_group_id: int = 0, notification: Notification = None
     ) -> None:
         self.notification_group_id: int = int(notification_group_id)
         r"""Unique notification group identifier"""
@@ -96309,6 +96920,7 @@ class UpdateNotificationGroup(TlObject, Update):
 
     def __init__(
         self,
+        *,
         notification_group_id: int = 0,
         type: NotificationGroupType = None,
         chat_id: int = 0,
@@ -96394,7 +97006,7 @@ class UpdateActiveNotifications(TlObject, Update):
 
     """
 
-    def __init__(self, groups: List[NotificationGroup] = None) -> None:
+    def __init__(self, *, groups: List[NotificationGroup] = None) -> None:
         self.groups: List[NotificationGroup] = groups or []
         r"""Lists of active notification groups"""
 
@@ -96435,6 +97047,7 @@ class UpdateHavePendingNotifications(TlObject, Update):
 
     def __init__(
         self,
+        *,
         have_delayed_notifications: bool = False,
         have_unreceived_notifications: bool = False,
     ) -> None:
@@ -96495,6 +97108,7 @@ class UpdateDeleteMessages(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_ids: List[int] = None,
         is_permanent: bool = False,
@@ -96561,6 +97175,7 @@ class UpdateChatAction(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         topic_id: MessageTopic = None,
         sender_id: MessageSender = None,
@@ -96650,6 +97265,7 @@ class UpdatePendingTextMessage(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         forum_topic_id: int = 0,
         draft_id: int = 0,
@@ -96708,7 +97324,7 @@ class UpdateUserStatus(TlObject, Update):
 
     """
 
-    def __init__(self, user_id: int = 0, status: UserStatus = None) -> None:
+    def __init__(self, *, user_id: int = 0, status: UserStatus = None) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier"""
         self.status: Union[
@@ -96755,7 +97371,7 @@ class UpdateUser(TlObject, Update):
 
     """
 
-    def __init__(self, user: User = None) -> None:
+    def __init__(self, *, user: User = None) -> None:
         self.user: Union[User, None] = user
         r"""New data about the user"""
 
@@ -96791,7 +97407,7 @@ class UpdateBasicGroup(TlObject, Update):
 
     """
 
-    def __init__(self, basic_group: BasicGroup = None) -> None:
+    def __init__(self, *, basic_group: BasicGroup = None) -> None:
         self.basic_group: Union[BasicGroup, None] = basic_group
         r"""New data about the group"""
 
@@ -96827,7 +97443,7 @@ class UpdateSupergroup(TlObject, Update):
 
     """
 
-    def __init__(self, supergroup: Supergroup = None) -> None:
+    def __init__(self, *, supergroup: Supergroup = None) -> None:
         self.supergroup: Union[Supergroup, None] = supergroup
         r"""New data about the supergroup"""
 
@@ -96863,7 +97479,7 @@ class UpdateSecretChat(TlObject, Update):
 
     """
 
-    def __init__(self, secret_chat: SecretChat = None) -> None:
+    def __init__(self, *, secret_chat: SecretChat = None) -> None:
         self.secret_chat: Union[SecretChat, None] = secret_chat
         r"""New data about the secret chat"""
 
@@ -96902,7 +97518,9 @@ class UpdateUserFullInfo(TlObject, Update):
 
     """
 
-    def __init__(self, user_id: int = 0, user_full_info: UserFullInfo = None) -> None:
+    def __init__(
+        self, *, user_id: int = 0, user_full_info: UserFullInfo = None
+    ) -> None:
         self.user_id: int = int(user_id)
         r"""User identifier"""
         self.user_full_info: Union[UserFullInfo, None] = user_full_info
@@ -96949,7 +97567,10 @@ class UpdateBasicGroupFullInfo(TlObject, Update):
     """
 
     def __init__(
-        self, basic_group_id: int = 0, basic_group_full_info: BasicGroupFullInfo = None
+        self,
+        *,
+        basic_group_id: int = 0,
+        basic_group_full_info: BasicGroupFullInfo = None,
     ) -> None:
         self.basic_group_id: int = int(basic_group_id)
         r"""Identifier of a basic group"""
@@ -96999,7 +97620,7 @@ class UpdateSupergroupFullInfo(TlObject, Update):
     """
 
     def __init__(
-        self, supergroup_id: int = 0, supergroup_full_info: SupergroupFullInfo = None
+        self, *, supergroup_id: int = 0, supergroup_full_info: SupergroupFullInfo = None
     ) -> None:
         self.supergroup_id: int = int(supergroup_id)
         r"""Identifier of the supergroup or channel"""
@@ -97048,7 +97669,7 @@ class UpdateServiceNotification(TlObject, Update):
 
     """
 
-    def __init__(self, type: str = "", content: MessageContent = None) -> None:
+    def __init__(self, *, type: str = "", content: MessageContent = None) -> None:
         self.type: Union[str, None] = type
         r"""Notification type\. If type begins with \"AUTH\_KEY\_DROP\_\", then two buttons \"Cancel\" and \"Log out\" must be shown under notification; if user presses the second, all local data must be destroyed using Destroy method"""
         self.content: Union[
@@ -97192,7 +97813,7 @@ class UpdateNewOauthRequest(TlObject, Update):
 
     """
 
-    def __init__(self, domain: str = "", location: str = "", url: str = "") -> None:
+    def __init__(self, *, domain: str = "", location: str = "", url: str = "") -> None:
         self.domain: Union[str, None] = domain
         r"""A domain of the URL where the user authorizes"""
         self.location: Union[str, None] = location
@@ -97239,7 +97860,7 @@ class UpdateFile(TlObject, Update):
 
     """
 
-    def __init__(self, file: File = None) -> None:
+    def __init__(self, *, file: File = None) -> None:
         self.file: Union[File, None] = file
         r"""New data about the file"""
 
@@ -97286,6 +97907,7 @@ class UpdateFileGenerationStart(TlObject, Update):
 
     def __init__(
         self,
+        *,
         generation_id: int = 0,
         original_path: str = "",
         destination_path: str = "",
@@ -97341,7 +97963,7 @@ class UpdateFileGenerationStop(TlObject, Update):
 
     """
 
-    def __init__(self, generation_id: int = 0) -> None:
+    def __init__(self, *, generation_id: int = 0) -> None:
         self.generation_id: int = int(generation_id)
         r"""Unique identifier for the generation process"""
 
@@ -97384,7 +98006,7 @@ class UpdateFileDownloads(TlObject, Update):
     """
 
     def __init__(
-        self, total_size: int = 0, total_count: int = 0, downloaded_size: int = 0
+        self, *, total_size: int = 0, total_count: int = 0, downloaded_size: int = 0
     ) -> None:
         self.total_size: int = int(total_size)
         r"""Total size of files in the file download list, in bytes"""
@@ -97436,7 +98058,7 @@ class UpdateFileAddedToDownloads(TlObject, Update):
     """
 
     def __init__(
-        self, file_download: FileDownload = None, counts: DownloadedFileCounts = None
+        self, *, file_download: FileDownload = None, counts: DownloadedFileCounts = None
     ) -> None:
         self.file_download: Union[FileDownload, None] = file_download
         r"""The added file download"""
@@ -97491,6 +98113,7 @@ class UpdateFileDownload(TlObject, Update):
 
     def __init__(
         self,
+        *,
         file_id: int = 0,
         complete_date: int = 0,
         is_paused: bool = False,
@@ -97549,7 +98172,9 @@ class UpdateFileRemovedFromDownloads(TlObject, Update):
 
     """
 
-    def __init__(self, file_id: int = 0, counts: DownloadedFileCounts = None) -> None:
+    def __init__(
+        self, *, file_id: int = 0, counts: DownloadedFileCounts = None
+    ) -> None:
         self.file_id: int = int(file_id)
         r"""File identifier"""
         self.counts: Union[DownloadedFileCounts, None] = counts
@@ -97595,7 +98220,11 @@ class UpdateApplicationVerificationRequired(TlObject, Update):
     """
 
     def __init__(
-        self, verification_id: int = 0, nonce: str = "", cloud_project_number: int = 0
+        self,
+        *,
+        verification_id: int = 0,
+        nonce: str = "",
+        cloud_project_number: int = 0,
     ) -> None:
         self.verification_id: int = int(verification_id)
         r"""Unique identifier for the verification process"""
@@ -97652,7 +98281,7 @@ class UpdateApplicationRecaptchaVerificationRequired(TlObject, Update):
     """
 
     def __init__(
-        self, verification_id: int = 0, action: str = "", recaptcha_key_id: str = ""
+        self, *, verification_id: int = 0, action: str = "", recaptcha_key_id: str = ""
     ) -> None:
         self.verification_id: int = int(verification_id)
         r"""Unique identifier for the verification process"""
@@ -97702,7 +98331,7 @@ class UpdateCall(TlObject, Update):
 
     """
 
-    def __init__(self, call: Call = None) -> None:
+    def __init__(self, *, call: Call = None) -> None:
         self.call: Union[Call, None] = call
         r"""New data about a call"""
 
@@ -97738,7 +98367,7 @@ class UpdateGroupCall(TlObject, Update):
 
     """
 
-    def __init__(self, group_call: GroupCall = None) -> None:
+    def __init__(self, *, group_call: GroupCall = None) -> None:
         self.group_call: Union[GroupCall, None] = group_call
         r"""New data about the group call"""
 
@@ -97778,7 +98407,7 @@ class UpdateGroupCallParticipant(TlObject, Update):
     """
 
     def __init__(
-        self, group_call_id: int = 0, participant: GroupCallParticipant = None
+        self, *, group_call_id: int = 0, participant: GroupCallParticipant = None
     ) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the group call"""
@@ -97826,7 +98455,7 @@ class UpdateGroupCallParticipants(TlObject, Update):
     """
 
     def __init__(
-        self, group_call_id: int = 0, participant_user_ids: List[int] = None
+        self, *, group_call_id: int = 0, participant_user_ids: List[int] = None
     ) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the group call"""
@@ -97877,7 +98506,7 @@ class UpdateGroupCallVerificationState(TlObject, Update):
     """
 
     def __init__(
-        self, group_call_id: int = 0, generation: int = 0, emojis: List[str] = None
+        self, *, group_call_id: int = 0, generation: int = 0, emojis: List[str] = None
     ) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the group call"""
@@ -97929,7 +98558,7 @@ class UpdateNewGroupCallMessage(TlObject, Update):
     """
 
     def __init__(
-        self, group_call_id: int = 0, message: GroupCallMessage = None
+        self, *, group_call_id: int = 0, message: GroupCallMessage = None
     ) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the group call"""
@@ -97981,6 +98610,7 @@ class UpdateNewGroupCallPaidReaction(TlObject, Update):
 
     def __init__(
         self,
+        *,
         group_call_id: int = 0,
         sender_id: MessageSender = None,
         star_count: int = 0,
@@ -98038,7 +98668,7 @@ class UpdateGroupCallMessageSendFailed(TlObject, Update):
     """
 
     def __init__(
-        self, group_call_id: int = 0, message_id: int = 0, error: Error = None
+        self, *, group_call_id: int = 0, message_id: int = 0, error: Error = None
     ) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the group call"""
@@ -98089,7 +98719,9 @@ class UpdateGroupCallMessagesDeleted(TlObject, Update):
 
     """
 
-    def __init__(self, group_call_id: int = 0, message_ids: List[int] = None) -> None:
+    def __init__(
+        self, *, group_call_id: int = 0, message_ids: List[int] = None
+    ) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the group call"""
         self.message_ids: List[int] = message_ids or []
@@ -98135,7 +98767,9 @@ class UpdateLiveStoryTopDonors(TlObject, Update):
 
     """
 
-    def __init__(self, group_call_id: int = 0, donors: LiveStoryDonors = None) -> None:
+    def __init__(
+        self, *, group_call_id: int = 0, donors: LiveStoryDonors = None
+    ) -> None:
         self.group_call_id: int = int(group_call_id)
         r"""Identifier of the group call"""
         self.donors: Union[LiveStoryDonors, None] = donors
@@ -98181,7 +98815,7 @@ class UpdateNewCallSignalingData(TlObject, Update):
 
     """
 
-    def __init__(self, call_id: int = 0, data: bytes = b"") -> None:
+    def __init__(self, *, call_id: int = 0, data: bytes = b"") -> None:
         self.call_id: int = int(call_id)
         r"""The call identifier"""
         self.data: Union[bytes, None] = data
@@ -98220,7 +98854,7 @@ class UpdateGiftAuctionState(TlObject, Update):
 
     """
 
-    def __init__(self, state: GiftAuctionState = None) -> None:
+    def __init__(self, *, state: GiftAuctionState = None) -> None:
         self.state: Union[GiftAuctionState, None] = state
         r"""New state of the auction"""
 
@@ -98256,7 +98890,7 @@ class UpdateActiveGiftAuctions(TlObject, Update):
 
     """
 
-    def __init__(self, states: List[GiftAuctionState] = None) -> None:
+    def __init__(self, *, states: List[GiftAuctionState] = None) -> None:
         self.states: List[GiftAuctionState] = states or []
         r"""New states of the auctions"""
 
@@ -98296,7 +98930,10 @@ class UpdateUserPrivacySettingRules(TlObject, Update):
     """
 
     def __init__(
-        self, setting: UserPrivacySetting = None, rules: UserPrivacySettingRules = None
+        self,
+        *,
+        setting: UserPrivacySetting = None,
+        rules: UserPrivacySettingRules = None,
     ) -> None:
         self.setting: Union[
             UserPrivacySettingShowStatus,
@@ -98360,6 +98997,7 @@ class UpdateUnreadMessageCount(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_list: ChatList = None,
         unread_count: int = 0,
         unread_unmuted_count: int = 0,
@@ -98429,6 +99067,7 @@ class UpdateUnreadChatCount(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_list: ChatList = None,
         total_count: int = 0,
         unread_count: int = 0,
@@ -98500,7 +99139,7 @@ class UpdateStory(TlObject, Update):
 
     """
 
-    def __init__(self, story: Story = None) -> None:
+    def __init__(self, *, story: Story = None) -> None:
         self.story: Union[Story, None] = story
         r"""The new information about the story"""
 
@@ -98539,7 +99178,7 @@ class UpdateStoryDeleted(TlObject, Update):
 
     """
 
-    def __init__(self, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
+    def __init__(self, *, story_poster_chat_id: int = 0, story_id: int = 0) -> None:
         self.story_poster_chat_id: int = int(story_poster_chat_id)
         r"""Identifier of the chat that posted the story"""
         self.story_id: int = int(story_id)
@@ -98585,7 +99224,7 @@ class UpdateStoryPostSucceeded(TlObject, Update):
 
     """
 
-    def __init__(self, story: Story = None, old_story_id: int = 0) -> None:
+    def __init__(self, *, story: Story = None, old_story_id: int = 0) -> None:
         self.story: Union[Story, None] = story
         r"""The posted story"""
         self.old_story_id: int = int(old_story_id)
@@ -98636,6 +99275,7 @@ class UpdateStoryPostFailed(TlObject, Update):
 
     def __init__(
         self,
+        *,
         story: Story = None,
         error: Error = None,
         error_type: CanPostStoryResult = None,
@@ -98695,7 +99335,7 @@ class UpdateChatActiveStories(TlObject, Update):
 
     """
 
-    def __init__(self, active_stories: ChatActiveStories = None) -> None:
+    def __init__(self, *, active_stories: ChatActiveStories = None) -> None:
         self.active_stories: Union[ChatActiveStories, None] = active_stories
         r"""The new list of active stories"""
 
@@ -98734,7 +99374,7 @@ class UpdateStoryListChatCount(TlObject, Update):
 
     """
 
-    def __init__(self, story_list: StoryList = None, chat_count: int = 0) -> None:
+    def __init__(self, *, story_list: StoryList = None, chat_count: int = 0) -> None:
         self.story_list: Union[StoryListMain, StoryListArchive, None] = story_list
         r"""The story list"""
         self.chat_count: int = int(chat_count)
@@ -98781,7 +99421,7 @@ class UpdateStoryStealthMode(TlObject, Update):
     """
 
     def __init__(
-        self, active_until_date: int = 0, cooldown_until_date: int = 0
+        self, *, active_until_date: int = 0, cooldown_until_date: int = 0
     ) -> None:
         self.active_until_date: int = int(active_until_date)
         r"""Point in time \(Unix timestamp\) until stealth mode is active; 0 if it is disabled"""
@@ -98825,7 +99465,7 @@ class UpdateTrustedMiniAppBots(TlObject, Update):
 
     """
 
-    def __init__(self, bot_user_ids: List[int] = None) -> None:
+    def __init__(self, *, bot_user_ids: List[int] = None) -> None:
         self.bot_user_ids: List[int] = bot_user_ids or []
         r"""List of user identifiers of the bots; the corresponding users may not be sent using updateUser updates and may not be accessible"""
 
@@ -98864,7 +99504,7 @@ class UpdateOption(TlObject, Update):
 
     """
 
-    def __init__(self, name: str = "", value: OptionValue = None) -> None:
+    def __init__(self, *, name: str = "", value: OptionValue = None) -> None:
         self.name: Union[str, None] = name
         r"""The option name"""
         self.value: Union[
@@ -98909,7 +99549,7 @@ class UpdateStickerSet(TlObject, Update):
 
     """
 
-    def __init__(self, sticker_set: StickerSet = None) -> None:
+    def __init__(self, *, sticker_set: StickerSet = None) -> None:
         self.sticker_set: Union[StickerSet, None] = sticker_set
         r"""The sticker set"""
 
@@ -98949,7 +99589,7 @@ class UpdateInstalledStickerSets(TlObject, Update):
     """
 
     def __init__(
-        self, sticker_type: StickerType = None, sticker_set_ids: List[int] = None
+        self, *, sticker_type: StickerType = None, sticker_set_ids: List[int] = None
     ) -> None:
         self.sticker_type: Union[
             StickerTypeRegular, StickerTypeMask, StickerTypeCustomEmoji, None
@@ -98999,7 +99639,10 @@ class UpdateTrendingStickerSets(TlObject, Update):
     """
 
     def __init__(
-        self, sticker_type: StickerType = None, sticker_sets: TrendingStickerSets = None
+        self,
+        *,
+        sticker_type: StickerType = None,
+        sticker_sets: TrendingStickerSets = None,
     ) -> None:
         self.sticker_type: Union[
             StickerTypeRegular, StickerTypeMask, StickerTypeCustomEmoji, None
@@ -99049,7 +99692,7 @@ class UpdateRecentStickers(TlObject, Update):
     """
 
     def __init__(
-        self, is_attached: bool = False, sticker_ids: List[int] = None
+        self, *, is_attached: bool = False, sticker_ids: List[int] = None
     ) -> None:
         self.is_attached: bool = bool(is_attached)
         r"""True, if the list of stickers attached to photo or video files was updated; otherwise, the list of sent stickers is updated"""
@@ -99093,7 +99736,7 @@ class UpdateFavoriteStickers(TlObject, Update):
 
     """
 
-    def __init__(self, sticker_ids: List[int] = None) -> None:
+    def __init__(self, *, sticker_ids: List[int] = None) -> None:
         self.sticker_ids: List[int] = sticker_ids or []
         r"""The new list of file identifiers of favorite stickers"""
 
@@ -99129,7 +99772,7 @@ class UpdateSavedAnimations(TlObject, Update):
 
     """
 
-    def __init__(self, animation_ids: List[int] = None) -> None:
+    def __init__(self, *, animation_ids: List[int] = None) -> None:
         self.animation_ids: List[int] = animation_ids or []
         r"""The new list of file identifiers of saved animations"""
 
@@ -99165,7 +99808,7 @@ class UpdateSavedNotificationSounds(TlObject, Update):
 
     """
 
-    def __init__(self, notification_sound_ids: List[int] = None) -> None:
+    def __init__(self, *, notification_sound_ids: List[int] = None) -> None:
         self.notification_sound_ids: List[int] = notification_sound_ids or []
         r"""The new list of identifiers of saved notification sounds"""
 
@@ -99208,7 +99851,7 @@ class UpdateDefaultBackground(TlObject, Update):
     """
 
     def __init__(
-        self, for_dark_theme: bool = False, background: Background = None
+        self, *, for_dark_theme: bool = False, background: Background = None
     ) -> None:
         self.for_dark_theme: bool = bool(for_dark_theme)
         r"""True, if default background for dark theme has changed"""
@@ -99252,7 +99895,7 @@ class UpdateEmojiChatThemes(TlObject, Update):
 
     """
 
-    def __init__(self, chat_themes: List[EmojiChatTheme] = None) -> None:
+    def __init__(self, *, chat_themes: List[EmojiChatTheme] = None) -> None:
         self.chat_themes: List[EmojiChatTheme] = chat_themes or []
         r"""The new list of emoji chat themes"""
 
@@ -99293,6 +99936,7 @@ class UpdateAccentColors(TlObject, Update):
 
     def __init__(
         self,
+        *,
         colors: List[AccentColor] = None,
         available_accent_color_ids: List[int] = None,
     ) -> None:
@@ -99345,6 +99989,7 @@ class UpdateProfileAccentColors(TlObject, Update):
 
     def __init__(
         self,
+        *,
         colors: List[ProfileAccentColor] = None,
         available_accent_color_ids: List[int] = None,
     ) -> None:
@@ -99400,6 +100045,7 @@ class UpdateLanguagePackStrings(TlObject, Update):
 
     def __init__(
         self,
+        *,
         localization_target: str = "",
         language_pack_id: str = "",
         strings: List[LanguagePackString] = None,
@@ -99450,7 +100096,7 @@ class UpdateConnectionState(TlObject, Update):
 
     """
 
-    def __init__(self, state: ConnectionState = None) -> None:
+    def __init__(self, *, state: ConnectionState = None) -> None:
         self.state: Union[
             ConnectionStateWaitingForNetwork,
             ConnectionStateConnectingToProxy,
@@ -99504,6 +100150,7 @@ class UpdateFreezeState(TlObject, Update):
 
     def __init__(
         self,
+        *,
         is_frozen: bool = False,
         freezing_date: int = 0,
         deletion_date: int = 0,
@@ -99559,7 +100206,7 @@ class UpdateAgeVerificationParameters(TlObject, Update):
 
     """
 
-    def __init__(self, parameters: AgeVerificationParameters = None) -> None:
+    def __init__(self, *, parameters: AgeVerificationParameters = None) -> None:
         self.parameters: Union[AgeVerificationParameters, None] = parameters
         r"""Parameters for the age verification; may be null if age verification isn't needed"""
 
@@ -99599,7 +100246,7 @@ class UpdateTermsOfService(TlObject, Update):
     """
 
     def __init__(
-        self, terms_of_service_id: str = "", terms_of_service: TermsOfService = None
+        self, *, terms_of_service_id: str = "", terms_of_service: TermsOfService = None
     ) -> None:
         self.terms_of_service_id: Union[str, None] = terms_of_service_id
         r"""Identifier of the terms of service"""
@@ -99643,7 +100290,7 @@ class UpdateUnconfirmedSession(TlObject, Update):
 
     """
 
-    def __init__(self, session: UnconfirmedSession = None) -> None:
+    def __init__(self, *, session: UnconfirmedSession = None) -> None:
         self.session: Union[UnconfirmedSession, None] = session
         r"""The unconfirmed session; may be null if none"""
 
@@ -99679,7 +100326,7 @@ class UpdateAttachmentMenuBots(TlObject, Update):
 
     """
 
-    def __init__(self, bots: List[AttachmentMenuBot] = None) -> None:
+    def __init__(self, *, bots: List[AttachmentMenuBot] = None) -> None:
         self.bots: List[AttachmentMenuBot] = bots or []
         r"""The new list of bots\. The bots must not be shown on scheduled messages screen"""
 
@@ -99715,7 +100362,7 @@ class UpdateWebAppMessageSent(TlObject, Update):
 
     """
 
-    def __init__(self, web_app_launch_id: int = 0) -> None:
+    def __init__(self, *, web_app_launch_id: int = 0) -> None:
         self.web_app_launch_id: int = int(web_app_launch_id)
         r"""Identifier of Web App launch"""
 
@@ -99751,7 +100398,7 @@ class UpdateActiveEmojiReactions(TlObject, Update):
 
     """
 
-    def __init__(self, emojis: List[str] = None) -> None:
+    def __init__(self, *, emojis: List[str] = None) -> None:
         self.emojis: List[str] = emojis or []
         r"""The new list of active emoji reactions"""
 
@@ -99792,6 +100439,7 @@ class UpdateAvailableMessageEffects(TlObject, Update):
 
     def __init__(
         self,
+        *,
         reaction_effect_ids: List[int] = None,
         sticker_effect_ids: List[int] = None,
     ) -> None:
@@ -99837,7 +100485,7 @@ class UpdateDefaultReactionType(TlObject, Update):
 
     """
 
-    def __init__(self, reaction_type: ReactionType = None) -> None:
+    def __init__(self, *, reaction_type: ReactionType = None) -> None:
         self.reaction_type: Union[
             ReactionTypeEmoji, ReactionTypeCustomEmoji, ReactionTypePaid, None
         ] = reaction_type
@@ -99875,7 +100523,7 @@ class UpdateDefaultPaidReactionType(TlObject, Update):
 
     """
 
-    def __init__(self, type: PaidReactionType = None) -> None:
+    def __init__(self, *, type: PaidReactionType = None) -> None:
         self.type: Union[
             PaidReactionTypeRegular,
             PaidReactionTypeAnonymous,
@@ -99920,7 +100568,7 @@ class UpdateSavedMessagesTags(TlObject, Update):
     """
 
     def __init__(
-        self, saved_messages_topic_id: int = 0, tags: SavedMessagesTags = None
+        self, *, saved_messages_topic_id: int = 0, tags: SavedMessagesTags = None
     ) -> None:
         self.saved_messages_topic_id: int = int(saved_messages_topic_id)
         r"""Identifier of Saved Messages topic which tags were changed; 0 if tags for the whole chat has changed"""
@@ -99966,7 +100614,7 @@ class UpdateActiveLiveLocationMessages(TlObject, Update):
 
     """
 
-    def __init__(self, messages: List[Message] = None) -> None:
+    def __init__(self, *, messages: List[Message] = None) -> None:
         self.messages: List[Message] = messages or []
         r"""The list of messages with active live locations"""
 
@@ -100002,7 +100650,7 @@ class UpdateOwnedStarCount(TlObject, Update):
 
     """
 
-    def __init__(self, star_amount: StarAmount = None) -> None:
+    def __init__(self, *, star_amount: StarAmount = None) -> None:
         self.star_amount: Union[StarAmount, None] = star_amount
         r"""The new amount of owned Telegram Stars"""
 
@@ -100038,7 +100686,7 @@ class UpdateOwnedTonCount(TlObject, Update):
 
     """
 
-    def __init__(self, ton_amount: int = 0) -> None:
+    def __init__(self, *, ton_amount: int = 0) -> None:
         self.ton_amount: int = int(ton_amount)
         r"""The new amount of owned Toncoins; in the smallest units of the cryptocurrency"""
 
@@ -100078,7 +100726,7 @@ class UpdateChatRevenueAmount(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, revenue_amount: ChatRevenueAmount = None
+        self, *, chat_id: int = 0, revenue_amount: ChatRevenueAmount = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Identifier of the chat"""
@@ -100126,7 +100774,7 @@ class UpdateStarRevenueStatus(TlObject, Update):
     """
 
     def __init__(
-        self, owner_id: MessageSender = None, status: StarRevenueStatus = None
+        self, *, owner_id: MessageSender = None, status: StarRevenueStatus = None
     ) -> None:
         self.owner_id: Union[MessageSenderUser, MessageSenderChat, None] = owner_id
         r"""Identifier of the owner of the Telegram Stars"""
@@ -100170,7 +100818,7 @@ class UpdateTonRevenueStatus(TlObject, Update):
 
     """
 
-    def __init__(self, status: TonRevenueStatus = None) -> None:
+    def __init__(self, *, status: TonRevenueStatus = None) -> None:
         self.status: Union[TonRevenueStatus, None] = status
         r"""New Toncoin revenue status"""
 
@@ -100217,6 +100865,7 @@ class UpdateSpeechRecognitionTrial(TlObject, Update):
 
     def __init__(
         self,
+        *,
         max_media_duration: int = 0,
         weekly_count: int = 0,
         left_count: int = 0,
@@ -100272,7 +100921,7 @@ class UpdateGroupCallMessageLevels(TlObject, Update):
 
     """
 
-    def __init__(self, levels: List[GroupCallMessageLevel] = None) -> None:
+    def __init__(self, *, levels: List[GroupCallMessageLevel] = None) -> None:
         self.levels: List[GroupCallMessageLevel] = levels or []
         r"""New description of the levels in decreasing order of groupCallMessageLevel\.min\_star\_count"""
 
@@ -100308,7 +100957,7 @@ class UpdateDiceEmojis(TlObject, Update):
 
     """
 
-    def __init__(self, emojis: List[str] = None) -> None:
+    def __init__(self, *, emojis: List[str] = None) -> None:
         self.emojis: List[str] = emojis or []
         r"""The new list of supported dice emojis"""
 
@@ -100344,7 +100993,7 @@ class UpdateStakeDiceState(TlObject, Update):
 
     """
 
-    def __init__(self, state: StakeDiceState = None) -> None:
+    def __init__(self, *, state: StakeDiceState = None) -> None:
         self.state: Union[StakeDiceState, None] = state
         r"""The new state\. The state can be used only if it was received recently enough\. Otherwise, a new state must be requested using getStakeDiceState"""
 
@@ -100387,7 +101036,7 @@ class UpdateAnimatedEmojiMessageClicked(TlObject, Update):
     """
 
     def __init__(
-        self, chat_id: int = 0, message_id: int = 0, sticker: Sticker = None
+        self, *, chat_id: int = 0, message_id: int = 0, sticker: Sticker = None
     ) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
@@ -100438,7 +101087,7 @@ class UpdateAnimationSearchParameters(TlObject, Update):
 
     """
 
-    def __init__(self, provider: str = "", emojis: List[str] = None) -> None:
+    def __init__(self, *, provider: str = "", emojis: List[str] = None) -> None:
         self.provider: Union[str, None] = provider
         r"""Name of the animation search provider"""
         self.emojis: List[str] = emojis or []
@@ -100486,6 +101135,7 @@ class UpdateSuggestedActions(TlObject, Update):
 
     def __init__(
         self,
+        *,
         added_actions: List[SuggestedAction] = None,
         removed_actions: List[SuggestedAction] = None,
     ) -> None:
@@ -100531,7 +101181,7 @@ class UpdateSpeedLimitNotification(TlObject, Update):
 
     """
 
-    def __init__(self, is_upload: bool = False) -> None:
+    def __init__(self, *, is_upload: bool = False) -> None:
         self.is_upload: bool = bool(is_upload)
         r"""True, if upload speed was limited; false, if download speed was limited"""
 
@@ -100567,7 +101217,7 @@ class UpdateContactCloseBirthdays(TlObject, Update):
 
     """
 
-    def __init__(self, close_birthday_users: List[CloseBirthdayUser] = None) -> None:
+    def __init__(self, *, close_birthday_users: List[CloseBirthdayUser] = None) -> None:
         self.close_birthday_users: List[CloseBirthdayUser] = close_birthday_users or []
         r"""List of contact users with close birthday"""
 
@@ -100611,6 +101261,7 @@ class UpdateAutosaveSettings(TlObject, Update):
 
     def __init__(
         self,
+        *,
         scope: AutosaveSettingsScope = None,
         settings: ScopeAutosaveSettings = None,
     ) -> None:
@@ -100658,7 +101309,7 @@ class UpdateBusinessConnection(TlObject, Update):
 
     """
 
-    def __init__(self, connection: BusinessConnection = None) -> None:
+    def __init__(self, *, connection: BusinessConnection = None) -> None:
         self.connection: Union[BusinessConnection, None] = connection
         r"""New data about the connection"""
 
@@ -100698,7 +101349,7 @@ class UpdateNewBusinessMessage(TlObject, Update):
     """
 
     def __init__(
-        self, connection_id: str = "", message: BusinessMessage = None
+        self, *, connection_id: str = "", message: BusinessMessage = None
     ) -> None:
         self.connection_id: Union[str, None] = connection_id
         r"""Unique identifier of the business connection"""
@@ -100746,7 +101397,7 @@ class UpdateBusinessMessageEdited(TlObject, Update):
     """
 
     def __init__(
-        self, connection_id: str = "", message: BusinessMessage = None
+        self, *, connection_id: str = "", message: BusinessMessage = None
     ) -> None:
         self.connection_id: Union[str, None] = connection_id
         r"""Unique identifier of the business connection"""
@@ -100797,7 +101448,11 @@ class UpdateBusinessMessagesDeleted(TlObject, Update):
     """
 
     def __init__(
-        self, connection_id: str = "", chat_id: int = 0, message_ids: List[int] = None
+        self,
+        *,
+        connection_id: str = "",
+        chat_id: int = 0,
+        message_ids: List[int] = None,
     ) -> None:
         self.connection_id: Union[str, None] = connection_id
         r"""Unique identifier of the business connection"""
@@ -100862,6 +101517,7 @@ class UpdateNewInlineQuery(TlObject, Update):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         sender_user_id: int = 0,
         user_location: Location = None,
@@ -100947,6 +101603,7 @@ class UpdateNewChosenInlineResult(TlObject, Update):
 
     def __init__(
         self,
+        *,
         sender_user_id: int = 0,
         user_location: Location = None,
         query: str = "",
@@ -101024,6 +101681,7 @@ class UpdateNewCallbackQuery(TlObject, Update, CallbackQueryBoundMethods):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         sender_user_id: int = 0,
         chat_id: int = 0,
@@ -101108,6 +101766,7 @@ class UpdateNewInlineCallbackQuery(TlObject, Update):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         sender_user_id: int = 0,
         inline_message_id: str = "",
@@ -101190,6 +101849,7 @@ class UpdateNewBusinessCallbackQuery(TlObject, Update):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         sender_user_id: int = 0,
         connection_id: str = "",
@@ -101271,6 +101931,7 @@ class UpdateNewShippingQuery(TlObject, Update):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         sender_user_id: int = 0,
         invoice_payload: str = "",
@@ -101346,6 +102007,7 @@ class UpdateNewPreCheckoutQuery(TlObject, Update):
 
     def __init__(
         self,
+        *,
         id: int = 0,
         sender_user_id: int = 0,
         currency: str = "",
@@ -101416,7 +102078,7 @@ class UpdateNewCustomEvent(TlObject, Update):
 
     """
 
-    def __init__(self, event: str = "") -> None:
+    def __init__(self, *, event: str = "") -> None:
         self.event: Union[str, None] = event
         r"""A JSON\-serialized event"""
 
@@ -101458,7 +102120,7 @@ class UpdateNewCustomQuery(TlObject, Update):
 
     """
 
-    def __init__(self, id: int = 0, data: str = "", timeout: int = 0) -> None:
+    def __init__(self, *, id: int = 0, data: str = "", timeout: int = 0) -> None:
         self.id: int = int(id)
         r"""The query identifier"""
         self.data: Union[str, None] = data
@@ -101505,7 +102167,7 @@ class UpdatePoll(TlObject, Update):
 
     """
 
-    def __init__(self, poll: Poll = None) -> None:
+    def __init__(self, *, poll: Poll = None) -> None:
         self.poll: Union[Poll, None] = poll
         r"""New data about the poll"""
 
@@ -101549,6 +102211,7 @@ class UpdatePollAnswer(TlObject, Update):
 
     def __init__(
         self,
+        *,
         poll_id: int = 0,
         voter_id: MessageSender = None,
         option_ids: List[int] = None,
@@ -101622,6 +102285,7 @@ class UpdateChatMember(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         actor_user_id: int = 0,
         date: int = 0,
@@ -101710,6 +102374,7 @@ class UpdateNewChatJoinRequest(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         request: ChatJoinRequest = None,
         user_chat_id: int = 0,
@@ -101768,7 +102433,7 @@ class UpdateChatBoost(TlObject, Update):
 
     """
 
-    def __init__(self, chat_id: int = 0, boost: ChatBoost = None) -> None:
+    def __init__(self, *, chat_id: int = 0, boost: ChatBoost = None) -> None:
         self.chat_id: int = int(chat_id)
         r"""Chat identifier"""
         self.boost: Union[ChatBoost, None] = boost
@@ -101824,6 +102489,7 @@ class UpdateMessageReaction(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_id: int = 0,
         actor_id: MessageSender = None,
@@ -101900,6 +102566,7 @@ class UpdateMessageReactions(TlObject, Update):
 
     def __init__(
         self,
+        *,
         chat_id: int = 0,
         message_id: int = 0,
         date: int = 0,
@@ -101958,7 +102625,7 @@ class UpdatePaidMediaPurchased(TlObject, Update):
 
     """
 
-    def __init__(self, user_id: int = 0, payload: str = "") -> None:
+    def __init__(self, *, user_id: int = 0, payload: str = "") -> None:
         self.user_id: int = int(user_id)
         r"""User identifier"""
         self.payload: Union[str, None] = payload
@@ -102001,7 +102668,7 @@ class Updates(TlObject):
 
     """
 
-    def __init__(self, updates: List[Update] = None) -> None:
+    def __init__(self, *, updates: List[Update] = None) -> None:
         self.updates: List[Update] = updates or []
         r"""List of updates"""
 

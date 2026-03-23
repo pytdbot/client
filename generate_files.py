@@ -130,6 +130,9 @@ def generate_args_def(args, is_function: bool = False):
 
         args_list.append(f"{arg_name}: {arg_type} = {generate_arg_default(arg_type)}")
 
+    if len(args_list) > 1:
+        args_list.insert(1, "*")
+
     return ", ".join(args_list)
 
 

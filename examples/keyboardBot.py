@@ -1,5 +1,6 @@
-from pytdbot import Client, types
 import logging
+
+from pytdbot import Client, types
 
 logging.basicConfig(
     level=logging.INFO,
@@ -14,7 +15,9 @@ client = Client(
     files_directory="BotDB",  # Path where to store TDLib files
     workers=2,  # Number of workers
     td_verbosity=2,  # TDLib verbosity level
-    td_log=types.LogStreamFile("tdlib.log", 104857600),  # Set TDLib log file path
+    td_log=types.LogStreamFile(
+        path="tdlib.log", max_file_size=104857600
+    ),  # Set TDLib log file path
 )
 
 
@@ -31,12 +34,12 @@ async def start(c: Client, message: types.Message):
         await message.reply_text(
             text,
             reply_markup=types.ReplyMarkupInlineKeyboard(
-                [
+                rows=[
                     [
                         types.InlineKeyboardButton(
                             text="GitHub",
                             type=types.InlineKeyboardButtonTypeUrl(
-                                "https://github.com/pytdbot/client"
+                                url="https://github.com/pytdbot/client"
                             ),
                         )
                     ]
@@ -51,15 +54,15 @@ async def commands(c: Client, message: types.Message):
         await message.reply_text(
             "This is a Inline keyboard",
             reply_markup=types.ReplyMarkupInlineKeyboard(
-                [
+                rows=[
                     [
                         types.InlineKeyboardButton(
                             text="OwO",
-                            type=types.InlineKeyboardButtonTypeCallback(b"OwO"),
+                            type=types.InlineKeyboardButtonTypeCallback(data=b"OwO"),
                         ),
                         types.InlineKeyboardButton(
                             text="UwU",
-                            type=types.InlineKeyboardButtonTypeCallback(b"UwU"),
+                            type=types.InlineKeyboardButtonTypeCallback(data=b"UwU"),
                         ),
                     ],
                 ]
@@ -69,13 +72,13 @@ async def commands(c: Client, message: types.Message):
         await message.reply_text(
             "This is a keyboard",
             reply_markup=types.ReplyMarkupShowKeyboard(
-                [
+                rows=[
                     [
                         types.KeyboardButton(
-                            "OwO", type=types.KeyboardButtonTypeText()
+                            text="OwO", type=types.KeyboardButtonTypeText()
                         ),
                         types.KeyboardButton(
-                            "UwU", type=types.KeyboardButtonTypeText()
+                            text="UwU", type=types.KeyboardButtonTypeText()
                         ),
                     ],
                 ],
@@ -106,12 +109,12 @@ async def callback_query(c: Client, message: types.UpdateNewCallbackQuery):
             message.message_id,
             "You pressed {}".format(message.payload.data.decode()),
             reply_markup=types.ReplyMarkupInlineKeyboard(
-                [
+                rows=[
                     [
                         types.InlineKeyboardButton(
                             text="GitHub",
                             type=types.InlineKeyboardButtonTypeUrl(
-                                "https://github.com/pytdbot/client"
+                                url="https://github.com/pytdbot/client"
                             ),
                         )
                     ]

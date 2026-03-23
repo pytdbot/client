@@ -1,5 +1,5 @@
-from typing import List, Union
 from functools import lru_cache
+from typing import List, Union
 
 import pytdbot
 
@@ -54,7 +54,11 @@ class CallbackQueryBoundMethods:
         r"""Answer to callback query. Shortcut for :meth:`~pytdbot.Client.answerCallbackQuery`"""
 
         return await self._client.answerCallbackQuery(
-            self.id, text=text, show_alert=show_alert, url=url, cache_time=cache_time
+            callback_query_id=self.id,
+            text=text,
+            show_alert=show_alert,
+            url=url,
+            cache_time=cache_time,
         )
 
     async def edit_message_text(

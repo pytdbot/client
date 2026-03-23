@@ -1,6 +1,7 @@
 import asyncio
 import signal
-from importlib import import_module, reload as reload_module
+from importlib import import_module
+from importlib import reload as reload_module
 from json import dumps
 from logging import DEBUG, getLogger
 from os.path import join as join_path
@@ -356,7 +357,7 @@ class Client(Decorators, Methods):
                 self.logger.info("Started with unlimited updates processes")
 
         self.loop.create_task(
-            self.getOption("version")
+            self.getOption(name="version")
         )  # Ping TDLib to start processing updates
 
         if wait_login and self.__wait_login:
@@ -560,7 +561,7 @@ class Client(Decorators, Methods):
 
                 self.logger.debug(f"Attempt to load chat {chat_id}")
 
-                chat = await self.getChat(chat_id)
+                chat = await self.getChat(chat_id=chat_id)
                 if not isinstance(chat, types.Error):
                     self.logger.debug(f"Chat {chat_id} is loaded")
 
@@ -571,7 +572,9 @@ class Client(Decorators, Methods):
                     # if the request is a reply to another message
                     # load the replied message to avoid "Message not found"
                     if reply_to_message_id > 0:
-                        await self.getMessage(chat_id, reply_to_message_id)
+                        await self.getMessage(
+                            chat_id=chat_id, message_id=reply_to_message_id
+                        )
 
                     continue
                 else:
@@ -1240,7 +1243,7 @@ class Client(Decorators, Methods):
         ):
             return
 
-        res = await self.checkAuthenticationBotToken(self.__token)
+        res = await self.checkAuthenticationBotToken(token=self.__token)
 
         if isinstance(res, types.Error):
             await self.stop()

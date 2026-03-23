@@ -1,7 +1,5 @@
 from typing import List, Union
 
-import pytdbot
-
 from ..types import (
     ChatTypeSupergroup,
     Error,
@@ -25,10 +23,10 @@ from ..types import (
     InputThumbnail,
     LinkPreviewOptions,
     Message,
-    MessageTopic,
     MessageCopyOptions,
     MessageSelfDestructType,
     MessageSendOptions,
+    MessageTopic,
     ReplyMarkup,
     ReplyMarkupForceReply,
     ReplyMarkupInlineKeyboard,
@@ -68,9 +66,9 @@ class Methods(TDLibFunctions):
         parse_mode = parse_mode.lower()
 
         if parse_mode == "markdown":
-            mode = TextParseModeMarkdown(1)
+            mode = TextParseModeMarkdown(version=1)
         elif parse_mode == "markdownv2":
-            mode = TextParseModeMarkdown(2)
+            mode = TextParseModeMarkdown(version=2)
         elif parse_mode == "html":
             mode = TextParseModeHTML()
         else:
@@ -78,7 +76,7 @@ class Methods(TDLibFunctions):
                 "Invalid parse_mode. Currently supported: markdown, markdownv2, html"
             )
 
-        return await self.parseTextEntities(text, mode)
+        return await self.parseTextEntities(text=text, mode=mode)
 
     async def getSupergroupId(
         self,
@@ -94,7 +92,7 @@ class Methods(TDLibFunctions):
             ``int``
         """
 
-        chat_info = await self.getChat(chat_id)
+        chat_info = await self.getChat(chat_id=chat_id)
         if not chat_info:
             return chat_info
 
@@ -199,12 +197,12 @@ class Methods(TDLibFunctions):
                 return parse
             text = parse
         else:
-            text = FormattedText(text)
+            text = FormattedText(text=text)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
             content=InputMessageText(
-                text,
+                text=text,
                 link_preview_options=LinkPreviewOptions(
                     is_disabled=disable_web_page_preview,
                     url=url,
@@ -328,7 +326,7 @@ class Methods(TDLibFunctions):
             caption = FormattedText(caption)
 
         if isinstance(animation, str):
-            animation = InputFileRemote(animation)
+            animation = InputFileRemote(id=animation)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
@@ -449,7 +447,7 @@ class Methods(TDLibFunctions):
             caption = FormattedText(caption)
 
         if isinstance(audio, str):
-            audio = InputFileRemote(audio)
+            audio = InputFileRemote(id=audio)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
@@ -559,7 +557,7 @@ class Methods(TDLibFunctions):
             caption = FormattedText(caption)
 
         if isinstance(document, str):
-            document = InputFileRemote(document)
+            document = InputFileRemote(id=document)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
@@ -683,7 +681,7 @@ class Methods(TDLibFunctions):
             caption = FormattedText(caption)
 
         if isinstance(photo, str):
-            photo = InputFileRemote(photo)
+            photo = InputFileRemote(id=photo)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
@@ -816,10 +814,10 @@ class Methods(TDLibFunctions):
                 return parse
             caption = parse
         else:
-            caption = FormattedText(caption)
+            caption = FormattedText(text=caption)
 
         if isinstance(video, str):
-            video = InputFileRemote(video)
+            video = InputFileRemote(id=video)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
@@ -915,7 +913,7 @@ class Methods(TDLibFunctions):
         """
 
         if isinstance(video_note, str):
-            video_note = InputFileRemote(video_note)
+            video_note = InputFileRemote(id=video_note)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
@@ -1020,10 +1018,10 @@ class Methods(TDLibFunctions):
                 return parse
             caption = parse
         else:
-            caption = FormattedText(caption)
+            caption = FormattedText(text=caption)
 
         if isinstance(voice, str):
-            voice = InputFileRemote(voice)
+            voice = InputFileRemote(id=voice)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
@@ -1116,7 +1114,7 @@ class Methods(TDLibFunctions):
         """
 
         if isinstance(sticker, str):
-            sticker = InputFileRemote(sticker)
+            sticker = InputFileRemote(id=sticker)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
@@ -1217,7 +1215,7 @@ class Methods(TDLibFunctions):
                 return parse
             caption = parse
         else:
-            caption = FormattedText(new_caption)
+            caption = FormattedText(id=new_caption)
 
         return await self.sendMessageWithContent(
             chat_id=chat_id,
@@ -1334,7 +1332,7 @@ class Methods(TDLibFunctions):
         """
 
         if not self.use_message_database:
-            load_message = await self.getMessage(chat_id, message_id)
+            load_message = await self.getMessage(chat_id=chat_id, message_id=message_id)
             if isinstance(load_message, Error):
                 return load_message
 
@@ -1347,7 +1345,7 @@ class Methods(TDLibFunctions):
                 return parse
             text = parse
         else:
-            text = FormattedText(text)
+            text = FormattedText(text=text)
 
         return await self.editMessageText(
             chat_id=chat_id,

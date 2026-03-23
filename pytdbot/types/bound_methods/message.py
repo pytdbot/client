@@ -140,7 +140,7 @@ class MessageBoundMethods:
                 The parse mode of the mention. Default is ``html``
         """
 
-        chat = await self._client.getChat(self.from_id)
+        chat = await self._client.getChat(chat_id=self.from_id)
         if chat:
             return pytdbot.utils.mention(
                 chat.title,
@@ -200,7 +200,7 @@ class MessageBoundMethods:
     ) -> Union["pytdbot.types.Error", "pytdbot.types.Chat"]:
         r"""Get chat info"""
 
-        return await self._client.getChat(self.chat_id)
+        return await self._client.getChat(chat_id=self.chat_id)
 
     async def getChatMember(
         self,
@@ -216,7 +216,7 @@ class MessageBoundMethods:
     ) -> Union["pytdbot.types.Error", "pytdbot.types.User"]:
         r"""Get user info"""
 
-        return await self._client.getUser(self.from_id)
+        return await self._client.getUser(user_id=self.from_id)
 
     async def setChatMemberStatus(
         self,
@@ -231,7 +231,7 @@ class MessageBoundMethods:
     async def leaveChat(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
         r"""Leave the current chat"""
 
-        return await self._client.leaveChat(self.chat_id)
+        return await self._client.leaveChat(chat_id=self.chat_id)
 
     async def ban(
         self, banned_until_date: int = 0

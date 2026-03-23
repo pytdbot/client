@@ -18,7 +18,7 @@ client = Client(
     files_directory="UserBot",
     database_encryption_key="tahinidates$",
     td_verbosity=2,
-    td_log=types.LogStreamFile("tdlib.log", 104857600),
+    td_log=types.LogStreamFile(path="tdlib.log", max_file_size=104857600),
     user_bot=True,
 )
 
@@ -30,7 +30,7 @@ async def handle_commands(_: Client, message: types.Message):
             await message.edit_text("Hi, this is from Pytdbot!")
 
 
-def async_input(prompt: str = "") -> str:
+def async_input(prompt: str = ""):
     return asyncio.to_thread(lambda: input(prompt))
 
 
@@ -86,9 +86,7 @@ async def handle_auth(_: Client, auth: types.UpdateAuthorizationState):
             if user_input.lower() == "qr":
                 res = await client.requestQrCodeAuthentication()
             else:
-                res = await client.setAuthenticationPhoneNumber(
-                    user_input,
-                )
+                res = await client.setAuthenticationPhoneNumber(phone_number=user_input)
 
             if isinstance(res, types.Error):
                 print(f"Error: {res.message}")
@@ -105,7 +103,7 @@ async def handle_auth(_: Client, auth: types.UpdateAuthorizationState):
             if not user_input:
                 continue
 
-            res = await client.checkAuthenticationCode(user_input)
+            res = await client.checkAuthenticationCode(code=user_input)
 
             if isinstance(res, types.Error):
                 print(f"Error: {res.message}")
@@ -144,7 +142,7 @@ async def handle_auth(_: Client, auth: types.UpdateAuthorizationState):
             if not user_input:
                 continue
 
-            res = await client.checkAuthenticationPassword(user_input)
+            res = await client.checkAuthenticationPassword(password=user_input)
 
             if isinstance(res, types.Error):
                 print(f"Error: {res.message}")

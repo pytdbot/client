@@ -1,5 +1,7 @@
+import asyncio
+import logging
+
 from pytdbot import Client, filters, types, utils
-import logging, asyncio
 
 logging.basicConfig(
     level=logging.INFO,
@@ -30,7 +32,7 @@ client = Client(
 )
 
 request_buttons = types.ReplyMarkupShowKeyboard(
-    [
+    rows=[
         [
             types.KeyboardButton(
                 text="Channel",
@@ -159,7 +161,7 @@ async def chat_member(client: Client, update: types.UpdateChatMember):
                     utils.code(str(update.chat_id)),
                 ),
             )
-            await client.leaveChat(update.chat_id)
+            await client.leaveChat(chat_id=update.chat_id)
             await increase_usage()
 
 
