@@ -1,7 +1,7 @@
 import pytdbot
 
 from .handler import Handler
-from typing import Callable
+from collections.abc import Callable
 from asyncio import iscoroutinefunction
 from logging import getLogger
 

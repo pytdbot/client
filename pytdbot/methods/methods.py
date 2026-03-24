@@ -1,5 +1,3 @@
-from typing import List, Union
-
 from ..types import (
     ChatTypeSupergroup,
     Error,
@@ -46,7 +44,7 @@ class Methods(TDLibFunctions):
         self,
         text: str,
         parse_mode: str = "html",
-    ) -> Union[Error, FormattedText]:
+    ) -> Error | FormattedText:
         r"""Parses Bold, Italic, Underline, Strikethrough, Spoiler, Code, Pre, PreCode, TextUrl and MentionName entities contained in the text
 
         Parameters:
@@ -81,7 +79,7 @@ class Methods(TDLibFunctions):
     async def getSupergroupId(
         self,
         chat_id: int,
-    ) -> Union[Error, int, None]:
+    ) -> Error | int | None:
         r"""Get supergroup id from chat id
 
         Parameters:
@@ -105,7 +103,7 @@ class Methods(TDLibFunctions):
         self,
         chat_id: int,
         text: str,
-        entities: List[TextEntity] = None,
+        entities: list[TextEntity] | None = None,
         parse_mode: str = None,
         disable_web_page_preview: bool = False,
         url: str = None,
@@ -120,13 +118,13 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ) -> Union[Error, Message]:
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
         r"""Send text message to chat
 
         Parameters:
@@ -225,7 +223,7 @@ class Methods(TDLibFunctions):
     async def sendAnimation(
         self,
         chat_id: int,
-        animation: Union[InputFile, str],
+        animation: InputFile | str,
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -242,13 +240,13 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ) -> Union[Error, Message]:
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
         r"""Send animation to chat
 
         Parameters:
@@ -353,7 +351,7 @@ class Methods(TDLibFunctions):
     async def sendAudio(
         self,
         chat_id: int,
-        audio: Union[InputFile, str],
+        audio: InputFile | str,
         album_cover_thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -368,13 +366,13 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ) -> Union[Error, Message]:
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
         r"""Send audio to chat
 
         Parameters:
@@ -472,7 +470,7 @@ class Methods(TDLibFunctions):
     async def sendDocument(
         self,
         chat_id: int,
-        document: Union[InputFile, str],
+        document: InputFile | str,
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -485,13 +483,13 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ) -> Union[Error, Message]:
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
         r"""Send document to chat
 
         Parameters:
@@ -580,7 +578,7 @@ class Methods(TDLibFunctions):
     async def sendPhoto(
         self,
         chat_id: int,
-        photo: Union[InputFile, str],
+        photo: InputFile | str,
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -597,13 +595,13 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ) -> Union[Error, Message]:
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
         r"""Send photo to chat
 
         Parameters:
@@ -708,7 +706,7 @@ class Methods(TDLibFunctions):
     async def sendVideo(
         self,
         chat_id: int,
-        video: Union[InputFile, str],
+        video: InputFile | str,
         thumbnail: InputThumbnail = None,
         caption: str = None,
         caption_entities: list = None,
@@ -727,13 +725,13 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ) -> Union[Error, Message]:
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
         r"""Send video to chat
 
         Parameters:
@@ -846,7 +844,7 @@ class Methods(TDLibFunctions):
     async def sendVideoNote(
         self,
         chat_id: int,
-        video_note: Union[InputFile, str],
+        video_note: InputFile | str,
         thumbnail: InputThumbnail = None,
         duration: int = 0,
         length: int = 0,
@@ -857,13 +855,13 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ) -> Union[Error, Message]:
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
         r"""Send video note to chat
 
         Parameters:
@@ -936,7 +934,7 @@ class Methods(TDLibFunctions):
     async def sendVoice(
         self,
         chat_id: int,
-        voice: Union[InputFile, str],
+        voice: InputFile | str,
         caption: str = None,
         caption_entities: list = None,
         parse_mode: str = None,
@@ -949,13 +947,13 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ) -> Union[Error, Message]:
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
         r"""Send voice to chat
 
         Parameters:
@@ -1044,7 +1042,7 @@ class Methods(TDLibFunctions):
     async def sendSticker(
         self,
         chat_id: int,
-        sticker: Union[InputFile, str],
+        sticker: InputFile | str,
         emoji: str = None,
         thumbnail: InputThumbnail = None,
         width: int = 0,
@@ -1056,13 +1054,13 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
-    ) -> Union[Error, Message]:
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
+    ) -> Error | Message:
         r"""Send sticker to chat
 
         Parameters:
@@ -1152,7 +1150,7 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-    ) -> Union[Error, Message]:
+    ) -> Error | Message:
         r"""Copy message to chat
 
         Parameters:
@@ -1289,7 +1287,7 @@ class Methods(TDLibFunctions):
         force_large_media: bool = None,
         show_above_text: bool = None,
         reply_markup: ReplyMarkup = None,
-    ) -> Union[Error, Message]:
+    ) -> Error | Message:
         r"""Edit text message
 
         Parameters:
@@ -1376,12 +1374,12 @@ class Methods(TDLibFunctions):
         quote: InputTextQuote = None,
         reply_to: InputMessageReplyTo = None,
         reply_to_message_id: int = 0,
-        reply_markup: Union[
-            ReplyMarkupInlineKeyboard,
-            ReplyMarkupShowKeyboard,
-            ReplyMarkupForceReply,
-            ReplyMarkupRemoveKeyboard,
-        ] = None,
+        reply_markup: (
+            ReplyMarkupInlineKeyboard
+            | ReplyMarkupShowKeyboard
+            | ReplyMarkupForceReply
+            | ReplyMarkupRemoveKeyboard
+        ) = None,
     ):
         if isinstance(reply_to_message_id, int) and reply_to_message_id > 0:
             reply_to = InputMessageReplyToMessage(

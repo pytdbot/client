@@ -1,5 +1,6 @@
+from typing import Literal
+
 import pytdbot
-from typing import Literal, Union
 
 
 class ServerStats:
@@ -54,7 +55,7 @@ class ServerStats:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["ServerStats", None]:
+    def from_dict(cls, data: dict) -> "ServerStats" | None:
         if data:
             data_class = cls()
             data_class.my_id = data.get("my_id", None)

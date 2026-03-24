@@ -1,5 +1,3 @@
-from typing import Union
-
 import pytdbot
 
 
@@ -13,7 +11,7 @@ class FileBoundMethods:
         offset: int = 0,
         limit: int = 0,
         synchronous: bool = True,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.File"]:
+    ) -> "pytdbot.types.Error" | "pytdbot.types.File":
         r"""Downloads a file. Shortcut for :meth:`~pytdbot.Client.downloadFile`"""
 
         file_id = None
@@ -35,7 +33,7 @@ class FileBoundMethods:
                 synchronous=synchronous,
             )
 
-    async def delete(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    async def delete(self) -> "pytdbot.types.Error" | "pytdbot.types.Ok":
         r"""Deletes a file from the TDLib file cache. Shortcut for :meth:`~pytdbot.Client.deleteFile`"""
 
         file_id = None

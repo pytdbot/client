@@ -98,7 +98,7 @@ async def commands(c: Client, message: types.Message):
         )
     elif message.text:
         if "/start" not in message.text:
-            await message.reply_text('You said "{}"'.format(message.text))
+            await message.reply_text(f'You said "{message.text}"')
 
 
 @client.on_updateNewCallbackQuery()
@@ -107,7 +107,7 @@ async def callback_query(c: Client, message: types.UpdateNewCallbackQuery):
         await c.editTextMessage(
             message.chat_id,
             message.message_id,
-            "You pressed {}".format(message.payload.data.decode()),
+            f"You pressed {message.payload.data.decode()}",
             reply_markup=types.ReplyMarkupInlineKeyboard(
                 rows=[
                     [

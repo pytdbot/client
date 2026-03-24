@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import List, Literal, Union
+from typing import Literal, Union
 
 import pytdbot
 
@@ -12,7 +12,7 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
-    def from_id(self) -> Union[int, None]:
+    def from_id(self) -> int | None:
         r"""Message Sender ID"""
 
         if isinstance(self.sender_id, pytdbot.types.MessageSenderChat):
@@ -40,7 +40,7 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
-    def entities(self) -> Union[List["pytdbot.types.TextEntity"], None]:
+    def entities(self) -> list["pytdbot.types.TextEntity"] | None:
         r"""Entities of the message"""
 
         if isinstance(self.content, pytdbot.types.MessageText):
@@ -48,7 +48,7 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
-    def caption(self) -> Union[str, None]:
+    def caption(self) -> str | None:
         r"""Caption of the received media"""
 
         if isinstance(
@@ -66,7 +66,7 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
-    def caption_entities(self) -> Union[List["pytdbot.types.TextEntity"], None]:
+    def caption_entities(self) -> list["pytdbot.types.TextEntity"] | None:
         r"""Caption entities of the received media"""
 
         if isinstance(
@@ -84,7 +84,7 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
-    def remote_file_id(self) -> Union[str, None]:
+    def remote_file_id(self) -> str | None:
         r"""Remote file id"""
 
         file_id = None
@@ -109,7 +109,7 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
-    def remote_unique_file_id(self) -> Union[str, None]:
+    def remote_unique_file_id(self) -> str | None:
         r"""Remote unique file id"""
 
         unique_file_id = None
@@ -132,7 +132,7 @@ class MessageBoundMethods:
 
         return unique_file_id
 
-    async def mention(self, parse_mode: str = "html") -> Union[str, None]:
+    async def mention(self, parse_mode: str = "html") -> str | None:
         r"""Get the text_mention of the message sender
 
         Parameters:
@@ -452,7 +452,7 @@ class MessageBoundMethods:
     async def reply_text(
         self,
         text: str,
-        entities: List["pytdbot.types.TextEntity"] = None,
+        entities: list["pytdbot.types.TextEntity"] = None,
         parse_mode: str = None,
         disable_web_page_preview: bool = False,
         url: str = None,

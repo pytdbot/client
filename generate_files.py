@@ -71,12 +71,12 @@ def getArgTypePython(
         type_name = type_name.strip("()")
         kind, inner = type_name.split(" ", 1)
         if kind == "vector":
-            return f"List[{getArgTypePython(inner, is_function, is_docstring)}]"
+            return f"list[{getArgTypePython(inner, is_function, is_docstring)}]"
         raise ValueError(f"Unknown data type: {kind}/{inner}")
 
     if type_name.startswith("vector<") and type_name.endswith(">"):
         inner = type_name[7:-1]
-        return f"List[{getArgTypePython(inner, is_function, is_docstring)}]"
+        return f"list[{getArgTypePython(inner, is_function, is_docstring)}]"
 
     class_name = to_camel_case(type_name, is_class=True)
 
@@ -95,7 +95,7 @@ def generate_arg_value(arg_type, arg_name):
         arg_value = f"float({arg_name})"
     elif arg_type == "bool":
         arg_value = f"bool({arg_name})"
-    elif arg_type.startswith("List[") or arg_type == "list":
+    elif arg_type.startswith("list[") or arg_type == "list":
         arg_value = f"{arg_name} or []"
     else:
         arg_value = arg_name
@@ -127,8 +127,12 @@ def generate_args_def(args, is_function: bool = False):
             arg_name += "_"
 
         arg_type = getArgTypePython(arg_data["type"], is_function)
+        arg_default = generate_arg_default(arg_type)
 
-        args_list.append(f"{arg_name}: {arg_type} = {generate_arg_default(arg_type)}")
+        if arg_default == "None":
+            args_list.append(f"{arg_name}: {arg_type} | None = None")
+        else:
+            args_list.append(f"{arg_name}: {arg_type} = {arg_default}")
 
     if len(args_list) > 1:
         args_list.insert(1, "*")
@@ -150,7 +154,7 @@ def generate_union_types(arg_type, arg_type_name, classes, noneable=True):
     if noneable:
         unions.append("None")
 
-    return f"Union[{', '.join(unions)}]"
+    return f"{' | '.join(unions)}"
 
 
 def generate_self_args(args, classes):
@@ -280,7 +284,7 @@ types_template = """class {class_name}({inherited_class}):
         return {{{to_dict_return}}}
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["{class_name}", None]:
+    def from_dict(cls, data: dict) -> "{class_name}" | None:
         if data:
             data_class = cls()
             {from_dict_kwargs}
@@ -319,7 +323,7 @@ def generate_types(f, types, updates, classes):
     gen(updates)
 
 
-functions_template = """async def {function_name}({function_args}) -> Union["pytdbot.types.Error", "pytdbot.types.{return_type}"]:
+functions_template = """async def {function_name}({function_args}) -> "pytdbot.types.Error" | "pytdbot.types.{return_type}":
         r\"\"\"{docstring}
 {docstring_args}
         Returns:
@@ -405,7 +409,7 @@ if __name__ == "__main__":
         tl_json = json.loads(f.read())
 
     with open("pytdbot/types/td_types.py", "w", encoding="utf-8") as types_file:
-        types_file.write("from typing import Union, Literal, List\n")
+        types_file.write("from typing import Literal\n")
         types_file.write("from base64 import b64decode\n")
         types_file.write(
             f"from .bound_methods import {', '.join(set(bound_methods_class.values()))}\n"
@@ -480,7 +484,7 @@ if __name__ == "__main__":
     with open(
         "pytdbot/methods/td_functions.py", "w", encoding="utf-8"
     ) as functions_file:
-        functions_file.write("from typing import Union, List\nimport pytdbot\n\n")
+        functions_file.write("import pytdbot\n\n")
 
         functions_file.write("class TDLibFunctions:\n")
         functions_file.write(
@@ -491,7 +495,7 @@ if __name__ == "__main__":
 
     with open("pytdbot/handlers/td_updates.py", "w", encoding="utf-8") as updates_file:
         updates_file.write(
-            'import pytdbot\n\nfrom .handler import Handler\nfrom typing import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated TDLib updates"""\n\n'
+            'import pytdbot\n\nfrom .handler import Handler\nfrom collections.abc import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated TDLib updates"""\n\n'
         )
 
         generate_updates(updates_file, tl_json["updates"])

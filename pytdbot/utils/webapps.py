@@ -1,10 +1,9 @@
 import hashlib
 import hmac
 import time
-
 from urllib.parse import parse_qs
 
-from ..exception import WebAppDataInvalid, WebAppDataOutdated, WebAppDataMismatch
+from ..exception import WebAppDataInvalid, WebAppDataMismatch, WebAppDataOutdated
 
 _webapp_secret_key = b"WebAppData"
 

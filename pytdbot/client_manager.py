@@ -1,9 +1,9 @@
 import asyncio
 import logging
-from typing import List
 from concurrent.futures import ThreadPoolExecutor
 
 import pytdbot
+
 from .tdjson import TdJson
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ class ClientManager:
 
     def __init__(
         self,
-        clients: List["pytdbot.Client"] = None,
+        clients: list["pytdbot.Client"] = None,
         lib_path: str = None,
         verbosity: int = 2,
         loop: asyncio.AbstractEventLoop = None,
@@ -30,7 +30,7 @@ class ClientManager:
                 >>> await client_manager.start()
 
         Parameters:
-            clients (``List[pytdbot.Client]``, *optional*):
+            clients (``list[pytdbot.Client]``, *optional*):
                 List of clients to manage
 
             lib_path (``str``, *optional*):

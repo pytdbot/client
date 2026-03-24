@@ -6,7 +6,6 @@ except ImportError:
 import sys
 from ctypes import CDLL, c_char_p, c_double, c_int
 from logging import getLogger
-from typing import Union
 
 from ..utils import JSON_ENCODER, json_dumps, json_loads
 
@@ -117,7 +116,7 @@ class TdJson:
         """Returns an opaque identifier of a new TDLib instance"""
         return self._td_create_client_id()
 
-    def receive(self, timeout: float = 2.0) -> Union[None, dict]:
+    def receive(self, timeout: float = 2.0) -> None | dict:
         """Receives incoming updates and results from TDLib
 
         Parameters:
@@ -156,7 +155,7 @@ class TdJson:
             ),
         )
 
-    def execute(self, data: dict) -> Union[None, dict]:
+    def execute(self, data: dict) -> None | dict:
         """Executes a TDLib request
 
         Parameters:

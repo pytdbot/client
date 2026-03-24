@@ -1,6 +1,6 @@
 import logging
 from asyncio import iscoroutinefunction
-from typing import Callable
+from collections.abc import Callable
 
 import pytdbot
 

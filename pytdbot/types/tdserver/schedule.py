@@ -1,5 +1,6 @@
+from typing import Literal
+
 import pytdbot
-from typing import Literal, Union
 
 
 class ScheduledEvent:
@@ -40,7 +41,7 @@ class ScheduledEvent:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["ScheduledEvent", None]:
+    def from_dict(cls, data: dict) -> "ScheduledEvent" | None:
         if data:
             data_class = cls()
             data_class.event_id = data.get("event_id", None)
@@ -94,7 +95,7 @@ class UpdateScheduledEvent:
         }
 
     @classmethod
-    def from_dict(cls, data: dict) -> Union["UpdateScheduledEvent", None]:
+    def from_dict(cls, data: dict) -> "UpdateScheduledEvent" | None:
         if data:
             data_class = cls()
             data_class.name = data.get("name", None)

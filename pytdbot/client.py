@@ -1,5 +1,6 @@
 import asyncio
 import signal
+from collections.abc import Callable
 from importlib import import_module
 from importlib import reload as reload_module
 from json import dumps
@@ -8,7 +9,7 @@ from os.path import join as join_path
 from pathlib import Path
 from platform import python_implementation, python_version
 from threading import current_thread, main_thread
-from typing import Callable, Dict, Type, Union
+from typing import Type
 
 import aio_pika
 from deepdiff import DeepDiff
@@ -124,7 +125,7 @@ class Client(Decorators, Methods):
         system_language_code: str = "en",
         device_model: str = None,
         files_directory: str = None,
-        database_encryption_key: Union[str, bytes] = None,
+        database_encryption_key: str | bytes = None,
         use_test_dc: bool = False,
         use_file_database: bool = True,
         use_chat_info_database: bool = True,
@@ -202,7 +203,7 @@ class Client(Decorators, Methods):
 
         self._handlers = {"initializer": [], "finalizer": []}
         self._current_handlers = {}
-        self._results: Dict[str, asyncio.Future] = {}
+        self._results: dict[str, asyncio.Future] = {}
         self._workers_tasks = None
         self.__wait_login: asyncio.Event = None
         self.__rabbitmq_iterator_task = None
@@ -251,7 +252,7 @@ class Client(Decorators, Methods):
 
     async def getServerStats(
         self,
-    ) -> Union["pytdbot.types.ServerStats", "pytdbot.types.Error"]:
+    ) -> "pytdbot.types.ServerStats" | "pytdbot.types.Error":
         """Returns TDLib Server stats"""
 
         self._check_rabbitmq()
@@ -260,7 +261,7 @@ class Client(Decorators, Methods):
 
     async def scheduleEvent(
         self, name: str, payload: str, send_at: int
-    ) -> Union["pytdbot.types.ScheduledEvent", "pytdbot.types.Error"]:
+    ) -> "pytdbot.types.ScheduledEvent" | "pytdbot.types.Error":
         """Schedule an event
 
         Parameters:
@@ -294,7 +295,7 @@ class Client(Decorators, Methods):
 
     async def cancelScheduledEvent(
         self, event_id: str
-    ) -> Union["pytdbot.types.Ok", "pytdbot.types.Error"]:
+    ) -> "pytdbot.types.Ok" | "pytdbot.types.Error":
         """Cancel a scheduled event
 
         Parameters:
@@ -365,7 +366,7 @@ class Client(Decorators, Methods):
 
     def add_handler(
         self,
-        update_type: Union[Type["pytdbot.types.Update"], str],
+        update_type: type["pytdbot.types.Update"] | str,
         func: Callable,
         filters: pytdbot.filters.Filter = None,
         position: int = None,

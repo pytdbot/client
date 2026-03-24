@@ -1,6 +1,6 @@
 import json
-import sys
 import re
+import sys
 from pathlib import Path
 
 optional_tags = ("; may be null", "; pass null", "; may be empty", "If non-empty,")

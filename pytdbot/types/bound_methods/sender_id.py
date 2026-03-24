@@ -1,4 +1,3 @@
-from typing import Union
 from functools import lru_cache
 
 import pytdbot
@@ -10,7 +9,7 @@ class MessageSenderBoundMethods:
 
     @property
     @lru_cache(1)
-    def from_id(self) -> Union[int, None]:
+    def from_id(self) -> int | None:
         """Returns the message sender's ID. ``None`` if not found"""
 
         if isinstance(self, pytdbot.types.MessageSenderUser):

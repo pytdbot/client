@@ -1,5 +1,4 @@
 from functools import lru_cache
-from typing import List, Union
 
 import pytdbot
 
@@ -36,7 +35,7 @@ class CallbackQueryBoundMethods:
 
         return ""
 
-    async def getMessage(self) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+    async def getMessage(self) -> "pytdbot.types.Error" | "pytdbot.types.Message":
         r"""Get callback query message"""
 
         if self.message_id:
@@ -50,7 +49,7 @@ class CallbackQueryBoundMethods:
         show_alert: bool = None,
         url: str = None,
         cache_time: int = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    ) -> "pytdbot.types.Error" | "pytdbot.types.Ok":
         r"""Answer to callback query. Shortcut for :meth:`~pytdbot.Client.answerCallbackQuery`"""
 
         return await self._client.answerCallbackQuery(
@@ -72,7 +71,7 @@ class CallbackQueryBoundMethods:
         force_large_media: bool = None,
         show_above_text: bool = None,
         reply_markup: "pytdbot.types.ReplyMarkup" = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+    ) -> "pytdbot.types.Error" | "pytdbot.types.Message":
         r"""Edit callback query message text. Shortcut for :meth:`~pytdbot.Client.editTextMessage`"""
 
         return await self._client.editTextMessage(
@@ -92,11 +91,11 @@ class CallbackQueryBoundMethods:
     async def edit_message_caption(
         self,
         caption: str,
-        caption_entities: List["pytdbot.types.TextEntity"] = None,
+        caption_entities: list["pytdbot.types.TextEntity"] = None,
         parse_mode: str = None,
         show_caption_above_media: bool = None,
         reply_markup: "pytdbot.types.ReplyMarkup" = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+    ) -> "pytdbot.types.Error" | "pytdbot.types.Message":
         r"""Edit message caption"""
 
         parse_mode = parse_mode or self._client.default_parse_mode
@@ -124,7 +123,7 @@ class CallbackQueryBoundMethods:
 
     async def edit_message_reply_markup(
         self, reply_markup: "pytdbot.types.ReplyMarkup"
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+    ) -> "pytdbot.types.Error" | "pytdbot.types.Message":
         r"""Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`"""
 
         return await self._client.editMessageReplyMarkup(
