@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from functools import lru_cache
 
 import pytdbot
@@ -9,7 +11,7 @@ class CallbackQueryBoundMethods:
 
     @property
     @lru_cache(1)
-    def callback_data(self) -> "pytdbot.utils.CallbackData":
+    def callback_data(self) -> pytdbot.utils.CallbackData:
         r"""Callback data that was set by :func:`~pytdbot.utils.callback_data`
 
         Args:
@@ -35,7 +37,7 @@ class CallbackQueryBoundMethods:
 
         return ""
 
-    async def getMessage(self) -> "pytdbot.types.Error" | "pytdbot.types.Message":
+    async def getMessage(self) -> pytdbot.types.Error | pytdbot.types.Message | None:
         r"""Get callback query message"""
 
         if self.message_id:
@@ -46,10 +48,10 @@ class CallbackQueryBoundMethods:
     async def answer(
         self,
         text: str,
-        show_alert: bool = None,
-        url: str = None,
-        cache_time: int = None,
-    ) -> "pytdbot.types.Error" | "pytdbot.types.Ok":
+        show_alert: bool | None = None,
+        url: str | None = None,
+        cache_time: int | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Answer to callback query. Shortcut for :meth:`~pytdbot.Client.answerCallbackQuery`"""
 
         return await self._client.answerCallbackQuery(
@@ -63,15 +65,15 @@ class CallbackQueryBoundMethods:
     async def edit_message_text(
         self,
         text: str,
-        parse_mode: str = None,
-        entities: list = None,
+        parse_mode: str | None = None,
+        entities: list | None = None,
         disable_web_page_preview: bool = False,
-        url: str = None,
-        force_small_media: bool = None,
-        force_large_media: bool = None,
-        show_above_text: bool = None,
-        reply_markup: "pytdbot.types.ReplyMarkup" = None,
-    ) -> "pytdbot.types.Error" | "pytdbot.types.Message":
+        url: str | None = None,
+        force_small_media: bool | None = None,
+        force_large_media: bool | None = None,
+        show_above_text: bool | None = None,
+        reply_markup: pytdbot.types.ReplyMarkup | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Edit callback query message text. Shortcut for :meth:`~pytdbot.Client.editTextMessage`"""
 
         return await self._client.editTextMessage(
@@ -91,11 +93,11 @@ class CallbackQueryBoundMethods:
     async def edit_message_caption(
         self,
         caption: str,
-        caption_entities: list["pytdbot.types.TextEntity"] = None,
-        parse_mode: str = None,
-        show_caption_above_media: bool = None,
-        reply_markup: "pytdbot.types.ReplyMarkup" = None,
-    ) -> "pytdbot.types.Error" | "pytdbot.types.Message":
+        caption_entities: list[pytdbot.types.TextEntity] | None = None,
+        parse_mode: str | None = None,
+        show_caption_above_media: bool | None = None,
+        reply_markup: pytdbot.types.ReplyMarkup | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Edit message caption"""
 
         parse_mode = parse_mode or self._client.default_parse_mode
@@ -123,7 +125,7 @@ class CallbackQueryBoundMethods:
 
     async def edit_message_reply_markup(
         self, reply_markup: "pytdbot.types.ReplyMarkup"
-    ) -> "pytdbot.types.Error" | "pytdbot.types.Message":
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Edit message reply markup. Shortcut for :meth:`~pytdbot.Client.editMessageReplyMarkup`"""
 
         return await self._client.editMessageReplyMarkup(

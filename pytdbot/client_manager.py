@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 import logging
 from concurrent.futures import ThreadPoolExecutor
@@ -14,10 +16,10 @@ class ClientManager:
 
     def __init__(
         self,
-        clients: list["pytdbot.Client"] = None,
-        lib_path: str = None,
+        clients: list[pytdbot.Client] | None = None,
+        lib_path: str | None = None,
         verbosity: int = 2,
-        loop: asyncio.AbstractEventLoop = None,
+        loop: asyncio.AbstractEventLoop | None = None,
     ) -> None:
         """Manage multiple Pytdbot clients
 
@@ -80,7 +82,7 @@ class ClientManager:
         self.__pending_clients = None
 
     async def add_client(
-        self, client: "pytdbot.Client", start_client: bool = False
+        self, client: pytdbot.Client, start_client: bool = False
     ) -> None:
         """Add a client to the manager
 

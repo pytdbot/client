@@ -1,9 +1,12 @@
+from __future__ import annotations
+
+from asyncio import iscoroutinefunction
+from collections.abc import Callable
+from logging import getLogger
+
 import pytdbot
 
 from .handler import Handler
-from collections.abc import Callable
-from asyncio import iscoroutinefunction
-from logging import getLogger
 
 logger = getLogger(__name__)
 
@@ -12,10 +15,10 @@ class Updates:
     """Auto generated TDLib updates"""
 
     def on_updateAuthorizationState(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The user authorization state has changed
 
@@ -71,10 +74,10 @@ class Updates:
         return decorator
 
     def on_updateNewMessage(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new message was received; can also be an outgoing message
 
@@ -130,10 +133,10 @@ class Updates:
         return decorator
 
     def on_updateMessageSendAcknowledged(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A request to send a message has reached the Telegram server\. This doesn't mean that the message will be sent successfully\. This update is sent only if the option \"use\_quick\_ack\" is set to true\. This update may be sent multiple times for the same message
 
@@ -189,10 +192,10 @@ class Updates:
         return decorator
 
     def on_updateMessageSendSucceeded(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A message has been successfully sent
 
@@ -248,10 +251,10 @@ class Updates:
         return decorator
 
     def on_updateMessageSendFailed(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A message failed to send\. Be aware that some messages being sent can be irrecoverably deleted, in which case updateDeleteMessages will be received instead of this update
 
@@ -307,10 +310,10 @@ class Updates:
         return decorator
 
     def on_updateMessageContent(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The message content has changed
 
@@ -366,10 +369,10 @@ class Updates:
         return decorator
 
     def on_updateMessageEdited(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A message was edited\. Changes in the message content will come in a separate updateMessageContent
 
@@ -425,10 +428,10 @@ class Updates:
         return decorator
 
     def on_updateMessageIsPinned(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The message pinned state was changed
 
@@ -484,10 +487,10 @@ class Updates:
         return decorator
 
     def on_updateMessageInteractionInfo(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The information about interactions with a message has changed
 
@@ -543,10 +546,10 @@ class Updates:
         return decorator
 
     def on_updateMessageContentOpened(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The message content was opened\. Updates voice note messages to \"listened\", video note messages to \"viewed\" and starts the self\-destruct timer
 
@@ -602,10 +605,10 @@ class Updates:
         return decorator
 
     def on_updateMessageMentionRead(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A message with an unread mention was read
 
@@ -661,10 +664,10 @@ class Updates:
         return decorator
 
     def on_updateMessageUnreadReactions(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of unread reactions added to a message was changed
 
@@ -720,10 +723,10 @@ class Updates:
         return decorator
 
     def on_updateMessageFactCheck(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A fact\-check added to a message was changed
 
@@ -779,10 +782,10 @@ class Updates:
         return decorator
 
     def on_updateMessageSuggestedPostInfo(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Information about suggested post of a message was changed
 
@@ -838,10 +841,10 @@ class Updates:
         return decorator
 
     def on_updateMessageLiveLocationViewed(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A message with a live location was viewed\. When the update is received, the application is expected to update the live location
 
@@ -897,10 +900,10 @@ class Updates:
         return decorator
 
     def on_updateVideoPublished(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""An automatically scheduled message with video has been successfully sent after conversion
 
@@ -956,10 +959,10 @@ class Updates:
         return decorator
 
     def on_updateNewChat(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new chat has been loaded/created\. This update is guaranteed to come before the chat identifier is returned to the application\. The chat field changes will be reported through separate updates
 
@@ -1015,10 +1018,10 @@ class Updates:
         return decorator
 
     def on_updateChatTitle(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The title of a chat was changed
 
@@ -1074,10 +1077,10 @@ class Updates:
         return decorator
 
     def on_updateChatPhoto(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat photo was changed
 
@@ -1133,10 +1136,10 @@ class Updates:
         return decorator
 
     def on_updateChatAccentColors(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Chat accent colors have changed
 
@@ -1192,10 +1195,10 @@ class Updates:
         return decorator
 
     def on_updateChatPermissions(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Chat permissions were changed
 
@@ -1251,10 +1254,10 @@ class Updates:
         return decorator
 
     def on_updateChatLastMessage(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The last message of a chat was changed
 
@@ -1310,10 +1313,10 @@ class Updates:
         return decorator
 
     def on_updateChatPosition(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The position of a chat in a chat list has changed\. An updateChatLastMessage or updateChatDraftMessage update might be sent instead of the update
 
@@ -1369,10 +1372,10 @@ class Updates:
         return decorator
 
     def on_updateChatAddedToList(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat was added to a chat list
 
@@ -1428,10 +1431,10 @@ class Updates:
         return decorator
 
     def on_updateChatRemovedFromList(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat was removed from a chat list
 
@@ -1487,10 +1490,10 @@ class Updates:
         return decorator
 
     def on_updateChatReadInbox(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Incoming messages were read or the number of unread messages has been changed
 
@@ -1546,10 +1549,10 @@ class Updates:
         return decorator
 
     def on_updateChatReadOutbox(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Outgoing messages were read
 
@@ -1605,10 +1608,10 @@ class Updates:
         return decorator
 
     def on_updateChatActionBar(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The chat action bar was changed
 
@@ -1664,10 +1667,10 @@ class Updates:
         return decorator
 
     def on_updateChatBusinessBotManageBar(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The bar for managing business bot was changed in a chat
 
@@ -1723,10 +1726,10 @@ class Updates:
         return decorator
 
     def on_updateChatAvailableReactions(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The chat available reactions were changed
 
@@ -1782,10 +1785,10 @@ class Updates:
         return decorator
 
     def on_updateChatDraftMessage(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat draft has changed\. Be aware that the update may come in the currently opened chat but with old content of the draft\. If the user has changed the content of the draft, this update mustn't be applied
 
@@ -1841,10 +1844,10 @@ class Updates:
         return decorator
 
     def on_updateChatEmojiStatus(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Chat emoji status has changed
 
@@ -1900,10 +1903,10 @@ class Updates:
         return decorator
 
     def on_updateChatMessageSender(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The message sender that is selected to send messages in a chat has changed
 
@@ -1959,10 +1962,10 @@ class Updates:
         return decorator
 
     def on_updateChatMessageAutoDeleteTime(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The message auto\-delete or self\-destruct timer setting for a chat was changed
 
@@ -2018,10 +2021,10 @@ class Updates:
         return decorator
 
     def on_updateChatNotificationSettings(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Notification settings for a chat were changed
 
@@ -2077,10 +2080,10 @@ class Updates:
         return decorator
 
     def on_updateChatPendingJoinRequests(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The chat pending join requests were changed
 
@@ -2136,10 +2139,10 @@ class Updates:
         return decorator
 
     def on_updateChatReplyMarkup(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The chat reply markup was changed
 
@@ -2195,10 +2198,10 @@ class Updates:
         return decorator
 
     def on_updateChatBackground(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The chat background was changed
 
@@ -2254,10 +2257,10 @@ class Updates:
         return decorator
 
     def on_updateChatTheme(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The chat theme was changed
 
@@ -2313,10 +2316,10 @@ class Updates:
         return decorator
 
     def on_updateChatUnreadMentionCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The chat unread\_mention\_count has changed
 
@@ -2372,10 +2375,10 @@ class Updates:
         return decorator
 
     def on_updateChatUnreadReactionCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The chat unread\_reaction\_count has changed
 
@@ -2431,10 +2434,10 @@ class Updates:
         return decorator
 
     def on_updateChatVideoChat(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat video chat state has changed
 
@@ -2490,10 +2493,10 @@ class Updates:
         return decorator
 
     def on_updateChatDefaultDisableNotification(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The value of the default disable\_notification parameter, used when a message is sent to the chat, was changed
 
@@ -2549,10 +2552,10 @@ class Updates:
         return decorator
 
     def on_updateChatHasProtectedContent(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat content was allowed or restricted for saving
 
@@ -2608,10 +2611,10 @@ class Updates:
         return decorator
 
     def on_updateChatIsTranslatable(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Translation of chat messages was enabled or disabled
 
@@ -2667,10 +2670,10 @@ class Updates:
         return decorator
 
     def on_updateChatIsMarkedAsUnread(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat was marked as unread or was read
 
@@ -2726,10 +2729,10 @@ class Updates:
         return decorator
 
     def on_updateChatViewAsTopics(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat default appearance has changed
 
@@ -2785,10 +2788,10 @@ class Updates:
         return decorator
 
     def on_updateChatBlockList(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat was blocked or unblocked
 
@@ -2844,10 +2847,10 @@ class Updates:
         return decorator
 
     def on_updateChatHasScheduledMessages(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat's has\_scheduled\_messages field has changed
 
@@ -2903,10 +2906,10 @@ class Updates:
         return decorator
 
     def on_updateChatFolders(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of chat folders or a chat folder has changed
 
@@ -2962,10 +2965,10 @@ class Updates:
         return decorator
 
     def on_updateChatOnlineMemberCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The number of online group members has changed\. This update with non\-zero number of online group members is sent only for currently opened chats\. There is no guarantee that it is sent just after the number of online users has changed
 
@@ -3021,10 +3024,10 @@ class Updates:
         return decorator
 
     def on_updateSavedMessagesTopic(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Basic information about a Saved Messages topic has changed\. This update is guaranteed to come before the topic identifier is returned to the application
 
@@ -3080,10 +3083,10 @@ class Updates:
         return decorator
 
     def on_updateSavedMessagesTopicCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Number of Saved Messages topics has changed
 
@@ -3139,10 +3142,10 @@ class Updates:
         return decorator
 
     def on_updateDirectMessagesChatTopic(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Basic information about a topic in a channel direct messages chat administered by the current user has changed\. This update is guaranteed to come before the topic identifier is returned to the application
 
@@ -3198,10 +3201,10 @@ class Updates:
         return decorator
 
     def on_updateTopicMessageCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Number of messages in a topic has changed; for Saved Messages and channel direct messages chat topics only
 
@@ -3257,10 +3260,10 @@ class Updates:
         return decorator
 
     def on_updateQuickReplyShortcut(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Basic information about a quick reply shortcut has changed\. This update is guaranteed to come before the quick shortcut name is returned to the application
 
@@ -3316,10 +3319,10 @@ class Updates:
         return decorator
 
     def on_updateQuickReplyShortcutDeleted(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A quick reply shortcut and all its messages were deleted
 
@@ -3375,10 +3378,10 @@ class Updates:
         return decorator
 
     def on_updateQuickReplyShortcuts(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of quick reply shortcuts has changed
 
@@ -3434,10 +3437,10 @@ class Updates:
         return decorator
 
     def on_updateQuickReplyShortcutMessages(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of quick reply shortcut messages has changed
 
@@ -3493,10 +3496,10 @@ class Updates:
         return decorator
 
     def on_updateForumTopicInfo(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Basic information about a topic in a forum chat was changed
 
@@ -3552,10 +3555,10 @@ class Updates:
         return decorator
 
     def on_updateForumTopic(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Information about a topic in a forum chat was changed
 
@@ -3611,10 +3614,10 @@ class Updates:
         return decorator
 
     def on_updateScopeNotificationSettings(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Notification settings for some type of chats were updated
 
@@ -3670,10 +3673,10 @@ class Updates:
         return decorator
 
     def on_updateReactionNotificationSettings(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Notification settings for reactions were updated
 
@@ -3729,10 +3732,10 @@ class Updates:
         return decorator
 
     def on_updateNotification(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A notification was changed
 
@@ -3788,10 +3791,10 @@ class Updates:
         return decorator
 
     def on_updateNotificationGroup(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A list of active notifications in a notification group has changed
 
@@ -3847,10 +3850,10 @@ class Updates:
         return decorator
 
     def on_updateActiveNotifications(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Contains active notifications that were shown on previous application launches\. This update is sent only if the message database is used\. In that case it comes once before any updateNotification and updateNotificationGroup update
 
@@ -3906,10 +3909,10 @@ class Updates:
         return decorator
 
     def on_updateHavePendingNotifications(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Describes whether there are some pending notification updates\. Can be used to prevent application from killing, while there are some pending notifications
 
@@ -3965,10 +3968,10 @@ class Updates:
         return decorator
 
     def on_updateDeleteMessages(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some messages were deleted
 
@@ -4024,10 +4027,10 @@ class Updates:
         return decorator
 
     def on_updateChatAction(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A message sender activity in the chat has changed
 
@@ -4083,10 +4086,10 @@ class Updates:
         return decorator
 
     def on_updatePendingTextMessage(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new pending text message was received in a chat with a bot\. The message must be shown in the chat for at most getOption\(\"pending\_text\_message\_period\"\) seconds, replace any other pending message with the same draft\_id, and be deleted whenever any incoming message from the bot in the message thread is received
 
@@ -4142,10 +4145,10 @@ class Updates:
         return decorator
 
     def on_updateUserStatus(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The user went online or offline
 
@@ -4201,10 +4204,10 @@ class Updates:
         return decorator
 
     def on_updateUser(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some data of a user has changed\. This update is guaranteed to come before the user identifier is returned to the application
 
@@ -4260,10 +4263,10 @@ class Updates:
         return decorator
 
     def on_updateBasicGroup(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some data of a basic group has changed\. This update is guaranteed to come before the basic group identifier is returned to the application
 
@@ -4319,10 +4322,10 @@ class Updates:
         return decorator
 
     def on_updateSupergroup(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some data of a supergroup or a channel has changed\. This update is guaranteed to come before the supergroup identifier is returned to the application
 
@@ -4378,10 +4381,10 @@ class Updates:
         return decorator
 
     def on_updateSecretChat(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some data of a secret chat has changed\. This update is guaranteed to come before the secret chat identifier is returned to the application
 
@@ -4437,10 +4440,10 @@ class Updates:
         return decorator
 
     def on_updateUserFullInfo(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some data in userFullInfo has been changed
 
@@ -4496,10 +4499,10 @@ class Updates:
         return decorator
 
     def on_updateBasicGroupFullInfo(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some data in basicGroupFullInfo has been changed
 
@@ -4555,10 +4558,10 @@ class Updates:
         return decorator
 
     def on_updateSupergroupFullInfo(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some data in supergroupFullInfo has been changed
 
@@ -4614,10 +4617,10 @@ class Updates:
         return decorator
 
     def on_updateServiceNotification(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A service notification from the server was received\. Upon receiving this the application must show a popup with the content of the notification
 
@@ -4673,10 +4676,10 @@ class Updates:
         return decorator
 
     def on_updateNewOauthRequest(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""An OAuth authorization request was received
 
@@ -4732,10 +4735,10 @@ class Updates:
         return decorator
 
     def on_updateFile(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Information about a file was updated
 
@@ -4791,10 +4794,10 @@ class Updates:
         return decorator
 
     def on_updateFileGenerationStart(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The file generation process needs to be started by the application\. Use setFileGenerationProgress and finishFileGeneration to generate the file
 
@@ -4850,10 +4853,10 @@ class Updates:
         return decorator
 
     def on_updateFileGenerationStop(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""File generation is no longer needed
 
@@ -4909,10 +4912,10 @@ class Updates:
         return decorator
 
     def on_updateFileDownloads(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The state of the file download list has changed
 
@@ -4968,10 +4971,10 @@ class Updates:
         return decorator
 
     def on_updateFileAddedToDownloads(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A file was added to the file download list\. This update is sent only after file download list is loaded for the first time
 
@@ -5027,10 +5030,10 @@ class Updates:
         return decorator
 
     def on_updateFileDownload(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A file download was changed\. This update is sent only after file download list is loaded for the first time
 
@@ -5086,10 +5089,10 @@ class Updates:
         return decorator
 
     def on_updateFileRemovedFromDownloads(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A file was removed from the file download list\. This update is sent only after file download list is loaded for the first time
 
@@ -5145,10 +5148,10 @@ class Updates:
         return decorator
 
     def on_updateApplicationVerificationRequired(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A request can't be completed unless application verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
 
@@ -5204,10 +5207,10 @@ class Updates:
         return decorator
 
     def on_updateApplicationRecaptchaVerificationRequired(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A request can't be completed unless reCAPTCHA verification is performed; for official mobile applications only\. The method setApplicationVerificationToken must be called once the verification is completed or failed
 
@@ -5263,10 +5266,10 @@ class Updates:
         return decorator
 
     def on_updateCall(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""New call was created or information about a call was updated
 
@@ -5322,10 +5325,10 @@ class Updates:
         return decorator
 
     def on_updateGroupCall(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Information about a group call was updated
 
@@ -5381,10 +5384,10 @@ class Updates:
         return decorator
 
     def on_updateGroupCallParticipant(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Information about a group call participant was changed\. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined
 
@@ -5440,10 +5443,10 @@ class Updates:
         return decorator
 
     def on_updateGroupCallParticipants(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of group call participants that can send and receive encrypted call data has changed; for group calls not bound to a chat only
 
@@ -5499,10 +5502,10 @@ class Updates:
         return decorator
 
     def on_updateGroupCallVerificationState(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The verification state of an encrypted group call has changed; for group calls not bound to a chat only
 
@@ -5558,10 +5561,10 @@ class Updates:
         return decorator
 
     def on_updateNewGroupCallMessage(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new message was received in a group call
 
@@ -5617,10 +5620,10 @@ class Updates:
         return decorator
 
     def on_updateNewGroupCallPaidReaction(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new paid reaction was received in a live story group call
 
@@ -5676,10 +5679,10 @@ class Updates:
         return decorator
 
     def on_updateGroupCallMessageSendFailed(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A group call message failed to send
 
@@ -5735,10 +5738,10 @@ class Updates:
         return decorator
 
     def on_updateGroupCallMessagesDeleted(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some group call messages were deleted
 
@@ -5794,10 +5797,10 @@ class Updates:
         return decorator
 
     def on_updateLiveStoryTopDonors(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of top donors in live story group call has changed
 
@@ -5853,10 +5856,10 @@ class Updates:
         return decorator
 
     def on_updateNewCallSignalingData(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""New call signaling data arrived
 
@@ -5912,10 +5915,10 @@ class Updates:
         return decorator
 
     def on_updateGiftAuctionState(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""State of a gift auction was updated
 
@@ -5971,10 +5974,10 @@ class Updates:
         return decorator
 
     def on_updateActiveGiftAuctions(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of auctions in which participate the current user has changed
 
@@ -6030,10 +6033,10 @@ class Updates:
         return decorator
 
     def on_updateUserPrivacySettingRules(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some privacy setting rules have been changed
 
@@ -6089,10 +6092,10 @@ class Updates:
         return decorator
 
     def on_updateUnreadMessageCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Number of unread messages in a chat list has changed\. This update is sent only if the message database is used
 
@@ -6148,10 +6151,10 @@ class Updates:
         return decorator
 
     def on_updateUnreadChatCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Number of unread chats, i\.e\. with unread messages or marked as unread, has changed\. This update is sent only if the message database is used
 
@@ -6207,10 +6210,10 @@ class Updates:
         return decorator
 
     def on_updateStory(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A story was changed
 
@@ -6266,10 +6269,10 @@ class Updates:
         return decorator
 
     def on_updateStoryDeleted(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A story became inaccessible
 
@@ -6325,10 +6328,10 @@ class Updates:
         return decorator
 
     def on_updateStoryPostSucceeded(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A story has been successfully posted
 
@@ -6384,10 +6387,10 @@ class Updates:
         return decorator
 
     def on_updateStoryPostFailed(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A story failed to post\. If the story posting is canceled, then updateStoryDeleted will be received instead of this update
 
@@ -6443,10 +6446,10 @@ class Updates:
         return decorator
 
     def on_updateChatActiveStories(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of active stories posted by a specific chat has changed
 
@@ -6502,10 +6505,10 @@ class Updates:
         return decorator
 
     def on_updateStoryListChatCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Number of chats in a story list has changed
 
@@ -6561,10 +6564,10 @@ class Updates:
         return decorator
 
     def on_updateStoryStealthMode(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Story stealth mode settings have changed
 
@@ -6620,10 +6623,10 @@ class Updates:
         return decorator
 
     def on_updateTrustedMiniAppBots(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Lists of bots which Mini Apps must be allowed to read text from clipboard and must be opened without a warning
 
@@ -6679,10 +6682,10 @@ class Updates:
         return decorator
 
     def on_updateOption(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""An option changed its value
 
@@ -6738,10 +6741,10 @@ class Updates:
         return decorator
 
     def on_updateStickerSet(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A sticker set has changed
 
@@ -6797,10 +6800,10 @@ class Updates:
         return decorator
 
     def on_updateInstalledStickerSets(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of installed sticker sets was updated
 
@@ -6856,10 +6859,10 @@ class Updates:
         return decorator
 
     def on_updateTrendingStickerSets(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of trending sticker sets was updated or some of them were viewed
 
@@ -6915,10 +6918,10 @@ class Updates:
         return decorator
 
     def on_updateRecentStickers(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of recently used stickers was updated
 
@@ -6974,10 +6977,10 @@ class Updates:
         return decorator
 
     def on_updateFavoriteStickers(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of favorite stickers was updated
 
@@ -7033,10 +7036,10 @@ class Updates:
         return decorator
 
     def on_updateSavedAnimations(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of saved animations was updated
 
@@ -7092,10 +7095,10 @@ class Updates:
         return decorator
 
     def on_updateSavedNotificationSounds(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of saved notification sounds was updated\. This update may not be sent until information about a notification sound was requested for the first time
 
@@ -7151,10 +7154,10 @@ class Updates:
         return decorator
 
     def on_updateDefaultBackground(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The default background has changed
 
@@ -7210,10 +7213,10 @@ class Updates:
         return decorator
 
     def on_updateEmojiChatThemes(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of available emoji chat themes has changed
 
@@ -7269,10 +7272,10 @@ class Updates:
         return decorator
 
     def on_updateAccentColors(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of supported accent colors has changed
 
@@ -7328,10 +7331,10 @@ class Updates:
         return decorator
 
     def on_updateProfileAccentColors(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of supported accent colors for user profiles has changed
 
@@ -7387,10 +7390,10 @@ class Updates:
         return decorator
 
     def on_updateLanguagePackStrings(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some language pack strings have been updated
 
@@ -7446,10 +7449,10 @@ class Updates:
         return decorator
 
     def on_updateConnectionState(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The connection state has changed\. This update must be used only to show a human\-readable description of the connection state
 
@@ -7505,10 +7508,10 @@ class Updates:
         return decorator
 
     def on_updateFreezeState(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The freeze state of the current user's account has changed
 
@@ -7564,10 +7567,10 @@ class Updates:
         return decorator
 
     def on_updateAgeVerificationParameters(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The parameters for age verification of the current user's account has changed
 
@@ -7623,10 +7626,10 @@ class Updates:
         return decorator
 
     def on_updateTermsOfService(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""New terms of service must be accepted by the user\. If the terms of service are declined, then the deleteAccount method must be called with the reason \"Decline ToS update\"
 
@@ -7682,10 +7685,10 @@ class Updates:
         return decorator
 
     def on_updateUnconfirmedSession(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The first unconfirmed session has changed
 
@@ -7741,10 +7744,10 @@ class Updates:
         return decorator
 
     def on_updateAttachmentMenuBots(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of bots added to attachment or side menu has changed
 
@@ -7800,10 +7803,10 @@ class Updates:
         return decorator
 
     def on_updateWebAppMessageSent(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A message was sent by an opened Web App, so the Web App needs to be closed
 
@@ -7859,10 +7862,10 @@ class Updates:
         return decorator
 
     def on_updateActiveEmojiReactions(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of active emoji reactions has changed
 
@@ -7918,10 +7921,10 @@ class Updates:
         return decorator
 
     def on_updateAvailableMessageEffects(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of available message effects has changed
 
@@ -7977,10 +7980,10 @@ class Updates:
         return decorator
 
     def on_updateDefaultReactionType(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The type of default reaction has changed
 
@@ -8036,10 +8039,10 @@ class Updates:
         return decorator
 
     def on_updateDefaultPaidReactionType(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The type of default paid reaction has changed
 
@@ -8095,10 +8098,10 @@ class Updates:
         return decorator
 
     def on_updateSavedMessagesTags(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Tags used in Saved Messages or a Saved Messages topic have changed
 
@@ -8154,10 +8157,10 @@ class Updates:
         return decorator
 
     def on_updateActiveLiveLocationMessages(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of messages with active live location that need to be updated by the application has changed\. The list is persistent across application restarts only if the message database is used
 
@@ -8213,10 +8216,10 @@ class Updates:
         return decorator
 
     def on_updateOwnedStarCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The number of Telegram Stars owned by the current user has changed
 
@@ -8272,10 +8275,10 @@ class Updates:
         return decorator
 
     def on_updateOwnedTonCount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The number of Toncoins owned by the current user has changed
 
@@ -8331,10 +8334,10 @@ class Updates:
         return decorator
 
     def on_updateChatRevenueAmount(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The revenue earned from sponsored messages in a chat has changed\. If chat revenue screen is opened, then getChatRevenueTransactions may be called to fetch new transactions
 
@@ -8390,10 +8393,10 @@ class Updates:
         return decorator
 
     def on_updateStarRevenueStatus(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The Telegram Star revenue earned by a user or a chat has changed\. If Telegram Star transaction screen of the chat is opened, then getStarTransactions may be called to fetch new transactions
 
@@ -8449,10 +8452,10 @@ class Updates:
         return decorator
 
     def on_updateTonRevenueStatus(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The Toncoin revenue earned by the current user has changed\. If Toncoin transaction screen of the chat is opened, then getTonTransactions may be called to fetch new transactions
 
@@ -8508,10 +8511,10 @@ class Updates:
         return decorator
 
     def on_updateSpeechRecognitionTrial(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The parameters of speech recognition without Telegram Premium subscription has changed
 
@@ -8567,10 +8570,10 @@ class Updates:
         return decorator
 
     def on_updateGroupCallMessageLevels(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The levels of live story group call messages have changed
 
@@ -8626,10 +8629,10 @@ class Updates:
         return decorator
 
     def on_updateDiceEmojis(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of supported dice emojis has changed
 
@@ -8685,10 +8688,10 @@ class Updates:
         return decorator
 
     def on_updateStakeDiceState(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The stake dice state has changed
 
@@ -8744,10 +8747,10 @@ class Updates:
         return decorator
 
     def on_updateAnimatedEmojiMessageClicked(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen\. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played
 
@@ -8803,10 +8806,10 @@ class Updates:
         return decorator
 
     def on_updateAnimationSearchParameters(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The parameters of animation search through getOption\(\"animation\_search\_bot\_username\"\) bot has changed
 
@@ -8862,10 +8865,10 @@ class Updates:
         return decorator
 
     def on_updateSuggestedActions(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of suggested to the user actions has changed
 
@@ -8921,10 +8924,10 @@ class Updates:
         return decorator
 
     def on_updateSpeedLimitNotification(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Download or upload file speed for the user was limited, but it can be restored by subscription to Telegram Premium\. The notification can be postponed until a being downloaded or uploaded file is visible to the user\. Use getOption\(\"premium\_download\_speedup\"\) or getOption\(\"premium\_upload\_speedup\"\) to get expected speedup after subscription to Telegram Premium
 
@@ -8980,10 +8983,10 @@ class Updates:
         return decorator
 
     def on_updateContactCloseBirthdays(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The list of contacts that had birthdays recently or will have birthday soon has changed
 
@@ -9039,10 +9042,10 @@ class Updates:
         return decorator
 
     def on_updateAutosaveSettings(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Autosave settings for some type of chats were updated
 
@@ -9098,10 +9101,10 @@ class Updates:
         return decorator
 
     def on_updateBusinessConnection(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A business connection has changed; for bots only
 
@@ -9157,10 +9160,10 @@ class Updates:
         return decorator
 
     def on_updateNewBusinessMessage(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new message was added to a business account; for bots only
 
@@ -9216,10 +9219,10 @@ class Updates:
         return decorator
 
     def on_updateBusinessMessageEdited(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A message in a business account was edited; for bots only
 
@@ -9275,10 +9278,10 @@ class Updates:
         return decorator
 
     def on_updateBusinessMessagesDeleted(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Messages in a business account were deleted; for bots only
 
@@ -9334,10 +9337,10 @@ class Updates:
         return decorator
 
     def on_updateNewInlineQuery(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new incoming inline query; for bots only
 
@@ -9393,10 +9396,10 @@ class Updates:
         return decorator
 
     def on_updateNewChosenInlineResult(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""The user has chosen a result of an inline query; for bots only
 
@@ -9452,10 +9455,10 @@ class Updates:
         return decorator
 
     def on_updateNewCallbackQuery(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new incoming callback query; for bots only
 
@@ -9511,10 +9514,10 @@ class Updates:
         return decorator
 
     def on_updateNewInlineCallbackQuery(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new incoming callback query from a message sent via a bot; for bots only
 
@@ -9570,10 +9573,10 @@ class Updates:
         return decorator
 
     def on_updateNewBusinessCallbackQuery(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new incoming callback query from a business message; for bots only
 
@@ -9629,10 +9632,10 @@ class Updates:
         return decorator
 
     def on_updateNewShippingQuery(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new incoming shipping query; for bots only\. Only for invoices with flexible price
 
@@ -9688,10 +9691,10 @@ class Updates:
         return decorator
 
     def on_updateNewPreCheckoutQuery(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new incoming pre\-checkout query; for bots only\. Contains full information about a checkout
 
@@ -9747,10 +9750,10 @@ class Updates:
         return decorator
 
     def on_updateNewCustomEvent(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new incoming event; for bots only
 
@@ -9806,10 +9809,10 @@ class Updates:
         return decorator
 
     def on_updateNewCustomQuery(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A new incoming query; for bots only
 
@@ -9865,10 +9868,10 @@ class Updates:
         return decorator
 
     def on_updatePoll(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A poll was updated; for bots only
 
@@ -9924,10 +9927,10 @@ class Updates:
         return decorator
 
     def on_updatePollAnswer(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A user changed the answer to a poll; for bots only
 
@@ -9983,10 +9986,10 @@ class Updates:
         return decorator
 
     def on_updateChatMember(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""User rights changed in a chat; for bots only
 
@@ -10042,10 +10045,10 @@ class Updates:
         return decorator
 
     def on_updateNewChatJoinRequest(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A user sent a join request to a chat; for bots only
 
@@ -10101,10 +10104,10 @@ class Updates:
         return decorator
 
     def on_updateChatBoost(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""A chat boost has changed; for bots only
 
@@ -10160,10 +10163,10 @@ class Updates:
         return decorator
 
     def on_updateMessageReaction(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""User changed its reactions on a message with public reactions; for bots only
 
@@ -10219,10 +10222,10 @@ class Updates:
         return decorator
 
     def on_updateMessageReactions(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Reactions added to a message with anonymous reactions have changed; for bots only
 
@@ -10278,10 +10281,10 @@ class Updates:
         return decorator
 
     def on_updatePaidMediaPurchased(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Paid media were purchased by a user; for bots only
 
@@ -10337,10 +10340,10 @@ class Updates:
         return decorator
 
     def on_updates(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r"""Contains a list of updates
 

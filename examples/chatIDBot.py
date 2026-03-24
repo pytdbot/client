@@ -112,9 +112,7 @@ async def increase_usage(by: int = 1):
 async def start(client: Client, message: types.Message):
     if message.text == "/start":
         await message.reply_text(
-            "*Your ID*: {}".format(
-                utils.code(str(message.from_id)),
-            ),
+            f"*Your ID*: {utils.code(str(message.from_id))}",
             reply_markup=request_buttons,
         )
         await increase_usage()
@@ -133,17 +131,12 @@ async def handle_shared_chat(client: Client, message: types.Message):
             user_type_text = "*Bot ID*"
 
         await message.reply_text(
-            "{}: {}".format(
-                user_type_text,
-                utils.code(str(message.content.users[0].user_id)),
-            ),
+            f"{user_type_text}: {utils.code(str(message.content.users[0].user_id))}",
         )
         await increase_usage()
     elif isinstance(message.content, types.MessageChatShared):
         await message.reply_text(
-            "*Chat ID*: {}".format(
-                utils.code(str(message.content.chat.chat_id)),
-            ),
+            f"*Chat ID*: {utils.code(str(message.content.chat.chat_id))}",
         )
         await increase_usage()
 
@@ -157,9 +150,7 @@ async def chat_member(client: Client, update: types.UpdateChatMember):
         if isinstance(update.new_chat_member.status, types.ChatMemberStatusMember):
             await client.sendTextMessage(
                 update.chat_id,
-                "*Chat ID*: {}".format(
-                    utils.code(str(update.chat_id)),
-                ),
+                f"*Chat ID*: {utils.code(str(update.chat_id))}",
             )
             await client.leaveChat(chat_id=update.chat_id)
             await increase_usage()

@@ -83,18 +83,18 @@ def getArgTypePython(
     if is_function:
         if is_docstring:
             return f":class:`~pytdbot.types.{class_name}`"
-        return f'"pytdbot.types.{class_name}"'
+        return f"pytdbot.types.{class_name}"
 
     return class_name
 
 
 def generate_arg_value(arg_type, arg_name):
     if arg_type == "int":
-        arg_value = f"int({arg_name})"
+        arg_value = f"{arg_name}"
     elif arg_type == "float":
-        arg_value = f"float({arg_name})"
+        arg_value = f"{arg_name}"
     elif arg_type == "bool":
-        arg_value = f"bool({arg_name})"
+        arg_value = f"{arg_name}"
     elif arg_type.startswith("list[") or arg_type == "list":
         arg_value = f"{arg_name} or []"
     else:
@@ -120,7 +120,7 @@ def generate_arg_default(arg_type):
     return arg_value
 
 
-def generate_args_def(args, is_function: bool = False):
+def generate_args_def(args, classes, is_function: bool = False):
     args_list = ["self"]
     for arg_name, arg_data in args.items():
         if arg_name in keyword.kwlist:
@@ -128,11 +128,11 @@ def generate_args_def(args, is_function: bool = False):
 
         arg_type = getArgTypePython(arg_data["type"], is_function)
         arg_default = generate_arg_default(arg_type)
+        arg_type = generate_union_types(
+            arg_type, arg_data["type"], classes, is_function=is_function
+        )
 
-        if arg_default == "None":
-            args_list.append(f"{arg_name}: {arg_type} | None = None")
-        else:
-            args_list.append(f"{arg_name}: {arg_type} = {arg_default}")
+        args_list.append(f"{arg_name}: {arg_type} = {arg_default}")
 
     if len(args_list) > 1:
         args_list.insert(1, "*")
@@ -140,7 +140,9 @@ def generate_args_def(args, is_function: bool = False):
     return ", ".join(args_list)
 
 
-def generate_union_types(arg_type, arg_type_name, classes, noneable=True):
+def generate_union_types(
+    arg_type, arg_type_name, classes, noneable=True, is_function=False
+):
     unions = [arg_type]
 
     if (
@@ -149,7 +151,12 @@ def generate_union_types(arg_type, arg_type_name, classes, noneable=True):
         unions.pop(0)
 
         for type_name in classes[arg_type_name]["types"]:
-            unions.append(to_camel_case(type_name, is_class=True))
+            if is_function:
+                unions.append(
+                    f"pytdbot.types.{to_camel_case(type_name, is_class=True)}"
+                )
+            else:
+                unions.append(to_camel_case(type_name, is_class=True))
 
     if noneable:
         unions.append("None")
@@ -165,11 +172,9 @@ def generate_self_args(args, classes):
 
         arg_type = getArgTypePython(arg_data["type"])
         arg_value = generate_arg_value(arg_type, arg_name)
-        if arg_value == arg_name:  # a.k.a field can be None
-            arg_type = generate_union_types(arg_type, arg_data["type"], classes)
 
         args_list.append(
-            f'self.{arg_name}: {arg_type} = {arg_value}\n{indent * 2}r"""{escape_quotes(arg_data["description"])}"""'
+            f'self.{arg_name} = {arg_value}\n{indent * 2}r"""{escape_quotes(arg_data["description"])}"""'
         )
     if not args_list:
         return "pass"
@@ -284,7 +289,7 @@ types_template = """class {class_name}({inherited_class}):
         return {{{to_dict_return}}}
 
     @classmethod
-    def from_dict(cls, data: dict) -> "{class_name}" | None:
+    def from_dict(cls, data: dict) -> {class_name} | None:
         if data:
             data_class = cls()
             {from_dict_kwargs}
@@ -295,7 +300,7 @@ types_template = """class {class_name}({inherited_class}):
 def generate_types(f, types, updates, classes):
     def gen(t):
         for type_name, type_data in t.items():
-            args_def = generate_args_def(type_data["args"])
+            args_def = generate_args_def(type_data["args"], classes)
             self_args = generate_self_args(type_data["args"], classes)
             to_return_dict = generate_to_dict_return(type_data["args"])
             from_dict_kwargs = generate_from_dict_kwargs(type_data["args"])
@@ -323,7 +328,7 @@ def generate_types(f, types, updates, classes):
     gen(updates)
 
 
-functions_template = """async def {function_name}({function_args}) -> "pytdbot.types.Error" | "pytdbot.types.{return_type}":
+functions_template = """async def {function_name}({function_args}) -> pytdbot.types.Error | pytdbot.types.{return_type}:
         r\"\"\"{docstring}
 {docstring_args}
         Returns:
@@ -333,9 +338,9 @@ functions_template = """async def {function_name}({function_args}) -> "pytdbot.t
         return await self.invoke({{'@type': '{method_name}', {function_invoke_args}}})"""
 
 
-def generate_functions(f, types):
+def generate_functions(f, types, classes):
     for function_name, function_data in types.items():
-        args_def = generate_args_def(function_data["args"], True)
+        args_def = generate_args_def(function_data["args"], classes, True)
         invoke_args = generate_function_invoke_args(function_data["args"])
 
         f.write(
@@ -354,10 +359,10 @@ def generate_functions(f, types):
 
 
 updates_template = """    def on_{update_name}(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> Callable:
         r\"\"\"{description}
 
@@ -405,10 +410,11 @@ def generate_updates(f, updates):
 
 
 if __name__ == "__main__":
-    with open("td_api.json", "r", encoding="utf-8") as f:
+    with open("td_api.json", encoding="utf-8") as f:
         tl_json = json.loads(f.read())
 
     with open("pytdbot/types/td_types.py", "w", encoding="utf-8") as types_file:
+        types_file.write("from __future__ import annotations\n")
         types_file.write("from typing import Literal\n")
         types_file.write("from base64 import b64decode\n")
         types_file.write(
@@ -484,6 +490,7 @@ if __name__ == "__main__":
     with open(
         "pytdbot/methods/td_functions.py", "w", encoding="utf-8"
     ) as functions_file:
+        functions_file.write("from __future__ import annotations\n")
         functions_file.write("import pytdbot\n\n")
 
         functions_file.write("class TDLibFunctions:\n")
@@ -491,9 +498,10 @@ if __name__ == "__main__":
             f'{indent}"""A class that include all TDLib functions"""\n\n'
         )
 
-        generate_functions(functions_file, tl_json["functions"])
+        generate_functions(functions_file, tl_json["functions"], tl_json["classes"])
 
     with open("pytdbot/handlers/td_updates.py", "w", encoding="utf-8") as updates_file:
+        updates_file.write("from __future__ import annotations\n")
         updates_file.write(
             'import pytdbot\n\nfrom .handler import Handler\nfrom collections.abc import Callable\nfrom asyncio import iscoroutinefunction\nfrom logging import getLogger\n\nlogger = getLogger(__name__)\n\n\nclass Updates:\n    """Auto generated TDLib updates"""\n\n'
         )

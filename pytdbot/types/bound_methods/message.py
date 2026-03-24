@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from functools import lru_cache
-from typing import Literal, Union
+from typing import Literal
 
 import pytdbot
 
@@ -40,7 +42,7 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
-    def entities(self) -> list["pytdbot.types.TextEntity"] | None:
+    def entities(self) -> list[pytdbot.types.TextEntity] | None:
         r"""Entities of the message"""
 
         if isinstance(self.content, pytdbot.types.MessageText):
@@ -66,7 +68,7 @@ class MessageBoundMethods:
 
     @property
     @lru_cache(1)
-    def caption_entities(self) -> list["pytdbot.types.TextEntity"] | None:
+    def caption_entities(self) -> list[pytdbot.types.TextEntity] | None:
         r"""Caption entities of the received media"""
 
         if isinstance(
@@ -150,7 +152,7 @@ class MessageBoundMethods:
 
     async def getMessageProperties(
         self,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.MessageProperties"]:
+    ) -> pytdbot.types.Error | pytdbot.types.MessageProperties:
         r"""Get the message properties"""
 
         return await self._client.getMessageProperties(
@@ -163,7 +165,7 @@ class MessageBoundMethods:
         media_timestamp: int = 0,
         for_album: bool = False,
         in_message_thread: bool = False,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.MessageLink"]:
+    ) -> pytdbot.types.Error | pytdbot.types.MessageLink:
         r"""Get message link
 
         Parameters:
@@ -187,7 +189,7 @@ class MessageBoundMethods:
 
     async def getRepliedMessage(
         self,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Get the replied message"""
 
         return await self._client.getRepliedMessage(
@@ -197,14 +199,14 @@ class MessageBoundMethods:
 
     async def getChat(
         self,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Chat"]:
+    ) -> pytdbot.types.Error | pytdbot.types.Chat:
         r"""Get chat info"""
 
         return await self._client.getChat(chat_id=self.chat_id)
 
     async def getChatMember(
         self,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.ChatMember"]:
+    ) -> pytdbot.types.Error | pytdbot.types.ChatMember:
         r"""Get member info in the current chat"""
 
         return await self._client.getChatMember(
@@ -213,29 +215,29 @@ class MessageBoundMethods:
 
     async def getUser(
         self,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.User"]:
+    ) -> pytdbot.types.Error | pytdbot.types.User:
         r"""Get user info"""
 
         return await self._client.getUser(user_id=self.from_id)
 
     async def setChatMemberStatus(
         self,
-        status: "pytdbot.types.ChatMemberStatus",
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+        status: pytdbot.types.ChatMemberStatus,
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Set chat member status"""
 
         return await self._client.setChatMemberStatus(
             chat_id=self.chat_id, member_id=self.sender_id, status=status
         )
 
-    async def leaveChat(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    async def leaveChat(self) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Leave the current chat"""
 
         return await self._client.leaveChat(chat_id=self.chat_id)
 
     async def ban(
         self, banned_until_date: int = 0
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Ban the message sender
 
         Parameters:
@@ -250,7 +252,7 @@ class MessageBoundMethods:
             )
         )
 
-    async def kick(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    async def kick(self) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Kick the message sender"""
 
         return await self.setChatMemberStatus(
@@ -259,9 +261,9 @@ class MessageBoundMethods:
 
     async def restrict(
         self,
-        permissions: "pytdbot.types.ChatPermissions",
+        permissions: pytdbot.types.ChatPermissions,
         restricted_until_date: int = 0,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Restrict the message sender
 
         Parameters:
@@ -283,7 +285,7 @@ class MessageBoundMethods:
     async def delete(
         self,
         revoke: bool = True,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Delete the received message
 
         Parameters:
@@ -297,7 +299,7 @@ class MessageBoundMethods:
 
     async def react(
         self, emoji: str = "👍", is_big: bool = False
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""React to the current message
 
         Parameters:
@@ -321,7 +323,7 @@ class MessageBoundMethods:
         self,
         disable_notification: bool = False,
         only_for_self: bool = False,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    ) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Pin the message
 
         Parameters:
@@ -339,7 +341,7 @@ class MessageBoundMethods:
             only_for_self=only_for_self,
         )
 
-    async def unpin(self) -> Union["pytdbot.types.Error", "pytdbot.types.Ok"]:
+    async def unpin(self) -> pytdbot.types.Error | pytdbot.types.Ok:
         r"""Unpin the message"""
 
         return await self._client.unpinChatMessage(
@@ -352,7 +354,7 @@ class MessageBoundMethods:
         offset: int = 0,
         limit: int = 0,
         synchronous: bool = True,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.LocalFile"]:
+    ) -> pytdbot.types.Error | pytdbot.types.LocalFile:
         r"""Download the media file and returns ``LocalFile`` object. Shortcut for :meth:`~pytdbot.Client.downloadFile`."""
 
         res = None
@@ -410,7 +412,7 @@ class MessageBoundMethods:
             "upload_video_note",
             "cancel",
         ],
-        topic_id: "pytdbot.types.MessageTopic" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
     ) -> ChatActions:
         r"""Sends a chat action to a specific chat. Supporting context manager (``with`` statement)
 
@@ -452,7 +454,7 @@ class MessageBoundMethods:
     async def reply_text(
         self,
         text: str,
-        entities: list["pytdbot.types.TextEntity"] = None,
+        entities: list[pytdbot.types.TextEntity] = None,
         parse_mode: str = None,
         disable_web_page_preview: bool = False,
         url: str = None,
@@ -463,16 +465,15 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
-        reply_markup: Union[
-            "pytdbot.types.ReplyMarkupInlineKeyboard",
-            "pytdbot.types.ReplyMarkupShowKeyboard",
-            "pytdbot.types.ReplyMarkupForceReply",
-            "pytdbot.types.ReplyMarkupRemoveKeyboard",
-        ] = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with text. Shortcut for :meth:`~pytdbot.Client.sendTextMessage`."""
 
         return await self._client.sendTextMessage(
@@ -497,8 +498,8 @@ class MessageBoundMethods:
 
     async def reply_animation(
         self,
-        animation: Union["pytdbot.types.InputFile", str],
-        thumbnail: "pytdbot.types.InputThumbnail" = None,
+        animation: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
         caption: str = None,
         caption_entities: list = None,
         parse_mode: str = None,
@@ -510,16 +511,15 @@ class MessageBoundMethods:
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
-        reply_markup: Union[
-            "pytdbot.types.ReplyMarkupInlineKeyboard",
-            "pytdbot.types.ReplyMarkupShowKeyboard",
-            "pytdbot.types.ReplyMarkupForceReply",
-            "pytdbot.types.ReplyMarkupRemoveKeyboard",
-        ] = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with animation. Shortcut for :meth:`~pytdbot.Client.sendAnimation`."""
 
         return await self._client.sendAnimation(
@@ -545,8 +545,8 @@ class MessageBoundMethods:
 
     async def reply_audio(
         self,
-        audio: Union["pytdbot.types.InputFile", str],
-        album_cover_thumbnail: "pytdbot.types.InputThumbnail" = None,
+        audio: pytdbot.types.InputFile | str,
+        album_cover_thumbnail: pytdbot.types.InputThumbnail | None = None,
         caption: str = None,
         caption_entities: list = None,
         parse_mode: str = None,
@@ -556,16 +556,15 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
-        reply_markup: Union[
-            "pytdbot.types.ReplyMarkupInlineKeyboard",
-            "pytdbot.types.ReplyMarkupShowKeyboard",
-            "pytdbot.types.ReplyMarkupForceReply",
-            "pytdbot.types.ReplyMarkupRemoveKeyboard",
-        ] = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with audio. Shortcut for :meth:`~pytdbot.Client.sendAudio`."""
 
         return await self._client.sendAudio(
@@ -589,8 +588,8 @@ class MessageBoundMethods:
 
     async def reply_document(
         self,
-        document: Union["pytdbot.types.InputFile", str],
-        thumbnail: "pytdbot.types.InputThumbnail" = None,
+        document: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
         caption: str = None,
         caption_entities: list = None,
         parse_mode: str = None,
@@ -598,16 +597,15 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = False,
-        reply_markup: Union[
-            "pytdbot.types.ReplyMarkupInlineKeyboard",
-            "pytdbot.types.ReplyMarkupShowKeyboard",
-            "pytdbot.types.ReplyMarkupForceReply",
-            "pytdbot.types.ReplyMarkupRemoveKeyboard",
-        ] = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a document. Shortcut for :meth:`~pytdbot.Client.sendDocument`."""
 
         return await self._client.sendDocument(
@@ -629,29 +627,28 @@ class MessageBoundMethods:
 
     async def reply_photo(
         self,
-        photo: Union["pytdbot.types.InputFile", str],
-        thumbnail: "pytdbot.types.InputThumbnail" = None,
+        photo: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
         caption: str = None,
         caption_entities: list = None,
         parse_mode: str = None,
         added_sticker_file_ids: list = None,
         width: int = 0,
         height: int = 0,
-        self_destruct_type: "pytdbot.types.MessageSelfDestructType" = None,
+        self_destruct_type: pytdbot.types.MessageSelfDestructType | None = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = None,
-        reply_markup: Union[
-            "pytdbot.types.ReplyMarkupInlineKeyboard",
-            "pytdbot.types.ReplyMarkupShowKeyboard",
-            "pytdbot.types.ReplyMarkupForceReply",
-            "pytdbot.types.ReplyMarkupRemoveKeyboard",
-        ] = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a photo. Shortcut for :meth:`~pytdbot.Client.sendPhoto`."""
 
         return await self._client.sendPhoto(
@@ -677,8 +674,8 @@ class MessageBoundMethods:
 
     async def reply_video(
         self,
-        video: Union["pytdbot.types.InputFile", str],
-        thumbnail: "pytdbot.types.InputThumbnail" = None,
+        video: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
         caption: str = None,
         caption_entities: list = None,
         parse_mode: str = None,
@@ -687,21 +684,20 @@ class MessageBoundMethods:
         duration: int = 0,
         width: int = 0,
         height: int = 0,
-        self_destruct_type: "pytdbot.types.MessageSelfDestructType" = None,
+        self_destruct_type: pytdbot.types.MessageSelfDestructType | None = None,
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
         has_spoiler: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = None,
-        reply_markup: Union[
-            "pytdbot.types.ReplyMarkupInlineKeyboard",
-            "pytdbot.types.ReplyMarkupShowKeyboard",
-            "pytdbot.types.ReplyMarkupForceReply",
-            "pytdbot.types.ReplyMarkupRemoveKeyboard",
-        ] = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a video. Shortcut for :meth:`~pytdbot.Client.sendVideo`."""
 
         return await self._client.sendVideo(
@@ -729,23 +725,22 @@ class MessageBoundMethods:
 
     async def reply_video_note(
         self,
-        video_note: Union["pytdbot.types.InputFile", str],
-        thumbnail: "pytdbot.types.InputThumbnail" = None,
+        video_note: pytdbot.types.InputFile | str,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
         duration: int = 0,
         length: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = None,
-        reply_markup: Union[
-            "pytdbot.types.ReplyMarkupInlineKeyboard",
-            "pytdbot.types.ReplyMarkupShowKeyboard",
-            "pytdbot.types.ReplyMarkupForceReply",
-            "pytdbot.types.ReplyMarkupRemoveKeyboard",
-        ] = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a video note. Shortcut for :meth:`~pytdbot.Client.sendVideoNote`."""
 
         return await self._client.sendVideoNote(
@@ -765,7 +760,7 @@ class MessageBoundMethods:
 
     async def reply_voice(
         self,
-        voice: Union["pytdbot.types.InputFile", str],
+        voice: pytdbot.types.InputFile | str,
         caption: str = None,
         caption_entities: list = None,
         parse_mode: str = None,
@@ -774,16 +769,15 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = None,
-        reply_markup: Union[
-            "pytdbot.types.ReplyMarkupInlineKeyboard",
-            "pytdbot.types.ReplyMarkupShowKeyboard",
-            "pytdbot.types.ReplyMarkupForceReply",
-            "pytdbot.types.ReplyMarkupRemoveKeyboard",
-        ] = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a voice note. Shortcut for :meth:`~pytdbot.Client.sendVoice`."""
 
         return await self._client.sendVoice(
@@ -805,24 +799,23 @@ class MessageBoundMethods:
 
     async def reply_sticker(
         self,
-        sticker: Union["pytdbot.types.InputFile", str],
+        sticker: pytdbot.types.InputFile | str,
         emoji: str = None,
-        thumbnail: "pytdbot.types.InputThumbnail" = None,
+        thumbnail: pytdbot.types.InputThumbnail | None = None,
         width: int = 0,
         height: int = 0,
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         no_reply: bool = None,
-        reply_markup: Union[
-            "pytdbot.types.ReplyMarkupInlineKeyboard",
-            "pytdbot.types.ReplyMarkupShowKeyboard",
-            "pytdbot.types.ReplyMarkupForceReply",
-            "pytdbot.types.ReplyMarkupRemoveKeyboard",
-        ] = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkupInlineKeyboard
+        | pytdbot.types.ReplyMarkupShowKeyboard
+        | pytdbot.types.ReplyMarkupForceReply
+        | pytdbot.types.ReplyMarkupRemoveKeyboard
+        | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Reply to the message with a sticker. Shortcut for :meth:`~pytdbot.Client.sendSticker`."""
 
         return await self._client.sendSticker(
@@ -852,10 +845,10 @@ class MessageBoundMethods:
         disable_notification: bool = False,
         protect_content: bool = False,
         allow_paid_broadcast: bool = False,
-        topic_id: "pytdbot.types.MessageTopic" = None,
-        quote: "pytdbot.types.InputTextQuote" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
+        quote: pytdbot.types.InputTextQuote | None = None,
         reply_to_message_id: int = 0,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Copy message to chat. Shortcut for :meth:`~pytdbot.Client.sendCopy`."""
 
         return await self._client.sendCopy(
@@ -880,7 +873,7 @@ class MessageBoundMethods:
         chat_id: int,
         in_game_share: bool = False,
         disable_notification: bool = False,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Forward message to chat. Shortcut for :meth:`~pytdbot.Client.forwardMessage`."""
 
         return await self._client.forwardMessage(
@@ -901,8 +894,8 @@ class MessageBoundMethods:
         force_small_media: bool = None,
         force_large_media: bool = None,
         show_above_text: bool = None,
-        reply_markup: "pytdbot.types.ReplyMarkup" = None,
-    ) -> Union["pytdbot.types.Error", "pytdbot.types.Message"]:
+        reply_markup: pytdbot.types.ReplyMarkup | None = None,
+    ) -> pytdbot.types.Error | pytdbot.types.Message:
         r"""Edit text message. Shortcut for :meth:`~pytdbot.Client.editTextMessage`."""
 
         return await self._client.editTextMessage(

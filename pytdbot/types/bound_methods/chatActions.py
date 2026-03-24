@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from asyncio import sleep
 from typing import Literal
 
@@ -7,7 +9,7 @@ import pytdbot
 class ChatActions:
     def __init__(
         self,
-        client: "pytdbot.Client",
+        client: pytdbot.Client,
         chat_id: int,
         action: Literal[
             "typing",
@@ -23,7 +25,7 @@ class ChatActions:
             "upload_video_note",
             "cancel",
         ],
-        topic_id: "pytdbot.types.MessageTopic" = None,
+        topic_id: pytdbot.types.MessageTopic | None = None,
     ) -> None:
         self.client = client
         self.chat_id = chat_id

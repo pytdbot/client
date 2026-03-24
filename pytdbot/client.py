@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 import signal
 from collections.abc import Callable
@@ -9,7 +11,6 @@ from os.path import join as join_path
 from pathlib import Path
 from platform import python_implementation, python_version
 from threading import current_thread, main_thread
-from typing import Type
 
 import aio_pika
 from deepdiff import DeepDiff
@@ -114,31 +115,31 @@ class Client(Decorators, Methods):
 
     def __init__(
         self,
-        token: str = None,
-        api_id: int = None,
-        api_hash: str = None,
-        rabbitmq_url: str = None,
-        instance_id: str = None,
-        lib_path: str = None,
-        plugins: Plugins = None,
-        default_parse_mode: str = None,
+        token: str | None = None,
+        api_id: int | None = None,
+        api_hash: str | None = None,
+        rabbitmq_url: str | None = None,
+        instance_id: str | None = None,
+        lib_path: str | None = None,
+        plugins: Plugins | None = None,
+        default_parse_mode: str | None = None,
         system_language_code: str = "en",
-        device_model: str = None,
-        files_directory: str = None,
-        database_encryption_key: str | bytes = None,
+        device_model: str | None = None,
+        files_directory: str | None = None,
+        database_encryption_key: str | bytes | None = None,
         use_test_dc: bool = False,
         use_file_database: bool = True,
         use_chat_info_database: bool = True,
         use_message_database: bool = True,
-        loop: asyncio.AbstractEventLoop = None,
-        options: dict = None,
+        loop: asyncio.AbstractEventLoop | None = None,
+        options: dict | None = None,
         workers: int = 5,
         queue_size: int = 1000,
-        default_handlers_timeout: float = None,
+        default_handlers_timeout: float | None = None,
         no_updates: bool = False,
         load_messages_before_reply: bool = False,
         td_verbosity: int = 2,
-        td_log: LogStream = None,
+        td_log: LogStream | None = None,
         user_bot: bool = False,
         server_ack: bool = True,
     ) -> None:
@@ -207,7 +208,7 @@ class Client(Decorators, Methods):
         self._workers_tasks = None
         self.__wait_login: asyncio.Event = None
         self.__rabbitmq_iterator_task = None
-        self.__authorization_state = None
+        self.__authorization_state: str = None
         self.__cache = {"is_coro_filter": {}}
         self.__local_handlers = {
             "updateAuthorizationState": self.__handle_authorization_state,
@@ -252,7 +253,7 @@ class Client(Decorators, Methods):
 
     async def getServerStats(
         self,
-    ) -> "pytdbot.types.ServerStats" | "pytdbot.types.Error":
+    ) -> pytdbot.types.ServerStats | pytdbot.types.Error:
         """Returns TDLib Server stats"""
 
         self._check_rabbitmq()
@@ -261,7 +262,7 @@ class Client(Decorators, Methods):
 
     async def scheduleEvent(
         self, name: str, payload: str, send_at: int
-    ) -> "pytdbot.types.ScheduledEvent" | "pytdbot.types.Error":
+    ) -> pytdbot.types.ScheduledEvent | pytdbot.types.Error:
         """Schedule an event
 
         Parameters:
@@ -295,7 +296,7 @@ class Client(Decorators, Methods):
 
     async def cancelScheduledEvent(
         self, event_id: str
-    ) -> "pytdbot.types.Ok" | "pytdbot.types.Error":
+    ) -> pytdbot.types.Ok | pytdbot.types.Error:
         """Cancel a scheduled event
 
         Parameters:
@@ -366,12 +367,12 @@ class Client(Decorators, Methods):
 
     def add_handler(
         self,
-        update_type: type["pytdbot.types.Update"] | str,
+        update_type: type[pytdbot.types.Update] | str,
         func: Callable,
-        filters: pytdbot.filters.Filter = None,
-        position: int = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
         inner_object: bool = False,
-        timeout: float = None,
+        timeout: float | None = None,
         is_from_plugin: bool = False,
     ) -> None:
         r"""Add an update handler
@@ -682,7 +683,7 @@ class Client(Decorators, Methods):
         return True
 
     def _create_request_future(
-        self, request: dict, result_id: str = None, handle_result: bool = True
+        self, request: dict, result_id: str | None = None, handle_result: bool = True
     ) -> asyncio.Future:
         result = asyncio.Future()
 
@@ -746,18 +747,17 @@ class Client(Decorators, Methods):
             plugin_paths = [
                 path
                 for path in plugin_paths
-                if ".".join(path.parent.parts + (path.stem,)) in self.plugins.include
+                if ".".join((*path.parent.parts, path.stem)) in self.plugins.include
             ]
         elif self.plugins.exclude:
             plugin_paths = [
                 path
                 for path in plugin_paths
-                if ".".join(path.parent.parts + (path.stem,))
-                not in self.plugins.exclude
+                if ".".join((*path.parent.parts, path.stem)) not in self.plugins.exclude
             ]
 
         for path in plugin_paths:
-            module_path = ".".join(path.parent.parts + (path.stem,))
+            module_path = ".".join((*path.parent.parts, path.stem))
 
             try:
                 module = import_module(module_path)

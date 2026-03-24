@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Callable
 
 import pytdbot
@@ -12,10 +14,10 @@ class Handler:
         self,
         func: Callable,
         update_type: str,
-        filter: Filter = None,
-        position: int = None,
+        filter: Filter | None = None,
+        position: int | None = None,
         inner_object: bool = False,
-        timeout: float = None,
+        timeout: float | None = None,
         is_from_plugin: bool = False,
     ) -> None:
         self.func = func

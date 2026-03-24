@@ -12,21 +12,21 @@ jobs:
 
     steps:
       - name: Clone Pytdbot
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
 
       - name: Clone TDLib
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: tdlib/td
           fetch-depth: 1
           path: "td/"
 
-      - name: Install Python 3.9
-        uses: actions/setup-python@v5
+      - name: Install Python 3.10
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.9"
+          python-version: "3.10"
 
       # - name: Install PHP 7.4
       #   uses: shivammathur/setup-php@v2
@@ -38,15 +38,15 @@ jobs:
       #   with:
       #     cmake-version: "3.25.1"
 
-      - name: Increase swap
-        run: |
-          free -h
-          export SWAP_PATH=$(sudo swapon --show=NAME | tail -1)
-          sudo swapoff -a
-          sudo fallocate -l 7G $SWAP_PATH
-          sudo mkswap $SWAP_PATH
-          sudo swapon $SWAP_PATH
-          free -h
+      # - name: Increase swap
+      #   run: |
+      #     free -h
+      #     export SWAP_PATH=$(sudo swapon --show=NAME | tail -1)
+      #     sudo swapoff -a
+      #     sudo fallocate -l 7G $SWAP_PATH
+      #     sudo mkswap $SWAP_PATH
+      #     sudo swapon $SWAP_PATH
+      #     free -h
 
       - name: Install TDLib dependencies
         id: td
@@ -95,8 +95,10 @@ jobs:
         run: |
           python generate_json.py "${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}" "${{ steps.vars.outputs.LATEST_TDLIB_COMMIT_HASH }}"
           python generate_files.py
+          TD_FILES="pytdbot/types/td_types.py pytdbot/methods/td_functions.py pytdbot/handlers/td_updates.py"
           python -m pip install ruff
-          python -m ruff format .
+          python -m ruff check $TD_FILES --select I --fix
+          python -m ruff format $TD_FILES
 
           CURRENT_VERSION=${{ steps.vars.outputs.CURRENT_TDLIB_VERSION }}
           sed --binary -i "s/${CURRENT_VERSION//./\\.}/${{ steps.vars.outputs.LATEST_TDLIB_VERSION }}/g" README.md

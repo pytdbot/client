@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 from asyncio import iscoroutinefunction
 from collections.abc import Callable
@@ -14,11 +16,11 @@ class Decorators(Updates):
     """Decorators class."""
 
     def initializer(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
         inner_object: bool = False,
-        timeout: float = None,
+        timeout: float | None = None,
     ) -> None:
         r"""A decorator to initialize an event object before running other handlers
 
@@ -78,11 +80,11 @@ class Decorators(Updates):
         return decorator
 
     def finalizer(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
         inner_object: bool = False,
-        timeout: float = None,
+        timeout: float | None = None,
     ) -> None:
         r"""A decorator to finalize an event object after running all handlers
 
@@ -141,10 +143,10 @@ class Decorators(Updates):
         return decorator
 
     def on_message(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> None:
         r"""A decorator to handle ``updateNewMessage`` but with ``Message`` object.
 
@@ -201,10 +203,10 @@ class Decorators(Updates):
         return decorator
 
     def on_updateScheduledEvent(
-        self: "pytdbot.Client" = None,
-        filters: "pytdbot.filters.Filter" = None,
-        position: int = None,
-        timeout: float = None,
+        self: pytdbot.Client | None = None,
+        filters: pytdbot.filters.Filter | None = None,
+        position: int | None = None,
+        timeout: float | None = None,
     ) -> None:
         r"""A scheduled event has been triggered
 
