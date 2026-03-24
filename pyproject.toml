@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Pytdbot"
+dynamic = ["version"]
+description = "Easy-to-use asynchronous TDLib wrapper for Python."
+readme = { file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "AYMEN A", email = "let.me.code.safe@gmail.com" }]
+dependencies = ["deepdiff", "aio_pika"]
+keywords = [
+    "telegram",
+    "tdlib",
+    "bot",
+    "telegram-client",
+    "telegram-bot",
+    "bot-api",
+    "tdlib-python",
+    "tdlib-bot",
+]
+
+[project.urls]
+Source = "https://github.com/pytdbot/client"
+Tracker = "https://github.com/pytdbot/client/issues"
+
+[project.optional-dependencies]
+tdjson = ["tdjson"]
+
+[tool.setuptools.packages.find]
+exclude = ["examples"]
+
+[tool.setuptools.package-data]
+pytdbot = ["td_api.*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "pytdbot.__version__" }
